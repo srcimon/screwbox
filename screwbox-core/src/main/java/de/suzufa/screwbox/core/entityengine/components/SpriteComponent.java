@@ -1,0 +1,28 @@
+package de.suzufa.screwbox.core.entityengine.components;
+
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.entityengine.Component;
+import de.suzufa.screwbox.core.graphics.Sprite;
+
+public class SpriteComponent implements Component {
+
+    private static final long serialVersionUID = 1L;
+
+    public Sprite sprite;
+    public int drawOrder;
+    public Percentage opacity;
+
+    public SpriteComponent(final int drawOrder) {
+        this(Sprite.invisible(), drawOrder);
+    }
+
+    public SpriteComponent(final Sprite sprite, final int drawOrder) {
+        this(sprite, drawOrder, Percentage.max());
+    }
+
+    public SpriteComponent(final Sprite sprite, final int drawOrder, final Percentage opacity) {
+        this.sprite = sprite;
+        this.drawOrder = drawOrder;
+        this.opacity = opacity;
+    }
+}

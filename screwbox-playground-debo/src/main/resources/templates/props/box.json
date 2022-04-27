@@ -1,0 +1,18 @@
+{ "object":
+    {
+     "gid":10,
+     "height":16,
+     "id":370,
+     "name":"box",
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":16
+    },
+ "tileset":
+    {
+     "firstgid":1,
+     "source":"..\/..\/tilesets\/symbols16x16.json"
+    },
+ "type":"template"
+}

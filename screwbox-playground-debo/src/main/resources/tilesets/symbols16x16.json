@@ -1,0 +1,14 @@
+{ "columns":4,
+ "image":"symbols16x16.png",
+ "imageheight":80,
+ "imagewidth":64,
+ "margin":0,
+ "name":"symbols16x16",
+ "spacing":0,
+ "tilecount":20,
+ "tiledversion":"1.8.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.8"
+}

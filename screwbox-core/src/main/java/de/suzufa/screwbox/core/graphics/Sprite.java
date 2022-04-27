@@ -1,0 +1,131 @@
+package de.suzufa.screwbox.core.graphics;
+
+import static java.util.Arrays.asList;
+import static java.util.Objects.isNull;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.utils.ResourceLoader;
+
+public class Sprite implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private final List<Frame> frames = new ArrayList<>();
+    private final Dimension dimension;
+    private final Time started = Time.now();
+    private Duration duration = Duration.zero();
+    private boolean flippedHorizontally = false;
+    private boolean flippedVertically = false;
+
+    private Sprite(final Image image) {
+        this(asList(new Frame(image)), Dimension.of(image.getWidth(null), image.getHeight(null)), false);
+    }
+
+    public Sprite(final List<Frame> frames, final Dimension dimension) {
+        this(frames, dimension, false);
+    }
+
+    // TODO: CHeck if frame dimension is exactly sprite dimension
+    private Sprite(final List<Frame> frames, final Dimension dimension, final boolean flipped) {
+        this.dimension = dimension;
+        this.flippedHorizontally = flipped;
+        for (final var frame : frames) {
+            addFrame(frame);
+        }
+    }
+
+    public static Sprite fromFile(final String fileName) {
+        try {
+            final File resource = ResourceLoader.resourceFile(fileName);
+            final BufferedImage image = ImageIO.read(resource);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return fromImage(image);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
+    }
+
+//TODO:spriteframe.invisible();
+    public static Sprite invisible() {
+        return fromImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    }
+
+    public static Sprite fromImage(final Image image) {
+        return new Sprite(image);
+    }
+
+    public boolean isFlippedHorizontally() {
+        return flippedHorizontally;
+    }
+
+    public void setFlippedHorizontally(final boolean flippedHorizontally) {
+        this.flippedHorizontally = flippedHorizontally;
+    }
+
+    public boolean isFlippedVertically() {
+        return flippedVertically;
+    }
+
+    public void setFlippedVertically(final boolean flippedVertically) {
+        this.flippedVertically = flippedVertically;
+    }
+
+    public Dimension dimension() {
+        return dimension;
+    }
+
+    public Image getFirstImage() {
+        return getImage(0);
+    }
+
+    public Image getImage(final Time time) {
+        final var frameNr = getFrameNr(frames, duration, time);
+        return getImage(frameNr);
+    }
+
+    public Sprite newInstance() {
+        return new Sprite(frames, dimension, flippedHorizontally);
+    }
+
+    private Image getImage(final int frameNr) {
+        return frames.get(frameNr).image(flippedHorizontally, flippedVertically);
+    }
+
+    private void addFrame(final Frame frame) {
+        duration = duration.plus(frame.duration());
+        frames.add(frame);
+    }
+
+    private int getFrameNr(final List<Frame> frames, final Duration durationSum, final Time time) {
+        if (frames.size() == 1) {
+            return 0;
+        }
+        final long timerIndex = Duration.between(time, started).nanos() % durationSum.nanos();
+        long sumAtCurrentIndex = 0;
+        long sumAtNextIndex = 0;
+        for (int i = 0; i < frames.size(); i++) {
+            sumAtNextIndex += frames.get(i).duration().nanos();
+
+            if (timerIndex >= sumAtCurrentIndex && timerIndex <= sumAtNextIndex) {
+                return i;
+            }
+
+            sumAtCurrentIndex += frames.get(i).duration().nanos();
+        }
+        return frames.size() - 1;
+    }
+
+}

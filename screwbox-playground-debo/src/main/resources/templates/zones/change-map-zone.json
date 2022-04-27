@@ -1,0 +1,18 @@
+{ "object":
+    {
+     "height":67,
+     "id":442,
+     "name":"change-map-zone",
+     "properties":[
+            {
+             "name":"file-name",
+             "type":"string",
+             "value":""
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":58
+    },
+ "type":"template"
+}

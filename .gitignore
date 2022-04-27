@@ -1,0 +1,11 @@
+# eclipse
+**/.classpath
+**/.project
+**/target
+**/.settings/
+
+# osx
+**/.DS_Store
+
+# tiled
+**/*.tiled-session

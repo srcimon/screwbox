@@ -1,0 +1,18 @@
+{ "object":
+    {
+     "height":12,
+     "id":24,
+     "name":"killzone",
+     "properties":[
+            {
+             "name":"death-type",
+             "type":"string",
+             "value":""
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":255
+    },
+ "type":"template"
+}
