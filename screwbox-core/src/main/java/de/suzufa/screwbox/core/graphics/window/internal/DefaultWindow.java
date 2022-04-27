@@ -1,0 +1,202 @@
+package de.suzufa.screwbox.core.graphics.window.internal;
+
+import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
+
+import java.awt.Cursor;
+import java.awt.DisplayMode;
+import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.util.List;
+
+import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
+import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
+import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.internal.DefaultRenderer;
+import de.suzufa.screwbox.core.graphics.internal.Renderer;
+import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
+import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.window.WindowCircle;
+import de.suzufa.screwbox.core.graphics.window.WindowLine;
+import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
+import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
+import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
+import de.suzufa.screwbox.core.graphics.window.WindowSprite;
+import de.suzufa.screwbox.core.graphics.window.WindowText;
+import de.suzufa.screwbox.core.loop.Metrics;
+
+public class DefaultWindow implements Window, GraphicsConfigListener {
+
+	private final Frame frame;
+	private final GraphicsDevice graphicsDevice;
+	private final GraphicsConfiguration configuration;
+	private Renderer renderer = new StandbyRenderer();
+	private DisplayMode lastDisplayMode;
+	private final Metrics metrics;
+
+	public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
+		this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		this.frame = frame;
+		this.configuration = configuration;
+		this.metrics = metrics;
+		setTitle("ScrewBox");
+		configuration.registerListener(this);
+	}
+
+	@Override
+	public Window draw(final WindowRepeatingSprite repeatingSprite) {
+		renderer.draw(repeatingSprite);
+		return this;
+	}
+
+	@Override
+	public Window draw(final WindowRectangle rectangle) {
+		renderer.draw(rectangle);
+		return this;
+	}
+
+	@Override
+	public int calculateTextWidth(final String text, final Font font) {
+		return renderer.calculateTextWidth(text, font);
+	}
+
+	@Override
+	public Sprite takeScreenshot() {
+		return renderer.takeScreenshot();
+	}
+
+	public void updateScreen(final boolean antialiased) {
+		renderer.updateScreen(antialiased);
+	}
+
+	@Override
+	public Offset center() {
+		return Offset.at(size().width() / 2.0, size().height() / 2.0);
+	}
+
+	@Override
+	public Dimension size() {
+		final var bounds = frame.getBounds();
+		return Dimension.of(bounds.width, bounds.height);
+	}
+
+	@Override
+	public Window draw(WindowPolygon polygon) {
+		renderer.draw(polygon);
+		return this;
+	}
+
+	@Override
+	public Window draw(final WindowText text) {
+		renderer.draw(text);
+		return this;
+	}
+
+	@Override
+	public Window draw(final WindowSprite sprite) {
+		renderer.draw(sprite);
+		return this;
+	}
+
+	@Override
+	public Window draw(final WindowLine line) {
+		renderer.draw(line);
+		return this;
+	}
+
+	@Override
+	public Window draw(final WindowCircle circle) {
+		renderer.draw(circle);
+		return this;
+	}
+
+	@Override
+	public Offset position() {
+		final var bounds = frame.getBounds();
+		return Offset.at(bounds.x, bounds.y);
+	}
+
+	@Override
+	public Window setTitle(final String title) {
+		frame.setTitle(title);
+		return this;
+	}
+
+	@Override
+	public Window moveTo(final Offset position) {
+		if (!frame.isResizable()) {
+			throw new IllegalStateException("Can't move Window in fullscreen.");
+		}
+		frame.setBounds(position.x(), position.y(), frame.getWidth(), frame.getHeight());
+		return this;
+	}
+
+	@Override
+	public Window open() {
+		final int width = configuration.resolution().width();
+		final int height = configuration.resolution().height();
+
+		frame.dispose();
+		frame.setSize(width, height);
+		frame.setResizable(!configuration.isFullscreen());
+		frame.setVisible(true);
+		frame.createBufferStrategy(2);
+		frame.setBounds(0, 0, width, height);
+		if (configuration.isFullscreen()) {
+			makeCursorInvisible();
+			lastDisplayMode = graphicsDevice.getDisplayMode();
+			final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
+			final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
+			final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
+			graphicsDevice.setDisplayMode(displayMode);
+			graphicsDevice.setFullScreenWindow(frame);
+		}
+		renderer = new DefaultRenderer(frame, metrics);
+		return this;
+	}
+
+	@Override
+	public Window close() {
+		renderer = new StandbyRenderer();
+		frame.setCursor(Cursor.getDefaultCursor());
+		frame.dispose();
+		if (nonNull(lastDisplayMode)) {
+			graphicsDevice.setFullScreenWindow(null);
+			graphicsDevice.setDisplayMode(lastDisplayMode);
+			lastDisplayMode = null;
+		}
+		return this;
+	}
+
+	public List<Dimension> supportedResolutions() {
+		return asList(graphicsDevice.getDisplayModes()).stream().map(dm -> Dimension.of(dm.getWidth(), dm.getHeight()))
+				.toList();
+	}
+
+	@Override
+	public void configurationChanged() {
+		if (frame.isVisible()) {
+			close();
+			open();
+		}
+	}
+
+	private void makeCursorInvisible() {
+		final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Sprite.invisible().getFirstImage(),
+				new Point(0, 0), "blank cursor");
+		frame.setCursor(blankCursor);
+	}
+
+	@Override
+	public boolean isVisible(WindowBounds bounds) {
+		return bounds.intersects(new WindowBounds(Offset.origin(), size()));
+	}
+
+}

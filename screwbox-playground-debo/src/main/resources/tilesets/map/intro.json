@@ -1,0 +1,14 @@
+{ "columns":4,
+ "image":"intro.png",
+ "imageheight":64,
+ "imagewidth":64,
+ "margin":0,
+ "name":"intro",
+ "spacing":0,
+ "tilecount":16,
+ "tiledversion":"1.8.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.8"
+}

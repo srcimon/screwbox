@@ -1,0 +1,14 @@
+{ "columns":1,
+ "image":"vanishing-block.png",
+ "imageheight":16,
+ "imagewidth":16,
+ "margin":0,
+ "name":"vanishing-block",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.6.0",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.6"
+}

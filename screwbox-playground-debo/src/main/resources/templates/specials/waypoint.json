@@ -1,0 +1,19 @@
+{ "object":
+    {
+     "height":0,
+     "id":309,
+     "name":"waypoint",
+     "point":true,
+     "properties":[
+            {
+             "name":"next",
+             "type":"object",
+             "value":0
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":0
+    },
+ "type":"template"
+}

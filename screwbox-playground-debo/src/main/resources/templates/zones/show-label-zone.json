@@ -1,0 +1,23 @@
+{ "object":
+    {
+     "height":78,
+     "id":5,
+     "name":"show-label-zone",
+     "properties":[
+            {
+             "name":"label",
+             "type":"string",
+             "value":""
+            }, 
+            {
+             "name":"size",
+             "type":"string",
+             "value":""
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":123
+    },
+ "type":"template"
+}

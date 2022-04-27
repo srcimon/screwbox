@@ -1,0 +1,24 @@
+{ "object":
+    {
+     "gid":11,
+     "height":16,
+     "id":391,
+     "name":"vanishing-block",
+     "properties":[
+            {
+             "name":"timeout-millis",
+             "type":"int",
+             "value":0
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":16
+    },
+ "tileset":
+    {
+     "firstgid":1,
+     "source":"..\/..\/tilesets\/symbols16x16.json"
+    },
+ "type":"template"
+}
