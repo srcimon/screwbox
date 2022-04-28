@@ -88,6 +88,20 @@ class RaycastTest {
     }
 
     @Test
+    void findHits_multipleHits_returnsAllHits() {
+    	when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+    			boxAt(0, 50),
+    			boxAt(0, 150),
+    			boxAt(0, 250)));
+    	
+    	var result = raycastBuilder
+    			.checkingBorders(Borders.ALL)
+    			.castingTo(0, 400)
+    			.findHits();
+    	
+    	assertThat(result).hasSize(6).contains(Vector.of(0, 40));
+    }
+    @Test
     void nearestHit_multipleHits_returnsNearestHitPosition() {
         when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
