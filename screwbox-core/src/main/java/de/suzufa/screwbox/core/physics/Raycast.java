@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
 import static java.util.Collections.sort;
+import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,8 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
-import de.suzufa.screwbox.core.physics.internal.ExtractSegmentsMethod;
 import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
+import de.suzufa.screwbox.core.physics.internal.ExtractSegmentsMethod;
 
 public class Raycast {
 
@@ -61,10 +62,7 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                final Vector intersection = getIntersection(entity);
-                if (intersection != null) {
-                    intersections.add(intersection);
-                }
+                intersections.addAll(getIntersections(entity));
             }
         }
         return intersections;
@@ -79,14 +77,15 @@ public class Raycast {
         return false;
     }
 
-    private Vector getIntersection(final Entity entity) {
+    private List<Vector> getIntersections(final Entity entity) {
+    	List<Vector> intersections = new ArrayList<>();
         for (final Segment border : method.segments(entity.get(TransformComponent.class).bounds)) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
-            if (intersectionPoint != null) {
-                return intersectionPoint;
+            if (nonNull(intersectionPoint)) {
+                 intersections.add(intersectionPoint);
             }
         }
-        return null;
+        return intersections;
     }
 
     private boolean intersectsRay(final Entity entity) {
