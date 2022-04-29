@@ -9,6 +9,11 @@ Minimalist 2d Java game engine.
 
 ScrewBox is a personal pet project since februrary 2021.
 
+## Upcomming Changes
+- enhanced drawing-api: `drawLine(from, to).using(color, opacity)` or `drawLine(segment).using(lineoptions)`
+- project logo
+
+drawSprite(sprite, position).using(rotation, opacity, scale)
 ## Libraries used
 - JUnit5: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
 - FasterXML Jackson Core [Apache License 2.0](https://github.com/FasterXML/jackson-core/blob/2.14/LICENSE)
