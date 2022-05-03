@@ -62,6 +62,7 @@ class DefaultWorldTest {
 
         world.draw(rectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED));
 
-        verify(window).draw(rectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED, Percentage.max()));
+        verify(window)
+                .draw(rectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED.withOpacity(Percentage.max())));
     }
 }

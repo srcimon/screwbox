@@ -3,43 +3,45 @@ package de.suzufa.screwbox.core.graphics.window;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface Window {
 
-	Window draw(WindowRectangle rectangle);
+    Window draw(WindowRectangle rectangle);
 
-	Window draw(WindowText text);
+    Window draw(WindowText text);
 
-	Window draw(WindowSprite sprite);
+    Window draw(WindowSprite sprite);
 
-	Window draw(WindowRepeatingSprite repeatingSprite);
+    Window draw(WindowRepeatingSprite repeatingSprite);
 
-	Window draw(WindowLine line);
+    Window draw(WindowLine line);
 
-	Window draw(WindowCircle circle);
+    Window draw(WindowCircle circle);
 
-	Window draw(WindowPolygon polygon);
+    Window draw(WindowPolygon polygon);
 
-	int calculateTextWidth(String text, Font font);
+    Window draw(WindowFill fill);
 
-	Sprite takeScreenshot();
+    int calculateTextWidth(String text, Font font);
 
-	Offset center();
+    Sprite takeScreenshot();
 
-	Dimension size();
+    Offset center();
 
-	Offset position();
+    Dimension size();
 
-	Window open();
+    Offset position();
 
-	Window close();
+    Window open();
 
-	Window setTitle(String title);
+    Window close();
 
-	Window moveTo(Offset position);
+    Window setTitle(String title);
 
-	boolean isVisible(WindowBounds bounds);
+    Window moveTo(Offset position);
+
+    boolean isVisible(WindowBounds bounds);
 
 }

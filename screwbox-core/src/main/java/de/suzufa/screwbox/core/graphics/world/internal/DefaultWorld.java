@@ -78,14 +78,14 @@ public class DefaultWorld implements World {
         // TODO: check if intersects camera bounds
         window.draw(worldToScreen(text));
     }
-    
-	@Override
-	public void draw(final WorldPolygon polygon) {
-		window.draw(worldToScreen(polygon));
-		
-	}
 
-	@Override
+    @Override
+    public void draw(final WorldPolygon polygon) {
+        window.draw(worldToScreen(polygon));
+
+    }
+
+    @Override
     public Bounds visibleArea() {
         return visibleArea;
     }
@@ -120,16 +120,15 @@ public class DefaultWorld implements World {
     }
 
     private WindowPolygon worldToScreen(final WorldPolygon polygon) {
-		final List<Offset> offsets = new ArrayList<>();
-		for(final var point : polygon.points()) {
-			offsets.add(toOffset(point));
-		}
-		return WindowPolygon.polygon(offsets, polygon.color(), polygon.opacity());
-	}
-    
+        final List<Offset> offsets = new ArrayList<>();
+        for (final var point : polygon.points()) {
+            offsets.add(toOffset(point));
+        }
+        return WindowPolygon.polygon(offsets, polygon.color());
+    }
+
     private WindowText worldToScreen(final WorldText text) {
-        return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(),
-                text.opacity(), text.centered());
+        return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(), text.centered());
     }
 
     private WindowSprite worldToScreen(final WorldSprite sprite) {
@@ -140,12 +139,11 @@ public class DefaultWorld implements World {
     private WindowRectangle worldToScreen(final WorldRectangle rectangle) {
         final Offset offset = toOffset(rectangle.bounds().origin());
         final Dimension dimension = toDimension(rectangle.bounds().size());
-        return WindowRectangle.rectangle(offset, dimension, rectangle.color(),
-                rectangle.opacity());
+        return WindowRectangle.rectangle(offset, dimension, rectangle.color());
     }
 
     private WindowLine worldToScreen(final WorldLine line) {
-        return line(toOffset(line.from()), toOffset(line.to()), line.color(), line.opacity());
+        return line(toOffset(line.from()), toOffset(line.to()), line.color());
     }
 
 }

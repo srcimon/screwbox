@@ -18,14 +18,14 @@ public class HorizontalLinesTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window screen, final Percentage progress) {
-        final int maxHeightPerLine = screen.size().height() / lineCount;
-        for (int y = 0; y < screen.size().height(); y += maxHeightPerLine) {
+    public void draw(final Window window, final Percentage progress) {
+        final int maxHeightPerLine = window.size().height() / lineCount;
+        for (int y = 0; y < window.size().height(); y += maxHeightPerLine) {
             final Offset offset = Offset.at(0, y);
             final int height = (int) (maxHeightPerLine
-                    - screen.size().height() / (double) lineCount * progress.value());
-            final Dimension size = Dimension.of(screen.size().width(), height);
-            screen.draw(rectangle(offset, size, BLACK));
+                    - window.size().height() / (double) lineCount * progress.value());
+            final Dimension size = Dimension.of(window.size().width(), height);
+            window.draw(rectangle(offset, size, BLACK));
         }
     }
 

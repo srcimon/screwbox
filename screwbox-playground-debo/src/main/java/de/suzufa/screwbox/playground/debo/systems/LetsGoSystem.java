@@ -12,8 +12,9 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TimeoutComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
 import de.suzufa.screwbox.core.keyboard.Key;
@@ -36,7 +37,8 @@ public class LetsGoSystem implements EntitySystem {
 
             int width = engine.graphics().window().calculateTextWidth("LET'S GO", FONT);
             Entity letsGoBubble = new Entity().add(
-                    new TransformComponent(Bounds.atPosition(playerCenter.x() - width / 4.0, playerCenter.y() - 5, 0, 0)),
+                    new TransformComponent(
+                            Bounds.atPosition(playerCenter.x() - width / 4.0, playerCenter.y() - 5, 0, 0)),
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
@@ -52,7 +54,8 @@ public class LetsGoSystem implements EntitySystem {
             bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().draw(text(postion, "LET'S GO", FONT, letsGoComponent.visibility));
+            engine.graphics().world()
+                    .draw(text(postion, "LET'S GO", FONT, Color.WHITE.withOpacity(letsGoComponent.visibility)));
             letsGoComponent.modifier += factor / 16;
             letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - factor / 2);
         }

@@ -32,15 +32,15 @@ public final class MosaikTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window screen, final Percentage progress) {
+    public void draw(final Window window, final Percentage progress) {
         final long offsetCountToDraw = mosaikOffsets.size() - Math.round((mosaikOffsets.size() - 1) * progress.value());
-        final int mosaikWidth = screen.size().width() / columns + 1;
-        final int mosaikHeight = screen.size().height() / rows + 1;
+        final int mosaikWidth = window.size().width() / columns + 1;
+        final int mosaikHeight = window.size().height() / rows + 1;
         final Dimension mosaikDimension = Dimension.of(mosaikWidth, mosaikHeight);
         for (int i = 0; i < offsetCountToDraw; i++) {
             final Offset mosaikOffset = mosaikOffsets.get(i);
             final Offset screenOffset = Offset.at(mosaikOffset.x() * mosaikWidth, mosaikOffset.y() * mosaikHeight);
-            screen.draw(rectangle(screenOffset, mosaikDimension, Color.BLACK));
+            window.draw(rectangle(screenOffset, mosaikDimension, Color.BLACK));
         }
     }
 
