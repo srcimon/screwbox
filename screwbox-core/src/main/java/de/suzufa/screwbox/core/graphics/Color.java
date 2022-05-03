@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import de.suzufa.screwbox.core.Percentage;
+
 /**
  * Used to store color information used in {@link Graphics}.
  */
@@ -8,6 +10,7 @@ public final class Color {
     private final int r;
     private final int g;
     private final int b;
+    private final Percentage opacity;
 
     /**
      * The color black.
@@ -40,10 +43,17 @@ public final class Color {
     public static final Color YELLOW = Color.rgb(255, 255, 0);
 
     /**
-     * Creates a color based on RGB-components.
+     * Creates a color based on RGB-components with full {@link #opacity()}.
      */
     public static Color rgb(final int r, final int g, final int b) {
         return new Color(r, g, b);
+    }
+
+    /**
+     * Creates a color based on RGB-components and custom {@link #opacity()}.
+     */
+    public static Color rgb(final int r, final int g, final int b, Percentage opacity) {
+        return new Color(r, g, b, opacity);
     }
 
     /**
@@ -67,13 +77,25 @@ public final class Color {
         return b;
     }
 
+    /**
+     * Returns the colors opacity value.
+     */
+    public Percentage opacity() {
+        return opacity;
+    }
+
     private Color(final int r, final int g, final int b) {
+        this(r, g, b, Percentage.max());
+    }
+
+    private Color(final int r, final int g, final int b, Percentage opacity) {
         validate(r);
         validate(g);
         validate(b);
         this.r = r;
         this.g = g;
         this.b = b;
+        this.opacity = opacity;
     }
 
     private void validate(final int rgbValue) {
