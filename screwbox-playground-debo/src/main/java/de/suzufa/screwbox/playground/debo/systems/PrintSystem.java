@@ -9,8 +9,8 @@ import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
-import de.suzufa.screwbox.core.graphics.window.Window;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.playground.debo.components.TextComponent;
 
 public class PrintSystem implements EntitySystem {

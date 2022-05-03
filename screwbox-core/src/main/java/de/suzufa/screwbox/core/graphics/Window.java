@@ -1,11 +1,11 @@
-package de.suzufa.screwbox.core.graphics.window;
+package de.suzufa.screwbox.core.graphics;
 
-import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.Dimension;
-import de.suzufa.screwbox.core.graphics.Font;
-import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.WindowBounds;
+import de.suzufa.screwbox.core.graphics.window.WindowCircle;
+import de.suzufa.screwbox.core.graphics.window.WindowLine;
+import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
+import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
+import de.suzufa.screwbox.core.graphics.window.WindowSprite;
+import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public interface Window {
 

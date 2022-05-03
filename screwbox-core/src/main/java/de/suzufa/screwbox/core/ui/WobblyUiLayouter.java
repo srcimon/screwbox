@@ -4,8 +4,8 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.Window;
 
 public class WobblyUiLayouter implements UiLayouter {
 

@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 
 public class FadeOutTransition implements ScreenTransition {
 

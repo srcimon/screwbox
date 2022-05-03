@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
-import de.suzufa.screwbox.core.graphics.window.internal.DefaultWindow;
+import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.loop.GameLoop;

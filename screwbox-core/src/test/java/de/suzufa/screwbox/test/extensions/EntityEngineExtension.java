@@ -17,8 +17,8 @@ import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.graphics.Graphics;
-import de.suzufa.screwbox.core.graphics.window.Window;
-import de.suzufa.screwbox.core.graphics.world.World;
+import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.Metrics;
 

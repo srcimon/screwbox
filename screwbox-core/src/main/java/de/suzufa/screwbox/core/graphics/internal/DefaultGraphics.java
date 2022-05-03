@@ -12,10 +12,8 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.window.Window;
-import de.suzufa.screwbox.core.graphics.window.internal.DefaultWindow;
-import de.suzufa.screwbox.core.graphics.world.World;
-import de.suzufa.screwbox.core.graphics.world.internal.DefaultWorld;
+import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.World;
 
 public class DefaultGraphics implements Graphics {
 

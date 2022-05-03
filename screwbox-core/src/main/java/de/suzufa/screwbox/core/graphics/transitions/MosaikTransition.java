@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 
 public final class MosaikTransition implements ScreenTransition {
 

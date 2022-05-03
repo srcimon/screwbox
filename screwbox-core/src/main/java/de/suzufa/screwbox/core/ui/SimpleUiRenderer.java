@@ -7,7 +7,7 @@ import static de.suzufa.screwbox.core.graphics.window.WindowText.textCentered;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 
 public class SimpleUiRenderer implements UiRenderer {
 

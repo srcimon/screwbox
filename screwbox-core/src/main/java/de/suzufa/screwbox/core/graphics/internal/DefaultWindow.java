@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.graphics.window.internal;
+package de.suzufa.screwbox.core.graphics.internal;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
@@ -19,11 +19,8 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.internal.DefaultRenderer;
-import de.suzufa.screwbox.core.graphics.internal.Renderer;
-import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
-import de.suzufa.screwbox.core.graphics.window.Window;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;

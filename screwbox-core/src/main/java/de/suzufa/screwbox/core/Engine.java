@@ -4,7 +4,7 @@ import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.mouse.Mouse;

@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.mouse;
 
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.world.World;
+import de.suzufa.screwbox.core.graphics.World;
 
 /**
  * Subsystem for getting Information on the Mouse.

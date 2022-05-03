@@ -2,8 +2,6 @@ package de.suzufa.screwbox.core.graphics;
 
 import java.io.Serializable;
 
-import de.suzufa.screwbox.core.graphics.window.Window;
-
 /**
  * Represents a Position on the {@link Window}.
  */
