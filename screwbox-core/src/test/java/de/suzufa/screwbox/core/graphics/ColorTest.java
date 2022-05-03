@@ -34,7 +34,7 @@ class ColorTest {
 
     @Test
     void withOpacity_returnsNewInstanceWithDifferentOpacity() {
-        Color color = Color.rgb(10, 20, 30).withOpacity(Percentage.half());
+        Color color = Color.rgb(10, 20, 30).withOpacity(0.5);
 
         assertThat(color.r()).isEqualTo(10);
         assertThat(color.g()).isEqualTo(20);

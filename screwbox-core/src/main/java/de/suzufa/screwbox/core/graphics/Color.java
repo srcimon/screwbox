@@ -61,6 +61,18 @@ public final class Color {
     /**
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
+     * 
+     * @see #withOpacity(Percentage)
+     */
+    public Color withOpacity(double opacity) {
+        return withOpacity(Percentage.of(opacity));
+    }
+
+    /**
+     * Creates a new instance with same RGB-components, but custom
+     * {@link #opacity()}.
+     * 
+     * @see #withOpacity(double)
      */
     public Color withOpacity(Percentage opacity) {
         return new Color(r, g, b, opacity);
