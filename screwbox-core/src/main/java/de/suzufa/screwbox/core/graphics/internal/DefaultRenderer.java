@@ -26,7 +26,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
@@ -61,17 +60,6 @@ public class DefaultRenderer implements Renderer {
         }
         graphics.setColor(toAwtColor(Color.BLACK));
         fillWithColor(Color.BLACK);
-    }
-
-    @Override
-    public void draw(final WindowRectangle rectangle) {
-        graphics.setColor(toAwtColor(rectangle.color()));
-        final WindowBounds bounds = rectangle.bounds();
-        graphics.fillRect(
-                bounds.offset().x(),
-                bounds.offset().y(),
-                bounds.dimension().width(),
-                bounds.dimension().height());
     }
 
     @Override
@@ -190,6 +178,16 @@ public class DefaultRenderer implements Renderer {
     public void draw(final WindowLine line) {
         graphics.setColor(toAwtColor(line.color()));
         graphics.drawLine(line.from().x(), line.from().y(), line.to().x(), line.to().y());
+    }
+
+    @Override
+    public void drawRectangle(WindowBounds bounds, Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.fillRect(
+                bounds.offset().x(),
+                bounds.offset().y(),
+                bounds.dimension().width(),
+                bounds.dimension().height());
     }
 
 }

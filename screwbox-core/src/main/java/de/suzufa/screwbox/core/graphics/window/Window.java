@@ -9,7 +9,11 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface Window {
 
-    Window draw(WindowRectangle rectangle);
+    Window drawRectangle(WindowBounds bounds, Color color);
+
+    default Window drawRectangle(Offset origin, Dimension size, Color color) {
+        return drawRectangle(new WindowBounds(origin, size), color);
+    }
 
     Window draw(WindowText text);
 

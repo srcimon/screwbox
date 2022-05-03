@@ -3,10 +3,10 @@ package de.suzufa.screwbox.core.graphics.internal;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
@@ -21,8 +21,6 @@ public interface Renderer {
 
     void draw(WindowCircle circle);
 
-    void draw(WindowRectangle rectangle);
-
     void draw(WindowText text);
 
     void draw(WindowSprite sprite);
@@ -34,4 +32,6 @@ public interface Renderer {
     void draw(WindowPolygon polygon);
 
     void fillWithColor(Color color);
+
+    void drawRectangle(WindowBounds bounds, Color color);
 }

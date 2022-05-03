@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowRectangle.rectangle;
-
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -16,7 +14,6 @@ public class SwipeTransition implements ScreenTransition {
     public void draw(final Window window, final Percentage progress) {
         final int xMin = (int) (window.size().width() * progress.value());
         final Dimension size = Dimension.of(window.size().width() - xMin, window.size().height());
-        window.draw(rectangle(Offset.at(xMin, 0), size, Color.BLACK));
+        window.drawRectangle(Offset.at(xMin, 0), size, Color.BLACK);
     }
-
 }

@@ -12,7 +12,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.window.Window;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
 import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.graphics.world.World;
@@ -61,11 +60,14 @@ public class DefaultWorld implements World {
 
     @Override
     public void draw(final WorldRectangle rectangle) {
-        if (!rectangle.bounds().intersects(visibleArea)) {
+        if (!rectangle.bounds().intersects(visibleArea)) {// TODO: REMOVE ALL CHECKS FROM RENDERER/GRAPHICS
             return;
         }
 
-        window.draw(worldToScreen(rectangle));
+        final Offset offset = toOffset(rectangle.bounds().origin());
+        final Dimension dimension = toDimension(rectangle.bounds().size());
+
+        window.drawRectangle(offset, dimension, rectangle.color());
     }
 
     @Override
@@ -134,12 +136,6 @@ public class DefaultWorld implements World {
     private WindowSprite worldToScreen(final WorldSprite sprite) {
         final var offset = toOffset(sprite.position());
         return WindowSprite.sprite(sprite.sprite(), offset, zoom, sprite.opacity(), sprite.rotation());
-    }
-
-    private WindowRectangle worldToScreen(final WorldRectangle rectangle) {
-        final Offset offset = toOffset(rectangle.bounds().origin());
-        final Dimension dimension = toDimension(rectangle.bounds().size());
-        return WindowRectangle.rectangle(offset, dimension, rectangle.color());
     }
 
     private WindowLine worldToScreen(final WorldLine line) {

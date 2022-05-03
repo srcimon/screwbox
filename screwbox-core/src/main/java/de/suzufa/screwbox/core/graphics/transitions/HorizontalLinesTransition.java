@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
 import static de.suzufa.screwbox.core.graphics.Color.BLACK;
-import static de.suzufa.screwbox.core.graphics.window.WindowRectangle.rectangle;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -25,7 +24,7 @@ public class HorizontalLinesTransition implements ScreenTransition {
             final int height = (int) (maxHeightPerLine
                     - window.size().height() / (double) lineCount * progress.value());
             final Dimension size = Dimension.of(window.size().width(), height);
-            window.draw(rectangle(offset, size, BLACK));
+            window.drawRectangle(offset, size, BLACK);
         }
     }
 

@@ -27,7 +27,6 @@ import de.suzufa.screwbox.core.graphics.window.Window;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
@@ -58,8 +57,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowRectangle rectangle) {
-        renderer.draw(rectangle);
+    public Window drawRectangle(WindowBounds bounds, Color color) {
+        renderer.drawRectangle(bounds, color);
         return this;
     }
 

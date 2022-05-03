@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowRectangle.rectangle;
 import static java.util.Collections.shuffle;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public final class MosaikTransition implements ScreenTransition {
         for (int i = 0; i < offsetCountToDraw; i++) {
             final Offset mosaikOffset = mosaikOffsets.get(i);
             final Offset screenOffset = Offset.at(mosaikOffset.x() * mosaikWidth, mosaikOffset.y() * mosaikHeight);
-            window.draw(rectangle(screenOffset, mosaikDimension, Color.BLACK));
+            window.drawRectangle(screenOffset, mosaikDimension, Color.BLACK);
         }
     }
 
