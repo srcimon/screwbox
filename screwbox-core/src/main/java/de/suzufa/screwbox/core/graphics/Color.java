@@ -57,6 +57,14 @@ public final class Color {
     }
 
     /**
+     * Creates a new instance with same RGB-components, but custom
+     * {@link #opacity()}.
+     */
+    public Color withOpacity(Percentage opacity) {
+        return new Color(r, g, b, opacity);
+    }
+
+    /**
      * Returns red value of the {@link Color}.
      */
     public int r() {
