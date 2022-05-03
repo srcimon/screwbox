@@ -21,47 +21,48 @@ import de.suzufa.screwbox.core.physics.internal.ShadowRequest;
 
 public class DynamicLightSystem implements EntitySystem {
 
-	private static final Archetype LIGHTS = Archetype.of(TransformComponent.class, LightEmitterComponent.class);
-	private static final Archetype COLLIDERS = Archetype.of(TransformComponent.class, LightBlockingComponent.class);
+    private static final Archetype LIGHTS = Archetype.of(TransformComponent.class, LightEmitterComponent.class);
+    private static final Archetype COLLIDERS = Archetype.of(TransformComponent.class, LightBlockingComponent.class);
 
-	@Override
-	public void update(Engine engine) {
-		List<Entity> colliders = engine.entityEngine().fetchAll(COLLIDERS);
+    @Override
+    public void update(Engine engine) {
+        List<Entity> colliders = engine.entityEngine().fetchAll(COLLIDERS);
 
-		for (Entity entity : engine.entityEngine().fetchAll(LIGHTS)) {
-			Vector position = entity.get(TransformComponent.class).bounds.position();
-			LightEmitterComponent lightEmitter = entity.get(LightEmitterComponent.class);
-			double range = lightEmitter.range;
-			for (var collider : colliders) {
-				Bounds colliderBounds = collider.get(TransformComponent.class).bounds;
-				Vector colliderPosition = colliderBounds.position();
+        for (Entity entity : engine.entityEngine().fetchAll(LIGHTS)) {
+            Vector position = entity.get(TransformComponent.class).bounds.position();
+            LightEmitterComponent lightEmitter = entity.get(LightEmitterComponent.class);
+            double range = lightEmitter.range;
+            for (var collider : colliders) {
+                Bounds colliderBounds = collider.get(TransformComponent.class).bounds;
+                Vector colliderPosition = colliderBounds.position();
 
-				if (colliderPosition.distanceTo(position) <= range && !colliderBounds.contains(position)) {
+                if (colliderPosition.distanceTo(position) <= range && !colliderBounds.contains(position)) {
 
-					boolean castShadow = isNull(lightEmitter.blockedBy) || !engine.physics().raycastFrom(position)
-							.ignoringEntities(entity, collider)
-							.checkingFor(lightEmitter.blockedBy)
-							.castingTo(colliderPosition)
-							.hasHit();
+                    boolean castShadow = isNull(lightEmitter.blockedBy) || !engine.physics().raycastFrom(position)
+                            .ignoringEntities(entity, collider)
+                            .checkingFor(lightEmitter.blockedBy)
+                            .castingTo(colliderPosition)
+                            .hasHit();
 
-					if (castShadow) {
+                    if (castShadow) {
 
-						var shadowRequest = new ShadowRequest(position, colliderBounds.inflated(collider.get(LightBlockingComponent.class).sizeModifier));
-						var distance = position.distanceTo(colliderPosition);
-						Percentage opacity = lightEmitter.fixedOpacity ? lightEmitter.shadowOpacity
-								: Percentage.of(lightEmitter.shadowOpacity.value() * ((range - distance) / range));
-						engine.graphics().world()
-								.draw(polygon(shadowRequest.shadowPolygonPoints(), Color.BLACK, opacity));
-					}
-				}
-			}
-		}
+                        var shadowRequest = new ShadowRequest(position,
+                                colliderBounds.inflated(collider.get(LightBlockingComponent.class).sizeModifier));
+                        var distance = position.distanceTo(colliderPosition);
+                        Percentage opacity = lightEmitter.fixedOpacity ? lightEmitter.shadowOpacity
+                                : Percentage.of(lightEmitter.shadowOpacity.value() * ((range - distance) / range));
+                        engine.graphics().world()
+                                .draw(polygon(shadowRequest.shadowPolygonPoints(), Color.BLACK.withOpacity(opacity)));
+                    }
+                }
+            }
+        }
 
-	}
+    }
 
-	@Override
-	public UpdatePriority updatePriority() {
-		return UpdatePriority.PRESENTATION_LIGHT;
-	}
+    @Override
+    public UpdatePriority updatePriority() {
+        return UpdatePriority.PRESENTATION_LIGHT;
+    }
 
 }
