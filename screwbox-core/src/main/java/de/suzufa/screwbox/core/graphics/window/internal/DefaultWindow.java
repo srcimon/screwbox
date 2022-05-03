@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
 
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
@@ -24,7 +25,6 @@ import de.suzufa.screwbox.core.graphics.internal.Renderer;
 import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
 import de.suzufa.screwbox.core.graphics.window.Window;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowFill;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
@@ -89,8 +89,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowFill fill) {
-        renderer.draw(fill);
+    public Window fillWithColor(final Color color) {
+        renderer.fillWithColor(color);
         return this;
     }
 

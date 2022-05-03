@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.window;
 
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -22,7 +23,7 @@ public interface Window {
 
     Window draw(WindowPolygon polygon);
 
-    Window draw(WindowFill fill);
+    Window fillWithColor(Color color);
 
     int calculateTextWidth(String text, Font font);
 

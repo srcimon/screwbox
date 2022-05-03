@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowFill;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
@@ -33,5 +33,5 @@ public interface Renderer {
 
     void draw(WindowPolygon polygon);
 
-    void draw(WindowFill fill);
+    void fillWithColor(Color color);
 }

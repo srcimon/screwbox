@@ -24,7 +24,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowFill;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
@@ -61,7 +60,7 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
         graphics.setColor(toAwtColor(Color.BLACK));
-        graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+        fillWithColor(Color.BLACK);
     }
 
     @Override
@@ -76,8 +75,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(WindowFill fill) {
-        graphics.setColor(toAwtColor(fill.color()));
+    public void fillWithColor(Color color) {
+        graphics.setColor(toAwtColor(color));
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }
 
