@@ -124,12 +124,11 @@ public class DefaultWorld implements World {
         for (final var point : polygon.points()) {
             offsets.add(toOffset(point));
         }
-        return WindowPolygon.polygon(offsets, polygon.color(), polygon.opacity());
+        return WindowPolygon.polygon(offsets, polygon.color());
     }
 
     private WindowText worldToScreen(final WorldText text) {
-        return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(),
-                text.opacity(), text.centered());
+        return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(), text.centered());
     }
 
     private WindowSprite worldToScreen(final WorldSprite sprite) {
@@ -144,7 +143,7 @@ public class DefaultWorld implements World {
     }
 
     private WindowLine worldToScreen(final WorldLine line) {
-        return line(toOffset(line.from()), toOffset(line.to()), line.color(), line.opacity());
+        return line(toOffset(line.from()), toOffset(line.to()), line.color());
     }
 
 }

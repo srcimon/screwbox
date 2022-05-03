@@ -88,28 +88,20 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void draw(final WindowCircle circle) {
-        applyOpacityConfig(circle.opacity());
-
         graphics.setColor(toAwtColor(circle.color()));
         final int x = circle.offset().x() - circle.diameter() / 2;
         final int y = circle.offset().y() - circle.diameter() / 2;
         graphics.fillOval(x, y, circle.diameter(), circle.diameter());
-
-        resetOpacityConfig(circle.opacity());
     }
 
     @Override
     public void draw(final WindowPolygon polygon) {
-        applyOpacityConfig(polygon.opacity());
-
         graphics.setColor(toAwtColor(polygon.color()));
         final Polygon awtPolygon = new Polygon();
         for (final var point : polygon.points()) {
             awtPolygon.addPoint(point.x(), point.y());
         }
         graphics.fillPolygon(awtPolygon);
-
-        resetOpacityConfig(polygon.opacity());
     }
 
     @Override
@@ -131,14 +123,11 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void draw(final WindowText text) {
-        applyOpacityConfig(text.opacity());
-
         graphics.setColor(toAwtColor(text.color()));
         graphics.setFont(toAwtFont(text.font()));
 
         final var offset = text.centered() ? calculateCenterOffset(text) : text.offset();
         graphics.drawString(text.text(), offset.x(), offset.y());
-        resetOpacityConfig(text.opacity());
 
     }
 
@@ -193,12 +182,8 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void draw(final WindowLine line) {
-        applyOpacityConfig(line.opacity());
-
         graphics.setColor(toAwtColor(line.color()));
         graphics.drawLine(line.from().x(), line.from().y(), line.to().x(), line.to().y());
-
-        resetOpacityConfig(line.opacity());
     }
 
 }
