@@ -13,7 +13,7 @@ public class FadingScreenTransition implements ScreenTransition {
 
     @Override
     public void draw(final Window screen, final Percentage progress) {
-        screen.draw(rectangle(origin(), screen.size(), Color.BLACK, progress.invert()));
+        screen.draw(rectangle(origin(), screen.size(), Color.BLACK.withOpacity(progress.invert())));
     }
 
 }

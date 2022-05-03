@@ -21,8 +21,8 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
@@ -65,8 +65,6 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void draw(final WindowRectangle rectangle) {
-        applyOpacityConfig(rectangle.opacity());
-
         graphics.setColor(toAwtColor(rectangle.color()));
         final WindowBounds bounds = rectangle.bounds();
         graphics.fillRect(
@@ -74,8 +72,6 @@ public class DefaultRenderer implements Renderer {
                 bounds.offset().y(),
                 bounds.dimension().width(),
                 bounds.dimension().height());
-
-        resetOpacityConfig(rectangle.opacity());
     }
 
     @Override
@@ -101,20 +97,20 @@ public class DefaultRenderer implements Renderer {
 
         resetOpacityConfig(circle.opacity());
     }
-	@Override
-	public void draw(final WindowPolygon polygon) {
-		applyOpacityConfig(polygon.opacity());
-		
-		graphics.setColor(toAwtColor(polygon.color()));
-		final Polygon awtPolygon = new Polygon();
-		for(final var point : polygon.points()) {
-			awtPolygon.addPoint(point.x(), point.y());
-		}
-		graphics.fillPolygon(awtPolygon);
-		
-		resetOpacityConfig(polygon.opacity());
-	}
-	
+
+    @Override
+    public void draw(final WindowPolygon polygon) {
+        applyOpacityConfig(polygon.opacity());
+
+        graphics.setColor(toAwtColor(polygon.color()));
+        final Polygon awtPolygon = new Polygon();
+        for (final var point : polygon.points()) {
+            awtPolygon.addPoint(point.x(), point.y());
+        }
+        graphics.fillPolygon(awtPolygon);
+
+        resetOpacityConfig(polygon.opacity());
+    }
 
     @Override
     public int calculateTextWidth(final String text, final Font font) {

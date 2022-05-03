@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import java.util.Objects;
+
 import de.suzufa.screwbox.core.Percentage;
 
 /**
@@ -111,4 +113,22 @@ public final class Color {
             throw new IllegalArgumentException("invalid color value (0-255): " + rgbValue);
         }
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(b, g, opacity, r);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Color other = (Color) obj;
+        return b == other.b && g == other.g && Objects.equals(opacity, other.opacity) && r == other.r;
+    }
+
 }
