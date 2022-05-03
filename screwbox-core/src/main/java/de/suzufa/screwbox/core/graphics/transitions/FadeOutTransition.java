@@ -14,9 +14,9 @@ public class FadeOutTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window screen, final Percentage progress) {
+    public void draw(final Window window, final Percentage progress) {
         final Percentage inverted = Percentage.of(Percentage.max().value() - progress.value());
-        transition.draw(screen, inverted);
+        transition.draw(window, inverted);
     }
 
 }

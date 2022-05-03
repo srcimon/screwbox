@@ -7,5 +7,5 @@ import de.suzufa.screwbox.core.graphics.window.Window;
 
 public interface ScreenTransition extends Serializable {
 
-    void draw(Window screen, Percentage progress);
+    void draw(Window window, Percentage progress);
 }

@@ -24,6 +24,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowCircle;
+import de.suzufa.screwbox.core.graphics.window.WindowFill;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
@@ -72,6 +73,12 @@ public class DefaultRenderer implements Renderer {
                 bounds.offset().y(),
                 bounds.dimension().width(),
                 bounds.dimension().height());
+    }
+
+    @Override
+    public void draw(WindowFill fill) {
+        graphics.setColor(toAwtColor(fill.color()));
+        graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }
 
     @Override
