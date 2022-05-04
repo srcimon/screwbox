@@ -9,6 +9,10 @@ import de.suzufa.screwbox.core.graphics.world.WorldText;
 
 public interface World {
 
+    // TODO: Window setDrawingColor(Color color);
+
+    // TODO: Color drawingColor();
+
     void draw(WorldRectangle rectangle);
 
     void draw(WorldSprite sprite);
@@ -16,7 +20,7 @@ public interface World {
     void draw(WorldText text);
 
     void draw(WorldLine line);
-    
+
     void draw(WorldPolygon polygon);
 
     Bounds visibleArea();

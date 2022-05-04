@@ -8,13 +8,29 @@ import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public interface Window {
 
+    Window setDrawingColor(Color color);
+
+    Color drawingColor();
+
     Window drawRectangle(WindowBounds bounds, Color color);
 
-    default Window drawRectangle(Offset origin, Dimension size, Color color) {
+    default Window drawRectangle(final WindowBounds bounds) {
+        return drawRectangle(bounds, drawingColor());
+    }
+
+    default Window drawRectangle(final Offset origin, final Dimension size, final Color color) {
         return drawRectangle(new WindowBounds(origin, size), color);
     }
 
+    default Window drawRectangle(final Offset origin, final Dimension size) {
+        return drawRectangle(new WindowBounds(origin, size), drawingColor());
+    }
+
     Window drawCircle(Offset offset, int diameter, Color color);
+
+    default Window drawCircle(final Offset offset, final int diameter) {
+        return drawCircle(offset, diameter, drawingColor());
+    }
 
     Window draw(WindowText text);
 

@@ -16,6 +16,7 @@ public class PrintHelloWorldSystem implements EntitySystem {
         Offset mousePosition = engine.mouse().position();
 
         Window window = engine.graphics().window();
+
         window.draw(textCentered(mousePosition, "Hello World", font));
     }
 
