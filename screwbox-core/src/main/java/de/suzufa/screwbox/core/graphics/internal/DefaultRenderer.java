@@ -23,7 +23,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
@@ -59,11 +58,11 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
         graphics.setColor(toAwtColor(Color.BLACK));
-        fillWithColor(Color.BLACK);
+        fillWith(Color.BLACK);
     }
 
     @Override
-    public void fillWithColor(Color color) {
+    public void fillWith(final Color color) {
         graphics.setColor(toAwtColor(color));
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }
@@ -78,14 +77,6 @@ public class DefaultRenderer implements Renderer {
             throw new IllegalStateException("failed to take screenshot", e);
         }
 
-    }
-
-    @Override
-    public void draw(final WindowCircle circle) {
-        graphics.setColor(toAwtColor(circle.color()));
-        final int x = circle.offset().x() - circle.diameter() / 2;
-        final int y = circle.offset().y() - circle.diameter() / 2;
-        graphics.fillOval(x, y, circle.diameter(), circle.diameter());
     }
 
     @Override
@@ -181,13 +172,21 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(WindowBounds bounds, Color color) {
+    public void drawRectangle(final WindowBounds bounds, final Color color) {
         graphics.setColor(toAwtColor(color));
         graphics.fillRect(
                 bounds.offset().x(),
                 bounds.offset().y(),
                 bounds.dimension().width(),
                 bounds.dimension().height());
+    }
+
+    @Override
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        final int x = offset.x() - diameter / 2;
+        final int y = offset.y() - diameter / 2;
+        graphics.fillOval(x, y, diameter, diameter);
     }
 
 }

@@ -2,9 +2,9 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
@@ -49,22 +49,22 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowCircle circle) {
-        // does nothing
-    }
-
-    @Override
     public void draw(final WindowPolygon polygon) {
         // does nothing
     }
 
     @Override
-    public void fillWithColor(final Color color) {
+    public void fillWith(final Color color) {
         // does nothing
     }
 
     @Override
     public void drawRectangle(final WindowBounds bounds, final Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawCircle(Offset offset, int diameter, Color color) {
         // does nothing
     }
 

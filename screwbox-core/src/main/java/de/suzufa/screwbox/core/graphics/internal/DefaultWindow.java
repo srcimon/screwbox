@@ -21,7 +21,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
@@ -48,13 +47,19 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
+    public Window drawCircle(final Offset offset, final int diameter, final Color color) {
+        renderer.drawCircle(offset, diameter, color);
+        return this;
+    }
+
+    @Override
     public Window draw(final WindowRepeatingSprite repeatingSprite) {
         renderer.draw(repeatingSprite);
         return this;
     }
 
     @Override
-    public Window drawRectangle(WindowBounds bounds, Color color) {
+    public Window drawRectangle(final WindowBounds bounds, final Color color) {
         renderer.drawRectangle(bounds, color);
         return this;
     }
@@ -85,8 +90,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window fillWithColor(final Color color) {
-        renderer.fillWithColor(color);
+    public Window fillWith(final Color color) {
+        renderer.fillWith(color);
         return this;
     }
 
@@ -111,12 +116,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public Window draw(final WindowLine line) {
         renderer.draw(line);
-        return this;
-    }
-
-    @Override
-    public Window draw(final WindowCircle circle) {
-        renderer.draw(circle);
         return this;
     }
 

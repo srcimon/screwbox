@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.graphics;
 
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
@@ -15,6 +14,8 @@ public interface Window {
         return drawRectangle(new WindowBounds(origin, size), color);
     }
 
+    Window drawCircle(Offset offset, int diameter, Color color);
+
     Window draw(WindowText text);
 
     Window draw(WindowSprite sprite);
@@ -23,11 +24,9 @@ public interface Window {
 
     Window draw(WindowLine line);
 
-    Window draw(WindowCircle circle);
-
     Window draw(WindowPolygon polygon);
 
-    Window fillWithColor(Color color);
+    Window fillWith(Color color);
 
     int calculateTextWidth(String text, Font font);
 

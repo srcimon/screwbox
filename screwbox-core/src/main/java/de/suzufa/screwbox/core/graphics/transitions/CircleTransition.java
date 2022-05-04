@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowCircle.circle;
-
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -18,7 +16,7 @@ public class CircleTransition implements ScreenTransition {
         final double maxRadius = Math.sqrt(width * width + height * height);
         final Offset offset = Offset.at(width / 2.0, height / 2.0);
         final int diameter = (int) (maxRadius * progress.invert().value());
-        window.draw(circle(offset, diameter, Color.BLACK));
+        window.drawCircle(offset, diameter, Color.BLACK);
     }
 
 }
