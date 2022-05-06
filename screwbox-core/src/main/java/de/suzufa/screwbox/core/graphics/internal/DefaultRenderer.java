@@ -14,6 +14,7 @@ import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
@@ -22,7 +23,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultRenderer implements Renderer {
@@ -75,10 +75,10 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowPolygon polygon) {
-        graphics.setColor(toAwtColor(polygon.color()));
+    public void drawPolygon(List<Offset> points, Color color) {
+        graphics.setColor(toAwtColor(color));
         final Polygon awtPolygon = new Polygon();
-        for (final var point : polygon.points()) {
+        for (final var point : points) {
             awtPolygon.addPoint(point.x(), point.y());
         }
         graphics.fillPolygon(awtPolygon);

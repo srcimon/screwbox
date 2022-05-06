@@ -24,7 +24,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultWindow implements Window, GraphicsConfigListener {
@@ -119,8 +118,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowPolygon polygon) {
-        renderer.draw(polygon);
+    public Window drawPolygon(List<Offset> points, Color color) {
+        renderer.drawPolygon(points, color);
         return this;
     }
 
