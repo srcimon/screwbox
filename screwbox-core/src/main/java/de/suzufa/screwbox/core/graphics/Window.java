@@ -1,9 +1,10 @@
 package de.suzufa.screwbox.core.graphics;
 
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public interface Window {
@@ -32,9 +33,17 @@ public interface Window {
         return drawCircle(offset, diameter, drawingColor());
     }
 
-    Window draw(WindowText text);
+    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
 
-    Window draw(WindowSprite sprite);
+    default Window drawSprite(final Sprite sprite, final Offset origin, final Percentage opacity) {
+        return drawSprite(sprite, origin, 1, opacity, Rotation.none());
+    }
+
+    default Window drawSprite(final Sprite sprite, final Offset origin) {
+        return drawSprite(sprite, origin, Percentage.max());
+    }
+
+    Window draw(WindowText text);
 
     Window draw(WindowRepeatingSprite repeatingSprite);
 

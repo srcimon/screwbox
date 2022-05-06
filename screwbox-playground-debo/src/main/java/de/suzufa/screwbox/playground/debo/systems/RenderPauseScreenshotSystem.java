@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowSprite.sprite;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Archetype;
@@ -17,8 +15,7 @@ public class RenderPauseScreenshotSystem implements EntitySystem {
     public void update(Engine engine) {
         var background = engine.entityEngine().forcedFetchSingle(BACKGROUND);
         var backgroundSprite = background.get(BackgroundHolderComponent.class).background;
-        engine.graphics().window().draw(sprite(backgroundSprite, Offset.origin(), Percentage.of(0.5)));
-
+        engine.graphics().window().drawSprite(backgroundSprite, Offset.origin(), Percentage.half());
     }
 
 }

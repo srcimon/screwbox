@@ -18,6 +18,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -26,7 +27,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.loop.Metrics;
 
@@ -122,28 +122,29 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowSprite sprite) {
-        applyOpacityConfig(sprite.opacity());
+    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
+        applyOpacityConfig(opacity);
 
-        if (!sprite.rotation().isNone()) {
-            final double x = sprite.offset().x() + sprite.sprite().dimension().width() * sprite.scale() / 2.0;
-            final double y = sprite.offset().y() + sprite.sprite().dimension().height() * sprite.scale() / 2.0;
-            final double radians = sprite.rotation().radians();
+        if (!rotation.isNone()) {
+            final double x = origin.x() + sprite.dimension().width() * scale / 2.0;
+            final double y = origin.y() + sprite.dimension().height() * scale / 2.0;
+            final double radians = rotation.radians();
             graphics.rotate(radians, x, y);
-            drawSpriteInContext(sprite);
+            drawSpriteInContext(sprite, origin, scale);
             graphics.rotate(-radians, x, y);
         } else {
-            drawSpriteInContext(sprite);
+            drawSpriteInContext(sprite, origin, scale);
         }
 
-        resetOpacityConfig(sprite.opacity());
+        resetOpacityConfig(opacity);
     }
 
-    private void drawSpriteInContext(final WindowSprite sprite) {
-        final Image image = sprite.sprite().getImage(metrics.timeOfLastUpdate());
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale) {
+        final Image image = sprite.getImage(metrics.timeOfLastUpdate());
         final AffineTransform transform = new AffineTransform();
-        transform.translate(sprite.offset().x(), sprite.offset().y());
-        transform.scale(sprite.scale(), sprite.scale());
+        transform.translate(origin.x(), origin.y());
+        transform.scale(scale, scale);
         graphics.drawImage(image, transform, frame);
     }
 
@@ -159,8 +160,8 @@ public class DefaultRenderer implements Renderer {
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                draw(WindowSprite.sprite(repeatingSprite.sprite(), thisOffset, repeatingSprite.scale(),
-                        repeatingSprite.opacity()));
+                drawSprite(repeatingSprite.sprite(), thisOffset, repeatingSprite.scale(), repeatingSprite.opacity(),
+                        Rotation.none());
             }
         }
     }

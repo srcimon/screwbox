@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowSprite.sprite;
 import static de.suzufa.screwbox.tiled.TiledSupport.loadTileset;
 
 import java.util.ArrayList;
@@ -27,20 +26,19 @@ public class StartBackgroundSystem implements EntitySystem {
     }
 
     @Override
-    public void update(Engine engine) {
-        long milliseconds = engine.loop().metrics().durationOfRuntime().milliseconds();
-        int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.size());
-        Sprite sprite = BACKGROUNDS.get(index);
-        Offset center = engine.graphics().window().center();
+    public void update(final Engine engine) {
+        final long milliseconds = engine.loop().metrics().durationOfRuntime().milliseconds();
+        final int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.size());
+        final Sprite sprite = BACKGROUNDS.get(index);
+        final Offset center = engine.graphics().window().center();
 
-        Rotation rotation = Rotation.ofDegrees(milliseconds / 200.0);
-        double scale = Math.abs(Math.sin(milliseconds / 1000.0)) * 8 + 12;
-        double xCorrect = sprite.dimension().width() / 2.0 * scale;
-        double yCorrect = sprite.dimension().height() / 2.0 * scale;
+        final Rotation rotation = Rotation.ofDegrees(milliseconds / 200.0);
+        final double scale = Math.abs(Math.sin(milliseconds / 1000.0)) * 8 + 12;
+        final double xCorrect = sprite.dimension().width() / 2.0 * scale;
+        final double yCorrect = sprite.dimension().height() / 2.0 * scale;
 
-        Offset position = Offset.at(center.x() - xCorrect, center.y() - yCorrect);
-        engine.graphics().window().draw(sprite(sprite, position, scale, Percentage.of(0.5), rotation));
-
+        final Offset position = Offset.at(center.x() - xCorrect, center.y() - yCorrect);
+        engine.graphics().window().drawSprite(sprite, position, scale, Percentage.half(), rotation);
     }
 
 }

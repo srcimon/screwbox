@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -8,7 +10,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public class StandbyRenderer implements Renderer {
@@ -30,11 +31,6 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void draw(final WindowText text) {
-        // does nothing
-    }
-
-    @Override
-    public void draw(final WindowSprite sprite) {
         // does nothing
     }
 
@@ -64,7 +60,13 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(Offset offset, int diameter, Color color) {
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
         // does nothing
     }
 

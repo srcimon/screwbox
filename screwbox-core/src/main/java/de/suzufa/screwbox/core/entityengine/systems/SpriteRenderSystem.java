@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
-import static de.suzufa.screwbox.core.graphics.world.WorldSprite.sprite;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,43 +12,45 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.World;
 
 public class SpriteRenderSystem implements EntitySystem {
 
     private final Archetype sprites;
-	private final Class<? extends SpriteComponent> spriteComponentClass;
+    private final Class<? extends SpriteComponent> spriteComponentClass;
 
     private static final record SpriteBatchEntry(Sprite sprite, Vector position, int drawOrder, Percentage opacity)
             implements Comparable<SpriteBatchEntry> {
 
         @Override
-        public int compareTo(SpriteBatchEntry o) {
+        public int compareTo(final SpriteBatchEntry o) {
             return Integer.compare(drawOrder(), o.drawOrder());
         }
 
     }
-    
+
     public SpriteRenderSystem() {
-    	this(SpriteComponent.class);
-	}
-    
-    SpriteRenderSystem(Class<? extends SpriteComponent> spriteComponentClass) {
-    	this.spriteComponentClass = spriteComponentClass;
-    	this.sprites = Archetype.of(spriteComponentClass, TransformComponent.class);
+        this(SpriteComponent.class);
+    }
+
+    SpriteRenderSystem(final Class<? extends SpriteComponent> spriteComponentClass) {
+        this.spriteComponentClass = spriteComponentClass;
+        this.sprites = Archetype.of(spriteComponentClass, TransformComponent.class);
     }
 
     @Override
-    public void update(Engine engine) {
-        List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
-        Bounds visibleArea = engine.graphics().world().visibleArea();
+    public void update(final Engine engine) {
+        final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
+        final World world = engine.graphics().world();
+        final Bounds visibleArea = world.visibleArea();
 
-        for (Entity entity : engine.entityEngine().fetchAll(sprites)) {
-            Bounds entityBounds = entity.get(TransformComponent.class).bounds;
-            SpriteComponent spriteComponent = entity.get(spriteComponentClass);
-            var sprite = spriteComponent.sprite;
+        for (final Entity entity : engine.entityEngine().fetchAll(sprites)) {
+            final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
+            final SpriteComponent spriteComponent = entity.get(spriteComponentClass);
+            final var sprite = spriteComponent.sprite;
             final var spriteDimension = sprite.dimension();
             final var spriteBounds = Bounds.atOrigin(
                     entityBounds.position().x() - spriteDimension.width() / 2.0,
@@ -66,7 +66,7 @@ public class SpriteRenderSystem implements EntitySystem {
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
-            engine.graphics().world().draw(sprite(entry.sprite(), entry.position(), entry.opacity()));
+            world.drawSprite(entry.sprite, entry.position, entry.opacity);
         }
     }
 

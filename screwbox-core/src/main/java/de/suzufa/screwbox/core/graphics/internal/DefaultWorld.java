@@ -6,19 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
 import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
-import de.suzufa.screwbox.core.graphics.world.WorldSprite;
 import de.suzufa.screwbox.core.graphics.world.WorldText;
 
 public class DefaultWorld implements World {
@@ -54,8 +55,10 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public void draw(final WorldSprite sprite) {
-        window.draw(worldToScreen(sprite));
+    public World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation) {
+        final var offset = toOffset(origin);
+        window.drawSprite(sprite, offset, scale * zoom, opacity, rotation);
+        return this;
     }
 
     @Override
@@ -131,11 +134,6 @@ public class DefaultWorld implements World {
 
     private WindowText worldToScreen(final WorldText text) {
         return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(), text.centered());
-    }
-
-    private WindowSprite worldToScreen(final WorldSprite sprite) {
-        final var offset = toOffset(sprite.position());
-        return WindowSprite.sprite(sprite.sprite(), offset, zoom, sprite.opacity(), sprite.rotation());
     }
 
     private WindowLine worldToScreen(final WorldLine line) {
