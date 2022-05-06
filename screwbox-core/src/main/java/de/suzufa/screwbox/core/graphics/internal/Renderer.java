@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 
 public interface Renderer {
@@ -17,8 +16,6 @@ public interface Renderer {
     Sprite takeScreenshot();
 
     int calculateTextWidth(String text, Font font);
-
-    void draw(WindowLine line);
 
     void draw(WindowPolygon polygon);
 
@@ -31,5 +28,7 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
 
     void drawText(Offset offset, String text, Font font, Color color);
+
+    void drawLine(Offset from, Offset to, Color color);
 
 }

@@ -22,7 +22,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.loop.Metrics;
 
@@ -138,12 +137,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowLine line) {
-        graphics.setColor(toAwtColor(line.color()));
-        graphics.drawLine(line.from().x(), line.from().y(), line.to().x(), line.to().y());
-    }
-
-    @Override
     public void drawRectangle(final WindowBounds bounds, final Color color) {
         graphics.setColor(toAwtColor(color));
         graphics.fillRect(
@@ -159,6 +152,12 @@ public class DefaultRenderer implements Renderer {
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
+    }
+
+    @Override
+    public void drawLine(final Offset from, final Offset to, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.drawLine(from.x(), from.y(), to.x(), to.y());
     }
 
 }

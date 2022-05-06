@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.graphics;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 
 public interface Window {
@@ -71,7 +70,11 @@ public interface Window {
         return fillWith(offset, sprite, 1);
     }
 
-    Window draw(WindowLine line);
+    Window drawLine(Offset from, Offset to, Color color);
+
+    default Window drawLine(Offset from, Offset to) {
+        return drawLine(from, to, drawingColor());
+    }
 
     Window draw(WindowPolygon polygon);
 

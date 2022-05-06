@@ -24,7 +24,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.loop.Metrics;
 
@@ -139,12 +138,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowLine line) {
-        renderer.draw(line);
-        return this;
-    }
-
-    @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y);
@@ -224,6 +217,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public boolean isVisible(final WindowBounds bounds) {
         return bounds.intersects(new WindowBounds(Offset.origin(), size()));
+    }
+
+    @Override
+    public Window drawLine(Offset from, Offset to, Color color) {
+        renderer.drawLine(from, to, color);
+        return this;
     }
 
 }

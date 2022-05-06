@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowLine.line;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +13,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
@@ -89,7 +86,7 @@ public class DefaultWorld implements World {
 
     @Override
     public void draw(final WorldLine line) {
-        window.draw(worldToScreen(line));
+        window.drawLine(toOffset(line.from()), toOffset(line.to()), line.color());
     }
 
     @Override
@@ -148,10 +145,6 @@ public class DefaultWorld implements World {
             offsets.add(toOffset(point));
         }
         return WindowPolygon.polygon(offsets, polygon.color());
-    }
-
-    private WindowLine worldToScreen(final WorldLine line) {
-        return line(toOffset(line.from()), toOffset(line.to()), line.color());
     }
 
 }

@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 
 public class StandbyRenderer implements Renderer {
@@ -25,11 +24,6 @@ public class StandbyRenderer implements Renderer {
     @Override
     public int calculateTextWidth(final String text, final Font font) {
         return 0;
-    }
-
-    @Override
-    public void draw(final WindowLine line) {
-        // does nothing
     }
 
     @Override
@@ -60,6 +54,11 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawLine(final Offset from, final Offset to, final Color color) {
         // does nothing
     }
 
