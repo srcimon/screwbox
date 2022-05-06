@@ -11,9 +11,9 @@ import de.suzufa.screwbox.core.graphics.world.WorldText;
 
 public interface World {
 
-    // TODO: Window setDrawingColor(Color color);
+    World setDrawingColor(Color color);
 
-    // TODO: Color drawingColor();
+    Color drawingColor();
 
     void draw(WorldRectangle rectangle);
 

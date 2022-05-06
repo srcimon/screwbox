@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -33,8 +34,21 @@ public class DefaultWorld implements World {
             Double.MAX_VALUE,
             Double.MAX_VALUE);
 
+    private Color defaultDrawingColor;
+
     public DefaultWorld(final Window window) {
         this.window = window;
+    }
+
+    @Override
+    public World setDrawingColor(final Color color) {
+        this.defaultDrawingColor = color;
+        return this;
+    }
+
+    @Override
+    public Color drawingColor() {
+        return defaultDrawingColor;
     }
 
     public double updateCameraZoom(final double zoom) {
@@ -54,7 +68,8 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation) {
+    public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
         final var offset = toOffset(origin);
         window.drawSprite(sprite, offset, scale * zoom, opacity, rotation);
         return this;
@@ -79,11 +94,11 @@ public class DefaultWorld implements World {
 
     @Override
     public void draw(final WorldText text) {
-        Offset offset = toOffset(text.position());
+        final Offset offset = toOffset(text.position());
         if (text.centered()) {
-            window.drawText(offset, text.text(), text.font(), text.color());
-        } else {
             window.drawTextCentered(offset, text.text(), text.font(), text.color());
+        } else {
+            window.drawText(offset, text.text(), text.font(), text.color());
         }
     }
 
