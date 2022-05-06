@@ -4,7 +4,6 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 
 public interface Window {
 
@@ -58,7 +57,19 @@ public interface Window {
         return drawTextCentered(offset, text, font, drawingColor());
     }
 
-    Window draw(WindowRepeatingSprite repeatingSprite);
+    Window fillWith(Offset offset, Sprite sprite, double scale, Percentage opacity);
+
+    default Window fillWith(Sprite sprite, double scale) {
+        return fillWith(Offset.origin(), sprite, scale, Percentage.max());
+    }
+
+    default Window fillWith(Offset offset, Sprite sprite, double scale) {
+        return fillWith(offset, sprite, scale, Percentage.max());
+    }
+
+    default Window fillWith(Offset offset, Sprite sprite) {
+        return fillWith(offset, sprite, 1);
+    }
 
     Window draw(WindowLine line);
 

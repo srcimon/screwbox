@@ -9,7 +9,6 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 
 public class StandbyRenderer implements Renderer {
 
@@ -26,11 +25,6 @@ public class StandbyRenderer implements Renderer {
     @Override
     public int calculateTextWidth(final String text, final Font font) {
         return 0;
-    }
-
-    @Override
-    public void draw(final WindowRepeatingSprite repeatingSprite) {
-        // does nothing
     }
 
     @Override

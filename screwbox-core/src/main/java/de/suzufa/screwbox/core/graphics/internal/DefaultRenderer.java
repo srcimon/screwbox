@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtFont;
-import static java.lang.Math.round;
 
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
@@ -25,7 +24,6 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultRenderer implements Renderer {
@@ -137,24 +135,6 @@ public class DefaultRenderer implements Renderer {
         transform.translate(origin.x(), origin.y());
         transform.scale(scale, scale);
         graphics.drawImage(image, transform, frame);
-    }
-
-    @Override
-    public void draw(final WindowRepeatingSprite repeatingSprite) {
-        final long spriteWidth = round(repeatingSprite.sprite().dimension().width() * repeatingSprite.scale());
-        final long spriteHeight = round(repeatingSprite.sprite().dimension().height() * repeatingSprite.scale());
-        final long countX = frame.getWidth() / spriteWidth + 1;
-        final long countY = frame.getHeight() / spriteHeight + 1;
-        final double offsetX = repeatingSprite.offset().x() % spriteWidth;
-        final double offsetY = repeatingSprite.offset().y() % spriteHeight;
-
-        for (long x = 0; x <= countX; x++) {
-            for (long y = 0; y <= countY; y++) {
-                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(repeatingSprite.sprite(), thisOffset, repeatingSprite.scale(), repeatingSprite.opacity(),
-                        Rotation.none());
-            }
-        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.lang.Math.round;
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 
@@ -25,7 +26,6 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultWindow implements Window, GraphicsConfigListener {
@@ -65,8 +65,20 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowRepeatingSprite repeatingSprite) {
-        renderer.draw(repeatingSprite);
+    public Window fillWith(final Offset offset, final Sprite sprite, final double scale, final Percentage opacity) {
+        final long spriteWidth = round(sprite.dimension().width() * scale);
+        final long spriteHeight = round(sprite.dimension().height() * scale);
+        final long countX = frame.getWidth() / spriteWidth + 1;
+        final long countY = frame.getHeight() / spriteHeight + 1;
+        final double offsetX = offset.x() % spriteWidth;
+        final double offsetY = offset.y() % spriteHeight;
+
+        for (long x = 0; x <= countX; x++) {
+            for (long y = 0; y <= countY; y++) {
+                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
+                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none());
+            }
+        }
         return this;
     }
 
