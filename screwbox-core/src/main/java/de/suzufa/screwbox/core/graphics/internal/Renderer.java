@@ -10,7 +10,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public interface Renderer {
 
@@ -19,8 +18,6 @@ public interface Renderer {
     Sprite takeScreenshot();
 
     int calculateTextWidth(String text, Font font);
-
-    void draw(WindowText text);
 
     void draw(WindowRepeatingSprite repeatingSprite);
 
@@ -35,4 +32,6 @@ public interface Renderer {
     void drawCircle(Offset offset, int diameter, Color color);
 
     void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
+
+    void drawText(Offset offset, String text, Font font, Color color);
 }

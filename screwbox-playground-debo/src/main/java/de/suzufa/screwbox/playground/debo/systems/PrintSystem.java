@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowText.textCentered;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
@@ -24,9 +22,9 @@ public class PrintSystem implements EntitySystem {
         for (var entity : engine.entityEngine().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Window window = engine.graphics().window();
-            window.draw(textCentered(window.center(), textComponent.text, TITLE_FONT, Color.WHITE));
+            window.drawTextCentered(window.center(), textComponent.text, TITLE_FONT, Color.WHITE);
             Offset subtextOffset = Offset.at(window.center().x(), window.center().y() + 80);
-            window.draw(textCentered(subtextOffset, textComponent.subtext, SUBTEXT_FONT, Color.WHITE));
+            window.drawTextCentered(subtextOffset, textComponent.subtext, SUBTEXT_FONT, Color.WHITE);
         }
     }
 

@@ -16,7 +16,6 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
@@ -80,8 +79,12 @@ public class DefaultWorld implements World {
 
     @Override
     public void draw(final WorldText text) {
-        // TODO: check if intersects camera bounds
-        window.draw(worldToScreen(text));
+        Offset offset = toOffset(text.position());
+        if (text.centered()) {
+            window.drawText(offset, text.text(), text.font(), text.color());
+        } else {
+            window.drawTextCentered(offset, text.text(), text.font(), text.color());
+        }
     }
 
     @Override
@@ -130,10 +133,6 @@ public class DefaultWorld implements World {
             offsets.add(toOffset(point));
         }
         return WindowPolygon.polygon(offsets, polygon.color());
-    }
-
-    private WindowText worldToScreen(final WorldText text) {
-        return new WindowText(toOffset(text.position()), text.text(), text.font(), text.color(), text.centered());
     }
 
     private WindowLine worldToScreen(final WorldLine line) {

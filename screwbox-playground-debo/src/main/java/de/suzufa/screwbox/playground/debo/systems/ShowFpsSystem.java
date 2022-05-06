@@ -1,13 +1,12 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowText.text;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 
@@ -25,7 +24,7 @@ public class ShowFpsSystem implements EntitySystem {
         long updateTime = engine.loop().metrics().durationOfLastUpdate().milliseconds();
         String text = String.format("fps: %d / updatetime %02d / %d entities / %d colliders",
                 fps, updateTime, entityCount, colliderCount);
-        engine.graphics().window().draw(text(TEXT_POSITION, text, FONT));
+        engine.graphics().window().drawText(TEXT_POSITION, text, FONT, Color.WHITE);
     }
 
     @Override

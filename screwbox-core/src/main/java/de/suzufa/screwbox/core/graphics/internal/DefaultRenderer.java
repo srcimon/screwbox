@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtFont;
-import static de.suzufa.screwbox.core.graphics.window.WindowText.text;
 import static java.lang.Math.round;
 
 import java.awt.AWTException;
@@ -27,7 +26,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultRenderer implements Renderer {
@@ -45,7 +43,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void initializeFontDrawing() {
-        draw(text(Offset.origin(), "-", new Font("Futura", 1), Color.WHITE));
+        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
     }
 
     @Override
@@ -107,18 +105,11 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowText text) {
-        graphics.setColor(toAwtColor(text.color()));
-        graphics.setFont(toAwtFont(text.font()));
+    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.setFont(toAwtFont(font));
 
-        final var offset = text.centered() ? calculateCenterOffset(text) : text.offset();
-        graphics.drawString(text.text(), offset.x(), offset.y());
-
-    }
-
-    private Offset calculateCenterOffset(final WindowText text) {
-        final int textWidth = calculateTextWidth(text.text(), text.font());
-        return Offset.at(text.offset().x() - textWidth / 2.0, text.offset().y());
+        graphics.drawString(text, offset.x(), offset.y());
     }
 
     @Override

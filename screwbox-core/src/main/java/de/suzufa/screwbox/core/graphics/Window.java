@@ -5,7 +5,6 @@ import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.window.WindowLine;
 import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
 import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 
 public interface Window {
 
@@ -43,7 +42,21 @@ public interface Window {
         return drawSprite(sprite, origin, Percentage.max());
     }
 
-    Window draw(WindowText text);
+    Window drawText(Offset offset, String text, Font font, Color color);
+
+    default Window drawText(final Offset offset, final String text, final Font font) {
+        return drawText(offset, text, font, drawingColor());
+    }
+
+    default Window drawTextCentered(final Offset offset, final String text, final Font font, final Color color) {
+        final int textWidth = calculateTextWidth(text, font);
+        final var centerOffset = Offset.at(offset.x() - textWidth / 2.0, offset.y());
+        return drawText(centerOffset, text, font, color);
+    }
+
+    default Window drawTextCentered(final Offset offset, final String text, final Font font) {
+        return drawTextCentered(offset, text, font, drawingColor());
+    }
 
     Window draw(WindowRepeatingSprite repeatingSprite);
 
