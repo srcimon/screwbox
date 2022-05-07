@@ -47,10 +47,10 @@ public interface Window {
         return drawText(offset, text, font, drawingColor());
     }
 
-    default Window drawTextCentered(final Offset offset, final String text, final Font font, final Color color) {
+    default Window drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         final int textWidth = calculateTextWidth(text, font);
-        final var centerOffset = Offset.at(offset.x() - textWidth / 2.0, offset.y());
-        return drawText(centerOffset, text, font, color);
+        final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
+        return drawText(offset, text, font, color);
     }
 
     default Window drawTextCentered(final Offset offset, final String text, final Font font) {

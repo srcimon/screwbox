@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -16,7 +17,6 @@ import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
-import de.suzufa.screwbox.core.graphics.world.WorldText;
 
 public class DefaultWorld implements World {
 
@@ -30,7 +30,7 @@ public class DefaultWorld implements World {
             Double.MAX_VALUE,
             Double.MAX_VALUE);
 
-    private Color defaultDrawingColor;
+    private Color defaultDrawingColor = Color.WHITE;
 
     public DefaultWorld(final Window window) {
         this.window = window;
@@ -89,16 +89,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public void draw(final WorldText text) {
-        final Offset offset = toOffset(text.position());
-        if (text.centered()) {
-            window.drawTextCentered(offset, text.text(), text.font(), text.color());
-        } else {
-            window.drawText(offset, text.text(), text.font(), text.color());
-        }
-    }
-
-    @Override
     public void draw(final WorldPolygon polygon) {
         final List<Offset> offsets = new ArrayList<>();
         for (final var point : polygon.points()) {
@@ -140,6 +130,20 @@ public class DefaultWorld implements World {
         final long x = Math.round(size.x() * zoom);
         final long y = Math.round(size.y() * zoom);
         return Dimension.of(x, y);
+    }
+
+    @Override
+    public World drawText(final Vector offset, final String text, final Font font, final Color color) {
+        final Offset windowOffset = toOffset(offset);
+        window.drawText(windowOffset, text, font, color);
+        return this;
+    }
+
+    @Override
+    public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
+        final Offset offset = toOffset(position);
+        window.drawTextCentered(offset, text, font, color);
+        return this;
     }
 
 }

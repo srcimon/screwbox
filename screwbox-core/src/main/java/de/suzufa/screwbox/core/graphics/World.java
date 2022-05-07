@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
-import de.suzufa.screwbox.core.graphics.world.WorldText;
 
 public interface World {
 
@@ -27,7 +26,17 @@ public interface World {
         return drawSprite(sprite, origin, Percentage.max());
     }
 
-    void draw(WorldText text);
+    World drawText(Vector offset, String text, Font font, Color color);
+
+    default World drawText(final Vector offset, final String text, final Font font) {
+        return drawText(offset, text, font, drawingColor());
+    }
+
+    World drawTextCentered(Vector position, String text, Font font, Color color);
+
+    default World drawTextCentered(final Vector position, final String text, final Font font) {
+        return drawTextCentered(position, text, font, drawingColor());
+    }
 
     void draw(WorldLine line);
 

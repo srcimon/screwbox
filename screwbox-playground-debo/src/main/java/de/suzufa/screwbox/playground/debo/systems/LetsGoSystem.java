@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.world.WorldText.text;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
@@ -54,8 +52,8 @@ public class LetsGoSystem implements EntitySystem {
             bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world()
-                    .draw(text(postion, "LET'S GO", FONT, Color.WHITE.withOpacity(letsGoComponent.visibility)));
+            Color whity = Color.WHITE.withOpacity(letsGoComponent.visibility);
+            engine.graphics().world().drawText(postion, "LET'S GO", FONT, whity);
             letsGoComponent.modifier += factor / 16;
             letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - factor / 2);
         }
