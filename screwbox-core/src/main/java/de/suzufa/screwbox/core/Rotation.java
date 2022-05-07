@@ -74,18 +74,15 @@ public final class Rotation {
         return degrees == MIN_VALUE;
     }
 
-    // TODO: CLEAN UP THIS MESS BELOW!!!!!!
+    public static Rotation towardsTarget(final double x, double y) {
+        final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
-    public static Rotation normalAngle(Vector target) {
-        return Rotation.ofDegrees(calculateAngle(Vector.zero(), Vector.of(target.x(), -1.0 * target.y())));
+        return Rotation.ofDegrees(inRangeDegrees);
     }
 
-    public static double calculateAngle(Vector first, Vector second) {
-        double angle = Math.toDegrees(Math.atan2(second.x() - first.x(), second.y() - first.y()));
-        // Keep angle between 0 and 360
-        angle = angle + Math.ceil(-angle / 360) * 360;
-
-        return angle;
+    public static Rotation towardsTarget(final Vector target) {
+        return towardsTarget(target.x(), target.y());
     }
 
 }
