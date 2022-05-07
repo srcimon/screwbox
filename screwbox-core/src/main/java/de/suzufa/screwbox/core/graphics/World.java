@@ -16,8 +16,12 @@ public interface World {
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation);
 
+    default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity, Rotation rotation) {
+        return drawSprite(sprite, origin, 1, opacity, rotation);
+    }
+
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none());
+        return drawSprite(sprite, origin, opacity, Rotation.none());
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {
