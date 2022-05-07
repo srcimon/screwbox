@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.entityengine.components;
 
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.entityengine.Component;
 import de.suzufa.screwbox.core.graphics.Sprite;
 
@@ -11,6 +12,7 @@ public class SpriteComponent implements Component {
     public Sprite sprite;
     public int drawOrder;
     public Percentage opacity;
+    public Rotation rotation = Rotation.none();
 
     public SpriteComponent(final int drawOrder) {
         this(Sprite.invisible(), drawOrder);
@@ -18,6 +20,10 @@ public class SpriteComponent implements Component {
 
     public SpriteComponent(final Sprite sprite, final int drawOrder) {
         this(sprite, drawOrder, Percentage.max());
+    }
+
+    public SpriteComponent(final Sprite sprite) {
+        this(sprite, 0);
     }
 
     public SpriteComponent(final Sprite sprite, final int drawOrder, final Percentage opacity) {

@@ -7,6 +7,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
@@ -22,7 +23,8 @@ public class SpriteRenderSystem implements EntitySystem {
     private final Archetype sprites;
     private final Class<? extends SpriteComponent> spriteComponentClass;
 
-    private static final record SpriteBatchEntry(Sprite sprite, Vector position, int drawOrder, Percentage opacity)
+    private static final record SpriteBatchEntry(Sprite sprite, Vector position, int drawOrder, Rotation rotation,
+            Percentage opacity)
             implements Comparable<SpriteBatchEntry> {
 
         @Override
@@ -59,14 +61,14 @@ public class SpriteRenderSystem implements EntitySystem {
 
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.add(new SpriteBatchEntry(spriteComponent.sprite, spriteBounds.origin(),
-                        spriteComponent.drawOrder, spriteComponent.opacity));
+                        spriteComponent.drawOrder, spriteComponent.rotation, spriteComponent.opacity));
             }
         }
 
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
-            world.drawSprite(entry.sprite, entry.position, entry.opacity);
+            world.drawSprite(entry.sprite, entry.position, entry.opacity, entry.rotation);
         }
     }
 
