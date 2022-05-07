@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
-import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
 
@@ -84,11 +83,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public void draw(final WorldLine line) {
-        window.drawLine(toOffset(line.from()), toOffset(line.to()), line.color());
-    }
-
-    @Override
     public void draw(final WorldPolygon polygon) {
         final List<Offset> offsets = new ArrayList<>();
         for (final var point : polygon.points()) {
@@ -143,6 +137,12 @@ public class DefaultWorld implements World {
     public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
         final Offset offset = toOffset(position);
         window.drawTextCentered(offset, text, font, color);
+        return this;
+    }
+
+    @Override
+    public World drawLine(Vector from, Vector to, Color color) {
+        window.drawLine(toOffset(from), toOffset(to), color);
         return this;
     }
 

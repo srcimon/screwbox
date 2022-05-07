@@ -3,8 +3,8 @@ package de.suzufa.screwbox.core.graphics;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.world.WorldLine;
 import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
 import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
 
@@ -13,8 +13,6 @@ public interface World {
     World setDrawingColor(Color color);
 
     Color drawingColor();
-
-    void draw(WorldRectangle rectangle);
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation);
 
@@ -38,7 +36,21 @@ public interface World {
         return drawTextCentered(position, text, font, drawingColor());
     }
 
-    void draw(WorldLine line);
+    World drawLine(Vector from, Vector to, Color color);
+
+    default World drawLine(Segment line, Color color) {
+        return drawLine(line.from(), line.to(), color);
+    }
+
+    default World drawLine(Segment line) {
+        return drawLine(line, drawingColor());
+    }
+
+    default World drawLine(Vector from, Vector to) {
+        return drawLine(from, to, drawingColor());
+    }
+
+    void draw(WorldRectangle rectangle);
 
     void draw(WorldPolygon polygon);
 
