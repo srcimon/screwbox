@@ -17,79 +17,78 @@ import de.suzufa.screwbox.core.graphics.World;
 
 public class DefaultGraphics implements Graphics {
 
-	private final GraphicsConfiguration configuration;
-	private final DefaultWindow window;
-	private final DefaultWorld world;
+    private final GraphicsConfiguration configuration;
+    private final DefaultWindow window;
+    private final DefaultWorld world;
 
-	public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window) {
-		this.configuration = configuration;
-		this.window = window;
-		world = new DefaultWorld(window);
-	}
+    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window) {
+        this.configuration = configuration;
+        this.window = window;
+        world = new DefaultWorld(window);
+    }
 
-	@Override
-	public GraphicsConfiguration configuration() {
-		return configuration;
-	}
+    @Override
+    public GraphicsConfiguration configuration() {
+        return configuration;
+    }
 
-	public void updateScreen() {
-		window.updateScreen(configuration.isUseAntialising());
-	}
+    public void updateScreen() {
+        window.updateScreen(configuration.isUseAntialising());
+    }
 
-	@Override
-	public Window window() {
-		return window;
-	}
+    @Override
+    public Window window() {
+        return window;
+    }
 
-	@Override
-	public World world() {
-		return world;
-	}
+    @Override
+    public World world() {
+        return world;
+    }
 
-	@Override
-	public double updateCameraZoom(final double zoom) {
-		return world.updateCameraZoom(zoom);
+    @Override
+    public double updateCameraZoom(final double zoom) {
+        return world.updateCameraZoom(zoom);
+    }
 
-	}
+    @Override
+    public void updateCameraPosition(final Vector position) {
+        world.updateCameraPosition(position);
+    }
 
-	@Override
-	public void updateCameraPosition(final Vector position) {
-		world.updateCameraPosition(position);
-	}
+    @Override
+    public Vector cameraPosition() {
+        return world.cameraPosition();
+    }
 
-	@Override
-	public Vector cameraPosition() {
-		return world.cameraPosition();
-	}
+    @Override
+    public double cameraZoom() {
+        return world.cameraZoom();
+    }
 
-	@Override
-	public double cameraZoom() {
-		return world.cameraZoom();
-	}
+    @Override
+    public Vector screenToWorld(final Offset offset) {
+        return world.toPosition(offset);
+    }
 
-	@Override
-	public Vector screenToWorld(final Offset offset) {
-		return world.toPosition(offset);
-	}
+    @Override
+    public List<Dimension> supportedResolutions() {
+        return window.supportedResolutions();
+    }
 
-	@Override
-	public List<Dimension> supportedResolutions() {
-		return window.supportedResolutions();
-	}
+    @Override
+    public List<Dimension> supportedResolutions(final AspectRatio ratio) {
+        return supportedResolutions().stream()
+                .filter(ratio::matches)
+                .toList();
+    }
 
-	@Override
-	public List<Dimension> supportedResolutions(final AspectRatio ratio) {
-		return supportedResolutions().stream()
-				.filter(ratio::matches)
-				.toList();
-	}
-
-	@Override
-	public List<String> availableFonts() {
-		final var allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-		return asList(allFonts).stream()
-				.map(Font::getFontName)
-				.toList();
-	}
+    @Override
+    public List<String> availableFonts() {
+        final var allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        return asList(allFonts).stream()
+                .map(Font::getFontName)
+                .toList();
+    }
 
 }

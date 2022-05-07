@@ -35,9 +35,19 @@ public final class Color {
     public static final Color GREEN = Color.rgb(0, 255, 0);
 
     /**
+     * The color dark green.
+     */
+    public static final Color DARK_GREEN = Color.rgb(0, 128, 0);
+
+    /**
      * The color blue.
      */
     public static final Color BLUE = Color.rgb(0, 0, 255);
+
+    /**
+     * The color dark blue.
+     */
+    public static final Color DARK_BLUE = Color.rgb(0, 0, 128);
 
     /**
      * The color yellow.

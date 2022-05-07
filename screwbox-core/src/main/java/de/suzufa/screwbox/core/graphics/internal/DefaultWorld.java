@@ -91,6 +91,9 @@ public class DefaultWorld implements World {
     }
 
     private Bounds calculateVisibleArea() {
+        if (window.size().width() == 0 && window.size().height() == 0) { // TODO: UtilityMethod
+            return Bounds.max();
+        }
         return Bounds.atPosition(cameraPosition,
                 window.size().width() / zoom,
                 window.size().height() / zoom);

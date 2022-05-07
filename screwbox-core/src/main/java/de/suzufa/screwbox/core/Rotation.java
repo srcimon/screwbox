@@ -62,11 +62,27 @@ public final class Rotation {
         return Double.doubleToLongBits(degrees) == Double.doubleToLongBits(other.degrees);
     }
 
+    @Override
+    public String toString() {
+        return "Rotation [degrees=" + degrees + "]";
+    }
+
     /**
      * Checks if there isn't any rotation.
      */
     public boolean isNone() {
         return degrees == MIN_VALUE;
+    }
+
+    public static Rotation towardsTarget(final double x, double y) {
+        final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
+
+        return Rotation.ofDegrees(inRangeDegrees);
+    }
+
+    public static Rotation towardsTarget(final Vector target) {
+        return towardsTarget(target.x(), target.y());
     }
 
 }

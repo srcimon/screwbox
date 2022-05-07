@@ -1,9 +1,12 @@
 package de.suzufa.screwbox.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 import static org.assertj.core.data.Percentage.withPercentage;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class RotationTest {
 
@@ -55,5 +58,20 @@ class RotationTest {
     void radians_returnsRadiansValue() {
         assertThat(Rotation.none().radians()).isEqualTo(0.0);
         assertThat(Rotation.ofDegrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "100,100,135", "0,100,180", "-100,0,270" })
+    void towardsTarget_returnsNewInstance(double x, double y, double angle) {
+        Rotation rotation = Rotation.towardsTarget(Vector.of(x, y));
+
+        assertThat(rotation.degrees()).isEqualTo(angle);
+    }
+
+    @Test
+    void towardsTarget_returnsNewInstance() {
+        Rotation rotation = Rotation.towardsTarget(10, 20);
+
+        assertThat(rotation.degrees()).isCloseTo(153.4, offset(0.2));
     }
 }

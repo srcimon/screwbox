@@ -46,7 +46,10 @@ public class DynamicLightSystem implements EntitySystem {
                     if (castShadow) {
 
                         var shadowRequest = new ShadowRequest(position,
-                                colliderBounds.inflated(collider.get(LightBlockingComponent.class).sizeModifier));
+                                colliderBounds.inflated(collider.get(LightBlockingComponent.class).sizeModifier
+                                        * engine.graphics().cameraZoom()
+
+                                ));
                         var distance = position.distanceTo(colliderPosition);
                         Percentage opacity = lightEmitter.fixedOpacity ? lightEmitter.shadowOpacity
                                 : Percentage.of(lightEmitter.shadowOpacity.value() * ((range - distance) / range));
