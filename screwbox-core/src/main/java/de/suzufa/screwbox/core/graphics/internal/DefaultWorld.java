@@ -14,8 +14,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
-import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
-import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
 
 public class DefaultWorld implements World {
 
@@ -71,28 +69,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public void draw(final WorldRectangle rectangle) {
-        if (!rectangle.bounds().intersects(visibleArea)) {// TODO: REMOVE ALL CHECKS FROM RENDERER/GRAPHICS
-            return;
-        }
-
-        final Offset offset = toOffset(rectangle.bounds().origin());
-        final Dimension dimension = toDimension(rectangle.bounds().size());
-
-        window.drawRectangle(offset, dimension, rectangle.color());
-    }
-
-    @Override
-    public void draw(final WorldPolygon polygon) {
-        final List<Offset> offsets = new ArrayList<>();
-        for (final var point : polygon.points()) {
-            offsets.add(toOffset(point));
-        }
-        window.drawPolygon(offsets, polygon.color());
-
-    }
-
-    @Override
     public Bounds visibleArea() {
         return visibleArea;
     }
@@ -141,8 +117,31 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawLine(Vector from, Vector to, Color color) {
+    public World drawLine(final Vector from, final Vector to, final Color color) {
         window.drawLine(toOffset(from), toOffset(to), color);
+        return this;
+    }
+
+    @Override
+    public World drawPolygon(final List<Vector> points, final Color color) {
+        final List<Offset> offsets = new ArrayList<>();
+        for (final var point : points) {
+            offsets.add(toOffset(point));
+        }
+        window.drawPolygon(offsets, color);
+        return this;
+    }
+
+    @Override
+    public World drawRectangle(final Bounds bounds, final Color color) {
+        // TODO: REMOVE ALL CHECKS FROM RENDERER/GRAPHICS
+        if (bounds.intersects(visibleArea)) {
+
+            final Offset offset = toOffset(bounds.origin());
+            final Dimension dimension = toDimension(bounds.size());
+
+            window.drawRectangle(offset, dimension, color);
+        }
         return this;
     }
 

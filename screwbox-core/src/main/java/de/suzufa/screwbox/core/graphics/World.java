@@ -1,12 +1,12 @@
 package de.suzufa.screwbox.core.graphics;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.world.WorldPolygon;
-import de.suzufa.screwbox.core.graphics.world.WorldRectangle;
 
 public interface World {
 
@@ -38,21 +38,29 @@ public interface World {
 
     World drawLine(Vector from, Vector to, Color color);
 
-    default World drawLine(Segment line, Color color) {
+    default World drawLine(final Segment line, final Color color) {
         return drawLine(line.from(), line.to(), color);
     }
 
-    default World drawLine(Segment line) {
+    default World drawLine(final Segment line) {
         return drawLine(line, drawingColor());
     }
 
-    default World drawLine(Vector from, Vector to) {
+    default World drawLine(final Vector from, final Vector to) {
         return drawLine(from, to, drawingColor());
     }
 
-    void draw(WorldRectangle rectangle);
+    World drawPolygon(List<Vector> points, Color color);
 
-    void draw(WorldPolygon polygon);
+    default World drawPolygon(List<Vector> points) {
+        return drawPolygon(points, drawingColor());
+    }
+
+    World drawRectangle(Bounds bounds, Color color);
+
+    default World drawRectangle(Bounds bounds) {
+        return drawRectangle(bounds, drawingColor());
+    }
 
     Bounds visibleArea();
 

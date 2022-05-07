@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.graphics.world.internal;
 
-import static de.suzufa.screwbox.core.graphics.world.WorldRectangle.rectangle;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,7 +45,7 @@ class DefaultWorldTest {
         world.updateCameraPosition(Vector.zero());
         world.updateCameraZoom(2.5);
 
-        world.draw(rectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED));
+        world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
 
         verify(window).drawRectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED);
     }
