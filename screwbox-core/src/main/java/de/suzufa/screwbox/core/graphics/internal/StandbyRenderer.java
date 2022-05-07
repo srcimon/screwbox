@@ -1,15 +1,14 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.util.List;
+
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class StandbyRenderer implements Renderer {
 
@@ -29,42 +28,38 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowRectangle rectangle) {
+    public void fillWith(final Color color) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowText text) {
+    public void drawRectangle(final WindowBounds bounds, final Color color) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowSprite sprite) {
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowRepeatingSprite repeatingSprite) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowLine line) {
+    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowCircle circle) {
+    public void drawLine(final Offset from, final Offset to, final Color color) {
         // does nothing
     }
 
     @Override
-    public void draw(final WindowPolygon polygon) {
-        // does nothing
-    }
-
-    @Override
-    public void fillWithColor(Color color) {
+    public void drawPolygon(List<Offset> points, Color color) {
         // does nothing
     }
 

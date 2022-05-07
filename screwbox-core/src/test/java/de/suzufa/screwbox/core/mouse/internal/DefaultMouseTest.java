@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.mouse.MouseButton;
 
 @ExtendWith(MockitoExtension.class)

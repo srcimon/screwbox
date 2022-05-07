@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
-import static de.suzufa.screwbox.core.graphics.world.WorldPolygon.polygon;
 import static java.util.Objects.isNull;
 
 import java.util.List;
@@ -51,8 +50,8 @@ public class DynamicLightSystem implements EntitySystem {
                         var distance = position.distanceTo(colliderPosition);
                         Percentage opacity = lightEmitter.fixedOpacity ? lightEmitter.shadowOpacity
                                 : Percentage.of(lightEmitter.shadowOpacity.value() * ((range - distance) / range));
-                        engine.graphics().world()
-                                .draw(polygon(shadowRequest.shadowPolygonPoints(), Color.BLACK.withOpacity(opacity)));
+                        Color color = Color.BLACK.withOpacity(opacity);
+                        engine.graphics().world().drawPolygon(shadowRequest.shadowPolygonPoints(), color);
                     }
                 }
             }

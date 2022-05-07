@@ -2,8 +2,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtFont;
-import static de.suzufa.screwbox.core.graphics.window.WindowText.text;
-import static java.lang.Math.round;
 
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
@@ -16,20 +14,15 @@ import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultRenderer implements Renderer {
@@ -47,7 +40,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void initializeFontDrawing() {
-        draw(text(Offset.origin(), "-", new Font("Futura", 1), Color.WHITE));
+        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
     }
 
     @Override
@@ -60,22 +53,11 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
         graphics.setColor(toAwtColor(Color.BLACK));
-        fillWithColor(Color.BLACK);
+        fillWith(Color.BLACK);
     }
 
     @Override
-    public void draw(final WindowRectangle rectangle) {
-        graphics.setColor(toAwtColor(rectangle.color()));
-        final WindowBounds bounds = rectangle.bounds();
-        graphics.fillRect(
-                bounds.offset().x(),
-                bounds.offset().y(),
-                bounds.dimension().width(),
-                bounds.dimension().height());
-    }
-
-    @Override
-    public void fillWithColor(Color color) {
+    public void fillWith(final Color color) {
         graphics.setColor(toAwtColor(color));
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }
@@ -93,18 +75,10 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowCircle circle) {
-        graphics.setColor(toAwtColor(circle.color()));
-        final int x = circle.offset().x() - circle.diameter() / 2;
-        final int y = circle.offset().y() - circle.diameter() / 2;
-        graphics.fillOval(x, y, circle.diameter(), circle.diameter());
-    }
-
-    @Override
-    public void draw(final WindowPolygon polygon) {
-        graphics.setColor(toAwtColor(polygon.color()));
+    public void drawPolygon(List<Offset> points, Color color) {
+        graphics.setColor(toAwtColor(color));
         final Polygon awtPolygon = new Polygon();
-        for (final var point : polygon.points()) {
+        for (final var point : points) {
             awtPolygon.addPoint(point.x(), point.y());
         }
         graphics.fillPolygon(awtPolygon);
@@ -128,68 +102,62 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void draw(final WindowText text) {
-        graphics.setColor(toAwtColor(text.color()));
-        graphics.setFont(toAwtFont(text.font()));
+    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.setFont(toAwtFont(font));
 
-        final var offset = text.centered() ? calculateCenterOffset(text) : text.offset();
-        graphics.drawString(text.text(), offset.x(), offset.y());
-
-    }
-
-    private Offset calculateCenterOffset(final WindowText text) {
-        final int textWidth = calculateTextWidth(text.text(), text.font());
-        return Offset.at(text.offset().x() - textWidth / 2.0, text.offset().y());
+        graphics.drawString(text, offset.x(), offset.y());
     }
 
     @Override
-    public void draw(final WindowSprite sprite) {
-        applyOpacityConfig(sprite.opacity());
+    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
+        applyOpacityConfig(opacity);
 
-        if (!sprite.rotation().isNone()) {
-            final double x = sprite.offset().x() + sprite.sprite().dimension().width() * sprite.scale() / 2.0;
-            final double y = sprite.offset().y() + sprite.sprite().dimension().height() * sprite.scale() / 2.0;
-            final double radians = sprite.rotation().radians();
+        if (!rotation.isNone()) {
+            final double x = origin.x() + sprite.dimension().width() * scale / 2.0;
+            final double y = origin.y() + sprite.dimension().height() * scale / 2.0;
+            final double radians = rotation.radians();
             graphics.rotate(radians, x, y);
-            drawSpriteInContext(sprite);
+            drawSpriteInContext(sprite, origin, scale);
             graphics.rotate(-radians, x, y);
         } else {
-            drawSpriteInContext(sprite);
+            drawSpriteInContext(sprite, origin, scale);
         }
 
-        resetOpacityConfig(sprite.opacity());
+        resetOpacityConfig(opacity);
     }
 
-    private void drawSpriteInContext(final WindowSprite sprite) {
-        final Image image = sprite.sprite().getImage(metrics.timeOfLastUpdate());
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale) {
+        final Image image = sprite.getImage(metrics.timeOfLastUpdate());
         final AffineTransform transform = new AffineTransform();
-        transform.translate(sprite.offset().x(), sprite.offset().y());
-        transform.scale(sprite.scale(), sprite.scale());
+        transform.translate(origin.x(), origin.y());
+        transform.scale(scale, scale);
         graphics.drawImage(image, transform, frame);
     }
 
     @Override
-    public void draw(final WindowRepeatingSprite repeatingSprite) {
-        final long spriteWidth = round(repeatingSprite.sprite().dimension().width() * repeatingSprite.scale());
-        final long spriteHeight = round(repeatingSprite.sprite().dimension().height() * repeatingSprite.scale());
-        final long countX = frame.getWidth() / spriteWidth + 1;
-        final long countY = frame.getHeight() / spriteHeight + 1;
-        final double offsetX = repeatingSprite.offset().x() % spriteWidth;
-        final double offsetY = repeatingSprite.offset().y() % spriteHeight;
-
-        for (long x = 0; x <= countX; x++) {
-            for (long y = 0; y <= countY; y++) {
-                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                draw(WindowSprite.sprite(repeatingSprite.sprite(), thisOffset, repeatingSprite.scale(),
-                        repeatingSprite.opacity()));
-            }
-        }
+    public void drawRectangle(final WindowBounds bounds, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.fillRect(
+                bounds.offset().x(),
+                bounds.offset().y(),
+                bounds.dimension().width(),
+                bounds.dimension().height());
     }
 
     @Override
-    public void draw(final WindowLine line) {
-        graphics.setColor(toAwtColor(line.color()));
-        graphics.drawLine(line.from().x(), line.from().y(), line.to().x(), line.to().y());
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        final int x = offset.x() - diameter / 2;
+        final int y = offset.y() - diameter / 2;
+        graphics.fillOval(x, y, diameter, diameter);
+    }
+
+    @Override
+    public void drawLine(final Offset from, final Offset to, final Color color) {
+        graphics.setColor(toAwtColor(color));
+        graphics.drawLine(from.x(), from.y(), to.x(), to.y());
     }
 
 }

@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite.repeatingSprite;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +11,7 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
 
 public class BackgroundSystem implements EntitySystem {
@@ -42,7 +40,7 @@ public class BackgroundSystem implements EntitySystem {
                     cameraPosition.x() * -1 * background.parallaxX,
                     cameraPosition.y() * -1 * background.parallaxY);
             final Window window = engine.graphics().window();
-            window.draw(repeatingSprite(offset, sprite.sprite, background.zoom, sprite.opacity));
+            window.fillWith(offset, sprite.sprite, background.zoom, sprite.opacity);
         }
     }
 

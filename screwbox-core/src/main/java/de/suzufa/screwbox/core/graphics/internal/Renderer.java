@@ -1,15 +1,14 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.util.List;
+
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface Renderer {
 
@@ -19,19 +18,18 @@ public interface Renderer {
 
     int calculateTextWidth(String text, Font font);
 
-    void draw(WindowCircle circle);
+    void fillWith(Color color);
 
-    void draw(WindowRectangle rectangle);
+    void drawRectangle(WindowBounds bounds, Color color);
 
-    void draw(WindowText text);
+    void drawCircle(Offset offset, int diameter, Color color);
 
-    void draw(WindowSprite sprite);
+    void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
 
-    void draw(WindowRepeatingSprite repeatingSprite);
+    void drawText(Offset offset, String text, Font font, Color color);
 
-    void draw(WindowLine line);
+    void drawLine(Offset from, Offset to, Color color);
 
-    void draw(WindowPolygon polygon);
+    void drawPolygon(List<Offset> points, Color color);
 
-    void fillWithColor(Color color);
 }

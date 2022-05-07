@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics.transitions;
 import static de.suzufa.screwbox.core.graphics.Color.BLACK;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 
 public class FadingScreenTransition implements ScreenTransition {
 
@@ -11,7 +11,7 @@ public class FadingScreenTransition implements ScreenTransition {
 
     @Override
     public void draw(final Window screen, final Percentage progress) {
-        screen.fillWithColor(BLACK.withOpacity(progress.invert()));
+        screen.fillWith(BLACK.withOpacity(progress.invert()));
     }
 
 }

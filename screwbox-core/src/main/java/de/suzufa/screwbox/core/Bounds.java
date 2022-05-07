@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core;
 import java.io.Serializable;
 import java.util.List;
 
-import de.suzufa.screwbox.core.graphics.world.World;
+import de.suzufa.screwbox.core.graphics.World;
 
 /**
  * {@link Bounds} represents a space in the 2d world. It's defined by its

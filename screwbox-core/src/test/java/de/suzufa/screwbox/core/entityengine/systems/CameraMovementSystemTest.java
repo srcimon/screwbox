@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
-import de.suzufa.screwbox.core.graphics.window.Window;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.Metrics;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 

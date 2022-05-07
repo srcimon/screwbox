@@ -2,8 +2,8 @@ package de.suzufa.screwbox.core.ui;
 
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.window.Window;
 
 public class SimpleUiLayouter implements UiLayouter {
 

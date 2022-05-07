@@ -1,5 +1,6 @@
-package de.suzufa.screwbox.core.graphics.window.internal;
+package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.lang.Math.round;
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 
@@ -12,6 +13,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
 
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -19,18 +22,8 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.graphics.internal.DefaultRenderer;
-import de.suzufa.screwbox.core.graphics.internal.Renderer;
-import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
-import de.suzufa.screwbox.core.graphics.window.Window;
-import de.suzufa.screwbox.core.graphics.window.WindowCircle;
-import de.suzufa.screwbox.core.graphics.window.WindowLine;
-import de.suzufa.screwbox.core.graphics.window.WindowPolygon;
-import de.suzufa.screwbox.core.graphics.window.WindowRectangle;
-import de.suzufa.screwbox.core.graphics.window.WindowRepeatingSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowSprite;
-import de.suzufa.screwbox.core.graphics.window.WindowText;
 import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultWindow implements Window, GraphicsConfigListener {
@@ -41,6 +34,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private final Metrics metrics;
+    private Color drawingColor = Color.WHITE;
 
     public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -52,14 +46,43 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window draw(final WindowRepeatingSprite repeatingSprite) {
-        renderer.draw(repeatingSprite);
+    public Window setDrawingColor(final Color color) {
+        drawingColor = color;
         return this;
     }
 
     @Override
-    public Window draw(final WindowRectangle rectangle) {
-        renderer.draw(rectangle);
+    public Color drawingColor() {
+        return drawingColor;
+    }
+
+    @Override
+    public Window drawCircle(final Offset offset, final int diameter, final Color color) {
+        renderer.drawCircle(offset, diameter, color);
+        return this;
+    }
+
+    @Override
+    public Window fillWith(final Offset offset, final Sprite sprite, final double scale, final Percentage opacity) {
+        final long spriteWidth = round(sprite.dimension().width() * scale);
+        final long spriteHeight = round(sprite.dimension().height() * scale);
+        final long countX = frame.getWidth() / spriteWidth + 1;
+        final long countY = frame.getHeight() / spriteHeight + 1;
+        final double offsetX = offset.x() % spriteWidth;
+        final double offsetY = offset.y() % spriteHeight;
+
+        for (long x = 0; x <= countX; x++) {
+            for (long y = 0; y <= countY; y++) {
+                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
+                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none());
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public Window drawRectangle(final WindowBounds bounds, final Color color) {
+        renderer.drawRectangle(bounds, color);
         return this;
     }
 
@@ -89,38 +112,27 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window fillWithColor(final Color color) {
-        renderer.fillWithColor(color);
+    public Window fillWith(final Color color) {
+        renderer.fillWith(color);
         return this;
     }
 
     @Override
-    public Window draw(final WindowPolygon polygon) {
-        renderer.draw(polygon);
+    public Window drawPolygon(List<Offset> points, Color color) {
+        renderer.drawPolygon(points, color);
         return this;
     }
 
     @Override
-    public Window draw(final WindowText text) {
-        renderer.draw(text);
+    public Window drawText(final Offset offset, final String text, final Font font, final Color color) {
+        renderer.drawText(offset, text, font, color);
         return this;
     }
 
     @Override
-    public Window draw(final WindowSprite sprite) {
-        renderer.draw(sprite);
-        return this;
-    }
-
-    @Override
-    public Window draw(final WindowLine line) {
-        renderer.draw(line);
-        return this;
-    }
-
-    @Override
-    public Window draw(final WindowCircle circle) {
-        renderer.draw(circle);
+    public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+            final Rotation rotation) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation);
         return this;
     }
 
@@ -204,6 +216,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public boolean isVisible(final WindowBounds bounds) {
         return bounds.intersects(new WindowBounds(Offset.origin(), size()));
+    }
+
+    @Override
+    public Window drawLine(Offset from, Offset to, Color color) {
+        renderer.drawLine(from, to, color);
+        return this;
     }
 
 }

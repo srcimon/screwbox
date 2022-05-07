@@ -1,8 +1,5 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
-import static de.suzufa.screwbox.core.graphics.world.WorldLine.line;
-import static de.suzufa.screwbox.core.graphics.world.WorldRectangle.rectangle;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
@@ -40,13 +37,13 @@ public class PhysicsDebugSystem implements EntitySystem {
 
     private void renderEntity(final Engine engine, final Entity entity, final Color color) {
         final var bounds = entity.get(TransformComponent.class).bounds;
-        engine.graphics().world().draw(rectangle(bounds, color.withOpacity(0.7)));
+        engine.graphics().world().drawRectangle(bounds, color.withOpacity(0.7));
 
         if (entity.hasComponent(PhysicsBodyComponent.class)) {
             final Vector momentum = entity.get(PhysicsBodyComponent.class).momentum;
             final Vector destination = bounds.position().add(momentum);
 
-            engine.graphics().world().draw(line(bounds.position(), destination, Color.BLUE));
+            engine.graphics().world().drawLine(bounds.position(), destination, Color.BLUE);
         }
     }
 
