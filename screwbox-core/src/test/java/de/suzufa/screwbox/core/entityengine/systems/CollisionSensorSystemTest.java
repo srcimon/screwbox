@@ -7,9 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.loop.Metrics;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
@@ -27,8 +27,8 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        entityEngine.add(ball, player);
-        entityEngine.add(new CollisionSensorSystem());
+        entityEngine.add(ball, player)
+                .add(new CollisionSensorSystem());
 
         entityEngine.update();
 
@@ -46,8 +46,8 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        entityEngine.add(bird, player);
-        entityEngine.add(new CollisionSensorSystem());
+        entityEngine.add(bird, player)
+                .add(new CollisionSensorSystem());
 
         entityEngine.update();
 

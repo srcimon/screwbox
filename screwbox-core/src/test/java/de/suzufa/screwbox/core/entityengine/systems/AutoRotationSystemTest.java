@@ -24,8 +24,8 @@ class AutoRotationSystemTest {
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entityEngine.add(body);
-        entityEngine.add(new AutoRotationSystem());
+        entityEngine.add(body)
+                .add(new AutoRotationSystem());
 
         entityEngine.update();
 
