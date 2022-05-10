@@ -62,15 +62,15 @@ class RotationTest {
 
     @ParameterizedTest
     @CsvSource({ "100,100,135", "0,100,180", "-100,0,270" })
-    void towardsTarget_returnsNewInstance(double x, double y, double angle) {
-        Rotation rotation = Rotation.towardsTarget(Vector.of(x, y));
+    void ofMomentum_returnsNewInstance(double x, double y, double angle) {
+        Rotation rotation = Rotation.ofMomentum(Vector.of(x, y));
 
         assertThat(rotation.degrees()).isEqualTo(angle);
     }
 
     @Test
-    void towardsTarget_returnsNewInstance() {
-        Rotation rotation = Rotation.towardsTarget(10, 20);
+    void ofMomentum_returnsNewInstance() {
+        Rotation rotation = Rotation.ofMomentum(10, 20);
 
         assertThat(rotation.degrees()).isCloseTo(153.4, offset(0.2));
     }

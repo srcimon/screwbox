@@ -25,6 +25,32 @@ public final class Rotation {
     }
 
     /**
+     * Returns the {@link Rotation}-value of an objects momentum. This value equals
+     * the angle between a vertical line and the {@link Vector} starting on the
+     * button of this line.
+     * 
+     * @see #ofMomentum(Vector)
+     */
+    public static Rotation ofMomentum(final double x, final double y) {
+        final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
+        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
+
+        return Rotation.ofDegrees(inRangeDegrees);
+    }
+
+    /**
+     * Returns the {@link Rotation}-value of an objects momentum. This value equals
+     * the angle between a vertical line and the {@link Vector} starting on the
+     * button of this line.
+     * 
+     * 
+     * @see #ofMomentum(double, double)
+     */
+    public static Rotation ofMomentum(final Vector momentum) {
+        return ofMomentum(momentum.x(), momentum.y());
+    }
+
+    /**
      * Creates a new Rotation of zero {@link #degrees()}.
      */
     public static Rotation none() {
@@ -72,17 +98,6 @@ public final class Rotation {
      */
     public boolean isNone() {
         return degrees == MIN_VALUE;
-    }
-
-    public static Rotation towardsTarget(final double x, double y) {
-        final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
-        final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
-
-        return Rotation.ofDegrees(inRangeDegrees);
-    }
-
-    public static Rotation towardsTarget(final Vector target) {
-        return towardsTarget(target.x(), target.y());
     }
 
 }
