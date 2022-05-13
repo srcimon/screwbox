@@ -183,7 +183,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     @Override
     public Window close() {
-        renderer.terminate();
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();

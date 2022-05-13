@@ -63,9 +63,4 @@ public class StandbyRenderer implements Renderer {
         // does nothing
     }
 
-    @Override
-    public void terminate() {
-        // does nothing
-    }
-
 }
