@@ -177,7 +177,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        renderer = new QueueingRenderer(new DefaultRenderer(frame, metrics));
+        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame, metrics));
         return this;
     }
 

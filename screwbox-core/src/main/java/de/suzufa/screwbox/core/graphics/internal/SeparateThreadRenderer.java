@@ -1,5 +1,8 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.lang.Thread.currentThread;
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,36 +21,26 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.utils.internal.Swappable;
 
-public class QueueingRenderer implements Renderer {
+public class SeparateThreadRenderer implements Renderer {
 
     private final Swappable<List<Runnable>> renderTasks = Swappable.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private Future<?> currentRendering = null;
 
-    public QueueingRenderer(final Renderer next) {
+    public SeparateThreadRenderer(final Renderer next) {
         this.next = next;
     }
 
     @Override
     public void updateScreen(final boolean antialiased) {
-        if (currentRendering != null) {
-            try {
-                currentRendering.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
+        waitForCurrentRenderingToEnd();
         renderTasks.backup().clear();
         renderTasks.swap();
         next.updateScreen(antialiased);
-        RunnableFuture<Void> renderAll = new FutureTask<>(new Runnable() {
-
-            @Override
-            public void run() {
-                for (var task : renderTasks.backup()) {
-                    task.run();
-                }
+        final RunnableFuture<Void> renderAll = new FutureTask<>(() -> {
+            for (final var task : renderTasks.backup()) {
+                task.run();
             }
         }, null);
         currentRendering = executor.submit(renderAll);
@@ -105,6 +98,16 @@ public class QueueingRenderer implements Renderer {
     @Override
     public void terminate() {
         executor.shutdown();
+    }
+
+    private void waitForCurrentRenderingToEnd() {
+        if (nonNull(currentRendering)) {
+            try {
+                currentRendering.get();
+            } catch (InterruptedException | ExecutionException e) {
+                currentThread().interrupt();
+            }
+        }
     }
 
 }
