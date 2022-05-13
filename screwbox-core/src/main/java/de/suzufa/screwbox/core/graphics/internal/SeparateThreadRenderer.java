@@ -34,15 +34,19 @@ public class SeparateThreadRenderer implements Renderer {
     @Override
     public void updateScreen(final boolean antialiased) {
         waitForCurrentRenderingToEnd();
-        renderTasks.backup().clear();
-        renderTasks.swap();
         next.updateScreen(antialiased);
-        final var finishRenderTasks = new FutureTask<>(() -> {
+
+        renderTasks.swap();
+        currentRendering = executor.submit(finishRenderTasks());
+    }
+
+    private FutureTask<Void> finishRenderTasks() {
+        return new FutureTask<>(() -> {
             for (final var task : renderTasks.backup()) {
                 task.run();
             }
+            renderTasks.backup().clear();
         }, null);
-        currentRendering = executor.submit(finishRenderTasks);
     }
 
     @Override
