@@ -19,10 +19,10 @@ public class LogFpsSystem implements EntitySystem {
         fpsMean.addValue(metrics.framesPerSecond());
 
         if (timer.isNow(metrics.timeOfLastUpdate())) {
-            engine.log().debug(String.format("FPS %.0f", fpsMean.calculate()));
+            String fpsMessage = String.format("FPS %.0f", fpsMean.calculate());
+            engine.log().debug(fpsMessage);
             fpsMean.reset();
         }
-
     }
 
 }
