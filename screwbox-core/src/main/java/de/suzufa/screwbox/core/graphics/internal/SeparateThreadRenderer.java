@@ -97,6 +97,7 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void terminate() {
+        waitForCurrentRenderingToEnd();
         executor.shutdown();
     }
 

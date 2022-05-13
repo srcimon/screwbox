@@ -1,11 +1,14 @@
 package de.suzufa.screwbox.core;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents the Rotation of an Object.
  */
-public final class Rotation {
+public final class Rotation implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
