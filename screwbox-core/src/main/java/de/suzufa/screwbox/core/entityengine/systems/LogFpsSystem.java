@@ -6,22 +6,24 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Timer;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.loop.Metrics;
-import de.suzufa.screwbox.core.util.MeanValue;
 
 public class LogFpsSystem implements EntitySystem {
 
-    private final MeanValue fpsMean = new MeanValue();
     private final Timer timer = Timer.withIntervalOf(ofSeconds(2));
+
+    private double sum;
+    private long count;
 
     @Override
     public void update(final Engine engine) {
         Metrics metrics = engine.loop().metrics();
-        fpsMean.addValue(metrics.framesPerSecond());
-
-        if (timer.isNow(metrics.timeOfLastUpdate())) {
-            String fpsMessage = String.format("FPS %.0f", fpsMean.calculate());
+        sum += metrics.framesPerSecond();
+        count++;
+        if (timer.isTick(metrics.timeOfLastUpdate())) {
+            String fpsMessage = String.format("current fps %.0f", sum / count);
             engine.log().debug(fpsMessage);
-            fpsMean.reset();
+            sum = 0;
+            count = 0;
         }
     }
 
