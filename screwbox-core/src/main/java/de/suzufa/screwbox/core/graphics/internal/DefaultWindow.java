@@ -118,7 +118,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window drawPolygon(List<Offset> points, Color color) {
+    public Window drawPolygon(final List<Offset> points, final Color color) {
         renderer.drawPolygon(points, color);
         return this;
     }
@@ -220,7 +220,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window drawLine(Offset from, Offset to, Color color) {
+    public Window drawLine(final Offset from, final Offset to, final Color color) {
         renderer.drawLine(from, to, color);
         return this;
     }

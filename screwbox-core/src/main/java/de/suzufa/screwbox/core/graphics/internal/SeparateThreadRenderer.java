@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.RunnableFuture;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
@@ -38,12 +37,12 @@ public class SeparateThreadRenderer implements Renderer {
         renderTasks.backup().clear();
         renderTasks.swap();
         next.updateScreen(antialiased);
-        final RunnableFuture<Void> renderAll = new FutureTask<>(() -> {
+        final var finishRenderTasks = new FutureTask<>(() -> {
             for (final var task : renderTasks.backup()) {
                 task.run();
             }
         }, null);
-        currentRendering = executor.submit(renderAll);
+        currentRendering = executor.submit(finishRenderTasks);
     }
 
     @Override
