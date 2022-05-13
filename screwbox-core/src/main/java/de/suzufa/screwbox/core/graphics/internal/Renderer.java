@@ -32,4 +32,6 @@ public interface Renderer {
 
     void drawPolygon(List<Offset> points, Color color);
 
+    void terminate();
+
 }

@@ -8,6 +8,7 @@ import de.suzufa.screwbox.core.entityengine.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CombineStaticCollidersSystem;
 import de.suzufa.screwbox.core.entityengine.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entityengine.systems.GravitySystem;
+import de.suzufa.screwbox.core.entityengine.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
@@ -63,6 +64,7 @@ public class GameScene implements Scene {
                 .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
 
         entityEngine.add(
+                new LogFpsSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlattformSystem(),
                 new CollectableSystem(),

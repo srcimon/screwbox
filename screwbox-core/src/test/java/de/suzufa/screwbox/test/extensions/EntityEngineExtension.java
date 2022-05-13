@@ -19,6 +19,7 @@ import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
+import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.Metrics;
 
@@ -34,12 +35,14 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         var engine = mock(Engine.class);
         var graphics = mock(Graphics.class);
         var world = mock(World.class);
+        var log = mock(Log.class);
         var screen = mock(Window.class);
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
         entityEngine = new DefaultEntityEngine(entityManager, systemManager);
         when(engine.entityEngine()).thenReturn(entityEngine);
         when(engine.graphics()).thenReturn(graphics);
+        when(engine.log()).thenReturn(log);
         when(graphics.world()).thenReturn(world);
         when(graphics.window()).thenReturn(screen);
         when(engine.loop()).thenReturn(gameLoop);
@@ -48,6 +51,7 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);
+        parameters.put(Log.class, log);
         parameters.put(DefaultEntityEngine.class, entityEngine);
     }
 

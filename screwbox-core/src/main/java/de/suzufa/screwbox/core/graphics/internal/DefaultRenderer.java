@@ -160,4 +160,9 @@ public class DefaultRenderer implements Renderer {
         graphics.drawLine(from.x(), from.y(), to.x(), to.y());
     }
 
+    @Override
+    public void terminate() {
+        // does nothing
+    }
+
 }
