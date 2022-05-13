@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.log.LoggingAdapter;
 
 public class DefaultLog implements Log {
 
-    private LoggingAdapter loggingAdapter = new JavaLoggingLoggingAdapter();
+    private LoggingAdapter loggingAdapter = new ConsoleLoggingAdapter();
 
     @Override
     public Log info(final String message) {
