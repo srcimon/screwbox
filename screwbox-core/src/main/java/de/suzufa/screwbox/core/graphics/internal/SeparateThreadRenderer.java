@@ -25,7 +25,7 @@ public class SeparateThreadRenderer implements Renderer {
 
     private final Swappable<List<Runnable>> renderTasks = Swappable.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
-    private final ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Future<?> currentRendering = null;
 
     public SeparateThreadRenderer(final Renderer next) {
