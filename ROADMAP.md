@@ -6,5 +6,4 @@
 - DrawingUtil.noUneccessaryDrawings(window) returns window + world
 - Draw in separate thread from queued drawing tasks
 - when fullscreen not supported, open windowed with warning
-- UtilClass new Timer(Duration.ofSeconds(20)).isNow()
-- MeanValue Util class
+- get rid of calculateTextWitdth (Pixelfont) -> can render in seperate thread!
