@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
+import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.physics.Physics;
@@ -39,6 +40,8 @@ public interface Engine {
     Mouse mouse();
 
     Ui ui();
+
+    Log log();
 
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
