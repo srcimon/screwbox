@@ -23,11 +23,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public int calculateTextWidth(final String text, final Font font) {
-        return 0;
-    }
-
-    @Override
     public void fillWith(final Color color) {
         // does nothing
     }
@@ -60,6 +55,11 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawPolygon(List<Offset> points, Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawTextCentered(Offset position, String text, Font font, Color color) {
         // does nothing
     }
 

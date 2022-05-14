@@ -87,11 +87,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public int calculateTextWidth(final String text, final Font font) {
-        return renderer.calculateTextWidth(text, font);
-    }
-
-    @Override
     public Sprite takeScreenshot() {
         return renderer.takeScreenshot();
     }
@@ -126,6 +121,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public Window drawText(final Offset offset, final String text, final Font font, final Color color) {
         renderer.drawText(offset, text, font, color);
+        return this;
+    }
+
+    @Override
+    public Window drawTextCentered(Offset position, String text, Font font, Color color) {
+        renderer.drawTextCentered(position, text, font, color);
         return this;
     }
 

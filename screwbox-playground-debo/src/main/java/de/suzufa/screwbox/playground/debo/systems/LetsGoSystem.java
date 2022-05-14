@@ -33,10 +33,9 @@ public class LetsGoSystem implements EntitySystem {
                     .position();
             engine.audio().playEffect(LETS_GO_SOUND);
 
-            int width = engine.graphics().window().calculateTextWidth("LET'S GO", FONT);
             Entity letsGoBubble = new Entity().add(
                     new TransformComponent(
-                            Bounds.atPosition(playerCenter.x() - width / 4.0, playerCenter.y() - 5, 0, 0)),
+                            Bounds.atPosition(playerCenter.x() / 4.0, playerCenter.y() - 5, 0, 0)),
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
@@ -53,7 +52,7 @@ public class LetsGoSystem implements EntitySystem {
 
             Vector postion = bubbleTranform.bounds.position();
             Color whity = Color.WHITE.withOpacity(letsGoComponent.visibility);
-            engine.graphics().world().drawText(postion, "LET'S GO", FONT, whity);
+            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FONT, whity);
             letsGoComponent.modifier += factor / 16;
             letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - factor / 2);
         }

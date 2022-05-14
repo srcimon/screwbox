@@ -84,11 +84,6 @@ public class DefaultRenderer implements Renderer {
         graphics.fillPolygon(awtPolygon);
     }
 
-    @Override
-    public int calculateTextWidth(final String text, final Font font) {
-        return graphics.getFontMetrics(toAwtFont(font)).stringWidth(text);
-    }
-
     private void applyOpacityConfig(final Percentage opacity) {
         if (!opacity.isMaxValue()) {
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity.valueFloat()));
@@ -107,6 +102,13 @@ public class DefaultRenderer implements Renderer {
         graphics.setFont(toAwtFont(font));
 
         graphics.drawString(text, offset.x(), offset.y());
+    }
+
+    @Override
+    public void drawTextCentered(Offset position, String text, Font font, Color color) {
+        final int textWidth = graphics.getFontMetrics(toAwtFont(font)).stringWidth(text);
+        final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
+        drawText(offset, text, font, color);
     }
 
     @Override

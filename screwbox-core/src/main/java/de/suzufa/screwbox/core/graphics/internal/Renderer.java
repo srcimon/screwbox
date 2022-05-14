@@ -16,8 +16,6 @@ public interface Renderer {
 
     Sprite takeScreenshot();
 
-    int calculateTextWidth(String text, Font font);
-
     void fillWith(Color color);
 
     void drawRectangle(WindowBounds bounds, Color color);
@@ -31,5 +29,7 @@ public interface Renderer {
     void drawLine(Offset from, Offset to, Color color);
 
     void drawPolygon(List<Offset> points, Color color);
+
+    void drawTextCentered(Offset position, String text, Font font, Color color);
 
 }
