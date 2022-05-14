@@ -32,4 +32,6 @@ public interface Renderer {
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
+    void terminate();
+
 }

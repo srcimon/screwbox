@@ -178,12 +178,13 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        renderer = new DefaultRenderer(frame, metrics);
+        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame, metrics));
         return this;
     }
 
     @Override
     public Window close() {
+        renderer.terminate();
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
