@@ -87,17 +87,13 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public int calculateTextWidth(final String text, final Font font) {
-        return renderer.calculateTextWidth(text, font);
-    }
-
-    @Override
     public Sprite takeScreenshot() {
         return renderer.takeScreenshot();
     }
 
     public void updateScreen(final boolean antialiased) {
         renderer.updateScreen(antialiased);
+        renderer.fillWith(Color.BLACK);
     }
 
     @Override
@@ -126,6 +122,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public Window drawText(final Offset offset, final String text, final Font font, final Color color) {
         renderer.drawText(offset, text, font, color);
+        return this;
+    }
+
+    @Override
+    public Window drawTextCentered(Offset position, String text, Font font, Color color) {
+        renderer.drawTextCentered(position, text, font, color);
         return this;
     }
 
@@ -177,12 +179,13 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        renderer = new DefaultRenderer(frame, metrics);
+        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame, metrics));
         return this;
     }
 
     @Override
     public Window close() {
+        renderer.terminate();
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();

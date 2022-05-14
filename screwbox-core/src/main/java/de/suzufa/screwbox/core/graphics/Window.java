@@ -47,11 +47,7 @@ public interface Window {
         return drawText(offset, text, font, drawingColor());
     }
 
-    default Window drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        final int textWidth = calculateTextWidth(text, font);
-        final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
-        return drawText(offset, text, font, color);
-    }
+    Window drawTextCentered(final Offset position, final String text, final Font font, final Color color);
 
     default Window drawTextCentered(final Offset offset, final String text, final Font font) {
         return drawTextCentered(offset, text, font, drawingColor());
@@ -84,8 +80,6 @@ public interface Window {
     }
 
     Window fillWith(Color color);
-
-    int calculateTextWidth(String text, Font font);
 
     Sprite takeScreenshot();
 
