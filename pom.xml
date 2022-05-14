@@ -15,7 +15,7 @@
 
 		<!-- public accessibility in components by intention -->
 		<sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
-		<sonar.issue.ignore.multicriteria.e1.resourceKey>**/Component.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
+		<sonar.issue.ignore.multicriteria.e1.resourceKey>**/*Component.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
 		
 	</properties>
 	<dependencyManagement>
