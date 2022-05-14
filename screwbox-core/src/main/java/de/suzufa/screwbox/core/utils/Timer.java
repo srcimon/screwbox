@@ -1,5 +1,11 @@
-package de.suzufa.screwbox.core;
+package de.suzufa.screwbox.core.utils;
 
+import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
+
+/**
+ * A simple timer to trigger timed actions.
+ */
 public class Timer {
 
     private final Duration duration;
@@ -10,10 +16,18 @@ public class Timer {
         this.nextTick = Time.now().plus(duration);
     }
 
+    /**
+     * Creates a new {@link Timer} with the given interval.
+     */
     public static Timer withIntervalOf(final Duration duration) {
         return new Timer(duration);
     }
 
+    /**
+     * Checks if the timer is triggerd at the given {@link Time}. If the timer is
+     * triggerd the next trigger {@link Time} is set. A second check will always
+     * return false. ({@link Time} must be provided from outside to reduce cpu load.
+     */
     public boolean isTick(final Time time) {
         final boolean isNow = time.isAfter(nextTick);
         if (isNow) {
