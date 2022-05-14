@@ -35,7 +35,7 @@ public class LetsGoSystem implements EntitySystem {
 
             Entity letsGoBubble = new Entity().add(
                     new TransformComponent(
-                            Bounds.atPosition(playerCenter.x() / 4.0, playerCenter.y() - 5, 0, 0)),
+                            Bounds.atPosition(playerCenter.x(), playerCenter.y() - 5, 0, 0)),
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
