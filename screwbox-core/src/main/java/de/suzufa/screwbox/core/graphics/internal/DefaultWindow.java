@@ -93,6 +93,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     public void updateScreen(final boolean antialiased) {
         renderer.updateScreen(antialiased);
+        renderer.fillWith(Color.BLACK);
     }
 
     @Override
