@@ -6,13 +6,10 @@ import static java.util.Objects.nonNull;
 
 import java.awt.Cursor;
 import java.awt.DisplayMode;
-import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
@@ -28,25 +25,24 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.loop.Metrics;
 
-public class DefaultWindow implements Window, GraphicsConfigListener, WindowFocusListener {
+public class DefaultWindow implements Window, GraphicsConfigListener {
 
-    private final Frame frame;
+    private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private final Metrics metrics;
     private Color drawColor = Color.WHITE;
-    private boolean hasFocus = true;
 
-    public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
+            final Metrics metrics) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
         this.metrics = metrics;
         setTitle("ScrewBox");
         configuration.registerListener(this);
-        frame.addWindowFocusListener(this);
     }
 
     @Override
@@ -232,19 +228,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener, WindowFocu
     }
 
     @Override
-    public void windowGainedFocus(WindowEvent e) {
-        hasFocus = true;
-
-    }
-
-    @Override
-    public void windowLostFocus(WindowEvent e) {
-        hasFocus = false;
-    }
-
-    @Override
     public boolean hasFocus() {
-        return hasFocus;
+        return frame.hasFocus();
     }
 
 }

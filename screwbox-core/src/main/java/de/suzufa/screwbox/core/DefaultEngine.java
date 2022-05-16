@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
-import de.suzufa.screwbox.core.graphics.internal.EngineAttachedFrame;
+import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.log.Log;
@@ -40,7 +40,7 @@ class DefaultEngine implements Engine {
     private final DefaultLog log;
 
     DefaultEngine() {
-        final EngineAttachedFrame frame = new EngineAttachedFrame(this);
+        final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final DefaultWindow window = new DefaultWindow(frame, configuration, metrics);

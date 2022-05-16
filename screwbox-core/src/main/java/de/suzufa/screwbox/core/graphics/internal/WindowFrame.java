@@ -1,20 +1,24 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
 import de.suzufa.screwbox.core.Engine;
 
-public class EngineAttachedFrame extends JFrame implements WindowListener {
+public class WindowFrame extends JFrame implements WindowListener, WindowFocusListener {
 
     private static final long serialVersionUID = 1L;
 
     private final Engine engine;
 
-    public EngineAttachedFrame(Engine engine) {
+    private boolean hasFocus;
+
+    public WindowFrame(Engine engine) {
         addWindowListener(this);
+        addWindowFocusListener(this);
         this.engine = engine;
     }
 
@@ -53,4 +57,22 @@ public class EngineAttachedFrame extends JFrame implements WindowListener {
         // do nothing
     }
 
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+        this.hasFocus = true;
+
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        this.hasFocus = false;
+    }
+
+    /**
+     * 10 times faster than {@link JFrame#hasFocus()}
+     */
+    @Override
+    public boolean hasFocus() {
+        return hasFocus;
+    }
 }
