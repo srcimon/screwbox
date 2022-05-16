@@ -34,7 +34,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private final Metrics metrics;
-    private Color drawingColor = Color.WHITE;
+    private Color drawColor = Color.WHITE;
 
     public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -46,14 +46,14 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window setDrawingColor(final Color color) {
-        drawingColor = color;
+    public Window drawColor(final Color color) {
+        drawColor = color;
         return this;
     }
 
     @Override
-    public Color drawingColor() {
-        return drawingColor;
+    public Color drawColor() {
+        return drawColor;
     }
 
     @Override

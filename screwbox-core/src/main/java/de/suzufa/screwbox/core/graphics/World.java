@@ -10,9 +10,9 @@ import de.suzufa.screwbox.core.Vector;
 
 public interface World {
 
-    World setDrawingColor(Color color);
+    World drawColor(Color color);
 
-    Color drawingColor();
+    Color drawColor();
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation);
 
@@ -31,13 +31,13 @@ public interface World {
     World drawText(Vector offset, String text, Font font, Color color);
 
     default World drawText(final Vector offset, final String text, final Font font) {
-        return drawText(offset, text, font, drawingColor());
+        return drawText(offset, text, font, drawColor());
     }
 
     World drawTextCentered(Vector position, String text, Font font, Color color);
 
     default World drawTextCentered(final Vector position, final String text, final Font font) {
-        return drawTextCentered(position, text, font, drawingColor());
+        return drawTextCentered(position, text, font, drawColor());
     }
 
     World drawLine(Vector from, Vector to, Color color);
@@ -47,23 +47,23 @@ public interface World {
     }
 
     default World drawLine(final Segment line) {
-        return drawLine(line, drawingColor());
+        return drawLine(line, drawColor());
     }
 
     default World drawLine(final Vector from, final Vector to) {
-        return drawLine(from, to, drawingColor());
+        return drawLine(from, to, drawColor());
     }
 
     World drawPolygon(List<Vector> points, Color color);
 
     default World drawPolygon(List<Vector> points) {
-        return drawPolygon(points, drawingColor());
+        return drawPolygon(points, drawColor());
     }
 
     World drawRectangle(Bounds bounds, Color color);
 
     default World drawRectangle(Bounds bounds) {
-        return drawRectangle(bounds, drawingColor());
+        return drawRectangle(bounds, drawColor());
     }
 
     Bounds visibleArea();
