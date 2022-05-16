@@ -9,33 +9,34 @@ public class DefaultLog implements Log {
     private LoggingAdapter loggingAdapter = new ConsoleLoggingAdapter();
 
     @Override
-    public Log info(final String message) {
-        loggingAdapter.log(LogLevel.INFO, message);
+    public Log log(final LogLevel level, final String message) {
+        loggingAdapter.log(level, message);
         return this;
+    }
+
+    @Override
+    public Log info(final String message) {
+        return log(LogLevel.INFO, message);
     }
 
     @Override
     public Log debug(final String message) {
-        loggingAdapter.log(LogLevel.DEBUG, message);
-        return this;
+        return log(LogLevel.DEBUG, message);
     }
 
     @Override
     public Log warning(final String message) {
-        loggingAdapter.log(LogLevel.WARNING, message);
-        return this;
+        return log(LogLevel.WARNING, message);
     }
 
     @Override
     public Log error(final String message) {
-        loggingAdapter.log(LogLevel.ERROR, message);
-        return this;
+        return log(LogLevel.ERROR, message);
     }
 
     @Override
     public Log error(final String message, final Exception e) {
-        loggingAdapter.log(LogLevel.DEBUG, message + System.lineSeparator() + e.getStackTrace());
-        return this;
+        return log(LogLevel.DEBUG, message + System.lineSeparator() + e.getStackTrace());
     }
 
     @Override

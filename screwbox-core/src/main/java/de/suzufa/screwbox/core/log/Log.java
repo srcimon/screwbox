@@ -2,6 +2,8 @@ package de.suzufa.screwbox.core.log;
 
 public interface Log {
 
+    Log log(LogLevel level, String message);
+
     Log debug(String message);
 
     Log info(String message);

@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core;
 
+import static java.lang.String.format;
+
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -80,7 +82,9 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        log.info("engine stopped (total frames: " + loop().metrics().frameNumber() + ")");
+        var frames = loop().metrics().frameNumber();
+
+        log.info(format("engine stopped (total frames: %,d)", frames));
         ui.closeMenu();
         gameLoop.stop();
         graphics.window().close();
