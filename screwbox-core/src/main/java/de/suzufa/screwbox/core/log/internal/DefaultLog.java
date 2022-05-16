@@ -6,7 +6,11 @@ import de.suzufa.screwbox.core.log.LoggingAdapter;
 
 public class DefaultLog implements Log {
 
-    private LoggingAdapter loggingAdapter = new ConsoleLoggingAdapter();
+    private LoggingAdapter loggingAdapter;
+
+    public DefaultLog(final LoggingAdapter loggingAdapter) {
+        this.loggingAdapter = loggingAdapter;
+    }
 
     @Override
     public Log log(final LogLevel level, final String message) {
@@ -32,11 +36,6 @@ public class DefaultLog implements Log {
     @Override
     public Log error(final String message) {
         return log(LogLevel.ERROR, message);
-    }
-
-    @Override
-    public Log error(final String message, final Exception e) {
-        return log(LogLevel.DEBUG, message + System.lineSeparator() + e.getStackTrace());
     }
 
     @Override

@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.log.Log;
+import de.suzufa.screwbox.core.log.internal.ConsoleLoggingAdapter;
 import de.suzufa.screwbox.core.log.internal.DefaultLog;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.internal.DefaultGameLoop;
@@ -52,7 +53,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         gameLoop = new DefaultGameLoop(scenes, graphics, metrics, keyboard, mouse, ui);
         physics = new DefaultPhysics(this);
-        log = new DefaultLog();
+        log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.addKeyListener(keyboard);

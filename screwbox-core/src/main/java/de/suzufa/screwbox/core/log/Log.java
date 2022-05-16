@@ -12,7 +12,5 @@ public interface Log {
 
     Log error(String message);
 
-    Log error(String message, Exception e);
-
     Log setAdapter(LoggingAdapter adapter);
 }
