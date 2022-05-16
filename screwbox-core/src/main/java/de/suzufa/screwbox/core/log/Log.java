@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.log;
 
+import de.suzufa.screwbox.core.Engine;
+
 /**
  * Provides some basic logging features and the ability to pick up engine log
  * events via {@link Log#setAdapter(log.LoggingAdapter)}.
@@ -36,7 +38,8 @@ public interface Log {
 
     /**
      * Sets the {@link LoggingAdapter} that is used for logging all messages. Can be
-     * used to pick up all engine log message.
+     * used to attach the {@link Engine} logging events to your preferred logging
+     * system.
      * 
      * @see ConsoleLoggingAdapter
      */
