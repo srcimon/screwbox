@@ -7,12 +7,20 @@ public class ConsoleLoggingAdapter implements LoggingAdapter {
 
     @Override
     public void log(final LogLevel level, final String message) {
-        String formattedMessage = String.format("[%-6s] %s", level.name(), message);
+        final String formattedMessage = String.format("[%-6s] %s", level.name(), message);
         if (LogLevel.ERROR.equals(level)) {
-            System.err.println(formattedMessage);
+            logError(formattedMessage);
         } else {
-            System.out.println(formattedMessage);
+            logNormal(formattedMessage);
         }
+    }
+
+    protected void logNormal(final String message) {
+        System.out.println(message);
+    }
+
+    protected void logError(final String message) {
+        System.err.println(message);
     }
 
 }
