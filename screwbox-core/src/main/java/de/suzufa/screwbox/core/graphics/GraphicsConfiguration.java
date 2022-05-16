@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GraphicsConfiguration {
+public class GraphicsConfiguration {
 
     private final List<GraphicsConfigListener> listeners = new ArrayList<>();
 
