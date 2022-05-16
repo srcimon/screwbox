@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.core;
 
-import javax.swing.JFrame;
+import static java.lang.String.format;
 
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
+import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.log.Log;
@@ -39,7 +40,7 @@ class DefaultEngine implements Engine {
     private final DefaultLog log;
 
     DefaultEngine() {
-        final JFrame frame = new JFrame();
+        final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final DefaultWindow window = new DefaultWindow(frame, configuration, metrics);
@@ -68,6 +69,7 @@ class DefaultEngine implements Engine {
         if (scenes.sceneCount() == 0) {
             throw new IllegalStateException("no scene present");
         }
+        log.info("engine started");
         try {
             graphics.window().open();
             gameLoop.start();
@@ -80,6 +82,9 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
+        var frames = loop().metrics().frameNumber();
+
+        log.info(format("engine stopped (total frames: %,d)", frames));
         ui.closeMenu();
         gameLoop.stop();
         graphics.window().close();

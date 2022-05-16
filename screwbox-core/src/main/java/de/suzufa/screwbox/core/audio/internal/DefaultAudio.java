@@ -122,10 +122,10 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Sound playEffect(final SoundPool soundPool) {
+    public Audio playEffect(final SoundPool soundPool) {
         final Sound sound = soundPool.next();
         playEffect(sound);
-        return sound;
+        return this;
     }
 
 }

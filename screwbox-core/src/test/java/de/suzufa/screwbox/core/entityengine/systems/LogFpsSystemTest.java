@@ -17,7 +17,7 @@ class LogFpsSystemTest {
 
     @Test
     void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, Metrics metrics, Log log) {
-        when(metrics.framesPerSecond()).thenReturn(50, 30, 10);
+        when(metrics.framesPerSecond()).thenReturn(5000, 3000, 1000);
         when(metrics.timeOfLastUpdate()).thenReturn(
                 now().plusSeconds(-10), // no logging yet
                 now().plusSeconds(-5), // no logging yet
@@ -27,6 +27,6 @@ class LogFpsSystemTest {
 
         entityEngine.updateTimes(3);
 
-        verify(log).debug("current fps 30");
+        verify(log).debug("current fps 3.000");
     }
 }

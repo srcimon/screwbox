@@ -6,7 +6,6 @@ import static java.util.Objects.nonNull;
 
 import java.awt.Cursor;
 import java.awt.DisplayMode;
-import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -28,15 +27,16 @@ import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultWindow implements Window, GraphicsConfigListener {
 
-    private final Frame frame;
+    private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private final Metrics metrics;
-    private Color drawingColor = Color.WHITE;
+    private Color drawColor = Color.WHITE;
 
-    public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
+            final Metrics metrics) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
@@ -46,14 +46,14 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window setDrawingColor(final Color color) {
-        drawingColor = color;
+    public Window drawColor(final Color color) {
+        drawColor = color;
         return this;
     }
 
     @Override
-    public Color drawingColor() {
-        return drawingColor;
+    public Color drawColor() {
+        return drawColor;
     }
 
     @Override
@@ -166,7 +166,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
         frame.dispose();
         frame.setSize(width, height);
-        frame.setResizable(!configuration.isFullscreen());
+        frame.setResizable(false);
         frame.setVisible(true);
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
@@ -225,6 +225,11 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     public Window drawLine(final Offset from, final Offset to, final Color color) {
         renderer.drawLine(from, to, color);
         return this;
+    }
+
+    @Override
+    public boolean hasFocus() {
+        return frame.hasFocus();
     }
 
 }

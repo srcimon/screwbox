@@ -7,14 +7,18 @@ import de.suzufa.screwbox.core.Rotation;
 
 public interface Window {
 
-    Window setDrawingColor(Color color);
+    Window drawColor(Color color);
 
-    Color drawingColor();
+    Color drawColor();
 
     Window drawRectangle(WindowBounds bounds, Color color);
 
+    default Window fill() {
+        return fillWith(drawColor());
+    }
+
     default Window drawRectangle(final WindowBounds bounds) {
-        return drawRectangle(bounds, drawingColor());
+        return drawRectangle(bounds, drawColor());
     }
 
     default Window drawRectangle(final Offset origin, final Dimension size, final Color color) {
@@ -22,13 +26,13 @@ public interface Window {
     }
 
     default Window drawRectangle(final Offset origin, final Dimension size) {
-        return drawRectangle(new WindowBounds(origin, size), drawingColor());
+        return drawRectangle(new WindowBounds(origin, size), drawColor());
     }
 
     Window drawCircle(Offset offset, int diameter, Color color);
 
     default Window drawCircle(final Offset offset, final int diameter) {
-        return drawCircle(offset, diameter, drawingColor());
+        return drawCircle(offset, diameter, drawColor());
     }
 
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
@@ -44,13 +48,13 @@ public interface Window {
     Window drawText(Offset offset, String text, Font font, Color color);
 
     default Window drawText(final Offset offset, final String text, final Font font) {
-        return drawText(offset, text, font, drawingColor());
+        return drawText(offset, text, font, drawColor());
     }
 
     Window drawTextCentered(final Offset position, final String text, final Font font, final Color color);
 
     default Window drawTextCentered(final Offset offset, final String text, final Font font) {
-        return drawTextCentered(offset, text, font, drawingColor());
+        return drawTextCentered(offset, text, font, drawColor());
     }
 
     Window fillWith(Offset offset, Sprite sprite, double scale, Percentage opacity);
@@ -70,13 +74,13 @@ public interface Window {
     Window drawLine(Offset from, Offset to, Color color);
 
     default Window drawLine(final Offset from, final Offset to) {
-        return drawLine(from, to, drawingColor());
+        return drawLine(from, to, drawColor());
     }
 
     Window drawPolygon(List<Offset> points, Color color);
 
     default Window drawPolygon(final List<Offset> points) {
-        return drawPolygon(points, drawingColor());
+        return drawPolygon(points, drawColor());
     }
 
     Window fillWith(Color color);
@@ -88,6 +92,8 @@ public interface Window {
     Dimension size();
 
     Offset position();
+
+    boolean hasFocus();
 
     Window open();
 

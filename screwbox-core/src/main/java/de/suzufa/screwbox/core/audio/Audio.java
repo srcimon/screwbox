@@ -6,7 +6,7 @@ public interface Audio {
 
     Audio playEffect(Sound sound);
 
-    Sound playEffect(SoundPool soundPool);
+    Audio playEffect(SoundPool soundPool);
 
     Sound playEffectLooped(Sound sound);
 

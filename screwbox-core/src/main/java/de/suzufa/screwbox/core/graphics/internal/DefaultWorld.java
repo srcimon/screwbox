@@ -27,21 +27,21 @@ public class DefaultWorld implements World {
             Double.MAX_VALUE,
             Double.MAX_VALUE);
 
-    private Color defaultDrawingColor = Color.WHITE;
+    private Color drawColor = Color.WHITE;
 
     public DefaultWorld(final Window window) {
         this.window = window;
     }
 
     @Override
-    public World setDrawingColor(final Color color) {
-        this.defaultDrawingColor = color;
+    public World drawColor(final Color color) {
+        this.drawColor = color;
         return this;
     }
 
     @Override
-    public Color drawingColor() {
-        return defaultDrawingColor;
+    public Color drawColor() {
+        return drawColor;
     }
 
     public double updateCameraZoom(final double zoom) {

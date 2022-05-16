@@ -2,9 +2,9 @@ package de.suzufa.screwbox.core.loop;
 
 public interface GameLoop {
 
-    GameLoop setTargetFps(int targetFps);
-
     Metrics metrics();
+
+    GameLoop setTargetFps(int targetFps);
 
     int targetFps();
 }
