@@ -41,6 +41,12 @@ public interface Engine {
 
     Ui ui();
 
+    /**
+     * Provides some basic logging features and the ability to pick up enging log
+     * events via {@link Log#setAdapter(log.LoggingAdapter)}.
+     * 
+     * @see Log
+     */
     Log log();
 
     /**

@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.log.internal;
+package de.suzufa.screwbox.core.log;
 
 import static org.mockito.Mockito.verify;
 
@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import de.suzufa.screwbox.core.log.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 class ConsoleLoggingAdapterTest {

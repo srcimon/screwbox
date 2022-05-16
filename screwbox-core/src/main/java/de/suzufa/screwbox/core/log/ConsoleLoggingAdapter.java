@@ -1,7 +1,4 @@
-package de.suzufa.screwbox.core.log.internal;
-
-import de.suzufa.screwbox.core.log.LogLevel;
-import de.suzufa.screwbox.core.log.LoggingAdapter;
+package de.suzufa.screwbox.core.log;
 
 public class ConsoleLoggingAdapter implements LoggingAdapter {
 
