@@ -166,7 +166,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
         frame.dispose();
         frame.setSize(width, height);
-        frame.setResizable(!configuration.isFullscreen());
+        frame.setResizable(false);
         frame.setVisible(true);
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
