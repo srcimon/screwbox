@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.log.internal;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -62,4 +64,55 @@ class DefaultLogTest {
         verify(alternativeAdapter).log(LogLevel.INFO, "logging adapter changed");
     }
 
+    @Test
+    void setMinimumSeverity_levelWarning_disablesLoggingInfoAndDebug() {
+        log.setMinimumSeverity(LogLevel.WARNING);
+        log.info("not logged");
+        log.debug("also not logged");
+
+        verify(loggingAdapter, never()).log(any(), any());
+    }
+
+    @Test
+    void setMinimumSeverity_levelWarning_allowsLoggingWarningAndError() {
+        log.setMinimumSeverity(LogLevel.WARNING);
+        log.warn("logged");
+        log.error("also logged");
+
+        verify(loggingAdapter).log(LogLevel.WARNING, "logged");
+        verify(loggingAdapter).log(LogLevel.ERROR, "also logged");
+    }
+
+    @Test
+    void setMinimumSeverity_levelNull_throwsException() {
+        assertThatThrownBy(() -> log.setMinimumSeverity(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("minimum level is required");
+    }
+
+    @Test
+    void disable_turnsOffLogging() {
+        log.disable();
+
+        log.info("not logged");
+
+        verify(loggingAdapter, never()).log(any(), any());
+    }
+
+    @Test
+    void enable_turnsOnLogging() {
+        log.disable();
+        log.enable();
+
+        log.info("logged");
+
+        verify(loggingAdapter).log(LogLevel.INFO, "logged");
+    }
+
+    @Test
+    void isActive_returnsCurrentActiveStatus() {
+        assertThat(log.isActive()).isTrue();
+        log.disable();
+        assertThat(log.isActive()).isFalse();
+    }
 }

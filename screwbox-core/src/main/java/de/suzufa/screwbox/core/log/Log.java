@@ -41,4 +41,34 @@ public interface Log {
      * @see ConsoleLoggingAdapter
      */
     Log setAdapter(LoggingAdapter adapter);
+
+    /**
+     * Disables all logging below the given {@link LogLevel} (not included).
+     */
+    Log setMinimumSeverity(LogLevel minimumLevel);
+
+    /**
+     * Turns off logging completly.
+     * 
+     * @see Log#setMinimumSeverity(LogLevel)
+     * @see Log#enable()
+     */
+    Log disable();
+
+    /**
+     * Turns on logging again.
+     * 
+     * @see Log#setMinimumSeverity(LogLevel)
+     * @see Log#disable()
+     */
+    Log enable();
+
+    /**
+     * Checks if logging is currently active.
+     * 
+     * @see Log#enable()
+     * @see Log#disable()
+     */
+    boolean isActive();
+
 }
