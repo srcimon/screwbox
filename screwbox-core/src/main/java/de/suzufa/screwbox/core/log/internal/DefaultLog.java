@@ -25,7 +25,7 @@ public class DefaultLog implements Log {
     }
 
     @Override
-    public Log warning(final String message) {
+    public Log warn(final String message) {
         return log(LogLevel.WARNING, message);
     }
 

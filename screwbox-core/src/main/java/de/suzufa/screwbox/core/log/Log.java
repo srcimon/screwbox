@@ -8,7 +8,7 @@ public interface Log {
 
     Log info(String message);
 
-    Log warning(String message);
+    Log warn(String message);
 
     Log error(String message);
 
