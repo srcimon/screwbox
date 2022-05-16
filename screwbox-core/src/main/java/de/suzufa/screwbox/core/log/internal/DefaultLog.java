@@ -19,7 +19,7 @@ public class DefaultLog implements Log {
 
     @Override
     public Log log(final LogLevel level, final String message) {
-        if (isActive && level.ordinal() >= minimumLevel.ordinal()) {
+        if (isActive && isActiveForLevel(level)) {
             loggingAdapter.log(level, message);
         }
         return this;
@@ -74,4 +74,7 @@ public class DefaultLog implements Log {
         return isActive;
     }
 
+    private boolean isActiveForLevel(final LogLevel level) {
+        return level.ordinal() >= minimumLevel.ordinal();
+    }
 }
