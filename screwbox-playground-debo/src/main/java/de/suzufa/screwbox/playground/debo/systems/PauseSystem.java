@@ -14,14 +14,15 @@ public class PauseSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (!engine.keyboard().justPressed(Key.P) && !engine.keyboard().justPressed(Key.ESCAPE)) {
-            return;
-        }
-        Entity screenshotEntity = engine.entityEngine().forcedFetchSingle(SCREENSHOT);
-        screenshotEntity.get(ScreenshotComponent.class).screenshot = engine.graphics().window().takeScreenshot();
-        engine.audio().stopAllAudio();
-        engine.scenes().switchTo(PauseScene.class);
+        if (engine.keyboard().justPressed(Key.P)
+                || engine.keyboard().justPressed(Key.ESCAPE)
+                || !engine.graphics().window().hasFocus()) {
 
+            Entity screenshotEntity = engine.entityEngine().forcedFetchSingle(SCREENSHOT);
+            screenshotEntity.get(ScreenshotComponent.class).screenshot = engine.graphics().window().takeScreenshot();
+            engine.audio().stopAllAudio();
+            engine.scenes().switchTo(PauseScene.class);
+        }
     }
 
 }

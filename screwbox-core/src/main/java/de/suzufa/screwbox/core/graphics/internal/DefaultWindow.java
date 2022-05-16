@@ -11,6 +11,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
@@ -26,7 +28,7 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.loop.Metrics;
 
-public class DefaultWindow implements Window, GraphicsConfigListener {
+public class DefaultWindow implements Window, GraphicsConfigListener, WindowFocusListener {
 
     private final Frame frame;
     private final GraphicsDevice graphicsDevice;
@@ -35,6 +37,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private DisplayMode lastDisplayMode;
     private final Metrics metrics;
     private Color drawColor = Color.WHITE;
+    private boolean hasFocus = true;
 
     public DefaultWindow(final Frame frame, final GraphicsConfiguration configuration, final Metrics metrics) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -43,6 +46,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         this.metrics = metrics;
         setTitle("ScrewBox");
         configuration.registerListener(this);
+        frame.addWindowFocusListener(this);
     }
 
     @Override
@@ -225,6 +229,22 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     public Window drawLine(final Offset from, final Offset to, final Color color) {
         renderer.drawLine(from, to, color);
         return this;
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+        hasFocus = true;
+
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        hasFocus = false;
+    }
+
+    @Override
+    public boolean hasFocus() {
+        return hasFocus;
     }
 
 }

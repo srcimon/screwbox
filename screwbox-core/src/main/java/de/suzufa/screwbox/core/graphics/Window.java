@@ -13,6 +13,10 @@ public interface Window {
 
     Window drawRectangle(WindowBounds bounds, Color color);
 
+    default Window fill() {
+        return fillWith(drawColor());
+    }
+
     default Window drawRectangle(final WindowBounds bounds) {
         return drawRectangle(bounds, drawColor());
     }
@@ -88,6 +92,8 @@ public interface Window {
     Dimension size();
 
     Offset position();
+
+    boolean hasFocus();
 
     Window open();
 
