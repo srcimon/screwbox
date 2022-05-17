@@ -51,7 +51,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
-        gameLoop = new DefaultGameLoop(scenes, graphics, metrics, keyboard, mouse, ui);
+        gameLoop = new DefaultGameLoop(metrics, keyboard, mouse, ui, graphics, scenes);
         physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);

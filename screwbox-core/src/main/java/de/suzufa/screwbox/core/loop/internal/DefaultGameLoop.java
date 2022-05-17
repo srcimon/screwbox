@@ -4,13 +4,8 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
-import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.Metrics;
-import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
-import de.suzufa.screwbox.core.scenes.internal.DefaultScenes;
-import de.suzufa.screwbox.core.ui.internal.DefaultUi;
 
 public class DefaultGameLoop implements GameLoop {
 
@@ -21,10 +16,9 @@ public class DefaultGameLoop implements GameLoop {
 
     private final List<Updatable> updatables;
 
-    public DefaultGameLoop(final DefaultScenes scenes, final DefaultGraphics graphics, final DefaultMetrics metrics,
-            final DefaultKeyboard keyboard, final DefaultMouse mouse, final DefaultUi ui) {
+    public DefaultGameLoop(final DefaultMetrics metrics, final Updatable... updatables) {
         this.metrics = metrics;
-        updatables = List.of(keyboard, mouse, ui, graphics, scenes);
+        this.updatables = List.of(updatables);
     }
 
     public void start() {
@@ -38,7 +32,7 @@ public class DefaultGameLoop implements GameLoop {
     private void runGameLoop() {
         while (active) {
             if (needsUpdate()) {
-                Time beforeUpdate = Time.now();
+                final Time beforeUpdate = Time.now();
                 for (final var updatable : updatables) {
                     updatable.update();
                 }
@@ -52,7 +46,7 @@ public class DefaultGameLoop implements GameLoop {
     private void beNiceToCpu() {
         try {
             Thread.sleep(0, 750_000);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
