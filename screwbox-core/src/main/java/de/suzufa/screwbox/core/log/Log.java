@@ -3,8 +3,8 @@ package de.suzufa.screwbox.core.log;
 import de.suzufa.screwbox.core.Engine;
 
 /**
- * Provides some basic logging features and the ability to pick up engine log
- * events via {@link Log#setAdapter(log.LoggingAdapter)}.
+ * Provides some super basic logging features and the ability to pick up engine
+ * log events via {@link Log#setAdapter(log.LoggingAdapter)}.
  * 
  * Without changing the {@link LoggingAdapter} the {@link ConsoleLoggingAdapter}
  * is used to log everything to console only.
@@ -51,7 +51,7 @@ public interface Log {
     Log setMinimumSeverity(LogLevel minimumLevel);
 
     /**
-     * Turns off logging completly.
+     * Turns off logging completely.
      * 
      * @see Log#setMinimumSeverity(LogLevel)
      * @see Log#enable()

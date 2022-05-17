@@ -18,21 +18,20 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultRenderer implements Renderer {
 
     private final Frame frame;
-    private final Metrics metrics;
+    private final Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
 
-    public DefaultRenderer(final Frame frame, final Metrics metrics) {
-        this.metrics = metrics;
+    public DefaultRenderer(final Frame frame) {
         this.frame = frame;
         this.frame.setIgnoreRepaint(true);
         graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
@@ -73,7 +72,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawPolygon(List<Offset> points, Color color) {
+    public void drawPolygon(final List<Offset> points, final Color color) {
         graphics.setColor(toAwtColor(color));
         final Polygon awtPolygon = new Polygon();
         for (final var point : points) {
@@ -103,7 +102,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawTextCentered(Offset position, String text, Font font, Color color) {
+    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         final int textWidth = graphics.getFontMetrics(toAwtFont(font)).stringWidth(text);
         final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
         drawText(offset, text, font, color);
@@ -129,7 +128,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale) {
-        final Image image = sprite.getImage(metrics.timeOfLastUpdate());
+        final Image image = sprite.getImage(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         transform.translate(origin.x(), origin.y());
         transform.scale(scale, scale);

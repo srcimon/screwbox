@@ -2,6 +2,8 @@ package de.suzufa.screwbox.core;
 
 import static java.lang.String.format;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -18,6 +20,7 @@ import de.suzufa.screwbox.core.log.internal.DefaultLog;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.internal.DefaultGameLoop;
 import de.suzufa.screwbox.core.loop.internal.DefaultMetrics;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
 import de.suzufa.screwbox.core.physics.Physics;
@@ -44,14 +47,15 @@ class DefaultEngine implements Engine {
         final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final DefaultWindow window = new DefaultWindow(frame, configuration, metrics);
+        final DefaultWindow window = new DefaultWindow(frame, configuration);
         audio = new DefaultAudio();
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
-        gameLoop = new DefaultGameLoop(scenes, graphics, metrics, keyboard, mouse, ui);
+        final List<Updatable> updatables = List.of(keyboard, mouse, ui, graphics, scenes);
+        gameLoop = new DefaultGameLoop(metrics, updatables);
         physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
@@ -83,7 +87,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        var frames = loop().metrics().frameNumber();
+        final var frames = loop().metrics().frameNumber();
 
         log.info(format("engine stopped (total frames: %,d)", frames));
         ui.closeMenu();

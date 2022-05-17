@@ -8,6 +8,7 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Metrics;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -25,6 +26,10 @@ public interface Engine {
 
     EntityEngine entityEngine();
 
+    /**
+     * Provides access to the {@link GameLoop} to gain access to current
+     * {@link Metrics} and to control the target frames per second.
+     */
     GameLoop loop();
 
     Graphics graphics();
@@ -42,8 +47,8 @@ public interface Engine {
     Ui ui();
 
     /**
-     * Provides some basic logging features and the ability to pick up enging log
-     * events via {@link Log#setAdapter(log.LoggingAdapter)}.
+     * Provides some super basic logging features and the ability to pick up engine
+     * log events via {@link Log#setAdapter(log.LoggingAdapter)}.
      * 
      * @see Log
      */

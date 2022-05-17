@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.gameloop.internal;
+package de.suzufa.screwbox.core.loop.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.loop.internal.DefaultMetrics;
 
 class DefaultMetricsTest {
 
