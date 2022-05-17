@@ -8,9 +8,10 @@ import java.util.Set;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.utils.internal.Swappable;
 
-public class DefaultKeyboard implements Keyboard, KeyListener {
+public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
     private final Swappable<Set<Integer>> justPressedKeys = Swappable.of(new HashSet<>(), new HashSet<>());
@@ -56,6 +57,7 @@ public class DefaultKeyboard implements Keyboard, KeyListener {
         return !pressedKeys.isEmpty();
     }
 
+    @Override
     public void update() {
         justPressedKeys.primary().clear();
         justPressedKeys.swap();

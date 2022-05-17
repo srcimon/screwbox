@@ -10,11 +10,12 @@ import java.util.Set;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
 import de.suzufa.screwbox.core.utils.internal.Swappable;
 
-public class DefaultMouse implements Mouse, MouseListener, MouseMotionListener {
+public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener {
 
     private static final Map<Integer, MouseButton> MAPPINGS = Map.of(
             1, MouseButton.LEFT,
@@ -79,6 +80,7 @@ public class DefaultMouse implements Mouse, MouseListener, MouseMotionListener {
         return justPressed.primary().contains(button);
     }
 
+    @Override
     public void update() {
         justPressed.primary().clear();
         justPressed.swap();

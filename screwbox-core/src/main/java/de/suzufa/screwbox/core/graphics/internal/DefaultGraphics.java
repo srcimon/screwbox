@@ -14,8 +14,9 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 
-public class DefaultGraphics implements Graphics {
+public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;
     private final DefaultWindow window;
@@ -30,10 +31,6 @@ public class DefaultGraphics implements Graphics {
     @Override
     public GraphicsConfiguration configuration() {
         return configuration;
-    }
-
-    public void updateScreen() {
-        window.updateScreen(configuration.isUseAntialising());
     }
 
     @Override
@@ -89,6 +86,11 @@ public class DefaultGraphics implements Graphics {
         return asList(allFonts).stream()
                 .map(Font::getFontName)
                 .toList();
+    }
+
+    @Override
+    public void update() {
+        window.updateScreen(configuration.isUseAntialising());
     }
 
 }

@@ -10,11 +10,12 @@ import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.scenes.DefaultScene;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.scenes.Scenes;
 
-public class DefaultScenes implements Scenes {
+public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
     private SceneContainer nextActiveScene;
@@ -35,15 +36,6 @@ public class DefaultScenes implements Scenes {
 
     public DefaultEntityEngine activeEntityEngine() {
         return activeScene.entityEngine();
-    }
-
-    public void applySceneChanges() {
-        final boolean sceneChange = !activeScene.equals(nextActiveScene);
-        if (sceneChange) {
-            activeScene.scene().onExit(engine);
-            nextActiveScene.scene().onEnter(engine);
-        }
-        activeScene = nextActiveScene;
     }
 
     @Override
@@ -108,6 +100,21 @@ public class DefaultScenes implements Scenes {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("missing scene: " + sceneClass);
         }
+    }
+
+    @Override
+    public void update() {
+        applySceneChanges();
+        activeEntityEngine().update();
+    }
+
+    private void applySceneChanges() {
+        final boolean sceneChange = !activeScene.equals(nextActiveScene);
+        if (sceneChange) {
+            activeScene.scene().onExit(engine);
+            nextActiveScene.scene().onEnter(engine);
+        }
+        activeScene = nextActiveScene;
     }
 
 }

@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.loop.internal;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
@@ -15,21 +17,14 @@ public class DefaultGameLoop implements GameLoop {
     private boolean active = false;
     private int targetFps = 120;
 
-    private final DefaultScenes scenes;
-    private final DefaultGraphics grapics;
     private final DefaultMetrics metrics;
-    private final DefaultKeyboard keyboard;
-    private final DefaultMouse mouse;
-    private final DefaultUi ui;
+
+    private final List<Updatable> updatables;
 
     public DefaultGameLoop(final DefaultScenes scenes, final DefaultGraphics graphics, final DefaultMetrics metrics,
             final DefaultKeyboard keyboard, final DefaultMouse mouse, final DefaultUi ui) {
-        this.scenes = scenes;
-        this.grapics = graphics;
         this.metrics = metrics;
-        this.keyboard = keyboard;
-        this.mouse = mouse;
-        this.ui = ui;
+        updatables = List.of(keyboard, mouse, ui, graphics, scenes);
     }
 
     public void start() {
@@ -44,12 +39,9 @@ public class DefaultGameLoop implements GameLoop {
         while (active) {
             if (needsUpdate()) {
                 Time beforeUpdate = Time.now();
-                keyboard.update();
-                mouse.update();
-                scenes.activeEntityEngine().update();
-                ui.update();
-                grapics.updateScreen();
-                scenes.applySceneChanges();
+                for (final var updatable : updatables) {
+                    updatable.update();
+                }
                 metrics.trackUpdateCycle(Duration.since(beforeUpdate));
             } else {
                 beNiceToCpu();
