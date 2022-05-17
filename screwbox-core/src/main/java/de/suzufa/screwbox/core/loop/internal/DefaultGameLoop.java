@@ -14,9 +14,9 @@ public class DefaultGameLoop implements GameLoop {
     private boolean active = false;
     private int targetFps = 120;
 
-    public DefaultGameLoop(final DefaultMetrics metrics, final Updatable... updatables) {
+    public DefaultGameLoop(final DefaultMetrics metrics, final List<Updatable> updatables) {
         this.metrics = metrics;
-        this.updatables = List.of(updatables);
+        this.updatables = updatables;
     }
 
     public void start() {
