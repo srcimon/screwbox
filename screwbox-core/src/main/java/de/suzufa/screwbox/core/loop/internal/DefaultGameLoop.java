@@ -9,12 +9,10 @@ import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultGameLoop implements GameLoop {
 
+    private final DefaultMetrics metrics;
+    private final List<Updatable> updatables;
     private boolean active = false;
     private int targetFps = 120;
-
-    private final DefaultMetrics metrics;
-
-    private final List<Updatable> updatables;
 
     public DefaultGameLoop(final DefaultMetrics metrics, final Updatable... updatables) {
         this.metrics = metrics;
@@ -72,6 +70,9 @@ public class DefaultGameLoop implements GameLoop {
 
     @Override
     public GameLoop setTargetFps(final int targetFps) {
+        if (targetFps <= 0) {
+            throw new IllegalArgumentException("target fps must have a positive value");
+        }
         this.targetFps = targetFps;
         return this;
 

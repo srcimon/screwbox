@@ -15,7 +15,7 @@ public class DefaultMetrics implements Metrics {
     private double updateFactor = 0;
     private Duration updateDuration = Duration.zero();
     private Time lastUpdate = Time.now();
-    private Time started = Time.now();
+    private final Time started = Time.now();
     private Duration runtimeDuration = Duration.zero();
 
     @Override
@@ -33,7 +33,7 @@ public class DefaultMetrics implements Metrics {
         return Duration.since(lastUpdate);
     }
 
-    public void trackUpdateCycle(Duration duration) {
+    public void trackUpdateCycle(final Duration duration) {
         final Duration timeBetweenUpdates = Duration.since(lastUpdate);
         lastUpdate = Time.now();
         fps = (int) (NANOS_PER_SECOND / timeBetweenUpdates.nanos());
