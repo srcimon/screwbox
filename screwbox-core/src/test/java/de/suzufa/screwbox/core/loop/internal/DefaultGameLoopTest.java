@@ -47,15 +47,15 @@ class DefaultGameLoopTest {
 
     @Test
     void setTargetFps_targetFpsValid_setsTargetFps() {
-        loop.setTargetFps(72);
+        loop.setTargetFps(172);
 
-        assertThat(loop.targetFps()).isEqualTo(72);
+        assertThat(loop.targetFps()).isEqualTo(172);
     }
 
     @Test
-    void setTargetFps_targetFpsBelowZero_throwsExeption() {
-        assertThatThrownBy(() -> loop.setTargetFps(-2))
+    void setTargetFps_targetFpsBelowDefaultFps_throwsExeption() {
+        assertThatThrownBy(() -> loop.setTargetFps(80))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("target fps must have a positive value");
+                .hasMessage("target fps must be at least 120");
     }
 }

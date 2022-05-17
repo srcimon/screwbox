@@ -12,7 +12,7 @@ public class DefaultGameLoop implements GameLoop {
     private final DefaultMetrics metrics;
     private final List<Updatable> updatables;
     private boolean active = false;
-    private int targetFps = 120;
+    private int targetFps = GameLoop.DEFAULT_TARGET_FPS;
 
     public DefaultGameLoop(final DefaultMetrics metrics, final List<Updatable> updatables) {
         this.metrics = metrics;
@@ -70,8 +70,8 @@ public class DefaultGameLoop implements GameLoop {
 
     @Override
     public GameLoop setTargetFps(final int targetFps) {
-        if (targetFps <= 0) {
-            throw new IllegalArgumentException("target fps must have a positive value");
+        if (targetFps < GameLoop.DEFAULT_TARGET_FPS) {
+            throw new IllegalArgumentException("target fps must be at least " + GameLoop.DEFAULT_TARGET_FPS);
         }
         this.targetFps = targetFps;
         return this;
