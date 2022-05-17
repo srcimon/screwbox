@@ -23,7 +23,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.loop.Metrics;
 
 public class DefaultWindow implements Window, GraphicsConfigListener {
 
@@ -32,15 +31,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private final GraphicsConfiguration configuration;
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
-    private final Metrics metrics;
     private Color drawColor = Color.WHITE;
 
-    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
-            final Metrics metrics) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
-        this.metrics = metrics;
         setTitle("ScrewBox");
         configuration.registerListener(this);
     }
@@ -179,7 +175,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame, metrics));
+        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame));
         return this;
     }
 

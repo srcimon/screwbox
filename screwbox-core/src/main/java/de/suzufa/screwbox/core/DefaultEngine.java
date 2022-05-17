@@ -44,7 +44,7 @@ class DefaultEngine implements Engine {
         final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final DefaultWindow window = new DefaultWindow(frame, configuration, metrics);
+        final DefaultWindow window = new DefaultWindow(frame, configuration);
         audio = new DefaultAudio();
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
