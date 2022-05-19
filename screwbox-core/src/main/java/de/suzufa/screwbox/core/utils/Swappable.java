@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.utils.internal;
+package de.suzufa.screwbox.core.utils;
 
 public class Swappable<T> {
 

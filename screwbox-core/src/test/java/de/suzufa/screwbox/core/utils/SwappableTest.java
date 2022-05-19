@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.utils.internal;
+package de.suzufa.screwbox.core.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

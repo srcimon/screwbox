@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
-import de.suzufa.screwbox.core.utils.internal.Swappable;
+import de.suzufa.screwbox.core.utils.Swappable;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
