@@ -5,7 +5,7 @@ import static java.lang.Math.abs;
 import java.io.Serializable;
 
 /**
- * Reresents a {@link Duration} between two {@link Time}s.
+ * Represents a {@link Duration} between two {@link Time}s.
  *
  * @see Time
  */
