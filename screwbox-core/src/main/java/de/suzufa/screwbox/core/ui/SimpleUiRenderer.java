@@ -16,13 +16,12 @@ public class SimpleUiRenderer implements UiRenderer {
     @Override
     public void render(final UiMenu menu, final UiLayouter layouter, final Window window) {
         for (final var item : menu.items()) {
-            final boolean isActive = menu.isActiveItem(item);
-            final var color = isActive ? YELLOW : WHITE;
+            final var color = menu.isActiveItem(item) ? YELLOW : WHITE;
 
             final var screenBounds = layouter.screenBoundsOf(item, menu, window);
             final Offset offset = screenBounds.center();
             if (window.isVisible(screenBounds)) {
-                Font font = isActive ? FONT_SELECTED : FONT_NOT_SELECTED;
+                Font font = menu.isActiveItem(item) ? FONT_SELECTED : FONT_NOT_SELECTED;
                 window.drawTextCentered(offset, item.label(), font, color);
             }
         }
