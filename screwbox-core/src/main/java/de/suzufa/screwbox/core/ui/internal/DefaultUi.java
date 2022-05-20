@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.ui.internal;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.ui.KeyboardInteractor;
 import de.suzufa.screwbox.core.ui.SimpleUiLayouter;
@@ -39,7 +40,20 @@ public class DefaultUi implements Ui, Updatable {
             final var window = engine.graphics().window();
             final var menu = currentMenu.get();
             interactor.interactWith(menu, layouter, engine);
-            renderer.render(menu, layouter, window);
+            renderMenu(menu, window);
+        }
+    }
+
+    private void renderMenu(final UiMenu menu, final Window window) {
+        for (final var item : menu.items()) {
+            final var bounds = layouter.calculateBounds(item, menu, window);
+            if (window.isVisible(bounds)) {
+                if (menu.isActiveItem(item)) {
+                    renderer.renderActiveItem(item, bounds, window);
+                } else {
+                    renderer.renderInactiveItem(item, bounds, window);
+                }
+            }
         }
     }
 

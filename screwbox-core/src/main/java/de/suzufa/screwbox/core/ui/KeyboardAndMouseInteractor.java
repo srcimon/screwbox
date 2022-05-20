@@ -8,7 +8,7 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
     @Override
     public void interactWith(final UiMenu menu, final UiLayouter layouter, final Engine engine) {
         for (final var item : menu.items()) {
-            final var menuItemBounds = layouter.screenBoundsOf(item, menu, engine.graphics().window());
+            final var menuItemBounds = layouter.calculateBounds(item, menu, engine.graphics().window());
             if (menuItemBounds.contains(engine.mouse().position())) {
                 menu.selectItem(item);
                 if (engine.mouse().justPressed(MouseButton.LEFT)) {

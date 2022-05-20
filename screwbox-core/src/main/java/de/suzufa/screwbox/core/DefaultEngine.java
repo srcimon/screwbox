@@ -89,7 +89,7 @@ class DefaultEngine implements Engine {
     public void stop() {
         final var frames = loop().metrics().frameNumber();
 
-        log.info(format("engine stopped (total frames: %,d)", frames));
+        log.info(format("engine stopped (%,d frames total)", frames));
         ui.closeMenu();
         gameLoop.stop();
         graphics.window().close();
