@@ -28,7 +28,7 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 public class DefaultRenderer implements Renderer {
 
     private final Frame frame;
-    private final Time lastUpdateTime = Time.now();
+    private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
 
     public DefaultRenderer(final Frame frame) {
@@ -44,6 +44,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void updateScreen(final boolean antialiased) {
+        lastUpdateTime = Time.now();
         frame.getBufferStrategy().show();
         graphics.dispose();
         graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
