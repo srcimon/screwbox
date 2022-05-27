@@ -13,7 +13,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
-import de.suzufa.screwbox.core.utils.internal.Swappable;
+import de.suzufa.screwbox.core.utils.Swappable;
 
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener {
 

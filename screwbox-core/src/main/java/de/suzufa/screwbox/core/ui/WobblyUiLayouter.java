@@ -12,7 +12,7 @@ public class WobblyUiLayouter implements UiLayouter {
     private final Time start = Time.now();
 
     @Override
-    public WindowBounds screenBoundsOf(UiMenuItem item, UiMenu menu, Window window) {
+    public WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Window window) {
         int itemIndex = menu.itemIndex(item);
         int x = (int) (Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex) * 30);
         int heightOfItem = 50;

@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 public class ScrollingUiLayouter implements UiLayouter {
 
     @Override
-    public WindowBounds screenBoundsOf(UiMenuItem item, UiMenu menu, Window screen) {
+    public WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Window screen) {
         int itemIndex = menu.itemIndex(item);
         int heightOfItem = 50;
         int y = screen.center().y() + (itemIndex - menu.activeItemIndex()) * heightOfItem;

@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.utils.internal.Swappable;
+import de.suzufa.screwbox.core.utils.Swappable;
 
 public class SeparateThreadRenderer implements Renderer {
 

@@ -1,12 +1,10 @@
 package de.suzufa.screwbox.core.ui;
 
-import static de.suzufa.screwbox.core.graphics.Color.WHITE;
-import static de.suzufa.screwbox.core.graphics.Color.YELLOW;
-
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
-import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class SimpleUiRenderer implements UiRenderer {
 
@@ -14,18 +12,13 @@ public class SimpleUiRenderer implements UiRenderer {
     private static final Font FONT_SELECTED = FONT_NOT_SELECTED.withSize(26);
 
     @Override
-    public void render(final UiMenu menu, final UiLayouter layouter, final Window window) {
-        for (final var item : menu.items()) {
-            final boolean isActive = menu.isActiveItem(item);
-            final var color = isActive ? YELLOW : WHITE;
+    public void renderInactiveItem(UiMenuItem item, WindowBounds bounds, Window window) {
+        window.drawTextCentered(bounds.center(), item.label(), FONT_NOT_SELECTED, Color.WHITE);
+    }
 
-            final var screenBounds = layouter.screenBoundsOf(item, menu, window);
-            final Offset offset = screenBounds.center();
-            if (window.isVisible(screenBounds)) {
-                Font font = isActive ? FONT_SELECTED : FONT_NOT_SELECTED;
-                window.drawTextCentered(offset, item.label(), font, color);
-            }
-        }
+    @Override
+    public void renderActiveItem(UiMenuItem item, WindowBounds bounds, Window window) {
+        window.drawTextCentered(bounds.center(), item.label(), FONT_SELECTED, Color.YELLOW);
     }
 
 }

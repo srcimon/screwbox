@@ -5,6 +5,6 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface UiLayouter {
 
-    WindowBounds screenBoundsOf(UiMenuItem item, UiMenu menu, Window window);
+    WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Window window);
 
 }

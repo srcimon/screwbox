@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 public class SimpleUiLayouter implements UiLayouter {
 
     @Override
-    public WindowBounds screenBoundsOf(final UiMenuItem item, final UiMenu menu, final Window window) {
+    public WindowBounds calculateBounds(final UiMenuItem item, final UiMenu menu, final Window window) {
         final int itemIndex = menu.itemIndex(item);
         final int heightOfItem = 50;
         final int heightOfMenu = menu.itemCount() * heightOfItem;
