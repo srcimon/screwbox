@@ -19,6 +19,7 @@ public class ConverterRegistry<T> {
         converters.add(converter);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Entity> load(final Object object) {
         return converters.stream()
                 .filter(c -> c.accepts((T) object))
