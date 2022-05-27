@@ -55,8 +55,10 @@ public class GameConverter<G> {
         List<Entity> allEntities = new ArrayList<>();
         for (var object : allInput) {
             GameConverter<G>.ConverterRegistryNew<? extends Object> registry = getRegistryForType(object.getClass());
-            List<Entity> loaded = registry.load(object);
-            allEntities.addAll(loaded);
+            if (nonNull(registry)) {
+                List<Entity> loaded = registry.load(object);
+                allEntities.addAll(loaded);
+            }
         }
 
         return allEntities;
