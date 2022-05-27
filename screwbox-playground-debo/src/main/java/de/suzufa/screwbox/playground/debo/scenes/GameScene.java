@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
@@ -92,7 +94,7 @@ public class GameScene implements Scene {
     public void initialize(EntityEngine entityEngine) {
         Map map = TiledSupport.loadMap(mapName);
         entityEngine
-                .add(gameConverter(map).createEnttiesFrom(map))// TODO: REDUNDANT MAP PARAMETER
+                .add(createEntitiesFrom(map))
                 .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
 
         entityEngine.add(
@@ -136,7 +138,7 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    GameConverter<Map> gameConverter(Map map) {
+    List<Entity> createEntitiesFrom(Map map) {
         return new GameConverter<Map>()
                 .add(map.allExtractors())
                 .add(new CloseMapLeftConverter(), Map.class)
@@ -168,7 +170,8 @@ public class GameScene implements Scene {
                 .add(new ChangeMapZoneConverter(), GameObject.class)
                 .add(new ShowLabelZoneConverter(), GameObject.class)
                 .add(new FadeInConverter(), GameObject.class)
-                .add(new TracerConverter(), GameObject.class);
+                .add(new TracerConverter(), GameObject.class)
+                .createEnttiesFrom(map);
     }
 
 }

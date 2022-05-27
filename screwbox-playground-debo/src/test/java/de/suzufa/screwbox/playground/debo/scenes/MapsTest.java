@@ -19,8 +19,7 @@ class MapsTest {
     @ValueSource(strings = { "0-1_intro", "1-1_teufelsinsel", "1-2_misty_caves" })
     void allMapsCanBeConvertetToEntities(String mapName) {
         Map map = TiledSupport.loadMap("maps/" + mapName + ".json");
-        var mapConverter = new GameScene(mapName).gameConverter(map);
-        List<Entity> entities = mapConverter.createEnttiesFrom(map);
+        List<Entity> entities = new GameScene(mapName).createEntitiesFrom(map);
 
         assertThat(entities).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
