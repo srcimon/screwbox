@@ -3,6 +3,7 @@ package de.suzufa.screwbox.tiled;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.resources.Extractor;
 
 public interface Map {
 
