@@ -3,13 +3,14 @@ package de.suzufa.screwbox.core.resources;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.resources.internal.ConverterRegistry;
 
 public class EntityLoader<T> {
 
-    private final java.util.Map<Class<?>, ConverterRegistry<?>> registries = new HashMap<>();
+    private final Map<Class<?>, ConverterRegistry<?>> registries = new HashMap<>();
     private final List<Extractor<T, ?>> extractors = new ArrayList<>();
 
     public <X> EntityLoader<T> add(Converter<X> converter, Class<X> acceptedClass) {
