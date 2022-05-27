@@ -92,9 +92,8 @@ public class GameScene implements Scene {
 
     @Override
     public void initialize(EntityEngine entityEngine) {
-        Map map = TiledSupport.loadMap(mapName);
         entityEngine
-                .add(createEntitiesFrom(map))
+                .add(createEntitiesFromMap())
                 .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
 
         entityEngine.add(
@@ -138,7 +137,9 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    List<Entity> createEntitiesFrom(Map map) {
+    List<Entity> createEntitiesFromMap() {
+        Map map = TiledSupport.loadMap(mapName);
+        System.out.println(mapName);
         return new GameConverter<Map>()
                 .add(map.allExtractors())
                 .add(new CloseMapLeftConverter(), Map.class)
