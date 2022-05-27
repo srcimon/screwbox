@@ -72,12 +72,8 @@ public class GameConverter<G> {
         return allEntities;
     }
 
-    private <T> ConverterRegistryNew<T> getRegistryForType(Class<T> type) {
-        return (ConverterRegistryNew<T>) registries.get(type);
-    }
-
     private <T> ConverterRegistryNew<T> getOrCreateRegistryForType(Class<T> type) {
-        ConverterRegistryNew<T> registry = getRegistryForType(type);
+        ConverterRegistryNew<T> registry = (ConverterRegistryNew<T>) registries.get(type);
         if (nonNull(registry)) {
             return registry;
         }
