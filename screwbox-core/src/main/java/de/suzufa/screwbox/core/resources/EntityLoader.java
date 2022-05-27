@@ -7,54 +7,31 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.resources.internal.ConverterRegistry;
 
-public class GameConverter<G> {
-
-    private class ConverterRegistry<T> {
-        private List<Converter<T>> converters = new ArrayList<>();
-        private Class<T> acceptedClass;
-
-        public ConverterRegistry(Class<T> acceptedClass) {
-            this.acceptedClass = acceptedClass;
-        }
-
-        public void register(final Converter<T> converter) {
-            converters.add(converter);
-        }
-
-        private List<Entity> load(final Object object) {
-            return converters.stream()
-                    .filter(c -> c.accepts((T) object))
-                    .map(c -> c.convert((T) object))
-                    .toList();
-        }
-
-        public boolean acceptsClass(Class<?> clazz) {
-            return acceptedClass.isAssignableFrom(clazz);
-        }
-    }
+public class EntityLoader<T> {
 
     private final java.util.Map<Class<?>, ConverterRegistry<?>> registries = new HashMap<>();
-    private final List<Extractor<G, ?>> extractors = new ArrayList<>();
+    private final List<Extractor<T, ?>> extractors = new ArrayList<>();
 
-    public <T> GameConverter<G> add(Converter<T> converter, Class<T> acceptedClass) {
+    public <X> EntityLoader<T> add(Converter<X> converter, Class<X> acceptedClass) {
         getOrCreateRegistryForType(acceptedClass).register(converter);
         return this;
     }
 
-    public GameConverter<G> add(List<Extractor<G, ?>> extractors) {
+    public EntityLoader<T> add(List<Extractor<T, ?>> extractors) {
         for (var extractor : extractors) {
             add(extractor);
         }
         return this;
     }
 
-    public GameConverter<G> add(Extractor<G, ?> extractor) {
+    public EntityLoader<T> add(Extractor<T, ?> extractor) {
         extractors.add(extractor);
         return this;
     }
 
-    public List<Entity> createEnttiesFrom(final G input) {
+    public List<Entity> createEnttiesFrom(final T input) {
         List<Object> allInput = new ArrayList<>();
         for (var extractor : extractors) {
             allInput.addAll(extractor.extractFrom(input));
@@ -72,8 +49,8 @@ public class GameConverter<G> {
         return allEntities;
     }
 
-    private <T> ConverterRegistry<T> getOrCreateRegistryForType(Class<T> type) {
-        ConverterRegistry<T> registry = (ConverterRegistry<T>) registries.get(type);
+    private <X> ConverterRegistry<X> getOrCreateRegistryForType(Class<X> type) {
+        ConverterRegistry<X> registry = (ConverterRegistry<X>) registries.get(type);
         if (nonNull(registry)) {
             return registry;
         }

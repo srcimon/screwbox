@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.resources.GameConverter;
+import de.suzufa.screwbox.core.resources.EntityLoader;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.CherriesConverter;
 import de.suzufa.screwbox.playground.debo.collectables.DeboBConverter;
@@ -139,8 +139,7 @@ public class GameScene implements Scene {
 
     List<Entity> createEntitiesFromMap() {
         Map map = TiledSupport.loadMap(mapName);
-        System.out.println(mapName);
-        return new GameConverter<Map>()
+        return new EntityLoader<Map>()
                 .add(map.allExtractors())
                 .add(new CloseMapLeftConverter(), Map.class)
                 .add(new CloseMapRightConverter(), Map.class)
