@@ -6,6 +6,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.tiled.internal.ConverterRegistry;
 
+@Deprecated
 public class MapConverter {
 
     private final ConverterRegistry<GameObject> gameObjectConverters = new ConverterRegistry<>();
