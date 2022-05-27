@@ -2,8 +2,8 @@ package de.suzufa.screwbox.tiled;
 
 import java.util.List;
 
-public interface Extractor<I> {
+public interface Extractor<I, O> {
 
-    public List<Object> extractFrom(I input);
+    public List<O> extractFrom(I input);
 
 }

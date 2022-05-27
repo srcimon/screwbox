@@ -44,6 +44,7 @@ import de.suzufa.screwbox.playground.debo.systems.ShowLabelSystem;
 import de.suzufa.screwbox.playground.debo.systems.SmokePuffSystem;
 import de.suzufa.screwbox.playground.debo.systems.VanishingOnCollisionSystem;
 import de.suzufa.screwbox.playground.debo.systems.ZoomSystem;
+import de.suzufa.screwbox.tiled.GameConverter;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
@@ -102,7 +103,14 @@ public class GameScene implements Scene {
                 new BackgroundSystem(),
                 new CatMovementSystem(),
                 new SpriteRenderSystem());
+    }
 
+    private GameConverter<Map> gameConverter(Map map) {
+        return new GameConverter<Map>()
+                .add(map.layerExtractor())
+                .add(map.mapExtractor())
+                .add(map.objectExtractor())
+                .add(map.tileExtractor());
     }
 
 }

@@ -35,14 +35,14 @@ public class GameConverter<G> {
     }
 
     private final java.util.Map<Class<?>, ConverterRegistryNew<?>> registries = new HashMap<>();
-    private final List<Extractor<G>> extractors = new ArrayList<>();
+    private final List<Extractor<G, ?>> extractors = new ArrayList<>();
 
     public <T> GameConverter<G> add(Converter<T> converter, Class<T> acceptedClass) {
         getOrCreateRegistryForType(acceptedClass).register(converter);
         return this;
     }
 
-    public GameConverter<G> add(Extractor<G> extractor) {
+    public GameConverter<G> add(Extractor<G, ?> extractor) {
         extractors.add(extractor);
         return this;
     }
