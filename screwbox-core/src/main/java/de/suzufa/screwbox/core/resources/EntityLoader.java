@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.resources;
 
-import static java.util.Objects.nonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,19 +44,15 @@ public class EntityLoader<T> {
     }
 
     private List<?> extractConvertibleFrom(final T input) {
-        List<?> allInput = extractors.stream()
+        return extractors.stream()
                 .flatMap(e -> e.extractFrom(input).stream())
                 .toList();
-        return allInput;
     }
 
     private <X> ConverterRegistry<X> getOrCreateRegistryForType(Class<X> type) {
-        ConverterRegistry<X> registry = (ConverterRegistry<X>) registries.get(type);
-        if (nonNull(registry)) {
-            return registry;
+        if (!registries.containsKey(type)) {
+            registries.put(type, new ConverterRegistry<>(type));
         }
-        var registryCreated = new ConverterRegistry<>(type);
-        registries.put(type, registryCreated);
-        return registryCreated;
+        return (ConverterRegistry<X>) registries.get(type);
     }
 }
