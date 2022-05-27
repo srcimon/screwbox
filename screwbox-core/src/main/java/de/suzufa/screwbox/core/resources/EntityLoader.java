@@ -32,21 +32,24 @@ public class EntityLoader<T> {
     }
 
     public List<Entity> createEnttiesFrom(final T input) {
-        List<Object> allInput = new ArrayList<>();
-        for (var extractor : extractors) {
-            allInput.addAll(extractor.extractFrom(input));
-        }
         List<Entity> allEntities = new ArrayList<>();
-        for (var object : allInput) {
+        for (var convertible : extractConvertibleFrom(input)) {
             for (var reg : registries.values()) {
-                if (reg.acceptsClass(object.getClass())) {
-                    List<Entity> loaded = reg.load(object);
+                if (reg.acceptsClass(convertible.getClass())) {
+                    List<Entity> loaded = reg.load(convertible);
                     allEntities.addAll(loaded);
                 }
             }
         }
 
         return allEntities;
+    }
+
+    private List<?> extractConvertibleFrom(final T input) {
+        List<?> allInput = extractors.stream()
+                .flatMap(e -> e.extractFrom(input).stream())
+                .toList();
+        return allInput;
     }
 
     private <X> ConverterRegistry<X> getOrCreateRegistryForType(Class<X> type) {
