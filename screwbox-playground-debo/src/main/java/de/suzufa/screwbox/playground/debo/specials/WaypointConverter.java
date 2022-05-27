@@ -2,8 +2,8 @@ package de.suzufa.screwbox.playground.debo.specials;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.resources.Converter;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
-import de.suzufa.screwbox.tiled.Converter;
 import de.suzufa.screwbox.tiled.GameObject;
 
 public class WaypointConverter implements Converter<GameObject> {

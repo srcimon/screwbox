@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled;
+package de.suzufa.screwbox.core.resources;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 

@@ -3,8 +3,8 @@ package de.suzufa.screwbox.playground.debo.effects;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.resources.Converter;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
-import de.suzufa.screwbox.tiled.Converter;
 import de.suzufa.screwbox.tiled.Layer;
 
 public class BackgroundConverter implements Converter<Layer> {

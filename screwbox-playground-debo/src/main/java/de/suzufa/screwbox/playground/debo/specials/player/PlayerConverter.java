@@ -9,12 +9,12 @@ import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.resources.Converter;
 import de.suzufa.screwbox.playground.debo.components.AutoflipByMovementComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
-import de.suzufa.screwbox.tiled.Converter;
 import de.suzufa.screwbox.tiled.GameObject;
 
 public class PlayerConverter implements Converter<GameObject> {

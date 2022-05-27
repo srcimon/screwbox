@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.tiles;
 
 import java.util.Optional;
 
-import de.suzufa.screwbox.tiled.Converter;
+import de.suzufa.screwbox.core.resources.Converter;
 import de.suzufa.screwbox.tiled.Tile;
 
 public abstract class BaseTileConverter implements Converter<Tile> {
