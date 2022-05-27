@@ -42,6 +42,13 @@ public class GameConverter<G> {
         return this;
     }
 
+    public GameConverter<G> add(List<Extractor<G, ?>> extractors) {
+        for (var extractor : extractors) {
+            add(extractor);
+        }
+        return this;
+    }
+
     public GameConverter<G> add(Extractor<G, ?> extractor) {
         extractors.add(extractor);
         return this;

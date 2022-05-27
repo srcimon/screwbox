@@ -16,6 +16,10 @@ public interface Map {
 
     Properties properties();
 
+    public default List<Extractor<Map, ?>> allExtractors() {
+        return List.of(layerExtractor(), tileExtractor(), objectExtractor(), mapExtractor());
+    }
+
     public default Extractor<Map, Layer> layerExtractor() {
         return input -> buildLayerDictionary().allLayers();
     }

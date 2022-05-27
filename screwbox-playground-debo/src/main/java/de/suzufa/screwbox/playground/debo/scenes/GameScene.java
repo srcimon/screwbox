@@ -136,12 +136,9 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    private GameConverter<Map> gameConverter(Map map) {
+    GameConverter<Map> gameConverter(Map map) {
         return new GameConverter<Map>()
-                .add(map.layerExtractor())
-                .add(map.mapExtractor())
-                .add(map.objectExtractor())
-                .add(map.tileExtractor())
+                .add(map.allExtractors())
                 .add(new CloseMapLeftConverter(), Map.class)
                 .add(new CloseMapRightConverter(), Map.class)
                 .add(new CloseMapBottomConverter(), Map.class)
