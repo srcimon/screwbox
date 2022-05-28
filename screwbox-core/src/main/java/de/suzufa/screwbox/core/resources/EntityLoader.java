@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.resources.internal.ConverterRegistry;
 /**
  * The {@link EntityLoader} is used to load entities from any input source. The
  * {@link EntityLoader} uses {@link Extractor}s to extract an intermediate from
- * the input source. Then it uses {@link Converter}s to create the
+ * the input source. Then it uses {@link EntityConverter}s to create the
  * {@link Entity}s from the intermediate.
  */
 public class EntityLoader<T> {
@@ -20,11 +20,11 @@ public class EntityLoader<T> {
     private final List<Extractor<T, ?>> extractors = new ArrayList<>();
 
     /**
-     * Adds a new {@link Converter} used to convert the intermediate to
+     * Adds a new {@link EntityConverter} used to convert the intermediate to
      * {@link Entity}s.
      */
     @SuppressWarnings("unchecked")
-    public <X> EntityLoader<T> add(final Converter<X> converter, final Class<X> acceptedClass) {
+    public <X> EntityLoader<T> add(final EntityConverter<X> converter, final Class<X> acceptedClass) {
         if (!registries.containsKey(acceptedClass)) {
             registries.put(acceptedClass, new ConverterRegistry<>(acceptedClass));
         }
@@ -55,10 +55,10 @@ public class EntityLoader<T> {
 
     /**
      * Creates enties from the input source, using the given {@link Extractor}s and
-     * {@link Converter}s.
+     * {@link EntityConverter}s.
      * 
      * @see #add(Extractor)
-     * @see #add(Converter)
+     * @see #add(EntityConverter)
      */
     public List<Entity> createEnttiesFrom(final T input) {
         final List<Entity> entities = new ArrayList<>();

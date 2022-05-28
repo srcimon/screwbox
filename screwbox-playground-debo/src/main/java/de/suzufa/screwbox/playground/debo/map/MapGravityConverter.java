@@ -3,10 +3,10 @@ package de.suzufa.screwbox.playground.debo.map;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.GravityComponent;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.tiled.Map;
 
-public class MapGravityConverter implements Converter<Map> {
+public class MapGravityConverter implements EntityConverter<Map> {
 
     @Override
     public boolean accepts(final Map map) {

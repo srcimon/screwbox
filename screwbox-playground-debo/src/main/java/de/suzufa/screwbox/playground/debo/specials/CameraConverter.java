@@ -5,10 +5,10 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class CameraConverter implements Converter<GameObject> {
+public class CameraConverter implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

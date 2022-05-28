@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 
 public class ConverterRegistry<T> {
 
-    private final List<Converter<T>> converters = new ArrayList<>();
+    private final List<EntityConverter<T>> converters = new ArrayList<>();
     private final Class<T> acceptedClass;
 
     public ConverterRegistry(final Class<T> acceptedClass) {
         this.acceptedClass = acceptedClass;
     }
 
-    public void register(final Converter<T> converter) {
+    public void register(final EntityConverter<T> converter) {
         converters.add(converter);
     }
 

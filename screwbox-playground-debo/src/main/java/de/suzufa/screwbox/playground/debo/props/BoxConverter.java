@@ -3,7 +3,7 @@ package de.suzufa.screwbox.playground.debo.props;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
@@ -12,7 +12,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class BoxConverter implements Converter<GameObject> {
+public class BoxConverter implements EntityConverter<GameObject> {
 
     private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/props/box.json");
 

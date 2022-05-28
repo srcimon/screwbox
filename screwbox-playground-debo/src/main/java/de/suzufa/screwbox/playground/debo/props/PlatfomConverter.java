@@ -4,7 +4,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
@@ -13,7 +13,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class PlatfomConverter implements Converter<GameObject> {
+public class PlatfomConverter implements EntityConverter<GameObject> {
 
     private static final SpriteDictionary SPRITE = TiledSupport.loadTileset("tilesets/props/platform.json");
 
