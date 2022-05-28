@@ -153,6 +153,6 @@ class VectorTest {
 
     @Test
     void equals_differentComponents_isFalse() {
-        assertThat(Vector.of(20, 12)).isEqualTo(Vector.of(12, 20));
+        assertThat(Vector.of(20, 12)).isNotEqualTo(Vector.of(12, 20));
     }
 }
