@@ -115,10 +115,7 @@ public class Time implements Serializable {
      * Specifies if this instance is after the given {@link Time} instance.
      */
     public boolean isAfter(final Time other) {
-        if (other.isUnset()) {
-            return false;
-        }
-        return nanos > other.nanos;
+        return other.isUnset() ? false : nanos > other.nanos;
     }
 
     /**
