@@ -7,11 +7,15 @@ import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
 public class TilePropertiesLoader {
 
-    public static PropertiesDictionary loadTileProperties(MapEntity map) {
-        PropertiesDictionary dictionary = new PropertiesDictionary();
-        for (TilesetEntity tileset : map.getTilesets()) {
-            for (TileEntity tileEntity : tileset.getTiles()) {
-                Properties properties = new DefaultProperties(tileEntity.getProperties());
+    private TilePropertiesLoader() {
+        // hide constructor
+    }
+
+    public static PropertiesDictionary loadTileProperties(final MapEntity map) {
+        final PropertiesDictionary dictionary = new PropertiesDictionary();
+        for (final TilesetEntity tileset : map.getTilesets()) {
+            for (final TileEntity tileEntity : tileset.getTiles()) {
+                final Properties properties = new DefaultProperties(tileEntity.getProperties());
                 dictionary.add(tileset.getFirstgid() + tileEntity.getId(), properties);
             }
         }
