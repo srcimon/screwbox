@@ -34,6 +34,6 @@ public interface Map {
     }
 
     public default Extractor<Map, Map> mapExtractor() {
-        return input -> List.of(input);
+        return List::of;
     }
 }
