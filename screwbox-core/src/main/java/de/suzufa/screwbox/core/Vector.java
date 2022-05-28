@@ -3,8 +3,6 @@ package de.suzufa.screwbox.core;
 import java.io.Serializable;
 import java.util.Locale;
 
-import javax.annotation.processing.Generated;
-
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
  * coordinates cannot be changed once the {@link Vector} is created.
@@ -119,7 +117,6 @@ public final class Vector implements Serializable {
         return String.format(Locale.ENGLISH, "Vector [x=%.2f, y=%.2f]", x, y);
     }
 
-    @Generated("using eclipse")
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -131,7 +128,6 @@ public final class Vector implements Serializable {
         return prime * result + (int) (temp ^ (temp >>> 32));
     }
 
-    @Generated("using eclipse")
     @Override
     public boolean equals(final Object obj) {
         if (this == obj)
