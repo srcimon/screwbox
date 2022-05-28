@@ -71,8 +71,7 @@ public class Time implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (nanos ^ (nanos >>> 32));
-        return result;
+        return prime * result + (int) (nanos ^ (nanos >>> 32));
     }
 
     @Override
@@ -84,9 +83,7 @@ public class Time implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final Time other = (Time) obj;
-        if (nanos != other.nanos)
-            return false;
-        return true;
+        return nanos == other.nanos;
     }
 
     /**

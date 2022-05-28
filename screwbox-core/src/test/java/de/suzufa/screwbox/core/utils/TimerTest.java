@@ -31,4 +31,23 @@ class TimerTest {
         assertThat(timer.isTick(later)).isTrue();
         assertThat(timer.isTick(later)).isFalse();
     }
+
+    @Test
+    void hashcode_calculatesHashCode() {
+        Time aTime = Time.atNanos(4000);
+        Time anotherTime = Time.unset();
+
+        assertThat(aTime.hashCode()).isEqualTo(4031);
+        assertThat(aTime).doesNotHaveSameHashCodeAs(anotherTime);
+    }
+
+    @Test
+    void equals_same_isTrue() {
+        assertThat(Time.atNanos(50)).isEqualTo(Time.atNanos(50));
+    }
+
+    @Test
+    void equals_different_isFalse() {
+        assertThat(Time.atNanos(4000)).isNotEqualTo(Time.atNanos(4001));
+    }
 }
