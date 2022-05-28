@@ -77,4 +77,23 @@ class PercentageTest {
 
         assertThat(original.invert()).isEqualTo(Percentage.of(0.7));
     }
+
+    @Test
+    void hashcode_calculatesHashCode() {
+        Percentage aPercentage = Percentage.of(0.4);
+        Percentage anotherPercentage = Percentage.of(0.41);
+
+        assertThat(aPercentage.hashCode()).isEqualTo(-1505755102);
+        assertThat(anotherPercentage).doesNotHaveSameHashCodeAs(aPercentage);
+    }
+
+    @Test
+    void equals_same_isTrue() {
+        assertThat(Percentage.of(0.4)).isEqualTo(Percentage.of(0.4));
+    }
+
+    @Test
+    void equals_different_isFalse() {
+        assertThat(Percentage.of(0.4)).isNotEqualTo(Percentage.of(0.6));
+    }
 }

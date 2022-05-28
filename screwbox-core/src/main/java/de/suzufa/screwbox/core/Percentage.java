@@ -64,8 +64,7 @@ public class Percentage implements Serializable {
         int result = 1;
         long temp;
         temp = Double.doubleToLongBits(value);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return prime * result + (int) (temp ^ (temp >>> 32));
     }
 
     @Override
@@ -77,9 +76,7 @@ public class Percentage implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final Percentage other = (Percentage) obj;
-        if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value))
-            return false;
-        return true;
+        return Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
     }
 
     public Percentage invert() {
