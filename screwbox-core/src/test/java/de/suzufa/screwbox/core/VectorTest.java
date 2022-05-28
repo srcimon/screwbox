@@ -137,4 +137,22 @@ class VectorTest {
         assertThat(result).isEqualTo(Vector.of(16, 10));
     }
 
+    @Test
+    void hashcode_calculatesHashCode() {
+        Vector aVector = Vector.of(20, 12);
+        Vector anotherVector = Vector.of(12, 20);
+
+        assertThat(aVector.hashCode()).isEqualTo(108266433);
+        assertThat(aVector).doesNotHaveSameHashCodeAs(anotherVector);
+    }
+
+    @Test
+    void equals_sameComponents_isTrue() {
+        assertThat(Vector.of(20, 12)).isEqualTo(Vector.of(20, 12));
+    }
+
+    @Test
+    void equals_differentComponents_isFalse() {
+        assertThat(Vector.of(20, 12)).isEqualTo(Vector.of(12, 20));
+    }
 }
