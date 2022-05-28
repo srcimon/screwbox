@@ -147,12 +147,12 @@ class VectorTest {
     }
 
     @Test
-    void equals_sameComponents_isTrue() {
+    void equals_same_isTrue() {
         assertThat(Vector.of(20, 12)).isEqualTo(Vector.of(20, 12));
     }
 
     @Test
-    void equals_differentComponents_isFalse() {
+    void equals_different_isFalse() {
         assertThat(Vector.of(20, 12)).isNotEqualTo(Vector.of(12, 20));
     }
 }

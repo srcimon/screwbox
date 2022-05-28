@@ -83,8 +83,7 @@ public class Duration implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (nanos ^ (nanos >>> 32));
-        return result;
+        return prime * result + (int) (nanos ^ (nanos >>> 32));
     }
 
     @Override
@@ -96,9 +95,7 @@ public class Duration implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final Duration other = (Duration) obj;
-        if (nanos != other.nanos)
-            return false;
-        return true;
+        return nanos == other.nanos;
     }
 
     public boolean isAtLeast(final Duration other) {
