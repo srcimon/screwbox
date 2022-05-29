@@ -39,12 +39,8 @@ public class TrippleLatch<T> {
         return value;
     }
 
-    // TODO: optimize
     public void swap() {
-        index--;
-        if (index < 0) {
-            index = 2;
-        }
+        index = index == 0 ? 2 : index - 1;
     }
 
 }
