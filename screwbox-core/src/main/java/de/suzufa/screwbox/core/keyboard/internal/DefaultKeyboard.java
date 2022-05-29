@@ -60,7 +60,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void update() {
         justPressedKeys.primary().clear();
-        justPressedKeys.gearNext();
+        justPressedKeys.swap();
     }
 
 }

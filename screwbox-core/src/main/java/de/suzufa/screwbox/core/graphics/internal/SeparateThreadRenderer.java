@@ -36,7 +36,7 @@ public class SeparateThreadRenderer implements Renderer {
         waitForCurrentRenderingToEnd();
         next.updateScreen(antialiased);
 
-        renderTasks.gearNext();
+        renderTasks.swap();
         currentRendering = executor.submit(finishRenderTasks());
     }
 

@@ -83,7 +83,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public void update() {
         justPressed.primary().clear();
-        justPressed.gearNext();
+        justPressed.swap();
     }
 
     @Override

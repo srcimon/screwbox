@@ -23,7 +23,7 @@ public class Latch<T> {
         return swapped ? first : second;
     }
 
-    public void gearNext() {
+    public void swap() {
         swapped = !swapped;
     }
 

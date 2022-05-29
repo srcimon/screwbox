@@ -21,7 +21,7 @@ class LatchTest {
 
     @Test
     void primary_swapped_returnsSecondary() {
-        latch.gearNext();
+        latch.swap();
 
         assertThat(latch.primary()).isEqualTo("B");
     }
@@ -33,7 +33,7 @@ class LatchTest {
 
     @Test
     void backup_swapped_returnsPrimary() {
-        latch.gearNext();
+        latch.swap();
 
         assertThat(latch.backup()).isEqualTo("A");
     }
