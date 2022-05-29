@@ -47,8 +47,8 @@ class EntityLoaderTest {
                 .anyMatch(e -> e.hasComponent(ColliderComponent.class));
     }
 
-    private Converter<String> boxConverter() {
-        Converter<String> boxConverter = new Converter<String>() {
+    private EntityConverter<String> boxConverter() {
+        EntityConverter<String> boxConverter = new EntityConverter<String>() {
 
             @Override
             public boolean accepts(String object) {
@@ -63,8 +63,8 @@ class EntityLoaderTest {
         return boxConverter;
     }
 
-    private Converter<String> playerConverter() {
-        Converter<String> playerConverter = new Converter<String>() {
+    private EntityConverter<String> playerConverter() {
+        EntityConverter<String> playerConverter = new EntityConverter<String>() {
 
             @Override
             public boolean accepts(String object) {

@@ -89,4 +89,23 @@ class DurationTest {
         assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_SECOND);
     }
 
+    @Test
+    void hashcode_calculatesHashCode() {
+        Duration aDuration = Duration.ofMillis(10);
+        Duration anotherDuration = Duration.ofMillis(15);
+
+        assertThat(aDuration.hashCode()).isEqualTo(10000031);
+        assertThat(aDuration).doesNotHaveSameHashCodeAs(anotherDuration);
+    }
+
+    @Test
+    void equals_same_isTrue() {
+        assertThat(Duration.ofMillis(10)).isEqualTo(Duration.ofNanos(10_000_000));
+    }
+
+    @Test
+    void equals_different_isFalse() {
+        assertThat(Duration.ofMillis(10)).isNotEqualTo(Duration.ofMillis(3));
+    }
+
 }

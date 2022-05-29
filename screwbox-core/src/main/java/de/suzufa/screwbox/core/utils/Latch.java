@@ -1,16 +1,16 @@
 package de.suzufa.screwbox.core.utils;
 
-public class Swappable<T> {
+public class Latch<T> {
 
     private final T first;
     private final T second;
     private boolean swapped;
 
-    public static <T> Swappable<T> of(final T first, final T second) {
-        return new Swappable<>(first, second);
+    public static <T> Latch<T> of(final T first, final T second) {
+        return new Latch<>(first, second);
     }
 
-    private Swappable(final T first, final T second) {
+    private Latch(final T first, final T second) {
         this.first = first;
         this.second = second;
     }

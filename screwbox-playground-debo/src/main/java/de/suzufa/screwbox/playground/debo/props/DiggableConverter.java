@@ -6,12 +6,12 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.DiggableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DiggableConverter implements Converter<GameObject> {
+public class DiggableConverter implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

@@ -121,12 +121,10 @@ public final class Vector implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(x);
+        long temp = Double.doubleToLongBits(x);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return prime * result + (int) (temp ^ (temp >>> 32));
     }
 
     @Override
@@ -140,9 +138,7 @@ public final class Vector implements Serializable {
         final Vector other = (Vector) obj;
         if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
             return false;
-        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-            return false;
-        return true;
+        return Double.doubleToLongBits(y) == Double.doubleToLongBits(other.y);
     }
 
     /**

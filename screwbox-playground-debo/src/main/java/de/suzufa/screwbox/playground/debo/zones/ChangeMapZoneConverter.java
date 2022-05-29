@@ -5,12 +5,12 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.resources.Converter;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.ChangeMapComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class ChangeMapZoneConverter implements Converter<GameObject> {
+public class ChangeMapZoneConverter implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

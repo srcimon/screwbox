@@ -9,7 +9,7 @@ import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.ObjectDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DefaultObjectDictionaryTest {
+class DefaultObjectDictionaryTest {
 
     private ObjectDictionary objectDictionary;
 

@@ -13,7 +13,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
-import de.suzufa.screwbox.core.utils.Swappable;
+import de.suzufa.screwbox.core.utils.TrippleLatch;
 
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener {
 
@@ -23,7 +23,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             3, MouseButton.RIGHT);
 
     private final Set<MouseButton> pressed = new HashSet<>();
-    private final Swappable<Set<MouseButton>> justPressed = Swappable.of(new HashSet<>(), new HashSet<>());
+    private final TrippleLatch<Set<MouseButton>> justPressed = TrippleLatch.of(
+            new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final Graphics graphics;
     private Offset position = Offset.origin();
     private boolean isCursorOnWindow;
@@ -56,7 +57,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public void mousePressed(final MouseEvent e) {
         final var mouseButton = MAPPINGS.get(e.getButton());
         pressed.add(mouseButton);
-        justPressed.backup().add(mouseButton);
+        justPressed.primary().add(mouseButton);
     }
 
     @Override
@@ -77,12 +78,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public boolean justPressed(final MouseButton button) {
-        return justPressed.primary().contains(button);
+        return justPressed.backup().contains(button);
     }
 
     @Override
     public void update() {
-        justPressed.primary().clear();
+        justPressed.secondaryBackup().clear();
         justPressed.swap();
     }
 

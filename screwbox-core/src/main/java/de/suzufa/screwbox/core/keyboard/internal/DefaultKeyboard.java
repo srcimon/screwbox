@@ -9,12 +9,14 @@ import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
-import de.suzufa.screwbox.core.utils.Swappable;
+import de.suzufa.screwbox.core.utils.TrippleLatch;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
-    private final Swappable<Set<Integer>> justPressedKeys = Swappable.of(new HashSet<>(), new HashSet<>());
+
+    private final TrippleLatch<Set<Integer>> justPressedKeys = TrippleLatch.of(new HashSet<>(), new HashSet<>(),
+            new HashSet<>());
 
     @Override
     public void keyTyped(final KeyEvent event) {
@@ -24,7 +26,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         pressedKeys.add(event.getKeyCode());
-        justPressedKeys.backup().add(event.getKeyCode());
+        justPressedKeys.primary().add(event.getKeyCode());
     }
 
     @Override
@@ -49,7 +51,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean justPressed(final Key key) {
-        return justPressedKeys.primary().contains(key.code());
+        return justPressedKeys.backup().contains(key.code());
     }
 
     @Override
@@ -59,7 +61,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public void update() {
-        justPressedKeys.primary().clear();
+        justPressedKeys.secondaryBackup().clear();
         justPressedKeys.swap();
     }
 
