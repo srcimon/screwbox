@@ -18,11 +18,11 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.utils.Swappable;
+import de.suzufa.screwbox.core.utils.Lever;
 
 public class SeparateThreadRenderer implements Renderer {
 
-    private final Swappable<List<Runnable>> renderTasks = Swappable.of(new ArrayList<>(), new ArrayList<>());
+    private final Lever<List<Runnable>> renderTasks = Lever.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Future<?> currentRendering = null;
@@ -36,7 +36,7 @@ public class SeparateThreadRenderer implements Renderer {
         waitForCurrentRenderingToEnd();
         next.updateScreen(antialiased);
 
-        renderTasks.swap();
+        renderTasks.gearNext();
         currentRendering = executor.submit(finishRenderTasks());
     }
 

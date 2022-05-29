@@ -13,7 +13,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
-import de.suzufa.screwbox.core.utils.Swappable;
+import de.suzufa.screwbox.core.utils.Lever;
 
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener {
 
@@ -23,7 +23,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             3, MouseButton.RIGHT);
 
     private final Set<MouseButton> pressed = new HashSet<>();
-    private final Swappable<Set<MouseButton>> justPressed = Swappable.of(new HashSet<>(), new HashSet<>());
+    private final Lever<Set<MouseButton>> justPressed = Lever.of(new HashSet<>(), new HashSet<>());
     private final Graphics graphics;
     private Offset position = Offset.origin();
     private boolean isCursorOnWindow;
@@ -83,7 +83,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public void update() {
         justPressed.primary().clear();
-        justPressed.swap();
+        justPressed.gearNext();
     }
 
     @Override
