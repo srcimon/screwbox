@@ -9,12 +9,12 @@ import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
-import de.suzufa.screwbox.core.utils.Lever;
+import de.suzufa.screwbox.core.utils.Latch;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
-    private final Lever<Set<Integer>> justPressedKeys = Lever.of(new HashSet<>(), new HashSet<>());
+    private final Latch<Set<Integer>> justPressedKeys = Latch.of(new HashSet<>(), new HashSet<>());
 
     @Override
     public void keyTyped(final KeyEvent event) {

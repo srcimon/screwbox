@@ -5,36 +5,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class LeverTest {
+class LatchTest {
 
-    private Lever<String> lever;
+    private Latch<String> latch;
 
     @BeforeEach
     void beforeEach() {
-        lever = Lever.of("A", "B");
+        latch = Latch.of("A", "B");
     }
 
     @Test
     void primary_notSwapped_returnsPrimary() {
-        assertThat(lever.primary()).isEqualTo("A");
+        assertThat(latch.primary()).isEqualTo("A");
     }
 
     @Test
     void primary_swapped_returnsSecondary() {
-        lever.gearNext();
+        latch.gearNext();
 
-        assertThat(lever.primary()).isEqualTo("B");
+        assertThat(latch.primary()).isEqualTo("B");
     }
 
     @Test
     void backup_notSwapped_returnsSecondary() {
-        assertThat(lever.backup()).isEqualTo("B");
+        assertThat(latch.backup()).isEqualTo("B");
     }
 
     @Test
     void backup_swapped_returnsPrimary() {
-        lever.gearNext();
+        latch.gearNext();
 
-        assertThat(lever.backup()).isEqualTo("A");
+        assertThat(latch.backup()).isEqualTo("A");
     }
 }
