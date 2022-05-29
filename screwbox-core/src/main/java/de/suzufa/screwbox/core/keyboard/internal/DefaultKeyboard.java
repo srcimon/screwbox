@@ -49,6 +49,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         return true;
     }
 
+    // TODO FIX multi press key / not just once
     @Override
     public boolean justPressed(final Key key) {
         return justPressedKeys.backup().contains(key.code());
