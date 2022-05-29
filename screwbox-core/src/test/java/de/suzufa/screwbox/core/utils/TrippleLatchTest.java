@@ -50,4 +50,22 @@ class TrippleLatchTest {
 
         assertThat(latch.backup()).isEqualTo("A");
     }
+
+    @Test
+    void backup_swappedTwice_returnsThirdValue() {
+        latch.swap();
+        latch.swap();
+
+        assertThat(latch.backup()).isEqualTo("C");
+    }
+
+    @Test
+    void secondaryBackup_swappedFoutTimes_returnsSecondValue() {
+        latch.swap();
+        latch.swap();
+        latch.swap();
+        latch.swap();
+
+        assertThat(latch.secondaryBackup()).isEqualTo("B");
+    }
 }

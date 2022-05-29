@@ -5,10 +5,10 @@ import java.util.List;
 public class TrippleLatch<T> {
 
     private final List<T> values;
-    private int index = 2;
+    private int index = 0;
 
     public static <T> TrippleLatch<T> of(final T first, final T second, final T third) {
-        return new TrippleLatch<>(List.of(third, second, first));
+        return new TrippleLatch<>(List.of(first, second, third));
     }
 
     private TrippleLatch(final List<T> values) {
@@ -20,20 +20,20 @@ public class TrippleLatch<T> {
     }
 
     public T backup() {
-        return values.get(lowerIndex(1));
+        return values.get(higherIndex(1));
     }
 
     public T secondaryBackup() {
-        return values.get(lowerIndex(2));
+        return values.get(higherIndex(2));
     }
 
     // TODO: optimize
-    private int lowerIndex(int change) {
-        int value = index - change;
-        if (value == -2) {
-            return 2;
+    private int higherIndex(int change) {
+        int value = index + change;
+        if (value == 3) {
+            return 0;
         }
-        if (value == -1) {
+        if (value == 4) {
             return 1;
         }
         return value;
@@ -41,9 +41,9 @@ public class TrippleLatch<T> {
 
     // TODO: optimize
     public void swap() {
-        index++;
-        if (index > 2) {
-            index = 0;
+        index--;
+        if (index < 0) {
+            index = 2;
         }
     }
 
