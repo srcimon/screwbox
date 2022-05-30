@@ -12,6 +12,7 @@ public class SpriteComponent implements Component {
     public Sprite sprite;
     public int drawOrder;
     public Percentage opacity;
+    public double scale = 1;
     public Rotation rotation = Rotation.none();
 
     public SpriteComponent(final int drawOrder) {

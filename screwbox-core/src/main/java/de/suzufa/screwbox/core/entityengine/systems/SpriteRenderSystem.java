@@ -24,7 +24,7 @@ public class SpriteRenderSystem implements EntitySystem {
     private final Class<? extends SpriteComponent> spriteComponentClass;
 
     private static final record SpriteBatchEntry(Sprite sprite, Vector position, int drawOrder, Rotation rotation,
-            Percentage opacity)
+            Percentage opacity, double scale)
             implements Comparable<SpriteBatchEntry> {
 
         @Override
@@ -61,14 +61,15 @@ public class SpriteRenderSystem implements EntitySystem {
 
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.add(new SpriteBatchEntry(spriteComponent.sprite, spriteBounds.origin(),
-                        spriteComponent.drawOrder, spriteComponent.rotation, spriteComponent.opacity));
+                        spriteComponent.drawOrder, spriteComponent.rotation, spriteComponent.opacity,
+                        spriteComponent.scale));
             }
         }
 
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
-            world.drawSprite(entry.sprite, entry.position, entry.opacity, entry.rotation);
+            world.drawSprite(entry.sprite, entry.position, entry.scale, entry.opacity, entry.rotation);
         }
     }
 
