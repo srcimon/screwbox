@@ -6,8 +6,6 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
@@ -15,21 +13,18 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.World;
 
 public class SpriteRenderSystem implements EntitySystem {
 
     private final Archetype sprites;
     private final Class<? extends SpriteComponent> spriteComponentClass;
 
-    private static final record SpriteBatchEntry(Sprite sprite, Vector position, int drawOrder, Rotation rotation,
-            Percentage opacity)
+    private static final record SpriteBatchEntry(SpriteComponent spriteComponent, Vector position)
             implements Comparable<SpriteBatchEntry> {
 
         @Override
         public int compareTo(final SpriteBatchEntry o) {
-            return Integer.compare(drawOrder(), o.drawOrder());
+            return Integer.compare(spriteComponent.drawOrder, o.spriteComponent.drawOrder);
         }
 
     }
@@ -46,8 +41,7 @@ public class SpriteRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
-        final World world = engine.graphics().world();
-        final Bounds visibleArea = world.visibleArea();
+        final Bounds visibleArea = engine.graphics().world().visibleArea();
 
         for (final Entity entity : engine.entityEngine().fetchAll(sprites)) {
             final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
@@ -57,18 +51,23 @@ public class SpriteRenderSystem implements EntitySystem {
             final var spriteBounds = Bounds.atOrigin(
                     entityBounds.position().x() - spriteDimension.width() / 2.0,
                     entityBounds.position().y() - spriteDimension.height() / 2.0,
-                    spriteDimension.width(), spriteDimension.height());
+                    spriteDimension.width() * spriteComponent.scale,
+                    spriteDimension.height() * spriteComponent.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
-                spriteBatch.add(new SpriteBatchEntry(spriteComponent.sprite, spriteBounds.origin(),
-                        spriteComponent.drawOrder, spriteComponent.rotation, spriteComponent.opacity));
+                spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
             }
         }
 
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
-            world.drawSprite(entry.sprite, entry.position, entry.opacity, entry.rotation);
+            engine.graphics().world().drawSprite(
+                    entry.spriteComponent.sprite,
+                    entry.position,
+                    entry.spriteComponent.scale,
+                    entry.spriteComponent.opacity,
+                    entry.spriteComponent.rotation);
         }
     }
 
