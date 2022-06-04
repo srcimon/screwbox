@@ -137,6 +137,10 @@ public class GameScene implements Scene {
         Map map = TiledSupport.loadMap(mapName);
 
         return EntityExtractor.from(map)
+                // TODO: .filter(input -> input.name.equals("bla")).convert(input -> new
+                // Entity().bla.bla)
+
+                // SPLIT CONVERSION FROM ACCEPTING
                 .convert(new CloseMapLeftConverter())
                 .convert(new CloseMapRightConverter())
                 .convert(new CloseMapTopConverter())
