@@ -20,14 +20,14 @@ public class EntityExtractor<T> {
         this.input = input;
     }
 
-    public EntityExtractor<T> convert(final EntityConverter<T> converter) {
+    public EntityExtractor<T> apply(final EntityConverter<T> converter) {
         if (converter.accepts(input)) {
             entities.add(converter.convert(input));
         }
         return this;
     }
 
-    public <O> EntityExtraction<EntityExtractor<T>, O> extractVia(Extractor<T, O> extractor) {
+    public <O> EntityExtraction<EntityExtractor<T>, O> extract(Extractor<T, O> extractor) {
         List<O> extractedEntities = extractor.extractFrom(input);
         var entityExtraction = new EntityExtraction<>(extractedEntities, this);
         extractions.add(entityExtraction);

@@ -32,16 +32,16 @@ class EntityLoaderTest {
     @Test
     void buildAllEntities_extractorsAndConvertersPresent_returnEntities() {
         List<Entity> entities = entityLoader
-                .convert(sentenceConverter())
+                .apply(sentenceConverter())
 
-                .extractVia(input -> input.lines().toList())
-                .convertVia(boxConverter())
-                .convertVia(playerConverter())
+                .extract(input -> input.lines().toList())
+                .apply(boxConverter())
+                .apply(playerConverter())
                 .and()
 
-                .extractVia(input -> List.of(input.split(" ")))
-                .convertVia(boxConverter())
-                .convertVia(playerConverter())
+                .extract(input -> List.of(input.split(" ")))
+                .apply(boxConverter())
+                .apply(playerConverter())
                 .and()
 
                 .buildAllEntities();

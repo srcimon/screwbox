@@ -16,7 +16,7 @@ public class EntityExtraction<C, O> {
         this.caller = caller;
     }
 
-    public EntityExtraction<C, O> convertVia(final EntityConverter<O> converter) {
+    public EntityExtraction<C, O> apply(final EntityConverter<O> converter) {
         inputObjects.stream()
                 .filter(converter::accepts)
                 .map(converter::convert)
