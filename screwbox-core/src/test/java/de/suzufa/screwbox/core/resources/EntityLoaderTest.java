@@ -12,37 +12,41 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 
+//TODO: FIX ALL NAMES
 class EntityLoaderTest {
 
-    EntityLoader<String> entityLoader;
+    EntityExtractor<String> entityLoader;
 
     @BeforeEach
     void beforeEach() {
-        entityLoader = new EntityLoader<>();
+        entityLoader = EntityExtractor.from("There are\ntwo boxes,\nBox\nBox and a Player.");
     }
 
     @Test
-    void createEntitiesFrom_noExtractors_empty() {
-        List<Entity> entities = entityLoader
-                .add(boxConverter(), String.class)
-                .add(playerConverter(), String.class)
-                .createEnttiesFrom("There are\ntwo boxes,\nBox\nBox and a Player.");
+    void buildAllEntities_noConverters_emptyList() {
+        var result = entityLoader.buildAllEntities();
 
-        assertThat(entities).isEmpty();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    void createEntitiesFrom_extractorsAndConverters_returnsEntities() {
-        Extractor<String, String> lineExtractor = input -> input.lines().toList();
-        Extractor<String, String> wordExtractor = input -> List.of(input.split(" "));
-
+    void buildAllEntities_extractorsAndConvertersPresent_returnEntities() {
         List<Entity> entities = entityLoader
-                .add(List.of(lineExtractor, wordExtractor))
-                .add(boxConverter(), String.class)
-                .add(playerConverter(), String.class)
-                .createEnttiesFrom("There are\ntwo boxes,\nBox\nBox and a Player.");
+                .convert(sentenceConverter())
 
-        assertThat(entities).hasSize(3)
+                .extractVia(input -> input.lines().toList())
+                .convertVia(boxConverter())
+                .convertVia(playerConverter())
+                .and()
+
+                .extractVia(input -> List.of(input.split(" ")))
+                .convertVia(boxConverter())
+                .convertVia(playerConverter())
+                .and()
+
+                .buildAllEntities();
+
+        assertThat(entities).hasSize(4)
                 .allMatch(e -> e.hasComponent(TransformComponent.class))
                 .anyMatch(e -> e.hasComponent(ColliderComponent.class));
     }
@@ -53,6 +57,22 @@ class EntityLoaderTest {
             @Override
             public boolean accepts(String object) {
                 return object.startsWith("Box");
+            }
+
+            @Override
+            public Entity convert(String object) {
+                return new Entity().add(new TransformComponent(Bounds.max()));
+            }
+        };
+        return boxConverter;
+    }
+
+    private EntityConverter<String> sentenceConverter() {
+        EntityConverter<String> boxConverter = new EntityConverter<String>() {
+
+            @Override
+            public boolean accepts(String object) {
+                return true;
             }
 
             @Override
