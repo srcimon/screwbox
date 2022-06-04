@@ -136,27 +136,24 @@ public class GameScene implements Scene {
     List<Entity> createEntitiesFromMap() {
         Map map = TiledSupport.loadMap(mapName);
 
-        return EntityExtractor.extractFrom(map)
+        return EntityExtractor.from(map)
+                .convert(new CloseMapLeftConverter())
+                .convert(new CloseMapRightConverter())
+                .convert(new CloseMapTopConverter())
+                .convert(new MapGravityConverter())
+                .convert(new WorldBoundsConverter())
 
-                .extractVia(List::of) // TODO: Add shortcut for this
-                .convertVia(new CloseMapLeftConverter())
-                .convertVia(new CloseMapRightConverter())
-                .convertVia(new CloseMapTopConverter())
-                .convertVia(new MapGravityConverter())
-                .convertVia(new WorldBoundsConverter())
-                .and()
-
-                .extractVia(input -> input.buildLayerDictionary().allLayers()) // TODO: Map.allLayers();
+                .extractVia(Map::allLayers)
                 .convertVia(new BackgroundConverter())
                 .and()
 
-                .extractVia(input -> input.buildTileDictionary().allTiles())// TODO: Map.allTiles();
+                .extractVia(Map::allTiles)
                 .convertVia(new NonSolidConverter())
                 .convertVia(new SolidConverter())
                 .convertVia(new OneWayConverter())
                 .and()
 
-                .extractVia(input -> input.buildObjectDictionary().allObjects())// TODO: Map.allObjects();
+                .extractVia(Map::allObjects)
                 .convertVia(new CatConverter())
                 .convertVia(new MovingSpikesConverter())
                 .convertVia(new VanishingBlockConverter())
@@ -178,7 +175,7 @@ public class GameScene implements Scene {
                 .convertVia(new FadeInConverter())
                 .convertVia(new TracerConverter())
                 .and()
-                .allEntities();
+                .buildAllEntities();
     }
 
 }

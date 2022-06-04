@@ -7,17 +7,21 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 
 public class EntityExtraction<C, O> {
 
-    private final List<O> entities;
+    private final List<O> inputObjects;
     private final C caller;
     private final List<Entity> extractedEntities = new ArrayList<>();
 
-    public EntityExtraction(final List<O> extractedEntities, C caller) {
-        this.entities = extractedEntities;
+    public EntityExtraction(final List<O> extractedEntities, final C caller) {
+        this.inputObjects = extractedEntities;
         this.caller = caller;
     }
 
     public EntityExtraction<C, O> convertVia(final EntityConverter<O> converter) {
-        entities.stream().filter(converter::accepts).map(converter::convert).forEach(extractedEntities::add);
+        inputObjects.stream()
+                .filter(converter::accepts)
+                .map(converter::convert)
+                .forEach(extractedEntities::add);
+
         return this;
     }
 

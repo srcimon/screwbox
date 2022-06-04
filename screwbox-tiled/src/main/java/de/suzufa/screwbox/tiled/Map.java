@@ -17,27 +17,39 @@ public interface Map {
 
     Properties properties();
 
-    // TODO: REMOVE?
+    default List<Layer> allLayers() {
+        return buildLayerDictionary().allLayers();
+    }
+
+    default List<GameObject> allObjects() {
+        return buildObjectDictionary().allObjects();
+    }
+
+    default List<Tile> allTiles() {
+        return buildTileDictionary().allTiles();
+    }
+
+    @Deprecated
     public default List<Extractor<Map, ?>> allExtractors() {
         return List.of(layerExtractor(), tileExtractor(), objectExtractor(), mapExtractor());
     }
 
-    // TODO: REMOVE?
+    @Deprecated
     public default Extractor<Map, Layer> layerExtractor() {
         return input -> buildLayerDictionary().allLayers();
     }
 
-    // TODO: REMOVE?
+    @Deprecated
     public default Extractor<Map, Tile> tileExtractor() {
         return input -> buildTileDictionary().allTiles();
     }
 
-    // TODO: REMOVE?
+    @Deprecated
     public default Extractor<Map, GameObject> objectExtractor() {
         return input -> buildObjectDictionary().allObjects();
     }
 
-    // TODO: REMOVE?
+    @Deprecated
     public default Extractor<Map, Map> mapExtractor() {
         return List::of;
     }

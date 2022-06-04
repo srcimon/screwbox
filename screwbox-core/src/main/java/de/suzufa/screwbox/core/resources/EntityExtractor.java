@@ -12,7 +12,7 @@ public class EntityExtractor<T> {
     private final List<Entity> entities = new ArrayList<>();
     private List<EntityExtraction<EntityExtractor<T>, ?>> extractions = new ArrayList<>();
 
-    public static <T> EntityExtractor<T> extractFrom(T input) {
+    public static <T> EntityExtractor<T> from(T input) {
         return new EntityExtractor<>(input);
     }
 
@@ -20,8 +20,11 @@ public class EntityExtractor<T> {
         this.input = input;
     }
 
-    void addEntities(List<Entity> entities) {
-        this.entities.addAll(entities);
+    public EntityExtractor<T> convert(final EntityConverter<T> converter) {
+        if (converter.accepts(input)) {
+            entities.add(converter.convert(input));
+        }
+        return this;
     }
 
     public <O> EntityExtraction<EntityExtractor<T>, O> extractVia(Extractor<T, O> extractor) {
@@ -31,7 +34,9 @@ public class EntityExtractor<T> {
         return entityExtraction;
     }
 
-    public List<Entity> allEntities() {
-        return extractions.stream().flatMap(e -> e.entities().stream()).toList();
+    public List<Entity> buildAllEntities() {
+        extractions.stream().flatMap(e -> e.entities().stream()).forEach(entities::add);
+        extractions.clear();
+        return entities;
     }
 }
