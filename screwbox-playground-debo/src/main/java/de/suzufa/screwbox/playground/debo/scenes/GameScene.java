@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.resources.EntityLoader;
+import de.suzufa.screwbox.core.resources.EntityExtractor;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.CherriesConverter;
 import de.suzufa.screwbox.playground.debo.collectables.DeboBConverter;
@@ -30,7 +30,6 @@ import de.suzufa.screwbox.playground.debo.effects.FadeInConverter;
 import de.suzufa.screwbox.playground.debo.enemies.MovingSpikesConverter;
 import de.suzufa.screwbox.playground.debo.enemies.slime.SlimeConverter;
 import de.suzufa.screwbox.playground.debo.enemies.tracer.TracerConverter;
-import de.suzufa.screwbox.playground.debo.map.CloseMapBottomConverter;
 import de.suzufa.screwbox.playground.debo.map.CloseMapLeftConverter;
 import de.suzufa.screwbox.playground.debo.map.CloseMapRightConverter;
 import de.suzufa.screwbox.playground.debo.map.CloseMapTopConverter;
@@ -76,10 +75,7 @@ import de.suzufa.screwbox.playground.debo.tiles.SolidConverter;
 import de.suzufa.screwbox.playground.debo.zones.ChangeMapZoneConverter;
 import de.suzufa.screwbox.playground.debo.zones.KillZoneConverter;
 import de.suzufa.screwbox.playground.debo.zones.ShowLabelZoneConverter;
-import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.Tile;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class GameScene implements Scene {
@@ -139,39 +135,50 @@ public class GameScene implements Scene {
 
     List<Entity> createEntitiesFromMap() {
         Map map = TiledSupport.loadMap(mapName);
-        return new EntityLoader<Map>()
-                .add(map.allExtractors())
-                .add(new CloseMapLeftConverter(), Map.class)
-                .add(new CloseMapRightConverter(), Map.class)
-                .add(new CloseMapBottomConverter(), Map.class)
-                .add(new CloseMapTopConverter(), Map.class)
-                .add(new MapGravityConverter(), Map.class)
-                .add(new WorldBoundsConverter(), Map.class)
-                .add(new BackgroundConverter(), Layer.class)
-                .add(new NonSolidConverter(), Tile.class)
-                .add(new SolidConverter(), Tile.class)
-                .add(new OneWayConverter(), Tile.class)
-                .add(new CatConverter(), GameObject.class)
-                .add(new MovingSpikesConverter(), GameObject.class)
-                .add(new VanishingBlockConverter(), GameObject.class)
-                .add(new SlimeConverter(), GameObject.class)
-                .add(new PlatfomConverter(), GameObject.class)
-                .add(new WaypointConverter(), GameObject.class)
-                .add(new CameraConverter(), GameObject.class)
-                .add(new PlayerConverter(), GameObject.class)
-                .add(new DeboDConverter(), GameObject.class)
-                .add(new DeboEConverter(), GameObject.class)
-                .add(new DeboBConverter(), GameObject.class)
-                .add(new DeboOConverter(), GameObject.class)
-                .add(new CherriesConverter(), GameObject.class)
-                .add(new KillZoneConverter(), GameObject.class)
-                .add(new BoxConverter(), GameObject.class)
-                .add(new DiggableConverter(), GameObject.class)
-                .add(new ChangeMapZoneConverter(), GameObject.class)
-                .add(new ShowLabelZoneConverter(), GameObject.class)
-                .add(new FadeInConverter(), GameObject.class)
-                .add(new TracerConverter(), GameObject.class)
-                .createEnttiesFrom(map);
+
+        return EntityExtractor.extractFrom(map)
+
+                .extractVia(List::of) // TODO: Add shortcut for this
+                .convertVia(new CloseMapLeftConverter())
+                .convertVia(new CloseMapRightConverter())
+                .convertVia(new CloseMapTopConverter())
+                .convertVia(new MapGravityConverter())
+                .convertVia(new WorldBoundsConverter())
+                .and()
+
+                .extractVia(input -> input.buildLayerDictionary().allLayers()) // TODO: Map.allLayers();
+                .convertVia(new BackgroundConverter())
+                .and()
+
+                .extractVia(input -> input.buildTileDictionary().allTiles())// TODO: Map.allTiles();
+                .convertVia(new NonSolidConverter())
+                .convertVia(new SolidConverter())
+                .convertVia(new OneWayConverter())
+                .and()
+
+                .extractVia(input -> input.buildObjectDictionary().allObjects())// TODO: Map.allObjects();
+                .convertVia(new CatConverter())
+                .convertVia(new MovingSpikesConverter())
+                .convertVia(new VanishingBlockConverter())
+                .convertVia(new SlimeConverter())
+                .convertVia(new PlatfomConverter())
+                .convertVia(new WaypointConverter())
+                .convertVia(new CameraConverter())
+                .convertVia(new PlayerConverter())
+                .convertVia(new DeboDConverter())
+                .convertVia(new DeboEConverter())
+                .convertVia(new DeboBConverter())
+                .convertVia(new DeboOConverter())
+                .convertVia(new CherriesConverter())
+                .convertVia(new KillZoneConverter())
+                .convertVia(new BoxConverter())
+                .convertVia(new DiggableConverter())
+                .convertVia(new ChangeMapZoneConverter())
+                .convertVia(new ShowLabelZoneConverter())
+                .convertVia(new FadeInConverter())
+                .convertVia(new TracerConverter())
+                .and()
+                .allEntities();
     }
 
 }

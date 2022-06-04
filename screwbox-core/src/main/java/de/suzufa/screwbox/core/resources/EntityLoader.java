@@ -14,6 +14,7 @@ import de.suzufa.screwbox.core.resources.internal.ConverterRegistry;
  * the input source. Then it uses {@link EntityConverter}s to create the
  * {@link Entity}s from the intermediate.
  */
+@Deprecated
 public class EntityLoader<T> {
 
     private final Map<Class<?>, ConverterRegistry<?>> registries = new HashMap<>();
