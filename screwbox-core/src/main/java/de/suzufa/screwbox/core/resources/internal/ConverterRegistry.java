@@ -6,6 +6,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.resources.EntityConverter;
 
+@Deprecated
 public class ConverterRegistry<T> {
 
     private final List<EntityConverter<T>> converters = new ArrayList<>();
