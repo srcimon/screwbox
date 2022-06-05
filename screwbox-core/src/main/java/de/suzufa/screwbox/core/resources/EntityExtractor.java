@@ -20,7 +20,7 @@ public class EntityExtractor<T> {
         this.input = input;
     }
 
-    public EntityExtractor<T> apply(final EntityConverter<T> converter) {
+    public EntityExtractor<T> use(final EntityConverter<T> converter) {
         if (converter.accepts(input)) {
             entities.add(converter.convert(input));
         }

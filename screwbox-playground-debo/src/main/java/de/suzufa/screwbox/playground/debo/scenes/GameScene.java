@@ -141,11 +141,11 @@ public class GameScene implements Scene {
                 // Entity().bla.bla)
 
                 // SPLIT CONVERSION FROM ACCEPTING
-                .apply(new CloseMapLeftConverter())
-                .apply(new CloseMapRightConverter())
-                .apply(new CloseMapTopConverter())
-                .apply(new MapGravityConverter())
-                .apply(new WorldBoundsConverter())
+                .use(new CloseMapLeftConverter())
+                .use(new CloseMapRightConverter())
+                .use(new CloseMapTopConverter())
+                .use(new MapGravityConverter())
+                .use(new WorldBoundsConverter())
 
                 .forEach(Map::allLayers)
                 .use(new BackgroundConverter())

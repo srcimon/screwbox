@@ -32,7 +32,7 @@ class EntityLoaderTest {
     @Test
     void buildAllEntities_extractorsAndConvertersPresent_returnEntities() {
         List<Entity> entities = entityLoader
-                .apply(sentenceConverter())
+                .use(sentenceConverter())
 
                 .forEach(input -> input.lines().toList())
                 .use(boxConverter())
