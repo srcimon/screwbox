@@ -29,7 +29,7 @@ public class EntityExtraction<C, O> {
         return extractedEntities;
     }
 
-    public C and() {
+    public C endLoop() {
         return caller;
     }
 }

@@ -149,13 +149,15 @@ public class GameScene implements Scene {
 
                 .forEach(Map::allLayers)
                 .apply(new BackgroundConverter())
+                .endLoop()
 
-                .and().forEach(Map::allTiles)
+                .forEach(Map::allTiles)
                 .apply(new NonSolidConverter())
                 .apply(new SolidConverter())
                 .apply(new OneWayConverter())
+                .endLoop()
 
-                .and().forEach(Map::allObjects)
+                .forEach(Map::allObjects)
                 .apply(new CatConverter())
                 .apply(new MovingSpikesConverter())
                 .apply(new VanishingBlockConverter())
@@ -176,8 +178,9 @@ public class GameScene implements Scene {
                 .apply(new ShowLabelZoneConverter())
                 .apply(new FadeInConverter())
                 .apply(new TracerConverter())
+                .endLoop()
 
-                .and().buildAllEntities();
+                .buildAllEntities();
     }
 
 }
