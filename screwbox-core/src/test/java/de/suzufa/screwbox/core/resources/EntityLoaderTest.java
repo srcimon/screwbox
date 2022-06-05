@@ -35,13 +35,13 @@ class EntityLoaderTest {
                 .apply(sentenceConverter())
 
                 .forEach(input -> input.lines().toList())
-                .apply(boxConverter())
-                .apply(playerConverter())
+                .use(boxConverter())
+                .use(playerConverter())
                 .endLoop()
 
                 .forEach(input -> List.of(input.split(" ")))
-                .apply(boxConverter())
-                .apply(playerConverter())
+                .use(boxConverter())
+                .use(playerConverter())
                 .endLoop()
 
                 .buildAllEntities();
