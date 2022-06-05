@@ -147,15 +147,15 @@ public class GameScene implements Scene {
                 .apply(new MapGravityConverter())
                 .apply(new WorldBoundsConverter())
 
-                .extract(Map::allLayers)
+                .forEach(Map::allLayers)
                 .apply(new BackgroundConverter())
 
-                .and().extract(Map::allTiles)
+                .and().forEach(Map::allTiles)
                 .apply(new NonSolidConverter())
                 .apply(new SolidConverter())
                 .apply(new OneWayConverter())
 
-                .and().extract(Map::allObjects)
+                .and().forEach(Map::allObjects)
                 .apply(new CatConverter())
                 .apply(new MovingSpikesConverter())
                 .apply(new VanishingBlockConverter())

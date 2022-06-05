@@ -27,7 +27,7 @@ public class EntityExtractor<T> {
         return this;
     }
 
-    public <O> EntityExtraction<EntityExtractor<T>, O> extract(Extractor<T, O> extractor) {
+    public <O> EntityExtraction<EntityExtractor<T>, O> forEach(Extractor<T, O> extractor) {
         List<O> extractedEntities = extractor.extractFrom(input);
         var entityExtraction = new EntityExtraction<>(extractedEntities, this);
         extractions.add(entityExtraction);

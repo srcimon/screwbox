@@ -34,12 +34,12 @@ class EntityLoaderTest {
         List<Entity> entities = entityLoader
                 .apply(sentenceConverter())
 
-                .extract(input -> input.lines().toList())
+                .forEach(input -> input.lines().toList())
                 .apply(boxConverter())
                 .apply(playerConverter())
                 .and()
 
-                .extract(input -> List.of(input.split(" ")))
+                .forEach(input -> List.of(input.split(" ")))
                 .apply(boxConverter())
                 .apply(playerConverter())
                 .and()
