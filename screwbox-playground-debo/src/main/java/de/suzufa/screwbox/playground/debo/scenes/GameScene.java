@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.resources.EntityExtractor;
+import de.suzufa.screwbox.core.resources.EntityBuilder;
 import de.suzufa.screwbox.core.resources.InputFilter;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
@@ -141,7 +141,7 @@ public class GameScene implements Scene {
     List<Entity> createEntitiesFromMap() {
         Map map = TiledSupport.loadMap(mapName);
 
-        return EntityExtractor.from(map)
+        return EntityBuilder.from(map)
                 .use(new MapGravity())
                 .use(new WorldBounds())
                 .useIf(propertyIsSet("closed-left"), new MapBorderLeft())
@@ -181,7 +181,7 @@ public class GameScene implements Scene {
                 .useIf(hasName("tracer"), new Tracer())
                 .endLoop()
 
-                .buildAllEntities();
+                .build();
     }
 
     private InputFilter<GameObject> hasName(String name) {
