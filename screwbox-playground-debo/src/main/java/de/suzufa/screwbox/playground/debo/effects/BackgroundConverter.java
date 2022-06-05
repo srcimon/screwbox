@@ -10,11 +10,6 @@ import de.suzufa.screwbox.tiled.Layer;
 public class BackgroundConverter implements EntityConverter<Layer> {
 
     @Override
-    public boolean accepts(Layer layer) {
-        return layer.isImageLayer();
-    }
-
-    @Override
     public Entity convert(Layer layer) {
         String imagePath = layer.image().orElseThrow().replace("../", "");
         Sprite image = Sprite.fromFile(imagePath);

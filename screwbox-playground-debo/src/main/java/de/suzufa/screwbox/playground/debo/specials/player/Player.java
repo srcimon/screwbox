@@ -20,11 +20,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 public class Player implements EntityConverter<GameObject> {
 
     @Override
-    public boolean accepts(final GameObject object) {
-        return "player".equals(object.name());
-    }
-
-    @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
                 new StateComponent(new PlayerStandingState()),

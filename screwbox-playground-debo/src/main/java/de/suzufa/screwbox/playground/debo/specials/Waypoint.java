@@ -9,11 +9,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 public class Waypoint implements EntityConverter<GameObject> {
 
     @Override
-    public boolean accepts(GameObject object) {
-        return "waypoint".equals(object.name());
-    }
-
-    @Override
     public Entity convert(GameObject object) {
         return new Entity(object.id()).add(
                 new TransformComponent(object.bounds()),

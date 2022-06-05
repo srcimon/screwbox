@@ -9,11 +9,6 @@ import de.suzufa.screwbox.tiled.Map;
 public class MapGravity implements EntityConverter<Map> {
 
     @Override
-    public boolean accepts(final Map map) {
-        return true;
-    }
-
-    @Override
     public Entity convert(final Map map) {
         final Vector gravity = Vector.of(
                 map.properties().getDouble("gravity-x").orElse(0.0),

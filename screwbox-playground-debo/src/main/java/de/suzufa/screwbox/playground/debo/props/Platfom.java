@@ -3,11 +3,11 @@ package de.suzufa.screwbox.playground.debo.props;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
@@ -16,11 +16,6 @@ import de.suzufa.screwbox.tiled.TiledSupport;
 public class Platfom implements EntityConverter<GameObject> {
 
     private static final SpriteDictionary SPRITE = TiledSupport.loadTileset("tilesets/props/platform.json");
-
-    @Override
-    public boolean accepts(GameObject object) {
-        return "platform".equals(object.name());
-    }
 
     @Override
     public Entity convert(GameObject object) {

@@ -11,11 +11,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 public class Camera implements EntityConverter<GameObject> {
 
     @Override
-    public boolean accepts(GameObject object) {
-        return "camera".equals(object.name());
-    }
-
-    @Override
     public Entity convert(GameObject object) {
         double zoom = object.properties().getDouble("zoom").orElse(3.5);
         int trackedEntityId = object.properties().forceInt("trackedEntity");

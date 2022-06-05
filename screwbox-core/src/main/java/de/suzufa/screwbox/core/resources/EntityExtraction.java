@@ -25,10 +25,8 @@ public class EntityExtraction<C, O> {
         return this;
     }
 
-    @Deprecated
     public EntityExtraction<C, O> use(final EntityConverter<O> converter) {
         inputObjects.stream()
-                .filter(converter::accepts)
                 .map(converter::convert)
                 .forEach(extractedEntities::add);
 

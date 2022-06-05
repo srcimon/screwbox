@@ -15,13 +15,8 @@ public class Cherries implements EntityConverter<GameObject> {
     private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/cherries.json");
 
     @Override
-    public boolean accepts(final GameObject object) {
-        return "cherries".equals(object.name());
-    }
-
-    @Override
     public Entity convert(final GameObject object) {
-		return new Entity().add(
+        return new Entity().add(
                 new TransformComponent(object.bounds()),
                 new SpriteComponent(SPRITES.findById(0), object.layer().order()),
                 new CollisionSensorComponent(),

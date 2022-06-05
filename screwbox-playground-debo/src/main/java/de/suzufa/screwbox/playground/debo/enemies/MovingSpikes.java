@@ -2,27 +2,22 @@ package de.suzufa.screwbox.playground.debo.enemies;
 
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
-import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class MovingSpikes implements EntityConverter<GameObject> {
 
     private static final Sprite SPRITE = TiledSupport.loadTileset("tilesets/enemies/moving-spikes.json").findById(0);
-
-    @Override
-    public boolean accepts(GameObject object) {
-        return "moving-spikes".equals(object.name());
-    }
 
     @Override
     public Entity convert(GameObject object) {

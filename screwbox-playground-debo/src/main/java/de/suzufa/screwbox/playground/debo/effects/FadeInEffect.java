@@ -16,11 +16,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 public class FadeInEffect implements EntityConverter<GameObject> {
 
     @Override
-    public boolean accepts(GameObject object) {
-        return "fade-in".equals(object.name());
-    }
-
-    @Override
     public Entity convert(GameObject object) {
         int duration = object.properties().forceInt("duration-secs");
 

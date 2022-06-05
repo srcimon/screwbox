@@ -9,11 +9,6 @@ import de.suzufa.screwbox.tiled.Map;
 public class WorldBounds implements EntityConverter<Map> {
 
     @Override
-    public boolean accepts(Map map) {
-        return true;
-    }
-
-    @Override
     public Entity convert(Map map) {
         return new Entity().add(
                 new WorldBoundsComponent(),
