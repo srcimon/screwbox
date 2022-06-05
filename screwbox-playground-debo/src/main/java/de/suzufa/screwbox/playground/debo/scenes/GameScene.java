@@ -20,25 +20,25 @@ import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
 import de.suzufa.screwbox.core.resources.EntityExtractor;
 import de.suzufa.screwbox.core.resources.InputFilter;
 import de.suzufa.screwbox.core.scenes.Scene;
-import de.suzufa.screwbox.playground.debo.collectables.CherriesConverter;
-import de.suzufa.screwbox.playground.debo.collectables.DeboBConverter;
-import de.suzufa.screwbox.playground.debo.collectables.DeboDConverter;
-import de.suzufa.screwbox.playground.debo.collectables.DeboEConverter;
-import de.suzufa.screwbox.playground.debo.collectables.DeboOConverter;
+import de.suzufa.screwbox.playground.debo.collectables.Cherries;
+import de.suzufa.screwbox.playground.debo.collectables.DeboB;
+import de.suzufa.screwbox.playground.debo.collectables.DeboD;
+import de.suzufa.screwbox.playground.debo.collectables.DeboE;
+import de.suzufa.screwbox.playground.debo.collectables.DeboO;
 import de.suzufa.screwbox.playground.debo.components.CurrentLevelComponent;
 import de.suzufa.screwbox.playground.debo.components.ScreenshotComponent;
 import de.suzufa.screwbox.playground.debo.effects.BackgroundConverter;
-import de.suzufa.screwbox.playground.debo.effects.FadeInConverter;
+import de.suzufa.screwbox.playground.debo.effects.FadeInEffect;
 import de.suzufa.screwbox.playground.debo.enemies.MovingSpikes;
 import de.suzufa.screwbox.playground.debo.enemies.slime.Slime;
-import de.suzufa.screwbox.playground.debo.enemies.tracer.TracerConverter;
+import de.suzufa.screwbox.playground.debo.enemies.tracer.Tracer;
 import de.suzufa.screwbox.playground.debo.map.MapBorderLeft;
 import de.suzufa.screwbox.playground.debo.map.MapBorderRight;
 import de.suzufa.screwbox.playground.debo.map.MapBorderTop;
 import de.suzufa.screwbox.playground.debo.map.MapGravity;
 import de.suzufa.screwbox.playground.debo.map.WorldBounds;
-import de.suzufa.screwbox.playground.debo.props.BoxConverter;
-import de.suzufa.screwbox.playground.debo.props.DiggableConverter;
+import de.suzufa.screwbox.playground.debo.props.Box;
+import de.suzufa.screwbox.playground.debo.props.Diggable;
 import de.suzufa.screwbox.playground.debo.props.Platfom;
 import de.suzufa.screwbox.playground.debo.props.VanishingBlock;
 import de.suzufa.screwbox.playground.debo.specials.Camera;
@@ -74,9 +74,9 @@ import de.suzufa.screwbox.playground.debo.systems.ZoomSystem;
 import de.suzufa.screwbox.playground.debo.tiles.NonSolidTile;
 import de.suzufa.screwbox.playground.debo.tiles.OneWayGround;
 import de.suzufa.screwbox.playground.debo.tiles.SolidGround;
-import de.suzufa.screwbox.playground.debo.zones.ChangeMapZoneConverter;
-import de.suzufa.screwbox.playground.debo.zones.KillZoneConverter;
-import de.suzufa.screwbox.playground.debo.zones.ShowLabelZoneConverter;
+import de.suzufa.screwbox.playground.debo.zones.ChangeMapZone;
+import de.suzufa.screwbox.playground.debo.zones.KillZone;
+import de.suzufa.screwbox.playground.debo.zones.ShowLabelZone;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
@@ -144,9 +144,9 @@ public class GameScene implements Scene {
         return EntityExtractor.from(map)
                 .use(new MapGravity())
                 .use(new WorldBounds())
-                .useIf(propertyActive("closed-left"), new MapBorderLeft())
-                .useIf(propertyActive("closed-right"), new MapBorderRight())
-                .useIf(propertyActive("closed-top"), new MapBorderTop())
+                .useIf(propertyIsSet("closed-left"), new MapBorderLeft())
+                .useIf(propertyIsSet("closed-right"), new MapBorderRight())
+                .useIf(propertyIsSet("closed-top"), new MapBorderTop())
 
                 .forEach(Map::allLayers)
                 .useIf(Layer::isImageLayer, new BackgroundConverter())
@@ -167,18 +167,18 @@ public class GameScene implements Scene {
                 .useIf(hasName("waypoint"), new Waypoint())
                 .useIf(hasName("camera"), new Camera())
                 .useIf(hasName("player"), new Player())
-                .use(new DeboDConverter())
-                .use(new DeboEConverter())
-                .use(new DeboBConverter())
-                .use(new DeboOConverter())
-                .use(new CherriesConverter())
-                .use(new KillZoneConverter())
-                .use(new BoxConverter())
-                .use(new DiggableConverter())
-                .use(new ChangeMapZoneConverter())
-                .use(new ShowLabelZoneConverter())
-                .use(new FadeInConverter())
-                .use(new TracerConverter())
+                .useIf(hasName("debo-d"), new DeboD())
+                .useIf(hasName("debo-e"), new DeboE())
+                .useIf(hasName("debo-b"), new DeboB())
+                .useIf(hasName("debo-o"), new DeboO())
+                .useIf(hasName("cherries"), new Cherries())
+                .useIf(hasName("killzone"), new KillZone())
+                .useIf(hasName("box"), new Box())
+                .useIf(hasName("diggable"), new Diggable())
+                .useIf(hasName("change-map-zone"), new ChangeMapZone())
+                .useIf(hasName("show-label-zone"), new ShowLabelZone())
+                .useIf(hasName("fade-in"), new FadeInEffect())
+                .useIf(hasName("tracer"), new Tracer())
                 .endLoop()
 
                 .buildAllEntities();
@@ -188,7 +188,7 @@ public class GameScene implements Scene {
         return gameObject -> name.equals(gameObject.name());
     }
 
-    private InputFilter<Map> propertyActive(String property) {
+    private InputFilter<Map> propertyIsSet(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 

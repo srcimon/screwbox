@@ -11,7 +11,7 @@ import de.suzufa.screwbox.playground.debo.components.DiggableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DiggableConverter implements EntityConverter<GameObject> {
+public class Diggable implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

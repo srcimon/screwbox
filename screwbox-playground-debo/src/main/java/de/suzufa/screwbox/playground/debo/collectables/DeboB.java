@@ -10,7 +10,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DeboBConverter implements EntityConverter<GameObject> {
+public class DeboB implements EntityConverter<GameObject> {
 
     private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/debo-b.json");
 

@@ -10,17 +10,17 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DeboOConverter implements EntityConverter<GameObject> {
+public class DeboD implements EntityConverter<GameObject> {
 
-    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/debo-o.json");
+    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/debo-d.json");
 
     @Override
-    public boolean accepts(GameObject object) {
-        return "debo-o".equals(object.name());
+    public boolean accepts(final GameObject object) {
+        return "debo-d".equals(object.name());
     }
 
     @Override
-    public Entity convert(GameObject object) {
+    public Entity convert(final GameObject object) {
         return new Entity().add(
                 new SpriteComponent(SPRITES.findById(0), object.layer().order()),
                 new TransformComponent(object.bounds()),

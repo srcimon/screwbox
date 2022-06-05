@@ -1,29 +1,29 @@
 package de.suzufa.screwbox.playground.debo.collectables;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.CollectableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class DeboDConverter implements EntityConverter<GameObject> {
+public class Cherries implements EntityConverter<GameObject> {
 
-    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/debo-d.json");
+    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/cherries.json");
 
     @Override
     public boolean accepts(final GameObject object) {
-        return "debo-d".equals(object.name());
+        return "cherries".equals(object.name());
     }
 
     @Override
     public Entity convert(final GameObject object) {
-        return new Entity().add(
-                new SpriteComponent(SPRITES.findById(0), object.layer().order()),
+		return new Entity().add(
                 new TransformComponent(object.bounds()),
+                new SpriteComponent(SPRITES.findById(0), object.layer().order()),
                 new CollisionSensorComponent(),
                 new CollectableComponent());
     }

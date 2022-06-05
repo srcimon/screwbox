@@ -11,7 +11,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class KillZoneConverter implements EntityConverter<GameObject> {
+public class KillZone implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

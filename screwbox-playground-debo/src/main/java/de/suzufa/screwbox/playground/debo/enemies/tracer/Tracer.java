@@ -15,7 +15,7 @@ import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class TracerConverter implements EntityConverter<GameObject> {
+public class Tracer implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {
