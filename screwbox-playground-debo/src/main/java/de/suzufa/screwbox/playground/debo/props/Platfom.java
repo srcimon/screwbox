@@ -13,7 +13,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class PlatfomConverter implements EntityConverter<GameObject> {
+public class Platfom implements EntityConverter<GameObject> {
 
     private static final SpriteDictionary SPRITE = TiledSupport.loadTileset("tilesets/props/platform.json");
 

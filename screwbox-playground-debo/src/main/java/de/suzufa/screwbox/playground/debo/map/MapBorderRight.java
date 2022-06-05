@@ -7,16 +7,16 @@ import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.tiled.Map;
 
-public class CloseMapTopConverter implements EntityConverter<Map> {
+public class MapBorderRight implements EntityConverter<Map> {
 
     @Override
     public boolean accepts(final Map map) {
-        return map.properties().getBoolean("closed-top").orElse(false);
+        return map.properties().getBoolean("closed-right").orElse(false);
     }
 
     @Override
     public Entity convert(final Map map) {
-        Bounds bounds = Bounds.atOrigin(0, -200, map.bounds().width(), 200);
+        Bounds bounds = Bounds.atOrigin(map.bounds().width(), 0, 200, map.bounds().height());
         return new Entity().add(
                 new TransformComponent(bounds),
                 new ColliderComponent(500));

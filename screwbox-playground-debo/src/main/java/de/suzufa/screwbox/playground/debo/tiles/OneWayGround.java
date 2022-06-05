@@ -8,19 +8,19 @@ import de.suzufa.screwbox.core.entityengine.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.tiled.Tile;
 
-public class SolidConverter extends BaseTileConverter {
+public class OneWayGround extends BaseTileConverter {
 
-    public SolidConverter() {
-        super("solid");
+    public OneWayGround() {
+        super("one-way");
     }
 
     @Override
     public Entity convert(Tile tile) {
         return new Entity().add(
                 new SpriteComponent(tile.sprite(), tile.layer().order()),
-                new TransformComponent(tile.renderBounds()),
                 new StaticMarkerComponent(),
-                new ColliderComponent(500, Percentage.min()));
+                new TransformComponent(tile.renderBounds()),
+                new ColliderComponent(500, Percentage.min(), true));
     }
 
 }

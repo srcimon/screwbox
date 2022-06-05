@@ -15,7 +15,7 @@ import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathTy
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class MovingSpikesConverter implements EntityConverter<GameObject> {
+public class MovingSpikes implements EntityConverter<GameObject> {
 
     private static final Sprite SPRITE = TiledSupport.loadTileset("tilesets/enemies/moving-spikes.json").findById(0);
 

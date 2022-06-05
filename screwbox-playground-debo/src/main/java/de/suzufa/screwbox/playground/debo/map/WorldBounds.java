@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.tiled.Map;
 
-public class WorldBoundsConverter implements EntityConverter<Map> {
+public class WorldBounds implements EntityConverter<Map> {
 
     @Override
     public boolean accepts(Map map) {

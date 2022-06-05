@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class WaypointConverter implements EntityConverter<GameObject> {
+public class Waypoint implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

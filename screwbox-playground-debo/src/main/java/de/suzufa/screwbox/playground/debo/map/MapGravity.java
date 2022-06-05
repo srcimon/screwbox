@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entityengine.components.GravityComponent;
 import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.tiled.Map;
 
-public class MapGravityConverter implements EntityConverter<Map> {
+public class MapGravity implements EntityConverter<Map> {
 
     @Override
     public boolean accepts(final Map map) {

@@ -17,7 +17,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class PlayerConverter implements EntityConverter<GameObject> {
+public class Player implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(final GameObject object) {

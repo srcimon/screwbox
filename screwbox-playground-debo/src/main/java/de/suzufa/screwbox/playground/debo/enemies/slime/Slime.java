@@ -22,7 +22,7 @@ import de.suzufa.screwbox.playground.debo.components.PatrollingMovementComponent
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class SlimeConverter implements EntityConverter<GameObject> {
+public class Slime implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(final GameObject object) {

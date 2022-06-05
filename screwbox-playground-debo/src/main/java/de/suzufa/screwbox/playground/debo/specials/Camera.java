@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class CameraConverter implements EntityConverter<GameObject> {
+public class Camera implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(GameObject object) {

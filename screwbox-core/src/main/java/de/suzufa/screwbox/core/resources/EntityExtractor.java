@@ -20,10 +20,15 @@ public class EntityExtractor<T> {
         this.input = input;
     }
 
-    public EntityExtractor<T> use(final EntityConverter<T> converter) {
-        if (converter.accepts(input)) {
+    public EntityExtractor<T> useIf(InputFilter<T> filter, EntityConverter<T> converter) {
+        if (filter.matches(input)) {
             entities.add(converter.convert(input));
         }
+        return this;
+    }
+
+    public EntityExtractor<T> use(final EntityConverter<T> converter) {
+        entities.add(converter.convert(input));
         return this;
     }
 
@@ -39,4 +44,5 @@ public class EntityExtractor<T> {
         extractions.clear();
         return entities;
     }
+
 }

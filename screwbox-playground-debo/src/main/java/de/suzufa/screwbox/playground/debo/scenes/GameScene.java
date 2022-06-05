@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -17,6 +18,7 @@ import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
 import de.suzufa.screwbox.core.resources.EntityExtractor;
+import de.suzufa.screwbox.core.resources.InputFilter;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.CherriesConverter;
 import de.suzufa.screwbox.playground.debo.collectables.DeboBConverter;
@@ -27,22 +29,22 @@ import de.suzufa.screwbox.playground.debo.components.CurrentLevelComponent;
 import de.suzufa.screwbox.playground.debo.components.ScreenshotComponent;
 import de.suzufa.screwbox.playground.debo.effects.BackgroundConverter;
 import de.suzufa.screwbox.playground.debo.effects.FadeInConverter;
-import de.suzufa.screwbox.playground.debo.enemies.MovingSpikesConverter;
-import de.suzufa.screwbox.playground.debo.enemies.slime.SlimeConverter;
+import de.suzufa.screwbox.playground.debo.enemies.MovingSpikes;
+import de.suzufa.screwbox.playground.debo.enemies.slime.Slime;
 import de.suzufa.screwbox.playground.debo.enemies.tracer.TracerConverter;
-import de.suzufa.screwbox.playground.debo.map.CloseMapLeftConverter;
-import de.suzufa.screwbox.playground.debo.map.CloseMapRightConverter;
-import de.suzufa.screwbox.playground.debo.map.CloseMapTopConverter;
-import de.suzufa.screwbox.playground.debo.map.MapGravityConverter;
-import de.suzufa.screwbox.playground.debo.map.WorldBoundsConverter;
+import de.suzufa.screwbox.playground.debo.map.MapBorderLeft;
+import de.suzufa.screwbox.playground.debo.map.MapBorderRight;
+import de.suzufa.screwbox.playground.debo.map.MapBorderTop;
+import de.suzufa.screwbox.playground.debo.map.MapGravity;
+import de.suzufa.screwbox.playground.debo.map.WorldBounds;
 import de.suzufa.screwbox.playground.debo.props.BoxConverter;
 import de.suzufa.screwbox.playground.debo.props.DiggableConverter;
-import de.suzufa.screwbox.playground.debo.props.PlatfomConverter;
-import de.suzufa.screwbox.playground.debo.props.VanishingBlockConverter;
-import de.suzufa.screwbox.playground.debo.specials.CameraConverter;
-import de.suzufa.screwbox.playground.debo.specials.CatConverter;
-import de.suzufa.screwbox.playground.debo.specials.WaypointConverter;
-import de.suzufa.screwbox.playground.debo.specials.player.PlayerConverter;
+import de.suzufa.screwbox.playground.debo.props.Platfom;
+import de.suzufa.screwbox.playground.debo.props.VanishingBlock;
+import de.suzufa.screwbox.playground.debo.specials.Camera;
+import de.suzufa.screwbox.playground.debo.specials.CatCompanion;
+import de.suzufa.screwbox.playground.debo.specials.Waypoint;
+import de.suzufa.screwbox.playground.debo.specials.player.Player;
 import de.suzufa.screwbox.playground.debo.systems.AutoflipByMovementSystem;
 import de.suzufa.screwbox.playground.debo.systems.BackgroundSystem;
 import de.suzufa.screwbox.playground.debo.systems.CameraShiftSystem;
@@ -69,13 +71,16 @@ import de.suzufa.screwbox.playground.debo.systems.ShowLabelSystem;
 import de.suzufa.screwbox.playground.debo.systems.SmokePuffSystem;
 import de.suzufa.screwbox.playground.debo.systems.VanishingOnCollisionSystem;
 import de.suzufa.screwbox.playground.debo.systems.ZoomSystem;
-import de.suzufa.screwbox.playground.debo.tiles.NonSolidConverter;
-import de.suzufa.screwbox.playground.debo.tiles.OneWayConverter;
-import de.suzufa.screwbox.playground.debo.tiles.SolidConverter;
+import de.suzufa.screwbox.playground.debo.tiles.NonSolidTile;
+import de.suzufa.screwbox.playground.debo.tiles.OneWayGround;
+import de.suzufa.screwbox.playground.debo.tiles.SolidGround;
 import de.suzufa.screwbox.playground.debo.zones.ChangeMapZoneConverter;
 import de.suzufa.screwbox.playground.debo.zones.KillZoneConverter;
 import de.suzufa.screwbox.playground.debo.zones.ShowLabelZoneConverter;
+import de.suzufa.screwbox.tiled.GameObject;
+import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
+import de.suzufa.screwbox.tiled.Tile;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class GameScene implements Scene {
@@ -137,35 +142,31 @@ public class GameScene implements Scene {
         Map map = TiledSupport.loadMap(mapName);
 
         return EntityExtractor.from(map)
-                // TODO: .filter(input -> input.name.equals("bla")).convert(input -> new
-                // Entity().bla.bla)
-
-                // SPLIT CONVERSION FROM ACCEPTING
-                .use(new CloseMapLeftConverter())
-                .use(new CloseMapRightConverter())
-                .use(new CloseMapTopConverter())
-                .use(new MapGravityConverter())
-                .use(new WorldBoundsConverter())
+                .use(new MapGravity())
+                .use(new WorldBounds())
+                .useIf(propertyActive("closed-left"), new MapBorderLeft())
+                .useIf(propertyActive("closed-right"), new MapBorderRight())
+                .useIf(propertyActive("closed-top"), new MapBorderTop())
 
                 .forEach(Map::allLayers)
-                .use(new BackgroundConverter())
+                .useIf(Layer::isImageLayer, new BackgroundConverter())
                 .endLoop()
 
                 .forEach(Map::allTiles)
-                .use(new NonSolidConverter())
-                .use(new SolidConverter())
-                .use(new OneWayConverter())
+                .useIf(tileTypeIs("non-solid"), new NonSolidTile())
+                .useIf(tileTypeIs("solid"), new SolidGround())
+                .useIf(tileTypeIs("one-way"), new OneWayGround())
                 .endLoop()
 
                 .forEach(Map::allObjects)
-                .use(new CatConverter())
-                .use(new MovingSpikesConverter())
-                .use(new VanishingBlockConverter())
-                .use(new SlimeConverter())
-                .use(new PlatfomConverter())
-                .use(new WaypointConverter())
-                .use(new CameraConverter())
-                .use(new PlayerConverter())
+                .useIf(hasName("cat"), new CatCompanion())
+                .useIf(hasName("moving-spikes"), new MovingSpikes())
+                .useIf(hasName("vanishing-block"), new VanishingBlock())
+                .useIf(hasName("slime"), new Slime())
+                .useIf(hasName("platform"), new Platfom())
+                .useIf(hasName("waypoint"), new Waypoint())
+                .useIf(hasName("camera"), new Camera())
+                .useIf(hasName("player"), new Player())
                 .use(new DeboDConverter())
                 .use(new DeboEConverter())
                 .use(new DeboBConverter())
@@ -181,6 +182,25 @@ public class GameScene implements Scene {
                 .endLoop()
 
                 .buildAllEntities();
+    }
+
+    private InputFilter<GameObject> hasName(String name) {
+        return gameObject -> name.equals(gameObject.name());
+    }
+
+    private InputFilter<Map> propertyActive(String property) {
+        return map -> map.properties().getBoolean(property).orElse(false);
+    }
+
+    private InputFilter<Tile> tileTypeIs(String name) {
+        return tile -> {
+            final Optional<String> type = tile.layer().properties().get("type");
+            if (type.isPresent()) {
+                return name.equals(type.get());
+            }
+            final Optional<String> tileType = tile.properties().get("type");
+            return tileType.isPresent() && name.equals(tileType.get());
+        };
     }
 
 }

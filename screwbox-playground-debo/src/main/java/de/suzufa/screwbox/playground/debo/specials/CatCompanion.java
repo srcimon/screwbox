@@ -9,7 +9,7 @@ import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.CatMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class CatConverter implements EntityConverter<GameObject> {
+public class CatCompanion implements EntityConverter<GameObject> {
 
     @Override
     public boolean accepts(final GameObject object) {

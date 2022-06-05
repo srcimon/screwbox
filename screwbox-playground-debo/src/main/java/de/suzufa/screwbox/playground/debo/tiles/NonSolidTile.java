@@ -5,9 +5,9 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.tiled.Tile;
 
-public class NonSolidConverter extends BaseTileConverter {
+public class NonSolidTile extends BaseTileConverter {
 
-    public NonSolidConverter() {
+    public NonSolidTile() {
         super("non-solid");
     }
 

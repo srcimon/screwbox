@@ -11,7 +11,7 @@ import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionCompone
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class VanishingBlockConverter implements EntityConverter<GameObject> {
+public class VanishingBlock implements EntityConverter<GameObject> {
 
     private static final Sprite SPRITE = TiledSupport.loadTileset("tilesets/props/vanishing-block.json").findById(0);
 
