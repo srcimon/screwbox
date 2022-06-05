@@ -141,7 +141,7 @@ public class GameScene implements Scene {
     List<Entity> createEntitiesFromMap() {
         Map map = TiledSupport.loadMap(mapName);
 
-        return EntityBuilder.from(map)
+        return EntityBuilder.forSource(map)
                 .use(new MapGravity())
                 .use(new WorldBounds())
                 .useIf(propertyIsSet("closed-left"), new MapBorderLeft())

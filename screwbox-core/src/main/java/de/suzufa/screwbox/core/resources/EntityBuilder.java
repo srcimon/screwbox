@@ -12,7 +12,7 @@ public class EntityBuilder<T> {
     private final List<Entity> entities = new ArrayList<>();
     private List<EntityExtraction<EntityBuilder<T>, ?>> extractions = new ArrayList<>();
 
-    public static <T> EntityBuilder<T> from(T input) {
+    public static <T> EntityBuilder<T> forSource(T input) {
         return new EntityBuilder<>(input);
     }
 
