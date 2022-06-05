@@ -10,31 +10,31 @@ public class EntityBuilder<T> {
     private final T input;
 
     private final List<Entity> entities = new ArrayList<>();
-    private List<EntityExtraction<EntityBuilder<T>, ?>> extractions = new ArrayList<>();
+    private final List<EntityExtraction<EntityBuilder<T>, ?>> extractions = new ArrayList<>();
 
-    public static <T> EntityBuilder<T> forSource(T input) {
+    public static <T> EntityBuilder<T> forSource(final T input) {
         return new EntityBuilder<>(input);
     }
 
-    private EntityBuilder(T input) {
+    private EntityBuilder(final T input) {
         this.input = input;
     }
 
-    public EntityBuilder<T> useIf(InputFilter<T> filter, EntityConverter<T> converter) {
+    public EntityBuilder<T> addIf(final InputFilter<T> filter, final EntityConverter<T> converter) {
         if (filter.matches(input)) {
             entities.add(converter.convert(input));
         }
         return this;
     }
 
-    public EntityBuilder<T> use(final EntityConverter<T> converter) {
+    public EntityBuilder<T> add(final EntityConverter<T> converter) {
         entities.add(converter.convert(input));
         return this;
     }
 
-    public <O> EntityExtraction<EntityBuilder<T>, O> forEach(Extractor<T, O> extractor) {
-        List<O> extractedEntities = extractor.extractFrom(input);
-        var entityExtraction = new EntityExtraction<>(extractedEntities, this);
+    public <O> EntityExtraction<EntityBuilder<T>, O> forEach(final Extractor<T, O> extractor) {
+        final List<O> extractedEntities = extractor.extractFrom(input);
+        final var entityExtraction = new EntityExtraction<>(extractedEntities, this);
         extractions.add(entityExtraction);
         return entityExtraction;
     }

@@ -16,7 +16,7 @@ public class EntityExtraction<C, O> {
         this.caller = caller;
     }
 
-    public EntityExtraction<C, O> useIf(InputFilter<O> filter, final EntityConverter<O> converter) {
+    public EntityExtraction<C, O> addIf(InputFilter<O> filter, final EntityConverter<O> converter) {
         inputObjects.stream()
                 .filter(filter::matches)
                 .map(converter::convert)
