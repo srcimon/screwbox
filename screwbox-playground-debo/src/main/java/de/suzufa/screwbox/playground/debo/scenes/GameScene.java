@@ -2,8 +2,8 @@ package de.suzufa.screwbox.playground.debo.scenes;
 
 import java.util.Optional;
 
-import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.BatchImport.Filter;
+import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
@@ -91,46 +91,7 @@ public class GameScene implements Scene {
 
     @Override
     public void initialize(EntityEngine entityEngine) {
-        Map map = TiledSupport.loadMap(mapName);
-
-        entityEngine.batchImportFrom(map)
-                .add(new MapGravity())
-                .add(new WorldBounds())
-                .addIf(propertyIsSet("closed-left"), new MapBorderLeft())
-                .addIf(propertyIsSet("closed-right"), new MapBorderRight())
-                .addIf(propertyIsSet("closed-top"), new MapBorderTop())
-
-                .forEach(Map::allLayers)
-                .addIf(Layer::isImageLayer, new BackgroundConverter())
-                .endLoop()
-
-                .forEach(Map::allTiles)
-                .addIf(tileTypeIs("non-solid"), new NonSolidTile())
-                .addIf(tileTypeIs("solid"), new SolidGround())
-                .addIf(tileTypeIs("one-way"), new OneWayGround())
-                .endLoop()
-
-                .forEach(Map::allObjects)
-                .addIf(hasName("cat"), new CatCompanion())
-                .addIf(hasName("moving-spikes"), new MovingSpikes())
-                .addIf(hasName("vanishing-block"), new VanishingBlock())
-                .addIf(hasName("slime"), new Slime())
-                .addIf(hasName("platform"), new Platfom())
-                .addIf(hasName("waypoint"), new Waypoint())
-                .addIf(hasName("camera"), new Camera())
-                .addIf(hasName("player"), new Player())
-                .addIf(hasName("debo-d"), new DeboD())
-                .addIf(hasName("debo-e"), new DeboE())
-                .addIf(hasName("debo-b"), new DeboB())
-                .addIf(hasName("debo-o"), new DeboO())
-                .addIf(hasName("cherries"), new Cherries())
-                .addIf(hasName("killzone"), new KillZone())
-                .addIf(hasName("box"), new Box())
-                .addIf(hasName("diggable"), new Diggable())
-                .addIf(hasName("change-map-zone"), new ChangeMapZone())
-                .addIf(hasName("show-label-zone"), new ShowLabelZone())
-                .addIf(hasName("fade-in"), new FadeInEffect())
-                .addIf(hasName("tracer"), new Tracer());
+        addMapEntities(entityEngine);
 
         entityEngine
                 .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
@@ -174,6 +135,49 @@ public class GameScene implements Scene {
                 new BackgroundSystem(),
                 new CatMovementSystem(),
                 new SpriteRenderSystem());
+    }
+
+    void addMapEntities(EntityEngine entityEngine) {
+        Map map = TiledSupport.loadMap(mapName);
+
+        entityEngine.batchImportFrom(map)
+                .add(new MapGravity())
+                .add(new WorldBounds())
+                .addIf(propertyIsSet("closed-left"), new MapBorderLeft())
+                .addIf(propertyIsSet("closed-right"), new MapBorderRight())
+                .addIf(propertyIsSet("closed-top"), new MapBorderTop())
+
+                .forEach(Map::allLayers)
+                .addIf(Layer::isImageLayer, new BackgroundConverter())
+                .endLoop()
+
+                .forEach(Map::allTiles)
+                .addIf(tileTypeIs("non-solid"), new NonSolidTile())
+                .addIf(tileTypeIs("solid"), new SolidGround())
+                .addIf(tileTypeIs("one-way"), new OneWayGround())
+                .endLoop()
+
+                .forEach(Map::allObjects)
+                .addIf(hasName("cat"), new CatCompanion())
+                .addIf(hasName("moving-spikes"), new MovingSpikes())
+                .addIf(hasName("vanishing-block"), new VanishingBlock())
+                .addIf(hasName("slime"), new Slime())
+                .addIf(hasName("platform"), new Platfom())
+                .addIf(hasName("waypoint"), new Waypoint())
+                .addIf(hasName("camera"), new Camera())
+                .addIf(hasName("player"), new Player())
+                .addIf(hasName("debo-d"), new DeboD())
+                .addIf(hasName("debo-e"), new DeboE())
+                .addIf(hasName("debo-b"), new DeboB())
+                .addIf(hasName("debo-o"), new DeboO())
+                .addIf(hasName("cherries"), new Cherries())
+                .addIf(hasName("killzone"), new KillZone())
+                .addIf(hasName("box"), new Box())
+                .addIf(hasName("diggable"), new Diggable())
+                .addIf(hasName("change-map-zone"), new ChangeMapZone())
+                .addIf(hasName("show-label-zone"), new ShowLabelZone())
+                .addIf(hasName("fade-in"), new FadeInEffect())
+                .addIf(hasName("tracer"), new Tracer());
     }
 
     private Filter<GameObject> hasName(String name) {

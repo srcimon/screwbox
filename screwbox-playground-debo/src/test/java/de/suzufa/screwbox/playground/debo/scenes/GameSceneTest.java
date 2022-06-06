@@ -24,7 +24,7 @@ class GameSceneTest {
         var systemManager = new DefaultSystemManager(engine, entityManager);
         EntityEngine entityEngine = new DefaultEntityEngine(entityManager, systemManager);
 
-        new GameScene(mapName).initialize(entityEngine);
+        new GameScene(mapName).addMapEntities(entityEngine);
 
         assertThat(entityEngine.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
