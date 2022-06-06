@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
+import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.ChangeMapComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;

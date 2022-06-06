@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
+import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;

@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
+import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
