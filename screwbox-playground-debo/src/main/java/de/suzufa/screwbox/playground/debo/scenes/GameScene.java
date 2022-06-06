@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
-import de.suzufa.screwbox.core.entityengine.BatchImport.Filter;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
@@ -180,15 +180,15 @@ public class GameScene implements Scene {
                 .addIf(hasName("tracer"), new Tracer());
     }
 
-    private Filter<GameObject> hasName(String name) {
+    private Predicate<GameObject> hasName(String name) {
         return gameObject -> name.equals(gameObject.name());
     }
 
-    private Filter<Map> propertyIsSet(String property) {
+    private Predicate<Map> propertyIsSet(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
-    private Filter<Tile> tileTypeIs(String name) {
+    private Predicate<Tile> tileTypeIs(String name) {
         return tile -> {
             final Optional<String> type = tile.layer().properties().get("type");
             if (type.isPresent()) {
