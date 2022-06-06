@@ -37,7 +37,5 @@ public interface EntityEngine {
 
     List<Entity> allEntities();
 
-    default <T> EntityBatchImport<T> batchImportFrom(T source) {
-        return new EntityBatchImport<>(source, this);
-    }
+    <T> BatchImport<T> batchImportFrom(T source);
 }

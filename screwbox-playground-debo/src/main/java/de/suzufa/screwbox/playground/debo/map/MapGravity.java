@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.map;
 
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityBatchImport.Converter;
+import de.suzufa.screwbox.core.entityengine.BatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.GravityComponent;
 import de.suzufa.screwbox.tiled.Map;
 

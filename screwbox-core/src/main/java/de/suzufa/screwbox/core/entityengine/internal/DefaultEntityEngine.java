@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.BatchImport;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 
@@ -139,5 +140,10 @@ public class DefaultEntityEngine implements EntityEngine {
     @Override
     public List<Entity> allEntities() {
         return entityManager.allEntities();
+    }
+
+    @Override
+    public <T> BatchImport<T> batchImportFrom(T source) {
+        return new BatchImport<>(source, this);
     }
 }

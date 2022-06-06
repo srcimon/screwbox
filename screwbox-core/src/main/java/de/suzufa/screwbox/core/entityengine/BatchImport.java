@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.entityengine;
 
 import java.util.List;
 
-public class EntityBatchImport<T> {
+public class BatchImport<T> {
 
     public interface Converter<T> {
         Entity convert(final T object);
@@ -51,24 +51,24 @@ public class EntityBatchImport<T> {
     private final T input;
     private EntityEngine engine;
 
-    EntityBatchImport(final T input, EntityEngine engine) {
+    public BatchImport(final T input, EntityEngine engine) {
         this.input = input;
         this.engine = engine;
     }
 
-    public EntityBatchImport<T> addIf(final Filter<T> filter, final Converter<T> converter) {
+    public BatchImport<T> addIf(final Filter<T> filter, final Converter<T> converter) {
         if (filter.matches(input)) {
             engine.add(converter.convert(input));
         }
         return this;
     }
 
-    public EntityBatchImport<T> add(final Converter<T> converter) {
+    public BatchImport<T> add(final Converter<T> converter) {
         engine.add(converter.convert(input));
         return this;
     }
 
-    public <O> ExtractionLoop<EntityBatchImport<T>, O> forEach(final Extractor<T, O> extractor) {
+    public <O> ExtractionLoop<BatchImport<T>, O> forEach(final Extractor<T, O> extractor) {
         final List<O> extractedEntities = extractor.extractFrom(input);
         return new ExtractionLoop<>(extractedEntities, this);
     }

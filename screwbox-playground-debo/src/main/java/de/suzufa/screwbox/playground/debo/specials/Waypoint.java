@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.specials;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityBatchImport.Converter;
+import de.suzufa.screwbox.core.entityengine.BatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
 import de.suzufa.screwbox.tiled.GameObject;

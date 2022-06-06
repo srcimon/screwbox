@@ -3,7 +3,7 @@ package de.suzufa.screwbox.playground.debo.scenes;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityBatchImport.Filter;
+import de.suzufa.screwbox.core.entityengine.BatchImport.Filter;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;

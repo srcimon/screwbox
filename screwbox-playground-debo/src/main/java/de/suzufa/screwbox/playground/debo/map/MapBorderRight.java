@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.tiled.Map;
 
-public class MapBorderRight implements de.suzufa.screwbox.core.entityengine.EntityBatchImport.Converter<Map> {
+public class MapBorderRight implements de.suzufa.screwbox.core.entityengine.BatchImport.Converter<Map> {
 
     @Override
     public Entity convert(final Map map) {
