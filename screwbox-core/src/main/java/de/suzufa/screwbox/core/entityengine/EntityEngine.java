@@ -36,4 +36,8 @@ public interface EntityEngine {
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
     List<Entity> allEntities();
+
+    default <T> EntityBatchImport<T> batchImportFrom(T source) {
+        return new EntityBatchImport<>(source, this);
+    }
 }

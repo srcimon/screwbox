@@ -4,7 +4,7 @@ import static de.suzufa.screwbox.core.Duration.ofSeconds;
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
+import de.suzufa.screwbox.core.entityengine.EntityBatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ScreenTransitionComponent;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;

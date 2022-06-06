@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.enemies;
 
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
+import de.suzufa.screwbox.core.entityengine.EntityBatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
