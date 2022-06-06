@@ -6,13 +6,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import de.suzufa.screwbox.core.entityengine.BatchImport.Extractor;
 
 @ExtendWith(MockitoExtension.class)
 class BatchImportTest {
@@ -66,11 +65,11 @@ class BatchImportTest {
         verify(entityEngine, times(7)).add(any(Entity.class));
     }
 
-    private Extractor<String, String> word() {
+    private Function<String, List<String>> word() {
         return input -> List.of(input.split(" "));
     }
 
-    private Extractor<String, String> line() {
+    private Function<String, List<String>> line() {
         return input -> List.of(input.split("\n"));
     }
 }
