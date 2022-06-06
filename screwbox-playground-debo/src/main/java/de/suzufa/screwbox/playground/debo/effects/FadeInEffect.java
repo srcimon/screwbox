@@ -10,10 +10,10 @@ import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;
 import de.suzufa.screwbox.core.graphics.transitions.HorizontalLinesTransition;
 import de.suzufa.screwbox.core.graphics.transitions.MosaikTransition;
 import de.suzufa.screwbox.core.graphics.transitions.SwipeTransition;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class FadeInEffect implements EntityConverter<GameObject> {
+public class FadeInEffect implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {

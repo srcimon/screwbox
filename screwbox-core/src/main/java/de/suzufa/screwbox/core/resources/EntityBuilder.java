@@ -7,6 +7,22 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 
 public class EntityBuilder<T> {
 
+    public interface Converter<T> {
+
+        Entity convert(final T object);
+    }
+
+    public interface Filter<T> {
+
+        boolean matches(T input);
+    }
+
+    public interface Extractor<I, O> {
+
+        public List<O> extractFrom(I input);
+
+    }
+
     private final T input;
 
     private final List<Entity> entities = new ArrayList<>();
@@ -20,14 +36,14 @@ public class EntityBuilder<T> {
         this.input = input;
     }
 
-    public EntityBuilder<T> addIf(final InputFilter<T> filter, final EntityConverter<T> converter) {
+    public EntityBuilder<T> addIf(final Filter<T> filter, final Converter<T> converter) {
         if (filter.matches(input)) {
             entities.add(converter.convert(input));
         }
         return this;
     }
 
-    public EntityBuilder<T> add(final EntityConverter<T> converter) {
+    public EntityBuilder<T> add(final Converter<T> converter) {
         entities.add(converter.convert(input));
         return this;
     }

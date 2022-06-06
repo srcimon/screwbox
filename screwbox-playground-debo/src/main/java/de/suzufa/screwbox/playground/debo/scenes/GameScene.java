@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
 import de.suzufa.screwbox.core.resources.EntityBuilder;
-import de.suzufa.screwbox.core.resources.InputFilter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Filter;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
 import de.suzufa.screwbox.playground.debo.collectables.DeboB;
@@ -184,15 +184,15 @@ public class GameScene implements Scene {
                 .build();
     }
 
-    private InputFilter<GameObject> hasName(String name) {
+    private Filter<GameObject> hasName(String name) {
         return gameObject -> name.equals(gameObject.name());
     }
 
-    private InputFilter<Map> propertyIsSet(String property) {
+    private Filter<Map> propertyIsSet(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
-    private InputFilter<Tile> tileTypeIs(String name) {
+    private Filter<Tile> tileTypeIs(String name) {
         return tile -> {
             final Optional<String> type = tile.layer().properties().get("type");
             if (type.isPresent()) {

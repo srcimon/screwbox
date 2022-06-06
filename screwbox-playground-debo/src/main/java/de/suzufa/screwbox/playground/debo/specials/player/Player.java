@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.AutoflipByMovementComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
@@ -17,7 +17,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class Player implements EntityConverter<GameObject> {
+public class Player implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {

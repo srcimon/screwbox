@@ -3,10 +3,10 @@ package de.suzufa.screwbox.playground.debo.map;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.tiled.Map;
 
-public class WorldBounds implements EntityConverter<Map> {
+public class WorldBounds implements Converter<Map> {
 
     @Override
     public Entity convert(Map map) {

@@ -2,11 +2,11 @@ package de.suzufa.screwbox.playground.debo.specials;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class Waypoint implements EntityConverter<GameObject> {
+public class Waypoint implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {

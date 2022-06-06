@@ -6,10 +6,10 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.tiled.Tile;
 
-public class OneWayGround implements EntityConverter<Tile> {
+public class OneWayGround implements Converter<Tile> {
 
     @Override
     public Entity convert(Tile tile) {

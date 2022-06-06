@@ -7,13 +7,13 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class Platfom implements EntityConverter<GameObject> {
+public class Platfom implements Converter<GameObject> {
 
     private static final SpriteDictionary SPRITE = TiledSupport.loadTileset("tilesets/props/platform.json");
 

@@ -4,12 +4,12 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.CatMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class CatCompanion implements EntityConverter<GameObject> {
+public class CatCompanion implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {

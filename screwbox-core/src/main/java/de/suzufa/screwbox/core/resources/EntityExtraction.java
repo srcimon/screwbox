@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Filter;
 
 public class EntityExtraction<C, O> {
 
@@ -16,7 +18,7 @@ public class EntityExtraction<C, O> {
         this.caller = caller;
     }
 
-    public EntityExtraction<C, O> addIf(InputFilter<O> filter, final EntityConverter<O> converter) {
+    public EntityExtraction<C, O> addIf(Filter<O> filter, final Converter<O> converter) {
         inputObjects.stream()
                 .filter(filter::matches)
                 .map(converter::convert)
@@ -25,7 +27,7 @@ public class EntityExtraction<C, O> {
         return this;
     }
 
-    public EntityExtraction<C, O> use(final EntityConverter<O> converter) {
+    public EntityExtraction<C, O> use(final Converter<O> converter) {
         inputObjects.stream()
                 .map(converter::convert)
                 .forEach(extractedEntities::add);

@@ -6,12 +6,12 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.resources.EntityConverter;
+import de.suzufa.screwbox.core.resources.EntityBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class VanishingBlock implements EntityConverter<GameObject> {
+public class VanishingBlock implements Converter<GameObject> {
 
     private static final Sprite SPRITE = TiledSupport.loadTileset("tilesets/props/vanishing-block.json").findById(0);
 
