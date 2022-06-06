@@ -1,16 +1,13 @@
 package de.suzufa.screwbox.core.entityengine;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class BatchImport<T> {
 
     public interface Converter<T> {
         Entity convert(final T object);
-    }
-
-    public interface Extractor<I, O> {
-        public List<O> extractFrom(I input);
     }
 
     public class ExtractionLoop<C, O> {
@@ -65,8 +62,8 @@ public class BatchImport<T> {
         return this;
     }
 
-    public <O> ExtractionLoop<BatchImport<T>, O> forEach(final Extractor<T, O> extractor) {
-        final List<O> extractedEntities = extractor.extractFrom(input);
+    public <O> ExtractionLoop<BatchImport<T>, O> forEach(final Function<T, List<O>> extractionMethod) {
+        final List<O> extractedEntities = extractionMethod.apply(input);
         return new ExtractionLoop<>(extractedEntities, this);
     }
 
