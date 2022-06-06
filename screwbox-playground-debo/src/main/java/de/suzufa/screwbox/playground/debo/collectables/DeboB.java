@@ -1,10 +1,10 @@
 package de.suzufa.screwbox.playground.debo.collectables;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.playground.debo.components.CollectableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;

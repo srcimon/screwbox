@@ -2,10 +2,10 @@ package de.suzufa.screwbox.playground.debo.specials;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.tiled.GameObject;
 
 public class Camera implements Converter<GameObject> {

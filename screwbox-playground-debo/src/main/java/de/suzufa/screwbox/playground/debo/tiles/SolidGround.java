@@ -2,11 +2,11 @@ package de.suzufa.screwbox.playground.debo.tiles;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.tiled.Tile;
 
 public class SolidGround implements Converter<Tile> {

@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.playground.debo.map;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.tiled.Map;
 
 public class WorldBounds implements Converter<Map> {

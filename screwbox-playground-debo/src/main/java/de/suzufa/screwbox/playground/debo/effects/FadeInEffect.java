@@ -4,13 +4,13 @@ import static de.suzufa.screwbox.core.Duration.ofSeconds;
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ScreenTransitionComponent;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;
 import de.suzufa.screwbox.core.graphics.transitions.HorizontalLinesTransition;
 import de.suzufa.screwbox.core.graphics.transitions.MosaikTransition;
 import de.suzufa.screwbox.core.graphics.transitions.SwipeTransition;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Converter;
 import de.suzufa.screwbox.tiled.GameObject;
 
 public class FadeInEffect implements Converter<GameObject> {

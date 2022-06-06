@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entityengine.EntityBatchBuilder.Filter;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CollisionSensorSystem;
@@ -17,8 +19,6 @@ import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder;
-import de.suzufa.screwbox.core.resources.EntityBatchBuilder.Filter;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
 import de.suzufa.screwbox.playground.debo.collectables.DeboB;

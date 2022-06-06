@@ -1,9 +1,7 @@
-package de.suzufa.screwbox.core.resources;
+package de.suzufa.screwbox.core.entityengine;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.suzufa.screwbox.core.entityengine.Entity;
 
 public class EntityBatchBuilder<T> {
 
@@ -47,17 +45,12 @@ public class EntityBatchBuilder<T> {
             return this;
         }
 
-        List<Entity> entities() {
-            return extractedEntities;
-        }
-
         public C endLoop() {
             return caller;
         }
     }
 
     private final T input;
-
     private final List<Entity> entities = new ArrayList<>();
     private final List<ExtractionLoop<EntityBatchBuilder<T>, ?>> extractions = new ArrayList<>();
 
@@ -89,7 +82,7 @@ public class EntityBatchBuilder<T> {
     }
 
     public List<Entity> build() {
-        extractions.stream().flatMap(e -> e.entities().stream()).forEach(entities::add);
+        extractions.stream().flatMap(e -> e.extractedEntities.stream()).forEach(entities::add);
         extractions.clear();
         return entities;
     }
