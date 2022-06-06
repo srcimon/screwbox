@@ -1,18 +1,13 @@
 package de.suzufa.screwbox.playground.debo.effects;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entityengine.BatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.resources.EntityConverter;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
 import de.suzufa.screwbox.tiled.Layer;
 
-public class BackgroundConverter implements EntityConverter<Layer> {
-
-    @Override
-    public boolean accepts(Layer layer) {
-        return layer.isImageLayer();
-    }
+public class BackgroundConverter implements Converter<Layer> {
 
     @Override
     public Entity convert(Layer layer) {

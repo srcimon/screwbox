@@ -2,16 +2,15 @@ package de.suzufa.screwbox.playground.debo.map;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.BatchImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.tiled.Map;
 
-public class CloseMapBottomConverter implements Converter<Map> {
+public class MapBorderRight implements de.suzufa.screwbox.core.entityengine.BatchImport.Converter<Map> {
 
     @Override
     public Entity convert(final Map map) {
-        Bounds bounds = Bounds.atOrigin(0, map.bounds().height(), map.bounds().width(), 200);
+        Bounds bounds = Bounds.atOrigin(map.bounds().width(), 0, 200, map.bounds().height());
         return new Entity().add(
                 new TransformComponent(bounds),
                 new ColliderComponent(500));

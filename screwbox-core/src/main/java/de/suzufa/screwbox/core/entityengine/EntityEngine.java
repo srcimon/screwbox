@@ -36,4 +36,10 @@ public interface EntityEngine {
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
     List<Entity> allEntities();
+
+    /**
+     * Starts a batch import for any kind of input source. Can be used to load
+     * Tiled-Maps or your the map format of your preferred game editor.
+     */
+    <T> BatchImport<T> batchImportFrom(T source);
 }
