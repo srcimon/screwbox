@@ -9,12 +9,12 @@ public class SourceImport<T> {
         Entity convert(final T object);
     }
 
-    public class SourceImportOn {
+    public class ConditionalSourceImport {
 
         private Predicate<T> condition;
         private SourceImport<T> caller;
 
-        public SourceImportOn(Predicate<T> condition, SourceImport<T> caller) {
+        private ConditionalSourceImport(Predicate<T> condition, SourceImport<T> caller) {
             this.condition = condition;
             this.caller = caller;
         }
@@ -44,8 +44,8 @@ public class SourceImport<T> {
         return this;
     }
 
-    public SourceImportOn on(final Predicate<T> condition) {
-        return new SourceImportOn(condition, this);
+    public ConditionalSourceImport when(final Predicate<T> condition) {
+        return new ConditionalSourceImport(condition, this);
     }
 
 }

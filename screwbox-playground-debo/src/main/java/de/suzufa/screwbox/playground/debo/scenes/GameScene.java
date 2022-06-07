@@ -144,40 +144,40 @@ public class GameScene implements Scene {
                 .as(new MapGravity())
                 .as(new WorldBounds())
 
-                .on(propertyIsSet("closed-left")).as(new MapBorderLeft())
-                .on(propertyIsSet("closed-left")).as(new MapBorderLeft())
-                .on(propertyIsSet("closed-right")).as(new MapBorderRight())
-                .on(propertyIsSet("closed-top")).as(new MapBorderTop());
+                .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsSet("closed-right")).as(new MapBorderRight())
+                .when(propertyIsSet("closed-top")).as(new MapBorderTop());
 
         entityEngine.importSource(map.allLayers())
-                .on(Layer::isImageLayer).as(new Background());
+                .when(Layer::isImageLayer).as(new Background());
 
         entityEngine.importSource(map.allTiles())
-                .on(tileTypeIs("non-solid")).as(new NonSolidTile())
-                .on(tileTypeIs("solid")).as(new SolidGround())
-                .on(tileTypeIs("one-way")).as(new OneWayGround());
+                .when(tileTypeIs("non-solid")).as(new NonSolidTile())
+                .when(tileTypeIs("solid")).as(new SolidGround())
+                .when(tileTypeIs("one-way")).as(new OneWayGround());
 
         entityEngine.importSource(map.allObjects())
-                .on(hasName("cat")).as(new CatCompanion())
-                .on(hasName("moving-spikes")).as(new MovingSpikes())
-                .on(hasName("vanishing-block")).as(new VanishingBlock())
-                .on(hasName("slime")).as(new Slime())
-                .on(hasName("platform")).as(new Platfom())
-                .on(hasName("waypoint")).as(new Waypoint())
-                .on(hasName("camera")).as(new Camera())
-                .on(hasName("player")).as(new Player())
-                .on(hasName("debo-d")).as(new DeboD())
-                .on(hasName("debo-e")).as(new DeboE())
-                .on(hasName("debo-b")).as(new DeboB())
-                .on(hasName("debo-o")).as(new DeboO())
-                .on(hasName("cherries")).as(new Cherries())
-                .on(hasName("killzone")).as(new KillZone())
-                .on(hasName("box")).as(new Box())
-                .on(hasName("diggable")).as(new Diggable())
-                .on(hasName("change-map-zone")).as(new ChangeMapZone())
-                .on(hasName("show-label-zone")).as(new ShowLabelZone())
-                .on(hasName("fade-in")).as(new FadeInEffect())
-                .on(hasName("tracer")).as(new Tracer());
+                .when(hasName("cat")).as(new CatCompanion())
+                .when(hasName("moving-spikes")).as(new MovingSpikes())
+                .when(hasName("vanishing-block")).as(new VanishingBlock())
+                .when(hasName("slime")).as(new Slime())
+                .when(hasName("platform")).as(new Platfom())
+                .when(hasName("waypoint")).as(new Waypoint())
+                .when(hasName("camera")).as(new Camera())
+                .when(hasName("player")).as(new Player())
+                .when(hasName("debo-d")).as(new DeboD())
+                .when(hasName("debo-e")).as(new DeboE())
+                .when(hasName("debo-b")).as(new DeboB())
+                .when(hasName("debo-o")).as(new DeboO())
+                .when(hasName("cherries")).as(new Cherries())
+                .when(hasName("killzone")).as(new KillZone())
+                .when(hasName("box")).as(new Box())
+                .when(hasName("diggable")).as(new Diggable())
+                .when(hasName("change-map-zone")).as(new ChangeMapZone())
+                .when(hasName("show-label-zone")).as(new ShowLabelZone())
+                .when(hasName("fade-in")).as(new FadeInEffect())
+                .when(hasName("tracer")).as(new Tracer());
     }
 
     private Predicate<GameObject> hasName(String name) {
