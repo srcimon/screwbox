@@ -9,9 +9,28 @@ public class SourceImport<T> {
         Entity convert(final T object);
     }
 
+    public class SourceImportOn {
+
+        private Predicate<T> condition;
+        private SourceImport<T> caller;
+
+        public SourceImportOn(Predicate<T> condition, SourceImport<T> caller) {
+            this.condition = condition;
+            this.caller = caller;
+        }
+
+        public SourceImport<T> as(final Converter<T> converter) {
+            for (final var input : inputs) {
+                if (condition.test(input)) {
+                    engine.add(converter.convert(input));
+                }
+            }
+            return caller;
+        }
+    }
+
     private final List<T> inputs;
     private final EntityEngine engine;
-    private Predicate<T> condition = input -> true;
 
     public SourceImport(final List<T> inputs, final EntityEngine engine) {
         this.inputs = inputs;
@@ -20,16 +39,13 @@ public class SourceImport<T> {
 
     public SourceImport<T> as(final Converter<T> converter) {
         for (final var input : inputs) {
-            if (condition.test(input)) {
-                engine.add(converter.convert(input));
-            }
+            engine.add(converter.convert(input));
         }
         return this;
     }
 
-    public SourceImport<T> on(final Predicate<T> condition) {
-        this.condition = condition;
-        return this;
+    public SourceImportOn on(final Predicate<T> condition) {
+        return new SourceImportOn(condition, this);
     }
 
 }
