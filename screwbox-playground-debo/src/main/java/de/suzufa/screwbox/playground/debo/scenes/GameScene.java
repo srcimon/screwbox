@@ -152,33 +152,33 @@ public class GameScene implements Scene {
                 .when(Layer::isImageLayer).as(new Background());
 
         entityEngine.importSource(map.allTiles())
-                .usingMatcher(this::tileType)
-                .matching("non-solid").as(new NonSolidTile())
-                .matching("solid").as(new SolidGround())
-                .matching("one-way").as(new OneWayGround());
+                .usingKey(this::tileType)
+                .whenKeyIs("non-solid").as(new NonSolidTile())
+                .whenKeyIs("solid").as(new SolidGround())
+                .whenKeyIs("one-way").as(new OneWayGround());
 
         entityEngine.importSource(map.allObjects())
-                .usingMatcher(GameObject::name)
-                .matching("cat").as(new CatCompanion())
-                .matching("moving-spikes").as(new MovingSpikes())
-                .matching("vanishing-block").as(new VanishingBlock())
-                .matching("slime").as(new Slime())
-                .matching("platform").as(new Platfom())
-                .matching("waypoint").as(new Waypoint())
-                .matching("camera").as(new Camera())
-                .matching("player").as(new Player())
-                .matching("debo-d").as(new DeboD())
-                .matching("debo-e").as(new DeboE())
-                .matching("debo-b").as(new DeboB())
-                .matching("debo-o").as(new DeboO())
-                .matching("cherries").as(new Cherries())
-                .matching("killzone").as(new KillZone())
-                .matching("box").as(new Box())
-                .matching("diggable").as(new Diggable())
-                .matching("change-map-zone").as(new ChangeMapZone())
-                .matching("show-label-zone").as(new ShowLabelZone())
-                .matching("fade-in").as(new FadeInEffect())
-                .matching("tracer").as(new Tracer());
+                .usingKey(GameObject::name)
+                .whenKeyIs("cat").as(new CatCompanion())
+                .whenKeyIs("moving-spikes").as(new MovingSpikes())
+                .whenKeyIs("vanishing-block").as(new VanishingBlock())
+                .whenKeyIs("slime").as(new Slime())
+                .whenKeyIs("platform").as(new Platfom())
+                .whenKeyIs("waypoint").as(new Waypoint())
+                .whenKeyIs("camera").as(new Camera())
+                .whenKeyIs("player").as(new Player())
+                .whenKeyIs("debo-d").as(new DeboD())
+                .whenKeyIs("debo-e").as(new DeboE())
+                .whenKeyIs("debo-b").as(new DeboB())
+                .whenKeyIs("debo-o").as(new DeboO())
+                .whenKeyIs("cherries").as(new Cherries())
+                .whenKeyIs("killzone").as(new KillZone())
+                .whenKeyIs("box").as(new Box())
+                .whenKeyIs("diggable").as(new Diggable())
+                .whenKeyIs("change-map-zone").as(new ChangeMapZone())
+                .whenKeyIs("show-label-zone").as(new ShowLabelZone())
+                .whenKeyIs("fade-in").as(new FadeInEffect())
+                .whenKeyIs("tracer").as(new Tracer());
     }
 
     private Predicate<Map> propertyIsActive(String property) {
