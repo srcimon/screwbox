@@ -143,12 +143,12 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public <T> SourceImport<T> importFromSource(T source) {
-        return importFromSource(List.of(source));
+    public <T> SourceImport<T> importSource(T source) {
+        return importSource(List.of(source));
     }
 
     @Override
-    public <T> SourceImport<T> importFromSource(List<T> source) {
+    public <T> SourceImport<T> importSource(List<T> source) {
         return new SourceImport<>(source, this);
     }
 }

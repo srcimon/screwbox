@@ -7,7 +7,7 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
 import de.suzufa.screwbox.tiled.Layer;
 
-public class BackgroundConverter implements Converter<Layer> {
+public class Background implements Converter<Layer> {
 
     @Override
     public Entity convert(Layer layer) {

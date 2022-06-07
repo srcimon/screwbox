@@ -37,7 +37,7 @@ public interface EntityEngine {
 
     List<Entity> allEntities();
 
-    <T> SourceImport<T> importFromSource(T source);
+    <T> SourceImport<T> importSource(T source);
 
-    <T> SourceImport<T> importFromSource(List<T> source);
+    <T> SourceImport<T> importSource(List<T> source);
 }
