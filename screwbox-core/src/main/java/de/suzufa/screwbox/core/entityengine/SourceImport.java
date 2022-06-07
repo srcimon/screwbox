@@ -38,7 +38,7 @@ public class SourceImport<T> {
             this.matcher = matcher;
         }
 
-        public MatchingSourceImportWithKey<M> whenKeyIs(M key) {
+        public MatchingSourceImportWithKey<M> matches(M key) {
             return new MatchingSourceImportWithKey<>(this.matcher, this, key);
         }
 
@@ -86,7 +86,7 @@ public class SourceImport<T> {
         return new ConditionalSourceImport(condition, this);
     }
 
-    public <M> MatchingSourceImport<M> usingKey(Function<T, M> matcher) {
+    public <M> MatchingSourceImport<M> whenKey(Function<T, M> matcher) {
         return new MatchingSourceImport<>(matcher);
     }
 
