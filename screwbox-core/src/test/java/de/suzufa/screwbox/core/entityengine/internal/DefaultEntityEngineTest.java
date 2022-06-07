@@ -18,12 +18,6 @@ class DefaultEntityEngineTest {
     private DefaultEntityEngine entityEngine;
 
     @Mock
-    private DefaultEntityManager entityManager;
-
-    @Mock
-    private DefaultSystemManager systemMananger;
-
-    @Mock
     private Engine engine;
 
     @Test

@@ -143,60 +143,56 @@ public class GameScene implements Scene {
         entityEngine.importSource(map)
                 .as(new MapGravity())
                 .as(new WorldBounds())
-
                 .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsSet("closed-right")).as(new MapBorderRight())
                 .when(propertyIsSet("closed-top")).as(new MapBorderTop());
 
         entityEngine.importSource(map.allLayers())
-                .when(Layer::isImageLayer).as(new Background());
+                .usingMatcher(Layer::isImageLayer)
+                .matching(true).as(new Background());
 
         entityEngine.importSource(map.allTiles())
-                .when(tileTypeIs("non-solid")).as(new NonSolidTile())
-                .when(tileTypeIs("solid")).as(new SolidGround())
-                .when(tileTypeIs("one-way")).as(new OneWayGround());
+                .usingMatcher(this::tileType)
+                .matching("non-solid").as(new NonSolidTile())
+                .matching("solid").as(new SolidGround())
+                .matching("one-way").as(new OneWayGround());
 
         entityEngine.importSource(map.allObjects())
-                .when(hasName("cat")).as(new CatCompanion())
-                .when(hasName("moving-spikes")).as(new MovingSpikes())
-                .when(hasName("vanishing-block")).as(new VanishingBlock())
-                .when(hasName("slime")).as(new Slime())
-                .when(hasName("platform")).as(new Platfom())
-                .when(hasName("waypoint")).as(new Waypoint())
-                .when(hasName("camera")).as(new Camera())
-                .when(hasName("player")).as(new Player())
-                .when(hasName("debo-d")).as(new DeboD())
-                .when(hasName("debo-e")).as(new DeboE())
-                .when(hasName("debo-b")).as(new DeboB())
-                .when(hasName("debo-o")).as(new DeboO())
-                .when(hasName("cherries")).as(new Cherries())
-                .when(hasName("killzone")).as(new KillZone())
-                .when(hasName("box")).as(new Box())
-                .when(hasName("diggable")).as(new Diggable())
-                .when(hasName("change-map-zone")).as(new ChangeMapZone())
-                .when(hasName("show-label-zone")).as(new ShowLabelZone())
-                .when(hasName("fade-in")).as(new FadeInEffect())
-                .when(hasName("tracer")).as(new Tracer());
-    }
-
-    private Predicate<GameObject> hasName(String name) {
-        return gameObject -> name.equals(gameObject.name());
+                .usingMatcher(GameObject::name)
+                .matching("cat").as(new CatCompanion())
+                .matching("moving-spikes").as(new MovingSpikes())
+                .matching("vanishing-block").as(new VanishingBlock())
+                .matching("slime").as(new Slime())
+                .matching("platform").as(new Platfom())
+                .matching("waypoint").as(new Waypoint())
+                .matching("camera").as(new Camera())
+                .matching("player").as(new Player())
+                .matching("debo-d").as(new DeboD())
+                .matching("debo-e").as(new DeboE())
+                .matching("debo-b").as(new DeboB())
+                .matching("debo-o").as(new DeboO())
+                .matching("cherries").as(new Cherries())
+                .matching("killzone").as(new KillZone())
+                .matching("box").as(new Box())
+                .matching("diggable").as(new Diggable())
+                .matching("change-map-zone").as(new ChangeMapZone())
+                .matching("show-label-zone").as(new ShowLabelZone())
+                .matching("fade-in").as(new FadeInEffect())
+                .matching("tracer").as(new Tracer());
     }
 
     private Predicate<Map> propertyIsSet(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
-    private Predicate<Tile> tileTypeIs(String name) {
-        return tile -> {
-            final Optional<String> type = tile.layer().properties().get("type");
-            if (type.isPresent()) {
-                return name.equals(type.get());
-            }
-            final Optional<String> tileType = tile.properties().get("type");
-            return tileType.isPresent() && name.equals(tileType.get());
-        };
+    private String tileType(Tile tile) {
+        final Optional<String> layerType = tile.layer().properties().get("type");
+        if (layerType.isPresent()) {
+            return layerType.get();
+        }
+        final Optional<String> tileType = tile.properties().get("type");
+        return tileType.isPresent() ? tileType.get() : "none";
     }
 
 }
