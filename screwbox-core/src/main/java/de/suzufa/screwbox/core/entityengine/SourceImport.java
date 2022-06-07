@@ -38,7 +38,7 @@ public class SourceImport<T> {
             this.matcher = matcher;
         }
 
-        public MatchingSourceImportWithKey<M> matches(M key) {
+        public MatchingSourceImportWithKey<M> is(M key) {
             return new MatchingSourceImportWithKey<>(this.matcher, this, key);
         }
 
