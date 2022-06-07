@@ -149,8 +149,7 @@ public class GameScene implements Scene {
                 .when(propertyIsSet("closed-top")).as(new MapBorderTop());
 
         entityEngine.importSource(map.allLayers())
-                .usingMatcher(Layer::isImageLayer)
-                .matching(true).as(new Background());
+                .when(Layer::isImageLayer).as(new Background());
 
         entityEngine.importSource(map.allTiles())
                 .usingMatcher(this::tileType)
