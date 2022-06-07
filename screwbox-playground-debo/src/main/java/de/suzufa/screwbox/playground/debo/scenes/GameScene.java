@@ -141,43 +141,43 @@ public class GameScene implements Scene {
         Map map = TiledSupport.loadMap(mapName);
 
         entityEngine.importSource(map)
-                .importAs(new MapGravity())
-                .importAs(new WorldBounds())
+                .as(new MapGravity())
+                .as(new WorldBounds())
 
-                .on(propertyIsSet("closed-left")).importAs(new MapBorderLeft())
-                .on(propertyIsSet("closed-left")).importAs(new MapBorderLeft())
-                .on(propertyIsSet("closed-right")).importAs(new MapBorderRight())
-                .on(propertyIsSet("closed-top")).importAs(new MapBorderTop());
+                .on(propertyIsSet("closed-left")).as(new MapBorderLeft())
+                .on(propertyIsSet("closed-left")).as(new MapBorderLeft())
+                .on(propertyIsSet("closed-right")).as(new MapBorderRight())
+                .on(propertyIsSet("closed-top")).as(new MapBorderTop());
 
         entityEngine.importSource(map.allLayers())
-                .on(Layer::isImageLayer).importAs(new Background());
+                .on(Layer::isImageLayer).as(new Background());
 
         entityEngine.importSource(map.allTiles())
-                .on(tileTypeIs("non-solid")).importAs(new NonSolidTile())
-                .on(tileTypeIs("solid")).importAs(new SolidGround())
-                .on(tileTypeIs("one-way")).importAs(new OneWayGround());
+                .on(tileTypeIs("non-solid")).as(new NonSolidTile())
+                .on(tileTypeIs("solid")).as(new SolidGround())
+                .on(tileTypeIs("one-way")).as(new OneWayGround());
 
         entityEngine.importSource(map.allObjects())
-                .on(hasName("cat")).importAs(new CatCompanion())
-                .on(hasName("moving-spikes")).importAs(new MovingSpikes())
-                .on(hasName("vanishing-block")).importAs(new VanishingBlock())
-                .on(hasName("slime")).importAs(new Slime())
-                .on(hasName("platform")).importAs(new Platfom())
-                .on(hasName("waypoint")).importAs(new Waypoint())
-                .on(hasName("camera")).importAs(new Camera())
-                .on(hasName("player")).importAs(new Player())
-                .on(hasName("debo-d")).importAs(new DeboD())
-                .on(hasName("debo-e")).importAs(new DeboE())
-                .on(hasName("debo-b")).importAs(new DeboB())
-                .on(hasName("debo-o")).importAs(new DeboO())
-                .on(hasName("cherries")).importAs(new Cherries())
-                .on(hasName("killzone")).importAs(new KillZone())
-                .on(hasName("box")).importAs(new Box())
-                .on(hasName("diggable")).importAs(new Diggable())
-                .on(hasName("change-map-zone")).importAs(new ChangeMapZone())
-                .on(hasName("show-label-zone")).importAs(new ShowLabelZone())
-                .on(hasName("fade-in")).importAs(new FadeInEffect())
-                .on(hasName("tracer")).importAs(new Tracer());
+                .on(hasName("cat")).as(new CatCompanion())
+                .on(hasName("moving-spikes")).as(new MovingSpikes())
+                .on(hasName("vanishing-block")).as(new VanishingBlock())
+                .on(hasName("slime")).as(new Slime())
+                .on(hasName("platform")).as(new Platfom())
+                .on(hasName("waypoint")).as(new Waypoint())
+                .on(hasName("camera")).as(new Camera())
+                .on(hasName("player")).as(new Player())
+                .on(hasName("debo-d")).as(new DeboD())
+                .on(hasName("debo-e")).as(new DeboE())
+                .on(hasName("debo-b")).as(new DeboB())
+                .on(hasName("debo-o")).as(new DeboO())
+                .on(hasName("cherries")).as(new Cherries())
+                .on(hasName("killzone")).as(new KillZone())
+                .on(hasName("box")).as(new Box())
+                .on(hasName("diggable")).as(new Diggable())
+                .on(hasName("change-map-zone")).as(new ChangeMapZone())
+                .on(hasName("show-label-zone")).as(new ShowLabelZone())
+                .on(hasName("fade-in")).as(new FadeInEffect())
+                .on(hasName("tracer")).as(new Tracer());
     }
 
     private Predicate<GameObject> hasName(String name) {
