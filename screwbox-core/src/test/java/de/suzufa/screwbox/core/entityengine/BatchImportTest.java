@@ -14,14 +14,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BatchImportTest {
+class SourceImportTest {
 
     @Mock
     EntityEngine entityEngine;
 
     @Test
     void batchImport_oneConverter_addsEntity() {
-        new BatchImport<String>("any input", entityEngine)
+        new SourceImport<String>("any input", entityEngine)
                 .add(input -> new Entity());
 
         verify(entityEngine).add(any(Entity.class));
@@ -29,7 +29,7 @@ class BatchImportTest {
 
     @Test
     void batchImport_converterConditionNotMet_doesntAddEntity() {
-        new BatchImport<String>("any input", entityEngine)
+        new SourceImport<String>("any input", entityEngine)
                 .addIf(String::isEmpty, input -> new Entity());
 
         verify(entityEngine, never()).add(any(Entity.class));
@@ -37,7 +37,7 @@ class BatchImportTest {
 
     @Test
     void batchImport_converterConditionMet_addsEntity() {
-        new BatchImport<String>("", entityEngine)
+        new SourceImport<String>("", entityEngine)
                 .addIf(String::isEmpty, input -> new Entity());
 
         verify(entityEngine).add(any(Entity.class));
@@ -45,7 +45,7 @@ class BatchImportTest {
 
     @Test
     void batchImport_extractionLoop_addsEntities() {
-        new BatchImport<String>("one two three", entityEngine)
+        new SourceImport<String>("one two three", entityEngine)
                 .forEach(word())
                 .add(input -> new Entity())
                 .addIf(input -> input.contains("o"), input -> new Entity());
@@ -55,7 +55,7 @@ class BatchImportTest {
 
     @Test
     void batchImport_multipleLoops_addsEntities() {
-        new BatchImport<String>("one two three \nfour five", entityEngine)
+        new SourceImport<String>("one two three \nfour five", entityEngine)
                 .forEach(word())
                 .add(input -> new Entity())
                 .endLoop()

@@ -140,24 +140,22 @@ public class GameScene implements Scene {
     void addMapEntities(EntityEngine entityEngine) {
         Map map = TiledSupport.loadMap(mapName);
 
-        entityEngine.batchImportFrom(map)
+        entityEngine.importFromSource(map)
                 .add(new MapGravity())
                 .add(new WorldBounds())
                 .addIf(propertyIsSet("closed-left"), new MapBorderLeft())
                 .addIf(propertyIsSet("closed-right"), new MapBorderRight())
-                .addIf(propertyIsSet("closed-top"), new MapBorderTop())
+                .addIf(propertyIsSet("closed-top"), new MapBorderTop());
 
-                .forEach(Map::allLayers)
-                .addIf(Layer::isImageLayer, new BackgroundConverter())
-                .endLoop()
+        entityEngine.importFromSource(map.allLayers())
+                .addIf(Layer::isImageLayer, new BackgroundConverter());
 
-                .forEach(Map::allTiles)
+        entityEngine.importFromSource(map.allTiles())
                 .addIf(tileTypeIs("non-solid"), new NonSolidTile())
                 .addIf(tileTypeIs("solid"), new SolidGround())
-                .addIf(tileTypeIs("one-way"), new OneWayGround())
-                .endLoop()
+                .addIf(tileTypeIs("one-way"), new OneWayGround());
 
-                .forEach(Map::allObjects)
+        entityEngine.importFromSource(map.allObjects())
                 .addIf(hasName("cat"), new CatCompanion())
                 .addIf(hasName("moving-spikes"), new MovingSpikes())
                 .addIf(hasName("vanishing-block"), new VanishingBlock())

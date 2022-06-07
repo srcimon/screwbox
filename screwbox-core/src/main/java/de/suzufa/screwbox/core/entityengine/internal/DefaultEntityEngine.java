@@ -7,8 +7,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Archetype;
+import de.suzufa.screwbox.core.entityengine.SourceImport;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.BatchImport;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 
@@ -143,7 +143,12 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public <T> BatchImport<T> batchImportFrom(T source) {
-        return new BatchImport<>(source, this);
+    public <T> SourceImport<T> importFromSource(T source) {
+        return importFromSource(List.of(source));
+    }
+
+    @Override
+    public <T> SourceImport<T> importFromSource(List<T> source) {
+        return new SourceImport<>(source, this);
     }
 }
