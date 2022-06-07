@@ -143,10 +143,10 @@ public class GameScene implements Scene {
         entityEngine.importSource(map)
                 .as(new MapGravity())
                 .as(new WorldBounds())
-                .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
-                .when(propertyIsSet("closed-left")).as(new MapBorderLeft())
-                .when(propertyIsSet("closed-right")).as(new MapBorderRight())
-                .when(propertyIsSet("closed-top")).as(new MapBorderTop());
+                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsActive("closed-right")).as(new MapBorderRight())
+                .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
         entityEngine.importSource(map.allLayers())
                 .when(Layer::isImageLayer).as(new Background());
@@ -181,7 +181,7 @@ public class GameScene implements Scene {
                 .matching("tracer").as(new Tracer());
     }
 
-    private Predicate<Map> propertyIsSet(String property) {
+    private Predicate<Map> propertyIsActive(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
