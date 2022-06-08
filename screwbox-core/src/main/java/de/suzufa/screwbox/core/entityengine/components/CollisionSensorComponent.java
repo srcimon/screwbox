@@ -10,6 +10,6 @@ public class CollisionSensorComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
-    public final List<Entity> collidedEntities = new ArrayList<>();
+    public List<Entity> collidedEntities = new ArrayList<>();
 
 }

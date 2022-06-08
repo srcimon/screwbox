@@ -54,14 +54,14 @@ public class Time implements Serializable {
     }
 
     /**
-     * The nanoseconds value that reresents the current {@link Time}.
+     * The nanoseconds value that represents the current {@link Time}.
      */
     public long nanos() {
         return nanos;
     }
 
     /**
-     * The seconds value that reresents the current {@link Time}.
+     * The seconds value that represents the current {@link Time}.
      */
     public long milliseconds() {
         return nanos / NANOS_PER_MILLISECOND;
@@ -112,7 +112,7 @@ public class Time implements Serializable {
      * Specifies if this instance is after the given {@link Time} instance.
      */
     public boolean isAfter(final Time other) {
-        return other.isUnset() ? false : nanos > other.nanos;
+        return other.isSet() && nanos > other.nanos;
     }
 
     /**
