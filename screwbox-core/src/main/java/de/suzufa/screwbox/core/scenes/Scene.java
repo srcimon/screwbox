@@ -3,15 +3,15 @@ package de.suzufa.screwbox.core.scenes;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 
-public abstract class Scene {
+public interface Scene {
 
-    public void initialize(EntityEngine entityEngine) {
+    default void initialize(EntityEngine entityEngine) {
     }
 
-    public void onEnter(Engine engine) {
+    default void onEnter(Engine engine) {
     }
 
-    public void onExit(Engine engine) {
+    default void onExit(Engine engine) {
     }
 
 }

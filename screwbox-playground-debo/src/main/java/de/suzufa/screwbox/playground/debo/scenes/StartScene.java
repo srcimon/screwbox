@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.menues.StartGameMenu;
 import de.suzufa.screwbox.playground.debo.systems.StartBackgroundSystem;
 
-public class StartScene extends Scene {
+public class StartScene implements Scene {
 
     @Override
     public void initialize(EntityEngine entityEngine) {
