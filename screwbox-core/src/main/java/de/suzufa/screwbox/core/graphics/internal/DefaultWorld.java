@@ -47,13 +47,19 @@ public class DefaultWorld implements World {
     public double updateCameraZoom(final double zoom) {
         final double actualZoomValue = Math.floor(zoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
-        this.visibleArea = calculateVisibleArea();
+        recalculateVisibleArea();
         return actualZoomValue;
     }
 
     public void updateCameraPosition(final Vector position) {
         this.cameraPosition = position;
-        this.visibleArea = calculateVisibleArea();
+        recalculateVisibleArea();
+    }
+
+    public void recalculateVisibleArea() {
+        this.visibleArea = Bounds.atPosition(cameraPosition,
+                window.size().width() / zoom,
+                window.size().height() / zoom);
     }
 
     public Vector cameraPosition() {
@@ -88,15 +94,6 @@ public class DefaultWorld implements World {
         final double y = (offset.y() - (window.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
-    }
-
-    private Bounds calculateVisibleArea() {
-        if (window.size().width() == 0 && window.size().height() == 0) { // TODO: UtilityMethod
-            return Bounds.max();
-        }
-        return Bounds.atPosition(cameraPosition,
-                window.size().width() / zoom,
-                window.size().height() / zoom);
     }
 
     private Dimension toDimension(final Vector size) {

@@ -91,6 +91,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         window.updateScreen(configuration.isUseAntialising());
+        world.recalculateVisibleArea();
     }
 
 }
