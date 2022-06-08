@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.entityengine;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -30,18 +31,19 @@ public class SourceImport<T> {
         }
     }
 
-    public class MatchingSourceImport<M> {
+    public class IndexSourceImport<M> {
 
-        private Function<T, M> matcher;
-        private SourceImport<T> caller;
+        private final Function<T, M> indexFunction;
+        private final SourceImport<T> caller;
 
-        public MatchingSourceImport(Function<T, M> matcher, SourceImport<T> caller) {
-            this.matcher = matcher;
+        public IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
+            this.indexFunction = Objects.requireNonNull(indexFunction, "Index function must not be null");
+            ;
             this.caller = caller;
         }
 
-        public MatchingSourceImportWithKey<M> when(M key) {
-            return new MatchingSourceImportWithKey<>(this.matcher, this, key);
+        public MatchingSourceImportWithKey<M> when(final M index) {
+            return new MatchingSourceImportWithKey<>(this.indexFunction, this, index);
         }
 
         public SourceImport<T> stopUsingIndex() {
@@ -52,19 +54,20 @@ public class SourceImport<T> {
 
     public class MatchingSourceImportWithKey<M> {
 
-        private MatchingSourceImport<M> caller;
-        private Function<T, M> matcher;
-        private M key;
+        private final IndexSourceImport<M> caller;
+        private final Function<T, M> matcher;
+        private final M index;
 
-        public MatchingSourceImportWithKey(Function<T, M> matcher, MatchingSourceImport<M> caller, M key) {
+        public MatchingSourceImportWithKey(final Function<T, M> matcher, final IndexSourceImport<M> caller,
+                final M index) {
             this.matcher = matcher;
             this.caller = caller;
-            this.key = key;
+            this.index = Objects.requireNonNull(index, "Index must not be null");
         }
 
-        public MatchingSourceImport<M> as(Converter<T> converter) {
+        public IndexSourceImport<M> as(final Converter<T> converter) {
             for (final var input : inputs) {
-                if (matcher.apply(input).equals(key)) {
+                if (matcher.apply(input).equals(index)) {
                     engine.add(converter.convert(input));
                 }
             }
@@ -78,10 +81,11 @@ public class SourceImport<T> {
 
     public SourceImport(final List<T> inputs, final EntityEngine engine) {
         this.inputs = inputs;
-        this.engine = engine;
+        this.engine = Objects.requireNonNull(engine, "Engine must not be null");
     }
 
     public SourceImport<T> as(final Converter<T> converter) {
+        Objects.requireNonNull(converter, "Converter must not be null");
         for (final var input : inputs) {
             engine.add(converter.convert(input));
         }
@@ -92,8 +96,8 @@ public class SourceImport<T> {
         return new ConditionalSourceImport(condition, this);
     }
 
-    public <M> MatchingSourceImport<M> usingIndex(Function<T, M> matcher) {
-        return new MatchingSourceImport<>(matcher, this);
+    public <M> IndexSourceImport<M> usingIndex(final Function<T, M> indexFunction) {
+        return new IndexSourceImport<>(indexFunction, this);
     }
 
 }
