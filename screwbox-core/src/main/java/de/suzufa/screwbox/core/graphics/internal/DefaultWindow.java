@@ -32,6 +32,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
+    private SeparateThreadRenderer separateThreadRenderer;
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -175,13 +176,17 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame));
+        separateThreadRenderer = new SeparateThreadRenderer(new DefaultRenderer(frame));
+        renderer = separateThreadRenderer;
         return this;
     }
 
     @Override
     public Window close() {
-        renderer.terminate();
+        if (nonNull(separateThreadRenderer)) {
+            separateThreadRenderer.close();
+            separateThreadRenderer = null;
+        }
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();

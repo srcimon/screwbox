@@ -98,12 +98,6 @@ public class SeparateThreadRenderer implements Renderer {
         renderTasks.primary().add(() -> next.drawPolygon(points, color));
     }
 
-    @Override
-    public void terminate() {
-        waitForCurrentRenderingToEnd();
-        executor.shutdown();
-    }
-
     private void waitForCurrentRenderingToEnd() {
         if (nonNull(currentRendering)) {
             try {
@@ -112,6 +106,11 @@ public class SeparateThreadRenderer implements Renderer {
                 currentThread().interrupt();
             }
         }
+    }
+
+    public void close() {
+        waitForCurrentRenderingToEnd();
+        executor.shutdown();
     }
 
 }
