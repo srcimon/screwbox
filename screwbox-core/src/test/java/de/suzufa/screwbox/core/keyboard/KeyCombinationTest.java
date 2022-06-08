@@ -11,7 +11,7 @@ class KeyCombinationTest {
     void ofKeys_keysAreSet_returnsKombinationOfKeys() {
         var jumpDown = KeyCombination.ofKeys(Key.ARROW_DOWN, Key.SPACE);
 
-        assertThat(jumpDown.getKeys()).contains(Key.ARROW_DOWN, Key.SPACE);
+        assertThat(jumpDown.keys()).contains(Key.ARROW_DOWN, Key.SPACE);
     }
 
     @Test

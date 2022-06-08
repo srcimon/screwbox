@@ -44,7 +44,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isDown(final KeyCombination combination) {
-        for (final Key key : combination.getKeys()) {
+        for (final Key key : combination.keys()) {
             if (!isDown(key)) {
                 return false;
             }
