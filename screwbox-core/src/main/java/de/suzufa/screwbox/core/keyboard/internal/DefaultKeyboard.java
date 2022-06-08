@@ -26,9 +26,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         final int keyCode = event.getKeyCode();
-        if (!pressedKeys.contains(keyCode)) {
-            justPressedKeys.primary().add(keyCode);
-        }
+        justPressedKeys.primary().add(keyCode);
         pressedKeys.add(keyCode);
     }
 
