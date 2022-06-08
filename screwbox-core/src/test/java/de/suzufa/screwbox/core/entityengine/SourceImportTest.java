@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,7 @@ import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 class SourceImportTest {
 
     @Test
-    void importSource_converterNull_throwsException(DefaultEntityEngine entityEngine) {
+    void as_converterNull_throwsException(DefaultEntityEngine entityEngine) {
         SourceImport<String> sourceImport = entityEngine.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport.as(null))
@@ -25,7 +24,7 @@ class SourceImportTest {
     }
 
     @Test
-    void importSource_indexFunctionIsNull_throwsException(DefaultEntityEngine entityEngine) {
+    void usingIndex_indexFunctionIsNull_throwsException(DefaultEntityEngine entityEngine) {
         var sourceImport = entityEngine.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport
@@ -35,7 +34,7 @@ class SourceImportTest {
     }
 
     @Test
-    void importSource_indexIsNull_throwsException(DefaultEntityEngine entityEngine) {
+    void when_indexIsNull_throwsException(DefaultEntityEngine entityEngine) {
         var sourceImport = entityEngine.importSource("Source of Inspiration")
                 .usingIndex(String::length);
 
@@ -45,7 +44,7 @@ class SourceImportTest {
     }
 
     @Test
-    void importSource_singleInputNoCondition_createsEntity(DefaultEntityEngine entityEngine) {
+    void as_inputWithoutCondition_createsEntity(DefaultEntityEngine entityEngine) {
         entityEngine.importSource("Source of Inspiration")
                 .as(source -> new Entity());
 
@@ -53,7 +52,7 @@ class SourceImportTest {
     }
 
     @Test
-    void importSource_conditionNotMet_noEntityCreated(DefaultEntityEngine entityEngine) {
+    void as_conditionNotMet_noEntityCreated(DefaultEntityEngine entityEngine) {
         entityEngine.importSource("Source of Inspiration")
                 .when(String::isEmpty).as(source -> new Entity());
 
@@ -61,56 +60,48 @@ class SourceImportTest {
     }
 
     @Test
-    void importSource_conditionMet_entityCreated(DefaultEntityEngine entityEngine) {
+    void ias_conditionMet_entityCreated(DefaultEntityEngine entityEngine) {
         entityEngine.importSource("")
                 .when(String::isEmpty).as(source -> new Entity());
 
         assertThat(entityEngine.allEntities()).hasSize(1);
     }
-//
-//    @Test
-//    void batchImport_converterConditionNotMet_doesntAddEntity() {
-//        new SourceImport<String>("any input", entityEngine)
-//                .convertIf(String::isEmpty, input -> new Entity());
-//
-//        verify(entityEngine, never()).add(any(Entity.class));
-//    }
-//
-//    @Test
-//    void batchImport_converterConditionMet_addsEntity() {
-//        new SourceImport<String>("", entityEngine)
-//                .convertIf(String::isEmpty, input -> new Entity());
-//
-//        verify(entityEngine).add(any(Entity.class));
-//    }
-//
-//    @Test
-//    void batchImport_extractionLoop_addsEntities() {
-//        new SourceImport<String>("one two three", entityEngine)
-//                .forEach(word())
-//                .convert(input -> new Entity())
-//                .convertIf(input -> input.contains("o"), input -> new Entity());
-//
-//        verify(entityEngine, times(5)).add(any(Entity.class));
-//    }
-//
-//    @Test
-//    void batchImport_multipleLoops_addsEntities() {
-//        new SourceImport<String>("one two three \nfour five", entityEngine)
-//                .forEach(word())
-//                .convert(input -> new Entity())
-//                .endLoop()
-//                .forEach(line())
-//                .convert(input -> new Entity());
-//
-//        verify(entityEngine, times(7)).add(any(Entity.class));
-//    }
 
-    private Function<String, List<String>> word() {
-        return input -> List.of(input.split(" "));
+    @Test
+    void as_multipleConditionsMet_multipleEntitiesCreated(DefaultEntityEngine entityEngine) {
+        entityEngine.importSource("")
+                .when(String::isEmpty).as(source -> new Entity())
+                .when(String::isEmpty).as(source -> new Entity());
+
+        assertThat(entityEngine.allEntities()).hasSize(2);
     }
 
-    private Function<String, List<String>> line() {
-        return input -> List.of(input.split("\n"));
+    @Test
+    void as_multipleSources_multipleEntitiesCreated(DefaultEntityEngine entityEngine) {
+        entityEngine.importSource(List.of("first", "second", "third"))
+                .when(i -> i.contains("ir")).as(source -> new Entity());
+
+        assertThat(entityEngine.allEntities()).hasSize(2);
+    }
+
+    @Test
+    void usingIndex_multipleSources_multipleEntitiesCreated(DefaultEntityEngine entityEngine) {
+        entityEngine.importSource(List.of("first", "second", "third"))
+                .usingIndex(String::length)
+                .when(6).as(source -> new Entity(6));
+
+        assertThat(entityEngine.allEntities()).hasSize(1)
+                .allMatch(e -> e.id().get() == 6);
+    }
+
+    @Test
+    void stopUsingIndex_returnsToDirectConversion(DefaultEntityEngine entityEngine) {
+        entityEngine.importSource(List.of("first", "second", "third"))
+                .usingIndex(String::length)
+                .when(6).as(source -> new Entity())
+                .stopUsingIndex()
+                .as(source -> new Entity());
+
+        assertThat(entityEngine.allEntities()).hasSize(4);
     }
 }
