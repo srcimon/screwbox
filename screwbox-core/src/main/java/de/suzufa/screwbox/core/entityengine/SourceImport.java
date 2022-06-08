@@ -5,13 +5,13 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class SourceImport<T> {
+public final class SourceImport<T> {
 
     public interface Converter<T> {
         Entity convert(final T object);
     }
 
-    public class ConditionalSourceImport {
+    public final class ConditionalSourceImport {
 
         private final Predicate<T> condition;
         private final SourceImport<T> caller;
@@ -36,7 +36,7 @@ public class SourceImport<T> {
         private final Function<T, M> indexFunction;
         private final SourceImport<T> caller;
 
-        public IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
+        private IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
             this.indexFunction = Objects.requireNonNull(indexFunction, "Index function must not be null");
             ;
             this.caller = caller;
@@ -52,13 +52,13 @@ public class SourceImport<T> {
 
     }
 
-    public class MatchingSourceImportWithKey<M> {
+    public final class MatchingSourceImportWithKey<M> {
 
         private final IndexSourceImport<M> caller;
         private final Function<T, M> matcher;
         private final M index;
 
-        public MatchingSourceImportWithKey(final Function<T, M> matcher, final IndexSourceImport<M> caller,
+        private MatchingSourceImportWithKey(final Function<T, M> matcher, final IndexSourceImport<M> caller,
                 final M index) {
             this.matcher = matcher;
             this.caller = caller;
