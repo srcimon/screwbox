@@ -33,13 +33,19 @@ public class SourceImport<T> {
     public class MatchingSourceImport<M> {
 
         private Function<T, M> matcher;
+        private SourceImport<T> caller;
 
-        public MatchingSourceImport(Function<T, M> matcher) {
+        public MatchingSourceImport(Function<T, M> matcher, SourceImport<T> caller) {
             this.matcher = matcher;
+            this.caller = caller;
         }
 
         public MatchingSourceImportWithKey<M> when(M key) {
             return new MatchingSourceImportWithKey<>(this.matcher, this, key);
+        }
+
+        public SourceImport<T> stopUsingIndex() {
+            return caller;
         }
 
     }
@@ -87,7 +93,7 @@ public class SourceImport<T> {
     }
 
     public <M> MatchingSourceImport<M> usingIndex(Function<T, M> matcher) {
-        return new MatchingSourceImport<>(matcher);
+        return new MatchingSourceImport<>(matcher, this);
     }
 
 }
