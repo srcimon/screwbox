@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -104,7 +103,7 @@ public class Sprite implements Serializable {
     }
 
     private void addFrame(final Frame frame) {
-        if (Objects.isNull(dimension)) {
+        if (isNull(dimension)) {
             dimension = frame.dimension();
         } else if (!dimension.equals(frame.dimension())) {
             throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
