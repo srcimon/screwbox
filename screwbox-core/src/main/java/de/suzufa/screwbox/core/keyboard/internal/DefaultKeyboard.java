@@ -25,8 +25,11 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public void keyPressed(final KeyEvent event) {
-        pressedKeys.add(event.getKeyCode());
-        justPressedKeys.primary().add(event.getKeyCode());
+        final int keyCode = event.getKeyCode();
+        if (!pressedKeys.contains(keyCode)) {
+            justPressedKeys.primary().add(keyCode);
+        }
+        pressedKeys.add(keyCode);
     }
 
     @Override
@@ -49,7 +52,6 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         return true;
     }
 
-    // TODO FIX multi press key / not just once
     @Override
     public boolean justPressed(final Key key) {
         return justPressedKeys.backup().contains(key.code());

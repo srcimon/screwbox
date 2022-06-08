@@ -66,4 +66,37 @@ class DefaultKeyboardTest {
 
         assertThat(keyboard.isDown(combination)).isTrue();
     }
+
+    @Test
+    void justPressed_sameFrame_false() {
+        when(keyEvent.getKeyCode()).thenReturn(32);
+
+        keyboard.keyPressed(keyEvent);
+
+        assertThat(keyboard.justPressed(Key.SPACE)).isFalse();
+    }
+
+    @Test
+    void justPressed_nextFrame_true() {
+        when(keyEvent.getKeyCode()).thenReturn(32);
+
+        keyboard.keyPressed(keyEvent);
+
+        keyboard.update();
+
+        assertThat(keyboard.justPressed(Key.SPACE)).isTrue();
+    }
+
+    @Test
+    void justPressed_pressedInThePast_false() {
+        when(keyEvent.getKeyCode()).thenReturn(32);
+
+        keyboard.keyPressed(keyEvent);
+        keyboard.update();
+
+        keyboard.keyPressed(keyEvent);
+        keyboard.update();
+
+        assertThat(keyboard.justPressed(Key.SPACE)).isFalse();
+    }
 }
