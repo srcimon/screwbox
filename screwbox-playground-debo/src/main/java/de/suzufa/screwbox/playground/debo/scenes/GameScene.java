@@ -81,7 +81,7 @@ import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class GameScene implements Scene {
+public class GameScene extends Scene {
 
     private final String mapName;
 

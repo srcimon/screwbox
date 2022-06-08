@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.core.keyboard;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class KeyCombination {
@@ -16,10 +15,10 @@ public class KeyCombination {
     }
 
     private KeyCombination(final List<Key> keys) {
-        this.keys = Collections.unmodifiableCollection(keys);
+        this.keys = keys;
     }
 
-    public Collection<Key> getKeys() {
+    public Collection<Key> keys() {
         return keys;
     }
 }
