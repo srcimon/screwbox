@@ -22,23 +22,21 @@ public class Sprite implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Frame> frames = new ArrayList<>();
-    private final Dimension dimension;
+    private Dimension dimension;
     private final Time started = Time.now();
     private Duration duration = Duration.zero();
     private boolean flippedHorizontally = false;
     private boolean flippedVertically = false;
 
     private Sprite(final Image image) {
-        this(asList(new Frame(image)), Dimension.of(image.getWidth(null), image.getHeight(null)), false);
+        this(asList(new Frame(image)), false);
     }
 
-    public Sprite(final List<Frame> frames, final Dimension dimension) {
-        this(frames, dimension, false);
+    public Sprite(final List<Frame> frames) {
+        this(frames, false);
     }
 
-    // TODO: CHeck if frame dimension is exactly sprite dimension
-    private Sprite(final List<Frame> frames, final Dimension dimension, final boolean flipped) {
-        this.dimension = dimension;
+    private Sprite(final List<Frame> frames, final boolean flipped) {
         this.flippedHorizontally = flipped;
         for (final var frame : frames) {
             addFrame(frame);
@@ -97,7 +95,7 @@ public class Sprite implements Serializable {
     }
 
     public Sprite newInstance() {
-        return new Sprite(frames, dimension, flippedHorizontally);
+        return new Sprite(frames, flippedHorizontally);
     }
 
     private Image getImage(final int frameNr) {
@@ -105,6 +103,11 @@ public class Sprite implements Serializable {
     }
 
     private void addFrame(final Frame frame) {
+        if (isNull(dimension)) {
+            dimension = frame.dimension();
+        } else if (!dimension.equals(frame.dimension())) {
+            throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
+        }
         duration = duration.plus(frame.duration());
         frames.add(frame);
     }

@@ -18,13 +18,8 @@ public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, SpriteComponent.class);
 
-    private static final Comparator<Entity> BACKGROUND_COMPARATOR = new Comparator<Entity>() {
-
-        @Override
-        public int compare(final Entity o1, final Entity o2) {
-            return Double.compare(o1.get(SpriteComponent.class).drawOrder, o2.get(SpriteComponent.class).drawOrder);
-        }
-    };
+    private static final Comparator<Entity> BACKGROUND_COMPARATOR = (o1, o2) -> Double
+            .compare(o1.get(SpriteComponent.class).drawOrder, o2.get(SpriteComponent.class).drawOrder);
 
     @Override
     public void update(final Engine engine) {

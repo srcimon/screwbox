@@ -85,4 +85,7 @@ public final class Frame implements Serializable {
         return duration;
     }
 
+    public Dimension dimension() {
+        return Dimension.of(imageContainer.image.getIconWidth(), imageContainer.image.getIconHeight());
+    }
 }

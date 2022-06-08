@@ -79,9 +79,7 @@ public final class Offset implements Serializable {
         final Offset other = (Offset) obj;
         if (x != other.x)
             return false;
-        if (y != other.y)
-            return false;
-        return true;
+        return y == other.y;
     }
 
     public Offset substract(final Offset other) {

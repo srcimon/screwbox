@@ -38,7 +38,7 @@ class SeparateThreadRendererTest {
 
         separateThreadRenderer.updateScreen(true);
 
-        separateThreadRenderer.terminate();
+        separateThreadRenderer.close();
 
         verify(renderer).drawPolygon(emptyList(), Color.BLACK);
         verify(renderer).drawCircle(Offset.origin(), 25, Color.BLUE);

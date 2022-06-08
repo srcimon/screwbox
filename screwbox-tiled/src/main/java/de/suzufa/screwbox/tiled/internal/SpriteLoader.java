@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.imageio.ImageIO;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
@@ -61,15 +60,14 @@ public final class SpriteLoader {
 
         for (final TileEntity tileEntity : tileset.getTiles()) {
             // read animated images and properties
-            final Dimension dimension = Dimension.of(tileset.getTilewidth(), tileset.getTileheight());
             final List<Frame> frames = new ArrayList<>();
             for (final FrameEntity frame : tileEntity.getAnimation()) {
                 final Image currentImage = dictionary.findById(tileset.getFirstgid() + frame.getTileid())
                         .getFirstImage();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frame.getDuration())));
             }
-            final Sprite animatedSprite = new Sprite(frames, dimension);// TODO: add Frame per Frame / validate frame
-                                                                        // size
+            final Sprite animatedSprite = new Sprite(frames);// TODO: add Frame per Frame / validate frame
+                                                             // size
             // with others
             final Properties properties = new DefaultProperties(tileEntity.getProperties());
             final Optional<String> name = properties.get("name");
