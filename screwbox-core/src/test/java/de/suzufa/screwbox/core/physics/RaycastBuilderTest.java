@@ -13,10 +13,10 @@ class RaycastBuilderTest {
     @Test
     void checkingFor_noTransformComponent_throwsException() {
         var raycastBuilder = new RaycastBuilder(null, Vector.zero());
+        Archetype archetype = Archetype.of(PhysicsBodyComponent.class);
 
-        assertThatThrownBy(() -> raycastBuilder
-                .checkingFor(Archetype.of(PhysicsBodyComponent.class)))
-                        .isInstanceOf(IllegalArgumentException.class)
-                        .hasMessage("cannot raycast for Archetypes without TransformComponent");
+        assertThatThrownBy(() -> raycastBuilder.checkingFor(archetype))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cannot raycast for Archetypes without TransformComponent");
     }
 }

@@ -11,7 +11,7 @@
 		<sonar.organization>simonbas</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-		<sonar.issue.ignore.multicriteria>e1, e2</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria>e1, e2, e3, e4</sonar.issue.ignore.multicriteria>
 
 		<!-- public accessibility in components by intention -->
 		<sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -20,7 +20,15 @@
 		<!-- ConsoleLoggingAdapter is allowed to use System.out -->
 		<sonar.issue.ignore.multicriteria.e2.ruleKey>java:S106</sonar.issue.ignore.multicriteria.e2.ruleKey>
 		<sonar.issue.ignore.multicriteria.e2.resourceKey>**/ConsoleLoggingAdapter.java</sonar.issue.ignore.multicriteria.e2.resourceKey>	
-	</properties>
+		
+		<!-- disable false-positive in CollisionSensorComponent -->
+		<sonar.issue.ignore.multicriteria.e3.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e3.ruleKey>
+		<sonar.issue.ignore.multicriteria.e3.resourceKey>**/CollisionSensorComponent.java</sonar.issue.ignore.multicriteria.e3.resourceKey>	
+		
+		<!-- disable false-positive in ForwardSignalComponent -->
+		<sonar.issue.ignore.multicriteria.e4.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e4.ruleKey>
+		<sonar.issue.ignore.multicriteria.e4.resourceKey>**/ForwardSignalComponent.java</sonar.issue.ignore.multicriteria.e4.resourceKey>	
+	</properties> 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
