@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.BatchImport;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entityengine.SourceImport;
 
 public class DefaultEntityEngine implements EntityEngine {
 
@@ -143,7 +143,14 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public <T> BatchImport<T> batchImportFrom(T source) {
-        return new BatchImport<>(source, this);
+    public <T> SourceImport<T> importSource(T source) {
+        Objects.requireNonNull(source, "Source must not be null");
+        return importSource(List.of(source));
+    }
+
+    @Override
+    public <T> SourceImport<T> importSource(List<T> source) {
+        Objects.requireNonNull(source, "Source must not be null");
+        return new SourceImport<>(source, this);
     }
 }

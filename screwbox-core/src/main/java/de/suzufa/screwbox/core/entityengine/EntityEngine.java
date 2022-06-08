@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core.entityengine;
 import java.util.List;
 import java.util.Optional;
 
+import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
+
 public interface EntityEngine {
 
     EntityEngine add(Entity entity);
@@ -38,8 +40,18 @@ public interface EntityEngine {
     List<Entity> allEntities();
 
     /**
-     * Starts a batch import for any kind of input source. Can be used to load
-     * Tiled-Maps or your the map format of your preferred game editor.
+     * Provides a compact syntax for importing {@link Entity}s from a custom source
+     * using conditions and {@link Converter}.
+     * 
+     * @see #importSource(List) for multiple sources
      */
-    <T> BatchImport<T> batchImportFrom(T source);
+    <T> SourceImport<T> importSource(T source);
+
+    /**
+     * Provides a compact syntax for importing {@link Entity}s from multiple custom
+     * sources using conditions and {@link Converter}.
+     * 
+     * @see #importSource(Object) for single source
+     */
+    <T> SourceImport<T> importSource(List<T> source);
 }

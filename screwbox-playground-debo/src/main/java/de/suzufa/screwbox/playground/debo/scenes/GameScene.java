@@ -25,7 +25,7 @@ import de.suzufa.screwbox.playground.debo.collectables.DeboE;
 import de.suzufa.screwbox.playground.debo.collectables.DeboO;
 import de.suzufa.screwbox.playground.debo.components.CurrentLevelComponent;
 import de.suzufa.screwbox.playground.debo.components.ScreenshotComponent;
-import de.suzufa.screwbox.playground.debo.effects.BackgroundConverter;
+import de.suzufa.screwbox.playground.debo.effects.Background;
 import de.suzufa.screwbox.playground.debo.effects.FadeInEffect;
 import de.suzufa.screwbox.playground.debo.enemies.MovingSpikes;
 import de.suzufa.screwbox.playground.debo.enemies.slime.Slime;
@@ -140,63 +140,58 @@ public class GameScene implements Scene {
     void addMapEntities(EntityEngine entityEngine) {
         Map map = TiledSupport.loadMap(mapName);
 
-        entityEngine.batchImportFrom(map)
-                .add(new MapGravity())
-                .add(new WorldBounds())
-                .addIf(propertyIsSet("closed-left"), new MapBorderLeft())
-                .addIf(propertyIsSet("closed-right"), new MapBorderRight())
-                .addIf(propertyIsSet("closed-top"), new MapBorderTop())
+        entityEngine.importSource(map)
+                .as(new MapGravity())
+                .as(new WorldBounds())
+                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
+                .when(propertyIsActive("closed-right")).as(new MapBorderRight())
+                .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-                .forEach(Map::allLayers)
-                .addIf(Layer::isImageLayer, new BackgroundConverter())
-                .endLoop()
+        entityEngine.importSource(map.allLayers())
+                .when(Layer::isImageLayer).as(new Background());
 
-                .forEach(Map::allTiles)
-                .addIf(tileTypeIs("non-solid"), new NonSolidTile())
-                .addIf(tileTypeIs("solid"), new SolidGround())
-                .addIf(tileTypeIs("one-way"), new OneWayGround())
-                .endLoop()
+        entityEngine.importSource(map.allTiles())
+                .usingIndex(this::tileType)
+                .when("non-solid").as(new NonSolidTile())
+                .when("solid").as(new SolidGround())
+                .when("one-way").as(new OneWayGround());
 
-                .forEach(Map::allObjects)
-                .addIf(hasName("cat"), new CatCompanion())
-                .addIf(hasName("moving-spikes"), new MovingSpikes())
-                .addIf(hasName("vanishing-block"), new VanishingBlock())
-                .addIf(hasName("slime"), new Slime())
-                .addIf(hasName("platform"), new Platfom())
-                .addIf(hasName("waypoint"), new Waypoint())
-                .addIf(hasName("camera"), new Camera())
-                .addIf(hasName("player"), new Player())
-                .addIf(hasName("debo-d"), new DeboD())
-                .addIf(hasName("debo-e"), new DeboE())
-                .addIf(hasName("debo-b"), new DeboB())
-                .addIf(hasName("debo-o"), new DeboO())
-                .addIf(hasName("cherries"), new Cherries())
-                .addIf(hasName("killzone"), new KillZone())
-                .addIf(hasName("box"), new Box())
-                .addIf(hasName("diggable"), new Diggable())
-                .addIf(hasName("change-map-zone"), new ChangeMapZone())
-                .addIf(hasName("show-label-zone"), new ShowLabelZone())
-                .addIf(hasName("fade-in"), new FadeInEffect())
-                .addIf(hasName("tracer"), new Tracer());
+        entityEngine.importSource(map.allObjects())
+                .usingIndex(GameObject::name)
+                .when("cat").as(new CatCompanion())
+                .when("moving-spikes").as(new MovingSpikes())
+                .when("vanishing-block").as(new VanishingBlock())
+                .when("slime").as(new Slime())
+                .when("platform").as(new Platfom())
+                .when("waypoint").as(new Waypoint())
+                .when("camera").as(new Camera())
+                .when("player").as(new Player())
+                .when("debo-d").as(new DeboD())
+                .when("debo-e").as(new DeboE())
+                .when("debo-b").as(new DeboB())
+                .when("debo-o").as(new DeboO())
+                .when("cherries").as(new Cherries())
+                .when("killzone").as(new KillZone())
+                .when("box").as(new Box())
+                .when("diggable").as(new Diggable())
+                .when("change-map-zone").as(new ChangeMapZone())
+                .when("show-label-zone").as(new ShowLabelZone())
+                .when("fade-in").as(new FadeInEffect())
+                .when("tracer").as(new Tracer());
     }
 
-    private Predicate<GameObject> hasName(String name) {
-        return gameObject -> name.equals(gameObject.name());
-    }
-
-    private Predicate<Map> propertyIsSet(String property) {
+    private Predicate<Map> propertyIsActive(String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
-    private Predicate<Tile> tileTypeIs(String name) {
-        return tile -> {
-            final Optional<String> type = tile.layer().properties().get("type");
-            if (type.isPresent()) {
-                return name.equals(type.get());
-            }
-            final Optional<String> tileType = tile.properties().get("type");
-            return tileType.isPresent() && name.equals(tileType.get());
-        };
+    private String tileType(Tile tile) {
+        final Optional<String> layerType = tile.layer().properties().get("type");
+        if (layerType.isPresent()) {
+            return layerType.get();
+        }
+        final Optional<String> tileType = tile.properties().get("type");
+        return tileType.isPresent() ? tileType.get() : "none";
     }
 
 }

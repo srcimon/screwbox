@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.specials.player;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.BatchImport.Converter;
+import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
