@@ -9,7 +9,7 @@ import de.suzufa.screwbox.playground.debo.menues.PauseMenu;
 import de.suzufa.screwbox.playground.debo.systems.GetSreenshotOfGameSceneSystem;
 import de.suzufa.screwbox.playground.debo.systems.RenderPauseScreenshotSystem;
 
-public class PauseScene implements Scene {
+public class PauseScene extends Scene {
 
     @Override
     public void onEnter(Engine engine) {

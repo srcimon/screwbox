@@ -8,7 +8,7 @@ import de.suzufa.screwbox.playground.debo.systems.BackToMenuSystem;
 import de.suzufa.screwbox.playground.debo.systems.PrintSystem;
 import de.suzufa.screwbox.playground.debo.systems.RestartGameSystem;
 
-public class DeadScene implements Scene {
+public class DeadScene extends Scene {
 
     @Override
     public void initialize(EntityEngine entityEngine) {
