@@ -12,7 +12,7 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
 
     private static final long serialVersionUID = 1L;
 
-    private final Engine engine;
+    private transient final Engine engine;
 
     private boolean hasFocus;
 
