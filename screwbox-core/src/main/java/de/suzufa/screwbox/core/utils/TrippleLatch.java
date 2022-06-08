@@ -27,16 +27,9 @@ public class TrippleLatch<T> {
         return values.get(higherIndex(2));
     }
 
-    // TODO: optimize
-    private int higherIndex(int change) {
-        int value = index + change;
-        if (value == 3) {
-            return 0;
-        }
-        if (value == 4) {
-            return 1;
-        }
-        return value;
+    private int higherIndex(final int change) {
+        final int value = index + change;
+        return value > 2 ? value - 3 : value;
     }
 
     public void swap() {
