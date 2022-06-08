@@ -5,7 +5,10 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class SlimeResources {
+public final class SlimeResources {
+
+    private SlimeResources() {
+    } // hide constructor
 
     private static final SpriteDictionary TILESET = TiledSupport.loadTileset("tilesets/enemies/slime.json");
 

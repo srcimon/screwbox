@@ -8,6 +8,9 @@ import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class PlayerResources {
 
+    private PlayerResources() {
+    } // hide constructor
+
     private static final SpriteDictionary TILESET = TiledSupport.loadTileset("tilesets/specials/player.json");
 
     public static final Sprite STANDING_SPRITE = TILESET.findByName("standing");

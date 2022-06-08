@@ -5,7 +5,10 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class TracerResources {
+public final class TracerResources {
+
+    private TracerResources() {
+    } // hide constructor
 
     private static final SpriteDictionary TILESET = TiledSupport.loadTileset("tilesets/enemies/tracer.json");
     public static final Sprite ACTIVE_SPRITE = TILESET.findByName("active");
