@@ -37,6 +37,7 @@ import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class CatMovementSystem implements EntitySystem {
 
+    private static final String WALKING = "walking";
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
     private static final Archetype CAT = Archetype.of(CatMarkerComponent.class, TransformComponent.class);
     private static final Archetype NAVPOINTS = Archetype.of(NavpointComponent.class, TransformComponent.class);
@@ -50,14 +51,14 @@ public class CatMovementSystem implements EntitySystem {
 
     static {
         SpriteDictionary catSprites = TiledSupport.loadTileset("tilesets/specials/cat.json");
-        SPRITES.put(PlayerDeathState.class, catSprites.findByName("walking"));
-        SPRITES.put(PlayerDiggingState.class, catSprites.findByName("walking"));
-        SPRITES.put(PlayerFallingState.class, catSprites.findByName("walking"));
-        SPRITES.put(PlayerFallThroughState.class, catSprites.findByName("walking"));
+        SPRITES.put(PlayerDeathState.class, catSprites.findByName(WALKING));
+        SPRITES.put(PlayerDiggingState.class, catSprites.findByName(WALKING));
+        SPRITES.put(PlayerFallingState.class, catSprites.findByName(WALKING));
+        SPRITES.put(PlayerFallThroughState.class, catSprites.findByName(WALKING));
         SPRITES.put(PlayerIdleState.class, catSprites.findByName("idle"));
         SPRITES.put(PlayerJumpingStartedState.class, catSprites.findByName("jumping"));
         SPRITES.put(PlayerJumpingState.class, catSprites.findByName("jumping"));
-        SPRITES.put(PlayerRunningState.class, catSprites.findByName("walking"));
+        SPRITES.put(PlayerRunningState.class, catSprites.findByName(WALKING));
         SPRITES.put(PlayerStandingState.class, catSprites.findByName("standing"));
     }
 
