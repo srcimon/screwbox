@@ -22,11 +22,11 @@ public final class SourceImport<T> {
         }
 
         public SourceImport<T> as(final Converter<T> converter) {
-            for (final var input : inputs) {
-                if (condition.test(input)) {
-                    engine.add(converter.convert(input));
-                }
-            }
+            inputs.stream()
+                    .filter(condition::test)
+                    .map(converter::convert)
+                    .forEach(engine::add);
+
             return caller;
         }
     }
@@ -38,7 +38,6 @@ public final class SourceImport<T> {
 
         private IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
             this.indexFunction = Objects.requireNonNull(indexFunction, "Index function must not be null");
-            ;
             this.caller = caller;
         }
 
@@ -66,11 +65,11 @@ public final class SourceImport<T> {
         }
 
         public IndexSourceImport<M> as(final Converter<T> converter) {
-            for (final var input : inputs) {
-                if (matcher.apply(input).equals(index)) {
-                    engine.add(converter.convert(input));
-                }
-            }
+            inputs.stream()
+                    .filter(input -> matcher.apply(input).equals(index))
+                    .map(converter::convert)
+                    .forEach(engine::add);
+
             return caller;
         }
 
