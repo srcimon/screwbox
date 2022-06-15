@@ -19,14 +19,14 @@ public class CameraShiftSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.entityEngine().fetchSingle(PLAYER);
+        Optional<Entity> playerEntity = engine.entityEngine().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
 
         double updateFactor = engine.loop().metrics().updateFactor();
         Entity player = playerEntity.get();
-        var cameraTrackerComponent = engine.entityEngine().forcedFetchSingle(CAMERA).get(CameraMovementComponent.class);
+        var cameraTrackerComponent = engine.entityEngine().forcedFetch(CAMERA).get(CameraMovementComponent.class);
         if (player.get(AutoflipByMovementComponent.class).flipped) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,

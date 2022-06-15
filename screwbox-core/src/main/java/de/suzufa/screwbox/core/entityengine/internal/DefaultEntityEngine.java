@@ -46,8 +46,8 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public Entity forcedFetchSingle(final Archetype archetype) {
-        final Optional<Entity> entity = fetchSingle(archetype);
+    public Entity forcedFetch(final Archetype archetype) {
+        final Optional<Entity> entity = fetch(archetype);
         if (entity.isEmpty()) {
             throw new IllegalStateException("didn't find exactly one entity matching " + archetype);
         }
@@ -55,7 +55,7 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public Optional<Entity> fetchSingle(final Archetype archetype) {
+    public Optional<Entity> fetch(final Archetype archetype) {
         final var entities = entityManager.entitiesMatching(archetype);
         if (entities.size() == 1) {
             return Optional.of(entities.get(0));

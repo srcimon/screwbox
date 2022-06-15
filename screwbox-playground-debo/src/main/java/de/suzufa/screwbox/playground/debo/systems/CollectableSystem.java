@@ -20,7 +20,7 @@ public class CollectableSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.entityEngine().forcedFetchSingle(PLAYER);
+        final var player = engine.entityEngine().forcedFetch(PLAYER);
         for (final Entity entity : engine.entityEngine().fetchAll(COLLECTABLES)) {
             if (entity.get(CollisionSensorComponent.class).collidedEntities.contains(player)) {
                 engine.entityEngine().remove(entity);

@@ -22,11 +22,11 @@ public class CameraMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Entity camera = engine.entityEngine().forcedFetchSingle(CAMERA);
+        final Entity camera = engine.entityEngine().forcedFetch(CAMERA);
         double wantedZoom = camera.get(CameraComponent.class).zoom;
         double zoom = engine.graphics().updateCameraZoom(wantedZoom);
 
-        final Bounds worldBounds = engine.entityEngine().forcedFetchSingle(WORLD_BOUNDS)
+        final Bounds worldBounds = engine.entityEngine().forcedFetch(WORLD_BOUNDS)
                 .get(TransformComponent.class).bounds;
         final var camBoundsComponent = camera.get(TransformComponent.class);
         final Vector cameraPosition = camBoundsComponent.bounds.position();
