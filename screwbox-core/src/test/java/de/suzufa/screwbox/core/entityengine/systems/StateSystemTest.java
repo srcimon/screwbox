@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,17 @@ class StateSystemTest {
     private class CounterComponent implements Component {
         private static final long serialVersionUID = 1L;
         public int count = 0;
+    }
+
+    private class NextStateIsNull implements EntityState {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public EntityState update(Entity entity, Engine engine) {
+            return null;
+        }
+
     }
 
     private class BoringState implements EntityState {
@@ -87,6 +99,21 @@ class StateSystemTest {
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(PingState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);
+    }
+
+    @Test
+    void update_nextStateIsNull_throwsException(DefaultEntityEngine entityEngine) {
+        Entity entity = new Entity().add(
+                new StateComponent(new NextStateIsNull()),
+                new CounterComponent());
+
+        entityEngine
+                .add(entity)
+                .add(new StateSystem());
+
+        assertThatThrownBy(() -> entityEngine.updateTimes(2))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Next state must not be null. Returned from EntityState: NextStateIsNull");
     }
 
     @Test
