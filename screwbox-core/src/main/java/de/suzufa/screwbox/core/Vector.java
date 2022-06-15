@@ -171,4 +171,11 @@ public final class Vector implements Serializable {
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
+    /**
+     * Checks if {@link Vector} is located on coordinates 0:0.
+     */
+    public boolean isZero() {
+        return x == 0 && y == 0;
+    }
+
 }
