@@ -70,7 +70,9 @@ public class DefaultWorld implements World {
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
             final Rotation rotation) {
         final var offset = toOffset(origin);
-        window.drawSprite(sprite, offset, scale * zoom, opacity, rotation);
+        final var x = offset.x() - ((scale - 1) * sprite.dimension().width());
+        final var y = offset.y() - ((scale - 1) * sprite.dimension().height());
+        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation);
         return this;
     }
 
