@@ -1,18 +1,20 @@
 package de.suzufa.screwbox.core;
 
+import static java.util.Objects.nonNull;
+
 public final class ScrewBox {
 
-    private static boolean initialized;
+    private static Engine engine;
 
     private ScrewBox() {
     }
 
     public static Engine createEngine() {
-        if (initialized) {
+        if (nonNull(engine)) {
             throw new IllegalStateException("only one instance of ScrewBox can be created");
         }
-        initialized = true;
-        return new DefaultEngine();
+        engine = new DefaultEngine();
+        return engine;
     }
 
 }
