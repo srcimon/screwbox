@@ -16,7 +16,7 @@ public class GravitySystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity gravityEntity = engine.entityEngine().forcedFetchSingle(GRAVITY);
+        Entity gravityEntity = engine.entityEngine().forcedFetch(GRAVITY);
         Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
         Vector gravityDelta = gravity.multiply(engine.loop().metrics().updateFactor());
         for (var entity : engine.entityEngine().fetchAll(GRAVITY_AFFECTED)) {

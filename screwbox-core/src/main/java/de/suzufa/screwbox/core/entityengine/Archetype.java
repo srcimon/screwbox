@@ -46,7 +46,7 @@ public class Archetype implements Serializable {
         return entity.getComponentClasses().containsAll(componentClasses);
     }
 
-    public boolean contains(Class<? extends Component> componentClass) {
+    public boolean contains(final Class<? extends Component> componentClass) {
         return componentClasses.contains(componentClass);
     }
 

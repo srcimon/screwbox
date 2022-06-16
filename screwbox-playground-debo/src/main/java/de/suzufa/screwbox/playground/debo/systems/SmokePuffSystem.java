@@ -27,7 +27,7 @@ public class SmokePuffSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var playerEntity = engine.entityEngine().fetchSingle(PLAYER);
+        var playerEntity = engine.entityEngine().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }

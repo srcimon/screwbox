@@ -7,6 +7,18 @@ import org.junit.jupiter.api.Test;
 class VectorTest {
 
     @Test
+    void isZero_noLength_isTrue() {
+        assertThat(Vector.of(0, 0).isZero()).isTrue();
+        assertThat(Vector.zero().isZero()).isTrue();
+    }
+
+    @Test
+    void isZero_hasLength_isFalse() {
+        assertThat(Vector.of(0.1, 0).isZero()).isFalse();
+        assertThat(Vector.zero().addY(2).isZero()).isFalse();
+    }
+
+    @Test
     void zero_returnsNullVector() {
         assertThat(Vector.zero()).isEqualTo(Vector.of(0, 0));
     }

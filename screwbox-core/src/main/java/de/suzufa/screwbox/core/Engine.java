@@ -4,6 +4,7 @@ import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
+import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.log.Log;
@@ -32,6 +33,11 @@ public interface Engine {
      */
     GameLoop loop();
 
+    /**
+     * Provides access to the {@link Graphics}, which has methods for drawing on
+     * screen, changing the {@link GraphicsConfiguration}, to update and read the
+     * {@link Graphics#cameraPosition()} and to adjust the {@link Window}.
+     */
     Graphics graphics();
 
     Keyboard keyboard();

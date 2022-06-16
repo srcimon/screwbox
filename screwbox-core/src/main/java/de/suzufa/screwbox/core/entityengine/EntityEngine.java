@@ -17,9 +17,33 @@ public interface EntityEngine {
 
     List<Entity> fetchAll(Archetype archetype);
 
-    Optional<Entity> fetchSingle(Archetype archetype);
+    default List<Entity> fetchAllHaving(Class<? extends Component> component) {
+        return fetchAll(Archetype.of(component));
+    }
 
-    Entity forcedFetchSingle(Archetype archetype);
+    default List<Entity> fetchAllHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+        return fetchAll(Archetype.of(componentA, componentB));
+    }
+
+    Optional<Entity> fetch(Archetype archetype);
+
+    default Optional<Entity> fetchHaving(Class<? extends Component> component) {
+        return fetch(Archetype.of(component));
+    }
+
+    default Optional<Entity> fetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+        return fetch(Archetype.of(componentA, componentB));
+    }
+
+    Entity forcedFetch(Archetype archetype);
+
+    default Entity forcedFetch(Class<? extends Component> component) {
+        return forcedFetch(Archetype.of(component));
+    }
+
+    default Entity forcedFetch(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+        return forcedFetch(Archetype.of(componentA, componentB));
+    }
 
     Entity forcedFetchById(int id);
 

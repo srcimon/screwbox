@@ -16,7 +16,7 @@ public class RestartGameSystem implements EntitySystem {
     public void update(Engine engine) {
         if (engine.keyboard().isDown(Key.SPACE)) {
             EntityEngine entityEngine = engine.scenes().entityEngineOf(GameScene.class);
-            String currentLevel = entityEngine.forcedFetchSingle(CURRENT_LEVEL).get(CurrentLevelComponent.class).name;
+            String currentLevel = entityEngine.forcedFetch(CURRENT_LEVEL).get(CurrentLevelComponent.class).name;
             engine.scenes().remove(GameScene.class);
             engine.scenes().add(new GameScene(currentLevel));
             engine.scenes().switchTo(GameScene.class);

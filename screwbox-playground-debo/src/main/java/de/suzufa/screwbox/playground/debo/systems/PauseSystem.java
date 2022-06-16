@@ -18,7 +18,7 @@ public class PauseSystem implements EntitySystem {
                 || engine.keyboard().justPressed(Key.ESCAPE)
                 || !engine.graphics().window().hasFocus()) {
 
-            Entity screenshotEntity = engine.entityEngine().forcedFetchSingle(SCREENSHOT);
+            Entity screenshotEntity = engine.entityEngine().forcedFetch(SCREENSHOT);
             screenshotEntity.get(ScreenshotComponent.class).screenshot = engine.graphics().window().takeScreenshot();
             engine.audio().stopAllAudio();
             engine.scenes().switchTo(PauseScene.class);

@@ -71,6 +71,10 @@ public interface Window {
         return fillWith(offset, sprite, 1);
     }
 
+    default Window fillWith(final Sprite sprite) {
+        return fillWith(sprite, 1);
+    }
+
     Window drawLine(Offset from, Offset to, Color color);
 
     default Window drawLine(final Offset from, final Offset to) {
