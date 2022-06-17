@@ -3,9 +3,7 @@ package de.suzufa.screwbox.playground.debo.systems;
 import java.util.Random;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
@@ -32,10 +30,10 @@ public class SmokePuffSystem implements EntitySystem {
             return;
         }
         var player = playerEntity.get();
-        var order = player.get(SpriteComponent.class).drawOrder;
         var smokeEmitter = player.get(SmokeEmitterComponent.class);
-        var playerCenter = player.get(TransformComponent.class).bounds.position();
-        if (Duration.since(smokeEmitter.lastEmitted).isAtLeast(Duration.ofMillis(120))) {
+        if (smokeEmitter.ticker.isTick(engine.loop().metrics().timeOfLastUpdate())) {
+            var playerCenter = player.get(TransformComponent.class).bounds.position();
+            var order = player.get(SpriteComponent.class).drawOrder;
             int tileId = RANDOM.nextInt(3);
             Bounds bounds = Bounds.atPosition(playerCenter, 16, 16);
             Entity smokePuff = new Entity().add(
@@ -44,10 +42,8 @@ public class SmokePuffSystem implements EntitySystem {
                     new SpriteComponent(SPRITES.findById(tileId), order)
 
             );
-            smokeEmitter.lastEmitted = Time.now();
             engine.entityEngine().add(smokePuff);
         }
-
     }
 
     @Override
