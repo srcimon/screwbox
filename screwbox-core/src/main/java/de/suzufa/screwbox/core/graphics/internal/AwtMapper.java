@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
 
-public final class AwtMapper {
+final class AwtMapper {
 
     private static final Map<Style, Integer> STYLES = Map.of(
             Style.NORMAL, 0,
