@@ -9,5 +9,5 @@ public class SmokeEmitterComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
-    public final Timer ticker = Timer.withIntervalOf(ofMillis(120));
+    public final Timer ticker = Timer.withInterval(ofMillis(120));
 }

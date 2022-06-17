@@ -14,7 +14,7 @@ class TimerTest {
 
     @BeforeEach
     void beforeEach() {
-        timer = Timer.withIntervalOf(ofSeconds(5));
+        timer = Timer.withInterval(ofSeconds(5));
     }
 
     @Test

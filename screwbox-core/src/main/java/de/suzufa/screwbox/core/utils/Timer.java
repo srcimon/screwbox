@@ -19,7 +19,7 @@ public class Timer {
     /**
      * Creates a new {@link Timer} with the given interval.
      */
-    public static Timer withIntervalOf(final Duration duration) {
+    public static Timer withInterval(final Duration duration) {
         return new Timer(duration);
     }
 
