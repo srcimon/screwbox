@@ -11,7 +11,8 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 class SpriteDictionaryTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("underworld.png");
-    private SpriteDictionary spriteDictionary;
+
+    SpriteDictionary spriteDictionary;
 
     @BeforeEach
     void beforeEach() {
@@ -45,5 +46,12 @@ class SpriteDictionaryTest {
     void findByName_nameMissing_throwsException() {
         assertThatThrownBy(() -> spriteDictionary.findByName("under"))
                 .isInstanceOf(IllegalArgumentException.class).hasMessage("sprite not found: under");
+    }
+
+    @Test
+    void all_returnsAllSprites() {
+        spriteDictionary.addSprite(9, SPRITE);
+
+        assertThat(spriteDictionary.all()).hasSize(2);
     }
 }

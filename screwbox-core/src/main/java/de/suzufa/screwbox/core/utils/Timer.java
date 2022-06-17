@@ -1,12 +1,16 @@
 package de.suzufa.screwbox.core.utils;
 
+import java.io.Serializable;
+
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 
 /**
  * A simple timer to trigger timed actions.
  */
-public class Timer {
+public class Timer implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final Duration duration;
     private Time nextTick;

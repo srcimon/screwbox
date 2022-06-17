@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import java.util.Random;
+import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
@@ -21,7 +21,6 @@ public class SmokePuffSystem implements EntitySystem {
             SmokeEmitterComponent.class);
 
     private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/effects/smokes.json");
-    private static final Random RANDOM = new Random();
 
     @Override
     public void update(Engine engine) {
@@ -34,12 +33,11 @@ public class SmokePuffSystem implements EntitySystem {
         if (smokeEmitter.ticker.isTick(engine.loop().metrics().timeOfLastUpdate())) {
             var playerCenter = player.get(TransformComponent.class).bounds.position();
             var order = player.get(SpriteComponent.class).drawOrder;
-            int tileId = RANDOM.nextInt(3);
             Bounds bounds = Bounds.atPosition(playerCenter, 16, 16);
             Entity smokePuff = new Entity().add(
                     new FadeOutComponent(2),
                     new TransformComponent(bounds),
-                    new SpriteComponent(SPRITES.findById(tileId), order)
+                    new SpriteComponent(randomFrom(SPRITES.all()), order)
 
             );
             engine.entityEngine().add(smokePuff);
