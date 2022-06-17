@@ -1,11 +1,9 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import java.util.Random;
+import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
@@ -23,7 +21,6 @@ public class SmokePuffSystem implements EntitySystem {
             SmokeEmitterComponent.class);
 
     private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/effects/smokes.json");
-    private static final Random RANDOM = new Random();
 
     @Override
     public void update(Engine engine) {
@@ -32,22 +29,19 @@ public class SmokePuffSystem implements EntitySystem {
             return;
         }
         var player = playerEntity.get();
-        var order = player.get(SpriteComponent.class).drawOrder;
         var smokeEmitter = player.get(SmokeEmitterComponent.class);
-        var playerCenter = player.get(TransformComponent.class).bounds.position();
-        if (Duration.since(smokeEmitter.lastEmitted).isAtLeast(Duration.ofMillis(120))) {
-            int tileId = RANDOM.nextInt(3);
+        if (smokeEmitter.ticker.isTick(engine.loop().metrics().timeOfLastUpdate())) {
+            var playerCenter = player.get(TransformComponent.class).bounds.position();
+            var order = player.get(SpriteComponent.class).drawOrder;
             Bounds bounds = Bounds.atPosition(playerCenter, 16, 16);
             Entity smokePuff = new Entity().add(
                     new FadeOutComponent(2),
                     new TransformComponent(bounds),
-                    new SpriteComponent(SPRITES.findById(tileId), order)
+                    new SpriteComponent(randomFrom(SPRITES.all()), order)
 
             );
-            smokeEmitter.lastEmitted = Time.now();
             engine.entityEngine().add(smokePuff);
         }
-
     }
 
     @Override

@@ -2,7 +2,9 @@ package de.suzufa.screwbox.tiled;
 
 import static java.util.Objects.isNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -11,9 +13,11 @@ public class SpriteDictionary {
 
     private final Map<Integer, Sprite> spritesById = new HashMap<>();
     private final Map<String, Sprite> spritesByName = new HashMap<>();
+    private final List<Sprite> allSprites = new ArrayList<>();
 
     public void addSprite(final int id, final Sprite sprite) {
         spritesById.put(id, sprite);
+        allSprites.add(sprite);
     }
 
     public Sprite findById(final int id) {
@@ -40,4 +44,7 @@ public class SpriteDictionary {
         spritesByName.put(name, findById(id));
     }
 
+    public List<Sprite> all() {
+        return allSprites;
+    }
 }

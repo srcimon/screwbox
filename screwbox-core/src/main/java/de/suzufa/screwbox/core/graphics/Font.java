@@ -7,7 +7,8 @@ public final class Font {
     public enum Style {
         NORMAL,
         ITALIC,
-        BOLD
+        BOLD,
+        ITALIC_BOLD
     }
 
     private final String name;

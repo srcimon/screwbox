@@ -1,7 +1,9 @@
 package de.suzufa.screwbox.core.entityengine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Archetype implements Serializable {
@@ -18,11 +20,12 @@ public class Archetype implements Serializable {
 
     private Archetype(final Collection<Class<? extends Component>> componentClasses) {
         this.componentClasses = componentClasses;
-        this.hash = componentClasses.stream()
-                .map(Class::getName)
-                .sorted()
-                .toList()
-                .hashCode();
+        List<String> names = new ArrayList<>();
+        for (Class<? extends Component> componentClass : componentClasses) {
+            names.add(componentClass.getName());
+        }
+        Collections.sort(names);
+        this.hash = names.hashCode();
     }
 
     @Override

@@ -1,10 +1,18 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.util.Map;
+
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
 
 public final class AwtMapper {
+
+    private static final Map<Style, Integer> STYLES = Map.of(
+            Style.NORMAL, 0,
+            Style.BOLD, 1,
+            Style.ITALIC, 2,
+            Style.ITALIC_BOLD, 3);
 
     private AwtMapper() {
     }
@@ -14,18 +22,8 @@ public final class AwtMapper {
     }
 
     public static java.awt.Font toAwtFont(final Font font) {
-        return new java.awt.Font(font.name(), getAwtStyle(font.style()), font.size());
-    }
-
-    private static int getAwtStyle(final Style style) {
-        switch (style) {
-        case NORMAL:
-            return 0;
-        case BOLD:
-            return 1;
-        default:
-            return 2;
-        }
+        final int style = STYLES.get(font.style());
+        return new java.awt.Font(font.name(), style, font.size());
     }
 
 }

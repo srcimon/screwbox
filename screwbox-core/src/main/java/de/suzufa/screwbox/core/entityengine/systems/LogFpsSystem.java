@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.utils.Timer;
 
 public class LogFpsSystem implements EntitySystem {
 
-    private final Timer timer = Timer.withIntervalOf(ofSeconds(2));
+    private final Timer timer = Timer.withInterval(ofSeconds(2));
 
     private double sum;
     private long count;
