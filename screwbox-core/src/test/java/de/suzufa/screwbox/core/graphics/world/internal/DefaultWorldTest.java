@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -48,5 +49,14 @@ class DefaultWorldTest {
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
 
         verify(window).drawRectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED);
+    }
+
+    @Test
+    void drawColor_setsColorForDrawing() {
+        world.drawColor(Color.BLUE);
+        world.drawLine(Segment.between(Vector.zero(), Vector.zero()));
+
+        assertThat(world.drawColor()).isEqualTo(Color.BLUE);
+        verify(window).drawLine(Offset.at(512, 384), Offset.at(512, 384), Color.BLUE);
     }
 }
