@@ -52,6 +52,7 @@ public class DemoScene implements Scene {
                 .add(new CameraMovementSystem())
                 .add(new PlayerMovementSystem())
                 .add(new AutoRotationSystem())
+                .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
     }
@@ -79,6 +80,7 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
+                .add(new EnemyMovementComponent())
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
