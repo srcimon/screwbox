@@ -5,6 +5,7 @@ import static de.suzufa.screwbox.core.Bounds.atPosition;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
+import de.suzufa.screwbox.core.entityengine.components.AutoRotationComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
@@ -12,9 +13,6 @@ import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
-import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
-import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
@@ -41,12 +39,6 @@ public class PathfindingMap {
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("camera").as(camera());
-
-        entityEngine
-                .add(new SpriteRenderSystem())
-                .add(new CameraMovementSystem())
-                .add(new PlayerMovementSystem())
-                .add(new PhysicsSystem());
     }
 
     private Converter<GameObject> camera() {
@@ -59,6 +51,8 @@ public class PathfindingMap {
     private Converter<GameObject> player() {
         return object -> new Entity(1)
                 .add(new PhysicsBodyComponent())
+                .add(new AutoRotationComponent())
+                .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
