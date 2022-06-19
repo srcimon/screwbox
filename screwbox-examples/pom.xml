@@ -11,5 +11,9 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>screwbox-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>screwbox-tiled</artifactId>
+		</dependency>
 	</dependencies>
 </project>
