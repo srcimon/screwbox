@@ -44,6 +44,7 @@ public class DemoScene implements Scene {
         entityEngine.importSource(map.allObjects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
+                .when("enemy").as(enemy())
                 .when("camera").as(camera());
 
         entityEngine
@@ -51,6 +52,7 @@ public class DemoScene implements Scene {
                 .add(new CameraMovementSystem())
                 .add(new PlayerMovementSystem())
                 .add(new AutoRotationSystem())
+                .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
     }
 
@@ -58,11 +60,24 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new TransformComponent(object.bounds()))
                 .add(new CameraComponent(2.5))
-                .add(new CameraMovementComponent(1, 1));
+                .add(new CameraMovementComponent(2, object.properties().forceInt("target")));
     }
 
     private Converter<GameObject> player() {
-        return object -> new Entity(1)
+        final var sprites = TiledSupport.loadTileset("maze/player.json");
+        return object -> new Entity(object.id())
+                .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
+                .add(new PlayerMovementComponent())
+                .add(new PhysicsBodyComponent())
+                .add(new AutoRotationComponent())
+                .add(new SpriteComponent(object.layer().order()))
+                .add(new TransformComponent(atPosition(object.position(), 8, 8)));
+    }
+
+    private Converter<GameObject> enemy() {
+        final var sprites = TiledSupport.loadTileset("maze/enemy.json");
+        return object -> new Entity()
+                .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))

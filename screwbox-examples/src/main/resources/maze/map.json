@@ -110,12 +110,30 @@
                  "id":2,
                  "name":"camera",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"target",
+                         "type":"object",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":215,
                  "y":137
+                }, 
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"enemy",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":38,
+                 "y":127
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -124,7 +142,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":3,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.4",
