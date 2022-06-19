@@ -13,20 +13,26 @@ import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
+import de.suzufa.screwbox.core.entityengine.systems.AutoRotationSystem;
+import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
+import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
+import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
-public class PathfindingMap {
+public class DemoScene implements Scene {
 
     private final Map map;
 
-    public PathfindingMap(final String name) {
-        map = TiledSupport.loadMap("maze/map.json");
+    public DemoScene(final String name) {
+        map = TiledSupport.loadMap(name);
     }
 
-    public void importInto(final EntityEngine entityEngine) {
+    @Override
+    public void initialize(final EntityEngine entityEngine) {
         entityEngine.importSource(map.allTiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
@@ -39,6 +45,13 @@ public class PathfindingMap {
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("camera").as(camera());
+
+        entityEngine
+                .add(new SpriteRenderSystem())
+                .add(new CameraMovementSystem())
+                .add(new PlayerMovementSystem())
+                .add(new AutoRotationSystem())
+                .add(new PhysicsSystem());
     }
 
     private Converter<GameObject> camera() {
@@ -67,7 +80,7 @@ public class PathfindingMap {
                 .add(new ColliderComponent());
     }
 
-    private Converter<Map> worldBounds() {
+    private static Converter<Map> worldBounds() {
         return map -> new Entity()
                 .add(new TransformComponent(map.bounds()))
                 .add(new WorldBoundsComponent());
