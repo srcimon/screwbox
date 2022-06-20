@@ -26,7 +26,7 @@ public class PlayerControlSystem implements EntitySystem {
         if (engine.keyboard().justPressed(Key.SPACE)) {
 
             var bomb = new Entity()
-                    .add(new SpriteComponent(player.get(SpriteComponent.class).drawOrder))
+                    .add(new SpriteComponent(player.get(SpriteComponent.class).drawOrder - 1))
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 
