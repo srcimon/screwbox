@@ -45,7 +45,7 @@ class SelectEntityBuilderTest {
     }
 
     @Test
-    void selectAnyEntity_noEntityAtPosition_returnsEmpty() {
+    void selectAny_noEntityAtPosition_returnsEmpty() {
         when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(
                         boxAt(55, 45),
@@ -55,20 +55,20 @@ class SelectEntityBuilderTest {
         var result = selectEntityBuilder
                 .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
                 .ignoringEntitiesHaving(SpriteComponent.class)
-                .selectAnyEntity();
+                .selectAny();
 
         assertThat(result).isEmpty();
     }
 
     @Test
-    void selectAnyEntity_entityAtPosition_returnsEntity() {
+    void selectAny_entityAtPosition_returnsEntity() {
         when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(boxAt(39, 59)));
 
         var result = selectEntityBuilder
                 .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
                 .ignoringEntitiesHaving(SpriteComponent.class)
-                .selectAnyEntity();
+                .selectAny();
 
         assertThat(result).isPresent();
     }

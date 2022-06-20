@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.physics.internal;
 
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.Physics;
@@ -22,6 +23,11 @@ public class DefaultPhysics implements Physics {
     @Override
     public SelectEntityBuilder searchAtPosition(final Vector position) {
         return new SelectEntityBuilder(engine.entityEngine(), position);
+    }
+
+    @Override
+    public SelectEntityBuilder searchInRange(final Bounds range) {
+        return new SelectEntityBuilder(engine.entityEngine(), range);
     }
 
 }

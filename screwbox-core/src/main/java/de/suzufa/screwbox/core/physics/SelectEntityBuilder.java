@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Component;
@@ -13,6 +14,7 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.EntityContainsPositionFilter;
 import de.suzufa.screwbox.core.physics.internal.EntityHasComponentFilter;
+import de.suzufa.screwbox.core.physics.internal.EntityNotInRangeFilter;
 import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public final class SelectEntityBuilder {
@@ -21,6 +23,11 @@ public final class SelectEntityBuilder {
     private final EntityEngine entityEngine;
 
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
+
+    public SelectEntityBuilder(final EntityEngine entityEngine, final Bounds bounds) {
+        this.entityEngine = entityEngine;
+        filters.add(new EntityNotInRangeFilter(bounds));
+    }
 
     public SelectEntityBuilder(final EntityEngine entityEngine, final Vector position) {
         this.entityEngine = entityEngine;
@@ -41,7 +48,7 @@ public final class SelectEntityBuilder {
         return this;
     }
 
-    public Optional<Entity> selectAnyEntity() {
+    public Optional<Entity> selectAny() {
         for (final Entity entity : entityEngine.fetchAll(archetype)) {
             if (isNotFiltered(entity)) {
                 return Optional.of(entity);
@@ -57,6 +64,16 @@ public final class SelectEntityBuilder {
             }
         }
         return true;
+    }
+
+    public List<Entity> selectAll() {
+        var entities = new ArrayList<Entity>();
+        for (final Entity entity : entityEngine.fetchAll(archetype)) {
+            if (isNotFiltered(entity)) {
+                entities.add(entity);
+            }
+        }
+        return entities;
     }
 
 }
