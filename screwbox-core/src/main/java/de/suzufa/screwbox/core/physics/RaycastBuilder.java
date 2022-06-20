@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.EntityHasComponentFilter;
 import de.suzufa.screwbox.core.physics.internal.EntityIsInRaycastFilter;
-import de.suzufa.screwbox.core.physics.internal.EntityNotInBounds;
+import de.suzufa.screwbox.core.physics.internal.EntityNotInRangeFilter;
 import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public final class RaycastBuilder {
@@ -54,7 +54,7 @@ public final class RaycastBuilder {
     }
 
     public RaycastBuilder ignoringEntitesNotIn(final Bounds bounds) {
-        filters.add(new EntityNotInBounds(bounds));
+        filters.add(new EntityNotInRangeFilter(bounds));
         return this;
     }
 

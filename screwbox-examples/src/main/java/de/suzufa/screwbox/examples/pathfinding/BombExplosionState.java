@@ -1,11 +1,15 @@
 package de.suzufa.screwbox.examples.pathfinding;
 
+import java.util.List;
+
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.audio.SoundPool;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
@@ -23,11 +27,20 @@ public class BombExplosionState implements EntityState {
         entity.get(SpriteComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().metrics().timeOfLastUpdate().plus(sprite.duration());
         engine.audio().playEffect(EXPLOSION);
+        Bounds bounds = entity.get(TransformComponent.class).bounds.inflated(8);
+        List<Entity> entitiesInExplosionRange = engine.physics()
+                .searchInRange(bounds)
+                .ignoringEntitiesHaving(PlayerMovementComponent.class)
+                .selectAll();
+
+        for (var entityInExplosionRange : entitiesInExplosionRange) {
+            engine.entityEngine().remove(entityInExplosionRange);// TODO: remove(List<OfEntities>)
+        }
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (engine.loop().metrics().timeOfLastUpdate().isAfter(endOfAnimation)) {
+        if (Time.now().isAfter(endOfAnimation)) {// TODO: isBefore
             engine.entityEngine().remove(entity);
         }
         return this;
