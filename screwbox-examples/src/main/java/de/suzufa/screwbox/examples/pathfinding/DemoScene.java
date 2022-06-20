@@ -17,6 +17,7 @@ import de.suzufa.screwbox.core.entityengine.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
@@ -50,7 +51,8 @@ public class DemoScene implements Scene {
         entityEngine
                 .add(new SpriteRenderSystem())
                 .add(new CameraMovementSystem())
-                .add(new PlayerMovementSystem())
+                .add(new StateSystem())
+                .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())

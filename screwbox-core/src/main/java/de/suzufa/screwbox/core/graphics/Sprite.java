@@ -102,6 +102,10 @@ public class Sprite implements Serializable {
         return frames.get(frameNr).image(flippedHorizontally, flippedVertically);
     }
 
+    public Duration duration() {
+        return duration;
+    }
+
     private void addFrame(final Frame frame) {
         if (isNull(dimension)) {
             dimension = frame.dimension();
