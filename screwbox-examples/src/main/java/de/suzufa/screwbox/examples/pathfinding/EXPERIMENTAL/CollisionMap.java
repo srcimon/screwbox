@@ -38,7 +38,11 @@ public class CollisionMap {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Color color = isBlocked[x][y] ? Color.RED : Color.GREEN;
-                Bounds bounds = Bounds.atOrigin(origin, gridSize, gridSize).moveBy(x * gridSize, y * gridSize);
+                Bounds bounds = Bounds.atOrigin(
+                        origin.x() + x * gridSize,
+                        origin.y() + y * gridSize,
+                        gridSize,
+                        gridSize);
                 world.drawRectangle(bounds, color.withOpacity(0.5));
             }
         }
