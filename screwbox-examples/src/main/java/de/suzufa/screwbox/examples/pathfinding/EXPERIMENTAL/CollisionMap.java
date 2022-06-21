@@ -1,15 +1,11 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.World;
 
 public class CollisionMap {
 
@@ -27,19 +23,25 @@ public class CollisionMap {
         map = new boolean[width][height];
     }
 
-    public void update(EntityEngine entityEngine) {
-        Time now = Time.now();
+    public void update(List<Bounds> nonPathAreas) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 map[x][y] = false;
             }
         }
-        for (Entity entity : entityEngine.fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
-            if (!entity.hasComponent(PhysicsBodyComponent.class)) {
-                markArea(entity.get(TransformComponent.class).bounds);
+        for (var bounds : nonPathAreas) {
+            markArea(bounds);
+        }
+    }
+
+    public void debugDraw(World world) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Color color = map[x][y] ? Color.RED : Color.GREEN;
+                Bounds bounds = Bounds.atOrigin(origin, gridSize, gridSize).moveBy(x * gridSize, y * gridSize);
+                world.drawRectangle(bounds, color.withOpacity(0.5));
             }
         }
-        System.out.println(Duration.since(now).nanos());
     }
 
     private void markArea(Bounds bounds) {
