@@ -22,14 +22,14 @@ public class PathfindingSystem {
     // TODO: merge with engine.physics()
     public PathfindingSystem(Engine engine) {
         this.engine = engine;
-        Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class, TransformComponent.class);
-        Bounds bounds = worldBounds.get(TransformComponent.class).bounds;
-        collisionMap = new CollisionMap(bounds, 16);
-
     }
 
     public void update() {
-        if (update.isTick(engine.loop().metrics().timeOfLastUpdate())) {
+        if (update.isTick(engine.loop().metrics().timeOfLastUpdate()) || collisionMap == null) {
+            Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class,
+                    TransformComponent.class);
+            Bounds bounds = worldBounds.get(TransformComponent.class).bounds;
+            collisionMap = new CollisionMap(bounds, 16);
             collisionMap.clear();
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
