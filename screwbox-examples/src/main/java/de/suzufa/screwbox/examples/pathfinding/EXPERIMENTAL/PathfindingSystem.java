@@ -22,6 +22,7 @@ public class PathfindingSystem {
 
     private Timer update = Timer.withInterval(ofMillis(500));
 
+    // TODO: merge with engine.physics()
     public PathfindingSystem(Engine engine) {
         this.engine = engine;
         Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class, TransformComponent.class);

@@ -25,7 +25,7 @@ public class EnemyMovementSystem implements EntitySystem {
         }
 
         pathfindingSystem.update();
-//        pathfindingSystem.debugDraw();
+        pathfindingSystem.debugDraw();
         Entity player = engine.entityEngine().forcedFetch(PlayerMovementComponent.class, TransformComponent.class);
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
 
