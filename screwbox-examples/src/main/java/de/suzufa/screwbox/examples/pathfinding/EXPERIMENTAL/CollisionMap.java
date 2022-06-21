@@ -29,6 +29,13 @@ public class CollisionMap {
         }
     }
 
+    public void createPath(Vector from, Vector to) { // TODO: accept bigger than gridSizeObjects
+        int fromX;
+        int fromY;
+        int toX;
+        int toY;
+    }
+
     public void debugDraw(World world) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
