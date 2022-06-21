@@ -2,9 +2,6 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static de.suzufa.screwbox.core.Duration.ofMillis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.Archetype;
@@ -33,15 +30,14 @@ public class PathfindingSystem {
 
     public void update() {
         if (update.isTick(engine.loop().metrics().timeOfLastUpdate())) {
-            List<Bounds> nonWalkableBounds = new ArrayList<>();
+            collisionMap.clear();
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
                 if (!entity.hasComponent(PhysicsBodyComponent.class)) { // TODO: add special
                                                                         // NotBlockingPathfindingComponent
-                    nonWalkableBounds.add(entity.get(TransformComponent.class).bounds);
+                    collisionMap.markNonWalkable(entity.get(TransformComponent.class).bounds);
                 }
             }
-            collisionMap.update(nonWalkableBounds);
         }
     }
 

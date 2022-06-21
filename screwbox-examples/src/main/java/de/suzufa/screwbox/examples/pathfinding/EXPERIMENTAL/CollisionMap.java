@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
-import java.util.List;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
@@ -23,14 +21,11 @@ public class CollisionMap {
         isBlocked = new boolean[width][height];
     }
 
-    public void update(List<Bounds> nonPathAreas) {
+    public void clear() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 isBlocked[x][y] = false;
             }
-        }
-        for (var bounds : nonPathAreas) {
-            markArea(bounds);
         }
     }
 
@@ -48,7 +43,7 @@ public class CollisionMap {
         }
     }
 
-    private void markArea(Bounds bounds) {
+    public void markNonWalkable(Bounds bounds) {
         Vector boundsOrigin = bounds.origin();
         int xMin = (int) boundsOrigin.x() / gridSize;
         int yMin = (int) boundsOrigin.y() / gridSize;
