@@ -11,9 +11,9 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.CollisionPair;
 import de.suzufa.screwbox.core.physics.internal.CollisionResolver;
 
@@ -30,6 +30,7 @@ public class PhysicsSystem implements EntitySystem {
             final var currentMomentum = entity.get(PhysicsBodyComponent.class).momentum;
             final var transform = entity.get(TransformComponent.class);
 
+            // TODO: PhysicsBodyComponent.maxSpeed /vector.reduceLengthTo(maxSpeed)
             final Vector momentum = currentMomentum.multiply(factor);
             final Bounds updatedBounds = transform.bounds.moveBy(momentum);
             transform.bounds = updatedBounds;
