@@ -14,6 +14,4 @@ public class PathfindingExample {
         engine.start(DemoScene.class);
     }
 
-    // TODO: Physics.createFlowField(area).gridSize(16).towards(target-vector);
-
 }

@@ -7,7 +7,7 @@ import de.suzufa.screwbox.core.graphics.World;
 
 public class CollisionMap {
 
-    private int[][] isBlocked;
+    private boolean[][] isBlocked;
     private Vector origin;
     private int width;
     private int height;
@@ -18,13 +18,13 @@ public class CollisionMap {
         height = (int) worldBounds.height() / gridSize;
         origin = worldBounds.origin();
         this.gridSize = gridSize;
-        isBlocked = new int[width][height];
+        isBlocked = new boolean[width][height];
     }
 
     public void clear() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                isBlocked[x][y] = 0;
+                isBlocked[x][y] = false;
             }
         }
     }
@@ -32,7 +32,7 @@ public class CollisionMap {
     public void debugDraw(World world) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Color color = isBlocked[x][y] == -1 ? Color.RED : Color.GREEN;
+                Color color = isBlocked[x][y] ? Color.RED : Color.GREEN;
                 Bounds bounds = Bounds.atOrigin(
                         origin.x() + x * gridSize,
                         origin.y() + y * gridSize,
@@ -53,7 +53,7 @@ public class CollisionMap {
         int yMax = (int) bottomRight.y() / gridSize;
         for (int x = xMin; x < xMax; x++) {
             for (int y = yMin; y < yMax; y++) {
-                isBlocked[x][y] = -1;
+                isBlocked[x][y] = true;
             }
         }
     }
