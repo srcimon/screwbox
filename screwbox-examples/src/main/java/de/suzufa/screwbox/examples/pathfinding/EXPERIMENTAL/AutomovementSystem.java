@@ -19,20 +19,17 @@ public class AutomovementSystem implements EntitySystem {
             Vector position = entity.get(TransformComponent.class).bounds.position();
             var automovement = entity.get(AutomovementComponent.class);
 
-            if (automovement.path != null && automovement.path.hasNodes()) {
+            if (automovement.path != null) {
                 double d = 8; // TODO: engine.physics().gridsize() / 2;
 
-                if (position.distanceTo(automovement.path.start()) < d && automovement.path.nodeCount() > 1) {
-                    automovement.path.nextNode();
-                }
-                if (position.distanceTo(automovement.path.start()) < d) {
-                    entity.get(PhysicsBodyComponent.class).momentum = Vector.zero();
+                Vector next = automovement.path.nextWaypoint(position);
 
+                if (position.distanceTo(automovement.path.end()) < d) {
+                    entity.get(PhysicsBodyComponent.class).momentum = Vector.zero();
                 } else {
-                    Vector direction = automovement.path.start().substract(position);
+                    Vector direction = next.substract(position);
 
                     entity.get(PhysicsBodyComponent.class).momentum = direction.capLength(automovement.speed);
-                    // TODO: if near target remove first dot
                 }
             }
         }
