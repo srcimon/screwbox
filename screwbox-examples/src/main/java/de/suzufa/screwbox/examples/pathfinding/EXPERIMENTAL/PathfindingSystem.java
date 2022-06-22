@@ -37,7 +37,7 @@ public class PathfindingSystem {
         if (path == null) {
             return Optional.empty();
         }
-
+//TODO: add start
         List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
         ArrayList<Vector> value = new ArrayList<>(list);
         value.add(end);
