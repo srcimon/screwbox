@@ -2,8 +2,11 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static de.suzufa.screwbox.core.Duration.ofMillis;
 
+import java.util.Optional;
+
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
@@ -24,6 +27,10 @@ public class PathfindingSystem {
         this.engine = engine;
     }
 
+    public Optional<String> findPath(Vector start, Vector end) {
+        return Optional.empty();
+    }
+
     public void update() {
         if (update.isTick(engine.loop().metrics().timeOfLastUpdate()) || raster == null) {
             Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class,
@@ -33,8 +40,7 @@ public class PathfindingSystem {
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
                 if (!entity.hasComponent(PhysicsBodyComponent.class)) { // TODO: add special
-                                                                        // NotBlockingPathfindingComponent
-                    raster.markNonWalkable(entity.get(TransformComponent.class).bounds);
+                    raster.blockArea(entity.get(TransformComponent.class).bounds);
                 }
             }
         }

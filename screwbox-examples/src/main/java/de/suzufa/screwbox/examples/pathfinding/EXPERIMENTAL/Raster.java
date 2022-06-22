@@ -35,7 +35,7 @@ public class Raster {
         }
     }
 
-    public void markNonWalkable(Bounds bounds) {
+    public void blockArea(Bounds bounds) {
         Vector boundsOrigin = bounds.origin();
         int xMin = (int) boundsOrigin.x() / gridSize;
         int yMin = (int) boundsOrigin.y() / gridSize;
