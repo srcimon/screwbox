@@ -20,14 +20,13 @@ import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.PathfindingSystem;
 
 public class EnemyMovementSystem implements EntitySystem {
 
-    // TODO: Remove enemymovementcomponent
     private static final Archetype ENEMIES = Archetype.of(
-            EnemyMovementComponent.class, PhysicsBodyComponent.class, SpriteComponent.class,
+            PhysicsBodyComponent.class, SpriteComponent.class,
             AutomovementComponent.class);
 
     private PathfindingSystem pathfindingSystem;
 
-    private Timer t = Timer.withInterval(Duration.ofSeconds(1));
+    private Timer t = Timer.withInterval(Duration.ofMillis(500));
 
     @Override
     public void update(Engine engine) {

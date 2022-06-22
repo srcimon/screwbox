@@ -86,7 +86,6 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
-                .add(new EnemyMovementComponent())
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
