@@ -36,8 +36,7 @@ public class Raster {
     }
 
     public RasterPoint getPoint(Vector position) {
-        return new RasterPoint((int) (position.x() + 0.5 * gridSize) / gridSize,
-                (int) (position.y() - 0.5 * gridSize) / gridSize, null);
+        return new RasterPoint((int) position.x() / gridSize, (int) position.y() / gridSize, null);
     }
 
     public void debugDraw(World world) {
