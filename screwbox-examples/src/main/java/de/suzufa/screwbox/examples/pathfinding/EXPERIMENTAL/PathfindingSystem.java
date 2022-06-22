@@ -3,6 +3,7 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 import static de.suzufa.screwbox.core.Duration.ofMillis;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,9 @@ public class PathfindingSystem {
         }
 
         List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
-        return Optional.of(new ArrayList<>(list));// TODO: REVERSE
+        ArrayList<Vector> value = new ArrayList<>(list);
+        Collections.reverse(value);
+        return Optional.of(value);
     }
 
     public void update() {
