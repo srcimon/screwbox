@@ -21,6 +21,25 @@ public class Raster {
         isBlocked = new boolean[width][height];
     }
 
+    public int[][] createMap() {
+        int[][] map = new int[height][width];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                map[y][x] = isBlocked[x][y] ? 1 : 0;
+            }
+        }
+        return map;
+    }
+
+    public Vector getVector(RasterPoint point) {
+        return Vector.of((point.x + 0.5) * gridSize, (point.y + 0.5) * gridSize);
+    }
+
+    public RasterPoint getPoint(Vector position) {
+        return new RasterPoint((int) (position.x() + 0.5 * gridSize) / gridSize,
+                (int) (position.y() - 0.5 * gridSize) / gridSize, null);
+    }
+
     public void debugDraw(World world) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -49,4 +68,5 @@ public class Raster {
             }
         }
     }
+
 }

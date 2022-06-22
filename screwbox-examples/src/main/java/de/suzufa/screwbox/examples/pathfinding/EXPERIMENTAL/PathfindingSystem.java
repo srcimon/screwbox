@@ -2,6 +2,7 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static de.suzufa.screwbox.core.Duration.ofMillis;
 
+import java.util.List;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
@@ -27,8 +28,16 @@ public class PathfindingSystem {
         this.engine = engine;
     }
 
-    public Optional<String> findPath(Vector start, Vector end) {
-        return Optional.empty();
+    public Optional<List<Vector>> findPath(Vector start, Vector end) {
+        RasterPoint startPoint = raster.getPoint(start);
+        RasterPoint endPoint = raster.getPoint(end);
+        var map = raster.createMap();
+        List<RasterPoint> path = STOLENBACKUP.FindPath(map, startPoint, endPoint);
+        if (path == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(path.stream().map(p -> raster.getVector(p)).toList());
     }
 
     public void update() {

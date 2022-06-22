@@ -1,5 +1,9 @@
 package de.suzufa.screwbox.examples.pathfinding;
 
+import java.util.List;
+import java.util.Optional;
+
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
@@ -31,6 +35,14 @@ public class EnemyMovementSystem implements EntitySystem {
 
         for (Entity enemy : engine.entityEngine().fetchAll(ENEMIES)) {
             Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
+            Optional<List<Vector>> path = pathfindingSystem.findPath(playerPosition, enemyPosition);
+            if (path.isPresent()) {
+                List<Vector> list = path.get();
+
+                for (var point : list) {
+                    engine.graphics().world().drawRectangle(Bounds.atPosition(point, 4, 4));
+                }
+            }
         }
 
     }
