@@ -1,9 +1,7 @@
 package de.suzufa.screwbox.examples.pathfinding;
 
-import java.util.List;
 import java.util.Optional;
 
-import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
@@ -17,6 +15,7 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.Path;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.PathfindingSystem;
 
 public class EnemyMovementSystem implements EntitySystem {
@@ -37,20 +36,15 @@ public class EnemyMovementSystem implements EntitySystem {
         }
 
         pathfindingSystem.update();
-        pathfindingSystem.debugDraw();
         Entity player = engine.entityEngine().forcedFetch(PlayerMovementComponent.class, TransformComponent.class);
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
 //TODO: NO TIMER
         if (t.isTick(Time.now())) {
             for (Entity enemy : engine.entityEngine().fetchAll(ENEMIES)) {
                 Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
-                Optional<List<Vector>> path = pathfindingSystem.findPath(playerPosition, enemyPosition);
+                Optional<Path> path = pathfindingSystem.findPath(playerPosition, enemyPosition);
                 if (path.isPresent()) {
                     enemy.get(AutomovementComponent.class).path = path.get();
-
-                    for (var point : path.get()) {
-                        engine.graphics().world().drawRectangle(Bounds.atPosition(point, 4, 4));
-                    }
                 }
             }
         }

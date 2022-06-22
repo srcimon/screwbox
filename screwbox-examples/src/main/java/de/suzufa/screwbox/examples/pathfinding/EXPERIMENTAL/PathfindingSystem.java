@@ -30,7 +30,7 @@ public class PathfindingSystem {
         this.engine = engine;
     }
 
-    public Optional<List<Vector>> findPath(Vector start, Vector end) {
+    public Optional<Path> findPath(Vector start, Vector end) {
         RasterPoint startPoint = raster.getPoint(start);
         RasterPoint endPoint = raster.getPoint(end);
         var map = raster.createMap();
@@ -41,8 +41,10 @@ public class PathfindingSystem {
 
         List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
         ArrayList<Vector> value = new ArrayList<>(list);
+
         Collections.reverse(value);
-        return Optional.of(value);
+        value.add(end);
+        return Optional.of(Path.withWaypoints(value));
     }
 
     public void update() {
@@ -58,10 +60,6 @@ public class PathfindingSystem {
                 }
             }
         }
-    }
-
-    public void debugDraw() {
-        raster.debugDraw(engine.graphics().world());
     }
 
 }
