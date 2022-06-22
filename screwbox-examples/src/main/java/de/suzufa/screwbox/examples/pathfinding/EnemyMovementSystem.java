@@ -41,7 +41,7 @@ public class EnemyMovementSystem implements EntitySystem {
         if (t.isTick(Time.now())) {
             for (Entity enemy : engine.entityEngine().fetchAll(ENEMIES)) {
                 Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
-                Optional<Path> path = pathfindingSystem.findPath(playerPosition, enemyPosition);
+                Optional<Path> path = pathfindingSystem.findPath(enemyPosition, playerPosition);
                 if (path.isPresent()) {
                     enemy.get(AutomovementComponent.class).path = path.get();
                 }
