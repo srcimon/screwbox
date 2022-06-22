@@ -2,6 +2,7 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static de.suzufa.screwbox.core.Duration.ofMillis;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,8 @@ public class PathfindingSystem {
             return Optional.empty();
         }
 
-        return Optional.of(path.stream().map(p -> raster.getVector(p)).toList());
+        List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
+        return Optional.of(new ArrayList<>(list));// TODO: REVERSE
     }
 
     public void update() {

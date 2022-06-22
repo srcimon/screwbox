@@ -19,6 +19,8 @@ import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
+import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
@@ -54,6 +56,7 @@ public class DemoScene implements Scene {
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
+                .add(new AutomovementSystem())
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
@@ -82,6 +85,7 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
+                .add(new AutomovementComponent())
                 .add(new EnemyMovementComponent())
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
