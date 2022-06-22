@@ -5,35 +5,20 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.World;
 
-public class CollisionMap {
+public class Raster {
 
-    private boolean[][] isBlocked;
-    private Vector origin;
-    private int width;
-    private int height;
-    private int gridSize;
+    private final boolean[][] isBlocked;
+    private final Vector origin;
+    private final int width;
+    private final int height;
+    private final int gridSize;
 
-    public CollisionMap(Bounds worldBounds, int gridSize) {
-        width = (int) worldBounds.width() / gridSize;
-        height = (int) worldBounds.height() / gridSize;
-        origin = worldBounds.origin();
+    public Raster(Bounds bounds, int gridSize) {
+        width = (int) bounds.width() / gridSize;
+        height = (int) bounds.height() / gridSize;
+        origin = bounds.origin();
         this.gridSize = gridSize;
         isBlocked = new boolean[width][height];
-    }
-
-    public void clear() {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                isBlocked[x][y] = false;
-            }
-        }
-    }
-
-    public void createPath(Vector from, Vector to) { // TODO: accept bigger than gridSizeObjects
-        int fromX;
-        int fromY;
-        int toX;
-        int toY;
     }
 
     public void debugDraw(World world) {

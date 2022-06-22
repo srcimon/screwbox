@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.utils.Timer;
 public class PathfindingSystem {
 
     private Engine engine;
-    private CollisionMap collisionMap;
+    private Raster raster;
 
     private Timer update = Timer.withInterval(ofMillis(500));
 
@@ -25,24 +25,23 @@ public class PathfindingSystem {
     }
 
     public void update() {
-        if (update.isTick(engine.loop().metrics().timeOfLastUpdate()) || collisionMap == null) {
+        if (update.isTick(engine.loop().metrics().timeOfLastUpdate()) || raster == null) {
             Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class,
                     TransformComponent.class);
             Bounds bounds = worldBounds.get(TransformComponent.class).bounds;
-            collisionMap = new CollisionMap(bounds, 16);
-            collisionMap.clear();
+            raster = new Raster(bounds, 16);
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
                 if (!entity.hasComponent(PhysicsBodyComponent.class)) { // TODO: add special
                                                                         // NotBlockingPathfindingComponent
-                    collisionMap.markNonWalkable(entity.get(TransformComponent.class).bounds);
+                    raster.markNonWalkable(entity.get(TransformComponent.class).bounds);
                 }
             }
         }
     }
 
     public void debugDraw() {
-        collisionMap.debugDraw(engine.graphics().world());
+        raster.debugDraw(engine.graphics().world());
     }
 
 }
