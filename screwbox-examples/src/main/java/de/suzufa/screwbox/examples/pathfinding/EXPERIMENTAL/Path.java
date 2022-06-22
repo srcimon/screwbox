@@ -1,8 +1,10 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 
 public class Path implements Serializable {
@@ -18,6 +20,14 @@ public class Path implements Serializable {
     public static Path withWaypoints(List<Vector> waypoints) {
         // TODO: check not empty
         return new Path(waypoints);
+    }
+
+    public List<Segment> segments() {
+        var segments = new ArrayList<Segment>();
+        for (int i = 0; i < nodeCount() - 1; i++) {
+            segments.add(Segment.between(waypoints.get(i), waypoints.get(i + 1)));
+        }
+        return segments;
     }
 
     public List<Vector> waypoints() {

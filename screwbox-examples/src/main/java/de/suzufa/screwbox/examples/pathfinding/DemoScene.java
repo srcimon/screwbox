@@ -20,6 +20,7 @@ import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementDebugSystem;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
@@ -57,6 +58,7 @@ public class DemoScene implements Scene {
                 .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
                 .add(new AutomovementSystem())
+                .add(new AutomovementDebugSystem())
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());

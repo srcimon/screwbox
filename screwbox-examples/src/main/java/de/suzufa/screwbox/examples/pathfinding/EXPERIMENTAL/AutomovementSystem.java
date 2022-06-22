@@ -1,15 +1,12 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
-import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.Color;
 
 public class AutomovementSystem implements EntitySystem {
 
@@ -22,12 +19,6 @@ public class AutomovementSystem implements EntitySystem {
             Vector position = entity.get(TransformComponent.class).bounds.position();
             var automovement = entity.get(AutomovementComponent.class);
 
-            // TODO: remove visualisation / add special debug system
-            if (automovement.path != null) {
-                for (var p : automovement.path.waypoints()) {
-                    engine.graphics().world().drawColor(Color.WHITE).drawRectangle(Bounds.atPosition(p, 2, 2));
-                }
-            }
             if (automovement.path != null && automovement.path.hasNodes()) {
                 double d = 8; // TODO: engine.physics().gridsize() / 2;
 
@@ -46,11 +37,6 @@ public class AutomovementSystem implements EntitySystem {
             }
         }
 
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_UI_FOREGROUND; // TODO: FIX just for debug path
     }
 
 }
