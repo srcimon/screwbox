@@ -66,23 +66,4 @@ public class STOLENBACKUP {
         return path;
     }
 
-    public static void main(String[] args) {
-        int[][] map = {
-                { 0, 0, 0, 0, 0 },
-                { 0, 0, 1, 0, 1 },
-                { 1, 0, 0, 1, 1 },
-                { 0, 0, 0, 1, 0 },
-                { 1, 1, 0, 0, 1 }
-        };
-
-        RasterPoint start = new RasterPoint(0, 0, null);
-        RasterPoint end = new RasterPoint(3, 4, null);
-        List<RasterPoint> path = FindPath(map, start, end);
-        if (path != null) {
-            for (RasterPoint point : path) {
-                System.out.println(point);
-            }
-        } else
-            System.out.println("No path found");
-    }
 }
