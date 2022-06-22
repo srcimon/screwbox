@@ -10,7 +10,7 @@ public class STOLENBACKUP {
             return false;
         if (point.x < 0 || point.x > map[0].length - 1)
             return false;
-        return map[point.y][point.x] == 0;
+        return map[point.x][point.y] == 0;
     }
 
     public static List<RasterPoint> FindNeighbors(int[][] map, RasterPoint point) {
