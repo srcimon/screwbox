@@ -42,9 +42,14 @@ public class PathfindingSystem {
 
         List<Vector> list = new ArrayList<>();
         list.add(start);
+        boolean first = true;
         for (var node : path) {
-            list.add(raster.getVector(node));
+            if (!first) {
+                list.add(raster.getVector(node));
+            }
+            first = false;
         }
+        list.remove(list.size() - 1);
         list.add(end);
         return Optional.of(Path.withNodes(list));
     }
