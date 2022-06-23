@@ -6,9 +6,9 @@ import java.util.List;
 public class STOLENBACKUP {
 
     public static boolean IsWalkable(int[][] map, RasterPoint point) {
-        if (point.y < 0 || point.y > map.length - 1)
+        if (point.y < 0 || point.y > map[0].length - 1)
             return false;
-        if (point.x < 0 || point.x > map[0].length - 1)
+        if (point.x < 0 || point.x > map.length - 1)
             return false;
         return map[point.x][point.y] == 0;
     }
