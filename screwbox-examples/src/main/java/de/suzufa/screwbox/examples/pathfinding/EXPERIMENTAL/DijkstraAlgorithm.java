@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
@@ -42,7 +43,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         return neighbors;
     }
 
-    private static int[][] createMap(Raster raster) {
+    private int[][] createMap(Raster raster) {
         int[][] map = new int[raster.width()][raster.height()];
         for (int x = 0; x < raster.width(); x++) {
             for (int y = 0; y < raster.height(); y++) {
@@ -54,7 +55,11 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end) {
-        return FindPath(createMap(raster), start, end);
+        var points = FindPath(createMap(raster), start, end);
+        if (points == null) {
+            return Collections.emptyList();
+        }
+        return points;
     }
 
     private List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {

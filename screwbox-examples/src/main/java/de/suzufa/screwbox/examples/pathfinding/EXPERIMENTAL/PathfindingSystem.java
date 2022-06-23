@@ -36,14 +36,17 @@ public class PathfindingSystem {
 
         PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
         List<RasterPoint> path = algorithm.findPath(raster, startPoint, endPoint);
-        if (path == null) {
+        if (path.isEmpty()) {
             return Optional.empty();
         }
-//TODO: add start
-        List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
-        ArrayList<Vector> value = new ArrayList<>(list);
-        value.add(end);
-        return Optional.of(Path.withNodes(value));
+
+        List<Vector> list = new ArrayList<>();
+        list.add(start);
+        for (var node : path) {
+            list.add(raster.getVector(node));
+        }
+        list.add(end);
+        return Optional.of(Path.withNodes(list));
     }
 
     public void update() {
