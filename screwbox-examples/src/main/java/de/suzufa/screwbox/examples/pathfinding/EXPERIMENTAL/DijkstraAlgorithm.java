@@ -3,9 +3,9 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class STOLENBACKUP {
+public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
-    public static boolean IsWalkable(int[][] map, RasterPoint point) {
+    private boolean IsWalkable(int[][] map, RasterPoint point) {
         if (point.y < 0 || point.y > map[0].length - 1)
             return false;
         if (point.x < 0 || point.x > map.length - 1)
@@ -13,7 +13,7 @@ public class STOLENBACKUP {
         return map[point.x][point.y] == 0;
     }
 
-    public static List<RasterPoint> FindNeighbors(int[][] map, RasterPoint point) {
+    private List<RasterPoint> FindNeighbors(int[][] map, RasterPoint point) {
         List<RasterPoint> neighbors = new ArrayList<>();
         RasterPoint downLeft = point.offset(-1, 1);
         RasterPoint downRight = point.offset(1, 1);
@@ -52,11 +52,12 @@ public class STOLENBACKUP {
         return map;
     }
 
-    public static List<RasterPoint> FindPath(Raster raster, RasterPoint start, RasterPoint end) {
+    @Override
+    public List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end) {
         return FindPath(createMap(raster), start, end);
     }
 
-    private static List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {
+    private List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {
         boolean finished = false;
         List<RasterPoint> used = new ArrayList<>();
         used.add(start);

@@ -34,7 +34,8 @@ public class PathfindingSystem {
         RasterPoint startPoint = raster.getPoint(start);
         RasterPoint endPoint = raster.getPoint(end);
 
-        List<RasterPoint> path = STOLENBACKUP.FindPath(raster, startPoint, endPoint);
+        PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
+        List<RasterPoint> path = algorithm.findPath(raster, startPoint, endPoint);
         if (path == null) {
             return Optional.empty();
         }
