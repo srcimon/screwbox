@@ -24,7 +24,7 @@ public class AutomovementDebugSystem implements EntitySystem {
                 for (var segment : path.segments()) {
                     world.drawLine(segment, Color.YELLOW);
                 }
-                for (var waypoint : path.waypoints()) {
+                for (var waypoint : path.nodes()) {
                     // TODO: drawcircle
                     world.drawRectangle(Bounds.atPosition(waypoint, 2, 2), Color.YELLOW);
                 }

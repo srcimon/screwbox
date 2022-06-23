@@ -26,7 +26,7 @@ public class EnemyMovementSystem implements EntitySystem {
 
     private PathfindingSystem pathfindingSystem;
 
-    private Timer t = Timer.withInterval(Duration.ofMillis(500));
+    private Timer t = Timer.withInterval(Duration.ofMillis(1000));
 
     @Override
     public void update(Engine engine) {

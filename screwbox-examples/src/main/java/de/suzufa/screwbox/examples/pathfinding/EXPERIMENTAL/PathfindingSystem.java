@@ -41,7 +41,7 @@ public class PathfindingSystem {
         List<Vector> list = path.stream().map(p -> raster.getVector(p)).toList();
         ArrayList<Vector> value = new ArrayList<>(list);
         value.add(end);
-        return Optional.of(Path.withWaypoints(value));
+        return Optional.of(Path.withNodes(value));
     }
 
     public void update() {
