@@ -9,10 +9,12 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.World;
 
 public class AutomovementDebugSystem implements EntitySystem {
 
+    private static final Font FONT = new Font("Arial", 11);
     private static final Archetype PATH_CONTAINING = Archetype.of(AutomovementComponent.class);
 
     @Override
@@ -24,9 +26,12 @@ public class AutomovementDebugSystem implements EntitySystem {
                 for (var segment : path.segments()) {
                     world.drawLine(segment, Color.YELLOW);
                 }
-                for (var waypoint : path.nodes()) {
+                int nr = 0;
+                for (var node : path.nodes()) {
+                    nr++;
+                    world.drawTextCentered(node.addY(-5), "" + nr, FONT, Color.WHITE)
+                            .drawRectangle(Bounds.atPosition(node, 2, 2), Color.YELLOW);
                     // TODO: drawcircle
-                    world.drawRectangle(Bounds.atPosition(waypoint, 2, 2), Color.YELLOW);
                 }
             }
         }

@@ -17,6 +17,17 @@ public class Raster {
         isBlocked = new boolean[width][height];
     }
 
+    public boolean isFree(RasterPoint point) {
+        if (point.y < 0 || point.y > isBlocked[0].length - 1) {
+            return false;
+        }
+        if (point.x < 0 || point.x > isBlocked.length - 1) {
+            return false;
+        }
+        return !isBlocked[point.x][point.y];
+    }
+
+    @Deprecated
     public boolean isBlocked(int x, int y) {
         // TODO: outOfRangeCheck
         return isBlocked[x][y];

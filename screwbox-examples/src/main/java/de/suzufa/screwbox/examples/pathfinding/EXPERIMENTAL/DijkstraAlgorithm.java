@@ -6,15 +6,18 @@ import java.util.List;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
-    private boolean IsWalkable(int[][] map, RasterPoint point) {
-        if (point.y < 0 || point.y > map[0].length - 1)
-            return false;
-        if (point.x < 0 || point.x > map.length - 1)
-            return false;
-        return map[point.x][point.y] == 0;
+    @Override
+    public List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end) {
+        var points = FindPath(raster, start, end);
+        if (points == null) {
+            return Collections.emptyList();
+        }
+        return points;
     }
 
-    private List<RasterPoint> FindNeighbors(int[][] map, RasterPoint point) {
+    // TODO: findNeighbours is part of the raster!!!!
+    // TODO: Sub Algorithm wihtout diagonal movements
+    private List<RasterPoint> FindNeighbors(Raster map, RasterPoint point) {
         List<RasterPoint> neighbors = new ArrayList<>();
         RasterPoint downLeft = point.offset(-1, 1);
         RasterPoint downRight = point.offset(1, 1);
@@ -24,45 +27,26 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         RasterPoint up = point.offset(0, -1);
         RasterPoint left = point.offset(-1, 0);
         RasterPoint right = point.offset(1, 0);
-        if (IsWalkable(map, down))
+        if (map.isFree(down))
             neighbors.add(down);
-        if (IsWalkable(map, up))
+        if (map.isFree(up))
             neighbors.add(up);
-        if (IsWalkable(map, left))
+        if (map.isFree(left))
             neighbors.add(left);
-        if (IsWalkable(map, right))
+        if (map.isFree(right))
             neighbors.add(right);
-        if (IsWalkable(map, downRight) && IsWalkable(map, down) && IsWalkable(map, right))
+        if (map.isFree(downRight) && map.isFree(down) && map.isFree(right))
             neighbors.add(downRight);
-        if (IsWalkable(map, downLeft) && IsWalkable(map, down) && IsWalkable(map, left))
+        if (map.isFree(downLeft) && map.isFree(down) && map.isFree(left))
             neighbors.add(downLeft);
-        if (IsWalkable(map, upLeft) && IsWalkable(map, up) && IsWalkable(map, left))
+        if (map.isFree(upLeft) && map.isFree(up) && map.isFree(left))
             neighbors.add(upLeft);
-        if (IsWalkable(map, upRight) && IsWalkable(map, up) && IsWalkable(map, right))
+        if (map.isFree(upRight) && map.isFree(up) && map.isFree(right))
             neighbors.add(upRight);
         return neighbors;
     }
 
-    private int[][] createMap(Raster raster) {
-        int[][] map = new int[raster.width()][raster.height()];
-        for (int x = 0; x < raster.width(); x++) {
-            for (int y = 0; y < raster.height(); y++) {
-                map[x][y] = raster.isBlocked(x, y) ? 1 : 0;
-            }
-        }
-        return map;
-    }
-
-    @Override
-    public List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end) {
-        var points = FindPath(createMap(raster), start, end);
-        if (points == null) {
-            return Collections.emptyList();
-        }
-        return points;
-    }
-
-    private List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {
+    private List<RasterPoint> FindPath(Raster map, RasterPoint start, RasterPoint end) {
         boolean finished = false;
         List<RasterPoint> used = new ArrayList<>();
         used.add(start);
