@@ -33,8 +33,8 @@ public class PathfindingSystem {
     public Optional<Path> findPath(Vector start, Vector end) {
         RasterPoint startPoint = raster.getPoint(start);
         RasterPoint endPoint = raster.getPoint(end);
-        var map = raster.createMap();
-        List<RasterPoint> path = STOLENBACKUP.FindPath(map, startPoint, endPoint);
+
+        List<RasterPoint> path = STOLENBACKUP.FindPath(raster, startPoint, endPoint);
         if (path == null) {
             return Optional.empty();
         }

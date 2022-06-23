@@ -42,7 +42,21 @@ public class STOLENBACKUP {
         return neighbors;
     }
 
-    public static List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {
+    private static int[][] createMap(Raster raster) {
+        int[][] map = new int[raster.width()][raster.height()];
+        for (int x = 0; x < raster.width(); x++) {
+            for (int y = 0; y < raster.height(); y++) {
+                map[x][y] = raster.isBlocked(x, y) ? 1 : 0;
+            }
+        }
+        return map;
+    }
+
+    public static List<RasterPoint> FindPath(Raster raster, RasterPoint start, RasterPoint end) {
+        return FindPath(createMap(raster), start, end);
+    }
+
+    private static List<RasterPoint> FindPath(int[][] map, RasterPoint start, RasterPoint end) {
         boolean finished = false;
         List<RasterPoint> used = new ArrayList<>();
         used.add(start);

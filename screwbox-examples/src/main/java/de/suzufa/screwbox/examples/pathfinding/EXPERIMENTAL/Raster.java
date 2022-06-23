@@ -17,14 +17,9 @@ public class Raster {
         isBlocked = new boolean[width][height];
     }
 
-    public int[][] createMap() {
-        int[][] map = new int[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                map[x][y] = isBlocked[x][y] ? 1 : 0;
-            }
-        }
-        return map;
+    public boolean isBlocked(int x, int y) {
+        // TODO: outOfRangeCheck
+        return isBlocked[x][y];
     }
 
     public Vector getVector(RasterPoint point) {
@@ -50,4 +45,11 @@ public class Raster {
         }
     }
 
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
 }
