@@ -15,18 +15,30 @@ public class STOLENBACKUP {
 
     public static List<RasterPoint> FindNeighbors(int[][] map, RasterPoint point) {
         List<RasterPoint> neighbors = new ArrayList<>();
-        RasterPoint up = point.offset(0, 1);
-        RasterPoint down = point.offset(0, -1);
+        RasterPoint downLeft = point.offset(-1, 1);
+        RasterPoint downRight = point.offset(1, 1);
+        RasterPoint upLeft = point.offset(-1, -1);
+        RasterPoint upRight = point.offset(1, -1);
+        RasterPoint down = point.offset(0, 1);
+        RasterPoint up = point.offset(0, -1);
         RasterPoint left = point.offset(-1, 0);
         RasterPoint right = point.offset(1, 0);
-        if (IsWalkable(map, up))
-            neighbors.add(up);
         if (IsWalkable(map, down))
             neighbors.add(down);
+        if (IsWalkable(map, up))
+            neighbors.add(up);
         if (IsWalkable(map, left))
             neighbors.add(left);
         if (IsWalkable(map, right))
             neighbors.add(right);
+        if (IsWalkable(map, downRight) && IsWalkable(map, down) && IsWalkable(map, right))
+            neighbors.add(downRight);
+        if (IsWalkable(map, downLeft) && IsWalkable(map, down) && IsWalkable(map, left))
+            neighbors.add(downLeft);
+        if (IsWalkable(map, upLeft) && IsWalkable(map, up) && IsWalkable(map, left))
+            neighbors.add(upLeft);
+        if (IsWalkable(map, upRight) && IsWalkable(map, up) && IsWalkable(map, right))
+            neighbors.add(upRight);
         return neighbors;
     }
 
