@@ -29,6 +29,7 @@ public class PathfindingSystem {
         this.engine = engine;
     }
 
+    // TODO: how to shedule a path update in a component? add Futures?
     public Optional<Path> findPath(Vector start, Vector end) {
         RasterPoint startPoint = raster.getPoint(start);
         RasterPoint endPoint = raster.getPoint(end);
