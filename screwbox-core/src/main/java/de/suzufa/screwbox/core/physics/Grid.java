@@ -98,7 +98,11 @@ public class Grid {
     }
 
     public Vector toWorld(final Node node) {
-        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize).substract(offset);
+        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize).add(offset).substract(visualOffset());
+    }
+
+    private Vector visualOffset() {
+        return Vector.of(offset.x() % gridSize, offset.y() % gridSize);
     }
 
     public Node toGrid(final Vector position) {
@@ -107,11 +111,11 @@ public class Grid {
     }
 
     private Vector tanslate(Vector position) {
-        return position.add(offset);
+        return position.substract(offset);
     }
 
     private Bounds tanslate(Bounds area) {
-        return area.moveBy(offset);
+        return area.moveBy(offset.invert());
     }
 
     public void blockArea(final Bounds area) {
