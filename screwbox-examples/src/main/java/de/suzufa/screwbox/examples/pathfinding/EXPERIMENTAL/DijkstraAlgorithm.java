@@ -39,9 +39,9 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     private List<RasterPoint> constructPath(final List<RasterPoint> used) {
         final List<RasterPoint> path = new ArrayList<>();
         RasterPoint point = used.get(used.size() - 1);
-        while (nonNull(point.previous)) {
+        while (nonNull(point.previous())) {
             path.add(0, point);
-            point = point.previous;
+            point = point.previous();
         }
         return path;
     }

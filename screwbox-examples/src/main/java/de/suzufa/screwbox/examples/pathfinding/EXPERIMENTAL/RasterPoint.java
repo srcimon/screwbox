@@ -5,7 +5,7 @@ import java.util.Objects;
 public class RasterPoint {
     private final int x;
     private final int y;
-    public RasterPoint previous;
+    private final RasterPoint previous;
 
     public RasterPoint(final int x, final int y, final RasterPoint previous) {
         this.x = x;
@@ -21,15 +21,12 @@ public class RasterPoint {
         return y;
     }
 
-    @Override
-    public String toString() {
-        return String.format("(%d, %d)", x, y);
+    public RasterPoint previous() {
+        return previous;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        final RasterPoint point = (RasterPoint) o;
-        return x == point.x && y == point.y;
+    public RasterPoint offset(final int deltaX, final int deltaY) {
+        return new RasterPoint(x + deltaX, y + deltaY, this);
     }
 
     @Override
@@ -37,7 +34,15 @@ public class RasterPoint {
         return Objects.hash(x, y);
     }
 
-    public RasterPoint offset(final int deltaX, final int deltaY) {
-        return new RasterPoint(x + deltaX, y + deltaY, this);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RasterPoint other = (RasterPoint) obj;
+        return x == other.x && y == other.y;
     }
 }

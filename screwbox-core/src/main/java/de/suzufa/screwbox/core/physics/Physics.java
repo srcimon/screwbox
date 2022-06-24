@@ -10,4 +10,5 @@ public interface Physics {
     SelectEntityBuilder searchAtPosition(Vector position);
 
     SelectEntityBuilder searchInRange(Bounds range);
+
 }
