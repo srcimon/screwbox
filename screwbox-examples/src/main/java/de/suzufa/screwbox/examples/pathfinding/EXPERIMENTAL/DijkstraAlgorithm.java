@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             for (final Node point : newOpen) {
                 used.add(point);
                 if (end.equals(point)) {
-                    return constructPath(used);
+                    return used.get(used.size() - 1).backtrackPath();
                 }
             }
 
@@ -37,16 +36,6 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 return emptyList();
             }
         }
-    }
-
-    private List<Node> constructPath(final List<Node> used) {
-        final List<Node> path = new ArrayList<>();
-        Node point = used.get(used.size() - 1);
-        while (nonNull(point.parent())) {
-            path.add(0, point);
-            point = point.parent();
-        }
-        return path;
     }
 
 }

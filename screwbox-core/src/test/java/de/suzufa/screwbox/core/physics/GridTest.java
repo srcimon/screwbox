@@ -3,10 +3,13 @@ package de.suzufa.screwbox.core.physics;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.physics.Grid.Node;
 
 class GridTest {
 
@@ -112,5 +115,21 @@ class GridTest {
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(1, 1))
                 .contains(grid.nodeAt(1, 0));
+    }
+
+    @Test
+    void backtrackPath_returnsNodesPath() {
+        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
+        var grid = new Grid(area, 16, true);
+        Node first = grid.nodeAt(0, 0);
+        List<Node> secondGeneration = grid.findNeighbors(first);
+
+        Node second = secondGeneration.get(0);
+        List<Node> thirdGeneration = grid.findNeighbors(second);
+        Node third = thirdGeneration.get(0);
+
+        List<Node> path = third.backtrackPath();
+
+        assertThat(path).containsExactlyInAnyOrder(second, third);
     }
 }

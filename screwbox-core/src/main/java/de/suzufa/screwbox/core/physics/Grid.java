@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +32,16 @@ public class Grid {
 
         public Node offset(final int deltaX, final int deltaY) {
             return new Node(x + deltaX, y + deltaY, this);
+        }
+
+        public List<Node> backtrackPath() {
+            final List<Node> path = new ArrayList<>();
+            Node point = this;
+            while (nonNull(point.parent())) {
+                path.add(0, point);
+                point = point.parent();
+            }
+            return path;
         }
 
         @Override
