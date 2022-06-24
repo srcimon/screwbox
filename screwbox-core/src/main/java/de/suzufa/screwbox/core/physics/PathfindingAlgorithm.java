@@ -1,8 +1,7 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.physics;
 
 import java.util.List;
 
-import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Grid.Node;
 
 public interface PathfindingAlgorithm {

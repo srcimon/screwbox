@@ -1,13 +1,13 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.physics;
 
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Grid.Node;
 
+//TODO: internal
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
