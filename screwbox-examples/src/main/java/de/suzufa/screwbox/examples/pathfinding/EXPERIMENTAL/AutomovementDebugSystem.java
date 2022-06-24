@@ -2,7 +2,6 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import static java.util.Objects.nonNull;
 
-import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
@@ -29,9 +28,8 @@ public class AutomovementDebugSystem implements EntitySystem {
                 int nr = 0;
                 for (var node : path.nodes()) {
                     nr++;
-                    world.drawTextCentered(node.addY(-5), "" + nr, FONT, Color.WHITE)
-                            .drawRectangle(Bounds.atPosition(node, 2, 2), Color.YELLOW);
-                    // TODO: drawcircle
+                    world.drawTextCentered(node.addY(-5), "#" + nr, FONT, Color.WHITE)
+                            .drawCircle(node, 3, Color.YELLOW);
                 }
             }
         }
