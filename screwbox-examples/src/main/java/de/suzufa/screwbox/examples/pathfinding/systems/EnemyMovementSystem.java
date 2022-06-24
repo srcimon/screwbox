@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
@@ -47,6 +48,11 @@ public class EnemyMovementSystem implements EntitySystem {
                 }
             }
         }
+    }
+
+    @Override
+    public UpdatePriority updatePriority() {
+        return UpdatePriority.PRESENTATION_UI;// TODO: DEBUG REASONS ONLY
     }
 
 }

@@ -6,6 +6,8 @@ import java.util.Objects;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.World;
 
 public class Grid {
 
@@ -88,8 +90,15 @@ public class Grid {
         return !isBlocked[node.x][node.y];
     }
 
+    public void debug(World world) {
+        for (var node : allNodes()) {
+            Color color = isFree(node) ? Color.YELLOW.withOpacity(0.2) : Color.YELLOW.withOpacity(0.7);
+            world.drawRectangle(Bounds.atPosition(toWorld(node), gridSize, gridSize), color);
+        }
+    }
+
     public Vector toWorld(final Node node) {
-        return Vector.of((node.x() + 0.5) * gridSize - offset.x(), (node.y + 0.5) * gridSize - offset.y());
+        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize).substract(offset);
     }
 
     public Node toGrid(final Vector position) {
@@ -98,7 +107,7 @@ public class Grid {
     }
 
     private Vector tanslate(Vector position) {
-        return Vector.of(position.x() + offset.x(), position.y() + offset.y());
+        return position.add(offset);
     }
 
     private Bounds tanslate(Bounds area) {
@@ -106,15 +115,19 @@ public class Grid {
     }
 
     public void blockArea(final Bounds area) {
-        var tArea = tanslate(area);
-        final int minX = gridValue(tArea.origin().x());
-        final int maxX = gridValue(tArea.bottomRight().x());
-        final int minY = gridValue(tArea.origin().y());
-        final int maxY = gridValue(tArea.bottomRight().y());
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY; y < maxY; y++) {
-                isBlocked[x][y] = true;
+        try {
+            var tArea = tanslate(area);
+            final int minX = gridValue(tArea.origin().x());
+            final int maxX = gridValue(tArea.bottomRight().x());
+            final int minY = gridValue(tArea.origin().y());
+            final int maxY = gridValue(tArea.bottomRight().y());
+            for (int x = minX; x < maxX; x++) {
+                for (int y = minY; y < maxY; y++) {
+                    isBlocked[x][y] = true;
+                }
             }
+        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+
         }
     }
 
@@ -163,8 +176,8 @@ public class Grid {
 
     public List<Node> allNodes() {
         var nodes = new ArrayList<Node>();
-        for (int x = 0; x < isBlocked.length; x++) {
-            for (int y = 0; y < isBlocked[0].length; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 nodes.add(new Node(x, y));
             }
         }
