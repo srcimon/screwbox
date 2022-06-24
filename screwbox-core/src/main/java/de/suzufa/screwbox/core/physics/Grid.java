@@ -20,6 +20,10 @@ public class Grid {
             this.parent = parent;
         }
 
+        public Node(int x, int y) {
+            this(x, y, null);
+        }
+
         public int x() {
             return x;
         }
@@ -61,6 +65,10 @@ public class Grid {
     private boolean diagonalMovementAllowed;
 
     public Grid(final Bounds bounds, final int gridSize, boolean diagonalMovementAllowed) {
+        Objects.requireNonNull(bounds, "Grid bounds must not be null.");
+        if (gridSize <= 0) {
+            throw new IllegalArgumentException("GridSize must have a positive value");
+        }
         this.gridSize = gridSize;
         width = gridValue(bounds.width());
         height = gridValue(bounds.height());
@@ -140,6 +148,16 @@ public class Grid {
 
     private int gridValue(final double value) {
         return (int) value / gridSize;
+    }
+
+    public List<Node> allNodes() {
+        var nodes = new ArrayList<Node>();
+        for (int x = 0; x < isBlocked.length; x++) {
+            for (int y = 0; y < isBlocked[0].length; y++) {
+                nodes.add(new Node(x, y));
+            }
+        }
+        return nodes;
     }
 
 }
