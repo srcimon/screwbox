@@ -12,12 +12,14 @@ public class Grid {
     private final int width;
     private final int height;
     private final int gridSize;
+    private boolean allowDiagonalMovement;
 
-    public Grid(final Bounds bounds, final int gridSize) {
+    public Grid(final Bounds bounds, final int gridSize, boolean allowDiagonalMovement) {
         this.gridSize = gridSize;
         width = gridValue(bounds.width());
         height = gridValue(bounds.height());
         isBlocked = new boolean[width][height];
+        this.allowDiagonalMovement = allowDiagonalMovement;
     }
 
     public boolean isFree(final GridNode node) {
@@ -77,14 +79,16 @@ public class Grid {
             neighbors.add(left);
         if (isFree(right))
             neighbors.add(right);
-        if (isFree(downRight) && isFree(down) && isFree(right))
-            neighbors.add(downRight);
-        if (isFree(downLeft) && isFree(down) && isFree(left))
-            neighbors.add(downLeft);
-        if (isFree(upLeft) && isFree(up) && isFree(left))
-            neighbors.add(upLeft);
-        if (isFree(upRight) && isFree(up) && isFree(right))
-            neighbors.add(upRight);
+        if (allowDiagonalMovement) {
+            if (isFree(downRight) && isFree(down) && isFree(right))
+                neighbors.add(downRight);
+            if (isFree(downLeft) && isFree(down) && isFree(left))
+                neighbors.add(downLeft);
+            if (isFree(upLeft) && isFree(up) && isFree(left))
+                neighbors.add(upLeft);
+            if (isFree(upRight) && isFree(up) && isFree(right))
+                neighbors.add(upRight);
+        }
         return neighbors;
     }
 
