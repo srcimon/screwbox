@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.components;
 
 import de.suzufa.screwbox.core.entityengine.Component;
 import de.suzufa.screwbox.core.graphics.Sprite;

@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
@@ -11,6 +11,8 @@ import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.states.BombTickingState;
 
 public class PlayerControlSystem implements EntitySystem {
 

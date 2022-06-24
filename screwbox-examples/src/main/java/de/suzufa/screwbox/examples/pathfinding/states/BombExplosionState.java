@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.states;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class BombExplosionState implements EntityState {

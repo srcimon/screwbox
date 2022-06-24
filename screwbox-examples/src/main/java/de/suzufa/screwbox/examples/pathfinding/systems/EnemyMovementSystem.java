@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.systems;
 
 import java.util.Optional;
 
@@ -9,7 +9,6 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
@@ -17,6 +16,7 @@ import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.Path;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.PathfindingSystem;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 
 public class EnemyMovementSystem implements EntitySystem {
 
@@ -47,11 +47,6 @@ public class EnemyMovementSystem implements EntitySystem {
                 }
             }
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_UI;// TODO: fix
     }
 
 }

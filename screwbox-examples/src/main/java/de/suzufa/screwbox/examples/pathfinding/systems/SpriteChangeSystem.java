@@ -1,10 +1,11 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.examples.pathfinding.components.SpriteChangeComponent;
 
 public class SpriteChangeSystem implements EntitySystem {
 

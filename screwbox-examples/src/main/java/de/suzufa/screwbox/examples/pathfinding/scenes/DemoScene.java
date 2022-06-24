@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.scenes;
 
 import static de.suzufa.screwbox.core.Bounds.atPosition;
 
@@ -22,6 +22,11 @@ import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementDebugSystem;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementSystem;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.components.SpriteChangeComponent;
+import de.suzufa.screwbox.examples.pathfinding.systems.EnemyMovementSystem;
+import de.suzufa.screwbox.examples.pathfinding.systems.PlayerControlSystem;
+import de.suzufa.screwbox.examples.pathfinding.systems.SpriteChangeSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
