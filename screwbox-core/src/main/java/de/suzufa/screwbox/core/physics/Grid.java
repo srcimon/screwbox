@@ -22,7 +22,7 @@ public class Grid {
             this.parent = parent;
         }
 
-        public Node(int x, int y) {
+        public Node(final int x, final int y) {
             this(x, y, null);
         }
 
@@ -48,14 +48,14 @@ public class Grid {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(final Object obj) {
             if (this == obj)
                 return true;
             if (obj == null)
                 return false;
             if (getClass() != obj.getClass())
                 return false;
-            Node other = (Node) obj;
+            final Node other = (Node) obj;
             return x == other.x && y == other.y;
         }
     }
@@ -64,13 +64,19 @@ public class Grid {
     private final int width;
     private final int height;
     private final int gridSize;
-    private boolean diagonalMovementAllowed;
-    private Vector offset;
+    private final boolean diagonalMovementAllowed;
+    private final Vector offset;
 
-    public Grid(Bounds area, int gridSize, boolean diagonalMovementAllowed) {
+    public Grid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
         Objects.requireNonNull(area, "Grid area must not be null");
         if (gridSize <= 0) {
             throw new IllegalArgumentException("GridSize must have value above zero");
+        }
+        if (area.origin().x() % gridSize != 0) {
+            throw new IllegalArgumentException("Area origin x should be dividable by grid size.");
+        }
+        if (area.origin().y() % gridSize != 0) {
+            throw new IllegalArgumentException("Area origin y should be dividable by grid size.");
         }
         this.gridSize = gridSize;
         this.offset = area.origin();
@@ -90,9 +96,9 @@ public class Grid {
         return !isBlocked[node.x][node.y];
     }
 
-    public void debug(World world) {
-        for (var node : allNodes()) {
-            Color color = isFree(node) ? Color.YELLOW.withOpacity(0.2) : Color.YELLOW.withOpacity(0.7);
+    public void debug(final World world) {
+        for (final var node : allNodes()) {
+            final Color color = isFree(node) ? Color.YELLOW.withOpacity(0.2) : Color.YELLOW.withOpacity(0.7);
             world.drawRectangle(Bounds.atPosition(toWorld(node), gridSize, gridSize), color);
         }
     }
@@ -110,28 +116,24 @@ public class Grid {
         return new Node(gridValue(tPos.x()), gridValue(tPos.y()), null);
     }
 
-    private Vector tanslate(Vector position) {
+    private Vector tanslate(final Vector position) {
         return position.substract(offset);
     }
 
-    private Bounds tanslate(Bounds area) {
+    private Bounds tanslate(final Bounds area) {
         return area.moveBy(Vector.of(-offset.x(), -offset.y()));
     }
 
     public void blockArea(final Bounds area) {
-        try {
-            var tArea = tanslate(area);
-            final int minX = gridValue(tArea.origin().x());
-            final int maxX = gridValue(tArea.bottomRight().x());
-            final int minY = gridValue(tArea.origin().y());
-            final int maxY = gridValue(tArea.bottomRight().y());
-            for (int x = minX; x < maxX; x++) {
-                for (int y = minY; y < maxY; y++) {
-                    isBlocked[x][y] = true;
-                }
+        final var tArea = tanslate(area);
+        final int minX = Math.max(gridValue(tArea.origin().x()), 0);
+        final int maxX = Math.min(gridValue(tArea.bottomRight().x()), width);
+        final int minY = Math.max(gridValue(tArea.origin().y()), 0);
+        final int maxY = Math.min(gridValue(tArea.bottomRight().y()), height);
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
+                isBlocked[x][y] = true;
             }
-        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-
         }
     }
 
@@ -179,7 +181,7 @@ public class Grid {
     }
 
     public List<Node> allNodes() {
-        var nodes = new ArrayList<Node>();
+        final var nodes = new ArrayList<Node>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 nodes.add(new Node(x, y));

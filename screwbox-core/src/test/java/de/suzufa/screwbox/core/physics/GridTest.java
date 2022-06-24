@@ -26,6 +26,22 @@ class GridTest {
     }
 
     @Test
+    void newInstance_invalidAreaOriginX_throwsException() {
+        Bounds area = Bounds.atOrigin(1, 0, 10, 10);
+        assertThatThrownBy(() -> new Grid(area, 16, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Area origin x should be dividable by grid size.");
+    }
+
+    @Test
+    void newInstance_invalidAreaOriginY_throwsException() {
+        Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
+        assertThatThrownBy(() -> new Grid(area, 16, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Area origin y should be dividable by grid size.");
+    }
+
+    @Test
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
