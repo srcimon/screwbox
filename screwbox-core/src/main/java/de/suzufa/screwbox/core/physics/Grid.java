@@ -64,15 +64,20 @@ public class Grid {
     private final int gridSize;
     private boolean diagonalMovementAllowed;
 
-    public Grid(final Bounds bounds, final int gridSize, boolean diagonalMovementAllowed) {
-        Objects.requireNonNull(bounds, "Grid bounds must not be null.");
+    public Grid(double width, double height, int gridSize, boolean diagonalMovementAllowed) {
+        if (width <= 0) {
+            throw new IllegalArgumentException("Width must have value above zero");
+        }
+        if (height <= 0) {
+            throw new IllegalArgumentException("Height must have value above zero");
+        }
         if (gridSize <= 0) {
-            throw new IllegalArgumentException("GridSize must have a positive value");
+            throw new IllegalArgumentException("GridSize must have value above zero");
         }
         this.gridSize = gridSize;
-        width = gridValue(bounds.width());
-        height = gridValue(bounds.height());
-        isBlocked = new boolean[width][height];
+        this.width = gridValue(width);
+        this.height = gridValue(height);
+        isBlocked = new boolean[this.width][this.height];
         this.diagonalMovementAllowed = diagonalMovementAllowed;
     }
 
