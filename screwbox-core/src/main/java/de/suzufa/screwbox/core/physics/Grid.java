@@ -24,14 +24,6 @@ public class Grid {
             this(x, y, null);
         }
 
-        public int x() {
-            return x;
-        }
-
-        public int y() {
-            return y;
-        }
-
         public Node parent() {
             return parent;
         }
@@ -56,6 +48,12 @@ public class Grid {
             final Node other = (Node) obj;
             return x == other.x && y == other.y;
         }
+
+        @Override
+        public String toString() {
+            return "Node [x=" + x + ", y=" + y + "]";
+        }
+
     }
 
     private final boolean[][] isBlocked;
@@ -111,7 +109,7 @@ public class Grid {
 
     public Node toGrid(final Vector position) {
         final var tPos = tanslate(position);
-        return new Node(gridValue(tPos.x()), gridValue(tPos.y()), null);
+        return new Node(gridValue(tPos.x()), gridValue(tPos.y()));
     }
 
     private Vector tanslate(final Vector position) {
