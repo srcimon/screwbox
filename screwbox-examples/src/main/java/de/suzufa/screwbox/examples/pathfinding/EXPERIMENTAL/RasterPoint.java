@@ -3,14 +3,22 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 import java.util.Objects;
 
 public class RasterPoint {
-    public int x;
-    public int y;
+    private final int x;
+    private final int y;
     public RasterPoint previous;
 
-    public RasterPoint(int x, int y, RasterPoint previous) {
+    public RasterPoint(final int x, final int y, final RasterPoint previous) {
         this.x = x;
         this.y = y;
         this.previous = previous;
+    }
+
+    public int x() {
+        return x;
+    }
+
+    public int y() {
+        return y;
     }
 
     @Override
@@ -19,8 +27,8 @@ public class RasterPoint {
     }
 
     @Override
-    public boolean equals(Object o) {
-        RasterPoint point = (RasterPoint) o;
+    public boolean equals(final Object o) {
+        final RasterPoint point = (RasterPoint) o;
         return x == point.x && y == point.y;
     }
 
@@ -29,7 +37,7 @@ public class RasterPoint {
         return Objects.hash(x, y);
     }
 
-    public RasterPoint offset(int ox, int oy) {
-        return new RasterPoint(x + ox, y + oy, this);
+    public RasterPoint offset(final int deltaX, final int deltaY) {
+        return new RasterPoint(x + deltaX, y + deltaY, this);
     }
 }

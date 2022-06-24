@@ -21,32 +21,32 @@ public class Raster {
     }
 
     public boolean isFree(final RasterPoint point) {
-        if (point.y < 0 || point.y > isBlocked[0].length - 1) {
+        if (point.y() < 0 || point.y() > isBlocked[0].length - 1) {
             return false;
         }
-        if (point.x < 0 || point.x > isBlocked.length - 1) {
+        if (point.x() < 0 || point.x() > isBlocked.length - 1) {
             return false;
         }
-        return !isBlocked[point.x][point.y];
+        return !isBlocked[point.x()][point.y()];
     }
 
-    public Vector getVector(final RasterPoint point) {
-        return Vector.of((point.x + 0.5) * gridSize, (point.y + 0.5) * gridSize);
+    public Vector toWorld(final RasterPoint point) {
+        return Vector.of((point.x() + 0.5) * gridSize, (point.y() + 0.5) * gridSize);
     }
 
-    public RasterPoint getPoint(final Vector position) {
-        return new RasterPoint(toRaster(position.x()), toRaster(position.y()), null);
+    public RasterPoint toRaster(final Vector position) {
+        return new RasterPoint(onRaster(position.x()), onRaster(position.y()), null);
     }
 
-    private int toRaster(final double value) {
+    private int onRaster(final double value) {
         return (int) value / gridSize;
     }
 
     public void blockArea(final Bounds bounds) {
         final Vector boundsOrigin = bounds.origin();
         final Vector bottomRight = bounds.bottomRight();
-        for (int x = toRaster(boundsOrigin.x()); x < toRaster(bottomRight.x()); x++) {
-            for (int y = toRaster(boundsOrigin.y()); y < toRaster(bottomRight.y()); y++) {
+        for (int x = onRaster(boundsOrigin.x()); x < onRaster(bottomRight.x()); x++) {
+            for (int y = onRaster(boundsOrigin.y()); y < onRaster(bottomRight.y()); y++) {
                 isBlocked[x][y] = true;
             }
         }

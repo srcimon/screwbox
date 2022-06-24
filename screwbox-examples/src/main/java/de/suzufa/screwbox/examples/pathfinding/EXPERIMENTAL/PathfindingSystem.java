@@ -31,8 +31,8 @@ public class PathfindingSystem {
 
     // TODO: how to shedule a path update in a component? add Futures?
     public Optional<Path> findPath(Vector start, Vector end) {
-        RasterPoint startPoint = raster.getPoint(start);
-        RasterPoint endPoint = raster.getPoint(end);
+        RasterPoint startPoint = raster.toRaster(start);
+        RasterPoint endPoint = raster.toRaster(end);
 
         PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
         List<RasterPoint> path = algorithm.findPath(raster, startPoint, endPoint);
@@ -45,7 +45,7 @@ public class PathfindingSystem {
         boolean first = true;
         for (var node : path) {
             if (!first) {
-                list.add(raster.getVector(node));
+                list.add(raster.toWorld(node));
             }
             first = false;
         }
