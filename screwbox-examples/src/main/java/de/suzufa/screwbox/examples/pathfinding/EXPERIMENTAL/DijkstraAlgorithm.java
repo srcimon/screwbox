@@ -6,6 +6,9 @@ import static java.util.Objects.nonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.physics.Grid;
+import de.suzufa.screwbox.core.physics.GridNode;
+
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
@@ -39,9 +42,9 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     private List<GridNode> constructPath(final List<GridNode> used) {
         final List<GridNode> path = new ArrayList<>();
         GridNode point = used.get(used.size() - 1);
-        while (nonNull(point.previous())) {
+        while (nonNull(point.parent())) {
             path.add(0, point);
-            point = point.previous();
+            point = point.parent();
         }
         return path;
     }

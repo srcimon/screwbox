@@ -15,6 +15,8 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
+import de.suzufa.screwbox.core.physics.Grid;
+import de.suzufa.screwbox.core.physics.GridNode;
 import de.suzufa.screwbox.core.utils.Timer;
 
 public class PathfindingSystem {

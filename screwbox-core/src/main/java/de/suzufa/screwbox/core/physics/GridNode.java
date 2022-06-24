@@ -1,16 +1,16 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.physics;
 
 import java.util.Objects;
 
 public class GridNode {
     private final int x;
     private final int y;
-    private final GridNode previous;
+    private final GridNode parent;
 
-    public GridNode(final int x, final int y, final GridNode previous) {
+    public GridNode(final int x, final int y, final GridNode parent) {
         this.x = x;
         this.y = y;
-        this.previous = previous;
+        this.parent = parent;
     }
 
     public int x() {
@@ -21,8 +21,8 @@ public class GridNode {
         return y;
     }
 
-    public GridNode previous() {
-        return previous;
+    public GridNode parent() {
+        return parent;
     }
 
     public GridNode offset(final int deltaX, final int deltaY) {

@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.physics;
 
 import java.util.ArrayList;
 import java.util.List;
