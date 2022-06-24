@@ -12,9 +12,8 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     public List<RasterPoint> findPath(final Raster raster, final RasterPoint start, final RasterPoint end) {
         final List<RasterPoint> used = new ArrayList<>();
         used.add(start);
-        boolean finished = false;
 
-        while (!finished) {
+        while (true) {
             final List<RasterPoint> newOpen = new ArrayList<>();
             for (var use : used) {
                 for (final RasterPoint neighbor : raster.FindNeighbors(use)) {
@@ -27,17 +26,14 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             for (final RasterPoint point : newOpen) {
                 used.add(point);
                 if (end.equals(point)) {
-                    finished = true;
                     return constructPath(used);
                 }
             }
 
             if (newOpen.isEmpty()) {
-                finished = true;
+                return emptyList();
             }
         }
-
-        return emptyList();
     }
 
     private List<RasterPoint> constructPath(final List<RasterPoint> used) {
