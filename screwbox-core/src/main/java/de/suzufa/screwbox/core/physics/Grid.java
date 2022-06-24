@@ -63,20 +63,17 @@ public class Grid {
     private final int height;
     private final int gridSize;
     private boolean diagonalMovementAllowed;
+    private Vector offset;
 
-    public Grid(double width, double height, int gridSize, boolean diagonalMovementAllowed) {
-        if (width <= 0) {
-            throw new IllegalArgumentException("Width must have value above zero");
-        }
-        if (height <= 0) {
-            throw new IllegalArgumentException("Height must have value above zero");
-        }
+    public Grid(Bounds area, int gridSize, boolean diagonalMovementAllowed) {
+        Objects.requireNonNull(area, "Grid area must not be null");
         if (gridSize <= 0) {
             throw new IllegalArgumentException("GridSize must have value above zero");
         }
         this.gridSize = gridSize;
-        this.width = gridValue(width);
-        this.height = gridValue(height);
+        this.offset = area.origin();
+        this.width = gridValue(area.width());
+        this.height = gridValue(area.height());
         isBlocked = new boolean[this.width][this.height];
         this.diagonalMovementAllowed = diagonalMovementAllowed;
     }
@@ -92,23 +89,37 @@ public class Grid {
     }
 
     public Vector toWorld(final Node node) {
-        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize);
+        return Vector.of((node.x() + 0.5) * gridSize - offset.x(), (node.y + 0.5) * gridSize - offset.y());
     }
 
     public Node toGrid(final Vector position) {
-        return new Node(gridValue(position.x()), gridValue(position.y()), null);
+        final var tPos = tanslate(position);
+        return new Node(gridValue(tPos.x()), gridValue(tPos.y()), null);
+    }
+
+    private Vector tanslate(Vector position) {
+        return Vector.of(position.x() + offset.x(), position.y() + offset.y());
+    }
+
+    private Bounds tanslate(Bounds area) {
+        return area.moveBy(offset);
     }
 
     public void blockArea(final Bounds area) {
-        final int minX = gridValue(area.origin().x());
-        final int maxX = gridValue(area.bottomRight().x());
-        final int minY = gridValue(area.origin().y());
-        final int maxY = gridValue(area.bottomRight().y());
+        var tArea = tanslate(area);
+        final int minX = gridValue(tArea.origin().x());
+        final int maxX = gridValue(tArea.bottomRight().x());
+        final int minY = gridValue(tArea.origin().y());
+        final int maxY = gridValue(tArea.bottomRight().y());
         for (int x = minX; x < maxX; x++) {
             for (int y = minY; y < maxY; y++) {
                 isBlocked[x][y] = true;
             }
         }
+    }
+
+    private int gridValue(final double value) {
+        return (int) value / gridSize;
     }
 
     public int width() {
@@ -148,10 +159,6 @@ public class Grid {
                 neighbors.add(upRight);
         }
         return neighbors;
-    }
-
-    private int gridValue(final double value) {
-        return (int) value / gridSize;
     }
 
     public List<Node> allNodes() {

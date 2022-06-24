@@ -60,8 +60,8 @@ public class PathfindingSystem {
         if (update.isTick(engine.loop().metrics().timeOfLastUpdate()) || raster == null) {
             Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class,
                     TransformComponent.class);
-            Bounds bounds = worldBounds.get(TransformComponent.class).bounds;
-            raster = new Grid(bounds.width(), bounds.height(), 16, true);
+            Bounds bounds = worldBounds.get(TransformComponent.class).bounds.moveBy(16, 16);
+            raster = new Grid(bounds, 16, true);
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
                 if (!entity.hasComponent(PhysicsBodyComponent.class)) { // TODO: add special

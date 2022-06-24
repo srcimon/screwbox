@@ -5,32 +5,31 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Vector;
+
 class GridTest {
 
     @Test
     void newInstance_widthNegative_throwsException() {
-        assertThatThrownBy(() -> new Grid(-5, 0, 4, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Width must have value above zero");
-    }
-
-    @Test
-    void newInstance_heightZero_throwsException() {
-        assertThatThrownBy(() -> new Grid(2, 0, 4, true))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Height must have value above zero");
+        assertThatThrownBy(() -> new Grid(null, 4, true))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Grid area must not be null");
     }
 
     @Test
     void newInstance_gridSizeZero_throwsException() {
-        assertThatThrownBy(() -> new Grid(1, 4, 0, true))
+        Bounds area = Bounds.max();
+        assertThatThrownBy(() -> new Grid(area, 0, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("GridSize must have value above zero");
     }
 
     @Test
     void newInstance_validArguments_createsEmptyGrid() {
-        var grid = new Grid(400, 200, 20, false);
+        Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
+
+        var grid = new Grid(area, 20, false);
 
         assertThat(grid.allNodes())
                 .hasSize(200)
