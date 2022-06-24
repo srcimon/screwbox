@@ -68,7 +68,7 @@ public class Raster {
     }
 
     // TODO: Sub Algorithm wihtout diagonal movements
-    public List<RasterPoint> FindNeighbors(final RasterPoint point) {
+    public List<RasterPoint> findNeighbors(final RasterPoint point) {
         final List<RasterPoint> neighbors = new ArrayList<>();
         final RasterPoint downLeft = point.offset(-1, 1);
         final RasterPoint downRight = point.offset(1, 1);

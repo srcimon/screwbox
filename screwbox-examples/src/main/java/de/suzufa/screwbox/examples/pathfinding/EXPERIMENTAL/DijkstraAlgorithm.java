@@ -16,7 +16,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         while (true) {
             final List<RasterPoint> newOpen = new ArrayList<>();
             for (var use : used) {
-                for (final RasterPoint neighbor : raster.FindNeighbors(use)) {
+                for (final RasterPoint neighbor : raster.findNeighbors(use)) {
                     if (!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
