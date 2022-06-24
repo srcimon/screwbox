@@ -14,13 +14,13 @@ public class Grid {
         private final int y;
         private final Node parent;
 
-        public Node(final int x, final int y, final Node parent) {
+        private Node(final int x, final int y, final Node parent) {
             this.x = x;
             this.y = y;
             this.parent = parent;
         }
 
-        public Node(final int x, final int y) {
+        private Node(final int x, final int y) {
             this(x, y, null);
         }
 
@@ -85,17 +85,17 @@ public class Grid {
     }
 
     public boolean isFree(int x, int y) {
-        return isFree(new Node(x, y));
+        if (x < 0 || x > isBlocked.length - 1) {
+            return false;
+        }
+        if (y < 0 || y > isBlocked[0].length - 1) {
+            return false;
+        }
+        return !isBlocked[x][y];
     }
 
     public boolean isFree(final Node node) {
-        if (node.y < 0 || node.y() > isBlocked[0].length - 1) {
-            return false;
-        }
-        if (node.x < 0 || node.x() > isBlocked.length - 1) {
-            return false;
-        }
-        return !isBlocked[node.x][node.y];
+        return isFree(node.x, node.y);
     }
 
     public Vector toWorld(final Node node) {
