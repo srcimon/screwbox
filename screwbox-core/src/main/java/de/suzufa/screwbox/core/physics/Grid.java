@@ -62,7 +62,6 @@ public class Grid {
     private final int width;
     private final int height;
     private final int gridSize;
-    private final Vector offset;
     private boolean diagonalMovementAllowed;
 
     public Grid(final Bounds bounds, final int gridSize, boolean diagonalMovementAllowed) {
@@ -71,7 +70,6 @@ public class Grid {
             throw new IllegalArgumentException("GridSize must have a positive value");
         }
         this.gridSize = gridSize;
-        this.offset = bounds.origin();
         width = gridValue(bounds.width());
         height = gridValue(bounds.height());
         isBlocked = new boolean[width][height];
@@ -89,19 +87,18 @@ public class Grid {
     }
 
     public Vector toWorld(final Node node) {
-        return Vector.of(offset.x() + (node.x() + 0.5) * gridSize, offset.y() + (node.y + 0.5) * gridSize);
+        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize);
     }
 
     public Node toGrid(final Vector position) {
-        return new Node(gridValue(position.x() - offset.x()), gridValue(position.y() - offset.y()), null);
+        return new Node(gridValue(position.x()), gridValue(position.y()), null);
     }
 
     public void blockArea(final Bounds area) {
-        Bounds translatedArea = area.moveBy(offset.invert());
-        final int minX = gridValue(translatedArea.origin().x());
-        final int maxX = gridValue(translatedArea.bottomRight().x());
-        final int minY = gridValue(translatedArea.origin().y());
-        final int maxY = gridValue(translatedArea.bottomRight().y());
+        final int minX = gridValue(area.origin().x());
+        final int maxX = gridValue(area.bottomRight().x());
+        final int minY = gridValue(area.origin().y());
+        final int maxY = gridValue(area.bottomRight().y());
         for (int x = minX; x < maxX; x++) {
             for (int y = minY; y < maxY; y++) {
                 isBlocked[x][y] = true;
