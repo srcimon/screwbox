@@ -1,36 +1,30 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end) {
-        var points = FindPath(raster, start, end);
-        if (points == null) {
-            return Collections.emptyList();
-        }
-        return points;
-    }
-
-    private List<RasterPoint> FindPath(Raster map, RasterPoint start, RasterPoint end) {
+    public List<RasterPoint> findPath(final Raster raster, final RasterPoint start, final RasterPoint end) {
         boolean finished = false;
-        List<RasterPoint> used = new ArrayList<>();
+        final List<RasterPoint> used = new ArrayList<>();
         used.add(start);
         while (!finished) {
-            List<RasterPoint> newOpen = new ArrayList<>();
+            final List<RasterPoint> newOpen = new ArrayList<>();
             for (int i = 0; i < used.size(); ++i) {
-                RasterPoint point = used.get(i);
-                for (RasterPoint neighbor : map.FindNeighbors(point)) {
+                final RasterPoint point = used.get(i);
+                for (final RasterPoint neighbor : raster.FindNeighbors(point)) {
                     if (!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
                 }
             }
 
-            for (RasterPoint point : newOpen) {
+            for (final RasterPoint point : newOpen) {
                 used.add(point);
                 if (end.equals(point)) {
                     finished = true;
@@ -39,12 +33,13 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             }
 
             if (!finished && newOpen.isEmpty())
-                return null;
+                return emptyList();
+            ;
         }
 
-        List<RasterPoint> path = new ArrayList<>();
+        final List<RasterPoint> path = new ArrayList<>();
         RasterPoint point = used.get(used.size() - 1);
-        while (point.previous != null) {
+        while (nonNull(point.previous)) {
             path.add(0, point);
             point = point.previous;
         }
