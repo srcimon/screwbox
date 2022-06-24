@@ -84,6 +84,10 @@ public class Grid {
         this.diagonalMovementAllowed = diagonalMovementAllowed;
     }
 
+    public boolean isFree(int x, int y) {
+        return isFree(new Node(x, y));
+    }
+
     public boolean isFree(final Node node) {
         if (node.y < 0 || node.y() > isBlocked[0].length - 1) {
             return false;
