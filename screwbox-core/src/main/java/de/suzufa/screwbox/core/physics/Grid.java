@@ -115,7 +115,7 @@ public class Grid {
     }
 
     private Bounds tanslate(Bounds area) {
-        return area.moveBy(offset.invert());
+        return area.moveBy(Vector.of(-offset.x(), -offset.y()));
     }
 
     public void blockArea(final Bounds area) {
