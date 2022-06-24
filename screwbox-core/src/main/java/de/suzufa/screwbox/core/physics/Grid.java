@@ -6,8 +6,6 @@ import java.util.Objects;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.World;
 
 public class Grid {
 
@@ -96,19 +94,11 @@ public class Grid {
         return !isBlocked[node.x][node.y];
     }
 
-    public void debug(final World world) {
-        for (final var node : allNodes()) {
-            final Color color = isFree(node) ? Color.YELLOW.withOpacity(0.2) : Color.YELLOW.withOpacity(0.7);
-            world.drawRectangle(Bounds.atPosition(toWorld(node), gridSize, gridSize), color);
-        }
-    }
-
     public Vector toWorld(final Node node) {
-        return Vector.of((node.x() + 0.5) * gridSize, (node.y + 0.5) * gridSize).add(offset).substract(visualOffset());
-    }
+        double x = (node.x + 0.5) * gridSize + offset.x();
+        double y = (node.y + 0.5) * gridSize + offset.y();
 
-    private Vector visualOffset() {
-        return Vector.of(offset.x() % gridSize, offset.y() % gridSize);
+        return Vector.of(x, y);
     }
 
     public Node toGrid(final Vector position) {
