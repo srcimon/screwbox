@@ -9,21 +9,21 @@ import java.util.List;
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<RasterPoint> findPath(final Raster raster, final RasterPoint start, final RasterPoint end) {
-        final List<RasterPoint> used = new ArrayList<>();
+    public List<GridNode> findPath(final Grid raster, final GridNode start, final GridNode end) {
+        final List<GridNode> used = new ArrayList<>();
         used.add(start);
 
         while (true) {
-            final List<RasterPoint> newOpen = new ArrayList<>();
+            final List<GridNode> newOpen = new ArrayList<>();
             for (var use : used) {
-                for (final RasterPoint neighbor : raster.findNeighbors(use)) {
+                for (final GridNode neighbor : raster.findNeighbors(use)) {
                     if (!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
                 }
             }
 
-            for (final RasterPoint point : newOpen) {
+            for (final GridNode point : newOpen) {
                 used.add(point);
                 if (end.equals(point)) {
                     return constructPath(used);
@@ -36,9 +36,9 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         }
     }
 
-    private List<RasterPoint> constructPath(final List<RasterPoint> used) {
-        final List<RasterPoint> path = new ArrayList<>();
-        RasterPoint point = used.get(used.size() - 1);
+    private List<GridNode> constructPath(final List<GridNode> used) {
+        final List<GridNode> path = new ArrayList<>();
+        GridNode point = used.get(used.size() - 1);
         while (nonNull(point.previous())) {
             path.add(0, point);
             point = point.previous();

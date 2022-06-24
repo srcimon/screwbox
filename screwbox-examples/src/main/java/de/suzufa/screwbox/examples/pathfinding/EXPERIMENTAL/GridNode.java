@@ -2,12 +2,12 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import java.util.Objects;
 
-public class RasterPoint {
+public class GridNode {
     private final int x;
     private final int y;
-    private final RasterPoint previous;
+    private final GridNode previous;
 
-    public RasterPoint(final int x, final int y, final RasterPoint previous) {
+    public GridNode(final int x, final int y, final GridNode previous) {
         this.x = x;
         this.y = y;
         this.previous = previous;
@@ -21,12 +21,12 @@ public class RasterPoint {
         return y;
     }
 
-    public RasterPoint previous() {
+    public GridNode previous() {
         return previous;
     }
 
-    public RasterPoint offset(final int deltaX, final int deltaY) {
-        return new RasterPoint(x + deltaX, y + deltaY, this);
+    public GridNode offset(final int deltaX, final int deltaY) {
+        return new GridNode(x + deltaX, y + deltaY, this);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RasterPoint {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RasterPoint other = (RasterPoint) obj;
+        GridNode other = (GridNode) obj;
         return x == other.x && y == other.y;
     }
 }

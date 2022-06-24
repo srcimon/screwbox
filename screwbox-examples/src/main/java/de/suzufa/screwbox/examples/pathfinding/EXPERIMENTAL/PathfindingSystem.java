@@ -20,7 +20,7 @@ import de.suzufa.screwbox.core.utils.Timer;
 public class PathfindingSystem {
 
     private Engine engine;
-    private Raster raster;
+    private Grid raster;
 
     private Timer update = Timer.withInterval(ofMillis(500));
 
@@ -31,11 +31,11 @@ public class PathfindingSystem {
 
     // TODO: how to shedule a path update in a component? add Futures?
     public Optional<Path> findPath(Vector start, Vector end) {
-        RasterPoint startPoint = raster.toRaster(start);
-        RasterPoint endPoint = raster.toRaster(end);
+        GridNode startPoint = raster.toGrid(start);
+        GridNode endPoint = raster.toGrid(end);
 
         PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
-        List<RasterPoint> path = algorithm.findPath(raster, startPoint, endPoint);
+        List<GridNode> path = algorithm.findPath(raster, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
@@ -59,7 +59,7 @@ public class PathfindingSystem {
             Entity worldBounds = engine.entityEngine().forcedFetch(WorldBoundsComponent.class,
                     TransformComponent.class);
             Bounds bounds = worldBounds.get(TransformComponent.class).bounds;
-            raster = new Raster(bounds, 16);
+            raster = new Grid(bounds, 16);
             for (Entity entity : engine.entityEngine()
                     .fetchAll(Archetype.of(ColliderComponent.class, TransformComponent.class))) {
                 if (!entity.hasComponent(PhysicsBodyComponent.class)) { // TODO: add special

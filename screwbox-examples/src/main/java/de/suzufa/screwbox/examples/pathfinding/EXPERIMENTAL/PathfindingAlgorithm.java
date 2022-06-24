@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface PathfindingAlgorithm {
 
-    List<RasterPoint> findPath(Raster raster, RasterPoint start, RasterPoint end);
+    List<GridNode> findPath(Grid raster, GridNode start, GridNode end);
 
 }
