@@ -30,30 +30,23 @@ public class Raster {
         return !isBlocked[point.x][point.y];
     }
 
-    @Deprecated
-    public boolean isBlocked(final int x, final int y) {
-        // TODO: outOfRangeCheck
-        return isBlocked[x][y];
-    }
-
     public Vector getVector(final RasterPoint point) {
         return Vector.of((point.x + 0.5) * gridSize, (point.y + 0.5) * gridSize);
     }
 
     public RasterPoint getPoint(final Vector position) {
-        return new RasterPoint((int) position.x() / gridSize, (int) position.y() / gridSize, null);
+        return new RasterPoint(toRaster(position.x()), toRaster(position.y()), null);
+    }
+
+    private int toRaster(final double value) {
+        return (int) value / gridSize;
     }
 
     public void blockArea(final Bounds bounds) {
         final Vector boundsOrigin = bounds.origin();
-        final int xMin = (int) boundsOrigin.x() / gridSize;
-        final int yMin = (int) boundsOrigin.y() / gridSize;
-
         final Vector bottomRight = bounds.bottomRight();
-        final int xMax = (int) bottomRight.x() / gridSize;
-        final int yMax = (int) bottomRight.y() / gridSize;
-        for (int x = xMin; x < xMax; x++) {
-            for (int y = yMin; y < yMax; y++) {
+        for (int x = toRaster(boundsOrigin.x()); x < toRaster(bottomRight.x()); x++) {
+            for (int y = toRaster(boundsOrigin.y()); y < toRaster(bottomRight.y()); y++) {
                 isBlocked[x][y] = true;
             }
         }

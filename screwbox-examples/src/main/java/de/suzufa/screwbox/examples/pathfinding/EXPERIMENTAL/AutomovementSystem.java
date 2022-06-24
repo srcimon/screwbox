@@ -23,7 +23,7 @@ public class AutomovementSystem implements EntitySystem {
                     entity.get(PhysicsBodyComponent.class).momentum = Vector.zero();
                 } else {
                     if (automovement.path.nodeCount() > 1 && position.distanceTo(automovement.path.start()) < 1) {
-                        automovement.path.dropFirstNode();
+                        automovement.path.dropStart();
                     }
                     final Vector direction = automovement.path.start().substract(position);
                     entity.get(PhysicsBodyComponent.class).momentum = direction.capLength(automovement.speed);

@@ -11,26 +11,29 @@ public class Path implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Vector> nodes;
+    private final List<Vector> nodes;
 
-    private Path(List<Vector> nodes) {
-        this.nodes = nodes;
-    }
-
-    public static Path withNodes(List<Vector> nodes) {
-        // TODO: check not empty
+    public static Path withNodes(final List<Vector> nodes) {
         return new Path(nodes);
     }
 
+    private Path(final List<Vector> nodes) {
+        if (nodes.isEmpty()) {
+            throw new IllegalArgumentException("Path must have at least one node.");
+        }
+        this.nodes = nodes;
+    }
+
     public List<Segment> segments() {
-        var segments = new ArrayList<Segment>();
+        final var segments = new ArrayList<Segment>();
         for (int i = 0; i < nodeCount() - 1; i++) {
-            segments.add(Segment.between(nodes.get(i), nodes.get(i + 1)));
+            final var segment = Segment.between(nodes.get(i), nodes.get(i + 1));
+            segments.add(segment);
         }
         return segments;
     }
 
-    public void dropFirstNode() {
+    public void dropStart() {
         if (nodeCount() == 1) {
             throw new IllegalStateException("Cannot drop last node.");
         }
