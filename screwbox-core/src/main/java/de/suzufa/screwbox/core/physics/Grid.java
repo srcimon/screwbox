@@ -94,11 +94,11 @@ public class Grid {
         this.diagonalMovementAllowed = diagonalMovementAllowed;
     }
 
-    public Node nodeAt(int x, int y) {
+    public Node nodeAt(final int x, final int y) {
         return new Node(x, y);
     }
 
-    public boolean isFree(int x, int y) {
+    public boolean isFree(final int x, final int y) {
         if (x < 0 || x > isBlocked.length - 1) {
             return false;
         }
@@ -113,8 +113,8 @@ public class Grid {
     }
 
     public Vector toWorld(final Node node) {
-        double x = (node.x + 0.5) * gridSize + offset.x();
-        double y = (node.y + 0.5) * gridSize + offset.y();
+        final double x = (node.x + 0.5) * gridSize + offset.x();
+        final double y = (node.y + 0.5) * gridSize + offset.y();
 
         return Vector.of(x, y);
     }

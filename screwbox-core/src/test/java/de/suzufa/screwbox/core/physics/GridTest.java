@@ -118,13 +118,23 @@ class GridTest {
     }
 
     @Test
-    void backtrackPath_returnsNodesPath() {
+    void backtrackPath_noParent_returnsNoNodes() {
+        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
+        var grid = new Grid(area, 16, true);
+        Node node = grid.nodeAt(0, 0);
+
+        assertThat(node.backtrackPath()).isEmpty();
+    }
+
+    @Test
+    void backtrackPath_parentPresent_returnsNodesPath() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
         var grid = new Grid(area, 16, true);
         Node first = grid.nodeAt(0, 0);
-        List<Node> secondGeneration = grid.findNeighbors(first);
 
+        List<Node> secondGeneration = grid.findNeighbors(first);
         Node second = secondGeneration.get(0);
+
         List<Node> thirdGeneration = grid.findNeighbors(second);
         Node third = thirdGeneration.get(0);
 
