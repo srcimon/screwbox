@@ -114,7 +114,6 @@ public class Grid {
         return height;
     }
 
-    // TODO: Sub Algorithm wihtout diagonal movements
     public List<Node> findNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node downLeft = node.offset(-1, 1);

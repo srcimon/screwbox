@@ -19,17 +19,24 @@ class GridTest {
 
     @Test
     void newInstance_gridSizeZero_throwsException() {
-        assertThatThrownBy(() -> new Grid(Bounds.atOrigin(Vector.zero(), 0, 0), 0, true))
+        var bounds = Bounds.atOrigin(Vector.zero(), 0, 0);
+
+        assertThatThrownBy(() -> new Grid(bounds, 0, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("GridSize must have a positive value");
     }
 
     @Test
-    void newInstance_validArguments_allGridNodesAreFree() {
-        var grid = new Grid(Bounds.atOrigin(Vector.zero(), 400, 200), 20, false);
+    void newInstance_validArguments_createsEmptyGrid() {
+        var bounds = Bounds.atOrigin(Vector.zero(), 400, 200);
+
+        var grid = new Grid(bounds, 20, false);
 
         assertThat(grid.allNodes())
                 .hasSize(200)
                 .allMatch(grid::isFree);
+
+        assertThat(grid.width()).isEqualTo(20);
+        assertThat(grid.height()).isEqualTo(10);
     }
 }
