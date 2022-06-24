@@ -3,10 +3,10 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 import java.util.List;
 
 import de.suzufa.screwbox.core.physics.Grid;
-import de.suzufa.screwbox.core.physics.GridNode;
+import de.suzufa.screwbox.core.physics.Grid.Node;
 
 public interface PathfindingAlgorithm {
 
-    List<GridNode> findPath(Grid raster, GridNode start, GridNode end);
+    List<Node> findPath(Grid raster, Node start, Node end);
 
 }

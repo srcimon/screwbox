@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.physics.Grid;
-import de.suzufa.screwbox.core.physics.GridNode;
+import de.suzufa.screwbox.core.physics.Grid.Node;
 import de.suzufa.screwbox.core.utils.Timer;
 
 public class PathfindingSystem {
@@ -33,11 +33,11 @@ public class PathfindingSystem {
 
     // TODO: how to shedule a path update in a component? add Futures?
     public Optional<Path> findPath(Vector start, Vector end) {
-        GridNode startPoint = raster.toGrid(start);
-        GridNode endPoint = raster.toGrid(end);
+        Node startPoint = raster.toGrid(start);
+        Node endPoint = raster.toGrid(end);
 
         PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
-        List<GridNode> path = algorithm.findPath(raster, startPoint, endPoint);
+        List<Node> path = algorithm.findPath(raster, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
