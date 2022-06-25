@@ -1,11 +1,8 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.suzufa.screwbox.core.Segment;
-import de.suzufa.screwbox.core.Vector;
 
 public class Path implements Serializable {
 

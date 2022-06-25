@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;

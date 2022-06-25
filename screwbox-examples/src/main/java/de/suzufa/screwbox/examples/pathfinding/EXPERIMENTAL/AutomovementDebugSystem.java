@@ -3,6 +3,7 @@ package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 import static java.util.Objects.nonNull;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;

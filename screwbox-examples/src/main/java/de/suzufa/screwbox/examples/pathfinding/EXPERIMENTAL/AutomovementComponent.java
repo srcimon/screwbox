@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
 
+import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.entityengine.Component;
 
 public class AutomovementComponent implements Component {

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
@@ -15,7 +16,6 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
-import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.Path;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.PathfindingSystem;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 
