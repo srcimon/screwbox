@@ -76,6 +76,16 @@ public class Grid {
     private final Vector offset;
 
     public Grid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
+        validate(area, gridSize);
+        this.gridSize = gridSize;
+        this.offset = area.origin();
+        this.width = gridValue(area.width());
+        this.height = gridValue(area.height());
+        isBlocked = new boolean[this.width][this.height];
+        this.diagonalMovementAllowed = diagonalMovementAllowed;
+    }
+
+    private void validate(final Bounds area, final int gridSize) {
         Objects.requireNonNull(area, "Grid area must not be null");
         if (gridSize <= 0) {
             throw new IllegalArgumentException("GridSize must have value above zero");
@@ -86,12 +96,6 @@ public class Grid {
         if (area.origin().y() % gridSize != 0) {
             throw new IllegalArgumentException("Area origin y should be dividable by grid size.");
         }
-        this.gridSize = gridSize;
-        this.offset = area.origin();
-        this.width = gridValue(area.width());
-        this.height = gridValue(area.height());
-        isBlocked = new boolean[this.width][this.height];
-        this.diagonalMovementAllowed = diagonalMovementAllowed;
     }
 
     public Node nodeAt(final int x, final int y) {
@@ -117,8 +121,8 @@ public class Grid {
     }
 
     public Node toGrid(final Vector position) {
-        final var tPos = tanslate(position);
-        return new Node(gridValue(tPos.x()), gridValue(tPos.y()));
+        final var translated = tanslate(position);
+        return new Node(gridValue(translated.x()), gridValue(translated.y()));
     }
 
     private Vector tanslate(final Vector position) {
@@ -126,7 +130,7 @@ public class Grid {
     }
 
     private Bounds tanslate(final Bounds area) {
-        return area.moveBy(Vector.of(-offset.x(), -offset.y()));
+        return area.moveBy(-offset.x(), -offset.y());
     }
 
     public void blockArea(final Bounds area) {
