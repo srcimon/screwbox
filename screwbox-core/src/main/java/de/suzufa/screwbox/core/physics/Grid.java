@@ -99,10 +99,10 @@ public class Grid {
     }
 
     public boolean isFree(final int x, final int y) {
-        if (x < 0 || x > isBlocked.length - 1) {
+        if (x < 0 || x >= width) {
             return false;
         }
-        if (y < 0 || y > isBlocked[0].length - 1) {
+        if (y < 0 || y >= height) {
             return false;
         }
         return !isBlocked[x][y];
