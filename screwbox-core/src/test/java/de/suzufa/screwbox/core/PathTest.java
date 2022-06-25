@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import static de.suzufa.screwbox.core.Segment.between;
+import static de.suzufa.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,7 +37,7 @@ class PathTest {
 
         assertThat(path.nodes())
                 .hasSize(4)
-                .doesNotContain(Vector.of(0, 0));
+                .doesNotContain($(0, 0));
     }
 
     @Test
@@ -58,15 +59,15 @@ class PathTest {
         Path path = Path.withNodes(createNodes(4));
 
         assertThat(path.segments()).containsExactly(
-                between(Vector.of(0, 0), Vector.of(1, 1)),
-                between(Vector.of(1, 1), Vector.of(2, 2)),
-                between(Vector.of(2, 2), Vector.of(3, 3)));
+                between($(0, 0), $(1, 1)),
+                between($(1, 1), $(2, 2)),
+                between($(2, 2), $(3, 3)));
     }
 
     private List<Vector> createNodes(int count) {
         List<Vector> nodes = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            nodes.add(Vector.of(i, i));
+            nodes.add($(i, i));
         }
         return nodes;
     }

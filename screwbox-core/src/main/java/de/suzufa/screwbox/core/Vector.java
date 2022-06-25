@@ -24,7 +24,17 @@ public final class Vector implements Serializable {
     }
 
     /**
+     * Creates a new Instance of {@link Vector} at the given coordinates. Short for
+     * {@link #of(double, double)}
+     */
+    public static Vector $(final double x, final double y) {
+        return new Vector(x, y);
+    }
+
+    /**
      * Creates a new Instance of {@link Vector} at the given coordinates.
+     * 
+     * @see #$(double, double)
      */
     public static Vector of(final double x, final double y) {
         return new Vector(x, y);
