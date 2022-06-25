@@ -48,9 +48,20 @@ public final class Bounds implements Serializable {
     }
 
     /**
+     * Creates a new {@link Bounds} at the given {@link #origin()}. Short form of
+     * {@link #atOrigin(double, double, double, double)}
+     * 
+     * @see #atPosition
+     */
+    public static Bounds $$(final double x, final double y, final double width, final double height) {
+        return new Bounds(x + (width / 2.0), y + (height / 2.0), width, height);
+    }
+
+    /**
      * Creates a new {@link Bounds} at the given {@link #origin()}.
      * 
      * @see #atPosition
+     * @see #$$(double, double, double, double)
      */
     public static Bounds atOrigin(final double x, final double y, final double width, final double height) {
         return new Bounds(x + (width / 2.0), y + (height / 2.0), width, height);

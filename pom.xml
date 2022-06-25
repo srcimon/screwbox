@@ -29,9 +29,9 @@
 		<sonar.issue.ignore.multicriteria.e4.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e4.ruleKey>
 		<sonar.issue.ignore.multicriteria.e4.resourceKey>**/ForwardSignalComponent.java</sonar.issue.ignore.multicriteria.e4.resourceKey>	
 		
-		<!-- disable false-positive naming convention for Vector.$ -->
+		<!-- disable false-positive naming convention for Vector.$ and Bounds.$$ -->
 		<sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
-		<sonar.issue.ignore.multicriteria.e5.resourceKey>**/Vector.java</sonar.issue.ignore.multicriteria.e5.resourceKey>	
+		<sonar.issue.ignore.multicriteria.e5.resourceKey>**/Vector.java,**/Bounds.java</sonar.issue.ignore.multicriteria.e5.resourceKey>	
 	</properties> 
 	<dependencyManagement>
 		<dependencies>

@@ -7,32 +7,31 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.physics.Grid.Node;
 
-//TODO: internal
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
-        final List<Node> used = new ArrayList<>();
-        used.add(start);
+        final var usedNodes = new ArrayList<Node>();
+        usedNodes.add(start);
 
         while (true) {
-            final List<Node> newOpen = new ArrayList<>();
-            for (var use : used) {
-                for (final Node neighbor : grid.findNeighbors(use)) {
-                    if (!used.contains(neighbor) && !newOpen.contains(neighbor)) {
-                        newOpen.add(neighbor);
+            final List<Node> openNodes = new ArrayList<>();
+            for (final var usedNode : usedNodes) {
+                for (final Node neighbor : grid.findNeighbors(usedNode)) {
+                    if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
+                        openNodes.add(neighbor);
                     }
                 }
             }
 
-            for (final Node point : newOpen) {
-                used.add(point);
+            for (final Node point : openNodes) {
+                usedNodes.add(point);
                 if (end.equals(point)) {
-                    return used.get(used.size() - 1).backtrackPath();
+                    return usedNodes.get(usedNodes.size() - 1).backtrackPath();
                 }
             }
 
-            if (newOpen.isEmpty()) {
+            if (openNodes.isEmpty()) {
                 return emptyList();
             }
         }
