@@ -14,7 +14,7 @@ public interface Physics {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
-    Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
+    PathfindingConfiguration pathfindingConfiguration();
 
     Optional<Path> findPath(Grid grid, Vector start, Vector end);
 }
