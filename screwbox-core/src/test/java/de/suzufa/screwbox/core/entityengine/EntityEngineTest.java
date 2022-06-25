@@ -45,15 +45,15 @@ class EntityEngineTest {
     }
 
     @Test
-    void forcedFetch_component_callsActualMethod() {
-        entityEngine.forcedFetch(SpriteComponent.class);
+    void forcedFetchHaving_component_callsActualMethod() {
+        entityEngine.forcedFetchHaving(SpriteComponent.class);
 
         verify(entityEngine).forcedFetch(Archetype.of(SpriteComponent.class));
     }
 
     @Test
-    void forcedFetch_twoComponents_callsActualMethod() {
-        entityEngine.forcedFetch(SpriteComponent.class, TransformComponent.class);
+    void forcedFetchHaving_twoComponents_callsActualMethod() {
+        entityEngine.forcedFetchHaving(SpriteComponent.class, TransformComponent.class);
 
         verify(entityEngine).forcedFetch(Archetype.of(SpriteComponent.class, TransformComponent.class));
     }

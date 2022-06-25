@@ -14,7 +14,13 @@ public interface Physics {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
-    PathfindingConfiguration pathfindingConfiguration();
+    PathfindingConfiguration pathfindingConfiguration();// TODO: maybe inline if there are not so many options
 
     Optional<Path> findPath(Grid grid, Vector start, Vector end);
+
+    Optional<Path> findPath(Vector start, Vector end);
+
+    Physics updatePathfindingGrid(Grid grid);
+
+    Grid pathfindingGrid();
 }

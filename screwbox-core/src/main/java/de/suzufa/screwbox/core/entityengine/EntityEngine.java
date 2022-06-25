@@ -37,11 +37,11 @@ public interface EntityEngine {
 
     Entity forcedFetch(Archetype archetype);
 
-    default Entity forcedFetch(Class<? extends Component> component) {
+    default Entity forcedFetchHaving(Class<? extends Component> component) {
         return forcedFetch(Archetype.of(component));
     }
 
-    default Entity forcedFetch(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+    default Entity forcedFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
         return forcedFetch(Archetype.of(componentA, componentB));
     }
 

@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.examples.pathfinding.scenes;
 
 import static de.suzufa.screwbox.core.Bounds.atPosition;
+import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -15,10 +16,12 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entityengine.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
+import de.suzufa.screwbox.core.entityengine.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
+import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementComponent;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementDebugSystem;
 import de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL.AutomovementSystem;
@@ -64,6 +67,7 @@ public class DemoScene implements Scene {
                 .add(new AutoRotationSystem())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
+                .add(new PathfindingGridCreationSystem(16, Timer.withInterval(ofSeconds(1))))
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());

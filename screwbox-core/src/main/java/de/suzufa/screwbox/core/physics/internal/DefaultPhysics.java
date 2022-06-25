@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.physics.internal;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,8 @@ public class DefaultPhysics implements Physics {
     private final Engine engine;
 
     private PathfindingConfiguration configuration = new PathfindingConfiguration();
+
+    private Grid grid;
 
     public DefaultPhysics(final Engine engine) {
         this.engine = engine;
@@ -65,6 +69,25 @@ public class DefaultPhysics implements Physics {
     @Override
     public PathfindingConfiguration pathfindingConfiguration() {
         return configuration;
+    }
+
+    @Override
+    public Optional<Path> findPath(Vector start, Vector end) {
+        if (isNull(grid)) {
+            throw new IllegalStateException("No grid for pathfinding present.");
+        }
+        return findPath(grid, start, end);
+    }
+
+    @Override
+    public Physics updatePathfindingGrid(Grid grid) {
+        this.grid = grid;
+        return this;
+    }
+
+    @Override
+    public Grid pathfindingGrid() {
+        return grid;
     }
 
 }
