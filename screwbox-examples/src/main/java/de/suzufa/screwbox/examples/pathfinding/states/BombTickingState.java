@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.states;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;

@@ -33,7 +33,7 @@ public class DefaultSystemManager implements SystemManager {
     }
 
     @Override
-    public List<EntitySystem> getSystems() {
+    public List<EntitySystem> allSystems() {
         return systems;
     }
 

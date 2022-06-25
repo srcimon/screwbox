@@ -136,4 +136,5 @@ public class DefaultEntityManager implements EntityManager, EntityListener {
     public Entity findById(final int id) {
         return entitiesById.get(id);
     }
+
 }

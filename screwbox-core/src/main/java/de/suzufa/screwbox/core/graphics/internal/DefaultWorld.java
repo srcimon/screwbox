@@ -135,6 +135,13 @@ public class DefaultWorld implements World {
     }
 
     @Override
+    public World drawCircle(Vector position, int diameter, Color color) {
+        final Offset offset = toOffset(position);
+        window.drawCircle(offset, (int) (diameter * zoom), color);
+        return this;
+    }
+
+    @Override
     public World drawRectangle(final Bounds bounds, final Color color) {
         // TODO: REMOVE ALL CHECKS FROM RENDERER/GRAPHICS
         if (bounds.intersects(visibleArea)) {

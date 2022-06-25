@@ -24,7 +24,17 @@ public final class Vector implements Serializable {
     }
 
     /**
+     * Creates a new Instance of {@link Vector} at the given coordinates. Short for
+     * {@link #of(double, double)}
+     */
+    public static Vector $(final double x, final double y) {
+        return new Vector(x, y);
+    }
+
+    /**
      * Creates a new Instance of {@link Vector} at the given coordinates.
+     * 
+     * @see #$(double, double)
      */
     public static Vector of(final double x, final double y) {
         return new Vector(x, y);
@@ -105,8 +115,8 @@ public final class Vector implements Serializable {
     }
 
     /**
-     * Returns a new {@link Vector} representing the substraction of the current and
-     * the given and the orther {@link Vector}.
+     * Returns a new {@link Vector} representing the subtraction of the current and
+     * the given and the other {@link Vector}.
      */
     public Vector substract(final Vector other) {
         return Vector.of(x - other.x, y - other.y);
@@ -168,7 +178,7 @@ public final class Vector implements Serializable {
     public double distanceTo(final Vector other) {
         final double deltaX = x() - other.x;
         final double deltaY = y() - other.y;
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        return calcLength(deltaX, deltaY);
     }
 
     /**
@@ -176,6 +186,25 @@ public final class Vector implements Serializable {
      */
     public boolean isZero() {
         return x == 0 && y == 0;
+    }
+
+    /**
+     * Returns a new {@link Vector} in the same direction but at the given length.
+     */
+    public Vector adjustLengthTo(double length) {
+        double factor = length / length();
+        return Vector.of(x * factor, y * factor);
+    }
+
+    /**
+     * Returns the length of the {@link Vector}.
+     */
+    public double length() {
+        return calcLength(x, y);
+    }
+
+    private double calcLength(final double x, final double y) {
+        return Math.sqrt(x * x + y * y);
     }
 
 }

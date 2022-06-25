@@ -91,7 +91,7 @@ public class GameScene implements Scene {
 
     @Override
     public void initialize(EntityEngine entityEngine) {
-        addMapEntities(entityEngine);
+        importEntities(entityEngine);
 
         entityEngine
                 .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
@@ -137,7 +137,7 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    void addMapEntities(EntityEngine entityEngine) {
+    void importEntities(EntityEngine entityEngine) {
         Map map = TiledSupport.loadMap(mapName);
 
         entityEngine.importSource(map)

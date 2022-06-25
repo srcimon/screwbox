@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.states;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class BombExplosionState implements EntityState {
@@ -33,14 +34,12 @@ public class BombExplosionState implements EntityState {
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
-        for (var entityInExplosionRange : entitiesInExplosionRange) {
-            engine.entityEngine().remove(entityInExplosionRange);// TODO: remove(List<OfEntities>)
-        }
+        engine.entityEngine().remove(entitiesInExplosionRange);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (Time.now().isAfter(endOfAnimation)) {// TODO: isBefore
+        if (endOfAnimation.isAfter(Time.now())) {
             engine.entityEngine().remove(entity);
         }
         return this;

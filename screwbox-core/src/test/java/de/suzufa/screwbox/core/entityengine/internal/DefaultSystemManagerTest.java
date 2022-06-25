@@ -21,7 +21,7 @@ class DefaultSystemManagerTest {
     void addSystem_addsSystem() {
         systemManager.addSystem(new PhysicsDebugSystem());
 
-        assertThat(systemManager.getSystems()).hasSize(1);
+        assertThat(systemManager.allSystems()).hasSize(1);
     }
 
     @Test
@@ -45,8 +45,7 @@ class DefaultSystemManagerTest {
         systemManager.addSystem(new PhysicsDebugSystem());
         systemManager.addSystem(new CombineStaticCollidersSystem());
 
-        assertThat(systemManager.getSystems().get(0)).isInstanceOf(CombineStaticCollidersSystem.class);
-
+        assertThat(systemManager.allSystems().get(0)).isInstanceOf(CombineStaticCollidersSystem.class);
     }
 
 }

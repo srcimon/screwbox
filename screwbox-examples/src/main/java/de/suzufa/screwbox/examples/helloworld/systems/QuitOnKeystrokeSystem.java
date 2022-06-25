@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.helloworld;
+package de.suzufa.screwbox.examples.helloworld.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;

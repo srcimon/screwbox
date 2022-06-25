@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding;
+package de.suzufa.screwbox.examples.pathfinding.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
@@ -11,6 +11,8 @@ import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
+import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
+import de.suzufa.screwbox.examples.pathfinding.states.BombTickingState;
 
 public class PlayerControlSystem implements EntitySystem {
 
@@ -26,7 +28,7 @@ public class PlayerControlSystem implements EntitySystem {
         if (engine.keyboard().justPressed(Key.SPACE)) {
 
             var bomb = new Entity()
-                    .add(new SpriteComponent(player.get(SpriteComponent.class).drawOrder))
+                    .add(new SpriteComponent(player.get(SpriteComponent.class).drawOrder - 1))
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 

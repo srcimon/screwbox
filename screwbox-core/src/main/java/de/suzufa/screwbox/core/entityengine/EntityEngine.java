@@ -37,11 +37,11 @@ public interface EntityEngine {
 
     Entity forcedFetch(Archetype archetype);
 
-    default Entity forcedFetch(Class<? extends Component> component) {
+    default Entity forcedFetchHaving(Class<? extends Component> component) {
         return forcedFetch(Archetype.of(component));
     }
 
-    default Entity forcedFetch(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+    default Entity forcedFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
         return forcedFetch(Archetype.of(componentA, componentB));
     }
 
@@ -49,7 +49,9 @@ public interface EntityEngine {
 
     Optional<Entity> fetchById(int id);
 
-    void remove(Entity entity);
+    EntityEngine remove(Entity entity);
+
+    EntityEngine remove(List<Entity> entities);
 
     void remove(Class<? extends EntitySystem> systemType);
 
@@ -62,6 +64,8 @@ public interface EntityEngine {
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
     List<Entity> allEntities();
+
+    List<EntitySystem> allSystems();
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from a custom source
@@ -78,4 +82,5 @@ public interface EntityEngine {
      * @see #importSource(Object) for single source
      */
     <T> SourceImport<T> importSource(List<T> source);
+
 }

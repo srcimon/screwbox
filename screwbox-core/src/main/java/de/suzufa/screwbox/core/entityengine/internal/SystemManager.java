@@ -8,7 +8,7 @@ public interface SystemManager {
 
     void addSystem(EntitySystem system);
 
-    List<EntitySystem> getSystems();
+    List<EntitySystem> allSystems();
 
     void updateAllSystems();
 

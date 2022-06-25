@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Percentage.withPercentage;
 
 import org.junit.jupiter.api.Test;
 
@@ -166,5 +167,24 @@ class VectorTest {
     @Test
     void equals_different_isFalse() {
         assertThat(Vector.of(20, 12)).isNotEqualTo(Vector.of(12, 20));
+    }
+
+    @Test
+    void adjustLengthTo_lengthZero_returnsZero() {
+        Vector vector = Vector.of(2, 9);
+        Vector adjusted = vector.adjustLengthTo(0);
+
+        assertThat(adjusted).isEqualTo(Vector.zero());
+        assertThat(adjusted.length()).isZero();
+    }
+
+    @Test
+    void adjustLengthTo_lengthGiven_returnsVectorWithNewLength() {
+        Vector vector = Vector.of(2, 9);
+        Vector adjusted = vector.adjustLengthTo(4);
+
+        assertThat(adjusted.x()).isCloseTo(0.867, withPercentage(0.1));
+        assertThat(adjusted.y()).isCloseTo(3.904, withPercentage(0.1));
+        assertThat(adjusted.length()).isEqualTo(4);
     }
 }

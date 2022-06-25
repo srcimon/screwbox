@@ -2,6 +2,7 @@ package de.suzufa.screwbox.examples.pathfinding;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
+import de.suzufa.screwbox.examples.pathfinding.scenes.DemoScene;
 
 public class PathfindingExample {
 
@@ -13,7 +14,5 @@ public class PathfindingExample {
 
         engine.start(DemoScene.class);
     }
-
-    // TODO: Physics.createFlowField(area).gridSize(16).towards(target-vector);
 
 }

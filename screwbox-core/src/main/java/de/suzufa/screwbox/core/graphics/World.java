@@ -16,7 +16,8 @@ public interface World {
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation);
 
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity, Rotation rotation) {
+    default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity,
+            final Rotation rotation) {
         return drawSprite(sprite, origin, 1, opacity, rotation);
     }
 
@@ -54,15 +55,21 @@ public interface World {
         return drawLine(from, to, drawColor());
     }
 
+    World drawCircle(Vector position, int diameter, Color color);
+
+    default World drawCircle(final Vector position, final int diameter) {
+        return drawCircle(position, diameter, drawColor());
+    }
+
     World drawPolygon(List<Vector> points, Color color);
 
-    default World drawPolygon(List<Vector> points) {
+    default World drawPolygon(final List<Vector> points) {
         return drawPolygon(points, drawColor());
     }
 
     World drawRectangle(Bounds bounds, Color color);
 
-    default World drawRectangle(Bounds bounds) {
+    default World drawRectangle(final Bounds bounds) {
         return drawRectangle(bounds, drawColor());
     }
 
