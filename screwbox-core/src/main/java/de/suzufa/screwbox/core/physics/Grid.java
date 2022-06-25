@@ -152,10 +152,6 @@ public class Grid {
 
     public List<Node> findNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);
         final Node left = node.offset(-1, 0);
@@ -169,6 +165,10 @@ public class Grid {
         if (isFree(right))
             neighbors.add(right);
         if (diagonalMovementAllowed) {
+            final Node downLeft = node.offset(-1, 1);
+            final Node downRight = node.offset(1, 1);
+            final Node upLeft = node.offset(-1, -1);
+            final Node upRight = node.offset(1, -1);
             if (isFree(downRight) && isFree(down) && isFree(right))
                 neighbors.add(downRight);
             if (isFree(downLeft) && isFree(down) && isFree(left))
