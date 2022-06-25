@@ -173,17 +173,22 @@ public class Grid {
             final Node downRight = node.offset(1, 1);
             final Node upLeft = node.offset(-1, -1);
             final Node upRight = node.offset(1, -1);
-            if (isFree(downRight) && isFree(down) && isFree(right)) {
-                neighbors.add(downRight);
+            if (isFree(down)) {
+                if (isFree(downRight) && isFree(right)) {
+                    neighbors.add(downRight);
+                }
+                if (isFree(downLeft) && isFree(left)) {
+                    neighbors.add(downLeft);
+                }
             }
-            if (isFree(downLeft) && isFree(down) && isFree(left)) {
-                neighbors.add(downLeft);
-            }
-            if (isFree(upLeft) && isFree(up) && isFree(left)) {
-                neighbors.add(upLeft);
-            }
-            if (isFree(upRight) && isFree(up) && isFree(right)) {
-                neighbors.add(upRight);
+
+            if (isFree(up)) {
+                if (isFree(upLeft) && isFree(left)) {
+                    neighbors.add(upLeft);
+                }
+                if (isFree(upRight) && isFree(right)) {
+                    neighbors.add(upRight);
+                }
             }
         }
         return neighbors;
