@@ -153,7 +153,6 @@ class GridTest {
         assertThat(node).isEqualTo(grid.nodeAt(11, -2));
     }
 
-    // TODO: finds bug
     @Test
     void toWorld_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
@@ -162,6 +161,7 @@ class GridTest {
         Node node = grid.toGrid(Vector.of(192, -64));
         Vector vector = grid.toWorld(node);
 
-        assertThat(vector).isEqualTo(Vector.of(192, -64));
+        assertThat(vector).isEqualTo(Vector.of(200, -56));
     }
+
 }
