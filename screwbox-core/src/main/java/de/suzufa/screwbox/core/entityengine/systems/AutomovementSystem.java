@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.entityengine.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Path;
@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entityengine.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 

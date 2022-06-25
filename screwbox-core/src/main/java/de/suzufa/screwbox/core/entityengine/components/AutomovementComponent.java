@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.entityengine.components;
 
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.entityengine.Component;

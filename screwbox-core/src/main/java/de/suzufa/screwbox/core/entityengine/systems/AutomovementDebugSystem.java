@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.examples.pathfinding.EXPERIMENTAL;
+package de.suzufa.screwbox.core.entityengine.systems;
 
 import static java.util.Objects.nonNull;
 
@@ -8,6 +8,7 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
+import de.suzufa.screwbox.core.entityengine.components.AutomovementComponent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.World;
