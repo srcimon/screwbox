@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
+import de.suzufa.screwbox.core.entityengine.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entityengine.components.PathfindingNonBlockingComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
@@ -18,7 +18,9 @@ import de.suzufa.screwbox.core.utils.Timer;
 
 public class PathfindingGridCreationSystem implements EntitySystem {
 
-    private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
+    private static final Archetype BLOCKING = Archetype.of(
+            PathfindingBlockingComponent.class, TransformComponent.class);
+
     private static final Archetype WORLD = Archetype.of(WorldBoundsComponent.class, TransformComponent.class);
 
     private final int gridSize;
@@ -35,9 +37,9 @@ public class PathfindingGridCreationSystem implements EntitySystem {
             final Bounds bounds = engine.entityEngine().forcedFetch(WORLD).get(TransformComponent.class).bounds;
 
             final Grid grid = new Grid(bounds, gridSize, true);
-            for (final Entity collider : engine.entityEngine().fetchAll(COLLIDERS)) {
-                if (!collider.hasComponent(PathfindingNonBlockingComponent.class)) {
-                    grid.blockArea(collider.get(TransformComponent.class).bounds);
+            for (final Entity blocking : engine.entityEngine().fetchAll(BLOCKING)) {
+                if (!blocking.hasComponent(PathfindingNonBlockingComponent.class)) {
+                    grid.blockArea(blocking.get(TransformComponent.class).bounds);
                 }
             }
             engine.physics().updatePathfindingGrid(grid);

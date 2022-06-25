@@ -94,6 +94,7 @@ class DefaultEngine implements Engine {
         gameLoop.stop();
         graphics.window().close();
         audio.shutdown();
+        physics.shutdown();
     }
 
     @Override

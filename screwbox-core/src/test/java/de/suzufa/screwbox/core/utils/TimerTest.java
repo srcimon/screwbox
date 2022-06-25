@@ -18,10 +18,10 @@ class TimerTest {
     }
 
     @Test
-    void isTick_tooEarly_false() {
+    void isTick_initialy_isTrue() {
         boolean isTick = timer.isTick(Time.now());
 
-        assertThat(isTick).isFalse();
+        assertThat(isTick).isTrue();
     }
 
     @Test

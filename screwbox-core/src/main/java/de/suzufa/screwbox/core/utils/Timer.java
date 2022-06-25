@@ -17,7 +17,7 @@ public class Timer implements Serializable {
 
     private Timer(final Duration duration) {
         this.duration = duration;
-        this.nextTick = Time.now().plus(duration);
+        this.nextTick = Time.unset();
     }
 
     /**
@@ -33,7 +33,7 @@ public class Timer implements Serializable {
      * return false. ({@link Time} must be provided from outside to reduce cpu load.
      */
     public boolean isTick(final Time time) {
-        final boolean isNow = time.isAfter(nextTick);
+        final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
         if (isNow) {
             nextTick = time.plus(duration);
         }

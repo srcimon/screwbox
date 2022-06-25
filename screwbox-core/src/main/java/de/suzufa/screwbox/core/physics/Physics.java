@@ -18,6 +18,8 @@ public interface Physics {
 
     Optional<Path> findPath(Vector start, Vector end);
 
+    Physics findPathAsync(Vector start, Vector end, PathfindingCallback callback);
+
     Physics updatePathfindingGrid(Grid grid);
 
     Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);

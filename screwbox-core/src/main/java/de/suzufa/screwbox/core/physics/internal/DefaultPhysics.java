@@ -5,6 +5,8 @@ import static java.util.Objects.isNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
@@ -14,12 +16,14 @@ import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
 import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Grid.Node;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
+import de.suzufa.screwbox.core.physics.PathfindingCallback;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.RaycastBuilder;
 import de.suzufa.screwbox.core.physics.SelectEntityBuilder;
 
 public class DefaultPhysics implements Physics {
 
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final Engine engine;
 
     private PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
@@ -49,26 +53,25 @@ public class DefaultPhysics implements Physics {
         return algorithm;
     }
 
-    public void setAlgorithm(PathfindingAlgorithm algorithm) {
+    public void setAlgorithm(final PathfindingAlgorithm algorithm) {
         this.algorithm = algorithm;
     }
 
     @Override
-    public Optional<Path> findPath(Grid grid, Vector start, Vector end) {
-        Node startPoint = grid.toGrid(start);
-        Node endPoint = grid.toGrid(end);
+    public Optional<Path> findPath(final Grid grid, final Vector start, final Vector end) {
+        final Node startPoint = grid.toGrid(start);
+        final Node endPoint = grid.toGrid(end);
 
-        List<Node> path = algorithm.findPath(grid, startPoint, endPoint);
+        final List<Node> path = algorithm.findPath(grid, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
         }
 
-        // replace first and last grid-node with actual positions
-        List<Vector> list = new ArrayList<>();
+        final List<Vector> list = new ArrayList<>();
         list.add(start);
 
-        for (int i = 1; i < path.size() - 1; i++) {
-            list.add(grid.toWorld(path.get(i)));
+        for (var node : path) {
+            list.add(grid.toWorld(node));
         }
 
         list.add(end);
@@ -76,7 +79,7 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Optional<Path> findPath(Vector start, Vector end) {
+    public Optional<Path> findPath(final Vector start, final Vector end) {
         if (isNull(grid)) {
             throw new IllegalStateException("No grid for pathfinding present.");
         }
@@ -84,7 +87,20 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Physics updatePathfindingGrid(Grid grid) {
+    public Physics findPathAsync(final Vector start, final Vector end, final PathfindingCallback callback) {
+        executorService.submit(() -> {
+            final var path = findPath(start, end);
+            if (path.isPresent()) {
+                callback.onPathFound(path.get());
+            } else {
+                callback.onPathNotFound();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public Physics updatePathfindingGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }
@@ -95,9 +111,13 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm) {
+    public Physics setPathfindingAlgorithm(final PathfindingAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
+    }
+
+    public void shutdown() {
+        executorService.shutdown();
     }
 
 }
