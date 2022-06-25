@@ -172,27 +172,28 @@ public class Grid {
         if (isFree(right)) {
             neighbors.add(right);
         }
-        if (diagonalMovementAllowed) {
-            final Node downLeft = node.offset(-1, 1);
-            final Node downRight = node.offset(1, 1);
-            final Node upLeft = node.offset(-1, -1);
-            final Node upRight = node.offset(1, -1);
-            if (isFree(down)) {
-                if (isFree(downRight) && isFree(right)) {
-                    neighbors.add(downRight);
-                }
-                if (isFree(downLeft) && isFree(left)) {
-                    neighbors.add(downLeft);
-                }
+        if (!diagonalMovementAllowed) {
+            return neighbors;
+        }
+        final Node downLeft = node.offset(-1, 1);
+        final Node downRight = node.offset(1, 1);
+        final Node upLeft = node.offset(-1, -1);
+        final Node upRight = node.offset(1, -1);
+        if (isFree(down)) {
+            if (isFree(downRight) && isFree(right)) {
+                neighbors.add(downRight);
             }
+            if (isFree(downLeft) && isFree(left)) {
+                neighbors.add(downLeft);
+            }
+        }
 
-            if (isFree(up)) {
-                if (isFree(upLeft) && isFree(left)) {
-                    neighbors.add(upLeft);
-                }
-                if (isFree(upRight) && isFree(right)) {
-                    neighbors.add(upRight);
-                }
+        if (isFree(up)) {
+            if (isFree(upLeft) && isFree(left)) {
+                neighbors.add(upLeft);
+            }
+            if (isFree(upRight) && isFree(right)) {
+                neighbors.add(upRight);
             }
         }
         return neighbors;
