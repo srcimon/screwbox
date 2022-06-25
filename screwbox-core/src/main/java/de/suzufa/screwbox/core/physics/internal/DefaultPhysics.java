@@ -67,12 +67,11 @@ public class DefaultPhysics implements Physics {
             return Optional.empty();
         }
 
-        // replace first and last grid-node with actual positions
         final List<Vector> list = new ArrayList<>();
         list.add(start);
 
-        for (int i = 1; i < path.size() - 1; i++) {
-            list.add(grid.toWorld(path.get(i)));
+        for (var node : path) {
+            list.add(grid.toWorld(node));
         }
 
         list.add(end);

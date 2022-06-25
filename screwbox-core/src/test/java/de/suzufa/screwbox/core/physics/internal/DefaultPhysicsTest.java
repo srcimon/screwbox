@@ -37,15 +37,14 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void findPath_gridPresent_replacesStartEndEndPositions() {
+    void findPath_gridPresent_addsStartEndEndPositions() {
         updateGrid();
 
         Path path = physics.findPath($(0, 0), $(9, 9)).get();
 
         assertThat(path.start()).isEqualTo($(0, 0));
         assertThat(path.end()).isEqualTo($(9, 9));
-
-        assertThat(path.nodeCount()).isEqualTo(8);
+        assertThat(path.nodeCount()).isEqualTo(10);
     }
 
     @Test
