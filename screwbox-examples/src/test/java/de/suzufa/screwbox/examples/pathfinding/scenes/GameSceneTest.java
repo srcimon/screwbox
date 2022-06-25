@@ -27,12 +27,10 @@ class DemoSceneTest {
         var systemManager = new DefaultSystemManager(engine, entityManager);
         EntityEngine entityEngine = new DefaultEntityEngine(entityManager, systemManager);
 
-        new DemoScene(map).initialize(entityEngine);
+        new DemoScene(map).importEntities(entityEngine);
 
         assertThat(entityEngine.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
                 .anyMatch(e -> e.hasComponent(WorldBoundsComponent.class));
-
-        assertThat(entityEngine.allSystems()).hasSize(11);
     }
 }
