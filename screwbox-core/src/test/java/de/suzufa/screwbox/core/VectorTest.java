@@ -175,6 +175,7 @@ class VectorTest {
         Vector adjusted = vector.adjustLengthTo(0);
 
         assertThat(adjusted).isEqualTo(Vector.zero());
+        assertThat(adjusted.length()).isZero();
     }
 
     @Test
@@ -184,5 +185,6 @@ class VectorTest {
 
         assertThat(adjusted.x()).isCloseTo(0.867, withPercentage(0.1));
         assertThat(adjusted.y()).isCloseTo(3.904, withPercentage(0.1));
+        assertThat(adjusted.length()).isEqualTo(4);
     }
 }
