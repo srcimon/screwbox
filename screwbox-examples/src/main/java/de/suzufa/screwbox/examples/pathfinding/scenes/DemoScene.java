@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.entityengine.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
 import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
+import de.suzufa.screwbox.core.entityengine.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
@@ -114,6 +115,7 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
+                .add(new PathfindingBlockingComponent())
                 .add(new ColliderComponent());
     }
 
