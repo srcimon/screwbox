@@ -6,6 +6,6 @@ import de.suzufa.screwbox.core.physics.Grid.Node;
 
 public interface PathfindingAlgorithm {
 
-    List<Node> findPath(Grid raster, Node start, Node end);
+    List<Node> findPath(Grid grid, Node start, Node end);
 
 }

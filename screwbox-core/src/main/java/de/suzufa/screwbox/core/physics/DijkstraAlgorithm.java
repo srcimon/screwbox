@@ -11,14 +11,14 @@ import de.suzufa.screwbox.core.physics.Grid.Node;
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Node> findPath(final Grid raster, final Node start, final Node end) {
+    public List<Node> findPath(final Grid grid, final Node start, final Node end) {
         final List<Node> used = new ArrayList<>();
         used.add(start);
 
         while (true) {
             final List<Node> newOpen = new ArrayList<>();
             for (var use : used) {
-                for (final Node neighbor : raster.findNeighbors(use)) {
+                for (final Node neighbor : grid.findNeighbors(use)) {
                     if (!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
