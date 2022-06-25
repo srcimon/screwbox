@@ -30,7 +30,6 @@ public class PhysicsSystem implements EntitySystem {
             final var currentMomentum = entity.get(PhysicsBodyComponent.class).momentum;
             final var transform = entity.get(TransformComponent.class);
 
-            // TODO: PhysicsBodyComponent.maxSpeed /vector.reduceLengthTo(maxSpeed)
             final Vector momentum = currentMomentum.multiply(factor);
             final Bounds updatedBounds = transform.bounds.moveBy(momentum);
             transform.bounds = updatedBounds;
