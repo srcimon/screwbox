@@ -142,10 +142,6 @@ public class Grid {
         }
     }
 
-    private int gridValue(final double value) {
-        return (int) value / gridSize;
-    }
-
     public int width() {
         return width;
     }
@@ -195,4 +191,7 @@ public class Grid {
         return nodes;
     }
 
+    private int gridValue(final double value) {
+        return (int) value / gridSize;
+    }
 }

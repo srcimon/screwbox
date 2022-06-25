@@ -142,4 +142,26 @@ class GridTest {
 
         assertThat(path).containsExactlyInAnyOrder(second, third);
     }
+
+    @Test
+    void toGrid_translatesVectorToGrid() {
+        Bounds area = Bounds.atOrigin(16, -32, 64, 64);
+        var grid = new Grid(area, 16, true);
+
+        Node node = grid.toGrid(Vector.of(192, -64));
+
+        assertThat(node).isEqualTo(grid.nodeAt(11, -2));
+    }
+
+    // TODO: finds bug
+    @Test
+    void toWorld_translatesNodeFromGridToWorld() {
+        Bounds area = Bounds.atOrigin(16, -32, 64, 64);
+        var grid = new Grid(area, 16, true);
+
+        Node node = grid.toGrid(Vector.of(192, -64));
+        Vector vector = grid.toWorld(node);
+
+        assertThat(vector).isEqualTo(Vector.of(192, -64));
+    }
 }
