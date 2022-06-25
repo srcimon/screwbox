@@ -30,7 +30,7 @@ public class AutomovementSystem implements EntitySystem {
                         path.dropStart();
                     }
                     final Vector direction = path.start().substract(position);
-                    mover.get(PhysicsBodyComponent.class).momentum = direction.capLength(automovement.speed);
+                    mover.get(PhysicsBodyComponent.class).momentum = direction.capToLength(automovement.speed);
                 }
 
             }

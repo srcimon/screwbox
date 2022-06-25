@@ -189,7 +189,7 @@ public final class Vector implements Serializable {
     }
 
     // TODO: REFACTOR
-    public Vector capLength(double length) {
+    public Vector capToLength(double length) {
         double factor = length / Math.sqrt(x * x + y * y);// TODO: duplicate code
         return Vector.of(x * factor, y * factor);
     }

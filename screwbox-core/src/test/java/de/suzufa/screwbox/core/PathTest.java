@@ -15,7 +15,9 @@ class PathTest {
 
     @Test
     void withNodes_noNodes_throwsException() {
-        assertThatThrownBy(() -> Path.withNodes(emptyList()))
+        List<Vector> noNodes = emptyList();
+
+        assertThatThrownBy(() -> Path.withNodes(noNodes))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Path must have at least one node.");
     }
