@@ -188,8 +188,10 @@ public final class Vector implements Serializable {
         return x == 0 && y == 0;
     }
 
-    // TODO: REFACTOR
-    public Vector capToLength(double length) {
+    /**
+     * Returns a new {@link Vector} in the same direction but at the given length.
+     */
+    public Vector adjustLengthTo(double length) {
         double factor = length / Math.sqrt(x * x + y * y);// TODO: duplicate code
         return Vector.of(x * factor, y * factor);
     }
