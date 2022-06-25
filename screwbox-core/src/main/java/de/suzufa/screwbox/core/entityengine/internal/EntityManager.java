@@ -20,4 +20,5 @@ public interface EntityManager {
     void removeEntity(Entity entity);
 
     Entity findById(int id);
+
 }

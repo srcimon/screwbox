@@ -160,18 +160,11 @@ public class Grid {
         final Node up = node.offset(0, -1);
         final Node left = node.offset(-1, 0);
         final Node right = node.offset(1, 0);
-        if (isFree(down)) {
-            neighbors.add(down);
-        }
-        if (isFree(up)) {
-            neighbors.add(up);
-        }
-        if (isFree(left)) {
-            neighbors.add(left);
-        }
-        if (isFree(right)) {
-            neighbors.add(right);
-        }
+        addIfFree(neighbors, down);
+        addIfFree(neighbors, up);
+        addIfFree(neighbors, left);
+        addIfFree(neighbors, right);
+
         if (!diagonalMovementAllowed) {
             return neighbors;
         }
@@ -180,23 +173,29 @@ public class Grid {
         final Node upLeft = node.offset(-1, -1);
         final Node upRight = node.offset(1, -1);
         if (isFree(down)) {
-            if (isFree(downRight) && isFree(right)) {
-                neighbors.add(downRight);
+            if (isFree(right)) {
+                addIfFree(neighbors, downRight);
             }
-            if (isFree(downLeft) && isFree(left)) {
-                neighbors.add(downLeft);
+            if (isFree(left)) {
+                addIfFree(neighbors, downLeft);
             }
         }
 
         if (isFree(up)) {
             if (isFree(upLeft) && isFree(left)) {
-                neighbors.add(upLeft);
+                addIfFree(neighbors, upLeft);
             }
             if (isFree(upRight) && isFree(right)) {
-                neighbors.add(upRight);
+                addIfFree(neighbors, upRight);
             }
         }
         return neighbors;
+    }
+
+    private void addIfFree(final List<Node> neighbors, final Node down) {
+        if (isFree(down)) {
+            neighbors.add(down);
+        }
     }
 
     public List<Node> allNodes() {

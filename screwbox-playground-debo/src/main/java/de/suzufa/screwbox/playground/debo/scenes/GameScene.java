@@ -137,7 +137,7 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    void addMapEntities(EntityEngine entityEngine) {
+    private void addMapEntities(EntityEngine entityEngine) {
         Map map = TiledSupport.loadMap(mapName);
 
         entityEngine.importSource(map)

@@ -65,6 +65,8 @@ public interface EntityEngine {
 
     List<Entity> allEntities();
 
+    List<EntitySystem> allSystems();
+
     /**
      * Provides a compact syntax for importing {@link Entity}s from a custom source
      * using conditions and {@link Converter}.
@@ -80,4 +82,5 @@ public interface EntityEngine {
      * @see #importSource(Object) for single source
      */
     <T> SourceImport<T> importSource(List<T> source);
+
 }

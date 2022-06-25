@@ -104,7 +104,7 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     public List<EntitySystem> getSystems() {
-        return systemManager.getSystems();
+        return systemManager.allSystems();
     }
 
     public void updateTimes(final int count) {
@@ -161,6 +161,11 @@ public class DefaultEntityEngine implements EntityEngine {
     public <T> SourceImport<T> importSource(List<T> source) {
         Objects.requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
+    }
+
+    @Override
+    public List<EntitySystem> allSystems() {
+        return systemManager.allSystems();
     }
 
 }
