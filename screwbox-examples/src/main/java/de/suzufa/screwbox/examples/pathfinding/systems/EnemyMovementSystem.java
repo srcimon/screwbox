@@ -12,7 +12,6 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
@@ -62,11 +61,6 @@ public class EnemyMovementSystem implements EntitySystem {
             }
         }
         return grid;
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_UI;// TODO: DEBUG REASONS ONLY
     }
 
 }
