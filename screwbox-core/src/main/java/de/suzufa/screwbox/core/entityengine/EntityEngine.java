@@ -49,7 +49,9 @@ public interface EntityEngine {
 
     Optional<Entity> fetchById(int id);
 
-    void remove(Entity entity);
+    EntityEngine remove(Entity entity);
+
+    EntityEngine remove(List<Entity> entities);
 
     void remove(Class<? extends EntitySystem> systemType);
 

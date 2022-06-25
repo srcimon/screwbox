@@ -64,8 +64,17 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public void remove(final Entity entity) {
+    public EntityEngine remove(final Entity entity) {
         entityManager.removeEntity(entity);
+        return this;
+    }
+
+    @Override
+    public EntityEngine remove(List<Entity> entities) {
+        for (final var entity : entities) {
+            remove(entity);
+        }
+        return this;
     }
 
     @Override
@@ -153,4 +162,5 @@ public class DefaultEntityEngine implements EntityEngine {
         Objects.requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
     }
+
 }

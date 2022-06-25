@@ -34,9 +34,7 @@ public class BombExplosionState implements EntityState {
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
-        for (var entityInExplosionRange : entitiesInExplosionRange) {
-            engine.entityEngine().remove(entityInExplosionRange);// TODO: remove(List<OfEntities>)
-        }
+        engine.entityEngine().remove(entitiesInExplosionRange);
     }
 
     @Override
