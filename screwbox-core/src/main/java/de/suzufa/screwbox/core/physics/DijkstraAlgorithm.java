@@ -15,14 +15,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         usedNodes.add(start);
 
         while (true) {
-            final List<Node> openNodes = new ArrayList<>();
-            for (final var usedNode : usedNodes) {
-                for (final Node neighbor : grid.findNeighbors(usedNode)) {
-                    if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
-                        openNodes.add(neighbor);
-                    }
-                }
-            }
+            final List<Node> openNodes = calculateOpenNodes(grid, usedNodes);
 
             for (final Node point : openNodes) {
                 usedNodes.add(point);
@@ -35,6 +28,18 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 return emptyList();
             }
         }
+    }
+
+    private List<Node> calculateOpenNodes(final Grid grid, final ArrayList<Node> usedNodes) {
+        final List<Node> openNodes = new ArrayList<>();
+        for (final var usedNode : usedNodes) {
+            for (final Node neighbor : grid.findNeighbors(usedNode)) {
+                if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
+                    openNodes.add(neighbor);
+                }
+            }
+        }
+        return openNodes;
     }
 
 }
