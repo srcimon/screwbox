@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -19,10 +18,14 @@ import de.suzufa.screwbox.core.audio.SoundPool;
 
 public class DefaultAudio implements Audio, LineListener {
 
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executor;
     private final Set<Clip> activeClips = new HashSet<>();
     private Percentage effectVolume = Percentage.max();
     private Percentage musicVolume = Percentage.max();
+
+    public DefaultAudio(ExecutorService executor) {
+        this.executor = executor;
+    }
 
     @Override
     public Audio playMusic(final Sound sound) {
@@ -65,14 +68,14 @@ public class DefaultAudio implements Audio, LineListener {
 
     public void shutdown() {
         synchronized (this) {
-            executorService.shutdown();
+            executor.shutdown();
         }
     }
 
     @Override
     public Audio stopAllAudio() {
-        if (!executorService.isShutdown()) {
-            executorService.execute(() -> {
+        if (!executor.isShutdown()) {
+            executor.execute(() -> {
                 final List<Clip> clipsToStop = new ArrayList<>(activeClips);
                 for (final Clip clip : clipsToStop) {
                     clip.stop();
@@ -85,13 +88,13 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio resume(final Sound sound) {
-        executorService.execute(() -> start(sound.getClip(), sound.isLooped()));
+        executor.execute(() -> start(sound.getClip(), sound.isLooped()));
         return this;
     }
 
     @Override
     public Audio stop(final Sound sound) {
-        executorService.execute(() -> sound.getClip().stop());
+        executor.execute(() -> sound.getClip().stop());
         return this;
     }
 
@@ -110,7 +113,7 @@ public class DefaultAudio implements Audio, LineListener {
         clip.addLineListener(this);
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
-        executorService.execute(() -> start(clip, looped));
+        executor.execute(() -> start(clip, looped));
     }
 
     private void start(final Clip clip, final boolean looped) {

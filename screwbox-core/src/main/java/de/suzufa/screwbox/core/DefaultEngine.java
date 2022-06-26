@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core;
 import static java.lang.String.format;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
@@ -42,13 +44,15 @@ class DefaultEngine implements Engine {
     private final DefaultMouse mouse;
     private final DefaultUi ui;
     private final DefaultLog log;
+    private final ExecutorService executor;
 
     DefaultEngine() {
         final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final DefaultWindow window = new DefaultWindow(frame, configuration);
-        audio = new DefaultAudio();
+        executor = Executors.newSingleThreadExecutor();
+        final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
+        audio = new DefaultAudio(executor);
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();
@@ -56,7 +60,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
         gameLoop = new DefaultGameLoop(metrics, updatables);
-        physics = new DefaultPhysics(this);
+        physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
@@ -92,9 +96,8 @@ class DefaultEngine implements Engine {
         log.info(format("engine stopped (%,d frames total)", frames));
         ui.closeMenu();
         gameLoop.stop();
+        executor.shutdown();
         graphics.window().close();
-        audio.shutdown();
-        physics.shutdown();
     }
 
     @Override

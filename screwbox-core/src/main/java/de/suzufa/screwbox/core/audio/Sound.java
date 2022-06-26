@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -25,7 +26,7 @@ public final class Sound {
     }
 
     Sound(byte[] content, final boolean isLooped) {
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(content)) {
+        try (InputStream inputStream = new ByteArrayInputStream(content)) {
             try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream)) {
                 clip = AudioSystem.getClip();
                 clip.open(audioInputStream);

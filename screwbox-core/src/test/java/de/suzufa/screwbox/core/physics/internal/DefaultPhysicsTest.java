@@ -9,6 +9,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +24,12 @@ import de.suzufa.screwbox.core.physics.PathfindingCallback;
 class DefaultPhysicsTest {
 
     DefaultPhysics physics;
+    ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
-        physics = new DefaultPhysics(null);
+        executor = Executors.newSingleThreadExecutor();
+        physics = new DefaultPhysics(null, executor);
     }
 
     @Test
@@ -67,6 +73,11 @@ class DefaultPhysicsTest {
 
         verify(callback, timeout(1000)).onPathFound(any());
 
+    }
+
+    @AfterEach
+    void afterEach() {
+        executor.shutdown();
     }
 
     private void updateGrid() {
