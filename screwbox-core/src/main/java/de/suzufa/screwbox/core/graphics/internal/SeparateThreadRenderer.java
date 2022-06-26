@@ -109,7 +109,6 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     public void close() {
-        waitForCurrentRenderingToEnd();
         executor.shutdown();
     }
 
