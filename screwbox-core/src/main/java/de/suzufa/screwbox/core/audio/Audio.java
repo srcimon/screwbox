@@ -16,6 +16,8 @@ public interface Audio {
 
     Audio resume(Sound sound);
 
+    Audio resumeLooped(Sound sound);
+
     Audio stop(Sound sound);
 
     Audio stopAllAudio();

@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.ExecutorService;
@@ -48,9 +49,9 @@ class SeparateThreadRendererTest {
 
         separateThreadRenderer.updateScreen(true);
 
-        verify(renderer).drawPolygon(emptyList(), Color.BLACK);
-        verify(renderer).drawCircle(Offset.origin(), 25, Color.BLUE);
-        verify(renderer).updateScreen(true);
+        verify(renderer, timeout(1000)).drawPolygon(emptyList(), Color.BLACK);
+        verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, Color.BLUE);
+        verify(renderer, timeout(1000)).updateScreen(true);
     }
 
     @AfterEach

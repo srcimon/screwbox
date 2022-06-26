@@ -88,7 +88,13 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio resume(final Sound sound) {
-        executor.execute(() -> start(sound.getClip(), sound.isLooped()));
+        executor.execute(() -> start(sound.getClip(), false));
+        return this;
+    }
+
+    @Override
+    public Audio resumeLooped(final Sound sound) {
+        executor.execute(() -> start(sound.getClip(), true));
         return this;
     }
 

@@ -14,18 +14,13 @@ import de.suzufa.screwbox.core.utils.ResourceLoader;
 
 public final class Sound {
 
-    private final boolean isLooped;
     private final Clip clip;
 
     public static Sound fromFile(final String fileName) {
-        return new Sound(ResourceLoader.loadResource(fileName), false);
+        return new Sound(ResourceLoader.loadResource(fileName));
     }
 
-    public static Sound fromFileLooped(final String fileName) {
-        return new Sound(ResourceLoader.loadResource(fileName), true);
-    }
-
-    Sound(byte[] content, final boolean isLooped) {
+    Sound(byte[] content) {
         try (InputStream inputStream = new ByteArrayInputStream(content)) {
             try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream)) {
                 clip = AudioSystem.getClip();
@@ -34,11 +29,6 @@ public final class Sound {
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             throw new IllegalStateException("could not create sound", e);
         }
-        this.isLooped = isLooped;
-    }
-
-    public boolean isLooped() {
-        return isLooped;
     }
 
     public boolean isActive() {
