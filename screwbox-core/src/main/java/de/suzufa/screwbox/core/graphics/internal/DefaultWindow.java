@@ -11,6 +11,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
@@ -32,12 +33,13 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
-    private SeparateThreadRenderer separateThreadRenderer;
+    private ExecutorService executor;
 
-    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
+        this.executor = executor;
         setTitle("ScrewBox");
         configuration.registerListener(this);
     }
@@ -176,17 +178,12 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         }
-        separateThreadRenderer = new SeparateThreadRenderer(new DefaultRenderer(frame));
-        renderer = separateThreadRenderer;
+        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame), executor);
         return this;
     }
 
     @Override
     public Window close() {
-        if (nonNull(separateThreadRenderer)) {
-            separateThreadRenderer.close();
-            separateThreadRenderer = null;
-        }
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();

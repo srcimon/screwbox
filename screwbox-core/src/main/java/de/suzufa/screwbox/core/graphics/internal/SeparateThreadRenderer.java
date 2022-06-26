@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
@@ -24,11 +23,12 @@ public class SeparateThreadRenderer implements Renderer {
 
     private final Latch<List<Runnable>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor;
     private Future<?> currentRendering = null;
 
-    public SeparateThreadRenderer(final Renderer next) {
+    public SeparateThreadRenderer(final Renderer next, ExecutorService executor) {
         this.next = next;
+        this.executor = executor;
     }
 
     @Override
@@ -106,11 +106,6 @@ public class SeparateThreadRenderer implements Renderer {
                 currentThread().interrupt();
             }
         }
-    }
-
-    public void close() {
-        waitForCurrentRenderingToEnd();
-        executor.shutdown();
     }
 
 }

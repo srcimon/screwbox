@@ -3,11 +3,16 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -20,8 +25,14 @@ class SeparateThreadRendererTest {
     @Mock
     Renderer renderer;
 
-    @InjectMocks
+    ExecutorService executor;
     SeparateThreadRenderer separateThreadRenderer;
+
+    @BeforeEach
+    void beforeEach() {
+        executor = Executors.newSingleThreadExecutor();
+        separateThreadRenderer = new SeparateThreadRenderer(renderer, executor);
+    }
 
     @Test
     void applyDrawActions_noUpdate_nextRendererNotInvoked() {
@@ -38,10 +49,13 @@ class SeparateThreadRendererTest {
 
         separateThreadRenderer.updateScreen(true);
 
-        separateThreadRenderer.close();
+        verify(renderer, timeout(1000)).drawPolygon(emptyList(), Color.BLACK);
+        verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, Color.BLUE);
+        verify(renderer, timeout(1000)).updateScreen(true);
+    }
 
-        verify(renderer).drawPolygon(emptyList(), Color.BLACK);
-        verify(renderer).drawCircle(Offset.origin(), 25, Color.BLUE);
-        verify(renderer).updateScreen(true);
+    @AfterEach
+    void afterEach() {
+        executor.shutdown();
     }
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
@@ -23,15 +22,16 @@ import de.suzufa.screwbox.core.physics.SelectEntityBuilder;
 
 public class DefaultPhysics implements Physics {
 
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executor;
     private final Engine engine;
 
     private PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
 
     private Grid grid;
 
-    public DefaultPhysics(final Engine engine) {
+    public DefaultPhysics(final Engine engine, ExecutorService executor) {
         this.engine = engine;
+        this.executor = executor;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public Physics findPathAsync(final Vector start, final Vector end, final PathfindingCallback callback) {
-        executorService.submit(() -> {
+        executor.submit(() -> {
             final var path = findPath(start, end);
             if (path.isPresent()) {
                 callback.onPathFound(path.get());
@@ -117,7 +117,7 @@ public class DefaultPhysics implements Physics {
     }
 
     public void shutdown() {
-        executorService.shutdown();
+        executor.shutdown();
     }
 
 }

@@ -130,17 +130,18 @@ public class Grid {
     }
 
     private Bounds tanslate(final Bounds area) {
+
         return area.moveBy(-offset.x(), -offset.y());
     }
 
     public void blockArea(final Bounds area) {
-        final var tArea = tanslate(area);
-        final int minX = Math.max(gridValue(tArea.origin().x()), 0);
-        final int maxX = Math.min(gridValue(tArea.bottomRight().x()), width);
-        final int minY = Math.max(gridValue(tArea.origin().y()), 0);
-        final int maxY = Math.min(gridValue(tArea.bottomRight().y()), height);
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY; y < maxY; y++) {
+        final var tArea = tanslate(area).inflated(-0.1);
+        final int minX = Math.max(Math.floorDiv((int) tArea.origin().x(), gridSize), 0);
+        final int maxX = Math.min(Math.floorDiv((int) tArea.bottomRight().x(), gridSize), width - 1);
+        final int minY = Math.max(Math.floorDiv((int) tArea.origin().y(), gridSize), 0);
+        final int maxY = Math.min(Math.floorDiv((int) tArea.bottomRight().y(), gridSize), height - 1);
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
                 isBlocked[x][y] = true;
             }
         }

@@ -23,7 +23,7 @@ public class SoundPool {
         byte[] content = ResourceLoader.loadResource(fileName);
 
         for (int i = 0; i < size; i++) {
-            sounds.add(new Sound(content, false));
+            sounds.add(new Sound(content));
         }
     }
 

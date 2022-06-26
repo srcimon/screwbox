@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
+import static de.suzufa.screwbox.core.Bounds.$$;
+import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -56,20 +58,6 @@ class GridTest {
 
         assertThat(grid.width()).isEqualTo(20);
         assertThat(grid.height()).isEqualTo(10);
-    }
-
-    @Test
-    void blockArea_areaInGrid_blocksGridArea() {
-        Bounds area = Bounds.atOrigin(-32, -32, 64, 64);
-
-        var grid = new Grid(area, 16, false);
-
-        grid.blockArea(Bounds.atOrigin(-16, -16, 32, 32));
-
-        assertThat(grid.isFree(0, 0)).isTrue();
-        assertThat(grid.isFree(1, 1)).isFalse();
-        assertThat(grid.isFree(2, 2)).isFalse();
-        assertThat(grid.isFree(3, 3)).isTrue();
     }
 
     @Test
@@ -148,7 +136,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16, true);
 
-        Node node = grid.toGrid(Vector.of(192, -64));
+        Node node = grid.toGrid($(192, -64));
 
         assertThat(node).isEqualTo(grid.nodeAt(11, -2));
     }
@@ -158,10 +146,29 @@ class GridTest {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16, true);
 
-        Node node = grid.toGrid(Vector.of(192, -64));
+        Node node = grid.toGrid($(192, -64));
         Vector vector = grid.toWorld(node);
 
-        assertThat(vector).isEqualTo(Vector.of(200, -56));
+        assertThat(vector).isEqualTo($(200, -56));
+    }
+
+    @Test
+    void blockArea_areaInGrid_blocksGridArea() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4, true);
+
+        grid.blockArea($$(3, 2, 2, 3));
+
+        assertThat(grid.isFree(0, 0)).isFalse();
+        assertThat(grid.isFree(0, 1)).isFalse();
+        assertThat(grid.isFree(1, 0)).isFalse();
+        assertThat(grid.isFree(1, 1)).isFalse();
+        assertThat(grid.isFree(2, 0)).isTrue();
+        assertThat(grid.isFree(2, 1)).isTrue();
+        assertThat(grid.isFree(0, 2)).isTrue();
+        assertThat(grid.isFree(1, 2)).isTrue();
+        assertThat(grid.isFree(2, 2)).isTrue();
+
     }
 
 }
