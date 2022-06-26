@@ -168,7 +168,6 @@ class GridTest {
         assertThat(grid.isFree(0, 2)).isTrue();
         assertThat(grid.isFree(1, 2)).isTrue();
         assertThat(grid.isFree(2, 2)).isTrue();
-
     }
 
 }
