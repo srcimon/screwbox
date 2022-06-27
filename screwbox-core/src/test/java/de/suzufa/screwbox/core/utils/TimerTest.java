@@ -33,6 +33,12 @@ class TimerTest {
     }
 
     @Test
+    void isTick_noArgument_returnsTickStatus() {
+        assertThat(timer.isTick()).isTrue();
+        assertThat(timer.isTick()).isFalse();
+    }
+
+    @Test
     void hashcode_calculatesHashCode() {
         Time aTime = Time.atNanos(4000);
         Time anotherTime = Time.unset();
@@ -50,4 +56,5 @@ class TimerTest {
     void equals_different_isFalse() {
         assertThat(Time.atNanos(4000)).isNotEqualTo(Time.atNanos(4001));
     }
+
 }

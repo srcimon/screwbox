@@ -1,9 +1,12 @@
 package de.suzufa.screwbox.core.utils;
 
+import static de.suzufa.screwbox.core.Time.now;
+
 import java.io.Serializable;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.loop.Metrics;
 
 /**
  * A simple timer to trigger timed actions.
@@ -28,9 +31,12 @@ public class Timer implements Serializable {
     }
 
     /**
-     * Checks if the timer is triggerd at the given {@link Time}. If the timer is
-     * triggerd the next trigger {@link Time} is set. A second check will always
-     * return false. ({@link Time} must be provided from outside to reduce cpu load.
+     * Checks if the timer is triggered at the given {@link Time}. If the timer is
+     * then reseted. {@link Time} should be provided from outside to reduce CPU
+     * load.
+     * 
+     * @see #isTick()
+     * @see Metrics#timeOfLastUpdate()
      */
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
@@ -38,5 +44,15 @@ public class Timer implements Serializable {
             nextTick = time.plus(duration);
         }
         return isNow;
+    }
+
+    /**
+     * Checks if the timer is triggered now. This Method is much more CPU intensive
+     * than {@link #isTick(Time)} because calculating nano time is CPU heavy.
+     * 
+     * @see #isTick(Time)
+     */
+    public boolean isTick() {
+        return isTick(now());
     }
 }
