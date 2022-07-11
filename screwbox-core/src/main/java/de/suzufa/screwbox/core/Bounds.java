@@ -11,7 +11,6 @@ import de.suzufa.screwbox.core.graphics.World;
  * (the {@link Vector} from the center to it's lower right corner.
  * 
  * The {@link #origin()} defines the upper left corner.
- *
  */
 public final class Bounds implements Serializable {
 
@@ -200,8 +199,7 @@ public final class Bounds implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((position == null) ? 0 : position.hashCode());
-        result = prime * result + ((extents == null) ? 0 : extents.hashCode());
-        return result;
+        return prime * result + ((extents == null) ? 0 : extents.hashCode());
     }
 
     @Override
@@ -221,9 +219,8 @@ public final class Bounds implements Serializable {
         if (extents == null) {
             if (other.extents != null)
                 return false;
-        } else if (!extents.equals(other.extents))
-            return false;
-        return true;
+        }
+        return extents.equals(other.extents);
     }
 
     public Vector bottomLeft() {
