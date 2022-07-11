@@ -23,19 +23,28 @@ class PathTest {
     }
 
     @Test
-    void dropStart_noNodeLeft_throwsException() {
+    void removeNode_noNodesLeft_throwsException() {
         Path path = Path.withNodes(createNodes(1));
 
-        assertThatThrownBy(() -> path.dropStart())
+        assertThatThrownBy(() -> path.removeNode(0))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Cannot drop last node.");
     }
 
     @Test
-    void dropStart_nodesLeft_dropsFirstNode() {
+    void removeNode_pathDoesntHaveNode_throwsException() {
+        Path path = Path.withNodes(createNodes(3));
+
+        assertThatThrownBy(() -> path.removeNode(4))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Path doesnt have node: 4");
+    }
+
+    @Test
+    void removeNode_nodesLeft_removesNode() {
         Path path = Path.withNodes(createNodes(5));
 
-        path.dropStart();
+        path.removeNode(0);
 
         assertThat(path.nodes())
                 .hasSize(4)
