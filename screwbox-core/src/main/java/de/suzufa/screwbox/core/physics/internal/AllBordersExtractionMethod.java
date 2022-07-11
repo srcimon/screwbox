@@ -9,16 +9,16 @@ import de.suzufa.screwbox.core.Vector;
 public class AllBordersExtractionMethod implements ExtractSegmentsMethod {
 
     @Override
-    public List<Segment> segments(Bounds bounds) {
-        Vector upperRight = Vector.of(bounds.maxX(), bounds.minY());
-        Vector lowerRight = Vector.of(bounds.maxX(), bounds.maxY());
-        Vector lowerLeft = Vector.of(bounds.minX(), bounds.maxY());
+    public List<Segment> segments(final Bounds bounds) {
+        final Vector topRight = bounds.topRight();
+        final Vector bottomRight = bounds.bottomRight();
+        final Vector bottomLeft = bounds.bottomLeft();
 
         return List.of(
-                Segment.between(bounds.origin(), upperRight),
-                Segment.between(upperRight, lowerRight),
-                Segment.between(lowerRight, lowerLeft),
-                Segment.between(lowerLeft, bounds.origin()));
+                Segment.between(bounds.origin(), topRight),
+                Segment.between(topRight, bottomRight),
+                Segment.between(bottomRight, bottomLeft),
+                Segment.between(bottomLeft, bounds.origin()));
     }
 
 }

@@ -239,20 +239,4 @@ public final class Bounds implements Serializable {
         return List.of(origin(), bottomLeft(), bottomRight(), topRight());
     }
 
-    public Segment top() {
-        return Segment.between(origin(), topRight());
-    }
-
-    public Segment right() {
-        return Segment.between(bottomRight(), topRight());
-    }
-
-    public Segment bottom() {
-        return Segment.between(bottomRight(), bottomLeft());
-    }
-
-    public Segment left() {
-        return Segment.between(bottomLeft(), origin());
-    }
-
 }
