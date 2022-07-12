@@ -116,13 +116,20 @@ public final class Bounds implements Serializable {
         return origin;
     }
 
+    /**
+     * Returns the size of the {@link Bounds}.
+     */
     public Vector size() {
         return Vector.of(width(), height());
     }
 
-    // TODO: FIX IF SIZE NEARLY ZERO
+    /**
+     * Returns a new instance of {@link Bounds} at the same {@link #position()} but
+     * with different {@link #size()}. Positive values increase the {@link #size()},
+     * negative one decreases the {@link #size()}.
+     */
     public Bounds inflated(final double inflation) {
-        return Bounds.atPosition(position.x(), position.y(), width() + inflation, height() + inflation);
+        return Bounds.atPosition(position, width() + inflation, height() + inflation);
     }
 
     /**
