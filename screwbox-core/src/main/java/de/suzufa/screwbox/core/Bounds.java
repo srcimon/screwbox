@@ -17,6 +17,8 @@ public final class Bounds implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Vector position;
+    private final Vector origin;
+    private final Vector bottomRight;
     private final Vector extents;
 
     /**
@@ -87,11 +89,15 @@ public final class Bounds implements Serializable {
         }
         this.position = Vector.of(x, y);
         this.extents = Vector.of(width / 2.0, height / 2.0);
+        this.origin = position.substract(extents);
+        this.bottomRight = position.add(extents);
     }
 
     private Bounds(final Vector position, final Vector extents) {
         this.position = position;
         this.extents = extents;
+        this.origin = position.substract(extents);
+        this.bottomRight = position.add(extents);
     }
 
     public Bounds moveBy(final Vector vector) {
@@ -107,7 +113,7 @@ public final class Bounds implements Serializable {
     }
 
     public Vector origin() {
-        return Vector.of(position.x() - extents.x(), position.y() - extents.y());
+        return origin;
     }
 
     public Vector size() {
@@ -170,19 +176,19 @@ public final class Bounds implements Serializable {
     }
 
     public double minX() {
-        return position.x() - extents.x();
+        return origin.x();
     }
 
     public double maxX() {
-        return position.x() + extents.x();
+        return bottomRight.x();
     }
 
     public double minY() {
-        return position.y() - extents.y();
+        return origin.y();
     }
 
     public double maxY() {
-        return position.y() + extents.y();
+        return bottomRight.y();
     }
 
     @Override
@@ -228,7 +234,7 @@ public final class Bounds implements Serializable {
     }
 
     public Vector bottomRight() {
-        return Vector.of(maxX(), maxY());
+        return bottomRight;
     }
 
     public Vector topRight() {
@@ -238,5 +244,4 @@ public final class Bounds implements Serializable {
     public List<Vector> corners() {
         return List.of(origin(), bottomLeft(), bottomRight(), topRight());
     }
-
 }
