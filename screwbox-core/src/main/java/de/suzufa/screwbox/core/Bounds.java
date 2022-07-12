@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import de.suzufa.screwbox.core.graphics.World;
 
@@ -216,24 +217,15 @@ public final class Bounds implements Serializable {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Bounds other = (Bounds) obj;
-        if (position == null) {
-            if (other.position != null)
-                return false;
-        } else if (!position.equals(other.position))
-            return false;
-        if (extents == null) {
-            if (other.extents != null)
-                return false;
-        }
-        return extents.equals(other.extents);
+        Bounds other = (Bounds) obj;
+        return Objects.equals(extents, other.extents) && Objects.equals(position, other.position);
     }
 
     public Vector bottomLeft() {
