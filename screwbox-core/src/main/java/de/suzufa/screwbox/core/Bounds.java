@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import de.suzufa.screwbox.core.graphics.World;
@@ -242,10 +241,6 @@ public final class Bounds implements Serializable {
 
     public Vector topLeft() {
         return Vector.of(minX(), minY());
-    }
-
-    public List<Vector> corners() {
-        return List.of(origin(), bottomLeft(), bottomRight(), topRight());
     }
 
 }
