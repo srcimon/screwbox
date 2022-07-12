@@ -1,24 +1,39 @@
 package de.suzufa.screwbox.core.physics;
 
-import de.suzufa.screwbox.core.physics.internal.AllBordersExtractionMethod;
-import de.suzufa.screwbox.core.physics.internal.ExtractSegmentsMethod;
-import de.suzufa.screwbox.core.physics.internal.TopBorderExtractionMethod;
-import de.suzufa.screwbox.core.physics.internal.VerticalBordersExtractionMethod;
+import java.util.List;
+import java.util.function.Function;
+
+import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Segment;
+import de.suzufa.screwbox.core.Vector;
 
 public enum Borders {
 
-    ALL(new AllBordersExtractionMethod()),
-    TOP_ONLY(new TopBorderExtractionMethod()),
-    VERTICAL_ONLY(new VerticalBordersExtractionMethod());
+    ALL((bounds) -> {
+        final Vector topRight = bounds.topRight();
+        final Vector bottomLeft = bounds.bottomLeft();
 
-    private final ExtractSegmentsMethod method;
+        return List.of(
+                Segment.between(bounds.origin(), topRight),
+                Segment.between(topRight, bounds.bottomRight()),
+                Segment.between(bounds.bottomRight(), bottomLeft),
+                Segment.between(bottomLeft, bounds.origin()));
+    }),
+    TOP_ONLY((bounds) -> List.of(Segment.between(bounds.origin(), bounds.topRight()))),
+    VERTICAL_ONLY((bounds) -> {
+        return List.of(
+                Segment.between(bounds.topRight(), bounds.bottomRight()),
+                Segment.between(bounds.bottomLeft(), bounds.origin()));
+    });
 
-    private Borders(final ExtractSegmentsMethod method) {
-        this.method = method;
+    private final Function<Bounds, List<Segment>> extractSegmentsMethod;
+
+    private Borders(final Function<Bounds, List<Segment>> extractSegmentsMethod) {
+        this.extractSegmentsMethod = extractSegmentsMethod;
     }
 
-    ExtractSegmentsMethod method() {
-        return method;
+    Function<Bounds, List<Segment>> extractSegmentsMethod() {
+        return extractSegmentsMethod;
     }
 
 }

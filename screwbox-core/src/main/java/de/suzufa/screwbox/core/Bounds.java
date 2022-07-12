@@ -248,7 +248,12 @@ public final class Bounds implements Serializable {
         return Vector.of(maxX(), minY());
     }
 
+    public Vector topLeft() {
+        return Vector.of(minX(), minY());
+    }
+
     public List<Vector> corners() {
         return List.of(origin(), bottomLeft(), bottomRight(), topRight());
     }
+
 }
