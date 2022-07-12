@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Objects;
 
 import de.suzufa.screwbox.core.graphics.World;
 
@@ -11,13 +11,14 @@ import de.suzufa.screwbox.core.graphics.World;
  * (the {@link Vector} from the center to it's lower right corner.
  * 
  * The {@link #origin()} defines the upper left corner.
- *
  */
 public final class Bounds implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final Vector position;
+    private final Vector origin;
+    private final Vector bottomRight;
     private final Vector extents;
 
     /**
@@ -88,11 +89,15 @@ public final class Bounds implements Serializable {
         }
         this.position = Vector.of(x, y);
         this.extents = Vector.of(width / 2.0, height / 2.0);
+        this.origin = position.substract(extents);
+        this.bottomRight = position.add(extents);
     }
 
     private Bounds(final Vector position, final Vector extents) {
         this.position = position;
         this.extents = extents;
+        this.origin = position.substract(extents);
+        this.bottomRight = position.add(extents);
     }
 
     public Bounds moveBy(final Vector vector) {
@@ -108,16 +113,23 @@ public final class Bounds implements Serializable {
     }
 
     public Vector origin() {
-        return Vector.of(position.x() - extents.x(), position.y() - extents.y());
+        return origin;
     }
 
+    /**
+     * Returns the size of the {@link Bounds}.
+     */
     public Vector size() {
         return Vector.of(width(), height());
     }
 
-    // TODO: FIX IF SIZE NEARLY ZERO
+    /**
+     * Returns a new instance of {@link Bounds} at the same {@link #position()} but
+     * with different {@link #size()}. Positive values increase the {@link #size()},
+     * negative one decreases the {@link #size()}.
+     */
     public Bounds inflated(final double inflation) {
-        return Bounds.atPosition(position.x(), position.y(), width() + inflation, height() + inflation);
+        return Bounds.atPosition(position, width() + inflation, height() + inflation);
     }
 
     /**
@@ -171,19 +183,19 @@ public final class Bounds implements Serializable {
     }
 
     public double minX() {
-        return position.x() - extents.x();
+        return origin.x();
     }
 
     public double maxX() {
-        return position.x() + extents.x();
+        return bottomRight.x();
     }
 
     public double minY() {
-        return position.y() - extents.y();
+        return origin.y();
     }
 
     public double maxY() {
-        return position.y() + extents.y();
+        return bottomRight.y();
     }
 
     @Override
@@ -200,30 +212,19 @@ public final class Bounds implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((position == null) ? 0 : position.hashCode());
-        result = prime * result + ((extents == null) ? 0 : extents.hashCode());
-        return result;
+        return prime * result + ((extents == null) ? 0 : extents.hashCode());
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Bounds other = (Bounds) obj;
-        if (position == null) {
-            if (other.position != null)
-                return false;
-        } else if (!position.equals(other.position))
-            return false;
-        if (extents == null) {
-            if (other.extents != null)
-                return false;
-        } else if (!extents.equals(other.extents))
-            return false;
-        return true;
+        Bounds other = (Bounds) obj;
+        return Objects.equals(extents, other.extents) && Objects.equals(position, other.position);
     }
 
     public Vector bottomLeft() {
@@ -231,31 +232,15 @@ public final class Bounds implements Serializable {
     }
 
     public Vector bottomRight() {
-        return Vector.of(maxX(), maxY());
+        return bottomRight;
     }
 
     public Vector topRight() {
         return Vector.of(maxX(), minY());
     }
 
-    public List<Vector> corners() {
-        return List.of(origin(), bottomLeft(), bottomRight(), topRight());
-    }
-
-    public Segment top() {
-        return Segment.between(origin(), topRight());
-    }
-
-    public Segment right() {
-        return Segment.between(bottomRight(), topRight());
-    }
-
-    public Segment bottom() {
-        return Segment.between(bottomRight(), bottomLeft());
-    }
-
-    public Segment left() {
-        return Segment.between(bottomLeft(), origin());
+    public Vector topLeft() {
+        return Vector.of(minX(), minY());
     }
 
 }

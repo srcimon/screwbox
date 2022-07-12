@@ -30,11 +30,14 @@ public class Path implements Serializable {
         return segments;
     }
 
-    public void dropStart() {
+    public void removeNode(final int node) {
         if (nodeCount() == 1) {
             throw new IllegalStateException("Cannot drop last node.");
         }
-        nodes.remove(0);
+        if (node > nodes.size()) {
+            throw new IllegalStateException("Path doesnt have node: " + node);
+        }
+        nodes.remove(node);
     }
 
     public List<Vector> nodes() {

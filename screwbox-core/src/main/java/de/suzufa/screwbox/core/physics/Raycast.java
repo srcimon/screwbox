@@ -6,24 +6,25 @@ import static java.util.Objects.nonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
-import de.suzufa.screwbox.core.physics.internal.ExtractSegmentsMethod;
 
 public class Raycast {
 
     private final Segment ray;
     private final List<Entity> entities;
     private final List<EntitySearchFilter> filters;
-    private final ExtractSegmentsMethod method;
+    private final Function<Bounds, List<Segment>> method;
 
     Raycast(final Segment ray, final List<Entity> entities, final List<EntitySearchFilter> filters,
-            final ExtractSegmentsMethod method) {
+            final Function<Bounds, List<Segment>> method) {
         this.ray = ray;
         this.entities = entities;
         this.filters = filters;
@@ -78,18 +79,18 @@ public class Raycast {
     }
 
     private List<Vector> getIntersections(final Entity entity) {
-    	List<Vector> intersections = new ArrayList<>();
-        for (final Segment border : method.segments(entity.get(TransformComponent.class).bounds)) {
+        List<Vector> intersections = new ArrayList<>();
+        for (final Segment border : method.apply(entity.get(TransformComponent.class).bounds)) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
             if (nonNull(intersectionPoint)) {
-                 intersections.add(intersectionPoint);
+                intersections.add(intersectionPoint);
             }
         }
         return intersections;
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Segment border : method.segments(entity.get(TransformComponent.class).bounds)) {
+        for (final Segment border : method.apply(entity.get(TransformComponent.class).bounds)) {
             if (ray.intersects(border)) {
                 return true;
             }
