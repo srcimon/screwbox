@@ -35,4 +35,19 @@ class SpriteTest {
                 .hasMessage("image cannot be read: test.txt");
     }
 
+    @Test
+    void multipleFromFile_dimensionLargerThanSource_emptyResult() {
+        Dimension tooLarge = Dimension.of(20, 20);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", tooLarge)).isEmpty();
+    }
+
+    @Test
+    void multipleFromFile_dimensionFitsSource_returnsSubImages() {
+        Dimension dimension = Dimension.of(4, 2);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", dimension))
+                .hasSize(32)
+                .allMatch(s -> s.dimension().equals(dimension));
+    }
 }
