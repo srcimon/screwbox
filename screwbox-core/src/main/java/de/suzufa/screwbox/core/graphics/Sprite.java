@@ -50,10 +50,10 @@ public class Sprite implements Serializable {
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
         final var image = imageFromFile(fileName);
-        var sprites = new ArrayList<Sprite>();
+        final var sprites = new ArrayList<Sprite>();
         for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height()) {
             for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width()) {
-                var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
+                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
                 sprites.add(fromImage(subimage));
             }
         }
