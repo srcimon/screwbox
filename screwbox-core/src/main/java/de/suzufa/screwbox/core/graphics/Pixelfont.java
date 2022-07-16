@@ -64,21 +64,23 @@ public class Pixelfont {
         return characters.containsKey(character);
     }
 
-    // TODO: test and add substituations (upper-lowercase)
     public List<Sprite> spritesFor(final String text) {
         final List<Sprite> sprites = new ArrayList<>();
-        for (var character : text.toCharArray()) {
-            Sprite sprite = characters.get(character);
+        for (final var character : text.toCharArray()) {
+            final var sprite = spriteFor(character);
             if (nonNull(sprite)) {
                 sprites.add(sprite);
-            } else {
-                Sprite spriteLower = characters.get(toUpperCase(character));
-                if (nonNull(spriteLower)) {
-                    sprites.add(spriteLower);
-                }
             }
         }
         return sprites;
+    }
+
+    private Sprite spriteFor(final char character) {
+        final Sprite sprite = characters.get(character);
+        if (nonNull(sprite)) {
+            return sprite;
+        }
+        return characters.get(toUpperCase(character));
     }
 
 }

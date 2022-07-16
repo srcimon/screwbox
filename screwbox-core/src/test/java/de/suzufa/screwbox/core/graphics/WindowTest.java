@@ -27,7 +27,7 @@ class WindowTest {
     }
 
     @Test
-    void fillWith_OffsetAndSprite_callsActualMethod() {
+    void fillWith_pffsetAndSprite_callsActualMethod() {
         Sprite sprite = sprite();
 
         window.fillWith(Offset.at(2, 3), sprite);
@@ -44,6 +44,33 @@ class WindowTest {
         window.drawLine(from, to);
 
         verify(window).drawLine(from, to, Color.BLUE);
+    }
+
+    @Test
+    void drawText_offsetTextAndFont_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawText(Offset.at(2, 4), "Test", font);
+
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.max(), 1);
+    }
+
+    @Test
+    void drawText_offsetTextFontAndScale_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawText(Offset.at(2, 4), "Test", font, 4);
+
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.max(), 4);
+    }
+
+    @Test
+    void drawText_offsetTextFontAndOpacity_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawText(Offset.at(2, 4), "Test", font, Percentage.half());
+
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
     }
 
     private Sprite sprite() {
