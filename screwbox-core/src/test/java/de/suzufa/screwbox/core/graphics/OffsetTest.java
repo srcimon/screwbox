@@ -30,4 +30,31 @@ class OffsetTest {
 
         assertThat(result).isEqualTo(Offset.at(1, 27));
     }
+
+    @Test
+    void add_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+
+        Offset result = offset.add(Offset.at(4, 3));
+
+        assertThat(result).isEqualTo(Offset.at(9, 33));
+    }
+
+    @Test
+    void addX_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+
+        Offset result = offset.addX(4);
+
+        assertThat(result).isEqualTo(Offset.at(9, 30));
+    }
+
+    @Test
+    void addY_returnsNewOffset() {
+        Offset offset = Offset.at(5, 30);
+
+        Offset result = offset.addY(4);
+
+        assertThat(result).isEqualTo(Offset.at(5, 35));
+    }
 }

@@ -86,4 +86,16 @@ public final class Offset implements Serializable {
         return Offset.at(x - other.x, y - other.y);
     }
 
+    public Offset addX(int x) {
+        return Offset.at(this.x + x, y);
+    }
+
+    public Offset addY(int y) {
+        return Offset.at(x, this.y + y);
+    }
+
+    public Offset add(final Offset other) {
+        return Offset.at(x + other.x, y + other.y);
+    }
+
 }

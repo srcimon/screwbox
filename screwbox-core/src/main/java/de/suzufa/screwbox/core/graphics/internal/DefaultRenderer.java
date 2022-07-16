@@ -115,8 +115,8 @@ public class DefaultRenderer implements Renderer {
         applyOpacityConfig(opacity);
 
         if (!rotation.isNone()) {
-            final double x = origin.x() + sprite.dimension().width() * scale / 2.0;
-            final double y = origin.y() + sprite.dimension().height() * scale / 2.0;
+            final double x = origin.x() + sprite.size().width() * scale / 2.0;
+            final double y = origin.y() + sprite.size().height() * scale / 2.0;
             final double radians = rotation.radians();
             graphics.rotate(radians, x, y);
             drawSpriteInContext(sprite, origin, scale);

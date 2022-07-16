@@ -45,6 +45,34 @@ public interface Window {
         return drawSprite(sprite, origin, Percentage.max());
     }
 
+    Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+
+    default Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity) {
+        return drawText(offset, text, font, opacity, 1);
+    }
+
+    default Window drawText(Offset offset, String text, Pixelfont font) {
+        return drawText(offset, text, font, Percentage.max());
+    }
+
+    default Window drawText(Offset offset, String text, Pixelfont font, double scale) {
+        return drawText(offset, text, font, Percentage.max(), scale);
+    }
+
+    Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+
+    default Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity) {
+        return drawTextCentered(offset, text, font, opacity, 1);
+    }
+
+    default Window drawTextCentered(Offset offset, String text, Pixelfont font) {
+        return drawTextCentered(offset, text, font, Percentage.max());
+    }
+
+    default Window drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
+        return drawTextCentered(offset, text, font, Percentage.max(), scale);
+    }
+
     Window drawText(Offset offset, String text, Font font, Color color);
 
     default Window drawText(final Offset offset, final String text, final Font font) {

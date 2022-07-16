@@ -11,14 +11,14 @@ class SpriteTest {
     void invisible_returnsInvisibleSprite() {
         Sprite sprite = Sprite.invisible();
 
-        assertThat(sprite.dimension()).isEqualTo(Dimension.of(1, 1));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
     }
 
     @Test
     void fromFile_imageFound_returnsSpriteFromFile() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThat(sprite.dimension()).isEqualTo(Dimension.of(16, 16));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(16, 16));
     }
 
     @Test
@@ -35,4 +35,28 @@ class SpriteTest {
                 .hasMessage("image cannot be read: test.txt");
     }
 
+    @Test
+    void multipleFromFile_dimensionLargerThanSource_emptyResult() {
+        Dimension tooLarge = Dimension.of(20, 20);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", tooLarge)).isEmpty();
+    }
+
+    @Test
+    void multipleFromFile_dimensionFitsSource_returnsSubImages() {
+        Dimension dimension = Dimension.of(4, 2);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", dimension))
+                .hasSize(32)
+                .allMatch(s -> s.size().equals(dimension));
+    }
+
+    @Test
+    void multipleFromFile_withPadding_returnsSubImages() {
+        Dimension dimension = Dimension.of(4, 2);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
+                .hasSize(6)
+                .allMatch(s -> s.size().equals(dimension));
+    }
 }

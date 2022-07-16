@@ -44,25 +44,46 @@ public class Sprite implements Serializable {
     }
 
     public static Sprite fromFile(final String fileName) {
-        try {
-            final File resource = ResourceLoader.resourceFile(fileName);
-            final BufferedImage image = ImageIO.read(resource);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return fromImage(image);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
+        final var image = imageFromFile(fileName);
+        return fromImage(image);
     }
 
-//TODO:spriteframe.invisible();
+    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
+        return multipleFromFile(fileName, dimension, 0);
+    }
+
+    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, int padding) {
+        final var image = imageFromFile(fileName);
+        final var sprites = new ArrayList<Sprite>();
+        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
+            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
+                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
+                sprites.add(fromImage(subimage));
+            }
+        }
+        return sprites;
+    }
+
     public static Sprite invisible() {
         return fromImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
     }
 
     public static Sprite fromImage(final Image image) {
         return new Sprite(image);
+    }
+
+    private static BufferedImage imageFromFile(final String fileName) {
+        try {
+            final File resource = ResourceLoader.resourceFile(fileName);
+            final BufferedImage image = ImageIO.read(resource);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return image;
+
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
     }
 
     public boolean isFlippedHorizontally() {
@@ -81,7 +102,7 @@ public class Sprite implements Serializable {
         this.flippedVertically = flippedVertically;
     }
 
-    public Dimension dimension() {
+    public Dimension size() {
         return dimension;
     }
 

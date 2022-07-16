@@ -47,7 +47,7 @@ public class SpriteRenderSystem implements EntitySystem {
             final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
             final SpriteComponent spriteComponent = entity.get(spriteComponentClass);
             final var sprite = spriteComponent.sprite;
-            final var spriteDimension = sprite.dimension();
+            final var spriteDimension = sprite.size();
             final var spriteBounds = Bounds.atOrigin(
                     entityBounds.position().x() - spriteDimension.width() / 2.0,
                     entityBounds.position().y() - spriteDimension.height() / 2.0,

@@ -36,13 +36,8 @@ public final class SpriteLoader {
     }
 
     public static void addTilesToDictionary(final TilesetEntity tileset, final SpriteDictionary dictionary) {
-        final File file = ResourceLoader.resourceFile(tileset.getImage());
-        BufferedImage tilesetImage;
-        try {
-            tilesetImage = ImageIO.read(file);
-        } catch (final IOException e) {
-            throw new IllegalStateException("could not load tileset: " + file.getName());
-        }
+        final String imageFileName = tileset.getImage();
+        final BufferedImage tilesetImage = loadImageFrom(imageFileName);
 
         int localId = 0;
 
@@ -77,6 +72,15 @@ public final class SpriteLoader {
             if (name.isPresent()) {
                 dictionary.addNameToSprite(tileset.getFirstgid() + tileEntity.getId(), name.get());
             }
+        }
+    }
+
+    private static BufferedImage loadImageFrom(final String imageFileName) {
+        final File file = ResourceLoader.resourceFile(imageFileName);
+        try {
+            return ImageIO.read(file);
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not load tileset: " + file.getName());
         }
     }
 
