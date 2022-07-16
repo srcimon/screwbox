@@ -19,7 +19,8 @@ public class SimpleUiRenderer implements UiRenderer {
         window.drawTextCentered(bounds.center(), item.label(), Pixelfont.defaultBlack(), Percentage.half(), 2.5);// TODO:
                                                                                                                  // use
                                                                                                                  // short
-        // methods
+                                                                                                                 // methods
+
     }
 
 }
