@@ -29,7 +29,7 @@ public class Pixelfont {
         final Pixelfont font = new Pixelfont();
         font.addCharacters(
                 List.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-                        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '.',
+                        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
                         ',', ':', '!', '?'),
                 Sprite.multipleFromFile("default_font_white.png", Dimension.of(7, 7), 1));
         return font;
@@ -67,7 +67,8 @@ public class Pixelfont {
     // TODO: test and add substituations (upper-lowercase)
     public List<Sprite> spritesFor(final String text) {
         final List<Sprite> sprites = new ArrayList<>();
-        for (final var character : text.toCharArray()) {
+        for (var character : text.toCharArray()) {
+            character = Character.toUpperCase(character); // TODO: FIX
             // TODO: remove
             if (hasCharacter(character)) {
                 sprites.add(characters.get(character));
@@ -75,4 +76,5 @@ public class Pixelfont {
         }
         return sprites;
     }
+
 }

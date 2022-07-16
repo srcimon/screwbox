@@ -46,14 +46,30 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
+    public Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
+        List<Sprite> allSprites = font.spritesFor(text);
+        int totalWith = 0;
+        for (var sprite : allSprites) {
+            totalWith += (int) ((sprite.dimension().width() + 2) * scale); // TODO: padding
+        }
+        drawTextSprites(offset.addX(totalWith / -2), opacity, scale, allSprites);
+        return this;
+    }
+
+    @Override
     public Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
+        List<Sprite> allSprites = font.spritesFor(text);
+        drawTextSprites(offset, opacity, scale, allSprites);
+        return this;
+    }
+
+    private void drawTextSprites(Offset offset, Percentage opacity, double scale, List<Sprite> allSprites) {
         Offset currentOffset = offset;
-        for (var sprite : font.spritesFor(text)) {
+        for (var sprite : allSprites) {
             drawSprite(sprite, currentOffset, scale, opacity, Rotation.none());// TODO: font.effect().roationOf(nr); AND
                                                                                // PADDING
             currentOffset = currentOffset.addX((int) ((sprite.dimension().width() + 2) * scale)); // TODO:font.effects.padding()
         }
-        return this;
     }
 
     @Override

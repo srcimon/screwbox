@@ -47,6 +47,8 @@ public interface Window {
 
     Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
 
+    Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+
     Window drawText(Offset offset, String text, Font font, Color color);
 
     default Window drawText(final Offset offset, final String text, final Font font) {
