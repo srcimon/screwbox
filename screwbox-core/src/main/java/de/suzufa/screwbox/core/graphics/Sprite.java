@@ -49,10 +49,14 @@ public class Sprite implements Serializable {
     }
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
+        return multipleFromFile(fileName, dimension, 0);
+    }
+
+    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, int padding) {
         final var image = imageFromFile(fileName);
         final var sprites = new ArrayList<Sprite>();
-        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height()) {
-            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width()) {
+        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
+            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
                 final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
                 sprites.add(fromImage(subimage));
             }

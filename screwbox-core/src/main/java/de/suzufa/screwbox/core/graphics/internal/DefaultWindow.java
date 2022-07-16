@@ -21,6 +21,7 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
@@ -42,6 +43,17 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         this.executor = executor;
         setTitle("ScrewBox");
         configuration.registerListener(this);
+    }
+
+    @Override
+    public Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
+        Offset currentOffset = offset;
+        for (var sprite : font.spritesFor(text)) {
+            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none());// TODO: font.effect().roationOf(nr); AND
+                                                                               // PADDING
+            currentOffset = currentOffset.addX((int) ((sprite.dimension().width() + 2) * scale)); // TODO:font.effects.padding()
+        }
+        return this;
     }
 
     @Override

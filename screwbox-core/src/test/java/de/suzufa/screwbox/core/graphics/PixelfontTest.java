@@ -18,20 +18,6 @@ class PixelfontTest {
     }
 
     @Test
-    void characterSize_noCharacters_throwsException() {
-        assertThatThrownBy(() -> pixelfont.characterSize())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Pixelfont has no characters.");
-    }
-
-    @Test
-    void characterSize_hasCharacter_returnsCharacterSize() {
-        pixelfont.addCharacter('A', Sprite.fromFile("tile.bmp"));
-
-        assertThat(pixelfont.characterSize()).isEqualTo(Dimension.of(16, 16));
-    }
-
-    @Test
     void characterCount_hasCharacters_returnsCount() {
         pixelfont.addCharacter('A', Sprite.invisible());
         pixelfont.addCharacter('B', Sprite.invisible());
@@ -51,17 +37,6 @@ class PixelfontTest {
         pixelfont.addCharacter('X', Sprite.invisible());
 
         assertThat(pixelfont.hasCharacter('X')).isTrue();
-    }
-
-    @Test
-    void addCharacter_characterHasDifferentSize_throwsException() {
-        Sprite differentSize = Sprite.fromFile("tile.bmp");
-
-        pixelfont.addCharacter('X', Sprite.invisible());
-
-        assertThatThrownBy(() -> pixelfont.addCharacter('A', differentSize))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Pixelfont only supports uniform character size.");
     }
 
     @Test

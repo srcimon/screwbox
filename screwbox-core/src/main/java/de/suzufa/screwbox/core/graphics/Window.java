@@ -45,6 +45,8 @@ public interface Window {
         return drawSprite(sprite, origin, Percentage.max());
     }
 
+    Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+
     Window drawText(Offset offset, String text, Font font, Color color);
 
     default Window drawText(final Offset offset, final String text, final Font font) {

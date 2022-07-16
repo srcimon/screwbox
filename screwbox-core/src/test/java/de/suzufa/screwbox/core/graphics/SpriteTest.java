@@ -50,4 +50,13 @@ class SpriteTest {
                 .hasSize(32)
                 .allMatch(s -> s.dimension().equals(dimension));
     }
+
+    @Test
+    void multipleFromFile_withPadding_returnsSubImages() {
+        Dimension dimension = Dimension.of(4, 2);
+
+        assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
+                .hasSize(6)
+                .allMatch(s -> s.dimension().equals(dimension));
+    }
 }
