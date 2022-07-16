@@ -50,25 +50,25 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         List<Sprite> allSprites = font.spritesFor(text);
         int totalWith = 0;
         for (var sprite : allSprites) {
-            totalWith += (int) ((sprite.dimension().width() + 2) * scale); // TODO: padding
+            totalWith += (int) ((sprite.size().width() + font.padding()) * scale);
         }
-        drawTextSprites(offset.addX(totalWith / -2), opacity, scale, allSprites);
+        drawTextSprites(offset.addX(totalWith / -2), opacity, scale, allSprites, font);
         return this;
     }
 
     @Override
     public Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
         List<Sprite> allSprites = font.spritesFor(text);
-        drawTextSprites(offset, opacity, scale, allSprites);
+        drawTextSprites(offset, opacity, scale, allSprites, font);
         return this;
     }
 
-    private void drawTextSprites(Offset offset, Percentage opacity, double scale, List<Sprite> allSprites) {
+    private void drawTextSprites(Offset offset, Percentage opacity, double scale, List<Sprite> allSprites,
+            Pixelfont font) {
         Offset currentOffset = offset;
         for (var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none());// TODO: font.effect().roationOf(nr); AND
-                                                                               // PADDING
-            currentOffset = currentOffset.addX((int) ((sprite.dimension().width() + 2) * scale)); // TODO:font.effects.padding()
+            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none());
+            currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
 
@@ -91,8 +91,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     @Override
     public Window fillWith(final Offset offset, final Sprite sprite, final double scale, final Percentage opacity) {
-        final long spriteWidth = round(sprite.dimension().width() * scale);
-        final long spriteHeight = round(sprite.dimension().height() * scale);
+        final long spriteWidth = round(sprite.size().width() * scale);
+        final long spriteHeight = round(sprite.size().height() * scale);
         final long countX = frame.getWidth() / spriteWidth + 1;
         final long countY = frame.getHeight() / spriteHeight + 1;
         final double offsetX = offset.x() % spriteWidth;

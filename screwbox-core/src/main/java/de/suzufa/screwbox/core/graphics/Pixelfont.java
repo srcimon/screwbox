@@ -16,6 +16,7 @@ public class Pixelfont implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
+    private int padding = 1;
 
     private static final Pixelfont DEFAULT_WHITE = defaultFont("default_font_white");
     private static final Pixelfont DEFAULT_BLACK = defaultFont("default_font_black");
@@ -26,6 +27,14 @@ public class Pixelfont implements Serializable {
 
     public static Pixelfont defaultBlack() {
         return DEFAULT_BLACK;
+    }
+
+    public int padding() {
+        return padding;
+    }
+
+    public void setPadding(final int padding) {
+        this.padding = padding;
     }
 
     private static Pixelfont defaultFont(final String name) {

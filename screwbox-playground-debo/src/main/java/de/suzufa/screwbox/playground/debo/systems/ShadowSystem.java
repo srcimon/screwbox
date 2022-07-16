@@ -28,8 +28,8 @@ public class ShadowSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final Entity shadowCaster : engine.entityEngine().fetchAll(SHADOW_CASTERS)) {
-            final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.dimension().width(),
-                    SHADOW.dimension().height());
+            final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.size().width(),
+                    SHADOW.size().height());
             final int drawOrder = shadowCaster.get(SpriteComponent.class).drawOrder;
             final Entity shadow = new Entity().add(
                     new TransformComponent(bounds),

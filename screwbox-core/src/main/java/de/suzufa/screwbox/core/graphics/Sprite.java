@@ -102,7 +102,7 @@ public class Sprite implements Serializable {
         this.flippedVertically = flippedVertically;
     }
 
-    public Dimension dimension() {
+    public Dimension size() {
         return dimension;
     }
 

@@ -11,14 +11,14 @@ class SpriteTest {
     void invisible_returnsInvisibleSprite() {
         Sprite sprite = Sprite.invisible();
 
-        assertThat(sprite.dimension()).isEqualTo(Dimension.of(1, 1));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
     }
 
     @Test
     void fromFile_imageFound_returnsSpriteFromFile() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThat(sprite.dimension()).isEqualTo(Dimension.of(16, 16));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(16, 16));
     }
 
     @Test
@@ -48,7 +48,7 @@ class SpriteTest {
 
         assertThat(Sprite.multipleFromFile("tile.bmp", dimension))
                 .hasSize(32)
-                .allMatch(s -> s.dimension().equals(dimension));
+                .allMatch(s -> s.size().equals(dimension));
     }
 
     @Test
@@ -57,6 +57,6 @@ class SpriteTest {
 
         assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
                 .hasSize(6)
-                .allMatch(s -> s.dimension().equals(dimension));
+                .allMatch(s -> s.size().equals(dimension));
     }
 }
