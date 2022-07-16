@@ -11,7 +11,7 @@ public class PrintHelloWorldSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Offset mousePosition = engine.mouse().position();
-        engine.graphics().window().drawText(mousePosition, "HELLO WORLD!", Pixelfont.defaultWhite(),
+        engine.graphics().window().drawTextCentered(mousePosition, "HELLO WORLD!", Pixelfont.defaultWhite(),
                 Percentage.max(), 4);
     }
 

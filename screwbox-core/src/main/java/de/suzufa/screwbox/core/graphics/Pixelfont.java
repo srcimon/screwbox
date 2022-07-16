@@ -58,6 +58,8 @@ public class Pixelfont implements Serializable {
         this.padding = padding;
     }
 
+    // TODO: allow only same height sprites / drawTextCentered fixes TextHeight (see
+    // helloWorld Demo)
     private static Pixelfont defaultFont(final String name) {
         final Pixelfont font = new Pixelfont();
         final var chracters = List.of(
