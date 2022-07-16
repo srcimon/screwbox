@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -15,12 +17,10 @@ public class Pixelfont {
     private static final Pixelfont DEFAULT_WHITE = defaultFont("default_font_white");
     private static final Pixelfont DEFAULT_BLACK = defaultFont("default_font_black");
 
-    // TODO:Test
     public static Pixelfont defaultWhite() {
         return DEFAULT_WHITE;
     }
 
-    // TODO:Test
     public static Pixelfont defaultBlack() {
         return DEFAULT_BLACK;
     }
@@ -68,10 +68,14 @@ public class Pixelfont {
     public List<Sprite> spritesFor(final String text) {
         final List<Sprite> sprites = new ArrayList<>();
         for (var character : text.toCharArray()) {
-            character = Character.toUpperCase(character); // TODO: FIX
-            // TODO: remove
-            if (hasCharacter(character)) {
-                sprites.add(characters.get(character));
+            Sprite sprite = characters.get(character);
+            if (nonNull(sprite)) {
+                sprites.add(sprite);
+            } else {
+                Sprite spriteLower = characters.get(toUpperCase(character));
+                if (nonNull(spriteLower)) {
+                    sprites.add(spriteLower);
+                }
             }
         }
         return sprites;

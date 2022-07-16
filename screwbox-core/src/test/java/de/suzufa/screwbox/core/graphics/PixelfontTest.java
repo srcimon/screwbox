@@ -74,4 +74,39 @@ class PixelfontTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Count of characters (3) is different than count of sprites (1).");
     }
+
+    @Test
+    void defaultWhite_returnsInitializedPixelfont() {
+        var font = Pixelfont.defaultWhite();
+
+        assertThat(font.characterCount()).isEqualTo(42);
+    }
+
+    @Test
+    void defaultBlack_returnsInitializedPixelfont() {
+        var font = Pixelfont.defaultBlack();
+
+        assertThat(font.characterCount()).isEqualTo(42);
+    }
+
+    @Test
+    void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
+        var font = Pixelfont.defaultBlack();
+
+        assertThat(font.spritesFor("@@@@")).isEmpty();
+    }
+
+    @Test
+    void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
+        var font = Pixelfont.defaultBlack();
+
+        assertThat(font.spritesFor("HELLO")).hasSize(5);
+    }
+
+    @Test
+    void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
+        var font = Pixelfont.defaultBlack();
+
+        assertThat(font.spritesFor("Hello")).hasSize(5);
+    }
 }
