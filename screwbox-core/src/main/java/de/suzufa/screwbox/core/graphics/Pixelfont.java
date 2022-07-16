@@ -12,6 +12,29 @@ public class Pixelfont {
 
     private final Map<Character, Sprite> characters = new HashMap<>();
 
+    private static final Pixelfont DEFAULT_WHITE = defaultFont("default_font_white");
+    private static final Pixelfont DEFAULT_BLACK = defaultFont("default_font_black");
+
+    // TODO:Test
+    public static Pixelfont defaultWhite() {
+        return DEFAULT_WHITE;
+    }
+
+    // TODO:Test
+    public static Pixelfont defaultBlack() {
+        return DEFAULT_BLACK;
+    }
+
+    private static Pixelfont defaultFont(final String name) {
+        final Pixelfont font = new Pixelfont();
+        font.addCharacters(
+                List.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+                        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '.',
+                        ',', ':', '!', '?'),
+                Sprite.multipleFromFile("default_font_white.png", Dimension.of(7, 7), 1));
+        return font;
+    }
+
     public void addCharacters(final List<Character> characters, final List<Sprite> sprites) {
         if (characters.size() != sprites.size()) {
             throw new IllegalArgumentException(
@@ -43,8 +66,8 @@ public class Pixelfont {
 
     // TODO: test and add substituations (upper-lowercase)
     public List<Sprite> spritesFor(final String text) {
-        List<Sprite> sprites = new ArrayList<>();
-        for (var character : text.toCharArray()) {
+        final List<Sprite> sprites = new ArrayList<>();
+        for (final var character : text.toCharArray()) {
             // TODO: remove
             if (hasCharacter(character)) {
                 sprites.add(characters.get(character));
