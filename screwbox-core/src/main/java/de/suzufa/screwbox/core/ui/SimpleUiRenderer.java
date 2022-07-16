@@ -14,7 +14,7 @@ public class SimpleUiRenderer implements UiRenderer {
 
     @Override
     public void renderActiveItem(UiMenuItem item, WindowBounds bounds, Window window) {
-        window.drawTextCentered(bounds.center(), item.label(), Pixelfont.defaultBlack(), Percentage.half(), 2.5);
+        window.drawTextCentered(bounds.center(), item.label(), Pixelfont.defaultWhite(), Percentage.half(), 2.5);
     }
 
 }
