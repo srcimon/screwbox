@@ -55,6 +55,6 @@ class OffsetTest {
 
         Offset result = offset.addY(4);
 
-        assertThat(result).isEqualTo(Offset.at(5, 35));
+        assertThat(result).isEqualTo(Offset.at(5, 34));
     }
 }
