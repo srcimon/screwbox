@@ -11,6 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A font made of {@link Sprite}s (even animated ones) for system independent
+ * rendering.
+ * 
+ * @see #defaultBlack()
+ * @see #defaultWhite()
+ */
 public class Pixelfont implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,18 +28,32 @@ public class Pixelfont implements Serializable {
     private static final Pixelfont DEFAULT_WHITE = defaultFont("default_font_white");
     private static final Pixelfont DEFAULT_BLACK = defaultFont("default_font_black");
 
+    /**
+     * A white monospace {@link Font}, containing a restricted set of characters,
+     * numbers and symbols.
+     */
     public static Pixelfont defaultWhite() {
         return DEFAULT_WHITE;
     }
 
+    /**
+     * A black monospace {@link Font}, containing a restricted set of characters,
+     * numbers and symbols.
+     */
     public static Pixelfont defaultBlack() {
         return DEFAULT_BLACK;
     }
 
+    /**
+     * The space between characters of this font.
+     */
     public int padding() {
         return padding;
     }
 
+    /**
+     * Sets the space between characters of this font.
+     */
     public void setPadding(final int padding) {
         this.padding = padding;
     }
