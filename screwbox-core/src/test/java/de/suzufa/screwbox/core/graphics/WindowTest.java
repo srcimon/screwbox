@@ -73,6 +73,33 @@ class WindowTest {
         verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
     }
 
+    @Test
+    void drawTextCentered_offsetTextAndFont_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawTextCentered(Offset.at(2, 4), "Test", font);
+
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.max(), 1);
+    }
+
+    @Test
+    void drawTextCentered_offsetTextFontAndScale_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawTextCentered(Offset.at(2, 4), "Test", font, 4);
+
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.max(), 4);
+    }
+
+    @Test
+    void drawTextCentered_offsetTextFontAndOpacity_callsActualMethod() {
+        Pixelfont font = Pixelfont.defaultBlack();
+
+        window.drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half());
+
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
+    }
+
     private Sprite sprite() {
         return Sprite.fromFile("tile.bmp");
     }
