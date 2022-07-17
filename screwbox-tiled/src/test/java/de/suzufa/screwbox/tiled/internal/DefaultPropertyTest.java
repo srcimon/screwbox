@@ -62,16 +62,12 @@ class DefaultPropertyTest {
     }
 
     private DefaultProperty createNumberProperty() {
-        var property = new PropertyEntity();
-        property.setName("hue");
-        property.setValue("20");
+        var property = new PropertyEntity("hue", "int", "20");
         return new DefaultProperty(property);
     }
 
     private DefaultProperty createBooleanProperty() {
-        var property = new PropertyEntity();
-        property.setName("isOn");
-        property.setValue("true");
+        var property = new PropertyEntity("isOn", "type", "true");
         return new DefaultProperty(property);
     }
 }

@@ -41,7 +41,7 @@ public class JsonLoader {
                     if (object.getTemplate() != null) {
                         File templateFile = ResourceLoader.resourceFile(directory + object.getTemplate());
                         ObjectTemplateEntity objectTemplate = deserialize(templateFile, ObjectTemplateEntity.class);
-                        ObjectEntity replacement = objectTemplate.getObject();
+                        ObjectEntity replacement = objectTemplate.object();
                         replacement.setId(object.getId());
                         replacement.setX(object.getX());
                         replacement.setY(object.getY());

@@ -82,9 +82,6 @@ class DefaultPropertiesTest {
     }
 
     private PropertyEntity createPropertyEntity(String name, String value) {
-        PropertyEntity propertyA = new PropertyEntity();
-        propertyA.setName(name);
-        propertyA.setValue(value);
-        return propertyA;
+        return new PropertyEntity(name, "type", value);
     }
 }
