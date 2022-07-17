@@ -1,8 +1,7 @@
 package de.suzufa.screwbox.tiled.internal.entity;
 
-import static java.util.Objects.isNull;
+import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record LayerEntity(
@@ -34,22 +33,22 @@ public record LayerEntity(
         int y) {
 
     public List<ChunkEntity> chunks() {
-        return isNull(chunks) ? new ArrayList<>() : chunks;
+        return emptyWhenNull(chunks);
     }
 
     public List<Integer> data() {
-        return isNull(data) ? new ArrayList<>() : data;
+        return emptyWhenNull(data);
     }
 
     public List<LayerEntity> layers() {
-        return isNull(layers) ? new ArrayList<>() : layers;
+        return emptyWhenNull(layers);
     }
 
     public List<ObjectEntity> objects() {
-        return isNull(objects) ? new ArrayList<>() : objects;
+        return emptyWhenNull(objects);
     }
 
     public List<PropertyEntity> properties() {
-        return isNull(properties) ? new ArrayList<>() : properties;
+        return emptyWhenNull(properties);
     }
 }

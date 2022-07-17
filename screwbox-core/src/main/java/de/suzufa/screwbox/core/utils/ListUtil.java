@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.utils;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +12,10 @@ public class ListUtil {
     private static final Random RANDOM = new Random();
 
     private ListUtil() {
+    }
+
+    public static <T> List<T> emptyWhenNull(final List<T> list) {
+        return isNull(list) ? new ArrayList<>() : list;
     }
 
     public static <T> List<T> merge(final List<T> list, final List<T> other) {

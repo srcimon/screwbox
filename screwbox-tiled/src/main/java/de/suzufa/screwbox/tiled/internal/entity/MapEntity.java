@@ -13,7 +13,6 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     private int nextlayerid;
     private int nextobjectid;
     private String orientation;
-
     private String renderorder;
     private String staggeraxis;
     private String staggerindex;
