@@ -35,13 +35,13 @@ public class JsonLoader {
 
     private void embedObjectTemplates(MapEntity map, String directory) {
         for (LayerEntity layer : map.getLayers()) {
-            if (layer.getObjects() != null) {
-                for (int i = 0; i < layer.getObjects().size(); i++) {
-                    ObjectEntity object = layer.getObjects().get(i);
+            if (layer.objects() != null) {
+                for (int i = 0; i < layer.objects().size(); i++) {
+                    ObjectEntity object = layer.objects().get(i);
                     if (object.getTemplate() != null) {
                         File templateFile = ResourceLoader.resourceFile(directory + object.getTemplate());
                         ObjectTemplateEntity objectTemplate = deserialize(templateFile, ObjectTemplateEntity.class);
-                        ObjectEntity replacement = objectTemplate.getObject();
+                        ObjectEntity replacement = objectTemplate.object();
                         replacement.setId(object.getId());
                         replacement.setX(object.getX());
                         replacement.setY(object.getY());
@@ -51,7 +51,7 @@ public class JsonLoader {
                         }
 
                         replacement.setProperties(object.getProperties());// TODO: combine neccessary?
-                        layer.getObjects().set(i, replacement);
+                        layer.objects().set(i, replacement);
                     }
                 }
             }

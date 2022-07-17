@@ -2,7 +2,7 @@ package de.suzufa.screwbox.tiled.internal.entity;
 
 import java.util.List;
 
-public class MapEntity {
+public class MapEntity { // cannot be replaced by record: tilesets are not final
 
     private String backgroundColor;
     private List<PropertyEntity> properties;
@@ -13,7 +13,6 @@ public class MapEntity {
     private int nextlayerid;
     private int nextobjectid;
     private String orientation;
-
     private String renderorder;
     private String staggeraxis;
     private String staggerindex;

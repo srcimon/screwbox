@@ -13,12 +13,12 @@ public class DefaultProperty implements Property {
 
     @Override
     public String name() {
-        return propertyEntity.getName();
+        return propertyEntity.name();
     }
 
     @Override
     public String get() {
-        return propertyEntity.getValue();
+        return propertyEntity.value();
     }
 
     @Override

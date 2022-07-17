@@ -3,7 +3,7 @@ package de.suzufa.screwbox.tiled.internal.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TilesetEntity {
+public class TilesetEntity {// cannot be replaced by record: not all properties are final
 
     private String backgroundcolor;
     private int columns;

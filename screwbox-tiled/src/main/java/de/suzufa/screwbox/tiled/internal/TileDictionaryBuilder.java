@@ -18,9 +18,9 @@ public class TileDictionaryBuilder {
 
         int order = 0;
         for (LayerEntity layerEntity : map.getLayers()) {
-            for (int y = 0; y < layerEntity.getHeight(); y++) {
-                for (int x = 0; x < layerEntity.getWidth(); x++) {
-                    Integer tileId = layerEntity.getData().get(y * layerEntity.getWidth() + x);
+            for (int y = 0; y < layerEntity.height(); y++) {
+                for (int x = 0; x < layerEntity.width(); x++) {
+                    Integer tileId = layerEntity.data().get(y * layerEntity.width() + x);
                     if (tileId != 0) {
                         double width = map.getTilewidth();
                         double height = map.getTileheight();

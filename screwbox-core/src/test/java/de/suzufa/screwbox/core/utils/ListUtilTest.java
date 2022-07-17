@@ -45,4 +45,18 @@ class ListUtilTest {
 
         assertThat(result).isIn("one", "two", "three");
     }
+
+    @Test
+    void emptyWhenNull_nonNull_returnsOriginal() {
+        var result = ListUtil.emptyWhenNull(List.of("A", "B"));
+
+        assertThat(result).isEqualTo(List.of("A", "B"));
+    }
+
+    @Test
+    void emptyWhenNull_null_empty() {
+        var result = ListUtil.emptyWhenNull((List<String>) null);
+
+        assertThat(result).isEmpty();
+    }
 }

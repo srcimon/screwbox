@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.tiled.internal;
 
+import static java.util.Optional.ofNullable;
+
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Percentage;
@@ -13,7 +15,7 @@ public class DefaultLayer implements Layer {
 
     @Override
     public String toString() {
-        return "Layer [name=" + layerEntity.getName() + "]";
+        return "Layer [name=" + layerEntity.name() + "]";
     }
 
     private final int order;
@@ -25,7 +27,7 @@ public class DefaultLayer implements Layer {
 
     @Override
     public String name() {
-        return layerEntity.getName();
+        return layerEntity.name();
     }
 
     @Override
@@ -35,34 +37,32 @@ public class DefaultLayer implements Layer {
 
     @Override
     public Properties properties() {
-        return new DefaultProperties(layerEntity.getProperties());
+        return new DefaultProperties(layerEntity.properties());
     }
 
     @Override
     public Percentage opacity() {
-        return Percentage.of(layerEntity.getOpacity());
+        return Percentage.of(layerEntity.opacity());
     }
 
     @Override
     public boolean isImageLayer() {
-        return "imagelayer".equals(layerEntity.getType());
+        return "imagelayer".equals(layerEntity.type());
     }
 
     @Override
     public Optional<String> image() {
-        return layerEntity.getImage() == null
-                ? Optional.empty()
-                : Optional.of(layerEntity.getImage());
+        return ofNullable(layerEntity.image());
     }
 
     @Override
     public double parallaxX() {
-        return layerEntity.getParallaxx();
+        return layerEntity.parallaxx();
     }
 
     @Override
     public double parallaxY() {
-        return layerEntity.getParallaxy();
+        return layerEntity.parallaxy();
     }
 
 }

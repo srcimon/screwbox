@@ -9,14 +9,14 @@ import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
 //TODO: Test
 public class ObjectDictionaryBuilder {
 
-    public ObjectDictionary buildDictionary(MapEntity map) {
-        DefaultObjectDictionary dictionary = new DefaultObjectDictionary();
+    public ObjectDictionary buildDictionary(final MapEntity map) {
+        final DefaultObjectDictionary dictionary = new DefaultObjectDictionary();
 
         int order = 0;
-        for (LayerEntity layerEntity : map.getLayers()) {
-            Layer layer = new DefaultLayer(layerEntity, order);
-            for (ObjectEntity object : layerEntity.getObjects()) {
-                DefaultGameObject tiledObject = new DefaultGameObject(object, layer);
+        for (final LayerEntity layerEntity : map.getLayers()) {
+            final Layer layer = new DefaultLayer(layerEntity, order);
+            for (final ObjectEntity object : layerEntity.objects()) {
+                final DefaultGameObject tiledObject = new DefaultGameObject(object, layer);
                 dictionary.add(tiledObject);
             }
             order++;
