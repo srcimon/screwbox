@@ -1,53 +1,13 @@
 package de.suzufa.screwbox.tiled.internal.entity;
 
+import static java.util.Objects.isNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class ChunkEntity {
+public record ChunkEntity(List<Integer> data, int height, int width, int x, int y) {
 
-    private List<Integer> data;
-    private int height;
-    private int width;
-    private int x;
-    private int y;
-
-    public List<Integer> getData() {
-        return data;
+    public List<Integer> data() {
+        return isNull(data) ? new ArrayList<>() : data;
     }
-
-    public void setData(List<Integer> data) {
-        this.data = data;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
 }
