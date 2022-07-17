@@ -3,7 +3,7 @@ package de.suzufa.screwbox.tiled.internal.entity;
 import java.awt.Point;
 import java.util.List;
 
-public class ObjectEntity {
+public class ObjectEntity { // cannot be replaced by record: not all properties are final
 
     private boolean ellipse;
     private int gid;
