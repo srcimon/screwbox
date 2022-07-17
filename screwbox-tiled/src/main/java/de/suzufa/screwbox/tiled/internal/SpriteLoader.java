@@ -56,7 +56,7 @@ public final class SpriteLoader {
         for (final TileEntity tileEntity : tileset.getTiles()) {
             // read animated images and properties
             final List<Frame> frames = new ArrayList<>();
-            for (final FrameEntity frame : tileEntity.getAnimation()) {
+            for (final FrameEntity frame : tileEntity.animation()) {
                 final Image currentImage = dictionary.findById(tileset.getFirstgid() + frame.getTileid())
                         .getFirstImage();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frame.getDuration())));
@@ -64,13 +64,13 @@ public final class SpriteLoader {
             final Sprite animatedSprite = new Sprite(frames);// TODO: add Frame per Frame / validate frame
                                                              // size
             // with others
-            final Properties properties = new DefaultProperties(tileEntity.getProperties());
+            final Properties properties = new DefaultProperties(tileEntity.properties());
             final Optional<String> name = properties.get("name");
             if (!frames.isEmpty()) {
-                dictionary.addSprite(tileset.getFirstgid() + tileEntity.getId(), animatedSprite);
+                dictionary.addSprite(tileset.getFirstgid() + tileEntity.id(), animatedSprite);
             }
             if (name.isPresent()) {
-                dictionary.addNameToSprite(tileset.getFirstgid() + tileEntity.getId(), name.get());
+                dictionary.addNameToSprite(tileset.getFirstgid() + tileEntity.id(), name.get());
             }
         }
     }

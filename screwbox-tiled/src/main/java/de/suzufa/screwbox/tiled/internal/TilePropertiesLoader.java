@@ -15,8 +15,8 @@ public class TilePropertiesLoader {
         final PropertiesDictionary dictionary = new PropertiesDictionary();
         for (final TilesetEntity tileset : map.getTilesets()) {
             for (final TileEntity tileEntity : tileset.getTiles()) {
-                final Properties properties = new DefaultProperties(tileEntity.getProperties());
-                dictionary.add(tileset.getFirstgid() + tileEntity.getId(), properties);
+                final Properties properties = new DefaultProperties(tileEntity.properties());
+                dictionary.add(tileset.getFirstgid() + tileEntity.id(), properties);
             }
         }
         return dictionary;
