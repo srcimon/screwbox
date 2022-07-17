@@ -1,23 +1,30 @@
 package de.suzufa.screwbox.tiled.internal.entity;
 
-import static java.util.Objects.isNull;
+import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public record TileEntity(List<FrameEntity> animation, int id, String image, int imageheight, int imagewidth,
+public record TileEntity(
+        List<FrameEntity> animation,
+        int id,
+        String image,
+        int imageheight,
+        int imagewidth,
         LayerEntity objectgroup,
-        double probability, List<PropertyEntity> properties, List<Integer> terrain, String type) {
+        double probability,
+        List<PropertyEntity> properties,
+        List<Integer> terrain,
+        String type) {
 
     public List<PropertyEntity> properties() {
-        return isNull(properties) ? new ArrayList<>() : properties;
+        return emptyWhenNull(properties);
     }
 
     public List<FrameEntity> animation() {
-        return isNull(animation) ? new ArrayList<>() : animation;
+        return emptyWhenNull(animation);
     }
 
     public List<Integer> terrain() {
-        return isNull(terrain) ? new ArrayList<>() : terrain;
+        return emptyWhenNull(terrain);
     }
 }
