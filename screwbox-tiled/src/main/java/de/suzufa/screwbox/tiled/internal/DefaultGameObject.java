@@ -1,9 +1,6 @@
 package de.suzufa.screwbox.tiled.internal;
 
-import static java.util.Collections.emptyList;
-import static java.util.Objects.isNull;
-
-import java.util.List;
+import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
@@ -11,7 +8,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Properties;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
-import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
 
 public class DefaultGameObject implements GameObject {
 
@@ -56,9 +52,7 @@ public class DefaultGameObject implements GameObject {
 
     @Override
     public Properties properties() {
-        final List<PropertyEntity> properties = isNull(object.getProperties())
-                ? emptyList()
-                : object.getProperties();
+        final var properties = emptyWhenNull(object.getProperties());
         return new DefaultProperties(properties);
     }
 
