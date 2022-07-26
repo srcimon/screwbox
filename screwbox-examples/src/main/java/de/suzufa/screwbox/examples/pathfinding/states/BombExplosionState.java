@@ -39,7 +39,7 @@ public class BombExplosionState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (endOfAnimation.isAfter(Time.now())) {
+        if (Time.now().isAfter(endOfAnimation)) {
             engine.entityEngine().remove(entity);
         }
         return this;
