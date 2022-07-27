@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
@@ -113,14 +114,30 @@ public class Sprite implements Serializable {
         return duration;
     }
 
-    // TODO: Test
+    /**
+     * Returns the frame of the sprite if there is only a single frame in the
+     * sprite.
+     */
     public Frame singleFrame() {
-        // TODO: Check if there is only one frame
-        return frames.get(0);
+        if (frames.size() > 1) {
+            throw new IllegalStateException("The sprite has more than one frame.");
+        }
+        return getFrame(0);
     }
 
-    // TODO: Test
-    public Frame getFrame(int nr) {
+    /**
+     * Returns the frame with the given number, starting with 0.
+     * 
+     * @throws IllegalArgumentException if the number is invalid
+     */
+    public Frame getFrame(final int nr) {
+        if (nr < 0) {
+            throw new IllegalArgumentException(nr + " is an invalid frame number");
+        }
+        if (nr >= frames.size()) {
+            throw new IllegalArgumentException(
+                    format("Cannot return frame nr %d, because sprite has only %d frame(s).", nr, frames.size()));
+        }
         return frames.get(nr);
     }
 

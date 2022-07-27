@@ -155,7 +155,7 @@ public final class Color {
 
     @Override
     public String toString() {
-        return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity + "]";
+        return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity.value() + "]";
     }
 
 }

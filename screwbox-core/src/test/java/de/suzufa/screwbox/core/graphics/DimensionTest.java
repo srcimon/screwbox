@@ -11,6 +11,13 @@ import org.junit.jupiter.api.Test;
 class DimensionTest {
 
     @Test
+    void square_returnsNewInstance() {
+        Dimension square = Dimension.square(4);
+
+        assertThat(square).isEqualTo(Dimension.of(4, 4));
+    }
+
+    @Test
     void pixelCount_returnsCountOfPixels() {
         Dimension dimension = Dimension.of(640, 480);
 
