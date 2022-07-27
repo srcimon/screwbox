@@ -11,9 +11,9 @@ class FrameTest {
     void colorAt_outOfBounds_throwsException() {
         Frame frame = Sprite.invisible().singleFrame();
 
-        assertThatThrownBy(() -> frame.colorAt(Dimension.of(40, 40)))
+        assertThatThrownBy(() -> frame.colorAt(Dimension.of(40, 45)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Dimension is out of bounds: Dimension [width=40, height=40]");
+                .hasMessage("Dimension is out of bounds: 40:45");
     }
 
     @Test

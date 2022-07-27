@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVertically;
+import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
@@ -92,13 +93,17 @@ public final class Frame implements Serializable {
         return Dimension.of(imageContainer.image.getIconWidth(), imageContainer.image.getIconHeight());
     }
 
-    public Color colorAt(final Dimension dimension) {
-        if (size().width() < dimension.width() || dimension.height() < dimension.height()) {
-            throw new IllegalArgumentException("Dimension is out of bounds: " + dimension);
+    public Color colorAt(final Dimension position) {
+        return colorAt(position.width(), position.height());
+    }
+
+    public Color colorAt(final int x, int y) {
+        if (size().width() < x || size().height() < y) {
+            throw new IllegalArgumentException(format("Dimension is out of bounds: %d:%d", x, y));
         }
 
         final BufferedImage bufferedImage = ImageConverter.toBufferedImage(imageContainer.image.getImage());
-        final int rgb = bufferedImage.getRGB(dimension.width(), dimension.height());
+        final int rgb = bufferedImage.getRGB(x, y);
         final java.awt.Color awtColor = new java.awt.Color(rgb, true);
         return AwtMapper.toColor(awtColor);
     }
