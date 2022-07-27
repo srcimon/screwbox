@@ -18,7 +18,6 @@ final public class AwtMapper {
     private AwtMapper() {
     }
 
-    // TODO: Test
     public static Color toColor(final java.awt.Color color) {
         final Percentage opacity = Percentage.of(color.getAlpha() / 255.0);
         return Color.rgb(color.getRed(), color.getGreen(), color.getBlue(), opacity);
