@@ -90,7 +90,7 @@ public final class ImageConverter {
     }
 
     public static Color colorAt(final Image image, final int x, final int y) {
-        if (image.getWidth(null) < x || image.getHeight(null) < y) {
+        if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
             throw new IllegalArgumentException(format("Dimension is out of bounds: %d:%d", x, y));
         }
         final BufferedImage bufferedImage = toBufferedImage(image);

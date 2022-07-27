@@ -7,7 +7,11 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
@@ -40,13 +44,14 @@ class ImageConverterTest {
         assertThat(color).isEqualTo(Color.rgb(199, 155, 119));
     }
 
-    @Test
-    void colorAt_outOfBounds_throwsException() throws Exception {
+    @ParameterizedTest
+    @CsvSource({ "-1,1", "100,1", "4,-2", "4,44" })
+    void colorAt_positionOutOfBounds_throwsException(int x, int y) throws Exception {
         BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
 
-        assertThatThrownBy(() -> ImageConverter.colorAt(image, 40, 45))
+        assertThatThrownBy(() -> ImageConverter.colorAt(image, x, y))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Dimension is out of bounds: 40:45");
+                .hasMessage("Dimension is out of bounds: " + x + ":" + y);
     }
 
     private int countTransparentPixels(Image result) {
