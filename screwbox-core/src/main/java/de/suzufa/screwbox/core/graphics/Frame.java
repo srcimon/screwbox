@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.graphics.internal.ImageConverter;
 
 public final class Frame implements Serializable {
 
@@ -85,7 +86,30 @@ public final class Frame implements Serializable {
         return duration;
     }
 
-    public Dimension dimension() {
+    /**
+     * Returns the size of the frames {@link #image()}.
+     */
+    public Dimension size() {
         return Dimension.of(imageContainer.image.getIconWidth(), imageContainer.image.getIconHeight());
+    }
+
+    /**
+     * Returns the {@link Color} of the pixel at the given position.
+     * 
+     * @throws IllegalArgumentException when position is out of bounds.
+     * @see #colorAt(int, int)
+     */
+    public Color colorAt(final Dimension position) {
+        return colorAt(position.width(), position.height());
+    }
+
+    /**
+     * Returns the {@link Color} of the pixel at the given position.
+     * 
+     * @throws IllegalArgumentException when position is out of bounds.
+     * @see #colorAt(Dimension)
+     */
+    public Color colorAt(final int x, final int y) {
+        return ImageConverter.colorAt(imageContainer.image.getImage(), x, y);
     }
 }

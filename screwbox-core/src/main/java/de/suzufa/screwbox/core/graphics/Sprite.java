@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
@@ -72,20 +73,6 @@ public class Sprite implements Serializable {
         return new Sprite(image);
     }
 
-    private static BufferedImage imageFromFile(final String fileName) {
-        try {
-            final File resource = ResourceLoader.resourceFile(fileName);
-            final BufferedImage image = ImageIO.read(resource);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return image;
-
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
-    }
-
     public boolean isFlippedHorizontally() {
         return flippedHorizontally;
     }
@@ -127,10 +114,37 @@ public class Sprite implements Serializable {
         return duration;
     }
 
+    /**
+     * Returns the frame of the sprite if there is only a single frame in the
+     * sprite.
+     */
+    public Frame singleFrame() {
+        if (frames.size() > 1) {
+            throw new IllegalStateException("The sprite has more than one frame.");
+        }
+        return getFrame(0);
+    }
+
+    /**
+     * Returns the frame with the given number, starting with 0.
+     * 
+     * @throws IllegalArgumentException if the number is invalid
+     */
+    public Frame getFrame(final int nr) {
+        if (nr < 0) {
+            throw new IllegalArgumentException(nr + " is an invalid frame number");
+        }
+        if (nr >= frames.size()) {
+            throw new IllegalArgumentException(
+                    format("Cannot return frame nr %d, because sprite has only %d frame(s).", nr, frames.size()));
+        }
+        return frames.get(nr);
+    }
+
     private void addFrame(final Frame frame) {
         if (isNull(dimension)) {
-            dimension = frame.dimension();
-        } else if (!dimension.equals(frame.dimension())) {
+            dimension = frame.size();
+        } else if (!dimension.equals(frame.size())) {
             throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
         }
         duration = duration.plus(frame.duration());
@@ -154,6 +168,20 @@ public class Sprite implements Serializable {
             sumAtCurrentIndex += frames.get(i).duration().nanos();
         }
         return frames.size() - 1;
+    }
+
+    private static BufferedImage imageFromFile(final String fileName) {
+        try {
+            final File resource = ResourceLoader.resourceFile(fileName);
+            final BufferedImage image = ImageIO.read(resource);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return image;
+
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
     }
 
 }

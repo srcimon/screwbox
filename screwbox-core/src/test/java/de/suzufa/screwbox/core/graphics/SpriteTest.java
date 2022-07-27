@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core.graphics;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class SpriteTest {
@@ -58,5 +60,43 @@ class SpriteTest {
         assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
                 .hasSize(6)
                 .allMatch(s -> s.size().equals(dimension));
+    }
+
+    @Test
+    void singleFrame_moreThanOneFrame_exception() {
+        Sprite first = Sprite.fromFile("tile.bmp");
+        var frames = List.of(first.singleFrame(), first.singleFrame());
+        var spriteWithMultipleFrames = new Sprite(frames);
+
+        assertThatThrownBy(() -> spriteWithMultipleFrames.singleFrame())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("The sprite has more than one frame.");
+    }
+
+    @Test
+    void singleFrame_oneFrame_returnsFrame() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+
+        Frame frame = sprite.singleFrame();
+
+        assertThat(frame.size()).isEqualTo(Dimension.square(16));
+    }
+
+    @Test
+    void getFrame_frameDoesntExist_exception() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+
+        assertThatThrownBy(() -> sprite.getFrame(4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot return frame nr 4, because sprite has only 1 frame(s).");
+    }
+
+    @Test
+    void getFrame_invalidNumber_exception() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+
+        assertThatThrownBy(() -> sprite.getFrame(-4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("-4 is an invalid frame number");
     }
 }

@@ -26,6 +26,14 @@ public class Dimension implements Serializable, Comparable<Dimension> {
         return of((int) width, (int) height);
     }
 
+    /**
+     * Returns a new instance of {@link Dimension} with the given {@link #width()}
+     * as {@link #width()} and {@link #height()}.
+     */
+    public static Dimension square(int width) {
+        return of(width, width);
+    }
+
     private Dimension(final int width, final int height) {
         this.width = width;
         this.height = height;

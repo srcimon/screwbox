@@ -153,4 +153,9 @@ public final class Color {
         return b == other.b && g == other.g && Objects.equals(opacity, other.opacity) && r == other.r;
     }
 
+    @Override
+    public String toString() {
+        return "Color [r=" + r + ", g=" + g + ", b=" + b + ", opacity=" + opacity.value() + "]";
+    }
+
 }

@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.lang.String.format;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -85,6 +87,16 @@ public final class ImageConverter {
             }
         });
         return Toolkit.getDefaultToolkit().createImage(imageProducer);
+    }
+
+    public static Color colorAt(final Image image, final int x, final int y) {
+        if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
+            throw new IllegalArgumentException(format("Dimension is out of bounds: %d:%d", x, y));
+        }
+        final BufferedImage bufferedImage = toBufferedImage(image);
+        final int rgb = bufferedImage.getRGB(x, y);
+        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
+        return AwtMapper.toColor(awtColor);
     }
 
     private static BufferedImage toBufferedImage(final Image image) {

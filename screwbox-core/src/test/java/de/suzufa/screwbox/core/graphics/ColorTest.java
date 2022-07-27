@@ -41,4 +41,11 @@ class ColorTest {
         assertThat(color.b()).isEqualTo(30);
         assertThat(color.opacity()).isEqualTo(Percentage.half());
     }
+
+    @Test
+    void toString_returnsString() {
+        var color = Color.rgb(10, 20, 30).withOpacity(0.5);
+
+        assertThat(color).hasToString("Color [r=10, g=20, b=30, opacity=0.5]");
+    }
 }
