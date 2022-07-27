@@ -1,14 +1,13 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
-
 import org.junit.jupiter.api.Test;
-
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
@@ -30,6 +29,24 @@ class ImageConverterTest {
         Image result = ImageConverter.makeColorTransparent(image, Color.rgb(233, 202, 177));
 
         assertThat(countTransparentPixels(result)).isEqualTo(2);
+    }
+
+    @Test
+    void colorAt_inBounds_returnsColor() throws Exception {
+        BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
+
+        Color color = ImageConverter.colorAt(image, 4, 4);
+
+        assertThat(color).isEqualTo(Color.rgb(199, 155, 119));
+    }
+
+    @Test
+    void colorAt_outOfBounds_throwsException() throws Exception {
+        BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
+
+        assertThatThrownBy(() -> ImageConverter.colorAt(image, 40, 45))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Dimension is out of bounds: 40:45");
     }
 
     private int countTransparentPixels(Image result) {

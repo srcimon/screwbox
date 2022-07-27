@@ -2,17 +2,14 @@ package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVertically;
-import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
 import de.suzufa.screwbox.core.graphics.internal.ImageConverter;
 
 public final class Frame implements Serializable {
@@ -98,13 +95,6 @@ public final class Frame implements Serializable {
     }
 
     public Color colorAt(final int x, int y) {
-        if (size().width() < x || size().height() < y) {
-            throw new IllegalArgumentException(format("Dimension is out of bounds: %d:%d", x, y));
-        }
-
-        final BufferedImage bufferedImage = ImageConverter.toBufferedImage(imageContainer.image.getImage());
-        final int rgb = bufferedImage.getRGB(x, y);
-        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
-        return AwtMapper.toColor(awtColor);
+        return ImageConverter.colorAt(imageContainer.image.getImage(), x, y);
     }
 }
