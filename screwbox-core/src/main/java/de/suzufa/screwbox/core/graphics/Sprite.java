@@ -72,20 +72,6 @@ public class Sprite implements Serializable {
         return new Sprite(image);
     }
 
-    private static BufferedImage imageFromFile(final String fileName) {
-        try {
-            final File resource = ResourceLoader.resourceFile(fileName);
-            final BufferedImage image = ImageIO.read(resource);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return image;
-
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
-    }
-
     public boolean isFlippedHorizontally() {
         return flippedHorizontally;
     }
@@ -127,10 +113,21 @@ public class Sprite implements Serializable {
         return duration;
     }
 
+    // TODO: Test
+    public Frame singleFrame() {
+        // TODO: Check if there is only one frame
+        return frames.get(0);
+    }
+
+    // TODO: Test
+    public Frame getFrame(int nr) {
+        return frames.get(nr);
+    }
+
     private void addFrame(final Frame frame) {
         if (isNull(dimension)) {
-            dimension = frame.dimension();
-        } else if (!dimension.equals(frame.dimension())) {
+            dimension = frame.size();
+        } else if (!dimension.equals(frame.size())) {
             throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
         }
         duration = duration.plus(frame.duration());
@@ -154,6 +151,20 @@ public class Sprite implements Serializable {
             sumAtCurrentIndex += frames.get(i).duration().nanos();
         }
         return frames.size() - 1;
+    }
+
+    private static BufferedImage imageFromFile(final String fileName) {
+        try {
+            final File resource = ResourceLoader.resourceFile(fileName);
+            final BufferedImage image = ImageIO.read(resource);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return image;
+
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
     }
 
 }

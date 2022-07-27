@@ -87,7 +87,8 @@ public final class ImageConverter {
         return Toolkit.getDefaultToolkit().createImage(imageProducer);
     }
 
-    private static BufferedImage toBufferedImage(final Image image) {
+    // TODO: HIDE again
+    public static BufferedImage toBufferedImage(final Image image) {
         final int width = image.getWidth(null);
         final int height = image.getHeight(null);
         final var bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

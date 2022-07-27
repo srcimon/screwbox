@@ -5,11 +5,14 @@ import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVerti
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
+import de.suzufa.screwbox.core.graphics.internal.ImageConverter;
 
 public final class Frame implements Serializable {
 
@@ -85,7 +88,18 @@ public final class Frame implements Serializable {
         return duration;
     }
 
-    public Dimension dimension() {
+    public Dimension size() {
         return Dimension.of(imageContainer.image.getIconWidth(), imageContainer.image.getIconHeight());
+    }
+
+    public Color colorAt(final Dimension dimension) {
+        if (size().width() < dimension.width() || dimension.height() < dimension.height()) {
+            throw new IllegalArgumentException("Dimension is out of bounds: " + dimension);
+        }
+
+        final BufferedImage bufferedImage = ImageConverter.toBufferedImage(imageContainer.image.getImage());
+        final int rgb = bufferedImage.getRGB(dimension.width(), dimension.height());
+        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
+        return AwtMapper.toColor(awtColor);
     }
 }
