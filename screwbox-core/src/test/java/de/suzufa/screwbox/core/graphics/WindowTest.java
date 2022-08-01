@@ -48,7 +48,7 @@ class WindowTest {
 
     @Test
     void drawText_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawText(Offset.at(2, 4), "Test", font);
 
@@ -57,7 +57,7 @@ class WindowTest {
 
     @Test
     void drawText_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawText(Offset.at(2, 4), "Test", font, 4);
 
@@ -66,7 +66,7 @@ class WindowTest {
 
     @Test
     void drawText_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawText(Offset.at(2, 4), "Test", font, Percentage.half());
 
@@ -75,7 +75,7 @@ class WindowTest {
 
     @Test
     void drawTextCentered_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawTextCentered(Offset.at(2, 4), "Test", font);
 
@@ -84,7 +84,7 @@ class WindowTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawTextCentered(Offset.at(2, 4), "Test", font, 4);
 
@@ -93,7 +93,7 @@ class WindowTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultBlack();
+        Pixelfont font = Pixelfont.defaultFont();
 
         window.drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half());
 

@@ -76,36 +76,29 @@ class PixelfontTest {
     }
 
     @Test
-    void defaultWhite_returnsInitializedPixelfont() {
-        var font = Pixelfont.defaultWhite();
-
-        assertThat(font.characterCount()).isEqualTo(42);
-    }
-
-    @Test
-    void defaultBlack_returnsInitializedPixelfont() {
-        var font = Pixelfont.defaultBlack();
+    void defaultFont_returnsInitializedPixelfont() {
+        var font = Pixelfont.defaultFont();
 
         assertThat(font.characterCount()).isEqualTo(42);
     }
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }

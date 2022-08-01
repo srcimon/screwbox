@@ -15,7 +15,7 @@ import java.util.Map;
  * A font made of {@link Sprite}s (even animated ones) for system independent
  * rendering.
  * 
- * @see #defaultBlack()
+ * @see #defaultFont()
  * @see #defaultWhite()
  */
 public class Pixelfont implements Serializable {
@@ -25,23 +25,21 @@ public class Pixelfont implements Serializable {
     private final Map<Character, Sprite> characters = new HashMap<>();
     private int padding = 1;
 
-    private static final Pixelfont DEFAULT_WHITE = defaultFont("default_font_white.png");
-    private static final Pixelfont DEFAULT_BLACK = defaultFont("default_font_black.png");
-
-    /**
-     * A white monospace {@link Font}, containing a restricted set of characters,
-     * numbers and symbols.
-     */
-    public static Pixelfont defaultWhite() {
-        return DEFAULT_WHITE;
-    }
+    private static final Pixelfont DEFAULT_FONT = defaultFont("default_font.png");
 
     /**
      * A black monospace {@link Font}, containing a restricted set of characters,
      * numbers and symbols.
      */
-    public static Pixelfont defaultBlack() { // TODO: Add replaceColor-Function
-        return DEFAULT_BLACK;
+    public static Pixelfont defaultFont() { // TODO: Add replaceColor-Function
+        return DEFAULT_FONT;
+    }
+
+    // TODO: Test + javadoc
+    public static Pixelfont defaultFont(Color color) { // TODO: Add replaceColor-Function
+        var font = defaultFont("default_font.png");
+        font.replaceColor(Color.BLACK, color);
+        return font;
     }
 
     /**
@@ -99,6 +97,12 @@ public class Pixelfont implements Serializable {
 
     public boolean hasCharacter(final char character) {
         return characters.containsKey(character);
+    }
+
+    public void replaceColor(final Color oldColor, final Color newColor) {
+        for (var sprite : characters.values()) {
+            sprite.replaceColor(oldColor, newColor);
+        }
     }
 
     public List<Sprite> spritesFor(final String text) {

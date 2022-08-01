@@ -15,12 +15,14 @@ import java.awt.image.RGBImageFilter;
 
 import de.suzufa.screwbox.core.graphics.Color;
 
+//TODO: Make ImageConverter part of Frame
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
 public final class ImageConverter {
 
     private ImageConverter() {
     }
 
+    // TODO: is specialized version of replaceColor
     public static Image makeColorTransparent(final Image image, final Color transparencyColor) {
         // TODO: fix transparency color not used
         final ImageFilter filter = new RGBImageFilter() {
@@ -36,6 +38,28 @@ public final class ImageConverter {
                     return 0x00FFFFFF & rgb;
                 } else {
                     // nothing to do
+                    return rgb;
+                }
+            }
+        };
+
+        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
+        return Toolkit.getDefaultToolkit().createImage(imageProducer);
+    }
+
+    public static Image replaceColor(final Image image, final Color oldColor, final Color newColor) {
+        final ImageFilter filter = new RGBImageFilter() {
+
+            // the color we are looking for... Alpha bits are set to opaque
+
+            int oldColorAwt = AwtMapper.toAwtColor(oldColor).getRGB();
+            int newColorAwt = AwtMapper.toAwtColor(newColor).getRGB();
+
+            @Override
+            public final int filterRGB(final int x, final int y, final int rgb) {
+                if (rgb == oldColorAwt) {
+                    return newColorAwt;
+                } else {
                     return rgb;
                 }
             }

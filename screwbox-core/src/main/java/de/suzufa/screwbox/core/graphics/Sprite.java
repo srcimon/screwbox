@@ -141,6 +141,13 @@ public class Sprite implements Serializable {
         return frames.get(nr);
     }
 
+    // TODO: javadoc + Tests
+    public void replaceColor(final Color oldColor, final Color newColor) {
+        for (var frame : frames) {
+            frame.replaceColor(oldColor, newColor);
+        }
+    }
+
     private void addFrame(final Frame frame) {
         if (isNull(dimension)) {
             dimension = frame.size();
