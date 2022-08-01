@@ -66,7 +66,8 @@ public final class ImageConverter {
         };
 
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        return Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return toBufferedImage(Toolkit.getDefaultToolkit().createImage(imageProducer)); // toBufferedImage -> no
+                                                                                        // flickering
     }
 
     // TODO: simplyfiy and test
