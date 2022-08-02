@@ -36,10 +36,9 @@ public class Pixelfont implements Serializable {
     }
 
     // TODO: Test + javadoc
-    public static Pixelfont defaultFont(Color color) { // TODO: Add replaceColor-Function
+    public static Pixelfont defaultFont(Color color) {
         var font = defaultFont("default_font.png");
         font.replaceColor(Color.BLACK, color);
-        System.out.println("MADE FONT");
         return font;
     }
 
