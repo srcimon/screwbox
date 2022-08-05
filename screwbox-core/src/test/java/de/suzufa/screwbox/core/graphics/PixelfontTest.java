@@ -76,29 +76,40 @@ class PixelfontTest {
     }
 
     @Test
-    void defaultFont_returnsInitializedPixelfont() {
-        var font = Pixelfont.defaultFont();
+    void defaultFont_colorNull_throwsException() {
+        assertThatThrownBy(() -> Pixelfont.defaultFont(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Color must not be null.");
+    }
+
+    @Test
+    void defaultFont_colorSet_returnsInitializedPixelfont() {
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.characterCount()).isEqualTo(42);
+
+        Frame frameA = font.spriteFor('A').singleFrame();
+        assertThat(frameA.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(frameA.colorAt(4, 4)).isEqualTo(Color.WHITE);
     }
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = Pixelfont.defaultFont();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = Pixelfont.defaultFont();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = Pixelfont.defaultFont();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }

@@ -20,25 +20,25 @@ import java.util.Map;
  */
 public class Pixelfont implements Serializable {
 
+    private static final List<Character> DEFAULT_CHARACTER_SET = List.of(
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+            'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
+            ',', ':', '!', '?');
+
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
     private int padding = 1;
 
-    private static final Pixelfont DEFAULT_FONT = defaultFont("default_font.png");
-
     /**
-     * A black monospace {@link Font}, containing a restricted set of characters,
-     * numbers and symbols.
+     * A monospace {@link Font}, containing a restricted set of characters, numbers
+     * and symbols. Creating the font is quite costly.
      */
-    public static Pixelfont defaultFont() { // TODO: Add replaceColor-Function
-        return DEFAULT_FONT;
-    }
-
-    // TODO: Test + javadoc
-    public static Pixelfont defaultFont(Color color) {
-        var font = defaultFont("default_font.png");
-        font.replaceColor(Color.BLACK, color);
+    public static Pixelfont defaultFont(final Color color) {
+        final Pixelfont font = new Pixelfont();
+        final var sprites = Sprite.multipleFromFile("default_font.png", Dimension.of(7, 7), 1);
+        font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
+        font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
         return font;
     }
 
@@ -58,17 +58,6 @@ public class Pixelfont implements Serializable {
 
     // TODO: allow only same height sprites / drawTextCentered fixes TextHeight (see
     // helloWorld Demo)
-    private static Pixelfont defaultFont(final String name) {
-        final Pixelfont font = new Pixelfont();
-        final var chracters = List.of(
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-                'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
-                ',', ':', '!', '?');
-        final var sprites = Sprite.multipleFromFile(name, Dimension.of(7, 7), 1);
-
-        font.addCharacters(chracters, sprites);
-        return font;
-    }
 
     public void addCharacters(final List<Character> characters, final List<Sprite> sprites) {
         if (characters.size() != sprites.size()) {
@@ -116,7 +105,8 @@ public class Pixelfont implements Serializable {
         return sprites;
     }
 
-    private Sprite spriteFor(final char character) {
+    // TODO: Tests and javadoc
+    public Sprite spriteFor(final char character) {
         final Sprite sprite = characters.get(character);
         if (nonNull(sprite)) {
             return sprite;

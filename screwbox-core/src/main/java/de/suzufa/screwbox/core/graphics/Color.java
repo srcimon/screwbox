@@ -55,6 +55,11 @@ public final class Color {
     public static final Color YELLOW = Color.rgb(255, 255, 0);
 
     /**
+     * A transparent color.
+     */
+    public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percentage.min());
+
+    /**
      * Creates a color based on RGB-components with full {@link #opacity()}.
      */
     public static Color rgb(final int r, final int g, final int b) {
