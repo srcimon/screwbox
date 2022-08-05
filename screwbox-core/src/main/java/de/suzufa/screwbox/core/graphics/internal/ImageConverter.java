@@ -47,29 +47,6 @@ public final class ImageConverter {
         return Toolkit.getDefaultToolkit().createImage(imageProducer);
     }
 
-    public static Image replaceColor(final Image image, final Color oldColor, final Color newColor) {
-        final ImageFilter filter = new RGBImageFilter() {
-
-            // the color we are looking for... Alpha bits are set to opaque
-
-            int oldColorAwt = AwtMapper.toAwtColor(oldColor).getRGB();
-            int newColorAwt = AwtMapper.toAwtColor(newColor).getRGB();
-
-            @Override
-            public final int filterRGB(final int x, final int y, final int rgb) {
-                if (rgb == oldColorAwt) {
-                    return newColorAwt;
-                } else {
-                    return rgb;
-                }
-            }
-        };
-
-        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        return toBufferedImage(Toolkit.getDefaultToolkit().createImage(imageProducer)); // toBufferedImage -> no
-                                                                                        // flickering
-    }
-
     // TODO: simplyfiy and test
     public static Image flipHorizontally(final Image image) {
         final BufferedImage bufferedImage = toBufferedImage(image);
@@ -124,7 +101,7 @@ public final class ImageConverter {
         return AwtMapper.toColor(awtColor);
     }
 
-    private static BufferedImage toBufferedImage(final Image image) {
+    public static BufferedImage toBufferedImage(final Image image) {
         final int width = image.getWidth(null);
         final int height = image.getHeight(null);
         final var bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

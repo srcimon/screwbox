@@ -2,14 +2,21 @@ package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVertically;
+import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.toBufferedImage;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
 import de.suzufa.screwbox.core.graphics.internal.ImageConverter;
 
 public final class Frame implements Serializable {
@@ -118,7 +125,27 @@ public final class Frame implements Serializable {
      */
     public void replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
-        final Image newImage = ImageConverter.replaceColor(oldImage, oldColor, newColor);
+        final Image newImage = replaceColor(oldImage, oldColor, newColor);
         imageContainer.image.setImage(newImage);
+    }
+
+    private Image replaceColor(final Image image, final Color oldColor, final Color newColor) {
+        final ImageFilter filter = new RGBImageFilter() {
+
+            // the color we are looking for... Alpha bits are set to opaque
+
+            int oldColorAwt = AwtMapper.toAwtColor(oldColor).getRGB();
+            int newColorAwt = AwtMapper.toAwtColor(newColor).getRGB();
+
+            @Override
+            public final int filterRGB(final int x, final int y, final int rgb) {
+                return rgb == oldColorAwt ? newColorAwt : rgb;
+            }
+        };
+
+        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
+        // convert to BufferedImage to avoid flickering
+        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return toBufferedImage(newImage);
     }
 }

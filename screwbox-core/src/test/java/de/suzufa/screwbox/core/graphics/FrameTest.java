@@ -27,4 +27,13 @@ class FrameTest {
         assertThat(newColor).isEqualTo(Color.BLUE);
     }
 
+    @Test
+    void replaceColor_doenstReplaceOtherColors() {
+        Frame frame = Sprite.fromFile("tile.bmp").singleFrame();
+
+        frame.replaceColor(Color.BLACK, Color.BLUE);
+
+        assertThat(frame.colorAt(4, 4)).isNotEqualTo(Color.BLUE);
+    }
+
 }
