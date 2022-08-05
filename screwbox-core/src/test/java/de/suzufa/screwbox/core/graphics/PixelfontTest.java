@@ -40,6 +40,29 @@ class PixelfontTest {
     }
 
     @Test
+    void addCharacter_differentHeight_throwsException() {
+        pixelfont.addCharacter('A', Sprite.invisible());
+
+        var sprite = Sprite.fromFile("tile.bmp");
+
+        assertThatThrownBy(() -> pixelfont.addCharacter('B', sprite))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("New character has different height than pixelfont.");
+    }
+
+    @Test
+    void height_noSprite_returnsZero() {
+        assertThat(pixelfont.height()).isEqualTo(0);
+    }
+
+    @Test
+    void height_withSprite_returnsSpriteHeight() {
+        pixelfont.addCharacter('A', Sprite.fromFile("tile.bmp"));
+
+        assertThat(pixelfont.height()).isEqualTo(16);
+    }
+
+    @Test
     void addCharacter_characterAlreadyPresent_throwsException() {
         Sprite sprite = Sprite.invisible();
 
@@ -112,5 +135,37 @@ class PixelfontTest {
         var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
+    }
+
+    @Test
+    void spriteFor_characterPresent_returnsSprite() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('A', sprite);
+
+        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
+    }
+
+    @Test
+    void spriteFor_justHasLowerCaseVersionofCharacter_returnsSprite() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('a', sprite);
+
+        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
+    }
+
+    @Test
+    void spriteFor_justHasUpperCaseVersionofCharacter_returnsSprite() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('A', sprite);
+
+        assertThat(pixelfont.spriteFor('a')).isEqualTo(sprite);
+    }
+
+    @Test
+    void spriteFor_characterMissing_returnsNull() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('A', sprite);
+
+        assertThat(pixelfont.spriteFor('B')).isNull();
     }
 }

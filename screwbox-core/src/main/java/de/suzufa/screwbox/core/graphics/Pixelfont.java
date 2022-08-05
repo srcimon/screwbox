@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.Dimension.square;
+import static java.lang.Character.isUpperCase;
+import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
@@ -30,10 +32,12 @@ public class Pixelfont implements Serializable {
 
     private final Map<Character, Sprite> characters = new HashMap<>();
     private int padding = 1;
+    private int height = 0;
 
     /**
-     * A monospace {@link Font}, containing a restricted set of characters, numbers
-     * and symbols. Creating the font is quite costly.
+     * Creates a monospace {@link Font}, containing a restricted set of characters,
+     * numbers and symbols. Creating the font is quite costly, so avoid doing it
+     * more than once.
      */
     public static Pixelfont defaultFont(final Color color) {
         final Pixelfont font = new Pixelfont();
@@ -57,9 +61,12 @@ public class Pixelfont implements Serializable {
         this.padding = padding;
     }
 
-    // TODO: allow only same height sprites / drawTextCentered fixes TextHeight (see
-    // helloWorld Demo)
-
+    /**
+     * Adds new characters with corresponding {@link Sprite}s to the
+     * {@link Pixelfont}. Both lists must have the same size.
+     * 
+     * @see #addCharacter(char, Sprite)
+     */
     public void addCharacters(final List<Character> characters, final List<Sprite> sprites) {
         if (characters.size() != sprites.size()) {
             throw new IllegalArgumentException(
@@ -71,6 +78,12 @@ public class Pixelfont implements Serializable {
         }
     }
 
+    /**
+     * Adds a new character and the corresponding {@link Sprite} to the
+     * {@link Pixelfont}.
+     * 
+     * @see #addCharacters(List, List)
+     */
     public void addCharacter(final char character, final Sprite sprite) {
         requireNonNull(sprite, "Sprite must not be null. Character: " + character);
 
@@ -78,21 +91,28 @@ public class Pixelfont implements Serializable {
             throw new IllegalStateException("Character already present in font: X");
         }
 
+        if (height == 0) {
+            height = sprite.size().height();
+        } else {
+            if (height != sprite.size().height()) {
+                throw new IllegalArgumentException("New character has different height than pixelfont.");
+            }
+        }
         characters.put(character, sprite);
     }
 
+    /**
+     * Returns the current count of different characters in the {@link Pixelfont}.
+     */
     public int characterCount() {
         return characters.size();
     }
 
+    /**
+     * Checks if the given character is contained in the {@link Pixelfont}.
+     */
     public boolean hasCharacter(final char character) {
         return characters.containsKey(character);
-    }
-
-    public void replaceColor(final Color oldColor, final Color newColor) {
-        for (var sprite : characters.values()) {
-            sprite.replaceColor(oldColor, newColor);
-        }
     }
 
     public List<Sprite> spritesFor(final String text) {
@@ -106,13 +126,32 @@ public class Pixelfont implements Serializable {
         return sprites;
     }
 
-    // TODO: Tests and javadoc
+    /**
+     * Returns the sprite for the given {@link Character}. Ignores case of
+     * {@link Character} if character is missing. Returns null if there is no such
+     * {@link Character}.
+     */
     public Sprite spriteFor(final char character) {
         final Sprite sprite = characters.get(character);
         if (nonNull(sprite)) {
             return sprite;
         }
-        return characters.get(toUpperCase(character));
+        return isUpperCase(character)
+                ? characters.get(toLowerCase(character))
+                : characters.get(toUpperCase(character));
     }
 
+    /**
+     * Returns the height of the pixelfont. Every {@link Sprite} in the font has the
+     * same height. Will be 0 if there is no character jet.
+     */
+    public int height() {
+        return height;
+    }
+
+    private void replaceColor(final Color oldColor, final Color newColor) {
+        for (var sprite : characters.values()) {
+            sprite.replaceColor(oldColor, newColor);
+        }
+    }
 }
