@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static de.suzufa.screwbox.core.graphics.Dimension.square;
 import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
@@ -36,7 +37,7 @@ public class Pixelfont implements Serializable {
      */
     public static Pixelfont defaultFont(final Color color) {
         final Pixelfont font = new Pixelfont();
-        final var sprites = Sprite.multipleFromFile("default_font.png", Dimension.of(7, 7), 1);
+        final var sprites = Sprite.multipleFromFile("default_font.png", square(7), 1);
         font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
         font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
         return font;
