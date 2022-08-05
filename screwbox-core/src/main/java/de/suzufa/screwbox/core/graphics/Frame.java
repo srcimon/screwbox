@@ -113,7 +113,9 @@ public final class Frame implements Serializable {
         return ImageConverter.colorAt(imageContainer.image.getImage(), x, y);
     }
 
-    // TODO: javadoc + Tests
+    /**
+     * Replaces the given {@link Color} with the new one. Is quite costly.
+     */
     public void replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
         final Image newImage = ImageConverter.replaceColor(oldImage, oldColor, newColor);
