@@ -52,7 +52,7 @@ class PixelfontTest {
 
     @Test
     void height_noSprite_returnsZero() {
-        assertThat(pixelfont.height()).isEqualTo(0);
+        assertThat(pixelfont.height()).isZero();
     }
 
     @Test
@@ -143,6 +143,7 @@ class PixelfontTest {
         pixelfont.addCharacter('A', sprite);
 
         assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
+        assertThat(pixelfont.spriteFor('a')).isEqualTo(sprite);
     }
 
     @Test
@@ -150,15 +151,8 @@ class PixelfontTest {
         Sprite sprite = Sprite.invisible();
         pixelfont.addCharacter('a', sprite);
 
-        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
-    }
-
-    @Test
-    void spriteFor_justHasUpperCaseVersionofCharacter_returnsSprite() {
-        Sprite sprite = Sprite.invisible();
-        pixelfont.addCharacter('A', sprite);
-
         assertThat(pixelfont.spriteFor('a')).isEqualTo(sprite);
+        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
     }
 
     @Test
