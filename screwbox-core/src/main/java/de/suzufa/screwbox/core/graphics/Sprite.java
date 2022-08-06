@@ -141,9 +141,13 @@ public class Sprite implements Serializable {
         return frames.get(nr);
     }
 
-    // TODO: javadoc + Tests
+    /**
+     * Replaces a color in all animation-{@link Frame}s of the {@link Sprite}.
+     * 
+     * @see Frame#replaceColor(Color, Color)
+     */
     public void replaceColor(final Color oldColor, final Color newColor) {
-        for (var frame : frames) {
+        for (final var frame : frames) {
             frame.replaceColor(oldColor, newColor);
         }
     }

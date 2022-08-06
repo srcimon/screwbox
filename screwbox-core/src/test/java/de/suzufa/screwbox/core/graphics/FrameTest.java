@@ -27,7 +27,7 @@ class FrameTest {
 
     @Test
     void colorAt_inBounds_returnsColorAtPoision() {
-        Color color = frame.colorAt(Dimension.of(4, 4));
+        Color color = frame.colorAt(Offset.at(4, 4));
 
         assertThat(color).isEqualTo(Color.rgb(199, 155, 119));
     }

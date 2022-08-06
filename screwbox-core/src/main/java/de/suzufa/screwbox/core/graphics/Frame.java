@@ -102,8 +102,8 @@ public final class Frame implements Serializable {
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(int, int)
      */
-    public Color colorAt(final Dimension position) {
-        return colorAt(position.width(), position.height());
+    public Color colorAt(final Offset offset) {
+        return colorAt(offset.x(), offset.y());
     }
 
     /**
