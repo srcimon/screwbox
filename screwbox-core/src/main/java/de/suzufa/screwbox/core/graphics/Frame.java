@@ -1,16 +1,14 @@
 package de.suzufa.screwbox.core.graphics;
 
-import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipHorizontally;
-import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVertically;
-import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.toBufferedImage;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipHorizontally;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipVertically;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageProducer;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
@@ -115,7 +113,7 @@ public final class Frame implements Serializable {
      * @see #colorAt(Dimension)
      */
     public Color colorAt(final int x, final int y) {
-        Image image = image();
+        final Image image = image();
         if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
             throw new IllegalArgumentException(format("Position is out of bounds: %d:%d", x, y));
         }
@@ -130,17 +128,8 @@ public final class Frame implements Serializable {
      */
     public void replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
-        final Image newImage = replaceColor(oldImage, oldColor, newColor);
-        imageContainer = new ImageContainer(newImage);
+        final Image newImage = applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
+        imageContainer = new ImageContainer(newImage); // create new flipped versions of the image
     }
 
-    private Image replaceColor(final Image image, final Color oldColor, final Color newColor) {
-        ReplaceColorFilter imageFilter = new ReplaceColorFilter(oldColor, newColor);
-
-        // TODO: ImageConverter ->(ImageUtil) applyImageFilter...
-        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), imageFilter);
-        // convert to BufferedImage to avoid flickering
-        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
-        return toBufferedImage(newImage);
-    }
 }

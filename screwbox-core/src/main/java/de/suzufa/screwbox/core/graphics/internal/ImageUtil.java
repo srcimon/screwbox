@@ -15,9 +15,9 @@ import de.suzufa.screwbox.core.graphics.Color;
 
 //TODO: Make ImageConverter part of Frame
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
-public final class ImageConverter {
+public final class ImageUtil {
 
-    private ImageConverter() {
+    private ImageUtil() {
     }
 
     // TODO: is specialized version of replaceColor
@@ -72,6 +72,12 @@ public final class ImageConverter {
         graphics.drawImage(image, 0, 0, null);
         graphics.dispose();
         return bufferedImage;
+    }
+
+    public static Image applyFilter(Image image, RGBImageFilter filter) {
+        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
+        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
     }
 
 }

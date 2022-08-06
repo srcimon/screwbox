@@ -12,13 +12,13 @@ import org.junit.jupiter.api.Test;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
-class ImageConverterTest {
+class ImageUtilTest {
 
     @Test
     void makeColorTransparent_colorNotPresent_doenstMakeAnythingTransparent() throws Exception {
         BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
 
-        Image result = ImageConverter.makeColorTransparent(image, Color.RED);
+        Image result = ImageUtil.makeColorTransparent(image, Color.RED);
 
         assertThat(countTransparentPixels(result)).isZero();
     }
@@ -27,7 +27,7 @@ class ImageConverterTest {
     void makeColorTransparent_colorPresent_makesMatchingPixelsTransparent() throws Exception {
         BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
 
-        Image result = ImageConverter.makeColorTransparent(image, Color.rgb(233, 202, 177));
+        Image result = ImageUtil.makeColorTransparent(image, Color.rgb(233, 202, 177));
 
         assertThat(countTransparentPixels(result)).isEqualTo(2);
     }
