@@ -3,10 +3,12 @@ package de.suzufa.screwbox.core.graphics;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.flipVertically;
 import static de.suzufa.screwbox.core.graphics.internal.ImageConverter.toBufferedImage;
+import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.io.Serializable;
@@ -14,15 +16,14 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.graphics.internal.ImageConverter;
+import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
 
 public final class Frame implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final ImageContainer imageContainer;
-
     private final Duration duration;
+    private ImageContainer imageContainer;
 
     private final class ImageContainer implements Serializable {
 
@@ -114,7 +115,14 @@ public final class Frame implements Serializable {
      * @see #colorAt(Dimension)
      */
     public Color colorAt(final int x, final int y) {
-        return ImageConverter.colorAt(imageContainer.image.getImage(), x, y);
+        Image image = image();
+        if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
+            throw new IllegalArgumentException(format("Position is out of bounds: %d:%d", x, y));
+        }
+        final BufferedImage bufferedImage = toBufferedImage(image);
+        final int rgb = bufferedImage.getRGB(x, y);
+        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
+        return AwtMapper.toColor(awtColor);
     }
 
     /**
@@ -123,7 +131,7 @@ public final class Frame implements Serializable {
     public void replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
         final Image newImage = replaceColor(oldImage, oldColor, newColor);
-        imageContainer.image.setImage(newImage);
+        imageContainer = new ImageContainer(newImage);
     }
 
     private Image replaceColor(final Image image, final Color oldColor, final Color newColor) {
