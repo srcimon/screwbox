@@ -1,20 +1,19 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.Font;
-import de.suzufa.screwbox.core.graphics.Font.Style;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.playground.debo.components.TextComponent;
 
 public class PrintSystem implements EntitySystem {
 
-    private static final Font TITLE_FONT = new Font("Futura", 72, Style.BOLD);
-    private static final Font SUBTEXT_FONT = new Font("Futura", 36, Style.BOLD);
+    private static final Pixelfont FONT = Pixelfont.defaultFont(Color.WHITE);
     private static final Archetype TEXTS = Archetype.of(TextComponent.class);
 
     @Override
@@ -22,9 +21,9 @@ public class PrintSystem implements EntitySystem {
         for (var entity : engine.entityEngine().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Window window = engine.graphics().window();
-            window.drawTextCentered(window.center(), textComponent.text, TITLE_FONT, Color.WHITE);
+            window.drawTextCentered(window.center(), textComponent.text, FONT, Percentage.max(), 7);
             Offset subtextOffset = Offset.at(window.center().x(), window.center().y() + 80);
-            window.drawTextCentered(subtextOffset, textComponent.subtext, SUBTEXT_FONT, Color.WHITE);
+            window.drawTextCentered(subtextOffset, textComponent.subtext, FONT, Percentage.max(), 4);
         }
     }
 
