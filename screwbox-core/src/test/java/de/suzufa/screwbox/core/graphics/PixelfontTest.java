@@ -109,7 +109,7 @@ class PixelfontTest {
     void defaultFont_colorSet_returnsInitializedPixelfont() {
         var font = Pixelfont.defaultFont(Color.WHITE);
 
-        assertThat(font.characterCount()).isEqualTo(42);
+        assertThat(font.characterCount()).isEqualTo(43);
 
         Frame frameA = font.spriteFor('A').singleFrame();
         assertThat(frameA.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
