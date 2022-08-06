@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import static java.lang.String.format;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,12 +13,14 @@ import java.awt.image.RGBImageFilter;
 
 import de.suzufa.screwbox.core.graphics.Color;
 
+//TODO: inline ImageUtil in Frame
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
-public final class ImageConverter {
+public final class ImageUtil {
 
-    private ImageConverter() {
+    private ImageUtil() {
     }
 
+    // TODO: is specialized version of replaceColor
     public static Image makeColorTransparent(final Image image, final Color transparencyColor) {
         // TODO: fix transparency color not used
         final ImageFilter filter = new RGBImageFilter() {
@@ -52,20 +52,7 @@ public final class ImageConverter {
         final AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-image.getWidth(null), 0);
         final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        final BufferedImage result = op.filter(bufferedImage, null);
-
-        // to image
-        final ImageProducer imageProducer = new FilteredImageSource(result.getSource(), new RGBImageFilter() {
-
-            // the color we are looking for... Alpha bits are set to opaque
-
-            @Override
-            public final int filterRGB(final int x, final int y, final int rgb) {
-                return rgb;
-            }
-        });
-        return Toolkit.getDefaultToolkit().createImage(imageProducer);
-
+        return op.filter(bufferedImage, null);
     }
 
     public static Image flipVertically(final Image image) {
@@ -74,32 +61,10 @@ public final class ImageConverter {
         final AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
         tx.translate(0, -image.getHeight(null));
         final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        final BufferedImage result = op.filter(bufferedImage, null);
-
-        // to image
-        final ImageProducer imageProducer = new FilteredImageSource(result.getSource(), new RGBImageFilter() {
-
-            // the color we are looking for... Alpha bits are set to opaque
-
-            @Override
-            public final int filterRGB(final int x, final int y, final int rgb) {
-                return rgb;
-            }
-        });
-        return Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return op.filter(bufferedImage, null);
     }
 
-    public static Color colorAt(final Image image, final int x, final int y) {
-        if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
-            throw new IllegalArgumentException(format("Dimension is out of bounds: %d:%d", x, y));
-        }
-        final BufferedImage bufferedImage = toBufferedImage(image);
-        final int rgb = bufferedImage.getRGB(x, y);
-        final java.awt.Color awtColor = new java.awt.Color(rgb, true);
-        return AwtMapper.toColor(awtColor);
-    }
-
-    private static BufferedImage toBufferedImage(final Image image) {
+    public static BufferedImage toBufferedImage(final Image image) {
         final int width = image.getWidth(null);
         final int height = image.getHeight(null);
         final var bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -107,6 +72,12 @@ public final class ImageConverter {
         graphics.drawImage(image, 0, 0, null);
         graphics.dispose();
         return bufferedImage;
+    }
+
+    public static Image applyFilter(Image image, RGBImageFilter filter) {
+        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
+        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
     }
 
 }

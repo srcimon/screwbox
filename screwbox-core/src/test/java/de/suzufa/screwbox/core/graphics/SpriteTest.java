@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static de.suzufa.screwbox.core.graphics.Color.BLACK;
+import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -98,5 +100,16 @@ class SpriteTest {
         assertThatThrownBy(() -> sprite.getFrame(-4))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("-4 is an invalid frame number");
+    }
+
+    @Test
+    void replaceColor_replacesColorOfFrames() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+        Color oldColor = sprite.singleFrame().colorAt(origin());
+
+        sprite.replaceColor(oldColor, BLACK);
+
+        Color newColor = sprite.singleFrame().colorAt(origin());
+        assertThat(newColor).isNotEqualTo(oldColor).isEqualTo(BLACK);
     }
 }

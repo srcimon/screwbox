@@ -40,6 +40,29 @@ class PixelfontTest {
     }
 
     @Test
+    void addCharacter_differentHeight_throwsException() {
+        pixelfont.addCharacter('A', Sprite.invisible());
+
+        var sprite = Sprite.fromFile("tile.bmp");
+
+        assertThatThrownBy(() -> pixelfont.addCharacter('B', sprite))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("New character has different height than pixelfont.");
+    }
+
+    @Test
+    void height_noSprite_returnsZero() {
+        assertThat(pixelfont.height()).isZero();
+    }
+
+    @Test
+    void height_withSprite_returnsSpriteHeight() {
+        pixelfont.addCharacter('A', Sprite.fromFile("tile.bmp"));
+
+        assertThat(pixelfont.height()).isEqualTo(16);
+    }
+
+    @Test
     void addCharacter_characterAlreadyPresent_throwsException() {
         Sprite sprite = Sprite.invisible();
 
@@ -76,37 +99,67 @@ class PixelfontTest {
     }
 
     @Test
-    void defaultWhite_returnsInitializedPixelfont() {
-        var font = Pixelfont.defaultWhite();
-
-        assertThat(font.characterCount()).isEqualTo(42);
+    void defaultFont_colorNull_throwsException() {
+        assertThatThrownBy(() -> Pixelfont.defaultFont(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Color must not be null.");
     }
 
     @Test
-    void defaultBlack_returnsInitializedPixelfont() {
-        var font = Pixelfont.defaultBlack();
+    void defaultFont_colorSet_returnsInitializedPixelfont() {
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
-        assertThat(font.characterCount()).isEqualTo(42);
+        assertThat(font.characterCount()).isEqualTo(43);
+
+        Frame frameA = font.spriteFor('A').singleFrame();
+        assertThat(frameA.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(frameA.colorAt(4, 4)).isEqualTo(Color.WHITE);
     }
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = Pixelfont.defaultBlack();
+        var font = Pixelfont.defaultFont(Color.WHITE);
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
+    }
+
+    @Test
+    void spriteFor_characterPresent_returnsSprite() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('A', sprite);
+
+        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
+        assertThat(pixelfont.spriteFor('a')).isEqualTo(sprite);
+    }
+
+    @Test
+    void spriteFor_justHasLowerCaseVersionofCharacter_returnsSprite() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('a', sprite);
+
+        assertThat(pixelfont.spriteFor('a')).isEqualTo(sprite);
+        assertThat(pixelfont.spriteFor('A')).isEqualTo(sprite);
+    }
+
+    @Test
+    void spriteFor_characterMissing_returnsNull() {
+        Sprite sprite = Sprite.invisible();
+        pixelfont.addCharacter('A', sprite);
+
+        assertThat(pixelfont.spriteFor('B')).isNull();
     }
 }

@@ -49,8 +49,9 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public void updateCameraPosition(final Vector position) {
+    public Graphics updateCameraPosition(final Vector position) {
         world.updateCameraPosition(position);
+        return this;
     }
 
     @Override

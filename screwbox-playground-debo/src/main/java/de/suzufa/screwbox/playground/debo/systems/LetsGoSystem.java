@@ -13,8 +13,7 @@ import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.Font;
-import de.suzufa.screwbox.core.graphics.Font.Style;
+import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.LetsGoComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -23,7 +22,7 @@ public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
     private static final Archetype BUBBLES = Archetype.of(LetsGoComponent.class, TransformComponent.class);
-    private static final Font FONT = new Font("FUTURA", 12, Style.BOLD);
+    private static final Pixelfont FONT = Pixelfont.defaultFont(Color.WHITE);
     private static final SoundPool LETS_GO_SOUND = SoundPool.fromFile("sounds/letsgo.wav");
 
     @Override
@@ -51,8 +50,7 @@ public class LetsGoSystem implements EntitySystem {
             bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
-            Color whity = Color.WHITE.withOpacity(letsGoComponent.visibility);
-            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FONT, whity);
+            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FONT, letsGoComponent.visibility, 0.5);
             letsGoComponent.modifier += factor / 16;
             letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - factor / 2);
         }

@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
@@ -151,6 +152,13 @@ public class DefaultWorld implements World {
 
             window.drawRectangle(offset, dimension, color);
         }
+        return this;
+    }
+
+    @Override
+    public World drawTextCentered(Vector position, String text, Pixelfont font, Percentage opacity, double scale) {
+        final Offset offset = toOffset(position);
+        window.drawTextCentered(offset, text, font, opacity, scale * zoom);
         return this;
     }
 
