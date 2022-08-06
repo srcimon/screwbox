@@ -13,7 +13,6 @@ import java.awt.image.RGBImageFilter;
 
 import de.suzufa.screwbox.core.graphics.Color;
 
-//TODO: Make ImageConverter part of Frame
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
 public final class ImageUtil {
 

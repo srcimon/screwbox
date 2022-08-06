@@ -22,7 +22,7 @@ public interface Graphics {
      */
     double updateCameraZoom(double zoom);
 
-    void updateCameraPosition(Vector position);
+    Graphics updateCameraPosition(Vector position);
 
     Vector cameraPosition();
 
