@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
@@ -36,6 +37,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
     private ExecutorService executor;
+    private Frame cursor = Sprite.invisible().singleFrame();
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -199,7 +201,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
-            makeCursorInvisible();
+            setCursor(cursor);
             lastDisplayMode = graphicsDevice.getDisplayMode();
             final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
             final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
@@ -214,7 +216,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public Window close() {
         renderer = new StandbyRenderer();
-        frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
         if (nonNull(lastDisplayMode)) {
             graphicsDevice.setFullScreenWindow(null);
@@ -237,12 +238,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         }
     }
 
-    private void makeCursorInvisible() {
-        final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Sprite.invisible().getFirstImage(),
-                new Point(0, 0), "blank cursor");
-        frame.setCursor(blankCursor);
-    }
-
     @Override
     public boolean isVisible(final WindowBounds bounds) {
         return bounds.intersects(new WindowBounds(Offset.origin(), size()));
@@ -260,18 +255,24 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window setCursor(final Sprite sprite) {
-        if (sprite.frameCount() > 1) {
+    public Window setCursor(final Sprite cursor) {
+        if (cursor.frameCount() > 1) {
             throw new IllegalArgumentException("Only single frame sprites are supported as cursor.");
         }
-        final Frame frame = sprite.singleFrame();
+        final Frame frame = cursor.singleFrame();
         return setCursor(frame);
     }
 
     @Override
-    public Window setCursor(final Frame frame) {
-        // TODO Auto-generated method stub
+    public Window setCursor(final Frame cursor) {
+        final Cursor awtCursor = createAwtCursor(cursor.image());
+        frame.setCursor(awtCursor);
         return this;
+    }
+
+    private Cursor createAwtCursor(final Image image) {
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        return toolkit.createCustomCursor(image, new Point(0, 0), "blank cursor");
     }
 
 }
