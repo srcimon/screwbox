@@ -20,6 +20,8 @@ public final class Frame implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
     private final Duration duration;
     private ImageContainer imageContainer;
 
@@ -66,6 +68,13 @@ public final class Frame implements Serializable {
             return imageFlippedHandV;
         }
 
+    }
+
+    /**
+     * Returns an invisible {@link Frame}.
+     */
+    public static Frame invisible() {
+        return INVISIBLE;
     }
 
     public Frame(final Image image) {

@@ -21,6 +21,7 @@ import de.suzufa.screwbox.core.utils.ResourceLoader;
 public class Sprite implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Sprite INVISIBLE = new Sprite(List.of(Frame.invisible()));
 
     private final List<Frame> frames = new ArrayList<>();
     private Dimension dimension;
@@ -65,8 +66,11 @@ public class Sprite implements Serializable {
         return sprites;
     }
 
+    /**
+     * Returns an invisible Sprite.
+     */
     public static Sprite invisible() {
-        return fromImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+        return INVISIBLE;
     }
 
     public static Sprite fromImage(final Image image) {
