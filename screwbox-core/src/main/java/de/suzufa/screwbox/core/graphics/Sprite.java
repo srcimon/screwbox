@@ -119,7 +119,7 @@ public class Sprite implements Serializable {
      * sprite.
      */
     public Frame singleFrame() {
-        if (frames.size() > 1) {
+        if (frameCount() > 1) {
             throw new IllegalStateException("The sprite has more than one frame.");
         }
         return getFrame(0);
@@ -193,6 +193,11 @@ public class Sprite implements Serializable {
         } catch (final IOException e) {
             throw new IllegalArgumentException("error while reading image: " + fileName, e);
         }
+    }
+
+    // TODO: Test and javadoc
+    public int frameCount() {
+        return frames.size();
     }
 
 }

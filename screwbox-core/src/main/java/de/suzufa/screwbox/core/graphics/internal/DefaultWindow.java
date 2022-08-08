@@ -18,6 +18,7 @@ import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -256,6 +257,18 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public boolean hasFocus() {
         return frame.hasFocus();
+    }
+
+    @Override
+    public Window setCursor(Sprite sprite) {
+        if (sprite.frameCount() > 1)
+            return null;
+    }
+
+    @Override
+    public Window setCursor(Frame frame) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

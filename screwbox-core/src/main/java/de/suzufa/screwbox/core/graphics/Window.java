@@ -135,6 +135,10 @@ public interface Window {
 
     Window moveTo(Offset position);
 
+    Window setCursor(Sprite sprite);
+
+    Window setCursor(Frame frame);
+
     boolean isVisible(WindowBounds bounds);
 
 }
