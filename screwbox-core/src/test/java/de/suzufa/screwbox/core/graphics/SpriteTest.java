@@ -19,6 +19,15 @@ class SpriteTest {
     }
 
     @Test
+    void frameCount_returnsCountOfFrames() {
+        Frame frame = Sprite.invisible().singleFrame();
+
+        Sprite sprite = new Sprite(List.of(frame, frame));
+
+        assertThat(sprite.frameCount()).isEqualTo(2);
+    }
+
+    @Test
     void fromFile_imageFound_returnsSpriteFromFile() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 

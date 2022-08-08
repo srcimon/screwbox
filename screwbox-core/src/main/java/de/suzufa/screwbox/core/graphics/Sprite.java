@@ -89,6 +89,13 @@ public class Sprite implements Serializable {
         this.flippedVertically = flippedVertically;
     }
 
+    /**
+     * Returns the count of {@link Frame}s in the {@link Sprite}.
+     */
+    public int frameCount() {
+        return frames.size();
+    }
+
     public Dimension size() {
         return dimension;
     }
@@ -193,11 +200,6 @@ public class Sprite implements Serializable {
         } catch (final IOException e) {
             throw new IllegalArgumentException("error while reading image: " + fileName, e);
         }
-    }
-
-    // TODO: Test and javadoc
-    public int frameCount() {
-        return frames.size();
     }
 
 }

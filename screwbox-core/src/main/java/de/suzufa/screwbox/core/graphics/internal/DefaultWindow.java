@@ -260,15 +260,18 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window setCursor(Sprite sprite) {
-        if (sprite.frameCount() > 1)
-            return null;
+    public Window setCursor(final Sprite sprite) {
+        if (sprite.frameCount() > 1) {
+            throw new IllegalArgumentException("Only single frame sprites are supported as cursor.");
+        }
+        final Frame frame = sprite.singleFrame();
+        return setCursor(frame);
     }
 
     @Override
-    public Window setCursor(Frame frame) {
+    public Window setCursor(final Frame frame) {
         // TODO Auto-generated method stub
-        return null;
+        return this;
     }
 
 }
