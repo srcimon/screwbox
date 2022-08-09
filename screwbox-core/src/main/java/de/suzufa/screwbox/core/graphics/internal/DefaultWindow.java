@@ -275,4 +275,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         return toolkit.createCustomCursor(image, new Point(0, 0), "blank cursor");
     }
 
+    // TODO: window/fullscreen cursor
+
 }
