@@ -1,5 +1,5 @@
 # ScrewBox
-![Project Logo](logo.png) 
+![Project Logo](logo.gif) 
 
 Minimalist 2d Java game engine.
 
