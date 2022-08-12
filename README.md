@@ -6,8 +6,7 @@ Minimalist 2d Java game engine.
 [![Build](https://github.com/simonbas/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/simonbas/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox)
 
 ## Current status
-
-ScrewBox is a personal pet project since februrary 2021.
+ScrewBox is a personal pet project since february 2021. Once a positive result of covid isolation it has no constant commits today. If you want to know what this can do. Download into your workspace and start `DeboApplication`. Enjoy.
 
 ## Libraries used
 - JUnit5: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
