@@ -104,10 +104,6 @@ public class Sprite implements Serializable {
         return dimension;
     }
 
-    public Image getFirstImage() {
-        return getImage(0);
-    }
-
     public Image getImage(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
         return getImage(frameNr);
