@@ -57,8 +57,8 @@ public final class SpriteLoader {
             // read animated images and properties
             final List<Frame> frames = new ArrayList<>();
             for (final FrameEntity frame : tileEntity.animation()) {
-                final Image currentImage = dictionary.findById(tileset.getFirstgid() + frame.tileid())
-                        .getFirstImage();
+                final Image currentImage = dictionary.findById(tileset.getFirstgid() + frame.tileid()).singleFrame()
+                        .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frame.duration())));
             }
             final Sprite animatedSprite = new Sprite(frames);// TODO: add Frame per Frame / validate frame

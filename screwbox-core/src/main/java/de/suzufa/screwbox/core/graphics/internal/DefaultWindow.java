@@ -18,6 +18,7 @@ import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Font;
+import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -237,7 +238,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     private void makeCursorInvisible() {
-        final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Sprite.invisible().getFirstImage(),
+        final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Frame.invisible().image(),
                 new Point(0, 0), "blank cursor");
         frame.setCursor(blankCursor);
     }
