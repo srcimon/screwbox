@@ -38,8 +38,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
     private ExecutorService executor;
-    private Cursor windowCursor = Cursor.getDefaultCursor();
-    private Cursor fullscreenCursor = Cursor.getDefaultCursor();
+    private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
+    private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
