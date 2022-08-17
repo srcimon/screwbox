@@ -14,6 +14,8 @@ public class DeboApplication {
 
         engine.ui().setLayouter(new WobblyUiLayouter());
 
+        engine.graphics().window().setFullscreenCursorHidden();
+
         engine.scenes()
                 .add(new DeadScene())
                 .add(new PauseScene())

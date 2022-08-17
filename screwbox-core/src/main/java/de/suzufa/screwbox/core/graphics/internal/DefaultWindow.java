@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
@@ -36,6 +37,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
     private ExecutorService executor;
+    private Cursor windowCursor = Cursor.getDefaultCursor();
+    private Cursor fullscreenCursor = Cursor.getDefaultCursor();
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -199,7 +202,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
-            makeCursorInvisible();
             lastDisplayMode = graphicsDevice.getDisplayMode();
             final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
             final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
@@ -208,6 +210,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setFullScreenWindow(frame);
         }
         renderer = new SeparateThreadRenderer(new DefaultRenderer(frame), executor);
+        updateCursor();
         return this;
     }
 
@@ -237,12 +240,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         }
     }
 
-    private void makeCursorInvisible() {
-        final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Frame.invisible().image(),
-                new Point(0, 0), "blank cursor");
-        frame.setCursor(blankCursor);
-    }
-
     @Override
     public boolean isVisible(final WindowBounds bounds) {
         return bounds.intersects(new WindowBounds(Offset.origin(), size()));
@@ -257,6 +254,62 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     @Override
     public boolean hasFocus() {
         return frame.hasFocus();
+    }
+
+    @Override
+    public Window setFullscreenCursor(Frame cursor) {
+        fullscreenCursor = createCustomCursor(cursor.image());
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setWindowCursor(Frame cursor) {
+        windowCursor = createCustomCursor(cursor.image());
+        updateCursor();
+        return this;
+    }
+
+    private void updateCursor() {
+        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
+
+    }
+
+    private Cursor createInvisibleCursor() {
+        return createCustomCursor(Frame.invisible().image());
+    }
+
+    private Cursor createCustomCursor(Image image) {
+        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
+                "custom cursor");
+    }
+
+    @Override
+    public Window setFullscreenDefaultCursor() {
+        fullscreenCursor = Cursor.getDefaultCursor();
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setWindowDefaultCursor() {
+        windowCursor = Cursor.getDefaultCursor();
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setFullscreenCursorHidden() {
+        fullscreenCursor = createInvisibleCursor();
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setWindowCursorHidden() {
+        windowCursor = createInvisibleCursor();
+        updateCursor();
+        return this;
     }
 
 }

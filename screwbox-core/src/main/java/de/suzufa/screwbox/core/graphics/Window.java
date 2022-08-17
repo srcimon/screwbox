@@ -135,6 +135,60 @@ public interface Window {
 
     Window moveTo(Offset position);
 
+    // TODO: javadoc / Test
+    default Window setCursor(Sprite cursor) {
+        return setCursor(cursor.singleFrame());
+    }
+
+    // TODO: javadoc / Test
+    default Window setCursor(Frame cursor) {
+        setWindowCursor(cursor);
+        setFullscreenCursor(cursor);
+        return this;
+    }
+
+    // TODO: javadoc / Test
+    default Window setFullscreenCursor(Sprite cursor) {
+        return setFullscreenCursor(cursor.singleFrame());
+    }
+
+    // TODO: javadoc / Test
+    Window setFullscreenCursor(Frame cursor);
+
+    // TODO: javadoc / Test
+    default Window setWindowCursor(Sprite cursor) {
+        return setWindowCursor(cursor.singleFrame());
+    }
+
+    // TODO: javadoc / Test
+    Window setWindowCursor(Frame cursor);
+
+    // TODO: javadoc / Test
+    default Window setDefaultCursor() {
+        setWindowDefaultCursor();
+        setFullscreenDefaultCursor();
+        return this;
+    }
+
+    // TODO: javadoc / Test
+    Window setFullscreenDefaultCursor();
+
+    // TODO: javadoc / Test
+    Window setWindowDefaultCursor();
+
+    // TODO: javadoc / Test
+    default Window setCursorHidden() {
+        setWindowCursorHidden();
+        setFullscreenCursorHidden();
+        return this;
+    }
+
+    // TODO: javadoc / Test
+    Window setFullscreenCursorHidden();
+
+    // TODO: javadoc / Test
+    Window setWindowCursorHidden();
+
     boolean isVisible(WindowBounds bounds);
 
 }
