@@ -2,6 +2,7 @@ package de.suzufa.screwbox.playground.debo;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
+import de.suzufa.screwbox.core.graphics.PredefinedCursor;
 import de.suzufa.screwbox.core.ui.WobblyUiLayouter;
 import de.suzufa.screwbox.playground.debo.scenes.DeadScene;
 import de.suzufa.screwbox.playground.debo.scenes.PauseScene;
@@ -13,6 +14,8 @@ public class DeboApplication {
         Engine engine = ScrewBox.createEngine();
 
         engine.ui().setLayouter(new WobblyUiLayouter());
+
+        engine.graphics().window().setFullscreenCursor(PredefinedCursor.HIDDEN);
 
         engine.scenes()
                 .add(new DeadScene())

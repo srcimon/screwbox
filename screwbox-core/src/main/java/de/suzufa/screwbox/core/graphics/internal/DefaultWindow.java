@@ -24,6 +24,7 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
+import de.suzufa.screwbox.core.graphics.PredefinedCursor;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
@@ -275,41 +276,33 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     }
 
-    private Cursor createInvisibleCursor() {
-        return createCustomCursor(Frame.invisible().image());
-    }
-
     private Cursor createCustomCursor(Image image) {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
     }
 
     @Override
-    public Window setFullscreenDefaultCursor() {
-        fullscreenCursor = Cursor.getDefaultCursor();
-        updateCursor();
+    public Window setWindowCursor(PredefinedCursor cursor) {
+        windowCursor = cursorFrom(cursor);
         return this;
     }
 
     @Override
-    public Window setWindowDefaultCursor() {
-        windowCursor = Cursor.getDefaultCursor();
-        updateCursor();
+    public Window setFullscreenCursor(PredefinedCursor cursor) {
+        fullscreenCursor = cursorFrom(cursor);
         return this;
     }
 
-    @Override
-    public Window setFullscreenCursorHidden() {
-        fullscreenCursor = createInvisibleCursor();
-        updateCursor();
-        return this;
-    }
-
-    @Override
-    public Window setWindowCursorHidden() {
-        windowCursor = createInvisibleCursor();
-        updateCursor();
-        return this;
+    private Cursor cursorFrom(PredefinedCursor cursor) {
+        switch (cursor) {
+        case DEFAULT: {
+            return Cursor.getDefaultCursor();
+        }
+        case HIDDEN: {
+            return createCustomCursor(Frame.invisible().image());
+        }
+        }
+        throw new IllegalStateException("Unknown predefined cursor: " + cursor);
     }
 
 }
