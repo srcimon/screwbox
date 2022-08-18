@@ -135,43 +135,82 @@ public interface Window {
 
     Window moveTo(Offset position);
 
-    // TODO: javadoc / Test
-    default Window setCursor(PredefinedCursor cursor) {
+    /**
+     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * is in fullscreen and window mode.
+     * 
+     * @see #setFullscreenCursor(PredefinedCursor)
+     * @see #setWindowCursor(PredefinedCursor)
+     */
+    default Window setCursor(final PredefinedCursor cursor) {
         setWindowCursor(cursor);
         setFullscreenCursor(cursor);
         return this;
     }
 
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * is in window mode.
+     * 
+     * @see #setCursor(PredefinedCursor)
+     * @see #setFullscreenCursor(PredefinedCursor)
+     */
     Window setWindowCursor(PredefinedCursor cursor);
 
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * is in fullscreen mode.
+     * 
+     * @see #setCursor(PredefinedCursor)
+     * @see #setWindowCursor(PredefinedCursor)
+     */
     Window setFullscreenCursor(PredefinedCursor cursor);
 
-    // TODO: javadoc / Test
-    default Window setCursor(Sprite cursor) {
+    /**
+     * Updates the mouse cursor with the given {@link Sprite} when game is in
+     * fullscreen and window mode. Supports only {@link Sprite}s with one
+     * {@link Frame}.
+     * 
+     * @see #setFullscreenCursor(Sprite)
+     * @see #setWindowCursor(Sprite)
+     */
+    default Window setCursor(final Sprite cursor) {
         return setCursor(cursor.singleFrame());
     }
 
-    // TODO: javadoc / Test
-    default Window setCursor(Frame cursor) {
-        setWindowCursor(cursor);
-        setFullscreenCursor(cursor);
-        return this;
-    }
-
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor with the given {@link Sprite} when game is in
+     * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
+     * 
+     * @see #setCursor(Sprite)
+     * @see #setWindowCursor(Sprite)
+     */
+    // TODO: TEst
     default Window setFullscreenCursor(Sprite cursor) {
         return setFullscreenCursor(cursor.singleFrame());
     }
 
-    // TODO: javadoc / Test
-    Window setFullscreenCursor(Frame cursor);
-
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor with the given {@link Sprite} when game is in
+     * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
+     * 
+     * @see #setCursor(Sprite)
+     * @see #setWindowCursor(Sprite)
+     */
+    // TODO: TEst
     default Window setWindowCursor(Sprite cursor) {
         return setWindowCursor(cursor.singleFrame());
     }
+
+    // TODO: javadoc / Test
+    default Window setCursor(final Frame cursor) {
+        setWindowCursor(cursor);
+        setFullscreenCursor(cursor);
+        return this;
+    }
+
+    // TODO: javadoc / Test
+    Window setFullscreenCursor(Frame cursor);
 
     Window setWindowCursor(Frame cursor);
 

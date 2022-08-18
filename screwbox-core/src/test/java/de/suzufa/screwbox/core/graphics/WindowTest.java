@@ -1,8 +1,11 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,6 +101,33 @@ class WindowTest {
         window.drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half());
 
         verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
+    }
+
+    @Test
+    void setCursor_predefinedCursor_setsFullscreenAndWindowCursor() {
+        window.setCursor(PredefinedCursor.HIDDEN);
+
+        verify(window).setWindowCursor(PredefinedCursor.HIDDEN);
+        verify(window).setFullscreenCursor(PredefinedCursor.HIDDEN);
+    }
+
+    @Test
+    void setCursor_multiImageSprite_exception() {
+        Sprite multiImageSprite = new Sprite(List.of(Frame.invisible(), Frame.invisible()));
+
+        assertThatThrownBy(() -> window.setCursor(multiImageSprite))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("The sprite has more than one frame.");
+    }
+
+    @Test
+    void setCursor_singleFrameSprite_exception() {
+        Sprite sprite = Sprite.invisible();
+
+        window.setCursor(sprite);
+
+        verify(window).setFullscreenCursor(sprite.singleFrame());
+        verify(window).setWindowCursor(sprite.singleFrame());
     }
 
     private Sprite sprite() {
