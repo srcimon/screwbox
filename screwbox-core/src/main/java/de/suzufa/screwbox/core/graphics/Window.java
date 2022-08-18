@@ -216,6 +216,7 @@ public interface Window {
         return this;
     }
 
+    // TODO: Frame.scaledClone() support scaled cursors
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen mode.
