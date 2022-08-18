@@ -202,16 +202,36 @@ public interface Window {
         return setWindowCursor(cursor.singleFrame());
     }
 
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor with the given {@link Frame} when game is in
+     * fullscreen and window mode.
+     * 
+     * @see #setWindowCursor(Frame)
+     * @see #setFullscreenCursor(Frame)
+     */
+    // TODO: Test
     default Window setCursor(final Frame cursor) {
         setWindowCursor(cursor);
         setFullscreenCursor(cursor);
         return this;
     }
 
-    // TODO: javadoc / Test
+    /**
+     * Updates the mouse cursor with the given {@link Frame} when game is in
+     * fullscreen mode.
+     * 
+     * @see #setCursor(Frame)
+     * @see #setWindowCursor(Frame)
+     */
     Window setFullscreenCursor(Frame cursor);
 
+    /**
+     * Updates the mouse cursor with the given {@link Frame} when game is in window
+     * mode.
+     * 
+     * @see #setCursor(Frame)
+     * @see #setFullscreenCursor(Frame)
+     */
     Window setWindowCursor(Frame cursor);
 
     boolean isVisible(WindowBounds bounds);
