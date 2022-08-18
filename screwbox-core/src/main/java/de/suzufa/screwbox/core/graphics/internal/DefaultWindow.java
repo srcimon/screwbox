@@ -271,16 +271,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         return this;
     }
 
-    private void updateCursor() {
-        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
-
-    }
-
-    private Cursor createCustomCursor(final Image image) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
-                "custom cursor");
-    }
-
     @Override
     public Window setWindowCursor(final PredefinedCursor cursor) {
         windowCursor = cursorFrom(cursor);
@@ -303,4 +293,13 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         throw new IllegalStateException("Unknown predefined cursor: " + cursor);
     }
 
+    private void updateCursor() {
+        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
+
+    }
+
+    private Cursor createCustomCursor(final Image image) {
+        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
+                "custom cursor");
+    }
 }
