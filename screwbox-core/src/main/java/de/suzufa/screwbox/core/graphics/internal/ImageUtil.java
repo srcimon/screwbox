@@ -1,7 +1,9 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -16,6 +18,8 @@ import de.suzufa.screwbox.core.graphics.Color;
 //TODO: inline ImageUtil in Frame
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
 public final class ImageUtil {
+
+    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
 
     private ImageUtil() {
     }
@@ -42,7 +46,11 @@ public final class ImageUtil {
         };
 
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        return Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return TOOLKIT.createImage(imageProducer);
+    }
+
+    public static Cursor createCursor(final Image image) {
+        return TOOLKIT.createCustomCursor(image, new Point(0, 0), "custom");
     }
 
     // TODO: simplyfiy and test
@@ -76,7 +84,7 @@ public final class ImageUtil {
 
     public static Image applyFilter(Image image, RGBImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
+        final Image newImage = TOOLKIT.createImage(imageProducer);
         return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
     }
 

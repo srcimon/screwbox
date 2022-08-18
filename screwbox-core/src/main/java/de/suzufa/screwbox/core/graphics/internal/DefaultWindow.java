@@ -8,9 +8,6 @@ import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -259,14 +256,14 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     @Override
     public Window setFullscreenCursor(Frame cursor) {
-        fullscreenCursor = createCustomCursor(cursor.image());
+        fullscreenCursor = ImageUtil.createCursor(cursor.image());
         updateCursor();
         return this;
     }
 
     @Override
     public Window setWindowCursor(Frame cursor) {
-        windowCursor = createCustomCursor(cursor.image());
+        windowCursor = ImageUtil.createCursor(cursor.image());
         updateCursor();
         return this;
     }
@@ -274,11 +271,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private void updateCursor() {
         this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
 
-    }
-
-    private Cursor createCustomCursor(Image image) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
-                "custom cursor");
     }
 
     @Override
@@ -299,7 +291,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             return Cursor.getDefaultCursor();
         }
         case HIDDEN: {
-            return createCustomCursor(Frame.invisible().image());
+            return ImageUtil.createCursor(Frame.invisible().image());
         }
         }
         throw new IllegalStateException("Unknown predefined cursor: " + cursor);
