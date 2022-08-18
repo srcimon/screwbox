@@ -173,7 +173,6 @@ public interface Window {
         return setWindowCursor(cursor.singleFrame());
     }
 
-    // TODO: javadoc / Test
     Window setWindowCursor(Frame cursor);
 
     boolean isVisible(WindowBounds bounds);

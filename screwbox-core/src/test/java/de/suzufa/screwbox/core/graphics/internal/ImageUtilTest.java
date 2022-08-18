@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
@@ -14,15 +13,6 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
 class ImageUtilTest {
-
-    @Test
-    void createCursor_returnsCursor() throws Exception {
-        BufferedImage image = ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
-
-        Cursor cursor = ImageUtil.createCursor(image);
-        assertThat(cursor.getName()).isEqualTo("custom");
-        assertThat(cursor.getType()).isEqualTo(Cursor.CUSTOM_CURSOR);
-    }
 
     @Test
     void makeColorTransparent_colorNotPresent_doenstMakeAnythingTransparent() throws Exception {
