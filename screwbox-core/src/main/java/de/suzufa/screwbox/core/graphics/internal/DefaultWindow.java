@@ -258,14 +258,14 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     }
 
     @Override
-    public Window setFullscreenCursor(Frame cursor) {
+    public Window setFullscreenCursor(final Frame cursor) {
         fullscreenCursor = createCustomCursor(cursor.image());
         updateCursor();
         return this;
     }
 
     @Override
-    public Window setWindowCursor(Frame cursor) {
+    public Window setWindowCursor(final Frame cursor) {
         windowCursor = createCustomCursor(cursor.image());
         updateCursor();
         return this;
@@ -276,31 +276,29 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     }
 
-    private Cursor createCustomCursor(Image image) {
+    private Cursor createCustomCursor(final Image image) {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
     }
 
     @Override
-    public Window setWindowCursor(PredefinedCursor cursor) {
+    public Window setWindowCursor(final PredefinedCursor cursor) {
         windowCursor = cursorFrom(cursor);
         return this;
     }
 
     @Override
-    public Window setFullscreenCursor(PredefinedCursor cursor) {
+    public Window setFullscreenCursor(final PredefinedCursor cursor) {
         fullscreenCursor = cursorFrom(cursor);
         return this;
     }
 
-    private Cursor cursorFrom(PredefinedCursor cursor) {
-        switch (cursor) {
-        case DEFAULT: {
+    private Cursor cursorFrom(final PredefinedCursor cursor) {
+        if (PredefinedCursor.DEFAULT == cursor) {
             return Cursor.getDefaultCursor();
         }
-        case HIDDEN: {
+        if (PredefinedCursor.HIDDEN == cursor) {
             return createCustomCursor(Frame.invisible().image());
-        }
         }
         throw new IllegalStateException("Unknown predefined cursor: " + cursor);
     }
