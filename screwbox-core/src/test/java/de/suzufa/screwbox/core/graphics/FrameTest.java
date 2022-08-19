@@ -33,14 +33,23 @@ class FrameTest {
     }
 
     @Test
-    void replaceColor_replacesOldColorWithNewOne() {
+    void replaceColor_doenstReplaceColorInOldFrame() {
         Color oldColor = frame.colorAt(4, 4);
 
         frame.replaceColor(oldColor, Color.BLUE);
 
         Color newColor = frame.colorAt(4, 4);
-        assertThat(oldColor).isNotEqualTo(newColor);
-        assertThat(newColor).isEqualTo(Color.BLUE);
+        assertThat(oldColor).isEqualTo(newColor);
+    }
+
+    @Test
+    void replaceColor_replaceColorInNewFrame() {
+        Color oldColor = frame.colorAt(4, 4);
+
+        Frame newFrame = frame.replaceColor(oldColor, Color.BLUE);
+
+        Color newColor = newFrame.colorAt(4, 4);
+        assertThat(newColor).isNotEqualTo(oldColor).isEqualTo(Color.BLUE);
     }
 
     @Test

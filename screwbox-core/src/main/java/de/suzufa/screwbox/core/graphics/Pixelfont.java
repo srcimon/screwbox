@@ -27,6 +27,7 @@ public class Pixelfont implements Serializable {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
             'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
             ',', ':', '!', '?', '-');
+    private static final Pixelfont DEFAULT_FONT = defaultFontBlack();
 
     private static final long serialVersionUID = 1L;
 
@@ -39,10 +40,15 @@ public class Pixelfont implements Serializable {
      * numbers and symbols. Creating the font is quite slow.
      */
     public static Pixelfont defaultFont(final Color color) {
+        final Color newColor = requireNonNull(color, "Color must not be null.");
+        return DEFAULT_FONT.replaceColor(Color.BLACK, newColor);
+    }
+
+    private static Pixelfont defaultFontBlack() {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile("default_font.png", square(7), 1);
         font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
-        return font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
+        return font;
     }
 
     /**
