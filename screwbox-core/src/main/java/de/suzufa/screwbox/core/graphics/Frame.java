@@ -79,7 +79,7 @@ public final class Frame implements Serializable {
     }
 
     public Frame(final Image image) {
-        this(image, Duration.zero());
+        this(image, Duration.none());
     }
 
     public Frame(final Image image, final Duration duration) {

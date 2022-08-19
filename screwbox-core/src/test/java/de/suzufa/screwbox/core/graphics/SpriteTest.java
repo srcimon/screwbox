@@ -6,9 +6,15 @@ import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.awt.Image;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
 
 class SpriteTest {
 
@@ -17,6 +23,8 @@ class SpriteTest {
         Sprite sprite = Sprite.invisible();
 
         assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
+        assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(Color.TRANSPARENT);
+        assertThat(sprite.duration()).isEqualTo(Duration.none());
     }
 
     @Test
@@ -162,4 +170,18 @@ class SpriteTest {
         assertThat(scaled.isFlippedHorizontally()).isTrue();
         assertThat(scaled.isFlippedVertically()).isTrue();
     }
+
+    @ParameterizedTest
+    @CsvSource({ "true,true", "true,false", "false,true", "false,false" })
+    void getImage_oneImage_returnsImageOfFrame(boolean flippedH, boolean flippedV) {
+        Sprite sprite = Sprite.invisible();
+        sprite.setFlippedHorizontally(flippedH);
+        sprite.setFlippedVertically(flippedV);
+
+        Image image = sprite.getImage(Time.now());
+
+        Image expectedImage = sprite.singleFrame().image(flippedH, flippedV);
+        assertThat(image).isEqualTo(expectedImage);
+    }
+
 }

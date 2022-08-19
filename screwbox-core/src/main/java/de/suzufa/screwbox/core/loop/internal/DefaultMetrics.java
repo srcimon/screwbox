@@ -13,10 +13,10 @@ public class DefaultMetrics implements Metrics {
     private int fps = 0;
     private long frameNumber;
     private double updateFactor = 0;
-    private Duration updateDuration = Duration.zero();
+    private Duration updateDuration = Duration.none();
     private Time lastUpdate = Time.now();
     private final Time started = Time.now();
-    private Duration runtimeDuration = Duration.zero();
+    private Duration runtimeDuration = Duration.none();
 
     @Override
     public int framesPerSecond() {

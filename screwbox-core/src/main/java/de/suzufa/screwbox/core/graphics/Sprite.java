@@ -26,7 +26,7 @@ public class Sprite implements Serializable {
     private final List<Frame> frames = new ArrayList<>();
     private Dimension dimension;
     private final Time started = Time.now();
-    private Duration duration = Duration.zero();
+    private Duration duration = Duration.none();
     private boolean flippedHorizontally = false;
     private boolean flippedVertically = false;
 
@@ -112,6 +112,9 @@ public class Sprite implements Serializable {
         return dimension;
     }
 
+    /**
+     * Returns the {@link Image} for the given {@link Time}.
+     */
     public Image getImage(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
         return getImage(frameNr);
