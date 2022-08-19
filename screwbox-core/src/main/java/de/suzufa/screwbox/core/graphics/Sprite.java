@@ -148,6 +148,7 @@ public class Sprite implements Serializable {
         return frames.get(nr);
     }
 
+    // TODO: Return new instance - dont change existing image
     /**
      * Replaces a color in all animation-{@link Frame}s of the {@link Sprite}.
      * 
@@ -157,6 +158,15 @@ public class Sprite implements Serializable {
         for (final var frame : frames) {
             frame.replaceColor(oldColor, newColor);
         }
+    }
+
+    // TODO: Test and Javadoc
+    public Sprite scaled(final double scale) {
+        final List<Frame> scaledFrames = new ArrayList<>();
+        for (final var frame : this.frames) {
+            scaledFrames.add(frame.scaled(scale));
+        }
+        return new Sprite(scaledFrames);
     }
 
     private void addFrame(final Frame frame) {

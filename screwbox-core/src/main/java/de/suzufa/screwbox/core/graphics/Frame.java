@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipVertically;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.scale;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -141,12 +142,11 @@ public final class Frame implements Serializable {
         imageContainer = new ImageContainer(newImage); // create new flipped versions of the image
     }
 
+    // TODO: Test and Javadoc
     // TODO: javadoc and fix cast and test
     // TODO: check no negative scaling
-    public Frame scaledInstance(double scale) {
-        final int width = (int) (size().width() * scale);
-        final int height = (int) (size().height() * scale);
-        return new Frame(image().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+    public Frame scaled(final double scale) {
+        return new Frame(scale(image(), scale));
     }
 
 }
