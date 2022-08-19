@@ -184,4 +184,6 @@ class SpriteTest {
         assertThat(image).isEqualTo(expectedImage);
     }
 
+    // TODO: getImage(Time) -> animatedFromFile(...)
+
 }
