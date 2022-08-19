@@ -55,16 +55,28 @@ public class Sprite implements Serializable {
     }
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
-        final var image = imageFromFile(fileName);
         final var sprites = new ArrayList<Sprite>();
-        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
-            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
-                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
-                sprites.add(fromImage(subimage));
-            }
+        for (final var subimage : extractSubImages(fileName, dimension, padding)) {
+            sprites.add(fromImage(subimage));
         }
         return sprites;
     }
+
+    private static ArrayList<Image> extractSubImages(final String fileName, final Dimension dimension,
+            final int padding) {
+        final var image = imageFromFile(fileName);
+        final var subImages = new ArrayList<Image>();
+        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
+            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
+                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
+                subImages.add(subimage);
+            }
+        }
+        return subImages;
+    }
+
+    // TODO: public static Sprite animatedFromFile(String fileName, Dimension
+    // dimension, Duration duration);
 
     /**
      * Returns an invisible {@link Sprite}.
