@@ -54,7 +54,7 @@ public class Sprite implements Serializable {
         return multipleFromFile(fileName, dimension, 0);
     }
 
-    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, int padding) {
+    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var image = imageFromFile(fileName);
         final var sprites = new ArrayList<Sprite>();
         for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
@@ -67,12 +67,16 @@ public class Sprite implements Serializable {
     }
 
     /**
-     * Returns an invisible Sprite.
+     * Returns an invisible {@link Sprite}.
      */
     public static Sprite invisible() {
         return INVISIBLE;
     }
 
+    /**
+     * Returns a {@link Sprite} with one {@link Frame} containing the given
+     * {@link Image}.
+     */
     public static Sprite fromImage(final Image image) {
         return new Sprite(image);
     }
@@ -100,6 +104,10 @@ public class Sprite implements Serializable {
         return frames.size();
     }
 
+    /**
+     * Returns the size of the {@link Sprite}. Every {@link Frame} in the sprites
+     * animation has the same size.
+     */
     public Dimension size() {
         return dimension;
     }
@@ -159,19 +167,21 @@ public class Sprite implements Serializable {
         for (final var frame : frames) {
             recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
-        Sprite sprite = new Sprite(recoloredFrames);
+        final Sprite sprite = new Sprite(recoloredFrames);
         sprite.setFlippedHorizontally(flippedHorizontally);
         sprite.setFlippedVertically(flippedVertically);
         return sprite;
     }
 
-    // TODO: Test and Javadoc
+    /**
+     * Returns a scaled version of this {@link Sprite}.
+     */
     public Sprite scaled(final double scale) {
         final List<Frame> scaledFrames = new ArrayList<>();
         for (final var frame : this.frames) {
             scaledFrames.add(frame.scaled(scale));
         }
-        Sprite newSprite = new Sprite(scaledFrames);
+        final Sprite newSprite = new Sprite(scaledFrames);
         newSprite.setFlippedHorizontally(flippedHorizontally);
         newSprite.setFlippedVertically(flippedVertically);
         return newSprite;
