@@ -134,12 +134,13 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Replaces the given {@link Color} with the new one. Is quite costly.
+     * Returns a new instance. The new {@link Frame}s old {@link Color} is replaced
+     * with a new one. This method is quite slow.
      */
-    public void replaceColor(final Color oldColor, final Color newColor) {
+    public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
         final Image newImage = applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
-        imageContainer = new ImageContainer(newImage); // create new flipped versions of the image
+        return new Frame(newImage);
     }
 
     // TODO: Test and Javadoc

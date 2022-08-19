@@ -112,13 +112,25 @@ class SpriteTest {
     }
 
     @Test
-    void replaceColor_replacesColorOfFrames() {
+    void replaceColor_doenstReplacesColorOfOldFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
         Color oldColor = sprite.singleFrame().colorAt(origin());
 
         sprite.replaceColor(oldColor, BLACK);
 
-        Color newColor = sprite.singleFrame().colorAt(origin());
-        assertThat(newColor).isNotEqualTo(oldColor).isEqualTo(BLACK);
+        assertThat(oldColor).isNotEqualTo(BLACK);
+        assertThat(oldColor).isEqualTo(oldColor);
+    }
+
+    @Test
+    void replaceColor_replacesColorOfNewFrames() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+        Color oldColor = sprite.singleFrame().colorAt(origin());
+
+        Sprite newSprite = sprite.replaceColor(oldColor, BLACK);
+        Color newColor = newSprite.singleFrame().colorAt(origin());
+
+        assertThat(oldColor).isNotEqualTo(BLACK);
+        assertThat(newColor).isEqualTo(BLACK);
     }
 }

@@ -148,16 +148,18 @@ public class Sprite implements Serializable {
         return frames.get(nr);
     }
 
-    // TODO: Return new instance - dont change existing image
     /**
-     * Replaces a color in all animation-{@link Frame}s of the {@link Sprite}.
+     * Returns a new {@link Sprite}. The old {@link Color} in alle {@link Frame}s is
+     * replaced with a new one. This method is quite slow.
      * 
      * @see Frame#replaceColor(Color, Color)
      */
-    public void replaceColor(final Color oldColor, final Color newColor) {
+    public Sprite replaceColor(final Color oldColor, final Color newColor) {
+        final List<Frame> recoloredFrames = new ArrayList<>();
         for (final var frame : frames) {
-            frame.replaceColor(oldColor, newColor);
+            recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
+        return new Sprite(recoloredFrames);
     }
 
     // TODO: Test and Javadoc

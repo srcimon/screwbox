@@ -36,15 +36,13 @@ public class Pixelfont implements Serializable {
 
     /**
      * Creates a monospace {@link Font}, containing a restricted set of characters,
-     * numbers and symbols. Creating the font is quite costly, so avoid doing it
-     * more than once.
+     * numbers and symbols. Creating the font is quite slow.
      */
     public static Pixelfont defaultFont(final Color color) {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile("default_font.png", square(7), 1);
         font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
-        font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
-        return font;
+        return font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
     }
 
     /**
@@ -149,9 +147,14 @@ public class Pixelfont implements Serializable {
         return height;
     }
 
-    private void replaceColor(final Color oldColor, final Color newColor) {
-        for (var sprite : characters.values()) {
-            sprite.replaceColor(oldColor, newColor);
+    private Pixelfont replaceColor(final Color oldColor, final Color newColor) {
+        final Pixelfont newFont = new Pixelfont();
+
+        for (final var character : characters.entrySet()) {
+            final Sprite recoloredSprite = character.getValue().replaceColor(oldColor, newColor);
+            newFont.addCharacter(character.getKey(), recoloredSprite);
         }
+        newFont.setPadding(padding);
+        return newFont;
     }
 }
