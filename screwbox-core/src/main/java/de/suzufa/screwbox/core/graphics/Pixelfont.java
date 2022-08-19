@@ -32,16 +32,23 @@ public class Pixelfont implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
+    private static final Map<Color, Pixelfont> FONT_CACHE = new HashMap<>();
     private int padding = 1;
     private int height = 0;
 
     /**
      * Creates a monospace {@link Font}, containing a restricted set of characters,
-     * numbers and symbols. Creating the font is quite slow.
+     * numbers and symbols. First call for every {@link Color} is quite slow.
      */
     public static Pixelfont defaultFont(final Color color) {
         final Color newColor = requireNonNull(color, "Color must not be null.");
-        return DEFAULT_FONT.replaceColor(Color.BLACK, newColor);
+        if (FONT_CACHE.containsKey(newColor)) {
+            return FONT_CACHE.get(newColor);
+        }
+        // TODO: cache.getOrElse(...
+        Pixelfont newFont = DEFAULT_FONT.replaceColor(Color.BLACK, newColor);
+        FONT_CACHE.put(newColor, newFont);
+        return newFont;
     }
 
     private static Pixelfont defaultFontBlack() {
