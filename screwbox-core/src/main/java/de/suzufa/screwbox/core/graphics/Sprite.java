@@ -159,7 +159,10 @@ public class Sprite implements Serializable {
         for (final var frame : frames) {
             recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
-        return new Sprite(recoloredFrames);
+        Sprite sprite = new Sprite(recoloredFrames);
+        sprite.setFlippedHorizontally(flippedHorizontally);
+        sprite.setFlippedVertically(flippedVertically);
+        return sprite;
     }
 
     // TODO: Test and Javadoc
@@ -168,7 +171,10 @@ public class Sprite implements Serializable {
         for (final var frame : this.frames) {
             scaledFrames.add(frame.scaled(scale));
         }
-        return new Sprite(scaledFrames);
+        Sprite newSprite = new Sprite(scaledFrames);
+        newSprite.setFlippedHorizontally(flippedHorizontally);
+        newSprite.setFlippedVertically(flippedVertically);
+        return newSprite;
     }
 
     private void addFrame(final Frame frame) {

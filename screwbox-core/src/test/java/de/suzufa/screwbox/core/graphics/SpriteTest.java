@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.Color.BLACK;
+import static de.suzufa.screwbox.core.graphics.Dimension.square;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -90,7 +91,7 @@ class SpriteTest {
 
         Frame frame = sprite.singleFrame();
 
-        assertThat(frame.size()).isEqualTo(Dimension.square(16));
+        assertThat(frame.size()).isEqualTo(square(16));
     }
 
     @Test
@@ -114,6 +115,7 @@ class SpriteTest {
     @Test
     void replaceColor_doenstReplacesColorOfOldFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
+
         Color oldColor = sprite.singleFrame().colorAt(origin());
 
         sprite.replaceColor(oldColor, BLACK);
@@ -125,6 +127,9 @@ class SpriteTest {
     @Test
     void replaceColor_replacesColorOfNewFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
+        sprite.setFlippedHorizontally(true);
+        sprite.setFlippedVertically(true);
+
         Color oldColor = sprite.singleFrame().colorAt(origin());
 
         Sprite newSprite = sprite.replaceColor(oldColor, BLACK);
@@ -132,5 +137,29 @@ class SpriteTest {
 
         assertThat(oldColor).isNotEqualTo(BLACK);
         assertThat(newColor).isEqualTo(BLACK);
+        assertThat(newSprite.isFlippedHorizontally()).isTrue();
+        assertThat(newSprite.isFlippedVertically()).isTrue();
+    }
+
+    @Test
+    void scaled_doesntChangeOriginal() {
+        Sprite original = Sprite.invisible();
+
+        original.scaled(4);
+
+        assertThat(original.size()).isEqualTo(square(1));
+    }
+
+    @Test
+    void scaled_createsSpriteWithNewSize() {
+        Sprite original = Sprite.invisible();
+        original.setFlippedHorizontally(true);
+        original.setFlippedVertically(true);
+
+        Sprite scaled = original.scaled(4);
+
+        assertThat(scaled.size()).isEqualTo(square(4));
+        assertThat(scaled.isFlippedHorizontally()).isTrue();
+        assertThat(scaled.isFlippedVertically()).isTrue();
     }
 }
