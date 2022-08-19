@@ -69,6 +69,7 @@ public class Pixelfont implements Serializable {
      * Sets the space between characters of this font.
      */
     public void setPadding(final int padding) {
+        // TODO: padding must not below 0
         this.padding = padding;
     }
 
