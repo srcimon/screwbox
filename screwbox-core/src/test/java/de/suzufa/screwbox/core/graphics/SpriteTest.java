@@ -184,6 +184,13 @@ class SpriteTest {
         assertThat(image).isEqualTo(expectedImage);
     }
 
+    @Test
+    void animatedFromFile_validFileFound_returnsAnimatedSprite() {
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(2), 1, Duration.ofMillis(100));
+
+        assertThat(animatedSprite.frameCount()).isEqualTo(25);
+        assertThat(animatedSprite.duration()).isEqualTo(Duration.ofMillis(2500));
+    }
     // TODO: getImage(Time) -> animatedFromFile(...)
 
 }

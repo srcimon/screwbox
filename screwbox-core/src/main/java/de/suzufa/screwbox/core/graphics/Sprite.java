@@ -56,13 +56,22 @@ public class Sprite implements Serializable {
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var sprites = new ArrayList<Sprite>();
-        for (final var subimage : extractSubImages(fileName, dimension, padding)) {
-            sprites.add(fromImage(subimage));
+        for (final var image : extractSubImages(fileName, dimension, padding)) {
+            sprites.add(fromImage(image));
         }
         return sprites;
     }
 
-    private static ArrayList<Image> extractSubImages(final String fileName, final Dimension dimension,
+    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
+            final Duration duration) {
+        final var frames = new ArrayList<Frame>();
+        for (final var image : extractSubImages(fileName, dimension, padding)) {
+            frames.add(new Frame(image, duration));
+        }
+        return new Sprite(frames);
+    }
+
+    private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
             final int padding) {
         final var image = imageFromFile(fileName);
         final var subImages = new ArrayList<Image>();
