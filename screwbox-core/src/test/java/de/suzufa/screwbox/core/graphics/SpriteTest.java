@@ -204,5 +204,6 @@ class SpriteTest {
         while (!foundImages.containsAll(allImages)) {
             foundImages.add(animatedSprite.getImage(Time.now()));
         }
+        assertThat(foundImages.containsAll(allImages));
     }
 }

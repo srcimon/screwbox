@@ -185,7 +185,6 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    // TODO: TEst
     default Window setFullscreenCursor(Sprite cursor) {
         return setFullscreenCursor(cursor.singleFrame());
     }
@@ -197,7 +196,6 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    // TODO: TEst
     default Window setWindowCursor(Sprite cursor) {
         return setWindowCursor(cursor.singleFrame());
     }
@@ -209,14 +207,12 @@ public interface Window {
      * @see #setWindowCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */
-    // TODO: Test
     default Window setCursor(final Frame cursor) {
         setWindowCursor(cursor);
         setFullscreenCursor(cursor);
         return this;
     }
 
-    // TODO: Frame.scaledClone() support scaled cursors
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen mode.
