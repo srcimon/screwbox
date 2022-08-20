@@ -131,7 +131,6 @@ class SpriteTest {
         sprite.replaceColor(oldColor, BLACK);
 
         assertThat(oldColor).isNotEqualTo(BLACK);
-        assertThat(oldColor).isEqualTo(oldColor);
     }
 
     @Test
@@ -206,5 +205,4 @@ class SpriteTest {
             foundImages.add(animatedSprite.getImage(Time.now()));
         }
     }
-
 }
