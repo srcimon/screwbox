@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.suzufa.screwbox.core.utils.Cache;
+
 /**
  * A font made of {@link Sprite}s (even animated ones) for system independent
  * rendering.
@@ -32,7 +34,7 @@ public class Pixelfont implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
-    private static final Map<Color, Pixelfont> FONT_CACHE = new HashMap<>();
+    private static final Cache<Color, Pixelfont> FONT_CACHE = new Cache<>();
     private int padding = 1;
     private int height = 0;
 
@@ -42,13 +44,7 @@ public class Pixelfont implements Serializable {
      */
     public static Pixelfont defaultFont(final Color color) {
         final Color newColor = requireNonNull(color, "Color must not be null.");
-        if (FONT_CACHE.containsKey(newColor)) {
-            return FONT_CACHE.get(newColor);
-        }
-        // TODO: cache.getOrElse(...
-        Pixelfont newFont = DEFAULT_FONT.replaceColor(Color.BLACK, newColor);
-        FONT_CACHE.put(newColor, newFont);
-        return newFont;
+        return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceColor(Color.BLACK, newColor));
     }
 
     private static Pixelfont defaultFontBlack() {
@@ -69,7 +65,9 @@ public class Pixelfont implements Serializable {
      * Sets the space between characters of this font.
      */
     public void setPadding(final int padding) {
-        // TODO: padding must not below 0
+        if (padding <= 0) {
+            throw new IllegalArgumentException("Padding must have positive value");
+        }
         this.padding = padding;
     }
 

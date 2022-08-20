@@ -162,4 +162,11 @@ class PixelfontTest {
 
         assertThat(pixelfont.spriteFor('B')).isNull();
     }
+
+    @Test
+    void setPadding_paddingZero_throwsException() {
+        assertThatThrownBy(() -> pixelfont.setPadding(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Padding must have positive value");
+    }
 }
