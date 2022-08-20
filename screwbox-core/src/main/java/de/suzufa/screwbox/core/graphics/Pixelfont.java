@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.suzufa.screwbox.core.utils.Cache;
+
 /**
  * A font made of {@link Sprite}s (even animated ones) for system independent
  * rendering.
@@ -27,23 +29,28 @@ public class Pixelfont implements Serializable {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
             'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
             ',', ':', '!', '?', '-');
+    private static final Pixelfont DEFAULT_FONT = defaultFontBlack();
 
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
+    private static final Cache<Color, Pixelfont> FONT_CACHE = new Cache<>();
     private int padding = 1;
     private int height = 0;
 
     /**
      * Creates a monospace {@link Font}, containing a restricted set of characters,
-     * numbers and symbols. Creating the font is quite costly, so avoid doing it
-     * more than once.
+     * numbers and symbols. First call for every {@link Color} is quite slow.
      */
     public static Pixelfont defaultFont(final Color color) {
+        final Color newColor = requireNonNull(color, "Color must not be null.");
+        return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceColor(Color.BLACK, newColor));
+    }
+
+    private static Pixelfont defaultFontBlack() {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile("default_font.png", square(7), 1);
         font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
-        font.replaceColor(Color.BLACK, requireNonNull(color, "Color must not be null."));
         return font;
     }
 
@@ -58,6 +65,9 @@ public class Pixelfont implements Serializable {
      * Sets the space between characters of this font.
      */
     public void setPadding(final int padding) {
+        if (padding <= 0) {
+            throw new IllegalArgumentException("Padding must have positive value");
+        }
         this.padding = padding;
     }
 
@@ -149,9 +159,14 @@ public class Pixelfont implements Serializable {
         return height;
     }
 
-    private void replaceColor(final Color oldColor, final Color newColor) {
-        for (var sprite : characters.values()) {
-            sprite.replaceColor(oldColor, newColor);
+    private Pixelfont replaceColor(final Color oldColor, final Color newColor) {
+        final Pixelfont newFont = new Pixelfont();
+
+        for (final var character : characters.entrySet()) {
+            final Sprite recoloredSprite = character.getValue().replaceColor(oldColor, newColor);
+            newFont.addCharacter(character.getKey(), recoloredSprite);
         }
+        newFont.setPadding(padding);
+        return newFont;
     }
 }

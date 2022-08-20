@@ -55,6 +55,15 @@ public final class ImageUtil {
         return op.filter(bufferedImage, null);
     }
 
+    public static Image scale(final Image image, final double scale) {
+        final int width = (int) (image.getWidth(null) * scale);
+        final int height = (int) (image.getHeight(null) * scale);
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Scaled image is size is invalid");
+        }
+        return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+    }
+
     public static Image flipVertically(final Image image) {
         final BufferedImage bufferedImage = toBufferedImage(image);
 

@@ -26,7 +26,7 @@ public class Sprite implements Serializable {
     private final List<Frame> frames = new ArrayList<>();
     private Dimension dimension;
     private final Time started = Time.now();
-    private Duration duration = Duration.zero();
+    private Duration duration = Duration.none();
     private boolean flippedHorizontally = false;
     private boolean flippedVertically = false;
 
@@ -54,25 +54,47 @@ public class Sprite implements Serializable {
         return multipleFromFile(fileName, dimension, 0);
     }
 
-    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, int padding) {
-        final var image = imageFromFile(fileName);
+    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var sprites = new ArrayList<Sprite>();
-        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
-            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
-                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
-                sprites.add(fromImage(subimage));
-            }
+        for (final var image : extractSubImages(fileName, dimension, padding)) {
+            sprites.add(fromImage(image));
         }
         return sprites;
     }
 
+    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
+            final Duration duration) {
+        final var frames = new ArrayList<Frame>();
+        for (final var image : extractSubImages(fileName, dimension, padding)) {
+            frames.add(new Frame(image, duration));
+        }
+        return new Sprite(frames);
+    }
+
+    private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
+            final int padding) {
+        final var image = imageFromFile(fileName);
+        final var subImages = new ArrayList<Image>();
+        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
+            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
+                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
+                subImages.add(subimage);
+            }
+        }
+        return subImages;
+    }
+
     /**
-     * Returns an invisible Sprite.
+     * Returns an invisible {@link Sprite}.
      */
     public static Sprite invisible() {
         return INVISIBLE;
     }
 
+    /**
+     * Returns a {@link Sprite} with one {@link Frame} containing the given
+     * {@link Image}.
+     */
     public static Sprite fromImage(final Image image) {
         return new Sprite(image);
     }
@@ -100,21 +122,39 @@ public class Sprite implements Serializable {
         return frames.size();
     }
 
+    /**
+     * Returns the size of the {@link Sprite}. Every {@link Frame} in the sprites
+     * animation has the same size.
+     */
     public Dimension size() {
         return dimension;
     }
 
+    /**
+     * Returns the {@link Image} for the given {@link Time}.
+     */
     public Image getImage(final Time time) {
+        final var frame = getFrame(time);
+        return frame.image(flippedHorizontally, flippedVertically);
+    }
+
+    /**
+     * Returns the {@link Frame} for the given {@link Time}.
+     */
+    public Frame getFrame(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
-        return getImage(frameNr);
+        return getFrame(frameNr);
+    }
+
+    /**
+     * Returns all {@link Frame}s contained in this {@link Sprite}.
+     */
+    public List<Frame> allFrames() {
+        return frames;
     }
 
     public Sprite newInstance() {
         return new Sprite(frames, flippedHorizontally);
-    }
-
-    private Image getImage(final int frameNr) {
-        return frames.get(frameNr).image(flippedHorizontally, flippedVertically);
     }
 
     public Duration duration() {
@@ -149,14 +189,34 @@ public class Sprite implements Serializable {
     }
 
     /**
-     * Replaces a color in all animation-{@link Frame}s of the {@link Sprite}.
+     * Returns a new {@link Sprite}. The old {@link Color} in alle {@link Frame}s is
+     * replaced with a new one. This method is quite slow.
      * 
      * @see Frame#replaceColor(Color, Color)
      */
-    public void replaceColor(final Color oldColor, final Color newColor) {
+    public Sprite replaceColor(final Color oldColor, final Color newColor) {
+        final List<Frame> recoloredFrames = new ArrayList<>();
         for (final var frame : frames) {
-            frame.replaceColor(oldColor, newColor);
+            recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
+        final Sprite sprite = new Sprite(recoloredFrames);
+        sprite.setFlippedHorizontally(flippedHorizontally);
+        sprite.setFlippedVertically(flippedVertically);
+        return sprite;
+    }
+
+    /**
+     * Returns a scaled version of this {@link Sprite}.
+     */
+    public Sprite scaled(final double scale) {
+        final List<Frame> scaledFrames = new ArrayList<>();
+        for (final var frame : this.frames) {
+            scaledFrames.add(frame.scaled(scale));
+        }
+        final Sprite newSprite = new Sprite(scaledFrames);
+        newSprite.setFlippedHorizontally(flippedHorizontally);
+        newSprite.setFlippedVertically(flippedVertically);
+        return newSprite;
     }
 
     private void addFrame(final Frame frame) {

@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipHorizontally;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipVertically;
+import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.scale;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -23,7 +24,7 @@ public final class Frame implements Serializable {
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
     private final Duration duration;
-    private ImageContainer imageContainer;
+    private final ImageContainer imageContainer;
 
     private final class ImageContainer implements Serializable {
 
@@ -78,7 +79,7 @@ public final class Frame implements Serializable {
     }
 
     public Frame(final Image image) {
-        this(image, Duration.zero());
+        this(image, Duration.none());
     }
 
     public Frame(final Image image, final Duration duration) {
@@ -133,12 +134,20 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Replaces the given {@link Color} with the new one. Is quite costly.
+     * Returns a new instance. The new {@link Frame}s old {@link Color} is replaced
+     * with a new one. This method is quite slow.
      */
-    public void replaceColor(final Color oldColor, final Color newColor) {
+    public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageContainer.image.getImage();
         final Image newImage = applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
-        imageContainer = new ImageContainer(newImage); // create new flipped versions of the image
+        return new Frame(newImage);
+    }
+
+    /**
+     * Returns a scaled version of the current {@link Frame}.
+     */
+    public Frame scaled(final double scale) {
+        return new Frame(scale(image(), scale));
     }
 
 }

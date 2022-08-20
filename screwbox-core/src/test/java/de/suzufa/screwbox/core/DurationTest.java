@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 class DurationTest {
 
     @Test
-    void zero_returnsDurationOfNotEvenANanoSecond() {
-        assertThat(Duration.zero().nanos()).isZero();
+    void none_returnsDurationOfNotEvenANanoSecond() {
+        assertThat(Duration.none().nanos()).isZero();
     }
 
     @Test

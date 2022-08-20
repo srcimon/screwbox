@@ -61,7 +61,7 @@ public class Duration implements Serializable {
         return nanos;
     }
 
-    public static Duration zero() {
+    public static Duration none() {
         return new Duration(0);
     }
 

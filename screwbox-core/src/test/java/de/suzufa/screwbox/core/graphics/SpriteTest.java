@@ -1,13 +1,22 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.Color.BLACK;
+import static de.suzufa.screwbox.core.graphics.Dimension.square;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.awt.Image;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
 
 class SpriteTest {
 
@@ -16,6 +25,8 @@ class SpriteTest {
         Sprite sprite = Sprite.invisible();
 
         assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
+        assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(Color.TRANSPARENT);
+        assertThat(sprite.duration()).isEqualTo(Duration.none());
     }
 
     @Test
@@ -90,7 +101,7 @@ class SpriteTest {
 
         Frame frame = sprite.singleFrame();
 
-        assertThat(frame.size()).isEqualTo(Dimension.square(16));
+        assertThat(frame.size()).isEqualTo(square(16));
     }
 
     @Test
@@ -112,13 +123,87 @@ class SpriteTest {
     }
 
     @Test
-    void replaceColor_replacesColorOfFrames() {
+    void replaceColor_doenstReplacesColorOfOldFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
+
         Color oldColor = sprite.singleFrame().colorAt(origin());
 
         sprite.replaceColor(oldColor, BLACK);
 
-        Color newColor = sprite.singleFrame().colorAt(origin());
-        assertThat(newColor).isNotEqualTo(oldColor).isEqualTo(BLACK);
+        assertThat(oldColor).isNotEqualTo(BLACK);
+    }
+
+    @Test
+    void replaceColor_replacesColorOfNewFrames() {
+        Sprite sprite = Sprite.fromFile("tile.bmp");
+        sprite.setFlippedHorizontally(true);
+        sprite.setFlippedVertically(true);
+
+        Color oldColor = sprite.singleFrame().colorAt(origin());
+
+        Sprite newSprite = sprite.replaceColor(oldColor, BLACK);
+        Color newColor = newSprite.singleFrame().colorAt(origin());
+
+        assertThat(oldColor).isNotEqualTo(BLACK);
+        assertThat(newColor).isEqualTo(BLACK);
+        assertThat(newSprite.isFlippedHorizontally()).isTrue();
+        assertThat(newSprite.isFlippedVertically()).isTrue();
+    }
+
+    @Test
+    void scaled_doesntChangeOriginal() {
+        Sprite original = Sprite.invisible();
+
+        original.scaled(4);
+
+        assertThat(original.size()).isEqualTo(square(1));
+    }
+
+    @Test
+    void scaled_createsSpriteWithNewSize() {
+        Sprite original = Sprite.invisible();
+        original.setFlippedHorizontally(true);
+        original.setFlippedVertically(true);
+
+        Sprite scaled = original.scaled(4);
+
+        assertThat(scaled.size()).isEqualTo(square(4));
+        assertThat(scaled.isFlippedHorizontally()).isTrue();
+        assertThat(scaled.isFlippedVertically()).isTrue();
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "true,true", "true,false", "false,true", "false,false" })
+    void getImage_oneImage_returnsImageOfFrame(boolean flippedH, boolean flippedV) {
+        Sprite sprite = Sprite.invisible();
+        sprite.setFlippedHorizontally(flippedH);
+        sprite.setFlippedVertically(flippedV);
+
+        Image image = sprite.getImage(Time.now());
+
+        Image expectedImage = sprite.singleFrame().image(flippedH, flippedV);
+        assertThat(image).isEqualTo(expectedImage);
+    }
+
+    @Test
+    void animatedFromFile_validFileFound_returnsAnimatedSprite() {
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(2), 1, Duration.ofMillis(100));
+
+        assertThat(animatedSprite.frameCount()).isEqualTo(25);
+        assertThat(animatedSprite.duration()).isEqualTo(Duration.ofMillis(2500));
+    }
+
+    @Test
+    @Timeout(5)
+    void getFrame_returnsAllImagesOfAnAnimation() {
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(5), 1, Duration.ofMillis(50));
+        List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
+
+        var foundImages = new HashSet<Image>();
+
+        while (!foundImages.containsAll(allImages)) {
+            foundImages.add(animatedSprite.getImage(Time.now()));
+        }
+        assertThat(foundImages).containsAll(allImages);
     }
 }

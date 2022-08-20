@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
@@ -23,6 +24,7 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
+import de.suzufa.screwbox.core.graphics.PredefinedCursor;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
@@ -36,6 +38,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
     private ExecutorService executor;
+    private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
+    private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -199,7 +203,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
-            makeCursorInvisible();
             lastDisplayMode = graphicsDevice.getDisplayMode();
             final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
             final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
@@ -208,6 +211,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             graphicsDevice.setFullScreenWindow(frame);
         }
         renderer = new SeparateThreadRenderer(new DefaultRenderer(frame), executor);
+        updateCursor();
         return this;
     }
 
@@ -237,12 +241,6 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         }
     }
 
-    private void makeCursorInvisible() {
-        final Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(Frame.invisible().image(),
-                new Point(0, 0), "blank cursor");
-        frame.setCursor(blankCursor);
-    }
-
     @Override
     public boolean isVisible(final WindowBounds bounds) {
         return bounds.intersects(new WindowBounds(Offset.origin(), size()));
@@ -259,4 +257,49 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         return frame.hasFocus();
     }
 
+    @Override
+    public Window setFullscreenCursor(final Frame cursor) {
+        fullscreenCursor = createCustomCursor(cursor.image());
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setWindowCursor(final Frame cursor) {
+        windowCursor = createCustomCursor(cursor.image());
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setWindowCursor(final PredefinedCursor cursor) {
+        windowCursor = cursorFrom(cursor);
+        return this;
+    }
+
+    @Override
+    public Window setFullscreenCursor(final PredefinedCursor cursor) {
+        fullscreenCursor = cursorFrom(cursor);
+        return this;
+    }
+
+    private Cursor cursorFrom(final PredefinedCursor cursor) {
+        if (PredefinedCursor.DEFAULT == cursor) {
+            return Cursor.getDefaultCursor();
+        }
+        if (PredefinedCursor.HIDDEN == cursor) {
+            return createCustomCursor(Frame.invisible().image());
+        }
+        throw new IllegalStateException("Unknown predefined cursor: " + cursor);
+    }
+
+    private void updateCursor() {
+        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
+
+    }
+
+    private Cursor createCustomCursor(final Image image) {
+        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
+                "custom cursor");
+    }
 }
