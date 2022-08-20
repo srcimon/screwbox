@@ -24,7 +24,7 @@ public final class Frame implements Serializable {
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
     private final Duration duration;
-    private ImageContainer imageContainer;
+    private final ImageContainer imageContainer;
 
     private final class ImageContainer implements Serializable {
 
@@ -143,9 +143,9 @@ public final class Frame implements Serializable {
         return new Frame(newImage);
     }
 
-    // TODO: Test and Javadoc
-    // TODO: javadoc and fix cast and test
-    // TODO: check no negative scaling
+    /**
+     * Returns a scaled version of the current {@link Frame}.
+     */
     public Frame scaled(final double scale) {
         return new Frame(scale(image(), scale));
     }

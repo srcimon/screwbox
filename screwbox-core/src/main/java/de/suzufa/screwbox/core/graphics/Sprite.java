@@ -84,9 +84,6 @@ public class Sprite implements Serializable {
         return subImages;
     }
 
-    // TODO: public static Sprite animatedFromFile(String fileName, Dimension
-    // dimension, Duration duration);
-
     /**
      * Returns an invisible {@link Sprite}.
      */

@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static de.suzufa.screwbox.core.graphics.Dimension.square;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -57,6 +58,13 @@ class FrameTest {
         frame.replaceColor(Color.BLACK, Color.BLUE);
 
         assertThat(frame.colorAt(4, 4)).isNotEqualTo(Color.BLUE);
+    }
+
+    @Test
+    void scaled_returnsScaledFrame() {
+        Frame scaled = frame.scaled(3);
+
+        assertThat(scaled.size()).isEqualTo(square(48));
     }
 
 }
