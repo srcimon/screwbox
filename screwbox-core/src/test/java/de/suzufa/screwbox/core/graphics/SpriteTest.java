@@ -7,9 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.awt.Image;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -191,6 +193,18 @@ class SpriteTest {
         assertThat(animatedSprite.frameCount()).isEqualTo(25);
         assertThat(animatedSprite.duration()).isEqualTo(Duration.ofMillis(2500));
     }
-    // TODO: getImage(Time) -> animatedFromFile(...)
+
+    @Test
+    @Timeout(5)
+    void getFrame_returnsAllImagesOfAnAnimation() {
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(5), 1, Duration.ofMillis(50));
+        List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
+
+        var foundImages = new HashSet<Image>();
+
+        while (!foundImages.containsAll(allImages)) {
+            foundImages.add(animatedSprite.getImage(Time.now()));
+        }
+    }
 
 }

@@ -137,16 +137,27 @@ public class Sprite implements Serializable {
      * Returns the {@link Image} for the given {@link Time}.
      */
     public Image getImage(final Time time) {
+        final var frame = getFrame(time);
+        return frame.image(flippedHorizontally, flippedVertically);
+    }
+
+    /**
+     * Returns the {@link Frame} for the given {@link Time}.
+     */
+    public Frame getFrame(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
-        return getImage(frameNr);
+        return getFrame(frameNr);
+    }
+
+    /**
+     * Returns all {@link Frame}s contained in this {@link Sprite}.
+     */
+    public List<Frame> allFrames() {
+        return frames;
     }
 
     public Sprite newInstance() {
         return new Sprite(frames, flippedHorizontally);
-    }
-
-    private Image getImage(final int frameNr) {
-        return frames.get(frameNr).image(flippedHorizontally, flippedVertically);
     }
 
     public Duration duration() {
