@@ -50,7 +50,7 @@ class DefaultEngine implements Engine {
         final WindowFrame frame = new WindowFrame(this);
         final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newSingleThreadExecutor();
+        executor = Executors.newCachedThreadPool();
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
         audio = new DefaultAudio(executor);
         graphics = new DefaultGraphics(configuration, window);
