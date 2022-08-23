@@ -17,7 +17,7 @@ class DefaultGameLoopTest {
     @BeforeEach
     void beforeEach() {
         updatables = new ArrayList<>();
-        loop = new DefaultGameLoop(new DefaultMetrics(), updatables);
+        loop = new DefaultGameLoop(updatables);
     }
 
     @Test

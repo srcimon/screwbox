@@ -10,13 +10,12 @@ import de.suzufa.screwbox.core.loop.Metrics;
 //TODO: inline metrics class
 public class DefaultGameLoop implements GameLoop {
 
-    private final DefaultMetrics metrics;
+    private final DefaultMetrics metrics = new DefaultMetrics();
     private final List<Updatable> updatables;
     private boolean active = false;
     private int targetFps = GameLoop.DEFAULT_TARGET_FPS;
 
-    public DefaultGameLoop(final DefaultMetrics metrics, final List<Updatable> updatables) {
-        this.metrics = metrics;
+    public DefaultGameLoop(final List<Updatable> updatables) {
         this.updatables = updatables;
     }
 
@@ -28,40 +27,11 @@ public class DefaultGameLoop implements GameLoop {
         runGameLoop();
     }
 
-    private void runGameLoop() {
-        while (active) {
-            if (needsUpdate()) {
-                final Time beforeUpdate = Time.now();
-                for (final var updatable : updatables) {
-                    updatable.update();
-                }
-                metrics.trackUpdateCycle(Duration.since(beforeUpdate));
-            } else {
-                beNiceToCpu();
-            }
-        }
-    }
-
-    private void beNiceToCpu() {
-        try {
-            Thread.sleep(0, 750_000);
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
     public void stop() {
         if (!active) {
             throw new IllegalStateException("game loop hast not been started yet");
         }
         this.active = false;
-    }
-
-    public boolean needsUpdate() {
-        final double targetNanosPerUpdate = Time.NANOS_PER_SECOND * 1.0 / targetFps;
-        final double nanosLastUpdate = metrics.updateDuration().nanos();
-        final double nanosSinceLastUpdate = Duration.since(metrics.lastUpdate()).nanos();
-        return nanosSinceLastUpdate > targetNanosPerUpdate - (nanosLastUpdate * 1.5);
     }
 
     @Override
@@ -82,6 +52,35 @@ public class DefaultGameLoop implements GameLoop {
     @Override
     public int targetFps() {
         return targetFps;
+    }
+
+    private void runGameLoop() {
+        while (active) {
+            if (needsUpdate()) {
+                final Time beforeUpdate = Time.now();
+                for (final var updatable : updatables) {
+                    updatable.update();
+                }
+                metrics.trackUpdateCycle(Duration.since(beforeUpdate));
+            } else {
+                beNiceToCpu();
+            }
+        }
+    }
+
+    private boolean needsUpdate() {
+        final double targetNanosPerUpdate = Time.NANOS_PER_SECOND * 1.0 / targetFps;
+        final double nanosLastUpdate = metrics.updateDuration().nanos();
+        final double nanosSinceLastUpdate = Duration.since(metrics.lastUpdate()).nanos();
+        return nanosSinceLastUpdate > targetNanosPerUpdate - (nanosLastUpdate * 1.5);
+    }
+
+    private void beNiceToCpu() {
+        try {
+            Thread.sleep(0, 750_000);
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 }

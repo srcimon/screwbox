@@ -21,7 +21,6 @@ import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.log.internal.DefaultLog;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.internal.DefaultGameLoop;
-import de.suzufa.screwbox.core.loop.internal.DefaultMetrics;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
@@ -48,7 +47,6 @@ class DefaultEngine implements Engine {
 
     DefaultEngine() {
         final WindowFrame frame = new WindowFrame(this);
-        final DefaultMetrics metrics = new DefaultMetrics();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
@@ -59,7 +57,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
-        gameLoop = new DefaultGameLoop(metrics, updatables);
+        gameLoop = new DefaultGameLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
