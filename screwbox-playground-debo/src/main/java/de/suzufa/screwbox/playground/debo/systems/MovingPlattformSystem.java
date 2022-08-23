@@ -21,7 +21,7 @@ public class MovingPlattformSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        double updateFactor = engine.loop().metrics().updateFactor();
+        double delta = engine.loop().metrics().delta();
         for (var entity : engine.entityEngine().fetchAll(PLATTFORMS)) {
             var plattformComponent = entity.get(MovingPlattformComponent.class);
             var transform = entity.get(TransformComponent.class);
@@ -40,13 +40,13 @@ public class MovingPlattformSystem implements EntitySystem {
                 plattformComponent.targetPosition = nextTarget.get(TransformComponent.class).bounds.position();
                 plattformComponent.waypoint = nextTarget.id().orElseThrow();
             }
-            double xSpeed = clamp(updateFactor * -1 * plattformComponent.speed,
+            double xSpeed = clamp(delta * -1 * plattformComponent.speed,
                     -1 * distance.x(),
-                    updateFactor * plattformComponent.speed);
+                    delta * plattformComponent.speed);
 
-            double ySpeed = clamp(updateFactor * -1 * plattformComponent.speed,
+            double ySpeed = clamp(delta * -1 * plattformComponent.speed,
                     -1 * distance.y(),
-                    updateFactor * plattformComponent.speed);
+                    delta * plattformComponent.speed);
 
             Vector movement = Vector.of(xSpeed, ySpeed);
 

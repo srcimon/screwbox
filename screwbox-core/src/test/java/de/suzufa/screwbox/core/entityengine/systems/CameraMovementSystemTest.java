@@ -27,7 +27,7 @@ class CameraMovementSystemTest {
     @Test
     void update_movesCameraTowardsTracker(DefaultEntityEngine entityEngine, Metrics metrics, Window screen,
             Graphics graphics) {
-        when(metrics.updateFactor()).thenReturn(0.4);
+        when(metrics.delta()).thenReturn(0.4);
         when(screen.size()).thenReturn(Dimension.of(640, 480));
         when(graphics.updateCameraZoom(anyDouble())).thenReturn(1.0);
 

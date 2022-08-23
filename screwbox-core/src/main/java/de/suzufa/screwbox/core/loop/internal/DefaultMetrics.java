@@ -40,7 +40,7 @@ public class DefaultMetrics implements Metrics {
     }
 
     @Override
-    public double updateFactor() {
+    public double delta() {
         return updateFactor;
     }
 

@@ -16,7 +16,13 @@ public interface Metrics {
      */
     Duration runningTime();
 
-    double updateFactor(); // TODO: better name needed: delta() : ask Debo
+    /**
+     * Returns an abstraction of delta time between two frames. It's highly
+     * recommended to use this value to multiply with any kind of steady movement in
+     * the game to avoid changes in the game speed in dependency to the frame rate
+     * ({@link #framesPerSecond()}).
+     */
+    double delta();
 
     /**
      * Returns the {@link Time} of the last update cycle.

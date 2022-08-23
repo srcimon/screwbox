@@ -24,18 +24,18 @@ public class CameraShiftSystem implements EntitySystem {
             return;
         }
 
-        double updateFactor = engine.loop().metrics().updateFactor();
+        double delta = engine.loop().metrics().delta();
         Entity player = playerEntity.get();
         var cameraTrackerComponent = engine.entityEngine().forcedFetch(CAMERA).get(CameraMovementComponent.class);
         if (player.get(AutoflipByMovementComponent.class).flipped) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,
-                            cameraTrackerComponent.shift.x() - cameraTrackerComponent.speed * updateFactor * 100),
+                            cameraTrackerComponent.shift.x() - cameraTrackerComponent.speed * delta * 100),
                     0);
         } else {
             cameraTrackerComponent.shift = Vector.of(
                     Math.min(50,
-                            cameraTrackerComponent.shift.x() + cameraTrackerComponent.speed * updateFactor * 100),
+                            cameraTrackerComponent.shift.x() + cameraTrackerComponent.speed * delta * 100),
                     0);
         }
     }

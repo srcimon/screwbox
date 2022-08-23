@@ -19,7 +19,7 @@ class FadeOutSystemTest {
 
     @Test
     void update_reduecesOpacityOfSprites(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.updateFactor()).thenReturn(0.5);
+        when(metrics.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));
 
@@ -34,7 +34,7 @@ class FadeOutSystemTest {
 
     @Test
     void update_removesOutFadedComponents(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.updateFactor()).thenReturn(0.5);
+        when(metrics.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));
 

@@ -45,7 +45,7 @@ public class FollowPlayerSystem implements EntitySystem {
                     lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(),
                     followComponent.speed);
 
-            Vector movement = Vector.of(x, y).multiply(engine.loop().metrics().updateFactor());
+            Vector movement = Vector.of(x, y).multiply(engine.loop().metrics().delta());
             Bounds updatedBounds = followTransform.bounds.moveBy(movement);
             followTransform.bounds = updatedBounds;
         }

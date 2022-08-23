@@ -19,7 +19,7 @@ class GravitySystemTest {
 
     @Test
     void update_updatesEntitiesWithGravity(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.updateFactor()).thenReturn(0.5);
+        when(metrics.delta()).thenReturn(0.5);
         Entity body = new Entity().add(new PhysicsBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));
 

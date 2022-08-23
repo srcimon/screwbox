@@ -23,7 +23,7 @@ class PhysicsSystemTest {
 
     @Test
     void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.updateFactor()).thenReturn(0.5);
+        when(metrics.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
@@ -39,7 +39,7 @@ class PhysicsSystemTest {
 
     @Test
     void update_physicBodiesCollideWithEnvironment(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.updateFactor()).thenReturn(0.8);
+        when(metrics.delta()).thenReturn(0.8);
 
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(50, 0, 20, 20)),
