@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.loop;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.Time;
 
 public interface Metrics {
@@ -9,9 +10,13 @@ public interface Metrics {
 
     Duration durationOfLastUpdate();
 
-    Duration durationOfRuntime();
+    /**
+     * Returns the running time of the game engine. Time since calling
+     * {@link ScrewBox#createEngine()}.
+     */
+    Duration runningTime();
 
-    double updateFactor();
+    double updateFactor(); // TODO: better name needed: delta() : ask Debo
 
     /**
      * Returns the {@link Time} of the last update cycle.

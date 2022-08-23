@@ -27,7 +27,7 @@ public class StartBackgroundSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final long milliseconds = engine.loop().metrics().durationOfRuntime().milliseconds();
+        final long milliseconds = engine.loop().metrics().runningTime().milliseconds();
         final int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.size());
         final Sprite sprite = BACKGROUNDS.get(index);
         final Offset center = engine.graphics().window().center();

@@ -45,7 +45,7 @@ public class DefaultMetrics implements Metrics {
     }
 
     @Override
-    public Duration durationOfRuntime() {
+    public Duration runningTime() {
         return runtimeDuration;
     }
 
