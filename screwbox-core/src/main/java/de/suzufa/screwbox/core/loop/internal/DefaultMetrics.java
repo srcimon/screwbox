@@ -49,8 +49,9 @@ public class DefaultMetrics implements Metrics {
     }
 
     public void trackUpdateCycle(final Duration duration) {
-        final Duration timeBetweenUpdates = Duration.since(lastUpdate);
-        lastUpdate = Time.now();
+        final Time now = Time.now();
+        final Duration timeBetweenUpdates = Duration.between(now, lastUpdate);
+        lastUpdate = now;
         fps = (int) (NANOS_PER_SECOND / timeBetweenUpdates.nanos());
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
         delta = min(timeBetweenUpdates.nanos() * 1.0 / NANOS_PER_SECOND, maxUpdateFactor);
