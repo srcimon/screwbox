@@ -15,7 +15,7 @@ public interface Metrics {
     int fps();
 
     /**
-     * Returns the {@link Duration} of the last update.
+     * Returns the {@link Duration} that the last update took.
      */
     Duration updateDuration();
 
