@@ -20,7 +20,7 @@ public interface Metrics {
     Duration updateDuration();
 
     /**
-     * Returns the running time of the game engine. Time since calling
+     * Returns the running time of the game engine. This is the time since calling
      * {@link ScrewBox#createEngine()}.
      */
     Duration runningTime();
@@ -40,7 +40,7 @@ public interface Metrics {
 
     /**
      * Returns the number of the current frame (Each iteration of the game loop is
-     * known as frame).
+     * called frame).
      */
     long frameNumber();
 }
