@@ -17,7 +17,7 @@ public class LogFpsSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         Metrics metrics = engine.loop().metrics();
-        sum += metrics.framesPerSecond();
+        sum += metrics.fps();
         count++;
         if (timer.isTick(metrics.lastUpdate())) {
             String fpsMessage = String.format("current fps %,.0f", sum / count);

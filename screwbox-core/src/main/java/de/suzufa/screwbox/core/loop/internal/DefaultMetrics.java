@@ -19,7 +19,7 @@ public class DefaultMetrics implements Metrics {
     private Duration runtimeDuration = Duration.none();
 
     @Override
-    public int framesPerSecond() {
+    public int fps() {
         return fps;
     }
 

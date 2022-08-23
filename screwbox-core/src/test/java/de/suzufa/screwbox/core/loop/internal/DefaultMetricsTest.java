@@ -24,8 +24,8 @@ class DefaultMetricsTest {
         metrics.trackUpdateCycle(aSecond);
 
         assertThat(metrics.frameNumber()).isEqualTo(1);
-        assertThat(metrics.framesPerSecond()).isPositive();
-        assertThat(metrics.delta()).isPositive().isEqualTo(1.0 / metrics.framesPerSecond(), within(0.2));
+        assertThat(metrics.fps()).isPositive();
+        assertThat(metrics.delta()).isPositive().isEqualTo(1.0 / metrics.fps(), within(0.2));
 
         metrics.trackUpdateCycle(aSecond);
         metrics.trackUpdateCycle(aSecond);
