@@ -7,6 +7,7 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.loop.Metrics;
 
+//TODO: inline metrics class
 public class DefaultGameLoop implements GameLoop {
 
     private final DefaultMetrics metrics;
