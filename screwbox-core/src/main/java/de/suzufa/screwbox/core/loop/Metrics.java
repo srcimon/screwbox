@@ -23,6 +23,7 @@ public interface Metrics {
      * Returns the running time of the game engine. This is the time since calling
      * {@link ScrewBox#createEngine()}.
      */
+    // TODO: should be time since calling start
     Duration runningTime();
 
     /**
