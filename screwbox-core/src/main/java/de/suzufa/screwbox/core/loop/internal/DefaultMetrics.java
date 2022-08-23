@@ -12,11 +12,11 @@ public class DefaultMetrics implements Metrics {
     private static final int CRITICAL_FPS_COUNT = 10;
     private int fps = 0;
     private long frameNumber;
-    private double updateFactor = 0;
+    private double delta = 0;
     private Duration updateDuration = Duration.none();
     private Time lastUpdate = Time.now();
     private final Time started = Time.now();
-    private Duration runtimeDuration = Duration.none();
+    private Duration runningTime = Duration.none();
 
     @Override
     public int fps() {
@@ -24,29 +24,18 @@ public class DefaultMetrics implements Metrics {
     }
 
     @Override
-    public Duration durationOfLastUpdate() {
+    public Duration updateDuration() {
         return updateDuration;
-    }
-
-    public void trackUpdateCycle(final Duration duration) {
-        final Duration timeBetweenUpdates = Duration.since(lastUpdate);
-        lastUpdate = Time.now();
-        fps = (int) (NANOS_PER_SECOND / timeBetweenUpdates.nanos());
-        final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
-        updateFactor = min(timeBetweenUpdates.nanos() * 1.0 / NANOS_PER_SECOND, maxUpdateFactor);
-        updateDuration = duration;
-        runtimeDuration = Duration.between(started, lastUpdate);
-        frameNumber++;
     }
 
     @Override
     public double delta() {
-        return updateFactor;
+        return delta;
     }
 
     @Override
     public Duration runningTime() {
-        return runtimeDuration;
+        return runningTime;
     }
 
     @Override
@@ -57,6 +46,17 @@ public class DefaultMetrics implements Metrics {
     @Override
     public long frameNumber() {
         return frameNumber;
+    }
+
+    public void trackUpdateCycle(final Duration duration) {
+        final Duration timeBetweenUpdates = Duration.since(lastUpdate);
+        lastUpdate = Time.now();
+        fps = (int) (NANOS_PER_SECOND / timeBetweenUpdates.nanos());
+        final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
+        delta = min(timeBetweenUpdates.nanos() * 1.0 / NANOS_PER_SECOND, maxUpdateFactor);
+        updateDuration = duration;
+        runningTime = Duration.between(started, lastUpdate);
+        frameNumber++;
     }
 
 }

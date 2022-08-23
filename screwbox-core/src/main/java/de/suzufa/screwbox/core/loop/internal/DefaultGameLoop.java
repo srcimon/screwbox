@@ -58,7 +58,7 @@ public class DefaultGameLoop implements GameLoop {
 
     public boolean needsUpdate() {
         final double targetNanosPerUpdate = Time.NANOS_PER_SECOND * 1.0 / targetFps;
-        final double nanosLastUpdate = metrics.durationOfLastUpdate().nanos();
+        final double nanosLastUpdate = metrics.updateDuration().nanos();
         final double nanosSinceLastUpdate = Duration.since(metrics.lastUpdate()).nanos();
         return nanosSinceLastUpdate > targetNanosPerUpdate - (nanosLastUpdate * 1.5);
     }

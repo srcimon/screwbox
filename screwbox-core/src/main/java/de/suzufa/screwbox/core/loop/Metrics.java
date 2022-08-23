@@ -14,7 +14,10 @@ public interface Metrics {
      */
     int fps();
 
-    Duration durationOfLastUpdate();
+    /**
+     * Returns the {@link Duration} of the last update.
+     */
+    Duration updateDuration();
 
     /**
      * Returns the running time of the game engine. Time since calling
