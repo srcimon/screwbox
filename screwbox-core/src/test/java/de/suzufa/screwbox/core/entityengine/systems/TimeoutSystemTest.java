@@ -21,7 +21,7 @@ class TimeoutSystemTest {
 
     @Test
     void update_removesTimedOutComponents(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.timeOfLastUpdate()).thenReturn(LATER);
+        when(metrics.lastUpdate()).thenReturn(LATER);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(NOW));
         entityEngine.add(timedOutEntity);
 
@@ -34,7 +34,7 @@ class TimeoutSystemTest {
 
     @Test
     void update_dosntTouchNonTimedOutComponents(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.timeOfLastUpdate()).thenReturn(NOW);
+        when(metrics.lastUpdate()).thenReturn(NOW);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(LATER));
         entityEngine.add(timedOutEntity);
 

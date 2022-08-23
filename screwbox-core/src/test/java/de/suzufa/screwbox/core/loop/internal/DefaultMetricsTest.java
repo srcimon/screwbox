@@ -35,13 +35,4 @@ class DefaultMetricsTest {
         assertThat(metrics.frameNumber()).isEqualTo(3);
     }
 
-    @Test
-    void durationSinceLastUpdate_returnsFreshTime() {
-        metrics.trackUpdateCycle(Duration.ofNanos(1000));
-
-        long firstQuery = metrics.durationSinceLastUpdate().nanos();
-        long secondQuery = metrics.durationSinceLastUpdate().nanos();
-        assertThat(firstQuery).isLessThan(secondQuery);
-    }
-
 }

@@ -28,11 +28,6 @@ public class DefaultMetrics implements Metrics {
         return updateDuration;
     }
 
-    @Override
-    public Duration durationSinceLastUpdate() {
-        return Duration.since(lastUpdate);
-    }
-
     public void trackUpdateCycle(final Duration duration) {
         final Duration timeBetweenUpdates = Duration.since(lastUpdate);
         lastUpdate = Time.now();
@@ -55,7 +50,7 @@ public class DefaultMetrics implements Metrics {
     }
 
     @Override
-    public Time timeOfLastUpdate() {
+    public Time lastUpdate() {
         return lastUpdate;
     }
 

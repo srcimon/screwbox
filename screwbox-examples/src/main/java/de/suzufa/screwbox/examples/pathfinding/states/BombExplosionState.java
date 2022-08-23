@@ -26,7 +26,7 @@ public class BombExplosionState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         Sprite sprite = SPRITE.newInstance();
         entity.get(SpriteComponent.class).sprite = sprite;
-        endOfAnimation = engine.loop().metrics().timeOfLastUpdate().plus(sprite.duration());
+        endOfAnimation = engine.loop().metrics().lastUpdate().plus(sprite.duration());
         engine.audio().playEffect(EXPLOSION);
         Bounds bounds = entity.get(TransformComponent.class).bounds.inflated(8);
         List<Entity> entitiesInExplosionRange = engine.physics()

@@ -13,7 +13,7 @@ public class TimeoutSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Time now = engine.loop().metrics().timeOfLastUpdate();
+        Time now = engine.loop().metrics().lastUpdate();
 
         for (var entity : engine.entityEngine().fetchAll(TIMEOUT_ENTITIES)) {
             if (now.isAfter(entity.get(TimeoutComponent.class).timeout)) {

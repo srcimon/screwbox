@@ -19,7 +19,7 @@ public class LogFpsSystem implements EntitySystem {
         Metrics metrics = engine.loop().metrics();
         sum += metrics.framesPerSecond();
         count++;
-        if (timer.isTick(metrics.timeOfLastUpdate())) {
+        if (timer.isTick(metrics.lastUpdate())) {
             String fpsMessage = String.format("current fps %,.0f", sum / count);
             engine.log().debug(fpsMessage);
             sum = 0;

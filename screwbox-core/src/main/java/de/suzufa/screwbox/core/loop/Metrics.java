@@ -9,13 +9,18 @@ public interface Metrics {
 
     Duration durationOfLastUpdate();
 
-    Duration durationSinceLastUpdate();
-
     Duration durationOfRuntime();
 
     double updateFactor();
 
-    Time timeOfLastUpdate();
+    /**
+     * Returns the {@link Time} of the last update cycle.
+     */
+    Time lastUpdate();
 
+    /**
+     * Returns the number of the current frame (Each iteration of the game loop is
+     * known as frame).
+     */
     long frameNumber();
 }

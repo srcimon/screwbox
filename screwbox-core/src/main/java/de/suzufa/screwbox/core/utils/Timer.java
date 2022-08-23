@@ -36,7 +36,7 @@ public class Timer implements Serializable {
      * load.
      * 
      * @see #isTick()
-     * @see Metrics#timeOfLastUpdate()
+     * @see Metrics#lastUpdate()
      */
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
