@@ -51,7 +51,7 @@ class DefaultGameLoopTest {
         loop.start();
 
         assertThat(loop.runningTime()).isNotEqualTo(none());
-        assertThat(loop.runningTime().isLessThan(Duration.since(time)));
+        assertThat(loop.runningTime().isLessThan(Duration.since(time))).isTrue();
     }
 
     @Test
