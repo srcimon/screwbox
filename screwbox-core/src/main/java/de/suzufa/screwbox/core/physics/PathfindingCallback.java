@@ -7,6 +7,7 @@ import de.suzufa.screwbox.core.Path;
  * 
  * @see Physics#findPathAsync(Vector, Vector, PathfindingCallback)
  */
+@FunctionalInterface
 public interface PathfindingCallback {
 
     /**
