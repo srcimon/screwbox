@@ -12,6 +12,8 @@ public class HelloWorldExample {
         // create the engine
         Engine engine = ScrewBox.createEngine();
 
+        engine.graphics().window().setTitle("Hello World Example");// TODO: engine Name ScrewBox.createEngine("name")
+
         // add systems to the game loop
         engine.entityEngine().add(
                 new PrintHelloWorldSystem(), // print hello world next to mouse position
