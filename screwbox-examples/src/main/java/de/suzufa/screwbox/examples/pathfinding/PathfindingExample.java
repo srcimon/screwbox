@@ -9,7 +9,7 @@ public class PathfindingExample {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine();
 
-        engine.graphics().window().setTitle("Pathfinding Example");// TODO: engine Name ScrewBox.createEngine("name")
+        engine.graphics().window().setTitle("Pathfinding Example");
 
         engine.scenes()
                 .add(new DemoScene("maze/map.json"));
