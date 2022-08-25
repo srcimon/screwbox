@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.utils;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -19,6 +20,24 @@ class ListUtilTest {
         assertThat(merged)
                 .contains("Andreas", "Andrea", "Kathrin")
                 .hasSize(3);
+    }
+
+    @Test
+    void merge_firstIsEmpty_returnsSecond() {
+        var male = List.of("Andreas", "Andrea");
+
+        var merged = ListUtil.merge(emptyList(), male);
+
+        assertThat(merged).isEqualTo(male);
+    }
+
+    @Test
+    void merge_secondIsEmpty_returnsSecond() {
+        var female = List.of("Kathrin", "Andrea");
+
+        var merged = ListUtil.merge(female, emptyList());
+
+        assertThat(merged).isEqualTo(female);
     }
 
     @Test

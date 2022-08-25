@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
+import static de.suzufa.screwbox.core.Bounds.$$;
+import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -13,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -32,7 +33,21 @@ class SelectEntityBuilderTest {
 
     @BeforeEach
     void beforeEach() {
-        selectEntityBuilder = new SelectEntityBuilder(entityEngine, Vector.of(40, 60));
+        selectEntityBuilder = new SelectEntityBuilder(entityEngine, $(40, 60));
+    }
+
+    @Test
+    void entityBuilderSelectingInBounds_findsOnlyEntitiesInBounds() {
+        Entity first = boxAt(0, 10);
+        Entity second = boxAt(55, 45);
+        Entity notInBounds = boxAt(155, 45);
+        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
+                .thenReturn(List.of(first, second, notInBounds));
+
+        SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(entityEngine, $$(0, 0, 100, 100));
+
+        assertThat(boundsEntityBuilder.selectAll()).contains(first, second).doesNotContain(notInBounds);
+
     }
 
     @Test
@@ -71,6 +86,23 @@ class SelectEntityBuilderTest {
                 .selectAny();
 
         assertThat(result).isPresent();
+    }
+
+    @Test
+    void selectAll_entitiesAtPosition_returnsAllEntitiesAtPosition() {
+        Entity first = boxAt(39, 59);
+        Entity second = boxAt(38, 58);
+        Entity notAtPosition = boxAt(0, 0);
+        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+                .thenReturn(List.of(first, second, notAtPosition));
+
+        var result = selectEntityBuilder
+                .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
+                .ignoringEntitiesHaving(SpriteComponent.class)
+                .selectAll();
+
+        assertThat(result).contains(first, second).doesNotContain(notAtPosition);
+
     }
 
     private Entity boxAt(double x, double y) {

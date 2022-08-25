@@ -21,6 +21,7 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.physics.Physics;
 
 public class EntityEngineExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
@@ -34,21 +35,30 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         final var graphics = mock(Graphics.class);
         final var world = mock(World.class);
         final var log = mock(Log.class);
+        final var physics = mock(Physics.class);
         final var screen = mock(Window.class);
         final var entityManager = new DefaultEntityManager();
         final var systemManager = new DefaultSystemManager(engine, entityManager);
         entityEngine = new DefaultEntityEngine(entityManager, systemManager);
+
+        // resolve a real entity engine with many mocked subsystems
         when(engine.entityEngine()).thenReturn(entityEngine);
+
+        // resolve mocks for any subsystem
         when(engine.graphics()).thenReturn(graphics);
         when(engine.log()).thenReturn(log);
+        when(engine.physics()).thenReturn(physics);
+        when(engine.loop()).thenReturn(gameLoop);
         when(graphics.world()).thenReturn(world);
         when(graphics.window()).thenReturn(screen);
-        when(engine.loop()).thenReturn(gameLoop);
+
+        // resolve test method parameters
         parameters.put(GameLoop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);
         parameters.put(Log.class, log);
+        parameters.put(Physics.class, physics);
         parameters.put(DefaultEntityEngine.class, entityEngine);
     }
 
