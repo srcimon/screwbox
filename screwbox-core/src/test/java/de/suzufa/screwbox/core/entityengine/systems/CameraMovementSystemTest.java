@@ -18,16 +18,16 @@ import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
-import de.suzufa.screwbox.core.loop.Metrics;
+import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class CameraMovementSystemTest {
 
     @Test
-    void update_movesCameraTowardsTracker(DefaultEntityEngine entityEngine, Metrics metrics, Window screen,
+    void update_movesCameraTowardsTracker(DefaultEntityEngine entityEngine, GameLoop loop, Window screen,
             Graphics graphics) {
-        when(metrics.delta()).thenReturn(0.4);
+        when(loop.delta()).thenReturn(0.4);
         when(screen.size()).thenReturn(Dimension.of(640, 480));
         when(graphics.updateCameraZoom(anyDouble())).thenReturn(1.0);
 

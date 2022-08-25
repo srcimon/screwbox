@@ -9,16 +9,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.log.Log;
-import de.suzufa.screwbox.core.loop.Metrics;
+import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class LogFpsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, Metrics metrics, Log log) {
-        when(metrics.fps()).thenReturn(50, 30, 10);
-        when(metrics.lastUpdate()).thenReturn(
+    void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, GameLoop loop, Log log) {
+        when(loop.fps()).thenReturn(50, 30, 10);
+        when(loop.lastUpdate()).thenReturn(
                 now().plusSeconds(-10), // no logging yet
                 now().plusSeconds(-5), // no logging yet
                 now().plusSeconds(20)); // log now

@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.loop.Metrics;
+import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
@@ -20,8 +20,8 @@ class TimeoutSystemTest {
     private static final Time LATER = NOW.plusSeconds(1);
 
     @Test
-    void update_removesTimedOutComponents(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.lastUpdate()).thenReturn(LATER);
+    void update_removesTimedOutComponents(DefaultEntityEngine entityEngine, GameLoop loop) {
+        when(loop.lastUpdate()).thenReturn(LATER);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(NOW));
         entityEngine.add(timedOutEntity);
 
@@ -33,8 +33,8 @@ class TimeoutSystemTest {
     }
 
     @Test
-    void update_dosntTouchNonTimedOutComponents(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.lastUpdate()).thenReturn(NOW);
+    void update_dosntTouchNonTimedOutComponents(DefaultEntityEngine entityEngine, GameLoop loop) {
+        when(loop.lastUpdate()).thenReturn(NOW);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(LATER));
         entityEngine.add(timedOutEntity);
 

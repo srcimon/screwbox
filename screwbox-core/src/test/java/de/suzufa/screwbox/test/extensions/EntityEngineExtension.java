@@ -21,7 +21,6 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.core.loop.Metrics;
 
 public class EntityEngineExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
@@ -30,7 +29,6 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        var metrics = mock(Metrics.class);
         var gameLoop = mock(GameLoop.class);
         var engine = mock(Engine.class);
         var graphics = mock(Graphics.class);
@@ -46,8 +44,6 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         when(graphics.world()).thenReturn(world);
         when(graphics.window()).thenReturn(screen);
         when(engine.loop()).thenReturn(gameLoop);
-        when(gameLoop.metrics()).thenReturn(metrics);
-        parameters.put(Metrics.class, metrics);
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);

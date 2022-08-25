@@ -9,21 +9,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.GravityComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.loop.Metrics;
+import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class PhysicsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.delta()).thenReturn(0.5);
+    void update_updatesPositionOfPhysicItems(DefaultEntityEngine entityEngine, GameLoop loop) {
+        when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
@@ -38,8 +38,8 @@ class PhysicsSystemTest {
     }
 
     @Test
-    void update_physicBodiesCollideWithEnvironment(DefaultEntityEngine entityEngine, Metrics metrics) {
-        when(metrics.delta()).thenReturn(0.8);
+    void update_physicBodiesCollideWithEnvironment(DefaultEntityEngine entityEngine, GameLoop loop) {
+        when(loop.delta()).thenReturn(0.8);
 
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(50, 0, 20, 20)),
