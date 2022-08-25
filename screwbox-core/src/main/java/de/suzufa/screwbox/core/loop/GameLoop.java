@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.loop;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.ScrewBox;
+import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 
 /**
@@ -38,11 +38,20 @@ public interface GameLoop {
     Duration updateDuration();
 
     /**
-     * Returns the running time of the game engine. This is the time since calling
-     * {@link ScrewBox#createEngine()}.
+     * Returns the running time of the game engine. This is the {@link Duration}
+     * since last time calling {@link Engine#start()}.
+     * 
+     * @see #startTime()
      */
-    // TODO: should be time since calling start
     Duration runningTime();
+
+    /**
+     * Returns the time the {@link GameLoop} was started for the last time. This is
+     * the {@link Duration} since last time calling {@link Engine#start()}.
+     * 
+     * @see #runningTime()
+     */
+    Time startTime();
 
     /**
      * Returns an abstraction of delta time between two frames. It's highly

@@ -17,7 +17,7 @@ public class DefaultGameLoop implements GameLoop {
     private double delta = 0;
     private Duration updateDuration = Duration.none();
     private Time lastUpdate = Time.now();
-    private final Time started = Time.now();
+    private Time startTime = Time.unset();
     private Duration runningTime = Duration.none();
     private final List<Updatable> updatables;
     private boolean active = false;
@@ -32,6 +32,7 @@ public class DefaultGameLoop implements GameLoop {
             throw new IllegalStateException("game loop already started");
         }
         active = true;
+        startTime = Time.now();
         runGameLoop();
     }
 
@@ -123,8 +124,13 @@ public class DefaultGameLoop implements GameLoop {
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
         delta = min(timeBetweenUpdates.nanos() * 1.0 / NANOS_PER_SECOND, maxUpdateFactor);
         updateDuration = duration;
-        runningTime = Duration.between(started, lastUpdate);
+        runningTime = Duration.between(startTime, lastUpdate);
         frameNumber++;
+    }
+
+    @Override
+    public Time startTime() {
+        return startTime;
     }
 
 }
