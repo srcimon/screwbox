@@ -41,7 +41,7 @@ public class LetsGoSystem implements EntitySystem {
             engine.entityEngine().add(letsGoBubble);
         }
 
-        var delta = engine.loop().metrics().delta();
+        var delta = engine.loop().delta();
         for (Entity bubble : engine.entityEngine().fetchAll(BUBBLES)) {
             final var bubbleTranform = bubble.get(TransformComponent.class);
             var letsGoComponent = bubble.get(LetsGoComponent.class);

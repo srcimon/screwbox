@@ -28,15 +28,15 @@ public class PlayerControlSystem implements EntitySystem {
 
             if (control.leftPressed && physicsBodyComponent.momentum.x() > -100) {
                 physicsBodyComponent.momentum = physicsBodyComponent.momentum
-                        .addX(-800 * engine.loop().metrics().delta());
+                        .addX(-800 * engine.loop().delta());
             } else if (control.rightPressed && physicsBodyComponent.momentum.x() < 100) {
                 physicsBodyComponent.momentum = physicsBodyComponent.momentum
-                        .addX(800 * engine.loop().metrics().delta());
+                        .addX(800 * engine.loop().delta());
             }
 
             if (control.jumpPressed && control.allowJumpPush) {
                 physicsBodyComponent.momentum = physicsBodyComponent.momentum
-                        .addY(-330 * engine.loop().metrics().delta());
+                        .addY(-330 * engine.loop().delta());
             }
 
         }

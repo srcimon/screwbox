@@ -40,7 +40,7 @@ public class CameraMovementSystem implements EntitySystem {
                 engine.graphics().window().size().width() / zoom / 2.0,
                 engine.graphics().window().size().height() / zoom / 2.0);
 
-        double delta = engine.loop().metrics().delta();
+        double delta = engine.loop().delta();
         final double movementX = clamp(
                 worldBounds.minX() + centerExtents.x() - cameraPosition.x(),
                 distX * -1 * cameraTrackerSpeed * delta,

@@ -4,7 +4,6 @@ import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.loop.Metrics;
 import de.suzufa.screwbox.core.utils.Timer;
 
 public class LogFpsSystem implements EntitySystem {
@@ -16,10 +15,10 @@ public class LogFpsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        Metrics metrics = engine.loop().metrics();
-        sum += metrics.fps();
+        sum += engine.loop().fps();
         count++;
-        if (timer.isTick(metrics.lastUpdate())) {
+//TODO: what am i doing right here?
+        if (timer.isTick(engine.loop().lastUpdate())) {
             String fpsMessage = String.format("current fps %,.0f", sum / count);
             engine.log().debug(fpsMessage);
             sum = 0;

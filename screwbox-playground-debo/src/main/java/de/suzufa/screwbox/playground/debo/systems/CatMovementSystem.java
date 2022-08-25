@@ -75,7 +75,7 @@ public class CatMovementSystem implements EntitySystem {
         boolean flipped = player.get(SpriteComponent.class).sprite.isFlippedHorizontally();
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
-                new TimeoutComponent(engine.loop().metrics().lastUpdate().plusMillis(200)),
+                new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
                 new NavpointComponent(state.getClass(), flipped));
 
         engine.entityEngine().add(navpoint);

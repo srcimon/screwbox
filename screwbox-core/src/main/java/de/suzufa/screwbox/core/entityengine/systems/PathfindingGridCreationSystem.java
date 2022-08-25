@@ -47,7 +47,7 @@ public class PathfindingGridCreationSystem implements EntitySystem {
     }
 
     private boolean needsUpdate(final Engine engine) {
-        final Time time = engine.loop().metrics().lastUpdate();
+        final Time time = engine.loop().lastUpdate();
         return isNull(engine.physics().pathfindingGrid()) || updateTimer.isTick(time);
     }
 

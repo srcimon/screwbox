@@ -9,9 +9,9 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
 
@@ -21,7 +21,7 @@ public class MovingPlattformSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        double delta = engine.loop().metrics().delta();
+        double delta = engine.loop().delta();
         for (var entity : engine.entityEngine().fetchAll(PLATTFORMS)) {
             var plattformComponent = entity.get(MovingPlattformComponent.class);
             var transform = entity.get(TransformComponent.class);

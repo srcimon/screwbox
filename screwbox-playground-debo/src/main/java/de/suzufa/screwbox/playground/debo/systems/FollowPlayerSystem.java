@@ -10,8 +10,8 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.MathUtil;
 import de.suzufa.screwbox.playground.debo.components.FollowPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -45,7 +45,7 @@ public class FollowPlayerSystem implements EntitySystem {
                     lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(),
                     followComponent.speed);
 
-            Vector movement = Vector.of(x, y).multiply(engine.loop().metrics().delta());
+            Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
             Bounds updatedBounds = followTransform.bounds.moveBy(movement);
             followTransform.bounds = updatedBounds;
         }

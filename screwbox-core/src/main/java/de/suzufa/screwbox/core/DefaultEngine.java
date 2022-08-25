@@ -89,7 +89,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        final var frames = loop().metrics().frameNumber();
+        final var frames = loop().frameNumber();
 
         log.info(format("engine stopped (%,d frames total)", frames));
         ui.closeMenu();
