@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.loop.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.within;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,21 @@ class DefaultGameLoopTest {
     }
 
     @Test
-    void start_stopAfterFirstIteration_tracksMetrics() {
-        updatables.add(() -> loop.stop());
+    void delta_afterOneIteration_returnsCorrectValue() {
+        updatables.add(stopAfterOneFrameUpdatable());
 
         loop.start();
 
-        assertThat(loop.metrics().frameNumber()).isEqualTo(1);
+        assertThat(loop.delta()).isPositive().isEqualTo(1.0 / loop.fps(), within(0.2));
+    }
+
+    @Test
+    void frameNumber_afterOneIteration_returnsOne() {
+        updatables.add(stopAfterOneFrameUpdatable());
+
+        loop.start();
+
+        assertThat(loop.frameNumber()).isEqualTo(1);
     }
 
     @Test
@@ -57,5 +67,9 @@ class DefaultGameLoopTest {
         assertThatThrownBy(() -> loop.setTargetFps(80))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("target fps must be at least 120");
+    }
+
+    private Updatable stopAfterOneFrameUpdatable() {
+        return () -> loop.stop();
     }
 }
