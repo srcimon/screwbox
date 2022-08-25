@@ -20,7 +20,7 @@ public class MagnetSystem implements EntitySystem {
             return;
         }
         final var bodies = engine.entityEngine().fetchAll(BODIES);
-        double updateFactor = engine.loop().metrics().updateFactor();
+        double delta = engine.loop().delta();
         for (final var magnet : magnets) {
             Vector magnetPosition = magnet.get(TransformComponent.class).bounds.position();
             var magnetComponent = magnet.get(MagnetComponent.class);
@@ -30,7 +30,7 @@ public class MagnetSystem implements EntitySystem {
                     var bodyPhysics = body.get(PhysicsBodyComponent.class);
                     var distance = bodyTransform.bounds.position().distanceTo(magnetPosition);
                     var force = Math.max(0, (magnetComponent.range - distance) / magnetComponent.range)
-                            * magnetComponent.force * updateFactor * bodyPhysics.magnetModifier;
+                            * magnetComponent.force * delta * bodyPhysics.magnetModifier;
                     bodyPhysics.momentum = bodyPhysics.momentum
                             .add(magnetPosition.substract(bodyTransform.bounds.position()).multiply(force));
                 }

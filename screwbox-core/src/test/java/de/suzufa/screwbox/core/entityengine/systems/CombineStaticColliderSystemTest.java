@@ -8,18 +8,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.StaticMarkerComponent;
+import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.loop.Metrics;
 import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class CombineStaticColliderSystemTest {
 
     @Test
-    void update_combinesHorizontallyAlignedColliders(DefaultEntityEngine entityEngine, Metrics metrics) {
+    void update_combinesHorizontallyAlignedColliders(DefaultEntityEngine entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -48,7 +47,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_combinesVerticallyAlignedColliders(DefaultEntityEngine entityEngine, Metrics metrics) {
+    void update_combinesVerticallyAlignedColliders(DefaultEntityEngine entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -77,7 +76,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_ignoresDifferentColliders(DefaultEntityEngine entityEngine, Metrics metrics) {
+    void update_ignoresDifferentColliders(DefaultEntityEngine entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(4),
@@ -103,7 +102,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_removesItselfAfterFinishingAllColliders(DefaultEntityEngine entityEngine, Metrics metrics) {
+    void update_removesItselfAfterFinishingAllColliders(DefaultEntityEngine entityEngine) {
         entityEngine.add(new CombineStaticCollidersSystem());
 
         entityEngine.update();

@@ -41,18 +41,18 @@ public class LetsGoSystem implements EntitySystem {
             engine.entityEngine().add(letsGoBubble);
         }
 
-        var factor = engine.loop().metrics().updateFactor();
+        var delta = engine.loop().delta();
         for (Entity bubble : engine.entityEngine().fetchAll(BUBBLES)) {
             final var bubbleTranform = bubble.get(TransformComponent.class);
             var letsGoComponent = bubble.get(LetsGoComponent.class);
             Bounds updatedBounds = bubbleTranform.bounds
-                    .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * factor * 100, -10 * factor));
+                    .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
             bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
             engine.graphics().world().drawTextCentered(postion, "LET'S GO", FONT, letsGoComponent.visibility, 0.5);
-            letsGoComponent.modifier += factor / 16;
-            letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - factor / 2);
+            letsGoComponent.modifier += delta / 16;
+            letsGoComponent.visibility = Percentage.of(letsGoComponent.visibility.value() - delta / 2);
         }
     }
 

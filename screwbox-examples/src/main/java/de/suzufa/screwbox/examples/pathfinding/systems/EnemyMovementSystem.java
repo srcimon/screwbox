@@ -25,7 +25,7 @@ public class EnemyMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (timer.isTick(engine.loop().metrics().timeOfLastUpdate())) {
+        if (timer.isTick(engine.loop().lastUpdate())) {
             final Entity player = engine.entityEngine().forcedFetch(PLAYER);
             final Vector playerPosition = player.get(TransformComponent.class).bounds.position();
             for (final Entity enemy : engine.entityEngine().fetchAll(ENEMIES)) {

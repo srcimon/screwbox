@@ -21,7 +21,6 @@ import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.core.loop.Metrics;
 
 public class EntityEngineExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
@@ -29,16 +28,15 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
     private DefaultEntityEngine entityEngine;
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        var metrics = mock(Metrics.class);
-        var gameLoop = mock(GameLoop.class);
-        var engine = mock(Engine.class);
-        var graphics = mock(Graphics.class);
-        var world = mock(World.class);
-        var log = mock(Log.class);
-        var screen = mock(Window.class);
-        var entityManager = new DefaultEntityManager();
-        var systemManager = new DefaultSystemManager(engine, entityManager);
+    public void beforeEach(final ExtensionContext context) throws Exception {
+        final var gameLoop = mock(GameLoop.class);
+        final var engine = mock(Engine.class);
+        final var graphics = mock(Graphics.class);
+        final var world = mock(World.class);
+        final var log = mock(Log.class);
+        final var screen = mock(Window.class);
+        final var entityManager = new DefaultEntityManager();
+        final var systemManager = new DefaultSystemManager(engine, entityManager);
         entityEngine = new DefaultEntityEngine(entityManager, systemManager);
         when(engine.entityEngine()).thenReturn(entityEngine);
         when(engine.graphics()).thenReturn(graphics);
@@ -46,8 +44,7 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         when(graphics.world()).thenReturn(world);
         when(graphics.window()).thenReturn(screen);
         when(engine.loop()).thenReturn(gameLoop);
-        when(gameLoop.metrics()).thenReturn(metrics);
-        parameters.put(Metrics.class, metrics);
+        parameters.put(GameLoop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);
@@ -56,14 +53,14 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
     }
 
     @Override
-    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        var type = parameterContext.getParameter().getType();
+    public boolean supportsParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
+        final var type = parameterContext.getParameter().getType();
         return parameters.containsKey(type);
     }
 
     @Override
-    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        var type = parameterContext.getParameter().getType();
+    public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
+        final var type = parameterContext.getParameter().getType();
         return parameters.get(type);
     }
 

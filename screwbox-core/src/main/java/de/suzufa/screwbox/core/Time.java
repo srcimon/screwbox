@@ -70,7 +70,7 @@ public class Time implements Serializable {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        final int result = 1;
         return prime * result + (int) (nanos ^ (nanos >>> 32));
     }
 
@@ -113,6 +113,13 @@ public class Time implements Serializable {
      */
     public boolean isAfter(final Time other) {
         return other.isSet() && nanos > other.nanos;
+    }
+
+    /**
+     * Specifies if this instance is before the given {@link Time} instance.
+     */
+    public boolean isBefore(final Time other) {
+        return other.isSet() && nanos < other.nanos;
     }
 
     /**

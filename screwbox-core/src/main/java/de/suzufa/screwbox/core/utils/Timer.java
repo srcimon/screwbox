@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.loop.Metrics;
+import de.suzufa.screwbox.core.loop.GameLoop;
 
 /**
  * A simple timer to trigger timed actions.
@@ -36,7 +36,7 @@ public class Timer implements Serializable {
      * load.
      * 
      * @see #isTick()
-     * @see Metrics#timeOfLastUpdate()
+     * @see GameLoop#lastUpdate()
      */
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);

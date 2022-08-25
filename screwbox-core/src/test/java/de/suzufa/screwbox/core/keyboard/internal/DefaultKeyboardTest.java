@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
-import de.suzufa.screwbox.core.loop.Metrics;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultKeyboardTest {
@@ -23,9 +22,6 @@ class DefaultKeyboardTest {
 
     @Mock
     private KeyEvent keyEvent;
-
-    @Mock
-    private Metrics metrics;
 
     @Test
     void isDown_keyWasPressedAndNotReleased_returnsTrue() {
