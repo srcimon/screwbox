@@ -73,6 +73,23 @@ class SelectEntityBuilderTest {
         assertThat(result).isPresent();
     }
 
+    @Test
+    void selectAll_entitiesAtPosition_returnsAllEntitiesAtPosition() {
+        Entity first = boxAt(39, 59);
+        Entity second = boxAt(38, 58);
+        Entity thirdFardAway = boxAt(0, 0);
+        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+                .thenReturn(List.of(first, second, thirdFardAway));
+
+        var result = selectEntityBuilder
+                .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
+                .ignoringEntitiesHaving(SpriteComponent.class)
+                .selectAll();
+
+        assertThat(result).contains(first, second).doesNotContain(thirdFardAway);
+
+    }
+
     private Entity boxAt(double x, double y) {
         Bounds bounds = Bounds.atPosition(x, y, 20, 20);
         return new Entity()
