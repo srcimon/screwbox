@@ -12,6 +12,8 @@ import de.suzufa.screwbox.core.loop.GameLoop;
 public class DefaultGameLoop implements GameLoop {
 
     private static final int CRITICAL_FPS_COUNT = 10;
+    private final List<Updatable> updatables;
+
     private int fps = 0;
     private long frameNumber;
     private double delta = 0;
@@ -19,9 +21,8 @@ public class DefaultGameLoop implements GameLoop {
     private Time lastUpdate = Time.now();
     private Time startTime = Time.unset();
     private Duration runningTime = Duration.none();
-    private final List<Updatable> updatables;
     private boolean active = false;
-    private int targetFps = GameLoop.DEFAULT_TARGET_FPS;
+    private int targetFps = GameLoop.MIN_TARGET_FPS;
 
     public DefaultGameLoop(final List<Updatable> updatables) {
         this.updatables = updatables;
@@ -45,8 +46,8 @@ public class DefaultGameLoop implements GameLoop {
 
     @Override
     public GameLoop setTargetFps(final int targetFps) {
-        if (targetFps < GameLoop.DEFAULT_TARGET_FPS) {
-            throw new IllegalArgumentException("target fps must be at least " + GameLoop.DEFAULT_TARGET_FPS);
+        if (targetFps < GameLoop.MIN_TARGET_FPS) {
+            throw new IllegalArgumentException("target fps must be at least " + GameLoop.MIN_TARGET_FPS);
         }
         this.targetFps = targetFps;
         return this;

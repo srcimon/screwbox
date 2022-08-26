@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class StateSystemTest {

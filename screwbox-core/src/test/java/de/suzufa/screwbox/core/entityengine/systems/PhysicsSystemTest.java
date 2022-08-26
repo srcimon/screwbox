@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class PhysicsSystemTest {

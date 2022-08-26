@@ -11,14 +11,13 @@ import de.suzufa.screwbox.core.Time;
 public interface GameLoop {
 
     /**
-     * The default target frames per second.
+     * The minimum target frames per second.
      */
-    public static final int DEFAULT_TARGET_FPS = 120;
+    public static final int MIN_TARGET_FPS = 120;
 
     /**
      * Sets the games target frames per second. Default value is
-     * {@link #DEFAULT_TARGET_FPS}. Setting target fps below that value is not
-     * recommended.
+     * {@link #MIN_TARGET_FPS}. Setting target fps below that value is not allowed.
      */
     GameLoop setTargetFps(int targetFps);
 

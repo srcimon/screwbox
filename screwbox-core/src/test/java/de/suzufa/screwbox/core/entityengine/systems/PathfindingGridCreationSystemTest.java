@@ -17,8 +17,8 @@ import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
 import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Physics;
+import de.suzufa.screwbox.core.test.EntityEngineExtension;
 import de.suzufa.screwbox.core.utils.Timer;
-import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class PathfindingGridCreationSystemTest {

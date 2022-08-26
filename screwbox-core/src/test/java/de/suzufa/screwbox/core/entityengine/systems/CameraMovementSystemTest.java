@@ -19,7 +19,7 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class CameraMovementSystemTest {

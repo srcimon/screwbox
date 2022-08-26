@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.ForwardSignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.RegisterToSignalComponent;
 import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.test.extensions.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class RegisterToSignalSystemTest {
