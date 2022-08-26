@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.test.extensions;
+package de.suzufa.screwbox.core.test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
