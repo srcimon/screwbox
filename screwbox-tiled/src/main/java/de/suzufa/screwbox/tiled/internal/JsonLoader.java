@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -75,7 +74,6 @@ public class JsonLoader {
     }
 
     public TilesetEntity loadTileset(final String fileName) {
-        Objects.requireNonNull(fileName, "fileName must not be null");
         final File tilesetFile = ResourceLoader.resourceFile(fileName);
         final TilesetEntity deserialize = deserialize(tilesetFile, TilesetEntity.class);
         final String fileNameInFileName = fileName.split("/")[fileName.split("/").length - 1];
