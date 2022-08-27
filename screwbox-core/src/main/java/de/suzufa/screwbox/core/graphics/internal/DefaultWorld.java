@@ -136,7 +136,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawCircle(Vector position, int diameter, Color color) {
+    public World drawCircle(final Vector position, final int diameter, final Color color) {
         final Offset offset = toOffset(position);
         window.drawCircle(offset, (int) (diameter * zoom), color);
         return this;
@@ -144,19 +144,15 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final Color color) {
-        // TODO: REMOVE ALL CHECKS FROM RENDERER/GRAPHICS
-        if (bounds.intersects(visibleArea)) {
-
-            final Offset offset = toOffset(bounds.origin());
-            final Dimension dimension = toDimension(bounds.size());
-
-            window.drawRectangle(offset, dimension, color);
-        }
+        final Offset offset = toOffset(bounds.origin());
+        final Dimension size = toDimension(bounds.size());
+        window.drawRectangle(offset, size, color);
         return this;
     }
 
     @Override
-    public World drawTextCentered(Vector position, String text, Pixelfont font, Percentage opacity, double scale) {
+    public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
+            final Percentage opacity, final double scale) {
         final Offset offset = toOffset(position);
         window.drawTextCentered(offset, text, font, opacity, scale * zoom);
         return this;

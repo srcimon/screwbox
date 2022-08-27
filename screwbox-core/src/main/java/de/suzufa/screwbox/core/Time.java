@@ -25,6 +25,11 @@ public class Time implements Serializable {
      */
     public static final long NANOS_PER_MILLISECOND = 1_000_000;
 
+    /**
+     * Count of nanoseconds per microsecond.
+     */
+    public static final long NANOS_PER_MICROSECOND = 1_000;
+
     private final long nanos;
 
     /**

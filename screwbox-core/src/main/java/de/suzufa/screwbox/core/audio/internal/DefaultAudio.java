@@ -115,6 +115,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     private void playClip(final Clip clip, final Percentage volume, final boolean looped) {
         activeClips.add(clip);
+
         clip.setFramePosition(0);
         clip.addLineListener(this);
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
