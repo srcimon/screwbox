@@ -28,6 +28,13 @@ class DurationTest {
     }
 
     @Test
+    void ofMicros_returnsNewInstance() {
+        Duration duration = Duration.ofMicros(10);
+
+        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_MICROSECOND);
+    }
+
+    @Test
     void ofNanos_returnsNewInstance() {
         Duration duration = Duration.ofNanos(5 * Time.NANOS_PER_MILLISECOND);
 

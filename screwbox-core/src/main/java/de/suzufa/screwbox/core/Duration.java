@@ -24,9 +24,21 @@ public class Duration implements Serializable {
      * 
      * @see #ofMillis(long)
      * @see #ofSeconds(long)
+     * @see #ofMicros(long)
      */
     public static Duration ofNanos(final long nanos) {
         return new Duration(nanos);
+    }
+
+    /**
+     * Creates a new instance with the duration of the given value of microseconds.
+     * 
+     * @see #ofMillis(long)
+     * @see #ofSeconds(long)
+     * @see #ofNanos(long)
+     */
+    public static Duration ofMicros(final long micros) {
+        return new Duration(micros * Time.NANOS_PER_MICROSECOND);
     }
 
     /**
@@ -34,6 +46,7 @@ public class Duration implements Serializable {
      * 
      * @see #ofNanos(long)
      * @see #ofSeconds(long)
+     * @see #ofMicros(long)
      */
     public static Duration ofMillis(final long millis) {
         return new Duration(millis * Time.NANOS_PER_MILLISECOND);
@@ -44,6 +57,7 @@ public class Duration implements Serializable {
      * 
      * @see #ofMillis(long)
      * @see #ofNanos(long)
+     * @see #ofMicros(long)
      */
     public static Duration ofSeconds(final long seconds) {
         return new Duration(seconds * Time.NANOS_PER_SECOND);
@@ -82,7 +96,7 @@ public class Duration implements Serializable {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        final int result = 1;
         return prime * result + (int) (nanos ^ (nanos >>> 32));
     }
 

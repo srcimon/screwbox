@@ -10,6 +10,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
 public final class Sound {
@@ -29,6 +30,10 @@ public final class Sound {
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             throw new IllegalStateException("could not create sound", e);
         }
+    }
+
+    public Duration length() {
+        return Duration.ofMicros(clip.getMicrosecondLength());
     }
 
     public boolean isActive() {
