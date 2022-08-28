@@ -16,6 +16,9 @@ import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.audio.SoundPool;
 
+//TODO: get rid of soundpool
+//TODO: only save byte[] in sound to make it serializable
+
 public class DefaultAudio implements Audio, LineListener {
 
     private final ExecutorService executor;
