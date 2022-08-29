@@ -19,9 +19,9 @@ public class AutoflipByMovementSystem implements EntitySystem {
         for (final var entity : engine.entityEngine().fetchAll(FLIPPABLES)) {
             final var momentum = entity.get(PhysicsBodyComponent.class).momentum;
             if (momentum.x() > 0) {
-                entity.get(SpriteComponent.class).flipMode = FlipMode.HORIZONTAL;
-            } else if (momentum.x() < 0) {
                 entity.get(SpriteComponent.class).flipMode = FlipMode.NONE;
+            } else if (momentum.x() < 0) {
+                entity.get(SpriteComponent.class).flipMode = FlipMode.HORIZONTAL;
             }
         }
     }
