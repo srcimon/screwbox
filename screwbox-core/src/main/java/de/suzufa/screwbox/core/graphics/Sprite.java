@@ -18,6 +18,7 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
+//TODO: SpriteCOmponent#flippedState instead of sprite#isFlipped
 public class Sprite implements Serializable {
 
     private static final long serialVersionUID = 1L;
