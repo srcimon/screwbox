@@ -62,12 +62,14 @@ public class SpriteRenderSystem implements EntitySystem {
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
+            final SpriteComponent spriteComponent = entry.spriteComponent;
             engine.graphics().world().drawSprite(
-                    entry.spriteComponent.sprite,
+                    spriteComponent.sprite,
                     entry.position,
-                    entry.spriteComponent.scale,
-                    entry.spriteComponent.opacity,
-                    entry.spriteComponent.rotation);
+                    spriteComponent.scale,
+                    spriteComponent.opacity,
+                    spriteComponent.rotation,
+                    spriteComponent.flipMode);
         }
     }
 

@@ -20,6 +20,8 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -111,7 +113,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation) {
+            final Rotation rotation, final FlipMode flipMode) {
         applyOpacityConfig(opacity);
 
         if (!rotation.isNone()) {
@@ -119,20 +121,24 @@ public class DefaultRenderer implements Renderer {
             final double y = origin.y() + sprite.size().height() * scale / 2.0;
             final double radians = rotation.radians();
             graphics.rotate(radians, x, y);
-            drawSpriteInContext(sprite, origin, scale);
+            drawSpriteInContext(sprite, origin, scale, flipMode);
             graphics.rotate(-radians, x, y);
         } else {
-            drawSpriteInContext(sprite, origin, scale);
+            drawSpriteInContext(sprite, origin, scale, flipMode);
         }
 
         resetOpacityConfig(opacity);
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale,
+            final FlipMode flipMode) {
         final Image image = sprite.getImage(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
-        transform.translate(origin.x(), origin.y());
-        transform.scale(scale, scale);
+        final Dimension size = sprite.size();
+        final double xCorrect = flipMode.isHorizontal() ? scale * size.width() : 0;
+        final double yCorrect = flipMode.isVertical() ? scale * size.height() : 0;
+        transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        transform.scale(scale * (flipMode.isHorizontal() ? -1 : 1), scale * (flipMode.isVertical() ? -1 : 1));
         graphics.drawImage(image, transform, frame);
     }
 

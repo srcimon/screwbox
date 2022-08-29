@@ -12,8 +12,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
@@ -136,8 +134,6 @@ class SpriteTest {
     @Test
     void replaceColor_replacesColorOfNewFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
-        sprite.setFlippedHorizontally(true);
-        sprite.setFlippedVertically(true);
 
         Color oldColor = sprite.singleFrame().colorAt(origin());
 
@@ -146,8 +142,6 @@ class SpriteTest {
 
         assertThat(oldColor).isNotEqualTo(BLACK);
         assertThat(newColor).isEqualTo(BLACK);
-        assertThat(newSprite.isFlippedHorizontally()).isTrue();
-        assertThat(newSprite.isFlippedVertically()).isTrue();
     }
 
     @Test
@@ -162,26 +156,19 @@ class SpriteTest {
     @Test
     void scaled_createsSpriteWithNewSize() {
         Sprite original = Sprite.invisible();
-        original.setFlippedHorizontally(true);
-        original.setFlippedVertically(true);
 
         Sprite scaled = original.scaled(4);
 
         assertThat(scaled.size()).isEqualTo(square(4));
-        assertThat(scaled.isFlippedHorizontally()).isTrue();
-        assertThat(scaled.isFlippedVertically()).isTrue();
     }
 
-    @ParameterizedTest
-    @CsvSource({ "true,true", "true,false", "false,true", "false,false" })
-    void getImage_oneImage_returnsImageOfFrame(boolean flippedH, boolean flippedV) {
+    @Test
+    void getImage_oneImage_returnsImageOfFrame() {
         Sprite sprite = Sprite.invisible();
-        sprite.setFlippedHorizontally(flippedH);
-        sprite.setFlippedVertically(flippedV);
 
         Image image = sprite.getImage(Time.now());
 
-        Image expectedImage = sprite.singleFrame().image(flippedH, flippedV);
+        Image expectedImage = sprite.singleFrame().image();
         assertThat(image).isEqualTo(expectedImage);
     }
 

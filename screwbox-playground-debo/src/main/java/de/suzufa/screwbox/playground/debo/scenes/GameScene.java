@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.entityengine.systems.AreaTriggerSystem;
+import de.suzufa.screwbox.core.entityengine.systems.AutFlipSpriteSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entityengine.systems.CombineStaticCollidersSystem;
@@ -43,7 +44,6 @@ import de.suzufa.screwbox.playground.debo.specials.Camera;
 import de.suzufa.screwbox.playground.debo.specials.CatCompanion;
 import de.suzufa.screwbox.playground.debo.specials.Waypoint;
 import de.suzufa.screwbox.playground.debo.specials.player.Player;
-import de.suzufa.screwbox.playground.debo.systems.AutoflipByMovementSystem;
 import de.suzufa.screwbox.playground.debo.systems.BackgroundSystem;
 import de.suzufa.screwbox.playground.debo.systems.CameraShiftSystem;
 import de.suzufa.screwbox.playground.debo.systems.CatMovementSystem;
@@ -131,7 +131,7 @@ public class GameScene implements Scene {
                 new AreaTriggerSystem(),
                 new TimeoutSystem(),
                 new ResetSceneSystem(),
-                new AutoflipByMovementSystem(),
+                new AutFlipSpriteSystem(),
                 new BackgroundSystem(),
                 new CatMovementSystem(),
                 new SpriteRenderSystem());

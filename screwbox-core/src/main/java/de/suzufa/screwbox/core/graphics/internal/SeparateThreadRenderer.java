@@ -13,6 +13,7 @@ import java.util.concurrent.FutureTask;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -26,7 +27,7 @@ public class SeparateThreadRenderer implements Renderer {
     private final ExecutorService executor;
     private Future<?> currentRendering = null;
 
-    public SeparateThreadRenderer(final Renderer next, ExecutorService executor) {
+    public SeparateThreadRenderer(final Renderer next, final ExecutorService executor) {
         this.next = next;
         this.executor = executor;
     }
@@ -55,7 +56,7 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawTextCentered(Offset position, String text, Font font, Color color) {
+    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         renderTasks.primary().add(() -> next.drawTextCentered(position, text, font, color));
     }
 
@@ -76,8 +77,8 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation) {
-        renderTasks.primary().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation));
+            final Rotation rotation, final FlipMode flipMode) {
+        renderTasks.primary().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flipMode));
 
     }
 

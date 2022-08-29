@@ -18,6 +18,7 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
@@ -72,7 +73,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
             Pixelfont font) {
         Offset currentOffset = offset;
         for (var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none());
+            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), FlipMode.NONE);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
@@ -106,7 +107,7 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none());
+                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), FlipMode.NONE);
             }
         }
         return this;
@@ -165,8 +166,8 @@ public class DefaultWindow implements Window, GraphicsConfigListener {
 
     @Override
     public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation);
+            final Rotation rotation, FlipMode flipMode) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode);
         return this;
     }
 

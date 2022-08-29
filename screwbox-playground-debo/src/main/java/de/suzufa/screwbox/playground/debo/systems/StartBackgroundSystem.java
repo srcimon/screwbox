@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 
@@ -38,7 +39,7 @@ public class StartBackgroundSystem implements EntitySystem {
         final double yCorrect = sprite.size().height() / 2.0 * scale;
 
         final Offset position = Offset.at(center.x() - xCorrect, center.y() - yCorrect);
-        engine.graphics().window().drawSprite(sprite, position, scale, Percentage.half(), rotation);
+        engine.graphics().window().drawSprite(sprite, position, scale, Percentage.half(), rotation, FlipMode.NONE);
     }
 
 }
