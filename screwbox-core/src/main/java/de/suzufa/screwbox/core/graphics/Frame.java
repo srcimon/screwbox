@@ -1,12 +1,9 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
-import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipHorizontally;
-import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.flipVertically;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.scale;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -30,43 +27,13 @@ public final class Frame implements Serializable {
 
         private static final long serialVersionUID = 1L;
         private final ImageIcon image;
-        private transient Image imageFlippedH;
-        private transient Image imageFlippedV;
-        private transient Image imageFlippedHandV;
 
         ImageContainer(final Image image) {
             this.image = new ImageIcon(image);
-            this.imageFlippedH = flipHorizontally(image);
-            this.imageFlippedV = flipVertically(image);
-            this.imageFlippedHandV = flipHorizontally(flipVertically(image));
         }
 
-        Image image(final boolean flippedH, final boolean flippedV) {
-            if (flippedH) {
-                return flippedV ? getFlippedHandV() : getFlippedH();
-            }
-            return flippedV ? getFlippedV() : image.getImage();
-        }
-
-        private Image getFlippedV() {
-            if (isNull(imageFlippedV)) {
-                imageFlippedV = flipVertically(image.getImage());
-            }
-            return imageFlippedV;
-        }
-
-        private Image getFlippedH() {
-            if (isNull(imageFlippedH)) {
-                imageFlippedH = flipHorizontally(image.getImage());
-            }
-            return imageFlippedH;
-        }
-
-        private Image getFlippedHandV() {
-            if (isNull(imageFlippedHandV)) {
-                imageFlippedHandV = flipHorizontally(flipVertically(image.getImage()));
-            }
-            return imageFlippedHandV;
+        Image image() {
+            return image.getImage();
         }
 
     }
@@ -88,11 +55,7 @@ public final class Frame implements Serializable {
     }
 
     public Image image() {
-        return image(false, false);
-    }
-
-    public Image image(final boolean flippedH, final boolean flippedV) {
-        return imageContainer.image(flippedH, flippedV);
+        return imageContainer.image();
     }
 
     public Duration duration() {

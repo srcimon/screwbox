@@ -18,7 +18,6 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
-//TODO: SpriteCOmponent#flippedState instead of sprite#isFlipped
 public class Sprite implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,19 +27,12 @@ public class Sprite implements Serializable {
     private Dimension dimension;
     private final Time started = Time.now();
     private Duration duration = Duration.none();
-    private boolean flippedHorizontally = false;
-    private boolean flippedVertically = false;
 
     private Sprite(final Image image) {
-        this(asList(new Frame(image)), false);
+        this(asList(new Frame(image)));
     }
 
     public Sprite(final List<Frame> frames) {
-        this(frames, false);
-    }
-
-    private Sprite(final List<Frame> frames, final boolean flipped) {
-        this.flippedHorizontally = flipped;
         for (final var frame : frames) {
             addFrame(frame);
         }
@@ -100,22 +92,6 @@ public class Sprite implements Serializable {
         return new Sprite(image);
     }
 
-    public boolean isFlippedHorizontally() {
-        return flippedHorizontally;
-    }
-
-    public void setFlippedHorizontally(final boolean flippedHorizontally) {
-        this.flippedHorizontally = flippedHorizontally;
-    }
-
-    public boolean isFlippedVertically() {
-        return flippedVertically;
-    }
-
-    public void setFlippedVertically(final boolean flippedVertically) {
-        this.flippedVertically = flippedVertically;
-    }
-
     /**
      * Returns the count of {@link Frame}s in the {@link Sprite}.
      */
@@ -135,8 +111,7 @@ public class Sprite implements Serializable {
      * Returns the {@link Image} for the given {@link Time}.
      */
     public Image getImage(final Time time) {
-        final var frame = getFrame(time);
-        return frame.image(flippedHorizontally, flippedVertically);
+        return getFrame(time).image();
     }
 
     /**
@@ -155,7 +130,7 @@ public class Sprite implements Serializable {
     }
 
     public Sprite newInstance() {
-        return new Sprite(frames, flippedHorizontally);
+        return new Sprite(frames);
     }
 
     public Duration duration() {
@@ -201,8 +176,6 @@ public class Sprite implements Serializable {
             recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
         final Sprite sprite = new Sprite(recoloredFrames);
-        sprite.setFlippedHorizontally(flippedHorizontally);
-        sprite.setFlippedVertically(flippedVertically);
         return sprite;
     }
 
@@ -215,8 +188,6 @@ public class Sprite implements Serializable {
             scaledFrames.add(frame.scaled(scale));
         }
         final Sprite newSprite = new Sprite(scaledFrames);
-        newSprite.setFlippedHorizontally(flippedHorizontally);
-        newSprite.setFlippedVertically(flippedVertically);
         return newSprite;
     }
 
