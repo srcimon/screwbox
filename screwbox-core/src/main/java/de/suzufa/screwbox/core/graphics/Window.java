@@ -35,10 +35,11 @@ public interface Window {
         return drawCircle(offset, diameter, drawColor());
     }
 
-    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
+    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation,
+            FlipMode flipMode);
 
     default Window drawSprite(final Sprite sprite, final Offset origin, final Percentage opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none());
+        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), FlipMode.NONE);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin) {

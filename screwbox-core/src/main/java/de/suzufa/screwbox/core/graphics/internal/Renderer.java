@@ -5,6 +5,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -22,7 +23,8 @@ public interface Renderer {
 
     void drawCircle(Offset offset, int diameter, Color color);
 
-    void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation);
+    void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation,
+            FlipMode flipMode);
 
     void drawText(Offset offset, String text, Font font, Color color);
 

@@ -20,6 +20,7 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -111,7 +112,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation) {
+            final Rotation rotation, final FlipMode flipMode) {
         applyOpacityConfig(opacity);
 
         if (!rotation.isNone()) {

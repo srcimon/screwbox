@@ -14,15 +14,16 @@ public interface World {
 
     Color drawColor();
 
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation);
+    World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation,
+            FlipMode flipMode);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity,
-            final Rotation rotation) {
-        return drawSprite(sprite, origin, 1, opacity, rotation);
+            final Rotation rotation, FlipMode flipMode) {
+        return drawSprite(sprite, origin, 1, opacity, rotation, flipMode);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity) {
-        return drawSprite(sprite, origin, opacity, Rotation.none());
+        return drawSprite(sprite, origin, opacity, Rotation.none(), FlipMode.NONE);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {

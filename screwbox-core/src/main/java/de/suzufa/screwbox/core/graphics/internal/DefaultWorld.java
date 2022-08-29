@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
@@ -69,11 +70,11 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation) {
+            final Rotation rotation, FlipMode flipMode) {
         final var offset = toOffset(origin);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation);
+        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flipMode);
         return this;
     }
 
