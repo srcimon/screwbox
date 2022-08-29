@@ -17,6 +17,10 @@ public class SpriteComponent implements Component {
     public Rotation rotation = Rotation.none();
     public FlipMode flipMode = FlipMode.NONE;
 
+    public SpriteComponent() {
+        this(0);
+    }
+
     public SpriteComponent(final int drawOrder) {
         this(Sprite.invisible(), drawOrder);
     }

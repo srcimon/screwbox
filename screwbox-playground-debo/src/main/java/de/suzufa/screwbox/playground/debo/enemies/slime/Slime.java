@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
+import de.suzufa.screwbox.core.entityengine.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
@@ -13,7 +14,6 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.playground.debo.components.AutoflipByMovementComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
@@ -35,7 +35,7 @@ public class Slime implements Converter<GameObject> {
                 new ColliderComponent(0, Percentage.of(0.4)),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class)),
                 new SignalComponent(),
-                new AutoflipByMovementComponent(),
+                new AutoFlipSpriteComponent(),
                 new PatrollingMovementComponent(),
                 new PhysicsBodyComponent(Vector.of(10, 0)),
                 new SpriteComponent(object.layer().order()));
