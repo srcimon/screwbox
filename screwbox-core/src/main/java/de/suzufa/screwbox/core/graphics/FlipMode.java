@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
 //TODO: COMMENT
-public enum FlippedState {
+public enum FlipMode {
 
     HORIZONTAL,
     VERTICAL,

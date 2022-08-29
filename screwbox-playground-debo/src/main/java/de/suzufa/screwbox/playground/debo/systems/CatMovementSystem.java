@@ -72,11 +72,11 @@ public class CatMovementSystem implements EntitySystem {
         Entity player = engine.entityEngine().forcedFetch(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
-        boolean flipped = player.get(SpriteComponent.class).sprite.isFlippedHorizontally();
+        var flipMode = player.get(SpriteComponent.class).flipMode;
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
                 new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
-                new NavpointComponent(state.getClass(), flipped));
+                new NavpointComponent(state.getClass(), flipMode));
 
         engine.entityEngine().add(navpoint);
 
@@ -91,12 +91,13 @@ public class CatMovementSystem implements EntitySystem {
         if (isNull(nextSprite)) {
             return;
         }
-        nextSprite.setFlippedHorizontally(navpointComponent.flipped);
         Entity cat = catEntity.get();
         TransformComponent catBounds = cat.get(TransformComponent.class);
         Bounds updatedBounds = Bounds.atPosition(nextPosition, catBounds.bounds.width(), catBounds.bounds.height());
         catBounds.bounds = updatedBounds;
-        cat.get(SpriteComponent.class).sprite = nextSprite;
+        SpriteComponent spriteComponent = cat.get(SpriteComponent.class);
+        spriteComponent.sprite = nextSprite;
+        spriteComponent.flipMode = navpointComponent.flipMode;
 
     }
 

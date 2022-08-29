@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.playground.debo.components.AutoflipByMovementComponent;
 
 public class AutoflipByMovementSystem implements EntitySystem {
@@ -14,16 +15,14 @@ public class AutoflipByMovementSystem implements EntitySystem {
             PhysicsBodyComponent.class);
 
     @Override
-    public void update(Engine engine) {
+    public void update(final Engine engine) {
         for (final var entity : engine.entityEngine().fetchAll(FLIPPABLES)) {
-            var autoflipComponent = entity.get(AutoflipByMovementComponent.class);
-            var momentum = entity.get(PhysicsBodyComponent.class).momentum;
+            final var momentum = entity.get(PhysicsBodyComponent.class).momentum;
             if (momentum.x() > 0) {
-                autoflipComponent.flipped = false;
+                entity.get(SpriteComponent.class).flipMode = FlipMode.HORIZONTAL;
             } else if (momentum.x() < 0) {
-                autoflipComponent.flipped = true;
+                entity.get(SpriteComponent.class).flipMode = FlipMode.NONE;
             }
-            entity.get(SpriteComponent.class).sprite.setFlippedHorizontally(autoflipComponent.flipped);
         }
     }
 

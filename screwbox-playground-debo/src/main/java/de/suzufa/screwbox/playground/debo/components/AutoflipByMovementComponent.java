@@ -6,5 +6,4 @@ public class AutoflipByMovementComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean flipped = false;
 }
