@@ -175,8 +175,7 @@ public class Sprite implements Serializable {
         for (final var frame : frames) {
             recoloredFrames.add(frame.replaceColor(oldColor, newColor));
         }
-        final Sprite sprite = new Sprite(recoloredFrames);
-        return sprite;
+        return new Sprite(recoloredFrames);
     }
 
     /**
@@ -187,8 +186,7 @@ public class Sprite implements Serializable {
         for (final var frame : this.frames) {
             scaledFrames.add(frame.scaled(scale));
         }
-        final Sprite newSprite = new Sprite(scaledFrames);
-        return newSprite;
+        return new Sprite(scaledFrames);
     }
 
     private void addFrame(final Frame frame) {
