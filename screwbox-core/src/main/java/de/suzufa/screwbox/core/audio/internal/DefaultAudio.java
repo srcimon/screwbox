@@ -80,7 +80,7 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio stopAllAudio() {
+    public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
                 final List<Clip> clipsToStop = new ArrayList<>(activeSounds.keySet());
@@ -125,15 +125,19 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     private void playClip(final Sound sound, final Percentage volume, final boolean looped) {
-        Clip clip = getClip(sound.content());
+        executor.execute(() -> {
+            Clip clip = getClip(sound.content());
 
-        activeSounds.put(clip, sound);
+            activeSounds.put(clip, sound);
 
-        clip.setFramePosition(0);
-        clip.addLineListener(this);
-        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume.value()));
-        executor.execute(() -> start(clip, looped));
+            clip.setFramePosition(0);
+            clip.addLineListener(this);
+            final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(20f * (float) Math.log10(volume.value()));
+
+            start(clip, looped);
+
+        });
     }
 
     private Clip getClip(final byte[] content) {

@@ -16,7 +16,7 @@ public interface Audio {
 
     Audio stop(Sound sound);
 
-    Audio stopAllAudio();
+    Audio stopAllSounds();
 
     Audio setEffectVolume(Percentage volume);
 
