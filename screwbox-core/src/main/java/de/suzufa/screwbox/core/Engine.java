@@ -43,6 +43,9 @@ public interface Engine {
 
     Scenes scenes();
 
+    /**
+     * Controls the audio playback of the {@link Engine}.
+     */
     Audio audio();
 
     Physics physics();

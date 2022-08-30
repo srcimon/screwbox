@@ -16,7 +16,7 @@ class SoundTest {
 
     @Test
     void fromFile_existingWav_hasContent() {
-        Sound sound = Sound.fromFile("kill.wav");
+        Sound sound = Sound.fromFile("kill.Wav");
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
     }

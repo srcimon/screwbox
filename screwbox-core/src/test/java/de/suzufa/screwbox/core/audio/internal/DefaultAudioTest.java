@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.audio.Sound;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,6 +108,21 @@ class DefaultAudioTest {
 
         verify(clip).stop();
         assertThat(audio.activeCount()).isZero();
+    }
+
+    @Test
+    void setEffectVolume_setsEffectVolume() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+
+        audio.setEffectVolume(Percentage.half());
+        audio.playEffect(sound);
+
+        waitExecutorToFinishTasks();
+
+        verify(gainControl).setValue(-6.0206003f);
+        assertThat(audio.effectVolume()).isEqualTo(Percentage.half());
     }
 
     private LineEvent stopEventFor(Clip clipMock) {

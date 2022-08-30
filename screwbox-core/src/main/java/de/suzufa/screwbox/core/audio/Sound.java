@@ -4,8 +4,12 @@ import static java.util.Objects.nonNull;
 
 import java.io.Serializable;
 
+import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
+/**
+ * A {@link Sound} that can be played via {@link Engine#audio()}.
+ */
 public final class Sound implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,10 +17,10 @@ public final class Sound implements Serializable {
     private final byte[] content;
 
     /**
-     * Creats a new {@link Sound} that can be played.
+     * Creates a new {@link Sound} from file. Only supports WAV-Files at the moment.
      */
     public static Sound fromFile(final String fileName) {
-        if (nonNull(fileName) && !fileName.endsWith(".wav")) {
+        if (nonNull(fileName) && !fileName.toLowerCase().endsWith(".wav")) {
             throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
         }
         return new Sound(ResourceLoader.loadResource(fileName));
@@ -26,6 +30,9 @@ public final class Sound implements Serializable {
         this.content = content;
     }
 
+    /**
+     * The binary content of the sound.
+     */
     public byte[] content() {
         return content;
     }

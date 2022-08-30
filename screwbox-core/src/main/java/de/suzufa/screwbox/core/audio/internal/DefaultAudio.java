@@ -149,4 +149,14 @@ public class DefaultAudio implements Audio, LineListener {
         return activeSounds.size();
     }
 
+    @Override
+    public Percentage effectVolume() {
+        return effectVolume;
+    }
+
+    @Override
+    public Percentage musicVolume() {
+        return musicVolume;
+    }
+
 }
