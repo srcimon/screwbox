@@ -3,8 +3,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
@@ -46,14 +44,6 @@ public final class ImageUtil {
     }
 
     // TODO: simplyfiy and test
-    public static Image flipHorizontally(final Image image) {
-        final BufferedImage bufferedImage = toBufferedImage(image);
-
-        final AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-        tx.translate(-image.getWidth(null), 0);
-        final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        return op.filter(bufferedImage, null);
-    }
 
     public static Image scale(final Image image, final double scale) {
         final int width = (int) (image.getWidth(null) * scale);
@@ -62,15 +52,6 @@ public final class ImageUtil {
             throw new IllegalArgumentException("Scaled image is size is invalid");
         }
         return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-    }
-
-    public static Image flipVertically(final Image image) {
-        final BufferedImage bufferedImage = toBufferedImage(image);
-
-        final AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
-        tx.translate(0, -image.getHeight(null));
-        final AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        return op.filter(bufferedImage, null);
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
