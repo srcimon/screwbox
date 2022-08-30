@@ -34,6 +34,12 @@ class DefaultAudioTest {
     @Mock
     AudioAdapter audioAdapter;
 
+    @Mock
+    Clip clip;
+
+    @Mock
+    FloatControl gainControl;
+
     ExecutorService executor;
 
     @BeforeEach
@@ -57,10 +63,7 @@ class DefaultAudioTest {
     @Test
     void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-
-        Clip clip = mock(Clip.class);
         when(audioAdapter.createClip(sound)).thenReturn(clip);
-        FloatControl gainControl = mock(FloatControl.class);
         when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
 
         audio.playEffect(sound);
@@ -79,10 +82,8 @@ class DefaultAudioTest {
     void activeCount_oneInstanceStartedAndStopped_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        Clip clip = mock(Clip.class);
-        FloatControl gainControl = mock(FloatControl.class);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
         when(audioAdapter.createClip(sound)).thenReturn(clip);
+        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
 
         audio.playEffect(sound);
 
@@ -91,6 +92,21 @@ class DefaultAudioTest {
         audio.update(stopEventFor(clip));
 
         assertThat(audio.activeCount(sound)).isZero();
+    }
+
+    @Test
+    void stopAllSounds_clipIsActive_clipIsStopped() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        audio.playMusic(sound);
+
+        audio.stopAllSounds();
+
+        waitExecutorToFinishTasks();
+
+        verify(clip).stop();
+        assertThat(audio.activeCount()).isZero();
     }
 
     private LineEvent stopEventFor(Clip clipMock) {
