@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.audio.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,12 +15,12 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.audio.Sound;
@@ -54,23 +55,22 @@ class DefaultAudioTest {
     }
 
     @Test
-    void activeCount_oneInstanceActive_isOne() {
+    void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        Clip clipMock = Mockito.mock(Clip.class);
-        when(audioAdapter.createClip(sound)).thenReturn(clipMock);
-        FloatControl gainControlMock = Mockito.mock(FloatControl.class);
-        when(clipMock.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControlMock);
+        Clip clip = mock(Clip.class);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        FloatControl gainControl = mock(FloatControl.class);
+        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
 
         audio.playEffect(sound);
 
-        awaitShutdown();
+        waitExecutorToFinishTasks();
 
-        verify(clipMock).setFramePosition(0);
-        verify(clipMock).addLineListener(audio);
-
-        verify(gainControlMock).setValue(0.0f);
-        verify(clipMock).start();
+        verify(gainControl).setValue(0.0f);
+        verify(clip).setFramePosition(0);
+        verify(clip).addLineListener(audio);
+        verify(clip).start();
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }
@@ -79,29 +79,42 @@ class DefaultAudioTest {
     void activeCount_oneInstanceStartedAndStopped_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        Clip clipMock = Mockito.mock(Clip.class);
-        when(audioAdapter.createClip(sound)).thenReturn(clipMock);
-        FloatControl gainControlMock = Mockito.mock(FloatControl.class);
-        when(clipMock.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControlMock);
+        Clip clip = mock(Clip.class);
+        FloatControl gainControl = mock(FloatControl.class);
+        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playEffect(sound);
 
-        awaitShutdown();
+        waitExecutorToFinishTasks();
 
-        LineEvent stopEventMock = new LineEvent(Mockito.mock(Line.class), Type.STOP, 0) {
+        audio.update(stopEventFor(clip));
+
+        assertThat(audio.activeCount(sound)).isZero();
+    }
+
+    private LineEvent stopEventFor(Clip clipMock) {
+        LineEvent stopEventMock = new LineEvent(mock(Line.class), Type.STOP, 0) {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Object getSource() {
                 return clipMock;
             };
         };
-
-        audio.update(stopEventMock);
-
-        assertThat(audio.activeCount(sound)).isZero();
+        return stopEventMock;
     }
 
-    private void awaitShutdown() {
+    @AfterEach
+    void afterEach() {
+        waitExecutorToFinishTasks();
+    }
+
+    private void waitExecutorToFinishTasks() {
         try {
+            if (!executor.isShutdown()) {
+                executor.shutdown();
+            }
             executor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
