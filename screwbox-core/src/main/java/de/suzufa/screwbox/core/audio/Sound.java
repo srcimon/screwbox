@@ -20,7 +20,7 @@ public final class Sound implements Serializable {
      * Creates a new {@link Sound} from file. Only supports WAV-Files at the moment.
      */
     public static Sound fromFile(final String fileName) {
-        if (nonNull(fileName) && !fileName.toLowerCase().endsWith(".wav")) {
+        if (nonNull(fileName) && !fileName.endsWith(".wav")) {
             throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
         }
         return new Sound(ResourceLoader.loadResource(fileName));

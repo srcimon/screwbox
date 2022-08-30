@@ -19,6 +19,10 @@ public interface Audio {
      */
     Audio playEffectLooped(Sound sound);
 
+    /**
+     * Plays a {@link Sound} looped with {@link #musicVolume()}. Can be stopped with
+     * {@link #stop(Sound)}.
+     */
     Audio playMusic(Sound sound);
 
     Audio resume(Sound sound);
