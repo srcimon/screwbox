@@ -161,6 +161,9 @@ class DefaultAudioTest {
         when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
 
         audio.playEffect(sound);
+        while (audio.activeCount() == 0) {
+            // wait for sound to be started
+        }
         audio.stop(sound);
 
         awaitShutdown();
