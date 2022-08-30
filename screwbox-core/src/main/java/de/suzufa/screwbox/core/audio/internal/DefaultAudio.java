@@ -89,25 +89,9 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio resume(final Sound sound) {
-        for (final Clip clip : reverseLookup(sound)) {
-            executor.execute(() -> start(clip, false));
-        }
-        return this;
-    }
-
-    @Override
-    public Audio resumeLooped(final Sound sound) {
-        for (final Clip clip : reverseLookup(sound)) {
-            executor.execute(() -> start(clip, true));
-        }
-        return this;
-    }
-
-    @Override
     public Audio stop(final Sound sound) {
         for (final Clip clip : reverseLookup(sound)) {
-            executor.execute(() -> clip.stop());
+            executor.execute(clip::stop);
         }
         return this;
     }

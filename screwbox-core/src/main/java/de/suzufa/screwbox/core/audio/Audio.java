@@ -25,24 +25,50 @@ public interface Audio {
      */
     Audio playMusic(Sound sound);
 
-    Audio resume(Sound sound);
-
-    Audio resumeLooped(Sound sound);
-
+    /**
+     * Stops all currently playing instances of the {@link Sound}.
+     */
     Audio stop(Sound sound);
 
+    /**
+     * Stops all currently playing {@link Sound}s.
+     */
     Audio stopAllSounds();
 
+    /**
+     * Sets the volume of all {@link Sound}s that are played via
+     * {@link #playEffect(Sound)} and {@link #playEffectLooped(Sound)}.
+     */
     Audio setEffectVolume(Percentage volume);
 
+    /**
+     * Sets the volume of all {@link Sound}s that are played via
+     * {@link #playMusic(Sound)}.
+     */
     Audio setMusicVolume(Percentage volume);
 
+    /**
+     * Returns the current volume for effects.
+     * 
+     * @see #musicVolume()
+     */
     Percentage effectVolume();
 
+    /**
+     * Returns the current volume for music.
+     * 
+     * @see #effectVolume()
+     */
     Percentage musicVolume();
 
+    /**
+     * Returns the count of currently playing instances of the given {@link Sound}.
+     */
     int activeCount(Sound sound);
 
+    /**
+     * Returns the count of currently playing {@link Sound}s.
+     */
     int activeCount();
 
 }
