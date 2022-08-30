@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
@@ -111,12 +110,10 @@ public class DefaultAudio implements Audio, LineListener {
 
     private void playClip(final Sound sound, final Percentage volume, final boolean looped) {
         executor.execute(() -> {
-            final Clip clip = audioAdapter.createClip(sound);
+            final Clip clip = audioAdapter.createClip(sound, volume);
             activeSounds.put(clip, sound);
             clip.setFramePosition(0);
             clip.addLineListener(this);
-            final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(20f * (float) Math.log10(volume.value()));
             start(clip, looped);
         });
     }

@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.audio.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -11,7 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
@@ -39,9 +39,6 @@ class DefaultAudioTest {
     @Mock
     Clip clip;
 
-    @Mock
-    FloatControl gainControl;
-
     ExecutorService executor;
 
     @BeforeEach
@@ -59,7 +56,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(sound);
+        verify(audioAdapter, never()).createClip(any(), any());
     }
 
     @Test
@@ -71,7 +68,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(sound);
+        verify(audioAdapter, never()).createClip(any(), any());
     }
 
     @Test
@@ -83,7 +80,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(sound);
+        verify(audioAdapter, never()).createClip(any(), any());
     }
 
     @Test
@@ -101,8 +98,7 @@ class DefaultAudioTest {
     @Test
     void activeCount_onlyAnotherSoundIsActive_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -114,16 +110,12 @@ class DefaultAudioTest {
     @Test
     void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
         awaitShutdown();
 
-        verify(gainControl).setValue(0.0f);
-        verify(clip).setFramePosition(0);
-        verify(clip).addLineListener(audio);
         verify(clip).start();
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
@@ -132,8 +124,7 @@ class DefaultAudioTest {
     @Test
     void playEffectLooped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
 
         audio.playEffectLooped(sound);
 
@@ -148,8 +139,7 @@ class DefaultAudioTest {
     void activeCount_oneInstanceStartedAndStopped_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -163,8 +153,7 @@ class DefaultAudioTest {
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
         audio.playMusic(sound);
 
         audio.stopAllSounds();
@@ -178,15 +167,13 @@ class DefaultAudioTest {
     @Test
     void setEffectVolume_setsEffectVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.half())).thenReturn(clip);
 
         audio.setEffectVolume(Percentage.half());
         audio.playEffect(sound);
 
         awaitShutdown();
 
-        verify(gainControl).setValue(-6.0206003f);
         assertThat(audio.effectVolume()).isEqualTo(Percentage.half());
     }
 
@@ -194,8 +181,7 @@ class DefaultAudioTest {
     void stop_instanceActive_stopsInstance() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
 
         audio.playEffect(sound);
         while (audio.activeCount() == 0) {
@@ -211,15 +197,13 @@ class DefaultAudioTest {
     @Test
     void setMusicVolume_setsMusicVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(gainControl);
+        when(audioAdapter.createClip(sound, Percentage.of(0.7))).thenReturn(clip);
 
         audio.setMusicVolume(Percentage.of(0.7));
         audio.playMusic(sound);
 
         awaitShutdown();
 
-        verify(gainControl).setValue(-3.0980394f);
         assertThat(audio.musicVolume()).isEqualTo(Percentage.of(0.7));
     }
 
@@ -248,5 +232,4 @@ class DefaultAudioTest {
             Thread.currentThread().interrupt();
         }
     }
-
 }
