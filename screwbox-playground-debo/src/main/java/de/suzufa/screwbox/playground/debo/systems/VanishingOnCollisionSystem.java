@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.audio.SoundPool;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
@@ -25,7 +25,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     private static final Archetype VANISHINGS = Archetype.of(VanishingOnCollisionComponent.class,
             TransformComponent.class);
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
-    private static final SoundPool PFFFFF = SoundPool.fromFile("sounds/steam.wav");
+    private static final Sound PFFFFF = Sound.fromFile("sounds/steam.wav");
 
     @Override
     public void update(Engine engine) {

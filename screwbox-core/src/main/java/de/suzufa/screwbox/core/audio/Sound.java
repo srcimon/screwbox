@@ -1,47 +1,40 @@
 package de.suzufa.screwbox.core.audio;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import static java.util.Objects.nonNull;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.Serializable;
 
-import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 
-public final class Sound {
+/**
+ * A {@link Sound} that can be played via {@link Engine#audio()}.
+ */
+public final class Sound implements Serializable {
 
-    private final Clip clip;
+    private static final long serialVersionUID = 1L;
 
+    private final byte[] content;
+
+    /**
+     * Creates a new {@link Sound} from file. Only supports WAV-Files at the moment.
+     */
     public static Sound fromFile(final String fileName) {
+        if (nonNull(fileName) && !fileName.endsWith(".wav")) {
+            throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
+        }
         return new Sound(ResourceLoader.loadResource(fileName));
     }
 
     Sound(byte[] content) {
-        try (InputStream inputStream = new ByteArrayInputStream(content)) {
-            try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream)) {
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-            }
-        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-            throw new IllegalStateException("could not create sound", e);
-        }
+        this.content = content;
     }
 
-    public Duration length() {
-        return Duration.ofMicros(clip.getMicrosecondLength());
-    }
-
-    public boolean isActive() {
-        return clip.isActive();
-    }
-
-    public Clip getClip() {
-        return clip;
+    /**
+     * The binary content of the sound.
+     */
+    public byte[] content() {
+        return content;
     }
 
 }

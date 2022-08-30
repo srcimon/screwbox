@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.audio.SoundPool;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
@@ -23,7 +23,7 @@ public class LetsGoSystem implements EntitySystem {
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
     private static final Archetype BUBBLES = Archetype.of(LetsGoComponent.class, TransformComponent.class);
     private static final Pixelfont FONT = Pixelfont.defaultFont(Color.WHITE);
-    private static final SoundPool LETS_GO_SOUND = SoundPool.fromFile("sounds/letsgo.wav");
+    private static final Sound LETS_GO_SOUND = Sound.fromFile("sounds/letsgo.wav");
 
     @Override
     public void update(Engine engine) {

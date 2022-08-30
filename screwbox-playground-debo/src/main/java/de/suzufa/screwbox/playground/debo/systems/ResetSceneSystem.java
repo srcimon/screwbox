@@ -17,7 +17,7 @@ public class ResetSceneSystem implements EntitySystem {
         for (var resetter : engine.entityEngine().fetchAll(RESETTERS)) {
             Time resetTime = resetter.get(ResetSceneComponent.class).atTime;
             if (Time.now().isAfter(resetTime)) {
-                engine.audio().stopAllAudio();
+                engine.audio().stopAllSounds();
                 engine.scenes().switchTo(DeadScene.class);
             }
         }

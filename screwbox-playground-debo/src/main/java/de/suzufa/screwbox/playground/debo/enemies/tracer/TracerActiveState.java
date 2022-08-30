@@ -15,13 +15,11 @@ public class TracerActiveState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(SpriteComponent.class).sprite = TracerResources.ACTIVE_SPRITE.newInstance();
         entity.add(new FollowPlayerComponent());
+        engine.audio().playEffectLooped(TracerResources.POEBELEI_SOUND);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        if (TracerResources.POEBELEI_SOUND.activeCount() == 0) {
-            engine.audio().playEffect(TracerResources.POEBELEI_SOUND);
-        }
         return entity.get(DetectLineOfSightToPlayerComponent.class).isInLineOfSight
                 ? this
                 : new TracerInactiveState();
@@ -30,6 +28,7 @@ public class TracerActiveState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         entity.remove(FollowPlayerComponent.class);
+        engine.audio().stop(TracerResources.POEBELEI_SOUND);
     }
 
 }

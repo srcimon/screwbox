@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.audio.Audio;
+import de.suzufa.screwbox.core.audio.internal.AudioAdapter;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.core.graphics.Graphics;
@@ -50,7 +51,7 @@ class DefaultEngine implements Engine {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
-        audio = new DefaultAudio(executor);
+        audio = new DefaultAudio(executor, new AudioAdapter());
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();

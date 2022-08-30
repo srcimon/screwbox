@@ -5,7 +5,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.audio.SoundPool;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
@@ -17,7 +17,7 @@ import de.suzufa.screwbox.tiled.TiledSupport;
 public class BombExplosionState implements EntityState {
 
     private static final Sprite SPRITE = TiledSupport.loadTileset("maze/bomb.json").findByName("explosion");
-    private static final SoundPool EXPLOSION = SoundPool.fromFile("maze/explosion.wav");
+    private static final Sound EXPLOSION = Sound.fromFile("maze/explosion.wav");
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;

@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
 import de.suzufa.screwbox.core.audio.Sound;
-import de.suzufa.screwbox.core.audio.SoundPool;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
 import de.suzufa.screwbox.tiled.TiledSupport;
@@ -23,6 +22,6 @@ public class PlayerResources {
     public static final Sound OUCH_SOUND = Sound.fromFile("sounds/ouch.wav");
     public static final Sound BLUPP_SOUND = Sound.fromFile("sounds/blupp.wav");
     public static final Sound ZISCH_SOUND = Sound.fromFile("sounds/zisch.wav");
-    public static final SoundPool JUMP_SOUND = SoundPool.fromFile("sounds/jump.wav");
+    public static final Sound JUMP_SOUND = Sound.fromFile("sounds/jump.wav");
 
 }

@@ -1,60 +1,64 @@
 package de.suzufa.screwbox.core.audio.internal;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.Sound;
-import de.suzufa.screwbox.core.audio.SoundPool;
-
-//TODO: get rid of soundpool
-//TODO: only save byte[] in sound to make it serializable
 
 public class DefaultAudio implements Audio, LineListener {
 
     private final ExecutorService executor;
-    private final Set<Clip> activeClips = new HashSet<>();
+    private final AudioAdapter audioAdapter;
+    private final Map<Clip, Sound> activeSounds = new HashMap<>();
     private Percentage effectVolume = Percentage.max();
     private Percentage musicVolume = Percentage.max();
 
-    public DefaultAudio(ExecutorService executor) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
+        this.audioAdapter = audioAdapter;
+    }
+
+    private List<Clip> reverseLookup(final Sound sound) {
+        final List<Clip> clips = new ArrayList<>();
+        for (final var activeSound : activeSounds.entrySet()) {
+            if (activeSound.getValue().equals(sound)) {
+                clips.add(activeSound.getKey());
+            }
+        }
+        return clips;
     }
 
     @Override
     public Audio playMusic(final Sound sound) {
-        playClip(sound.getClip(), musicVolume, true);
+        if (!musicVolume.isMinValue()) {
+            playClip(sound, musicVolume, true);
+        }
         return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound) {
-        if (!sound.isActive()) {
-            playClip(sound.getClip(), effectVolume, false);
+        if (!effectVolume.isMinValue()) {
+            playClip(sound, effectVolume, false);
         }
         return this;
     }
 
     @Override
-    public Sound playEffectLooped(final Sound sound) {
-        if (!sound.isActive()) {
-            playClip(sound.getClip(), effectVolume, true);
+    public Audio playEffectLooped(final Sound sound) {
+        if (!effectVolume.isMinValue()) {
+            playClip(sound, effectVolume, true);
         }
-        return sound;
-    }
-
-    @Override
-    public Sound playEffectLooped(final SoundPool soundPool) {
-        return playEffectLooped(soundPool.next());
+        return this;
     }
 
     @Override
@@ -76,54 +80,42 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio stopAllAudio() {
+    public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                final List<Clip> clipsToStop = new ArrayList<>(activeClips);
+                final List<Clip> clipsToStop = new ArrayList<>(activeSounds.keySet());
                 for (final Clip clip : clipsToStop) {
                     clip.stop();
                 }
-                activeClips.clear();
+                activeSounds.clear();
             });
         }
         return this;
     }
 
     @Override
-    public Audio resume(final Sound sound) {
-        executor.execute(() -> start(sound.getClip(), false));
-        return this;
-    }
-
-    @Override
-    public Audio resumeLooped(final Sound sound) {
-        executor.execute(() -> start(sound.getClip(), true));
-        return this;
-    }
-
-    @Override
     public Audio stop(final Sound sound) {
-        executor.execute(() -> sound.getClip().stop());
+        for (final Clip clip : reverseLookup(sound)) {
+            executor.execute(clip::stop);
+        }
         return this;
     }
 
     @Override
     public void update(final LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
-            activeClips.remove(event.getSource());
-        } else if (event.getType().equals(LineEvent.Type.START)) {
-            activeClips.add((Clip) event.getSource());
+            activeSounds.remove(event.getSource());
         }
     }
 
-    private void playClip(final Clip clip, final Percentage volume, final boolean looped) {
-        activeClips.add(clip);
-
-        clip.setFramePosition(0);
-        clip.addLineListener(this);
-        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume.value()));
-        executor.execute(() -> start(clip, looped));
+    private void playClip(final Sound sound, final Percentage volume, final boolean looped) {
+        executor.execute(() -> {
+            final Clip clip = audioAdapter.createClip(sound, volume);
+            activeSounds.put(clip, sound);
+            clip.setFramePosition(0);
+            clip.addLineListener(this);
+            start(clip, looped);
+        });
     }
 
     private void start(final Clip clip, final boolean looped) {
@@ -135,9 +127,34 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio playEffect(final SoundPool soundPool) {
-        final Sound sound = soundPool.next();
-        playEffect(sound);
+    public int activeCount(final Sound sound) {
+        return reverseLookup(sound).size();
+    }
+
+    @Override
+    public int activeCount() {
+        return activeSounds.size();
+    }
+
+    @Override
+    public Percentage effectVolume() {
+        return effectVolume;
+    }
+
+    @Override
+    public Percentage musicVolume() {
+        return musicVolume;
+    }
+
+    @Override
+    public Audio muteMusic() {
+        setMusicVolume(Percentage.min());
+        return this;
+    }
+
+    @Override
+    public Audio muteEffects() {
+        setEffectVolume(Percentage.min());
         return this;
     }
 
