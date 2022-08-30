@@ -21,22 +21,7 @@ public final class Frame implements Serializable {
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
     private final Duration duration;
-    private final ImageContainer imageContainer;
-
-    private final class ImageContainer implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-        private final ImageIcon image;
-
-        ImageContainer(final Image image) {
-            this.image = new ImageIcon(image);
-        }
-
-        Image image() {
-            return image.getImage();
-        }
-
-    }
+    private final ImageIcon imageCont;
 
     /**
      * Returns an invisible {@link Frame}.
@@ -50,12 +35,12 @@ public final class Frame implements Serializable {
     }
 
     public Frame(final Image image, final Duration duration) {
-        this.imageContainer = new ImageContainer(image);
+        this.imageCont = new ImageIcon(image);
         this.duration = duration;
     }
 
     public Image image() {
-        return imageContainer.image();
+        return imageCont.getImage();
     }
 
     public Duration duration() {
@@ -66,7 +51,7 @@ public final class Frame implements Serializable {
      * Returns the size of the frames {@link #image()}.
      */
     public Dimension size() {
-        return Dimension.of(imageContainer.image.getIconWidth(), imageContainer.image.getIconHeight());
+        return Dimension.of(imageCont.getIconWidth(), imageCont.getIconHeight());
     }
 
     /**
@@ -101,7 +86,7 @@ public final class Frame implements Serializable {
      * with a new one. This method is quite slow.
      */
     public Frame replaceColor(final Color oldColor, final Color newColor) {
-        final Image oldImage = imageContainer.image.getImage();
+        final Image oldImage = imageCont.getImage();
         final Image newImage = applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage);
     }
