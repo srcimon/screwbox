@@ -6,7 +6,7 @@ public interface Audio {
 
     Audio playEffect(Sound sound);
 
-    Sound playEffectLooped(Sound sound);
+    Audio playEffectLooped(Sound sound);
 
     Audio playMusic(Sound sound);
 
@@ -21,5 +21,7 @@ public interface Audio {
     Audio setEffectVolume(Percentage volume);
 
     Audio setMusicVolume(Percentage volume);
+
+    int activeCount(Sound sound);
 
 }

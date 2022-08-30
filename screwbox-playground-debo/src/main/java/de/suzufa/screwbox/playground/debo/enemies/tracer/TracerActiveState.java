@@ -19,8 +19,10 @@ public class TracerActiveState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        // TODO: fix
-        engine.audio().playEffect(TracerResources.POEBELEI_SOUND);
+        // TODO: engine.audio().playEffectWhenSilent(effect)
+        if (engine.audio().activeCount(TracerResources.POEBELEI_SOUND) == 0) {
+            engine.audio().playEffect(TracerResources.POEBELEI_SOUND);
+        }
         return entity.get(DetectLineOfSightToPlayerComponent.class).isInLineOfSight
                 ? this
                 : new TracerInactiveState();
