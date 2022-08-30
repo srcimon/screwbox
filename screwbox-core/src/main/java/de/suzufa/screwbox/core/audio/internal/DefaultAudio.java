@@ -23,7 +23,7 @@ public class DefaultAudio implements Audio, LineListener {
     private Percentage effectVolume = Percentage.max();
     private Percentage musicVolume = Percentage.max();
 
-    public DefaultAudio(final ExecutorService executor, AudioAdapter audioAdapter) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
     }
