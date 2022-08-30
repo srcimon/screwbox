@@ -24,4 +24,6 @@ public interface Audio {
 
     int activeCount(Sound sound);
 
+    int activeCount();
+
 }

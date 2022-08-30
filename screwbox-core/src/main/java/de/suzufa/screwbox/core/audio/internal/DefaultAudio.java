@@ -1,22 +1,15 @@
 package de.suzufa.screwbox.core.audio.internal;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.audio.Audio;
@@ -25,17 +18,19 @@ import de.suzufa.screwbox.core.audio.Sound;
 public class DefaultAudio implements Audio, LineListener {
 
     private final ExecutorService executor;
+    private final AudioAdapter audioAdapter;
     private final Map<Clip, Sound> activeSounds = new HashMap<>();
     private Percentage effectVolume = Percentage.max();
     private Percentage musicVolume = Percentage.max();
 
-    public DefaultAudio(final ExecutorService executor) {
+    public DefaultAudio(final ExecutorService executor, AudioAdapter audioAdapter) {
         this.executor = executor;
+        this.audioAdapter = audioAdapter;
     }
 
-    private List<Clip> reverseLookup(Sound sound) {
-        List<Clip> clips = new ArrayList<>();
-        for (var activeSound : activeSounds.entrySet()) {
+    private List<Clip> reverseLookup(final Sound sound) {
+        final List<Clip> clips = new ArrayList<>();
+        for (final var activeSound : activeSounds.entrySet()) {
             if (activeSound.getValue().equals(sound)) {
                 clips.add(activeSound.getKey());
             }
@@ -95,7 +90,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio resume(final Sound sound) {
-        for (Clip clip : reverseLookup(sound)) {
+        for (final Clip clip : reverseLookup(sound)) {
             executor.execute(() -> start(clip, false));
         }
         return this;
@@ -103,7 +98,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio resumeLooped(final Sound sound) {
-        for (Clip clip : reverseLookup(sound)) {
+        for (final Clip clip : reverseLookup(sound)) {
             executor.execute(() -> start(clip, true));
         }
         return this;
@@ -111,7 +106,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio stop(final Sound sound) {
-        for (Clip clip : reverseLookup(sound)) {
+        for (final Clip clip : reverseLookup(sound)) {
             executor.execute(() -> clip.stop());
         }
         return this;
@@ -126,30 +121,14 @@ public class DefaultAudio implements Audio, LineListener {
 
     private void playClip(final Sound sound, final Percentage volume, final boolean looped) {
         executor.execute(() -> {
-            Clip clip = getClip(sound.content());
-
+            final Clip clip = audioAdapter.createClip(sound);
             activeSounds.put(clip, sound);
-
             clip.setFramePosition(0);
             clip.addLineListener(this);
             final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(20f * (float) Math.log10(volume.value()));
-
             start(clip, looped);
-
         });
-    }
-
-    private Clip getClip(final byte[] content) {
-        try (InputStream inputStream = new ByteArrayInputStream(content)) {
-            try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream)) {
-                final Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                return clip;
-            }
-        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-            throw new IllegalStateException("could not create sound", e);
-        }
     }
 
     private void start(final Clip clip, final boolean looped) {
@@ -161,8 +140,13 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public int activeCount(Sound sound) {
+    public int activeCount(final Sound sound) {
         return reverseLookup(sound).size();
+    }
+
+    @Override
+    public int activeCount() {
+        return activeSounds.size();
     }
 
 }
