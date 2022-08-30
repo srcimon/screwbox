@@ -14,10 +14,6 @@ import javax.sound.sampled.LineListener;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.Sound;
-import de.suzufa.screwbox.core.audio.SoundPool;
-
-//TODO: get rid of soundpool
-//TODO: only save byte[] in sound to make it serializable
 
 public class DefaultAudio implements Audio, LineListener {
 
@@ -38,23 +34,14 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playEffect(final Sound sound) {
-        if (!sound.isActive()) {
-            playClip(sound.getClip(), effectVolume, false);
-        }
+        playClip(sound.getClip(), effectVolume, false);
         return this;
     }
 
     @Override
     public Sound playEffectLooped(final Sound sound) {
-        if (!sound.isActive()) {
-            playClip(sound.getClip(), effectVolume, true);
-        }
+        playClip(sound.getClip(), effectVolume, true);
         return sound;
-    }
-
-    @Override
-    public Sound playEffectLooped(final SoundPool soundPool) {
-        return playEffectLooped(soundPool.next());
     }
 
     @Override
@@ -132,13 +119,6 @@ public class DefaultAudio implements Audio, LineListener {
         } else {
             clip.start();
         }
-    }
-
-    @Override
-    public Audio playEffect(final SoundPool soundPool) {
-        final Sound sound = soundPool.next();
-        playEffect(sound);
-        return this;
     }
 
 }
