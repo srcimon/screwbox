@@ -71,4 +71,16 @@ public interface Audio {
      */
     int activeCount();
 
+    /**
+     * Sets {@link #musicVolume()} to zero. Can be unmuted via
+     * {@link #setMusicVolume(Percentage)}.
+     */
+    Audio muteMusic();
+
+    /**
+     * Sets {@link #effectVolume()} to zero. Can be unmuted via
+     * {@link #setEffectVolume(Percentage)}.
+     */
+    Audio muteEffects();
+
 }

@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.audio.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,6 +48,42 @@ class DefaultAudioTest {
     void beforeEach() {
         executor = Executors.newCachedThreadPool();
         audio = new DefaultAudio(executor, audioAdapter);
+    }
+
+    @Test
+    void playEffect_effectVolumeZero_doesntPlayEffect() {
+        Sound sound = Sound.fromFile("kill.wav");
+
+        audio.setEffectVolume(Percentage.min());
+        audio.playEffect(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(sound);
+    }
+
+    @Test
+    void playEffectLooped_effectVolumeZero_doesntPlayEffect() {
+        Sound sound = Sound.fromFile("kill.wav");
+
+        audio.muteEffects();
+        audio.playEffectLooped(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(sound);
+    }
+
+    @Test
+    void playMusic_musicVolumeZero_doesntPlayEffect() {
+        Sound sound = Sound.fromFile("kill.wav");
+
+        audio.muteMusic();
+        audio.playMusic(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(sound);
     }
 
     @Test
