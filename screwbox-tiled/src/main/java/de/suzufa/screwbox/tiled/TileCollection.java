@@ -1,6 +1,9 @@
 package de.suzufa.screwbox.tiled;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
@@ -10,13 +13,13 @@ import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
-public class TileDicitonary {
+public class TileCollection {
 
     private final List<Tile> tiles = new ArrayList<>();
 
-    public TileDicitonary(final MapEntity map) {
+    public TileCollection(final MapEntity map) {
         final Tileset tileset = SpriteLoader.loadTileset(map);
-        final PropertiesCollection propertiesDictionary = loadTileProperties(map);
+        var propertiesHolder = loadTileProperties(map);
 
         int order = 0;
         for (final LayerEntity layerEntity : map.getLayers()) {
@@ -31,8 +34,9 @@ public class TileDicitonary {
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
                         final Sprite sprite = tileset.findById(tileId);
                         final Layer layer = new Layer(layerEntity, order);
-                        final Properties properties = propertiesDictionary.get(tileId);
-                        final var tile = new Tile(sprite, bounds, layer, properties);
+                        final Properties properties = propertiesHolder.get(tileId);
+                        final var tile = new Tile(sprite, bounds, layer,
+                                properties == null ? new Properties(emptyList()) : properties);
                         add(tile);
                     }
                 }
@@ -55,15 +59,15 @@ public class TileDicitonary {
                 .toList();
     }
 
-    private PropertiesCollection loadTileProperties(final MapEntity map) {
-        final PropertiesCollection dictionary = new PropertiesCollection();
+    private HashMap<Integer, Properties> loadTileProperties(final MapEntity map) {
+        var propertiesHolder = new HashMap<Integer, Properties>();
         for (final TilesetEntity tileset : map.getTilesets()) {
             for (final TileEntity tileEntity : tileset.getTiles()) {
                 final Properties properties = new Properties(tileEntity.properties());
-                dictionary.add(tileset.getFirstgid() + tileEntity.id(), properties);
+                propertiesHolder.put(tileset.getFirstgid() + tileEntity.id(), properties);
             }
         }
-        return dictionary;
+        return propertiesHolder;
     }
 
 }

@@ -35,8 +35,8 @@ public class Map {
         this.mapEntity = mapEntity;
     }
 
-    public TileDicitonary tiles() {
-        return new TileDicitonary(mapEntity);
+    public TileCollection tiles() {
+        return new TileCollection(mapEntity);
     }
 
     public GameObjectsCollection objects() {
