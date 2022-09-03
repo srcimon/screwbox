@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.tiled;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,19 +24,5 @@ class MapTest {
     @Test
     void properties_returnsMapProperties() {
         assertThat(map.properties().force("aMapProperty")).isEqualTo("aMapPropertyValue");
-    }
-
-    @Test
-    void fromJson_fileNameIsNull_throwsException() {
-        assertThatThrownBy(() -> Map.fromJson(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("fileName must not be null");
-    }
-
-    @Test
-    void fromJson_notAJsonFile_throwsException() {
-        assertThatThrownBy(() -> Map.fromJson("abc.xml"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("abc.xml is not a JSON-File");
     }
 }

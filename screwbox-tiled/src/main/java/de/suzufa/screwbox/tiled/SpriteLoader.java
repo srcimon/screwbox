@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.utils.ResourceLoader;
+import de.suzufa.screwbox.core.utils.Resources;
 import de.suzufa.screwbox.tiled.internal.entity.FrameEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
@@ -74,7 +74,7 @@ final class SpriteLoader {
     }
 
     private static BufferedImage loadImageFrom(final String imageFileName) {
-        final File file = ResourceLoader.resourceFile(imageFileName);
+        final File file = Resources.loadFile(imageFileName);
         try {
             return ImageIO.read(file);
         } catch (final IOException e) {

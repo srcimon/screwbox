@@ -3,6 +3,7 @@ package de.suzufa.screwbox.tiled.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.utils.Resources;
 import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
@@ -12,7 +13,7 @@ import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 public class JsonLoader {
 
     public MapEntity loadMap(final String fileName) {
-        final MapEntity map = EntityLoader.load(fileName, MapEntity.class);
+        final MapEntity map = Resources.loadFromJson(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
         embedExternalTilesets(map, directory);
         embedObjectTemplates(map, directory);
@@ -31,7 +32,8 @@ public class JsonLoader {
                 for (int i = 0; i < layer.objects().size(); i++) {
                     final ObjectEntity object = layer.objects().get(i);
                     if (object.getTemplate() != null) {
-                        final ObjectTemplateEntity objectTemplate = EntityLoader.load(directory + object.getTemplate(),
+                        final ObjectTemplateEntity objectTemplate = Resources.loadFromJson(
+                                directory + object.getTemplate(),
                                 ObjectTemplateEntity.class);
                         final ObjectEntity replacement = objectTemplate.object();
                         replacement.setId(object.getId());
@@ -66,7 +68,7 @@ public class JsonLoader {
     }
 
     public TilesetEntity loadTileset(final String fileName) {
-        final TilesetEntity deserialize = EntityLoader.load(fileName, TilesetEntity.class);
+        final TilesetEntity deserialize = Resources.loadFromJson(fileName, TilesetEntity.class);
         final String fileNameInFileName = fileName.split("/")[fileName.split("/").length - 1];
         final String correctPath = fileName.replace(fileNameInFileName, deserialize.getImage());
         deserialize.setImage(correctPath);

@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.tiled;
 
-import static java.util.Objects.requireNonNull;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -22,11 +20,6 @@ public class Map {
      * Loads a new instance of a Tiled-Map that was saved as JSON-File.
      */
     public static Map fromJson(final String fileName) {
-        requireNonNull(fileName, "fileName must not be null");
-        if (!fileName.toLowerCase().endsWith(".json")) {
-            throw new IllegalArgumentException("abc.xml is not a JSON-File");
-        }
-
         final MapEntity entity = new JsonLoader().loadMap(fileName);
         return new Map(entity);
     }

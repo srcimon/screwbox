@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.utils.ResourceLoader;
+import de.suzufa.screwbox.core.utils.Resources;
 
 public class Sprite implements Serializable {
 
@@ -220,7 +220,7 @@ public class Sprite implements Serializable {
 
     private static BufferedImage imageFromFile(final String fileName) {
         try {
-            final File resource = ResourceLoader.resourceFile(fileName);
+            final File resource = Resources.loadFile(fileName);
             final BufferedImage image = ImageIO.read(resource);
             if (isNull(image)) {
                 throw new IllegalArgumentException("image cannot be read: " + fileName);

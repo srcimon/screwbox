@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.utils.ResourceLoader;
+import de.suzufa.screwbox.core.utils.Resources;
 
 class ImageUtilTest {
 
@@ -50,7 +50,7 @@ class ImageUtilTest {
     }
 
     private Image someImage() throws IOException {
-        return ImageIO.read(ResourceLoader.resourceFile("tile.bmp"));
+        return ImageIO.read(Resources.loadFile("tile.bmp"));
     }
 
     private int countTransparentPixels(Image result) {

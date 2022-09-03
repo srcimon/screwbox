@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.tiled;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +17,6 @@ public class Tileset {
     private final List<Sprite> allSprites = new ArrayList<>();
 
     public static Tileset fromJson(final String fileName) {
-        requireNonNull(fileName, "fileName must not be null");
-        if (!fileName.toLowerCase().endsWith(".json")) {
-            throw new IllegalArgumentException("abc.xml is not a JSON-File");
-        }
         final var tileset = new JsonLoader().loadTileset(fileName);
         final var dictionary = new Tileset();
         SpriteLoader.addTilesToTileset(tileset, dictionary);
