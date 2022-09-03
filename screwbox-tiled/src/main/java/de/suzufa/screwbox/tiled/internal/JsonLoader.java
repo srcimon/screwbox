@@ -1,13 +1,8 @@
 package de.suzufa.screwbox.tiled.internal;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import de.suzufa.screwbox.core.utils.ResourceLoader;
 import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
@@ -16,12 +11,8 @@ import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
 public class JsonLoader {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     public MapEntity loadMap(final String fileName) {
-        final File mapFile = ResourceLoader.resourceFile(fileName);
-
-        final MapEntity map = deserialize(mapFile, MapEntity.class);
+        final MapEntity map = EntityLoader.load(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
         embedExternalTilesets(map, directory);
         embedObjectTemplates(map, directory);
@@ -40,8 +31,7 @@ public class JsonLoader {
                 for (int i = 0; i < layer.objects().size(); i++) {
                     final ObjectEntity object = layer.objects().get(i);
                     if (object.getTemplate() != null) {
-                        final File templateFile = ResourceLoader.resourceFile(directory + object.getTemplate());
-                        final ObjectTemplateEntity objectTemplate = deserialize(templateFile,
+                        final ObjectTemplateEntity objectTemplate = EntityLoader.load(directory + object.getTemplate(),
                                 ObjectTemplateEntity.class);
                         final ObjectEntity replacement = objectTemplate.object();
                         replacement.setId(object.getId());
@@ -76,20 +66,11 @@ public class JsonLoader {
     }
 
     public TilesetEntity loadTileset(final String fileName) {
-        final File tilesetFile = ResourceLoader.resourceFile(fileName);
-        final TilesetEntity deserialize = deserialize(tilesetFile, TilesetEntity.class);
+        final TilesetEntity deserialize = EntityLoader.load(fileName, TilesetEntity.class);
         final String fileNameInFileName = fileName.split("/")[fileName.split("/").length - 1];
         final String correctPath = fileName.replace(fileNameInFileName, deserialize.getImage());
         deserialize.setImage(correctPath);
         return deserialize;
-    }
-
-    private <T> T deserialize(final File mapFile, final Class<T> type) {
-        try {
-            return OBJECT_MAPPER.readValue(mapFile, type);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("file could not be deserialized: " + mapFile.getName(), e);
-        }
     }
 
 }
