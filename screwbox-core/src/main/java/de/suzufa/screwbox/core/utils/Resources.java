@@ -39,7 +39,7 @@ public final class Resources {
     }
 
     // TODO: Test
-    public static <T> T loadFromJson(final String fileName, final Class<T> type) {
+    public static <T> T loadJson(final String fileName, final Class<T> type) {
         requireNonNull(fileName, "fileName must not be null");
         if (!fileName.toLowerCase().endsWith(".json")) {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");

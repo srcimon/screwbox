@@ -15,7 +15,7 @@ public class GameObjectsCollection {
 
     GameObjectsCollection(final MapEntity map) {
         int order = 0;
-        for (final LayerEntity layerEntity : map.getLayers()) {
+        for (final LayerEntity layerEntity : map.layers()) {
             final Layer layer = new Layer(layerEntity, order);
             for (final ObjectEntity object : layerEntity.objects()) {
                 final GameObject tiledObject = new GameObject(object, layer);

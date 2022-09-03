@@ -37,13 +37,13 @@ public class Map {
     }
 
     public Bounds bounds() {
-        final int width = mapEntity.getWidth() * mapEntity.getTilewidth();
-        final int height = mapEntity.getHeight() * mapEntity.getTileheight();
+        final int width = mapEntity.width() * mapEntity.tilewidth();
+        final int height = mapEntity.height() * mapEntity.tileheight();
         return Bounds.atOrigin(Vector.zero(), width, height);
     }
 
     public Properties properties() {
-        return new Properties(mapEntity.getProperties());
+        return new Properties(mapEntity.properties());
     }
 
     public LayersCollection layers() {

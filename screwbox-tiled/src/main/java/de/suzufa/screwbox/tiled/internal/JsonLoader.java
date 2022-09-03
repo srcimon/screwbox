@@ -10,10 +10,12 @@ import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectTemplateEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
+@Deprecated
+//TODO: get rid of that class
 public class JsonLoader {
 
     public MapEntity loadMap(final String fileName) {
-        final MapEntity map = Resources.loadFromJson(fileName, MapEntity.class);
+        final MapEntity map = Resources.loadJson(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
         embedExternalTilesets(map, directory);
         embedObjectTemplates(map, directory);
@@ -27,12 +29,12 @@ public class JsonLoader {
     }
 
     private void embedObjectTemplates(final MapEntity map, final String directory) {
-        for (final LayerEntity layer : map.getLayers()) {
+        for (final LayerEntity layer : map.layers()) {
             if (layer.objects() != null) {
                 for (int i = 0; i < layer.objects().size(); i++) {
                     final ObjectEntity object = layer.objects().get(i);
                     if (object.getTemplate() != null) {
-                        final ObjectTemplateEntity objectTemplate = Resources.loadFromJson(
+                        final ObjectTemplateEntity objectTemplate = Resources.loadJson(
                                 directory + object.getTemplate(),
                                 ObjectTemplateEntity.class);
                         final ObjectEntity replacement = objectTemplate.object();
@@ -55,7 +57,7 @@ public class JsonLoader {
 
     private void embedExternalTilesets(final MapEntity map, final String directory) {
         final List<TilesetEntity> fullTilesets = new ArrayList<>();
-        for (final TilesetEntity tileset : map.getTilesets()) {
+        for (final TilesetEntity tileset : map.tilesets()) {
             if (tileset.getSource() == null) {
                 fullTilesets.add(tileset);
             } else {
@@ -68,11 +70,11 @@ public class JsonLoader {
     }
 
     public TilesetEntity loadTileset(final String fileName) {
-        final TilesetEntity deserialize = Resources.loadFromJson(fileName, TilesetEntity.class);
+        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
         final String fileNameInFileName = fileName.split("/")[fileName.split("/").length - 1];
-        final String correctPath = fileName.replace(fileNameInFileName, deserialize.getImage());
-        deserialize.setImage(correctPath);
-        return deserialize;
+        final String correctPath = fileName.replace(fileNameInFileName, tilesetEntity.getImage());
+        tilesetEntity.setImage(correctPath);
+        return tilesetEntity;
     }
 
 }

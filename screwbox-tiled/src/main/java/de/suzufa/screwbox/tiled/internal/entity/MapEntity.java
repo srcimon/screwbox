@@ -25,7 +25,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     private List<LayerEntity> layers;
     private List<TilesetEntity> tilesets;
 
-    public String getBackgroundColor() {
+    public String backgroundColor() {
         return backgroundColor;
     }
 
@@ -33,7 +33,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.backgroundColor = backgroundColor;
     }
 
-    public List<PropertyEntity> getProperties() {
+    public List<PropertyEntity> properties() {
         return properties;
     }
 
@@ -41,7 +41,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.properties = properties;
     }
 
-    public int getCompressionlevel() {
+    public int compressionlevel() {
         return compressionlevel;
     }
 
@@ -49,15 +49,15 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.compressionlevel = compressionlevel;
     }
 
-    public int getHeight() {
+    public int height() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void height(int height) {
         this.height = height;
     }
 
-    public int getHexsidelength() {
+    public int hexsidelength() {
         return hexsidelength;
     }
 
@@ -73,7 +73,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.infinite = infinite;
     }
 
-    public int getNextlayerid() {
+    public int nextlayerid() {
         return nextlayerid;
     }
 
@@ -81,7 +81,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.nextlayerid = nextlayerid;
     }
 
-    public int getNextobjectid() {
+    public int nextobjectid() {
         return nextobjectid;
     }
 
@@ -89,7 +89,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.nextobjectid = nextobjectid;
     }
 
-    public String getOrientation() {
+    public String orientation() {
         return orientation;
     }
 
@@ -97,7 +97,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.orientation = orientation;
     }
 
-    public String getRenderorder() {
+    public String renderorder() {
         return renderorder;
     }
 
@@ -105,7 +105,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.renderorder = renderorder;
     }
 
-    public String getStaggeraxis() {
+    public String staggeraxis() {
         return staggeraxis;
     }
 
@@ -113,7 +113,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.staggeraxis = staggeraxis;
     }
 
-    public String getStaggerindex() {
+    public String staggerindex() {
         return staggerindex;
     }
 
@@ -121,7 +121,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.staggerindex = staggerindex;
     }
 
-    public String getTiledversion() {
+    public String tiledversion() {
         return tiledversion;
     }
 
@@ -129,7 +129,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.tiledversion = tiledversion;
     }
 
-    public int getTilewidth() {
+    public int tilewidth() {
         return tilewidth;
     }
 
@@ -137,7 +137,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.tilewidth = tilewidth;
     }
 
-    public int getTileheight() {
+    public int tileheight() {
         return tileheight;
     }
 
@@ -145,7 +145,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.tileheight = tileheight;
     }
 
-    public String getType() {
+    public String type() {
         return type;
     }
 
@@ -153,7 +153,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.type = type;
     }
 
-    public float getVersion() {
+    public float version() {
         return version;
     }
 
@@ -161,7 +161,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.version = version;
     }
 
-    public int getWidth() {
+    public int width() {
         return width;
     }
 
@@ -169,7 +169,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.width = width;
     }
 
-    public List<LayerEntity> getLayers() {
+    public List<LayerEntity> layers() {
         return layers;
     }
 
@@ -177,7 +177,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         this.layers = layers;
     }
 
-    public List<TilesetEntity> getTilesets() {
+    public List<TilesetEntity> tilesets() {
         return tilesets;
     }
 
