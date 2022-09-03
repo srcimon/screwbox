@@ -7,11 +7,11 @@ import java.util.Optional;
 import de.suzufa.screwbox.tiled.internal.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.MapEntity;
 
-public class LayersCollection {
+public class LayerCollection {
 
     private final List<Layer> layers = new ArrayList<>();
 
-    LayersCollection(final MapEntity mapEntity) {
+    LayerCollection(final MapEntity mapEntity) {
         int order = 0;
         for (final LayerEntity layerEntity : mapEntity.getLayers()) {
             layers.add(new Layer(layerEntity, order));

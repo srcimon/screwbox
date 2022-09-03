@@ -9,11 +9,11 @@ import de.suzufa.screwbox.tiled.internal.MapEntity;
 import de.suzufa.screwbox.tiled.internal.ObjectEntity;
 
 //TODO: test
-public class GameObjectsCollection {
+public class GameObjectCollection {
 
     private final List<GameObject> objects = new ArrayList<>();
 
-    GameObjectsCollection(final MapEntity map) {
+    GameObjectCollection(final MapEntity map) {
         int order = 0;
         for (final LayerEntity layerEntity : map.getLayers()) {
             final Layer layer = new Layer(layerEntity, order);

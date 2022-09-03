@@ -31,8 +31,8 @@ public class Map {
         return new TileCollection(mapEntity);
     }
 
-    public GameObjectsCollection objects() {
-        return new GameObjectsCollection(mapEntity);
+    public GameObjectCollection objects() {
+        return new GameObjectCollection(mapEntity);
     }
 
     public Bounds bounds() {
@@ -45,8 +45,8 @@ public class Map {
         return new Properties(mapEntity.getProperties());
     }
 
-    public LayersCollection layers() {
-        return new LayersCollection(mapEntity);
+    public LayerCollection layers() {
+        return new LayerCollection(mapEntity);
     }
 
     @Override
