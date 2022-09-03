@@ -11,11 +11,10 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class Platfom implements Converter<GameObject> {
 
-    private static final SpriteDictionary SPRITE = TiledSupport.loadTileset("tilesets/props/platform.json");
+    private static final SpriteDictionary SPRITE = SpriteDictionary.fromJsonTileset("tilesets/props/platform.json");
 
     @Override
     public Entity convert(GameObject object) {

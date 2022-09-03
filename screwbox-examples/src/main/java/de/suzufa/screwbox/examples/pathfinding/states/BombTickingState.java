@@ -6,11 +6,11 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntityState;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.TiledSupport;
+import de.suzufa.screwbox.tiled.SpriteDictionary;
 
 public class BombTickingState implements EntityState {
 
-    private static final Sprite SPRITE = TiledSupport.loadTileset("maze/bomb.json").findByName("ticking");
+    private static final Sprite SPRITE = SpriteDictionary.fromJsonTileset("maze/bomb.json").findByName("ticking");
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;

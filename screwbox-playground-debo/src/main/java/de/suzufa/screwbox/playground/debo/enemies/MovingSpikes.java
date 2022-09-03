@@ -13,11 +13,12 @@ import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.TiledSupport;
+import de.suzufa.screwbox.tiled.SpriteDictionary;
 
 public class MovingSpikes implements Converter<GameObject> {
 
-    private static final Sprite SPRITE = TiledSupport.loadTileset("tilesets/enemies/moving-spikes.json").findById(0);
+    private static final Sprite SPRITE = SpriteDictionary.fromJsonTileset("tilesets/enemies/moving-spikes.json")
+            .findById(0);
 
     @Override
     public Entity convert(GameObject object) {

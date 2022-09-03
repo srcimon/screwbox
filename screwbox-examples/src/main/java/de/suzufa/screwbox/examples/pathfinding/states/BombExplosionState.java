@@ -12,11 +12,11 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
-import de.suzufa.screwbox.tiled.TiledSupport;
+import de.suzufa.screwbox.tiled.SpriteDictionary;
 
 public class BombExplosionState implements EntityState {
 
-    private static final Sprite SPRITE = TiledSupport.loadTileset("maze/bomb.json").findByName("explosion");
+    private static final Sprite SPRITE = SpriteDictionary.fromJsonTileset("maze/bomb.json").findByName("explosion");
     private static final Sound EXPLOSION = Sound.fromFile("maze/explosion.wav");
     private static final long serialVersionUID = 1L;
 

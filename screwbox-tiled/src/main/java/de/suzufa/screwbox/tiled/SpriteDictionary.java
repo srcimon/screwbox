@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.tiled;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +9,25 @@ import java.util.List;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.tiled.internal.JsonLoader;
+import de.suzufa.screwbox.tiled.internal.SpriteLoader;
 
 public class SpriteDictionary {
 
     private final Map<Integer, Sprite> spritesById = new HashMap<>();
     private final Map<String, Sprite> spritesByName = new HashMap<>();
     private final List<Sprite> allSprites = new ArrayList<>();
+
+    public static SpriteDictionary fromJsonTileset(final String fileName) {
+        requireNonNull(fileName, "fileName must not be null");
+        if (!fileName.toLowerCase().endsWith(".json")) {
+            throw new IllegalArgumentException("abc.xml is not a JSON-File");
+        }
+        final var tileset = new JsonLoader().loadTileset(fileName);
+        final var dictionary = new SpriteDictionary();
+        SpriteLoader.addTilesToDictionary(tileset, dictionary);
+        return dictionary;
+    }
 
     public void addSprite(final int id, final Sprite sprite) {
         spritesById.put(id, sprite);

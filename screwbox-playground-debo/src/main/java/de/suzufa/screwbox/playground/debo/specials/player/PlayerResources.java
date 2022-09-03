@@ -3,14 +3,13 @@ package de.suzufa.screwbox.playground.debo.specials.player;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class PlayerResources {
 
     private PlayerResources() {
     } // hide constructor
 
-    private static final SpriteDictionary TILESET = TiledSupport.loadTileset("tilesets/specials/player.json");
+    private static final SpriteDictionary TILESET = SpriteDictionary.fromJsonTileset("tilesets/specials/player.json");
 
     public static final Sprite STANDING_SPRITE = TILESET.findByName("standing");
     public static final Sprite DEAD_SPRITE = TILESET.findByName("dead");

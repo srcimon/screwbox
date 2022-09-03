@@ -8,11 +8,11 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.CollectableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class DeboB implements Converter<GameObject> {
 
-    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/collectables/debo-b.json");
+    private static final SpriteDictionary SPRITES = SpriteDictionary
+            .fromJsonTileset("tilesets/collectables/debo-b.json");
 
     @Override
     public Entity convert(final GameObject object) {

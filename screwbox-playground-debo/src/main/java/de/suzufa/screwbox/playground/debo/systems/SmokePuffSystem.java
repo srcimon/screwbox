@@ -13,14 +13,13 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.SmokeEmitterComponent;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class SmokePuffSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(SpriteComponent.class, TransformComponent.class,
             SmokeEmitterComponent.class);
 
-    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/effects/smokes.json");
+    private static final SpriteDictionary SPRITES = SpriteDictionary.fromJsonTileset("tilesets/effects/smokes.json");
 
     @Override
     public void update(Engine engine) {

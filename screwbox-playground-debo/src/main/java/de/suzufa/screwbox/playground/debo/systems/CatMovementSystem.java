@@ -33,7 +33,6 @@ import de.suzufa.screwbox.playground.debo.specials.player.PlayerJumpingState;
 import de.suzufa.screwbox.playground.debo.specials.player.PlayerRunningState;
 import de.suzufa.screwbox.playground.debo.specials.player.PlayerStandingState;
 import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class CatMovementSystem implements EntitySystem {
 
@@ -50,7 +49,7 @@ public class CatMovementSystem implements EntitySystem {
     }
 
     static {
-        SpriteDictionary catSprites = TiledSupport.loadTileset("tilesets/specials/cat.json");
+        SpriteDictionary catSprites = SpriteDictionary.fromJsonTileset("tilesets/specials/cat.json");
         SPRITES.put(PlayerDeathState.class, catSprites.findByName(WALKING));
         SPRITES.put(PlayerDiggingState.class, catSprites.findByName(WALKING));
         SPRITES.put(PlayerFallingState.class, catSprites.findByName(WALKING));

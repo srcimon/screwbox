@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import static de.suzufa.screwbox.tiled.TiledSupport.loadTileset;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +10,19 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.tiled.SpriteDictionary;
 
 public class StartBackgroundSystem implements EntitySystem {
 
     private static final List<Sprite> BACKGROUNDS = new ArrayList<>();
 
     static {
-        BACKGROUNDS.add(loadTileset("tilesets/specials/player.json").findByName("idle"));
-        BACKGROUNDS.add(loadTileset("tilesets/enemies/slime.json").findByName("moving"));
-        BACKGROUNDS.add(loadTileset("tilesets/enemies/tracer.json").findByName("active"));
-        BACKGROUNDS.add(loadTileset("tilesets/specials/cat.json").findByName("walking"));
-        BACKGROUNDS.add(loadTileset("tilesets/collectables/cherries.json").findById(0));
-        BACKGROUNDS.add(loadTileset("tilesets/props/box.json").findById(0));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/specials/player.json").findByName("idle"));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/enemies/slime.json").findByName("moving"));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/enemies/tracer.json").findByName("active"));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/specials/cat.json").findByName("walking"));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/collectables/cherries.json").findById(0));
+        BACKGROUNDS.add(SpriteDictionary.fromJsonTileset("tilesets/props/box.json").findById(0));
     }
 
     @Override
