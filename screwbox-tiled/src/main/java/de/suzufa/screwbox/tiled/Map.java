@@ -9,7 +9,6 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.tiled.internal.DefaultProperties;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.LayerDictionaryBuilder;
-import de.suzufa.screwbox.tiled.internal.ObjectDictionaryBuilder;
 import de.suzufa.screwbox.tiled.internal.TileDictionaryBuilder;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
@@ -42,7 +41,7 @@ public class Map {
     }
 
     public ObjectDictionary buildObjectDictionary() {
-        return new ObjectDictionaryBuilder().buildDictionary(mapEntity);
+        return new ObjectDictionary(mapEntity);
     }
 
     public Bounds bounds() {
