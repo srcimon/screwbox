@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal.entity;
+package de.suzufa.screwbox.tiled.internal;
 
 import java.awt.Point;
 import java.util.List;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
+import de.suzufa.screwbox.tiled.internal.LayerEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
 
 public class LayersCollection {
 

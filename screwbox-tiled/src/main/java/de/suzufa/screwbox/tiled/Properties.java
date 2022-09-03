@@ -6,7 +6,7 @@ import static java.util.Objects.isNull;
 import java.util.List;
 import java.util.Optional;
 
-import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
+import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
 public class Properties {
 

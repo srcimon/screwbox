@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.tiled;
 
-import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
+import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
 public class Property {
 

@@ -5,7 +5,7 @@ import static java.util.Optional.ofNullable;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
+import de.suzufa.screwbox.tiled.internal.LayerEntity;
 
 public class Layer {
 

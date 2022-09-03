@@ -14,10 +14,10 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.utils.Resources;
-import de.suzufa.screwbox.tiled.internal.entity.FrameEntity;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
-import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
-import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
+import de.suzufa.screwbox.tiled.internal.FrameEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
+import de.suzufa.screwbox.tiled.internal.TileEntity;
+import de.suzufa.screwbox.tiled.internal.TilesetEntity;
 
 @Deprecated
 //TODO get rid of this class

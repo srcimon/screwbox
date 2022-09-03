@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
+import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
 class PropertyTest {
 

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
-import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
+import de.suzufa.screwbox.tiled.internal.LayerEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
+import de.suzufa.screwbox.tiled.internal.ObjectEntity;
 
 //TODO: test
 public class GameObjectsCollection {

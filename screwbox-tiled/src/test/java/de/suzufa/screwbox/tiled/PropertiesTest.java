@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
+import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
 class PropertiesTest {
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
+import de.suzufa.screwbox.tiled.internal.TilesetEntity;
 
 public class Tileset {
 

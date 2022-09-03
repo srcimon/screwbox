@@ -8,10 +8,10 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
-import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
-import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
+import de.suzufa.screwbox.tiled.internal.LayerEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
+import de.suzufa.screwbox.tiled.internal.TileEntity;
+import de.suzufa.screwbox.tiled.internal.TilesetEntity;
 
 public class TileCollection {
 

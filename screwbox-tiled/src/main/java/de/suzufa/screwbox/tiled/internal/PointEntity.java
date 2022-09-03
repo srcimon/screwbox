@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal.entity;
+package de.suzufa.screwbox.tiled.internal;
 
 public record PointEntity(double x, double y) {
 

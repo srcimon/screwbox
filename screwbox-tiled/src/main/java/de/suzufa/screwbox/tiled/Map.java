@@ -3,7 +3,7 @@ package de.suzufa.screwbox.tiled;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
 
 /**
  * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor

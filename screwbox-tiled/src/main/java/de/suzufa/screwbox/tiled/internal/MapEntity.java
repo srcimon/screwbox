@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal.entity;
+package de.suzufa.screwbox.tiled.internal;
 
 import java.util.ArrayList;
 import java.util.List;

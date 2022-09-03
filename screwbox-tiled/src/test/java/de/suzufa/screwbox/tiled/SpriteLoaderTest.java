@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
-import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
+import de.suzufa.screwbox.tiled.internal.MapEntity;
+import de.suzufa.screwbox.tiled.internal.TilesetEntity;
 
 class SpriteLoaderTest {
 

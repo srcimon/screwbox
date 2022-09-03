@@ -4,7 +4,7 @@ import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
+import de.suzufa.screwbox.tiled.internal.ObjectEntity;
 
 public class GameObject {
 
