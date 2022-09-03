@@ -16,6 +16,8 @@ import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
 public class JsonLoader {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     public MapEntity loadMap(final String fileName) {
         final File mapFile = ResourceLoader.resourceFile(fileName);
 
@@ -82,12 +84,11 @@ public class JsonLoader {
         return deserialize;
     }
 
-    private <T> T deserialize(final File mapFile, final Class<T> clazz) {
+    private <T> T deserialize(final File mapFile, final Class<T> type) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(mapFile, clazz);
+            return OBJECT_MAPPER.readValue(mapFile, type);
         } catch (final IOException e) {
-            throw new IllegalArgumentException("file could not be loaded: " + mapFile.getName(), e);
+            throw new IllegalArgumentException("file could not be deserialized: " + mapFile.getName(), e);
         }
     }
 
