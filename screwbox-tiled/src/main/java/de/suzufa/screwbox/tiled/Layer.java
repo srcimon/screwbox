@@ -1,24 +1,58 @@
 package de.suzufa.screwbox.tiled;
 
+import static java.util.Optional.ofNullable;
+
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.tiled.internal.DefaultProperties;
+import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 
-public interface Layer {
+public class Layer {
 
-    String name();
+    private final LayerEntity layerEntity;
 
-    int order();
+    @Override
+    public String toString() {
+        return "Layer [name=" + layerEntity.name() + "]";
+    }
 
-    Properties properties();
+    private final int order;
 
-    Percentage opacity();
+    Layer(final LayerEntity layerEntity, final int order) {
+        this.layerEntity = layerEntity;
+        this.order = order;
+    }
 
-    boolean isImageLayer();
+    public String name() {
+        return layerEntity.name();
+    }
 
-    Optional<String> image();
+    public int order() {
+        return order;
+    }
 
-    double parallaxX();
+    public Properties properties() {
+        return new DefaultProperties(layerEntity.properties());
+    }
 
-    double parallaxY();
+    public Percentage opacity() {
+        return Percentage.of(layerEntity.opacity());
+    }
+
+    public boolean isImageLayer() {
+        return "imagelayer".equals(layerEntity.type());
+    }
+
+    public Optional<String> image() {
+        return ofNullable(layerEntity.image());
+    }
+
+    public double parallaxX() {
+        return layerEntity.parallaxx();
+    }
+
+    public double parallaxY() {
+        return layerEntity.parallaxy();
+    }
 }

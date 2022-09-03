@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import de.suzufa.screwbox.tiled.internal.DefaultGameObject;
-import de.suzufa.screwbox.tiled.internal.DefaultLayer;
 import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
@@ -18,7 +17,7 @@ public class ObjectDictionary {
     ObjectDictionary(final MapEntity map) {
         int order = 0;
         for (final LayerEntity layerEntity : map.getLayers()) {
-            final Layer layer = new DefaultLayer(layerEntity, order);
+            final Layer layer = new Layer(layerEntity, order);
             for (final ObjectEntity object : layerEntity.objects()) {
                 final DefaultGameObject tiledObject = new DefaultGameObject(object, layer);
                 objects.add(tiledObject);
