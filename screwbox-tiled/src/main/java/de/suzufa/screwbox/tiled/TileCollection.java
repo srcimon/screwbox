@@ -17,7 +17,7 @@ public class TileCollection {
 
     private final List<Tile> tiles = new ArrayList<>();
 
-    public TileCollection(final MapEntity map) {
+    TileCollection(final MapEntity map) {
         final Tileset tileset = SpriteLoader.loadTileset(map);
         var propertiesHolder = loadTileProperties(map);
 
