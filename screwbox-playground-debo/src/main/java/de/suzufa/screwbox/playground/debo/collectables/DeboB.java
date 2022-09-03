@@ -7,12 +7,12 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.CollectableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class DeboB implements Converter<GameObject> {
 
-    private static final SpriteDictionary SPRITES = SpriteDictionary
-            .fromJsonTileset("tilesets/collectables/debo-b.json");
+    private static final Tileset SPRITES = Tileset
+            .fromJson("tilesets/collectables/debo-b.json");
 
     @Override
     public Entity convert(final GameObject object) {

@@ -9,11 +9,11 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class VanishingBlock implements Converter<GameObject> {
 
-    private static final Sprite SPRITE = SpriteDictionary.fromJsonTileset("tilesets/props/vanishing-block.json")
+    private static final Sprite SPRITE = Tileset.fromJson("tilesets/props/vanishing-block.json")
             .findById(0);
 
     @Override

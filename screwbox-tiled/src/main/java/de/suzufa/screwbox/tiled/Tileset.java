@@ -12,20 +12,20 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.SpriteLoader;
 
-public class SpriteDictionary {
+public class Tileset {
 
     private final Map<Integer, Sprite> spritesById = new HashMap<>();
     private final Map<String, Sprite> spritesByName = new HashMap<>();
     private final List<Sprite> allSprites = new ArrayList<>();
 
-    public static SpriteDictionary fromJsonTileset(final String fileName) {
+    public static Tileset fromJson(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
         if (!fileName.toLowerCase().endsWith(".json")) {
             throw new IllegalArgumentException("abc.xml is not a JSON-File");
         }
         final var tileset = new JsonLoader().loadTileset(fileName);
-        final var dictionary = new SpriteDictionary();
-        SpriteLoader.addTilesToDictionary(tileset, dictionary);
+        final var dictionary = new Tileset();
+        SpriteLoader.addTilesToTileset(tileset, dictionary);
         return dictionary;
     }
 

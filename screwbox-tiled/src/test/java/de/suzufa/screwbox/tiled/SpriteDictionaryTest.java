@@ -12,11 +12,11 @@ class SpriteDictionaryTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("underworld.png");
 
-    SpriteDictionary spriteDictionary;
+    Tileset spriteDictionary;
 
     @BeforeEach
     void beforeEach() {
-        spriteDictionary = new SpriteDictionary();
+        spriteDictionary = new Tileset();
         spriteDictionary.addSprite(4, SPRITE);
         spriteDictionary.addNameToSprite(4, "underworld");
     }

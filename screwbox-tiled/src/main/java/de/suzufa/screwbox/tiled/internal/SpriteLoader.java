@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
 import de.suzufa.screwbox.tiled.Properties;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 import de.suzufa.screwbox.tiled.internal.entity.FrameEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
@@ -26,16 +26,16 @@ public final class SpriteLoader {
     private SpriteLoader() {
     }
 
-    public static SpriteDictionary loadSprites(final MapEntity map) {
-        final SpriteDictionary dictionary = new SpriteDictionary();
+    public static Tileset loadTileset(final MapEntity map) {
+        final Tileset tileset = new Tileset();
 
-        for (final TilesetEntity tileset : map.getTilesets()) {
-            addTilesToDictionary(tileset, dictionary);
+        for (final TilesetEntity mapTileset : map.getTilesets()) {
+            addTilesToTileset(mapTileset, tileset);
         }
-        return dictionary;
+        return tileset;
     }
 
-    public static void addTilesToDictionary(final TilesetEntity tileset, final SpriteDictionary dictionary) {
+    public static void addTilesToTileset(final TilesetEntity tileset, final Tileset dictionary) {
         final String imageFileName = tileset.getImage();
         final BufferedImage tilesetImage = loadImageFrom(imageFileName);
 

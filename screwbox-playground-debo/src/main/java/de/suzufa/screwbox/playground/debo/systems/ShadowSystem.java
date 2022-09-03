@@ -17,11 +17,11 @@ import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.utils.MathUtil;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.ShadowComponent;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class ShadowSystem implements EntitySystem {
 
-    private static final Sprite SHADOW = SpriteDictionary.fromJsonTileset("tilesets/effects/shadow.json").findById(0);
+    private static final Sprite SHADOW = Tileset.fromJson("tilesets/effects/shadow.json").findById(0);
     private static final Archetype SHADOW_CASTERS = Archetype.of(CastShadowComponent.class);
     private static final Archetype SHADOWS = Archetype.of(ShadowComponent.class);
 

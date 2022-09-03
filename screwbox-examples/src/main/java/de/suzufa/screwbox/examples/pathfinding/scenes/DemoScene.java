@@ -33,7 +33,7 @@ import de.suzufa.screwbox.examples.pathfinding.systems.PlayerControlSystem;
 import de.suzufa.screwbox.examples.pathfinding.systems.SpriteChangeSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 import de.suzufa.screwbox.tiled.Tile;
 
 public class DemoScene implements Scene {
@@ -86,9 +86,9 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> player() {
-        final var sprites = SpriteDictionary.fromJsonTileset("maze/player.json");
+        final var tileset = Tileset.fromJson("maze/player.json");
         return object -> new Entity(object.id())
-                .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
+                .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
@@ -97,7 +97,7 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> enemy() {
-        final var sprites = SpriteDictionary.fromJsonTileset("maze/enemy.json");
+        final var sprites = Tileset.fromJson("maze/enemy.json");
         return object -> new Entity()
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())

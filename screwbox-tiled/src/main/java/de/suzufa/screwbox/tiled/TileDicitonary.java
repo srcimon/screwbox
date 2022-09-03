@@ -20,7 +20,7 @@ public class TileDicitonary {
     private final List<Tile> tiles = new ArrayList<>();
 
     public TileDicitonary(final MapEntity map) {
-        final SpriteDictionary spriteDictionary = SpriteLoader.loadSprites(map);
+        final Tileset tileset = SpriteLoader.loadTileset(map);
         final PropertiesDictionary propertiesDictionary = loadTileProperties(map);
 
         int order = 0;
@@ -34,7 +34,7 @@ public class TileDicitonary {
                         final double offsetX = x * width;
                         final double offsetY = y * height;
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
-                        final Sprite sprite = spriteDictionary.findById(tileId);
+                        final Sprite sprite = tileset.findById(tileId);
                         final Layer layer = new DefaultLayer(layerEntity, order);
                         final Properties properties = propertiesDictionary.get(tileId);
                         final var tile = new DefaultTile(sprite, bounds, layer, properties);

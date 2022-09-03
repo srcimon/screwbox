@@ -9,13 +9,13 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DiggableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class Diggable implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        Sprite sprite = SpriteDictionary.fromJsonTileset("tilesets/props/diggable.json").findById(0);
+        Sprite sprite = Tileset.fromJson("tilesets/props/diggable.json").findById(0);
         return new Entity().add(
                 new SpriteComponent(sprite, object.layer().order()),
                 new DiggableComponent(),
