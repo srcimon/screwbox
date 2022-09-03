@@ -17,10 +17,10 @@ public class Tileset {
     private final List<Sprite> allSprites = new ArrayList<>();
 
     public static Tileset fromJson(final String fileName) {
-        final var tileset = TilesetEntity.load(fileName);
-        final var dictionary = new Tileset();
-        SpriteLoader.addTilesToTileset(tileset, dictionary);
-        return dictionary;
+        final var tilesetEntity = TilesetEntity.load(fileName);
+        final var tileset = new Tileset();
+        SpriteLoader.addTilesToTileset(tilesetEntity, tileset);
+        return tileset;
     }
 
     void addSprite(final int id, final Sprite sprite) {
