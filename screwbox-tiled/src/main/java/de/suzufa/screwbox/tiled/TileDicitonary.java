@@ -45,7 +45,7 @@ public class TileDicitonary {
         tiles.add(tile);
     }
 
-    public List<Tile> allTiles() {
+    public List<Tile> all() {
         return tiles;
     }
 

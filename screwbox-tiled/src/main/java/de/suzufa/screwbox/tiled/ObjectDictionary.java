@@ -25,7 +25,7 @@ public class ObjectDictionary {
         }
     }
 
-    public List<GameObject> allObjects() {
+    public List<GameObject> all() {
         return objects;
     }
 

@@ -28,7 +28,7 @@ public class Tileset {
         return dictionary;
     }
 
-    public void addSprite(final int id, final Sprite sprite) {
+    void addSprite(final int id, final Sprite sprite) {
         spritesById.put(id, sprite);
         allSprites.add(sprite);
     }

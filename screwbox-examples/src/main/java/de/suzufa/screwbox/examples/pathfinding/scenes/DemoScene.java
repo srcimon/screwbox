@@ -33,8 +33,8 @@ import de.suzufa.screwbox.examples.pathfinding.systems.PlayerControlSystem;
 import de.suzufa.screwbox.examples.pathfinding.systems.SpriteChangeSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.Tileset;
 import de.suzufa.screwbox.tiled.Tile;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class DemoScene implements Scene {
 
@@ -63,7 +63,7 @@ public class DemoScene implements Scene {
     }
 
     void importEntities(final EntityEngine entityEngine) {
-        entityEngine.importSource(map.allTiles())
+        entityEngine.importSource(map.tiles().all())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
@@ -71,7 +71,7 @@ public class DemoScene implements Scene {
         entityEngine.importSource(map)
                 .as(worldBounds());
 
-        entityEngine.importSource(map.allObjects())
+        entityEngine.importSource(map.objects().all())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())

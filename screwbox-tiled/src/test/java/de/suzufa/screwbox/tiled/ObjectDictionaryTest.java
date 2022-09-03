@@ -12,12 +12,12 @@ class ObjectDictionaryTest {
     @BeforeEach
     void beforeEach() {
         Map map = Map.fromJson("underworld_map.json");
-        objectDictionary = map.buildObjectDictionary();
+        objectDictionary = map.objects();
     }
 
     @Test
     void allObjects_returnsAllObjects() {
-        assertThat(objectDictionary.allObjects())
+        assertThat(objectDictionary.all())
                 .hasSize(7);
     }
 

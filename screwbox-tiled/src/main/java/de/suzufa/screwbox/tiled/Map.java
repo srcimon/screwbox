@@ -2,8 +2,6 @@ package de.suzufa.screwbox.tiled;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
@@ -33,11 +31,11 @@ public class Map {
         this.mapEntity = mapEntity;
     }
 
-    public TileDicitonary buildTileDictionary() {
+    public TileDicitonary tiles() {
         return new TileDicitonary(mapEntity);
     }
 
-    public ObjectDictionary buildObjectDictionary() {
+    public ObjectDictionary objects() {
         return new ObjectDictionary(mapEntity);
     }
 
@@ -51,25 +49,13 @@ public class Map {
         return new Properties(mapEntity.getProperties());
     }
 
-    public LayerDictionary buildLayerDictionary() {
+    public LayerDictionary layers() {
         return new LayerDictionary(mapEntity);
     }
 
     @Override
     public String toString() {
         return "Map [width=" + bounds().width() + ",height=" + bounds().height() + "]";
-    }
-
-    public List<Layer> allLayers() {
-        return buildLayerDictionary().allLayers();
-    }
-
-    public List<GameObject> allObjects() {
-        return buildObjectDictionary().allObjects();
-    }
-
-    public List<Tile> allTiles() {
-        return buildTileDictionary().allTiles();
     }
 
 }

@@ -19,7 +19,7 @@ public class LayerDictionary {
         }
     }
 
-    public List<Layer> allLayers() {
+    public List<Layer> all() {
         return layers;
     }
 

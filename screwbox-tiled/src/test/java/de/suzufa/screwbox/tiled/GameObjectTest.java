@@ -17,7 +17,7 @@ class GameObjectTest {
     @BeforeEach
     void beforeEach() {
         var map = Map.fromJson("underworld_map.json");
-        var objects = map.buildObjectDictionary();
+        var objects = map.objects();
         image = objects.findByName("testimage").orElseThrow();
         pointer = objects.findByName("testpoint").orElseThrow();
         square = objects.findByName("testsquare").orElseThrow();
