@@ -3,6 +3,8 @@ package de.suzufa.screwbox.tiled.internal.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.utils.Resources;
+
 public class TilesetEntity {// cannot be replaced by record: not all properties are final
 
     private String backgroundcolor;
@@ -29,6 +31,14 @@ public class TilesetEntity {// cannot be replaced by record: not all properties 
     private String transparentcolor;
     private String type;
     private double version;
+
+    public static TilesetEntity load(final String fileName) {
+        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
+        final String fileNameWithoudDirectories = fileName.split("/")[fileName.split("/").length - 1];
+        final String correctPath = fileName.replace(fileNameWithoudDirectories, tilesetEntity.getImage());
+        tilesetEntity.setImage(correctPath);
+        return tilesetEntity;
+    }
 
     public String getBackgroundcolor() {
         return backgroundcolor;

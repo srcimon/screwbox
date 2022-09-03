@@ -3,7 +3,6 @@ package de.suzufa.screwbox.tiled;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
 /**
@@ -20,7 +19,7 @@ public class Map {
      * Loads a new instance of a Tiled-Map that was saved as JSON-File.
      */
     public static Map fromJson(final String fileName) {
-        final MapEntity entity = new JsonLoader().loadMap(fileName);
+        final MapEntity entity = MapEntity.load(fileName);
         return new Map(entity);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.internal.JsonLoader;
+import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
 public class Tileset {
 
@@ -17,7 +17,7 @@ public class Tileset {
     private final List<Sprite> allSprites = new ArrayList<>();
 
     public static Tileset fromJson(final String fileName) {
-        final var tileset = new JsonLoader().loadTileset(fileName);
+        final var tileset = TilesetEntity.load(fileName);
         final var dictionary = new Tileset();
         SpriteLoader.addTilesToTileset(tileset, dictionary);
         return dictionary;

@@ -19,6 +19,8 @@ import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
+@Deprecated
+//TODO get rid of this class
 final class SpriteLoader {
 
     private SpriteLoader() {

@@ -1,6 +1,9 @@
 package de.suzufa.screwbox.tiled.internal.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import de.suzufa.screwbox.core.utils.Resources;
 
 public class MapEntity { // cannot be replaced by record: tilesets are not final
 
@@ -24,6 +27,61 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     private int width;
     private List<LayerEntity> layers;
     private List<TilesetEntity> tilesets;
+
+    public static MapEntity load(final String fileName) {
+        final MapEntity map = Resources.loadJson(fileName, MapEntity.class);
+        final String directory = getDirectory(fileName);
+        embedExternalTilesets(map, directory);
+        embedObjectTemplates(map, directory);
+        return map;
+    }
+
+    private static String getDirectory(final String fileName) {
+        final String[] parts = fileName.split("/");
+        final String file = parts[parts.length - 1];
+        return fileName.replace(file, "");
+    }
+
+    private static void embedObjectTemplates(final MapEntity map, final String directory) {
+        for (final LayerEntity layer : map.getLayers()) {
+            if (layer.objects() != null) {
+                for (int i = 0; i < layer.objects().size(); i++) {
+                    final ObjectEntity object = layer.objects().get(i);
+                    if (object.getTemplate() != null) {
+                        final ObjectTemplateEntity objectTemplate = Resources.loadJson(
+                                directory + object.getTemplate(),
+                                ObjectTemplateEntity.class);
+                        final ObjectEntity replacement = objectTemplate.object();
+                        replacement.setId(object.getId());
+                        replacement.setX(object.getX());
+                        replacement.setY(object.getY());
+                        if (object.getWidth() != 0 && object.getHeight() != 0) {
+                            replacement.setWidth(object.getWidth());
+                            replacement.setHeight(object.getHeight());
+                        }
+
+                        replacement.setProperties(object.getProperties());// TODO: combine neccessary?
+                        layer.objects().set(i, replacement);
+                    }
+                }
+            }
+        }
+
+    }
+
+    private static void embedExternalTilesets(final MapEntity map, final String directory) {
+        final List<TilesetEntity> fullTilesets = new ArrayList<>();
+        for (final TilesetEntity tileset : map.getTilesets()) {
+            if (tileset.getSource() == null) {
+                fullTilesets.add(tileset);
+            } else {
+                final TilesetEntity externalTileset = TilesetEntity.load(directory + tileset.getSource());
+                externalTileset.setFirstgid(tileset.getFirstgid());
+                fullTilesets.add(externalTileset);
+            }
+        }
+        map.setTilesets(fullTilesets);
+    }
 
     public String getBackgroundColor() {
         return backgroundColor;
