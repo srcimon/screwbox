@@ -79,7 +79,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class GameScene implements Scene {
 
@@ -138,7 +137,7 @@ public class GameScene implements Scene {
     }
 
     void importEntities(EntityEngine entityEngine) {
-        Map map = TiledSupport.loadMap(mapName);
+        Map map = Map.fromJson(mapName);
 
         entityEngine.importSource(map)
                 .as(new MapGravity())

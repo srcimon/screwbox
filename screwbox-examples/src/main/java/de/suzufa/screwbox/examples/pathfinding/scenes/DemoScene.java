@@ -41,7 +41,7 @@ public class DemoScene implements Scene {
     private final Map map;
 
     public DemoScene(final String name) {
-        map = TiledSupport.loadMap(name);
+        map = Map.fromJson(name);
     }
 
     @Override

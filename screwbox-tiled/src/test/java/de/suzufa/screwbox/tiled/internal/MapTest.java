@@ -7,15 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
-class DefaultMapTest {
+class MapTest {
 
     private Map map;
 
     @BeforeEach
     void beforeEach() {
-        map = TiledSupport.loadMap("underworld_map.json");
+        map = Map.fromJson("underworld_map.json");
     }
 
     @Test

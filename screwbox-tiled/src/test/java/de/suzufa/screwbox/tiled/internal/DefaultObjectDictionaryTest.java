@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.ObjectDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 class DefaultObjectDictionaryTest {
 
@@ -15,7 +14,7 @@ class DefaultObjectDictionaryTest {
 
     @BeforeEach
     void beforeEach() {
-        Map map = TiledSupport.loadMap("underworld_map.json");
+        Map map = Map.fromJson("underworld_map.json");
         objectDictionary = map.buildObjectDictionary();
     }
 

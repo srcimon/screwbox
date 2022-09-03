@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.tiled.GameObject;
+import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Properties;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 class DefaultGameObjectTest {
 
@@ -19,7 +19,7 @@ class DefaultGameObjectTest {
 
     @BeforeEach
     void beforeEach() {
-        var map = TiledSupport.loadMap("underworld_map.json");
+        var map = Map.fromJson("underworld_map.json");
         var objects = map.buildObjectDictionary();
         image = objects.findByName("testimage").orElseThrow();
         pointer = objects.findByName("testpoint").orElseThrow();
