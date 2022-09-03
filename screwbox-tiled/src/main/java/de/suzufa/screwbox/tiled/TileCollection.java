@@ -53,12 +53,6 @@ public class TileCollection {
         return tiles;
     }
 
-    public List<Tile> allFromLayer(final String name) {
-        return tiles.stream()
-                .filter(t -> name.equals(t.layer().name()))
-                .toList();
-    }
-
     private HashMap<Integer, Properties> loadTileProperties(final MapEntity map) {
         var propertiesHolder = new HashMap<Integer, Properties>();
         for (final TilesetEntity tileset : map.getTilesets()) {
