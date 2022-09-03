@@ -5,7 +5,6 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.internal.DefaultTile;
 import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
@@ -33,7 +32,7 @@ public class TileDicitonary {
                         final Sprite sprite = tileset.findById(tileId);
                         final Layer layer = new Layer(layerEntity, order);
                         final Properties properties = propertiesDictionary.get(tileId);
-                        final var tile = new DefaultTile(sprite, bounds, layer, properties);
+                        final var tile = new Tile(sprite, bounds, layer, properties);
                         add(tile);
                     }
                 }
