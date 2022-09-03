@@ -45,7 +45,7 @@ public class TileCollection {
         }
     }
 
-    public void add(final Tile tile) {
+    void add(final Tile tile) {
         tiles.add(tile);
     }
 
