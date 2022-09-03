@@ -5,6 +5,8 @@ import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.SpriteLoader;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
+//TODO: Map.fromJson()
+//TODO: SpriteDictionary.fromJson
 public final class TiledSupport {
 
     private TiledSupport() {
