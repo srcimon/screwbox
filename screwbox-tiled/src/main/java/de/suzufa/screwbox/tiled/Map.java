@@ -4,11 +4,15 @@ import static java.util.Objects.requireNonNull;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.entityengine.EntityEngine;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
 /**
- * A Map created in Tiled-Editor.
+ * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
+ * in your game.
+ * 
+ * @see EntityEngine#importSource(Object)
  */
 public class Map {
 
@@ -35,8 +39,8 @@ public class Map {
         return new TileDicitonary(mapEntity);
     }
 
-    public ObjectDictionary objects() {
-        return new ObjectDictionary(mapEntity);
+    public GameObjectsCollection objects() {
+        return new GameObjectsCollection(mapEntity);
     }
 
     public Bounds bounds() {
@@ -49,8 +53,8 @@ public class Map {
         return new Properties(mapEntity.getProperties());
     }
 
-    public LayerDictionary layers() {
-        return new LayerDictionary(mapEntity);
+    public LayersCollection layers() {
+        return new LayersCollection(mapEntity);
     }
 
     @Override

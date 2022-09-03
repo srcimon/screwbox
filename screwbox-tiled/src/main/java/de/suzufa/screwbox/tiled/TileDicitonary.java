@@ -16,7 +16,7 @@ public class TileDicitonary {
 
     public TileDicitonary(final MapEntity map) {
         final Tileset tileset = SpriteLoader.loadTileset(map);
-        final PropertiesDictionary propertiesDictionary = loadTileProperties(map);
+        final PropertiesCollection propertiesDictionary = loadTileProperties(map);
 
         int order = 0;
         for (final LayerEntity layerEntity : map.getLayers()) {
@@ -55,8 +55,8 @@ public class TileDicitonary {
                 .toList();
     }
 
-    private PropertiesDictionary loadTileProperties(final MapEntity map) {
-        final PropertiesDictionary dictionary = new PropertiesDictionary();
+    private PropertiesCollection loadTileProperties(final MapEntity map) {
+        final PropertiesCollection dictionary = new PropertiesCollection();
         for (final TilesetEntity tileset : map.getTilesets()) {
             for (final TileEntity tileEntity : tileset.getTiles()) {
                 final Properties properties = new Properties(tileEntity.properties());

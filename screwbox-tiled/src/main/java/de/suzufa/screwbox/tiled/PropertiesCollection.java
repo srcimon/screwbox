@@ -5,7 +5,7 @@ import static java.util.Collections.emptyList;
 import java.util.HashMap;
 import java.util.Map;
 
-class PropertiesDictionary {
+class PropertiesCollection {
 
     private Map<Integer, Properties> properties = new HashMap<>();
 
