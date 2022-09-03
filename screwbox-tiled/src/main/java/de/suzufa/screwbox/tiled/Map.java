@@ -8,7 +8,6 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.tiled.internal.DefaultProperties;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
-import de.suzufa.screwbox.tiled.internal.TileDictionaryBuilder;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
 /**
@@ -36,7 +35,7 @@ public class Map {
     }
 
     public TileDicitonary buildTileDictionary() {
-        return new TileDictionaryBuilder().buildDictionary(mapEntity);
+        return new TileDicitonary(mapEntity);
     }
 
     public ObjectDictionary buildObjectDictionary() {
