@@ -27,7 +27,7 @@ final class SpriteLoader {
     public static Tileset loadTileset(final MapEntity map) {
         final Tileset tileset = new Tileset();
 
-        for (final TilesetEntity mapTileset : map.tilesets()) {
+        for (final TilesetEntity mapTileset : map.getTilesets()) {
             addTilesToTileset(mapTileset, tileset);
         }
         return tileset;

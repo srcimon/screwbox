@@ -22,13 +22,13 @@ public class TileCollection {
         var propertiesHolder = loadTileProperties(map);
 
         int order = 0;
-        for (final LayerEntity layerEntity : map.layers()) {
+        for (final LayerEntity layerEntity : map.getLayers()) {
             for (int y = 0; y < layerEntity.height(); y++) {
                 for (int x = 0; x < layerEntity.width(); x++) {
                     final Integer tileId = layerEntity.data().get(y * layerEntity.width() + x);
                     if (tileId != 0) {
-                        final double width = map.tilewidth();
-                        final double height = map.tileheight();
+                        final double width = map.getTilewidth();
+                        final double height = map.getTileheight();
                         final double offsetX = x * width;
                         final double offsetY = y * height;
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
@@ -61,7 +61,7 @@ public class TileCollection {
 
     private HashMap<Integer, Properties> loadTileProperties(final MapEntity map) {
         var propertiesHolder = new HashMap<Integer, Properties>();
-        for (final TilesetEntity tileset : map.tilesets()) {
+        for (final TilesetEntity tileset : map.getTilesets()) {
             for (final TileEntity tileEntity : tileset.getTiles()) {
                 final Properties properties = new Properties(tileEntity.properties());
                 propertiesHolder.put(tileset.getFirstgid() + tileEntity.id(), properties);

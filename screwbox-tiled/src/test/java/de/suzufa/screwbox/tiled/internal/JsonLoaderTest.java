@@ -28,15 +28,15 @@ class JsonLoaderTest {
     void loadMap_mapIsValid_returnsMap() {
         MapEntity map = jsonLoader.loadMap("underworld_map.json");
 
-        assertThat(map.layers()).hasSize(3);
-        assertThat(map.tilesets()).hasSize(2);
+        assertThat(map.getLayers()).hasSize(3);
+        assertThat(map.getTilesets()).hasSize(2);
     }
 
     @Test
     void loadMap_externalizedTilemap_returnsMapWithEmbeddedTilemap() {
         MapEntity map = jsonLoader.loadMap("underworld_map.json");
 
-        assertThat(map.tilesets().get(0).getImage()).isEqualTo("underworld.png");
-        assertThat(map.tilesets().get(1).getImage()).isEqualTo("second_tileset.png");
+        assertThat(map.getTilesets().get(0).getImage()).isEqualTo("underworld.png");
+        assertThat(map.getTilesets().get(1).getImage()).isEqualTo("second_tileset.png");
     }
 }

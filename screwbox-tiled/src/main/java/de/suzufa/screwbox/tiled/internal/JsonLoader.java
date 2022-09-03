@@ -22,6 +22,14 @@ public class JsonLoader {
         return map;
     }
 
+    public TilesetEntity loadTileset(final String fileName) {
+        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
+        final String fileNameWithoudDirectories = fileName.split("/")[fileName.split("/").length - 1];
+        final String correctPath = fileName.replace(fileNameWithoudDirectories, tilesetEntity.getImage());
+        tilesetEntity.setImage(correctPath);
+        return tilesetEntity;
+    }
+
     private String getDirectory(final String fileName) {
         final String[] parts = fileName.split("/");
         final String file = parts[parts.length - 1];
@@ -29,7 +37,7 @@ public class JsonLoader {
     }
 
     private void embedObjectTemplates(final MapEntity map, final String directory) {
-        for (final LayerEntity layer : map.layers()) {
+        for (final LayerEntity layer : map.getLayers()) {
             if (layer.objects() != null) {
                 for (int i = 0; i < layer.objects().size(); i++) {
                     final ObjectEntity object = layer.objects().get(i);
@@ -57,7 +65,7 @@ public class JsonLoader {
 
     private void embedExternalTilesets(final MapEntity map, final String directory) {
         final List<TilesetEntity> fullTilesets = new ArrayList<>();
-        for (final TilesetEntity tileset : map.tilesets()) {
+        for (final TilesetEntity tileset : map.getTilesets()) {
             if (tileset.getSource() == null) {
                 fullTilesets.add(tileset);
             } else {
@@ -68,13 +76,4 @@ public class JsonLoader {
         }
         map.setTilesets(fullTilesets);
     }
-
-    public TilesetEntity loadTileset(final String fileName) {
-        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
-        final String fileNameInFileName = fileName.split("/")[fileName.split("/").length - 1];
-        final String correctPath = fileName.replace(fileNameInFileName, tilesetEntity.getImage());
-        tilesetEntity.setImage(correctPath);
-        return tilesetEntity;
-    }
-
 }
