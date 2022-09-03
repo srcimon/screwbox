@@ -59,9 +59,7 @@ final class SpriteLoader {
                         .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frame.duration())));
             }
-            final Sprite animatedSprite = new Sprite(frames);// TODO: add Frame per Frame / validate frame
-                                                             // size
-            // with others
+            final Sprite animatedSprite = new Sprite(frames);
             final Properties properties = new Properties(tileEntity.properties());
             final Optional<String> name = properties.get("name");
             if (!frames.isEmpty()) {

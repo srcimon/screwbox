@@ -30,6 +30,7 @@ public final class Frame implements Serializable {
         return INVISIBLE;
     }
 
+    // TODO: fromFile()
     public Frame(final Image image) {
         this(image, Duration.none());
     }
