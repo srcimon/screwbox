@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.tiled.internal.DefaultProperties;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 
@@ -49,7 +48,7 @@ public class Map {
     }
 
     public Properties properties() {
-        return new DefaultProperties(mapEntity.getProperties());
+        return new Properties(mapEntity.getProperties());
     }
 
     public LayerDictionary buildLayerDictionary() {

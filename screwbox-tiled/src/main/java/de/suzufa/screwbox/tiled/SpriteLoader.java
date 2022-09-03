@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -14,14 +14,12 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.utils.ResourceLoader;
-import de.suzufa.screwbox.tiled.Properties;
-import de.suzufa.screwbox.tiled.Tileset;
 import de.suzufa.screwbox.tiled.internal.entity.FrameEntity;
 import de.suzufa.screwbox.tiled.internal.entity.MapEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TileEntity;
 import de.suzufa.screwbox.tiled.internal.entity.TilesetEntity;
 
-public final class SpriteLoader {
+final class SpriteLoader {
 
     private SpriteLoader() {
     }
@@ -64,7 +62,7 @@ public final class SpriteLoader {
             final Sprite animatedSprite = new Sprite(frames);// TODO: add Frame per Frame / validate frame
                                                              // size
             // with others
-            final Properties properties = new DefaultProperties(tileEntity.properties());
+            final Properties properties = new Properties(tileEntity.properties());
             final Optional<String> name = properties.get("name");
             if (!frames.isEmpty()) {
                 dictionary.addSprite(tileset.getFirstgid() + tileEntity.id(), animatedSprite);

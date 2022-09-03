@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,11 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.Properties;
 
-class DefaultGameObjectTest {
+class GameObjectTest {
 
     private GameObject image;
     private GameObject pointer;

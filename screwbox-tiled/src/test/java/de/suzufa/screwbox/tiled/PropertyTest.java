@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
 
-class DefaultPropertyTest {
+class PropertyTest {
 
     @Test
     void name_returnsName() {
@@ -61,13 +61,13 @@ class DefaultPropertyTest {
                 .hasMessage("property isOn is not a number: true");
     }
 
-    private DefaultProperty createNumberProperty() {
+    private Property createNumberProperty() {
         var property = new PropertyEntity("hue", "int", "20");
-        return new DefaultProperty(property);
+        return new Property(property);
     }
 
-    private DefaultProperty createBooleanProperty() {
+    private Property createBooleanProperty() {
         var property = new PropertyEntity("isOn", "type", "true");
-        return new DefaultProperty(property);
+        return new Property(property);
     }
 }

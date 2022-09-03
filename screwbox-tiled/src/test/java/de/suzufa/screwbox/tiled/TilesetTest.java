@@ -8,50 +8,50 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
 
-class SpriteDictionaryTest {
+class TilesetTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("underworld.png");
 
-    Tileset spriteDictionary;
+    Tileset tileset;
 
     @BeforeEach
     void beforeEach() {
-        spriteDictionary = new Tileset();
-        spriteDictionary.addSprite(4, SPRITE);
-        spriteDictionary.addNameToSprite(4, "underworld");
+        tileset = new Tileset();
+        tileset.addSprite(4, SPRITE);
+        tileset.addNameToSprite(4, "underworld");
     }
 
     @Test
     void spriteCount_returnsSpriteCount() {
-        assertThat(spriteDictionary.spriteCount()).isEqualTo(1);
+        assertThat(tileset.spriteCount()).isEqualTo(1);
     }
 
     @Test
     void findById_idPresent_returnsSprite() {
-        assertThat(spriteDictionary.findById(4)).isEqualTo(SPRITE);
+        assertThat(tileset.findById(4)).isEqualTo(SPRITE);
     }
 
     @Test
     void findById_idMissing_throwsException() {
-        assertThatThrownBy(() -> spriteDictionary.findById(5))
+        assertThatThrownBy(() -> tileset.findById(5))
                 .isInstanceOf(IllegalArgumentException.class).hasMessage("sprite not found: 5");
     }
 
     @Test
     void findByName_namePresent_returnsSprite() {
-        assertThat(spriteDictionary.findByName("underworld")).isEqualTo(SPRITE);
+        assertThat(tileset.findByName("underworld")).isEqualTo(SPRITE);
     }
 
     @Test
     void findByName_nameMissing_throwsException() {
-        assertThatThrownBy(() -> spriteDictionary.findByName("under"))
+        assertThatThrownBy(() -> tileset.findByName("under"))
                 .isInstanceOf(IllegalArgumentException.class).hasMessage("sprite not found: under");
     }
 
     @Test
     void all_returnsAllSprites() {
-        spriteDictionary.addSprite(9, SPRITE);
+        tileset.addSprite(9, SPRITE);
 
-        assertThat(spriteDictionary.all()).hasSize(2);
+        assertThat(tileset.all()).hasSize(2);
     }
 }

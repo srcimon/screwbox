@@ -1,11 +1,11 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
+
+import static java.util.Collections.emptyList;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import de.suzufa.screwbox.tiled.Properties;
-
-public class PropertiesDictionary {
+class PropertiesDictionary {
 
     private Map<Integer, Properties> properties = new HashMap<>();
 
@@ -16,7 +16,7 @@ public class PropertiesDictionary {
 // TODO: test
     public Properties get(int id) {
         if (!properties.containsKey(id)) {
-            return DefaultProperties.empty();
+            return new Properties(emptyList());
         }
         return properties.get(id);
     }

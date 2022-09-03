@@ -4,7 +4,6 @@ import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.tiled.internal.DefaultProperties;
 import de.suzufa.screwbox.tiled.internal.entity.ObjectEntity;
 
 public class GameObject {
@@ -46,7 +45,7 @@ public class GameObject {
 
     public Properties properties() {
         final var properties = emptyWhenNull(object.getProperties());
-        return new DefaultProperties(properties);
+        return new Properties(properties);
     }
 
     public Layer layer() {

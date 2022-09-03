@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.tiled.internal.entity.PropertyEntity;
 
-class DefaultPropertiesTest {
+class PropertiesTest {
 
-    private DefaultProperties properties;
+    private Properties properties;
 
     @BeforeEach
     void beforeEach() {
@@ -24,7 +24,7 @@ class DefaultPropertiesTest {
                 createPropertyEntity("unchecked", "falsE"),
                 createPropertyEntity("checked", "true"));
 
-        properties = new DefaultProperties(propertyEntities);
+        properties = new Properties(propertyEntities);
     }
 
     @Test

@@ -1,14 +1,11 @@
-package de.suzufa.screwbox.tiled.internal;
+package de.suzufa.screwbox.tiled;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.tiled.Map;
-import de.suzufa.screwbox.tiled.ObjectDictionary;
-
-class DefaultObjectDictionaryTest {
+class ObjectDictionaryTest {
 
     private ObjectDictionary objectDictionary;
 

@@ -5,7 +5,6 @@ import static java.util.Optional.ofNullable;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.tiled.internal.DefaultProperties;
 import de.suzufa.screwbox.tiled.internal.entity.LayerEntity;
 
 public class Layer {
@@ -33,7 +32,7 @@ public class Layer {
     }
 
     public Properties properties() {
-        return new DefaultProperties(layerEntity.properties());
+        return new Properties(layerEntity.properties());
     }
 
     public Percentage opacity() {

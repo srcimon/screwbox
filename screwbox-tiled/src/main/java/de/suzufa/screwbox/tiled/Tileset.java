@@ -10,7 +10,6 @@ import java.util.Map;
 
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.internal.JsonLoader;
-import de.suzufa.screwbox.tiled.internal.SpriteLoader;
 
 public class Tileset {
 
