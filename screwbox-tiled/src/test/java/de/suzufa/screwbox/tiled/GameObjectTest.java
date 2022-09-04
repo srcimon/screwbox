@@ -59,4 +59,9 @@ class GameObjectTest {
     void layer_returnsObjectLayer() {
         assertThat(image.layer().order()).isEqualTo(2);
     }
+
+    @Test
+    void toString_containsName() {
+        assertThat(image).hasToString("GameObject [name=testimage]");
+    }
 }

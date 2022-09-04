@@ -52,4 +52,15 @@ class MapTest {
         assertThat(map.tiles()).hasSize(41)
                 .anyMatch(tile -> tile.layer().name().equals("world"));
     }
+
+    @Test
+    void objectWithName_objectMissing_isEmpty() {
+        assertThat(map.objectWithName("unknown")).isEmpty();
+    }
+
+    @Test
+    void objectWithName_objectFound_isObject() {
+        assertThat(map.objectWithName("testpoint")).isPresent()
+                .matches(object -> object.get().name().equals("testpoint"));
+    }
 }
