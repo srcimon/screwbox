@@ -28,10 +28,6 @@ class GameObjectCollection {
         return objects;
     }
 
-    void add(final GameObject object) {
-        objects.add(object);
-    }
-
     Optional<GameObject> findByName(final String name) {
         return objects.stream()
                 .filter(o -> name.equals(o.name()))
