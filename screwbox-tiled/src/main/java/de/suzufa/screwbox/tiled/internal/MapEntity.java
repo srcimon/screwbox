@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.tiled.internal;
 
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +48,11 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         for (final LayerEntity layer : map.getLayers()) {
             for (int i = 0; i < layer.objects().size(); i++) {
                 final ObjectEntity object = layer.objects().get(i);
-                if (object.getTemplate() != null) {
-                    final ObjectTemplateEntity objectTemplate = Resources.loadJson(
+                if (nonNull(object.getTemplate())) {
+                    final var replacement = Resources.loadJson(
                             directory + object.getTemplate(),
-                            ObjectTemplateEntity.class);
-                    final ObjectEntity replacement = objectTemplate.object();
+                            ObjectTemplateEntity.class)
+                            .object();
                     replacement.setId(object.getId());
                     replacement.setX(object.getX());
                     replacement.setY(object.getY());
