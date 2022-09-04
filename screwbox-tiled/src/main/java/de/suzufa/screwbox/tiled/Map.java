@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.tiled;
 
+import java.util.List;
+
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.EntityEngine;
@@ -14,6 +16,10 @@ import de.suzufa.screwbox.tiled.internal.MapEntity;
 public class Map {
 
     private final MapEntity mapEntity;
+    private final TileCollection tiles;
+    private final GameObjectCollection objects;
+    private final Properties properties;
+    private final LayerCollection layers;
 
     /**
      * Loads a new instance of a Tiled-Map that was saved as JSON-File.
@@ -25,14 +31,18 @@ public class Map {
 
     private Map(final MapEntity mapEntity) {
         this.mapEntity = mapEntity;
+        tiles = new TileCollection(mapEntity);
+        objects = new GameObjectCollection(mapEntity);
+        properties = new Properties(mapEntity.getProperties());
+        layers = new LayerCollection(mapEntity);
     }
 
-    public TileCollection tiles() {
-        return new TileCollection(mapEntity);
+    public List<Tile> tiles() {
+        return tiles.all();
     }
 
-    public GameObjectCollection objects() {
-        return new GameObjectCollection(mapEntity);
+    public List<GameObject> objects() {
+        return objects.all();
     }
 
     public Bounds bounds() {
@@ -42,11 +52,11 @@ public class Map {
     }
 
     public Properties properties() {
-        return new Properties(mapEntity.getProperties());
+        return properties;
     }
 
-    public LayerCollection layers() {
-        return new LayerCollection(mapEntity);
+    public List<Layer> layers() {
+        return layers.all();
     }
 
     @Override

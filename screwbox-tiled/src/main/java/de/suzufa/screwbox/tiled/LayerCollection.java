@@ -7,7 +7,7 @@ import java.util.Optional;
 import de.suzufa.screwbox.tiled.internal.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.MapEntity;
 
-public class LayerCollection {
+class LayerCollection {
 
     private final List<Layer> layers = new ArrayList<>();
 
@@ -19,11 +19,11 @@ public class LayerCollection {
         }
     }
 
-    public List<Layer> all() {
+    List<Layer> all() {
         return layers;
     }
 
-    public Optional<Layer> findByName(String name) {
+    Optional<Layer> findByName(String name) {
         return layers.stream()
                 .filter(l -> "name".equals(l.name()))
                 .findFirst();

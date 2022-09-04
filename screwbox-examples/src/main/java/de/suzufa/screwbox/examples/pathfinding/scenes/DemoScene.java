@@ -63,7 +63,7 @@ public class DemoScene implements Scene {
     }
 
     void importEntities(final EntityEngine entityEngine) {
-        entityEngine.importSource(map.tiles().all())
+        entityEngine.importSource(map.tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
@@ -71,7 +71,7 @@ public class DemoScene implements Scene {
         entityEngine.importSource(map)
                 .as(worldBounds());
 
-        entityEngine.importSource(map.objects().all())
+        entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())

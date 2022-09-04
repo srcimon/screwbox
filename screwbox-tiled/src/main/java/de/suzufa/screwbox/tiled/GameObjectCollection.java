@@ -8,8 +8,7 @@ import de.suzufa.screwbox.tiled.internal.LayerEntity;
 import de.suzufa.screwbox.tiled.internal.MapEntity;
 import de.suzufa.screwbox.tiled.internal.ObjectEntity;
 
-//TODO: test
-public class GameObjectCollection {
+class GameObjectCollection {
 
     private final List<GameObject> objects = new ArrayList<>();
 
@@ -25,27 +24,27 @@ public class GameObjectCollection {
         }
     }
 
-    public List<GameObject> all() {
+    List<GameObject> all() {
         return objects;
     }
 
-    public void add(final GameObject object) {
+    void add(final GameObject object) {
         objects.add(object);
     }
 
-    public Optional<GameObject> findByName(final String name) {
+    Optional<GameObject> findByName(final String name) {
         return objects.stream()
                 .filter(o -> name.equals(o.name()))
                 .findFirst();
     }
 
-    public List<GameObject> findAllWithName(final String name) {
+    List<GameObject> findAllWithName(final String name) {
         return objects.stream()
                 .filter(o -> name.equals(o.name()))
                 .toList();
     }
 
-    public Optional<GameObject> findById(final int id) {
+    Optional<GameObject> findById(final int id) {
         return objects.stream()
                 .filter(o -> id == o.id())
                 .findFirst();

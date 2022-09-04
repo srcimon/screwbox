@@ -13,7 +13,7 @@ import de.suzufa.screwbox.tiled.internal.MapEntity;
 import de.suzufa.screwbox.tiled.internal.TileEntity;
 import de.suzufa.screwbox.tiled.internal.TilesetEntity;
 
-public class TileCollection {
+class TileCollection {
 
     private final List<Tile> tiles = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class TileCollection {
         tiles.add(tile);
     }
 
-    public List<Tile> all() {
+    List<Tile> all() {
         return tiles;
     }
 
@@ -63,5 +63,4 @@ public class TileCollection {
         }
         return propertiesHolder;
     }
-
 }

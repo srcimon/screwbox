@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
-//TODO: PropertySet, GameObjectSet, LayerSet, Tileset???
 public class Properties {
 
     private final List<Property> properties;
