@@ -46,8 +46,8 @@ public final class Resources {
         }
         // TODO: check Type not null
         try {
-            final File file = Resources.loadFile(fileName);
-            return OBJECT_MAPPER.readValue(file, type);
+            final var fileContent = Resources.loadBinary(fileName);
+            return OBJECT_MAPPER.readValue(fileContent, type);
         } catch (final IOException e) {
             throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
         }
