@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.tiled;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
@@ -62,6 +63,10 @@ public class Map {
     @Override
     public String toString() {
         return "Map [width=" + bounds().width() + ",height=" + bounds().height() + "]";
+    }
+
+    public Optional<GameObject> objectWithName(final String name) {
+        return objects.findByName(name);
     }
 
 }
