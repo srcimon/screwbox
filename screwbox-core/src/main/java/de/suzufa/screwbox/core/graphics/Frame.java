@@ -4,15 +4,20 @@ import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.scale;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
+import de.suzufa.screwbox.core.utils.Resources;
 
 public final class Frame implements Serializable {
 
@@ -30,7 +35,11 @@ public final class Frame implements Serializable {
         return INVISIBLE;
     }
 
-    // TODO: fromFile()
+    // TODO: javadoc and test
+    public static Frame fromFile(String fileName) {
+        return new Frame(imageFromFile(fileName));
+    }
+
     public Frame(final Image image) {
         this(image, Duration.none());
     }
@@ -99,4 +108,17 @@ public final class Frame implements Serializable {
         return new Frame(scale(image(), scale));
     }
 
+    static BufferedImage imageFromFile(final String fileName) {
+        byte[] imageData = Resources.loadBinary(fileName);
+        try (var inputStream = new ByteArrayInputStream(imageData)) {
+            final BufferedImage image = ImageIO.read(inputStream);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return image;
+
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
+    }
 }

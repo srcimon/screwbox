@@ -7,50 +7,42 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.utils.Resources;
+import de.suzufa.screwbox.core.graphics.Frame;
 
 class ImageUtilTest {
 
+    private static final Image SOME_IMAGE = Frame.fromFile("tile.bmp").image();
+
     @Test
     void makeColorTransparent_colorNotPresent_doenstMakeAnythingTransparent() throws Exception {
-        Image result = ImageUtil.makeColorTransparent(someImage(), Color.RED);
+        Image result = ImageUtil.makeColorTransparent(SOME_IMAGE, Color.RED);
 
         assertThat(countTransparentPixels(result)).isZero();
     }
 
     @Test
     void makeColorTransparent_colorPresent_makesMatchingPixelsTransparent() throws Exception {
-        Image result = ImageUtil.makeColorTransparent(someImage(), Color.rgb(233, 202, 177));
+        Image result = ImageUtil.makeColorTransparent(SOME_IMAGE, Color.rgb(233, 202, 177));
 
         assertThat(countTransparentPixels(result)).isEqualTo(2);
     }
 
     @Test
     void scale_sizeTooSmall_throwsException() throws IOException {
-        Image image = someImage();
-
-        assertThatThrownBy(() -> ImageUtil.scale(image, 0))
+        assertThatThrownBy(() -> ImageUtil.scale(SOME_IMAGE, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Scaled image is size is invalid");
     }
 
     @Test
     void scale_sizeValid_returnsNewImage() throws IOException {
-        Image image = someImage();
-
-        Image result = ImageUtil.scale(image, 4);
+        Image result = ImageUtil.scale(SOME_IMAGE, 4);
 
         assertThat(result.getWidth(null)).isEqualTo(64);
         assertThat(result.getHeight(null)).isEqualTo(64);
-    }
-
-    private Image someImage() throws IOException {
-        return ImageIO.read(Resources.loadFile("tile.bmp"));
     }
 
     private int countTransparentPixels(Image result) {
@@ -67,7 +59,6 @@ class ImageUtilTest {
                 }
             }
         }
-
         return transparentPixelCount;
     }
 }
