@@ -15,7 +15,7 @@ class FrameTest {
 
     @BeforeEach
     void beforeEach() {
-        frame = Sprite.fromFile("tile.bmp").singleFrame();
+        frame = Frame.fromFile("tile.bmp");
     }
 
     @ParameterizedTest
@@ -67,4 +67,9 @@ class FrameTest {
         assertThat(scaled.size()).isEqualTo(square(48));
     }
 
+    @Test
+    void fromFile_fileIsImage_returnsFrame() {
+        Frame frame = Frame.fromFile("tile.bmp");
+        assertThat(frame.size()).isEqualTo(Dimension.square(16));
+    }
 }

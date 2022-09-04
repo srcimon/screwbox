@@ -36,7 +36,9 @@ public final class Frame implements Serializable {
         return INVISIBLE;
     }
 
-    // TODO: javadoc and test
+    /**
+     * Returns a {@link Frame} created from a file.
+     */
     public static Frame fromFile(final String fileName) {
         return new Frame(imageFromFile(fileName));
     }
