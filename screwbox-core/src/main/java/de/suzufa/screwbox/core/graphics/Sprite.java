@@ -1,22 +1,15 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.utils.ResourceLoader;
 
 public class Sprite implements Serializable {
 
@@ -29,7 +22,7 @@ public class Sprite implements Serializable {
     private Duration duration = Duration.none();
 
     private Sprite(final Image image) {
-        this(asList(new Frame(image)));
+        this(new Frame(image));
     }
 
     public Sprite(final List<Frame> frames) {
@@ -38,8 +31,12 @@ public class Sprite implements Serializable {
         }
     }
 
+    public Sprite(Frame frame) {
+        this(List.of(frame));
+    }
+
     public static Sprite fromFile(final String fileName) {
-        final var image = imageFromFile(fileName);
+        final var image = Frame.imageFromFile(fileName);
         return fromImage(image);
     }
 
@@ -66,7 +63,7 @@ public class Sprite implements Serializable {
 
     private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
             final int padding) {
-        final var image = imageFromFile(fileName);
+        final var image = Frame.imageFromFile(fileName);
         final var subImages = new ArrayList<Image>();
         for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
             for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
@@ -217,19 +214,4 @@ public class Sprite implements Serializable {
         }
         return frames.size() - 1;
     }
-
-    private static BufferedImage imageFromFile(final String fileName) {
-        try {
-            final File resource = ResourceLoader.resourceFile(fileName);
-            final BufferedImage image = ImageIO.read(resource);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return image;
-
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
-    }
-
 }

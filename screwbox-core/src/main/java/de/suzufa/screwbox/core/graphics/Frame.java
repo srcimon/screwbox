@@ -4,15 +4,21 @@ import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.applyFilter;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.scale;
 import static de.suzufa.screwbox.core.graphics.internal.ImageUtil.toBufferedImage;
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
+import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
+import de.suzufa.screwbox.core.utils.Resources;
 
 public final class Frame implements Serializable {
 
@@ -30,6 +36,13 @@ public final class Frame implements Serializable {
         return INVISIBLE;
     }
 
+    /**
+     * Returns a {@link Frame} created from a file.
+     */
+    public static Frame fromFile(final String fileName) {
+        return new Frame(imageFromFile(fileName));
+    }
+
     public Frame(final Image image) {
         this(image, Duration.none());
     }
@@ -37,6 +50,21 @@ public final class Frame implements Serializable {
     public Frame(final Image image, final Duration duration) {
         this.imageCont = new ImageIcon(image);
         this.duration = duration;
+    }
+
+    /**
+     * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
+     */
+    public Frame subFrame(final Offset offset, final Dimension size) {
+        if (offset.x() < 0
+                || offset.y() < 0
+                || offset.x() + size.width() > size().width()
+                || offset.y() + size.height() > size().height()) {
+            throw new IllegalArgumentException("given offset and size are out offrame bounds");
+        }
+        final var image = ImageUtil.toBufferedImage(image());
+        final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
+        return new Frame(subImage);
     }
 
     public Image image() {
@@ -98,4 +126,17 @@ public final class Frame implements Serializable {
         return new Frame(scale(image(), scale));
     }
 
+    static BufferedImage imageFromFile(final String fileName) {
+        final byte[] imageData = Resources.loadBinary(fileName);
+        try (var inputStream = new ByteArrayInputStream(imageData)) {
+            final BufferedImage image = ImageIO.read(inputStream);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return image;
+
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
+    }
 }

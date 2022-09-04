@@ -9,12 +9,11 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
-import de.suzufa.screwbox.tiled.SpriteDictionary;
-import de.suzufa.screwbox.tiled.TiledSupport;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class Box implements Converter<GameObject> {
 
-    private static final SpriteDictionary SPRITES = TiledSupport.loadTileset("tilesets/props/box.json");
+    private static final Tileset SPRITES = Tileset.fromJson("tilesets/props/box.json");
 
     @Override
     public Entity convert(GameObject object) {

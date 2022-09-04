@@ -79,7 +79,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
-import de.suzufa.screwbox.tiled.TiledSupport;
 
 public class GameScene implements Scene {
 
@@ -138,7 +137,7 @@ public class GameScene implements Scene {
     }
 
     void importEntities(EntityEngine entityEngine) {
-        Map map = TiledSupport.loadMap(mapName);
+        Map map = Map.fromJson(mapName);
 
         entityEngine.importSource(map)
                 .as(new MapGravity())
@@ -148,16 +147,16 @@ public class GameScene implements Scene {
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-        entityEngine.importSource(map.allLayers())
+        entityEngine.importSource(map.layers())
                 .when(Layer::isImageLayer).as(new Background());
 
-        entityEngine.importSource(map.allTiles())
+        entityEngine.importSource(map.tiles())
                 .usingIndex(this::tileType)
                 .when("non-solid").as(new NonSolidTile())
                 .when("solid").as(new SolidGround())
                 .when("one-way").as(new OneWayGround());
 
-        entityEngine.importSource(map.allObjects())
+        entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("cat").as(new CatCompanion())
                 .when("moving-spikes").as(new MovingSpikes())

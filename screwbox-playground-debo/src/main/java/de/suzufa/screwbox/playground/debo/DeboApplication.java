@@ -21,5 +21,4 @@ public class DeboApplication {
 
         engine.start(StartScene.class);
     }
-
 }

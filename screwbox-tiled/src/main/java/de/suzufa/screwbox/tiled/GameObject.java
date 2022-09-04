@@ -1,22 +1,54 @@
 package de.suzufa.screwbox.tiled;
 
+import static de.suzufa.screwbox.core.utils.ListUtil.emptyWhenNull;
+
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.tiled.internal.ObjectEntity;
 
-public interface GameObject {
+public class GameObject {
 
-    int id();
+    private final ObjectEntity object;
+    private final Layer layer;
 
-    String name();
+    public Vector position() {
+        double xCorrection = object.getWidth() / 2;
+        double yCorrection = object.getGid() == 0 ? object.getHeight() / 2 : object.getHeight() / -2;
+        return Vector.of(object.getX() + xCorrection, object.getY() + yCorrection);
+    }
 
-    String type();
+    @Override
+    public String toString() {
+        return "GameObject [name=" + object.getName() + "]";
+    }
 
-    Vector position();
+    GameObject(final ObjectEntity object, final Layer layer) {
+        this.object = object;
+        this.layer = layer;
+    }
 
-    Bounds bounds();
+    public int id() {
+        return object.getId();
+    }
 
-    Properties properties();
+    public Bounds bounds() {
+        return Bounds.atPosition(position(), object.getWidth(), object.getHeight());
+    }
 
-    Layer layer();
+    public String name() {
+        return object.getName();
+    }
 
+    public Properties properties() {
+        final var properties = emptyWhenNull(object.getProperties());
+        return new Properties(properties);
+    }
+
+    public Layer layer() {
+        return layer;
+    }
+
+    public String type() {
+        return object.getType();
+    }
 }

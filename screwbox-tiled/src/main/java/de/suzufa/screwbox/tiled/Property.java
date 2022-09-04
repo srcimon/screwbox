@@ -1,16 +1,44 @@
 package de.suzufa.screwbox.tiled;
 
-public interface Property {
+import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
-    String name();
+public class Property {
 
-    String get();
+    private final PropertyEntity propertyEntity;
 
-    int getInt();
+    Property(final PropertyEntity propertyEntity) {
+        this.propertyEntity = propertyEntity;
+    }
 
-    double getDouble();
+    public String name() {
+        return propertyEntity.name();
+    }
 
-    boolean hasValue();
+    public String get() {
+        return propertyEntity.value();
+    }
 
-    boolean getBoolean();
+    public int getInt() {
+        try {
+            return Integer.valueOf(get());
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("property " + name() + " is not a number: " + get());
+        }
+    }
+
+    public double getDouble() {
+        try {
+            return Double.valueOf(get());
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("property " + name() + " is not a number: " + get());
+        }
+    }
+
+    public boolean hasValue() {
+        return !get().isEmpty();
+    }
+
+    public boolean getBoolean() {
+        return "true".equalsIgnoreCase(get());
+    }
 }

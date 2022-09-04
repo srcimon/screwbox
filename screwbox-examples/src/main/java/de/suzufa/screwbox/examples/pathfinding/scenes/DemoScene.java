@@ -34,14 +34,14 @@ import de.suzufa.screwbox.examples.pathfinding.systems.SpriteChangeSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
-import de.suzufa.screwbox.tiled.TiledSupport;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class DemoScene implements Scene {
 
     private final Map map;
 
     public DemoScene(final String name) {
-        map = TiledSupport.loadMap(name);
+        map = Map.fromJson(name);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DemoScene implements Scene {
     }
 
     void importEntities(final EntityEngine entityEngine) {
-        entityEngine.importSource(map.allTiles())
+        entityEngine.importSource(map.tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
@@ -71,7 +71,7 @@ public class DemoScene implements Scene {
         entityEngine.importSource(map)
                 .as(worldBounds());
 
-        entityEngine.importSource(map.allObjects())
+        entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
@@ -86,9 +86,9 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> player() {
-        final var sprites = TiledSupport.loadTileset("maze/player.json");
+        final var tileset = Tileset.fromJson("maze/player.json");
         return object -> new Entity(object.id())
-                .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
+                .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
@@ -97,7 +97,7 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> enemy() {
-        final var sprites = TiledSupport.loadTileset("maze/enemy.json");
+        final var sprites = Tileset.fromJson("maze/enemy.json");
         return object -> new Entity()
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
