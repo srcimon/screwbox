@@ -61,7 +61,7 @@ public class Properties {
         return getDouble(name).orElseThrow(() -> missingProperty(name));
     }
 
-    public List<Property> allEntries() {
+    public List<Property> all() {
         return propertyList;
     }
 
