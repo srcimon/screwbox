@@ -3,21 +3,17 @@ package de.suzufa.screwbox.tiled;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.imageio.ImageIO;
-
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
+import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.utils.Resources;
 import de.suzufa.screwbox.tiled.internal.FrameEntity;
 import de.suzufa.screwbox.tiled.internal.TileEntity;
 import de.suzufa.screwbox.tiled.internal.TilesetEntity;
@@ -49,17 +45,16 @@ public class Tileset {
 
     public void addTilesToTileset(final TilesetEntity tilesetEntity) {
         final String imageFileName = tilesetEntity.getImage();
-        final BufferedImage tilesetImage = loadImageFrom(imageFileName);
-
+        final Frame frame = Frame.fromFile(imageFileName);
         int localId = 0;
 
         // Read static images
         for (int y = 0; y < tilesetEntity.getImageheight(); y += tilesetEntity.getTileheight()) {
             for (int x = 0; x < tilesetEntity.getImagewidth(); x += tilesetEntity.getTilewidth()) {
-
-                final BufferedImage subimage = tilesetImage.getSubimage(x, y, tilesetEntity.getTilewidth(),
-                        tilesetEntity.getTileheight());
-                final Sprite sprite = Sprite.fromImage(subimage);
+                Offset imageOffset = Offset.at(x, y);
+                Dimension imageSize = Dimension.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
+                Frame subFrame = frame.subFrame(imageOffset, imageSize);
+                final Sprite sprite = new Sprite(subFrame);
                 addSprite(tilesetEntity.getFirstgid() + localId, sprite);
                 localId++;
             }
@@ -68,10 +63,10 @@ public class Tileset {
         for (final TileEntity tileEntity : tilesetEntity.getTiles()) {
             // read animated images and properties
             final List<Frame> frames = new ArrayList<>();
-            for (final FrameEntity frame : tileEntity.animation()) {
-                final Image currentImage = findById(tilesetEntity.getFirstgid() + frame.tileid()).singleFrame()
+            for (final FrameEntity frameEntity : tileEntity.animation()) {
+                final Image currentImage = findById(tilesetEntity.getFirstgid() + frameEntity.tileid()).singleFrame()
                         .image();
-                frames.add(new Frame(currentImage, Duration.ofMillis(frame.duration())));
+                frames.add(new Frame(currentImage, Duration.ofMillis(frameEntity.duration())));
             }
             final Sprite animatedSprite = new Sprite(frames);
             final Properties properties = new Properties(tileEntity.properties());
@@ -82,15 +77,6 @@ public class Tileset {
             if (name.isPresent()) {
                 addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), name.get());
             }
-        }
-    }
-
-    private BufferedImage loadImageFrom(final String imageFileName) {
-        final File file = Resources.loadFile(imageFileName);
-        try {
-            return ImageIO.read(file);
-        } catch (final IOException e) {
-            throw new IllegalStateException("could not load tileset: " + file.getName());
         }
     }
 

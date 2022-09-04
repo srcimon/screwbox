@@ -18,19 +18,14 @@ public final class Resources {
     private Resources() {
     }
 
-    @Deprecated
-    // TODO: Replace
-    public static File loadFile(final String fileName) {
+    public static byte[] loadBinary(final String fileName) {
         Objects.requireNonNull(fileName, "fileName must not be null");
         final URL url = Resources.class.getClassLoader().getResource(fileName);
         if (isNull(url)) {
             throw new IllegalArgumentException("file not found: " + fileName);
         }
-        return new File(url.getFile());
-    }
 
-    public static byte[] loadBinary(final String fileName) {
-        final File resourceFile = loadFile(fileName);
+        final File resourceFile = new File(url.getFile());
         try {
             return Files.readAllBytes(resourceFile.toPath());
         } catch (final IOException e) {

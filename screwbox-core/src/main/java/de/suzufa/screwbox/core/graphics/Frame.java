@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.graphics.internal.AwtMapper;
+import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 import de.suzufa.screwbox.core.utils.Resources;
 
 public final class Frame implements Serializable {
@@ -36,7 +37,7 @@ public final class Frame implements Serializable {
     }
 
     // TODO: javadoc and test
-    public static Frame fromFile(String fileName) {
+    public static Frame fromFile(final String fileName) {
         return new Frame(imageFromFile(fileName));
     }
 
@@ -47,6 +48,13 @@ public final class Frame implements Serializable {
     public Frame(final Image image, final Duration duration) {
         this.imageCont = new ImageIcon(image);
         this.duration = duration;
+    }
+
+    // TODO: javadoc and test
+    public Frame subFrame(final Offset offset, final Dimension size) {
+        final var image = ImageUtil.toBufferedImage(image());
+        final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
+        return new Frame(subImage);
     }
 
     public Image image() {
@@ -109,7 +117,7 @@ public final class Frame implements Serializable {
     }
 
     static BufferedImage imageFromFile(final String fileName) {
-        byte[] imageData = Resources.loadBinary(fileName);
+        final byte[] imageData = Resources.loadBinary(fileName);
         try (var inputStream = new ByteArrayInputStream(imageData)) {
             final BufferedImage image = ImageIO.read(inputStream);
             if (isNull(image)) {

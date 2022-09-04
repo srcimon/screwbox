@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
 import java.awt.Image;
@@ -23,13 +22,17 @@ public class Sprite implements Serializable {
     private Duration duration = Duration.none();
 
     private Sprite(final Image image) {
-        this(asList(new Frame(image)));
+        this(new Frame(image));
     }
 
     public Sprite(final List<Frame> frames) {
         for (final var frame : frames) {
             addFrame(frame);
         }
+    }
+
+    public Sprite(Frame frame) {
+        this(List.of(frame));
     }
 
     public static Sprite fromFile(final String fileName) {
