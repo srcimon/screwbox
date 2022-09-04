@@ -52,8 +52,16 @@ public final class Frame implements Serializable {
         this.duration = duration;
     }
 
-    // TODO: javadoc and test
+    /**
+     * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
+     */
     public Frame subFrame(final Offset offset, final Dimension size) {
+        if (offset.x() < 0
+                || offset.y() < 0
+                || offset.x() + size.width() > size().width()
+                || offset.y() + size.height() > size().height()) {
+            throw new IllegalArgumentException("given offset and size are out offrame bounds");
+        }
         final var image = ImageUtil.toBufferedImage(image());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
         return new Frame(subImage);
