@@ -27,10 +27,6 @@ public class GameObject {
         this.layer = layer;
     }
 
-    public Layer getLayer() {
-        return layer;
-    }
-
     public int id() {
         return object.getId();
     }
@@ -55,5 +51,4 @@ public class GameObject {
     public String type() {
         return object.getType();
     }
-
 }
