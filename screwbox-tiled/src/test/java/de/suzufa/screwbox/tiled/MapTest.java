@@ -25,4 +25,31 @@ class MapTest {
     void properties_returnsMapProperties() {
         assertThat(map.properties().force("aMapProperty")).isEqualTo("aMapPropertyValue");
     }
+
+    @Test
+    void layers_returnsMapLayers() {
+        assertThat(map.layers()).hasSize(3)
+                .anyMatch(layer -> layer.name().equals("objects"))
+                .anyMatch(layer -> layer.order() == 0)
+                .anyMatch(layer -> layer.order() == 1)
+                .anyMatch(layer -> layer.order() == 2);
+    }
+
+    @Test
+    void objects_returnsMapObjects() {
+        assertThat(map.objects()).hasSize(7)
+                .anyMatch(object -> object.name().equals("testimage"))
+                .anyMatch(object -> object.name().equals("dummy"));
+    }
+
+    @Test
+    void toString_returnsMapInformation() {
+        assertThat(map).hasToString("Map [width=768.0,height=512.0]");
+    }
+
+    @Test
+    void tiles_returnsMapTiles() {
+        assertThat(map.tiles()).hasSize(41)
+                .anyMatch(tile -> tile.layer().name().equals("world"));
+    }
 }
