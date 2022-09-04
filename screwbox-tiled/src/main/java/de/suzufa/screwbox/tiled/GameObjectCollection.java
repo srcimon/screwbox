@@ -37,17 +37,4 @@ class GameObjectCollection {
                 .filter(o -> name.equals(o.name()))
                 .findFirst();
     }
-
-    List<GameObject> findAllWithName(final String name) {
-        return objects.stream()
-                .filter(o -> name.equals(o.name()))
-                .toList();
-    }
-
-    Optional<GameObject> findById(final int id) {
-        return objects.stream()
-                .filter(o -> id == o.id())
-                .findFirst();
-    }
-
 }
