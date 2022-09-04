@@ -33,8 +33,8 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     public static MapEntity load(final String fileName) {
         final MapEntity map = Resources.loadJson(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
-        embedExternalTilesets(map, directory);
-        embedObjectTemplates(map, directory);
+        map.embedExternalTilesets(directory);
+        map.embedObjectTemplates(directory);
         return map;
     }
 
@@ -44,8 +44,8 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         return fileName.replace(file, "");
     }
 
-    private static void embedObjectTemplates(final MapEntity map, final String directory) {
-        for (final LayerEntity layer : map.getLayers()) {
+    private void embedObjectTemplates(final String directory) {
+        for (final LayerEntity layer : getLayers()) {
             for (int i = 0; i < layer.objects().size(); i++) {
                 final ObjectEntity object = layer.objects().get(i);
                 if (nonNull(object.getTemplate())) {
@@ -68,9 +68,9 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
         }
     }
 
-    private static void embedExternalTilesets(final MapEntity map, final String directory) {
+    private void embedExternalTilesets(final String directory) {
         final List<TilesetEntity> fullTilesets = new ArrayList<>();
-        for (final TilesetEntity tileset : map.getTilesets()) {
+        for (final TilesetEntity tileset : getTilesets()) {
             if (tileset.getSource() == null) {
                 fullTilesets.add(tileset);
             } else {
@@ -79,7 +79,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
                 fullTilesets.add(externalTileset);
             }
         }
-        map.setTilesets(fullTilesets);
+        setTilesets(fullTilesets);
     }
 
     public String getBackgroundColor() {
