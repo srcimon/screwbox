@@ -44,29 +44,26 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
 
     private static void embedObjectTemplates(final MapEntity map, final String directory) {
         for (final LayerEntity layer : map.getLayers()) {
-            if (layer.objects() != null) {
-                for (int i = 0; i < layer.objects().size(); i++) {
-                    final ObjectEntity object = layer.objects().get(i);
-                    if (object.getTemplate() != null) {
-                        final ObjectTemplateEntity objectTemplate = Resources.loadJson(
-                                directory + object.getTemplate(),
-                                ObjectTemplateEntity.class);
-                        final ObjectEntity replacement = objectTemplate.object();
-                        replacement.setId(object.getId());
-                        replacement.setX(object.getX());
-                        replacement.setY(object.getY());
-                        if (object.getWidth() != 0 && object.getHeight() != 0) {
-                            replacement.setWidth(object.getWidth());
-                            replacement.setHeight(object.getHeight());
-                        }
-
-                        replacement.setProperties(object.getProperties());// TODO: combine neccessary?
-                        layer.objects().set(i, replacement);
+            for (int i = 0; i < layer.objects().size(); i++) {
+                final ObjectEntity object = layer.objects().get(i);
+                if (object.getTemplate() != null) {
+                    final ObjectTemplateEntity objectTemplate = Resources.loadJson(
+                            directory + object.getTemplate(),
+                            ObjectTemplateEntity.class);
+                    final ObjectEntity replacement = objectTemplate.object();
+                    replacement.setId(object.getId());
+                    replacement.setX(object.getX());
+                    replacement.setY(object.getY());
+                    if (object.getWidth() != 0 && object.getHeight() != 0) {
+                        replacement.setWidth(object.getWidth());
+                        replacement.setHeight(object.getHeight());
                     }
+
+                    replacement.setProperties(object.getProperties());
+                    layer.objects().set(i, replacement);
                 }
             }
         }
-
     }
 
     private static void embedExternalTilesets(final MapEntity map, final String directory) {
