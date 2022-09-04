@@ -23,9 +23,9 @@ class LayerCollection {
         return layers;
     }
 
-    Optional<Layer> findByName(String name) {
+    Optional<Layer> findByName(final String name) {
         return layers.stream()
-                .filter(l -> "name".equals(l.name()))
+                .filter(l -> name.equals(l.name()))
                 .findFirst();
     }
 }

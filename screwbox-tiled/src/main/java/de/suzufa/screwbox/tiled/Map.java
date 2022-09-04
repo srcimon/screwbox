@@ -69,4 +69,8 @@ public class Map {
         return objects.findByName(name);
     }
 
+    public Optional<Layer> layerWithName(final String name) {
+        return layers.findByName(name);
+    }
+
 }

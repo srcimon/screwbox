@@ -63,4 +63,15 @@ class MapTest {
         assertThat(map.objectWithName("testpoint")).isPresent()
                 .matches(object -> object.get().name().equals("testpoint"));
     }
+
+    @Test
+    void layerWithName_layerMissing_isEmpty() {
+        assertThat(map.layerWithName("unknown")).isEmpty();
+    }
+
+    @Test
+    void layerWithName_layerFound_isLayer() {
+        assertThat(map.layerWithName("world")).isPresent()
+                .matches(layer -> layer.get().name().equals("world"));
+    }
 }
