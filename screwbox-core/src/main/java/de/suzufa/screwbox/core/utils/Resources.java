@@ -33,13 +33,13 @@ public final class Resources {
         }
     }
 
-    // TODO: Test
     public static <T> T loadJson(final String fileName, final Class<T> type) {
         requireNonNull(fileName, "fileName must not be null");
+        requireNonNull(type, "type must not be null");
+
         if (!fileName.toLowerCase().endsWith(".json")) {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
-        // TODO: check Type not null
         try {
             final var fileContent = Resources.loadBinary(fileName);
             return OBJECT_MAPPER.readValue(fileContent, type);
