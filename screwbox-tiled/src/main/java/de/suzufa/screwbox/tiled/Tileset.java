@@ -26,8 +26,7 @@ public class Tileset {
 
     public static Tileset fromJson(final String fileName) {
         final var tilesetEntity = TilesetEntity.load(fileName);
-        final var tileset = new Tileset(tilesetEntity);
-        return tileset;
+        return new Tileset(tilesetEntity);
     }
 
     Tileset() {

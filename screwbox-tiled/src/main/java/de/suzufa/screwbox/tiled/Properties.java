@@ -10,10 +10,10 @@ import de.suzufa.screwbox.tiled.internal.PropertyEntity;
 
 public class Properties {
 
-    private final List<Property> properties;
+    private final List<Property> propertyList;
 
     Properties(final List<PropertyEntity> propertyEntities) {
-        this.properties = isNull(propertyEntities)
+        this.propertyList = isNull(propertyEntities)
                 ? emptyList()
                 : propertyEntities.stream()
                         .map(Property::new)
@@ -22,61 +22,61 @@ public class Properties {
     }
 
     public Optional<String> get(final String name) {
-        Optional<Property> property = findProperty(name);
+        final Optional<Property> property = findProperty(name);
         return property.isPresent()
                 ? Optional.of(property.get().get())
                 : Optional.empty();
     }
 
     private Optional<Property> findProperty(final String name) {
-        return properties.stream()
+        return propertyList.stream()
                 .filter(p -> name.equals(p.name()))
                 .findFirst();
     }
 
-    public Optional<Integer> getInt(String name) {
-        Optional<Property> property = findProperty(name);
+    public Optional<Integer> getInt(final String name) {
+        final Optional<Property> property = findProperty(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getInt())
                 : Optional.empty();
 
     }
 
-    public Optional<Double> getDouble(String name) {
-        Optional<Property> property = findProperty(name);
+    public Optional<Double> getDouble(final String name) {
+        final Optional<Property> property = findProperty(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getDouble())
                 : Optional.empty();
     }
 
-    public String force(String name) {
+    public String force(final String name) {
         return get(name).orElseThrow(() -> missingProperty(name));
     }
 
-    public int forceInt(String name) {
+    public int forceInt(final String name) {
         return getInt(name).orElseThrow(() -> missingProperty(name));
     }
 
-    public double forceDouble(String name) {
+    public double forceDouble(final String name) {
         return getDouble(name).orElseThrow(() -> missingProperty(name));
     }
 
     public List<Property> allEntries() {
-        return properties;
+        return propertyList;
     }
 
-    public Optional<Boolean> getBoolean(String name) {
-        Optional<Property> property = findProperty(name);
+    public Optional<Boolean> getBoolean(final String name) {
+        final Optional<Property> property = findProperty(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getBoolean())
                 : Optional.empty();
     }
 
-    public boolean forceBoolean(String name) {
+    public boolean forceBoolean(final String name) {
         return getBoolean(name).orElseThrow(() -> missingProperty(name));
     }
 
-    private IllegalStateException missingProperty(String name) {
+    private IllegalStateException missingProperty(final String name) {
         return new IllegalStateException("missing property: " + name);
     }
 
