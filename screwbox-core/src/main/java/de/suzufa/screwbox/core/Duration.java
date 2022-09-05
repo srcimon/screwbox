@@ -95,9 +95,7 @@ public class Duration implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        final int result = 1;
-        return prime * result + (int) (nanos ^ (nanos >>> 32));
+        return 31 + (int) (nanos ^ (nanos >>> 32));
     }
 
     @Override
