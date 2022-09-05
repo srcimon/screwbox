@@ -29,6 +29,7 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class DefaultRenderer implements Renderer {
 
+    private final Robot robot;
     private final Frame frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
@@ -38,6 +39,11 @@ public class DefaultRenderer implements Renderer {
         this.frame.setIgnoreRepaint(true);
         graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
         initializeFontDrawing();
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            throw new IllegalStateException("could not create robot for screenshots");
+        }
     }
 
     private void initializeFontDrawing() {
@@ -64,14 +70,9 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public Sprite takeScreenshot() {
-        try {
-            final Rectangle rectangle = new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
-            final BufferedImage screenCapture = new Robot().createScreenCapture(rectangle);
-            return Sprite.fromImage(screenCapture);
-        } catch (final AWTException e) {
-            throw new IllegalStateException("failed to take screenshot", e);
-        }
-
+        final Rectangle rectangle = new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        return Sprite.fromImage(screenCapture);
     }
 
     @Override
