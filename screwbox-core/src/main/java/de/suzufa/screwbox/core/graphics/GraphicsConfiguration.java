@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GraphicsConfiguration {
 
-    private final List<GraphicsConfigListener> listeners = new ArrayList<>();
+    private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
     private Dimension resolution = Dimension.of(960, 540);
     private boolean fullscreen = false;
@@ -39,11 +39,11 @@ public class GraphicsConfiguration {
         return this;
     }
 
-    public void registerListener(final GraphicsConfigListener listener) {
+    public void registerListener(final GraphicsConfigurationListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(final GraphicsConfigListener listener) {
+    public void removeListener(final GraphicsConfigurationListener listener) {
         listeners.remove(listener);
     }
 

@@ -21,7 +21,7 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
-import de.suzufa.screwbox.core.graphics.GraphicsConfigListener;
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
@@ -30,7 +30,7 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
-public class DefaultWindow implements Window, GraphicsConfigListener {
+public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;

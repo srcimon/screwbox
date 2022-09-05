@@ -16,7 +16,7 @@ class GraphicsConfigurationTest {
     GraphicsConfiguration graphicsConfiguration;
 
     @Mock
-    GraphicsConfigListener graphicsConfigListener;
+    GraphicsConfigurationListener graphicsConfigListener;
 
     @BeforeEach
     void beforeEach() {
