@@ -11,10 +11,10 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
+import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
+import de.suzufa.screwbox.core.entityengine.components.ReflectingFloorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectingFloorComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 
 public class ReflectionFloorSystem implements EntitySystem {
 
@@ -64,7 +64,7 @@ public class ReflectionFloorSystem implements EntitySystem {
             Collections.sort(spriteBatch);
             for (final SpriteBatchEntry entry : spriteBatch) {
                 final SpriteComponent spriteC = entry.spriteComponent;
-                engine.graphics().world().drawSprite(
+                engine.graphics().world().restrictedToArea(transform).drawSprite(
                         spriteC.sprite,
                         Vector.of(entry.position.x(),
                                 transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
