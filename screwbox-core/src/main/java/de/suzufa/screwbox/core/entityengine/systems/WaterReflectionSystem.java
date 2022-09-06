@@ -68,7 +68,7 @@ public class WaterReflectionSystem implements EntitySystem {
                                 transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
                                         - entry.spriteComponent.sprite.size().height())),
                         spriteC.scale,
-                        spriteC.opacity.substract(0.7),
+                        spriteC.opacity.substract(0.8),
                         spriteC.rotation,
                         spriteC.flipMode.invertVertical());// TODO:invert
             }

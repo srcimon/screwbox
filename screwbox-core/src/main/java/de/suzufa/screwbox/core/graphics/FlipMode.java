@@ -43,7 +43,9 @@ public enum FlipMode {
     }
 
     // TODO: Test
+    // TODO: FIX
     public FlipMode invertVertical() {
-        return horizontal ? BOTH : VERTICAL;
+        return isHorizontal() ? BOTH : VERTICAL;
     }
+
 }
