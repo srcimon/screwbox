@@ -48,27 +48,28 @@ public class WaterReflectionSystem implements EntitySystem {
                 var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
 
+                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
+                    final var sprite = spriteComponent.sprite;
+                    final var spriteDimension = sprite.size();
+                    final var spriteBounds = Bounds.atOrigin(
+                            reflectableBounds.position().x() - spriteDimension.width() / 2.0,
+                            reflectableBounds.position().y() - spriteDimension.height() / 2.0,
+                            spriteDimension.width() * spriteComponent.scale,
+                            spriteDimension.height() * spriteComponent.scale);
+
+                    spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
                 }
-
-                final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                final var sprite = spriteComponent.sprite;
-                final var spriteDimension = sprite.size();
-                final var spriteBounds = Bounds.atOrigin(
-                        reflectableBounds.position().x() - spriteDimension.width() / 2.0,
-                        reflectableBounds.position().y() - spriteDimension.height() / 2.0,
-                        spriteDimension.width() * spriteComponent.scale,
-                        spriteDimension.height() * spriteComponent.scale);
-
-                spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
             }
             Collections.sort(spriteBatch);
             for (final SpriteBatchEntry entry : spriteBatch) {
                 final SpriteComponent spriteC = entry.spriteComponent;
                 engine.graphics().world().drawSprite(
                         spriteC.sprite,
-                        entry.position.addY(reflectedArea.height()),
+                        Vector.of(entry.position.x(),
+                                transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
+                                        - entry.spriteComponent.sprite.size().height())),
                         spriteC.scale,
-                        spriteC.opacity.substract(0.4),
+                        spriteC.opacity.substract(0.7),
                         spriteC.rotation,
                         FlipMode.VERTICAL);// TODO:invert
             }
