@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.entityengine.components;
 
 import de.suzufa.screwbox.core.entityengine.Component;
 
-public class WaterComponent implements Component {
+public class ReflectingFloorComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
