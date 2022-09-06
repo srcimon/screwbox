@@ -37,7 +37,7 @@ public class WaterReflectionSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         List<Entity> reflectableEntities = engine.entityEngine().fetchAll(RELECTED_ENTITIES);
-
+        var visibleArea = engine.graphics().world().visibleArea();
         for (Entity water : engine.entityEngine().fetchAll(WATERS)) {
             var transform = water.get(TransformComponent.class);
             var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()));
@@ -56,7 +56,9 @@ public class WaterReflectionSystem implements EntitySystem {
                             spriteDimension.width() * spriteComponent.scale,
                             spriteDimension.height() * spriteComponent.scale);
 
-                    spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                    if (spriteBounds.intersects(visibleArea)) {
+                        spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                    }
                 }
             }
             Collections.sort(spriteBatch);
