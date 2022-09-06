@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
+import de.suzufa.screwbox.core.entityengine.components.WaterReflectionComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
@@ -20,6 +21,7 @@ public class Tracer implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         return new Entity(object.id()).add(
+                new WaterReflectionComponent(),
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
                 new SpriteComponent(object.layer().order()),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),

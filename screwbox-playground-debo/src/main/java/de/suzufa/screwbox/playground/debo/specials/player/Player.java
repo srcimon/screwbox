@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entityengine.components.WaterReflectionComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
@@ -22,6 +23,7 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
+                new WaterReflectionComponent(),
                 new StateComponent(new PlayerStandingState()),
                 new PhysicsBodyComponent(),
                 new GroundDetectorComponent(),

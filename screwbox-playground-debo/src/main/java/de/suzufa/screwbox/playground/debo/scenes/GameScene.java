@@ -75,6 +75,7 @@ import de.suzufa.screwbox.playground.debo.tiles.SolidGround;
 import de.suzufa.screwbox.playground.debo.zones.ChangeMapZone;
 import de.suzufa.screwbox.playground.debo.zones.KillZone;
 import de.suzufa.screwbox.playground.debo.zones.ShowLabelZone;
+import de.suzufa.screwbox.playground.debo.zones.WaterZone;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
@@ -158,6 +159,7 @@ public class GameScene implements Scene {
 
         entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
+                .when("water").as(new WaterZone())
                 .when("cat").as(new CatCompanion())
                 .when("moving-spikes").as(new MovingSpikes())
                 .when("vanishing-block").as(new VanishingBlock())

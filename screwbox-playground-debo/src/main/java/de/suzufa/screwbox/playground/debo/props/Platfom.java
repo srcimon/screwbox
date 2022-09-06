@@ -8,6 +8,7 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entityengine.components.WaterReflectionComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Tileset;
@@ -20,6 +21,7 @@ public class Platfom implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         double speed = object.properties().getDouble("speed").orElse(60.0);
         return new Entity().add(
+                new WaterReflectionComponent(),
                 new ColliderComponent(500, Percentage.min(), true),
                 new SpriteComponent(SPRITE.findById(0), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),

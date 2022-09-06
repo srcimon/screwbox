@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entityengine.components.WaterReflectionComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
@@ -20,6 +21,7 @@ public class VanishingBlock implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         Integer timeoutMillis = object.properties().getInt("timeout-millis").orElse(300);
         return new Entity().add(
+                new WaterReflectionComponent(),
                 new ColliderComponent(500),
                 new VanishingOnCollisionComponent(Duration.ofMillis(timeoutMillis)),
                 new TransformComponent(object.bounds()),

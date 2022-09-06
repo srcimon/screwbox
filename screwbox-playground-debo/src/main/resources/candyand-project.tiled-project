@@ -6,7 +6,8 @@
     "folders": [
         ".",
         ".",
-        "templates"
+        "templates",
+        "."
     ],
     "objectTypesFile": "",
     "propertyTypes": [

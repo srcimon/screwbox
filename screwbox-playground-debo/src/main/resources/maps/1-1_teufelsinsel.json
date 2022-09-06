@@ -804,6 +804,17 @@
                  "template":"..\/templates\/props\/box.json",
                  "x":844.5,
                  "y":243.5
+                }, 
+                {
+                 "height":32,
+                 "id":458,
+                 "name":"water",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":112,
+                 "x":0,
+                 "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -915,7 +926,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":458,
+ "nextobjectid":459,
  "orientation":"orthogonal",
  "properties":[
         {
