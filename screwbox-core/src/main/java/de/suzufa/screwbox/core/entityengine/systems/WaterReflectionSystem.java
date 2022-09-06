@@ -15,7 +15,6 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.WaterComponent;
 import de.suzufa.screwbox.core.entityengine.components.WaterReflectionComponent;
-import de.suzufa.screwbox.core.graphics.FlipMode;
 
 public class WaterReflectionSystem implements EntitySystem {
 
@@ -71,7 +70,7 @@ public class WaterReflectionSystem implements EntitySystem {
                         spriteC.scale,
                         spriteC.opacity.substract(0.7),
                         spriteC.rotation,
-                        FlipMode.VERTICAL);// TODO:invert
+                        spriteC.flipMode.invertVertical());// TODO:invert
             }
         }
 
