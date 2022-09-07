@@ -60,21 +60,23 @@ public class ReflectionSystem implements EntitySystem {
                                 spriteDimension.height() * spriteComponent.scale);
 
                         if (spriteBounds.intersects(visibleArea)) {
-                            spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                            Vector oldPosition = spriteBounds.origin();
+                            var actualPosition = Vector.of(oldPosition.x(),
+                                    transform.bounds.minY() + (transform.bounds.minY() - oldPosition.y()
+                                            - spriteComponent.sprite.size().height()));
+
+                            spriteBatch.add(new SpriteBatchEntry(spriteComponent, actualPosition));
                         }
                     }
                 }
                 // TODO: world().drawSpriteBatch(batch)
                 // TODO: world().drawSpriteBatch(batch, restrictedArea)
-                // TODO: find position before creating the sprite batch entry
                 Collections.sort(spriteBatch);
                 for (final SpriteBatchEntry entry : spriteBatch) {
                     final SpriteComponent spriteC = entry.spriteComponent;
                     world.drawSprite(
                             spriteC.sprite,
-                            Vector.of(entry.position.x(),
-                                    transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
-                                            - entry.spriteComponent.sprite.size().height())),
+                            entry.position,
                             spriteC.scale,
                             spriteC.opacity.substract(0.8),
                             spriteC.rotation,
