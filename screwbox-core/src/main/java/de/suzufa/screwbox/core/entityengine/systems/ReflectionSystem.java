@@ -6,12 +6,13 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.ReflectingFloorComponent;
+import de.suzufa.screwbox.core.entityengine.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.World;
@@ -20,7 +21,7 @@ import de.suzufa.screwbox.core.graphics.World;
 public class ReflectionSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_FLOORS = Archetype.of(
-            ReflectingFloorComponent.class, TransformComponent.class);
+            ReflectionComponent.class, TransformComponent.class);
 
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, SpriteComponent.class);
@@ -46,12 +47,12 @@ public class ReflectionSystem implements EntitySystem {
                 var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()))
                         .intersection(visibleArea);
 
+                Percentage opacityReduction = floor.get(ReflectionComponent.class).opacityReduction;
                 final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
 
                 for (var reflectableEntity : reflectableEntities) {
                     var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                     if (reflectableBounds.intersects(reflectedArea)) {
-
                         final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
                         final var sprite = spriteComponent.sprite;
                         final var spriteDimension = sprite.size();
@@ -80,7 +81,7 @@ public class ReflectionSystem implements EntitySystem {
                             spriteC.sprite,
                             entry.position,
                             spriteC.scale,
-                            spriteC.opacity.substract(0.8),
+                            spriteC.opacity.substract(opacityReduction.value()),
                             spriteC.rotation,
                             spriteC.flipMode.invertVertical());
                 }
