@@ -64,10 +64,12 @@ public class ReflectionSystem implements EntitySystem {
                         }
                     }
                 }
+                // TODO: world().drawSpriteBatch(batch)
+                // TODO: world().drawSpriteBatch(batch, restrictedArea)
+                // TODO: find position before creating the sprite batch entry
                 Collections.sort(spriteBatch);
                 for (final SpriteBatchEntry entry : spriteBatch) {
                     final SpriteComponent spriteC = entry.spriteComponent;
-//                engine.graphics().world().restrictedToArea(transform).drawSprite(
                     world.drawSprite(
                             spriteC.sprite,
                             Vector.of(entry.position.x(),
@@ -76,7 +78,7 @@ public class ReflectionSystem implements EntitySystem {
                             spriteC.scale,
                             spriteC.opacity.substract(0.8),
                             spriteC.rotation,
-                            spriteC.flipMode.invertVertical());// TODO:invert
+                            spriteC.flipMode.invertVertical());
                 }
             }
         }
