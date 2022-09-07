@@ -16,7 +16,8 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.World;
 
-public class ReflectionFloorSystem implements EntitySystem {
+//TODO: implement relfections left right / top down
+public class ReflectionSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_FLOORS = Archetype.of(
             ReflectingFloorComponent.class, TransformComponent.class);

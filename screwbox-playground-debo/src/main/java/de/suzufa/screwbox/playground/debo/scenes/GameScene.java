@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.entityengine.systems.ReflectionFloorSystem;
+import de.suzufa.screwbox.core.entityengine.systems.ReflectionSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
 import de.suzufa.screwbox.playground.debo.collectables.DeboB;
@@ -99,7 +99,7 @@ public class GameScene implements Scene {
 
         entityEngine.add(
                 new LogFpsSystem(),
-                new ReflectionFloorSystem(),
+                new ReflectionSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlattformSystem(),
                 new CollectableSystem(),
