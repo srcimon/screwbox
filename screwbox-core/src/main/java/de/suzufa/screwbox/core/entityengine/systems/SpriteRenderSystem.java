@@ -6,6 +6,8 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
@@ -13,18 +15,22 @@ import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Sprite;
 
 public class SpriteRenderSystem implements EntitySystem {
 
     private final Archetype sprites;
     private final Class<? extends SpriteComponent> spriteComponentClass;
 
-    private static final record SpriteBatchEntry(SpriteComponent spriteComponent, Vector position)
+    private static final record SpriteBatchEntry(
+            Sprite sprite, Vector position, double scale, Percentage opacity, Rotation rotation, FlipMode flipMode,
+            int drawOrder)
             implements Comparable<SpriteBatchEntry> {
 
         @Override
         public int compareTo(final SpriteBatchEntry o) {
-            return Integer.compare(spriteComponent.drawOrder, o.spriteComponent.drawOrder);
+            return Integer.compare(drawOrder, o.drawOrder);
         }
 
     }
@@ -55,21 +61,30 @@ public class SpriteRenderSystem implements EntitySystem {
                     spriteDimension.height() * spriteComponent.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
-                spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                spriteBatch.add(new SpriteBatchEntry(
+                        spriteComponent.sprite,
+
+                        spriteBounds.origin(),
+                        spriteComponent.scale,
+                        spriteComponent.opacity,
+                        spriteComponent.rotation,
+                        spriteComponent.flipMode,
+                        spriteComponent.drawOrder
+
+                ));
             }
         }
 
         Collections.sort(spriteBatch);
 
         for (final SpriteBatchEntry entry : spriteBatch) {
-            final SpriteComponent spriteComponent = entry.spriteComponent;
             engine.graphics().world().drawSprite(
-                    spriteComponent.sprite,
+                    entry.sprite,
                     entry.position,
-                    spriteComponent.scale,
-                    spriteComponent.opacity,
-                    spriteComponent.rotation,
-                    spriteComponent.flipMode);
+                    entry.scale,
+                    entry.opacity,
+                    entry.rotation,
+                    entry.flipMode);
         }
     }
 

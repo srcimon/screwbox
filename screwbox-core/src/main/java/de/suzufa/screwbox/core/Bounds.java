@@ -243,4 +243,13 @@ public final class Bounds implements Serializable {
         return Vector.of(minX(), minY());
     }
 
+    // TODO: TEST (May be buggy)
+    public Bounds intersection(Bounds other) {
+        var newMinX = Math.max(minX(), other.minX());
+        var newMaxX = Math.min(maxX(), other.maxX());
+        var newMinY = Math.max(minY(), other.minY());
+        var newMaxY = Math.min(maxY(), other.maxY());
+        return Bounds.atOrigin(newMinX, newMinY, newMaxX - newMinX, newMaxY - newMinY);
+    }
+
 }

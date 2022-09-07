@@ -43,7 +43,9 @@ public class ReflectionSystem implements EntitySystem {
         for (Entity floor : engine.entityEngine().fetchAll(REFLECTING_FLOORS)) {
             var transform = floor.get(TransformComponent.class);
             if (transform.bounds.intersects(visibleArea)) {
-                var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()));
+                var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()))
+                        .intersection(visibleArea);
+
                 final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
 
                 for (var reflectableEntity : reflectableEntities) {
