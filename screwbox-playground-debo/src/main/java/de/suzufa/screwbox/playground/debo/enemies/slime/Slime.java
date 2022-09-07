@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StateComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
@@ -28,7 +27,6 @@ public class Slime implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new ReflectedComponent(),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),
                 new KillZoneComponent(DeathType.ENEMY_TOUCHED),

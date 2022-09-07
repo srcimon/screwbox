@@ -11,10 +11,10 @@ import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.core.entityengine.components.ReflectingFloorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.World;
 
 public class ReflectionFloorSystem implements EntitySystem {
 
@@ -22,7 +22,7 @@ public class ReflectionFloorSystem implements EntitySystem {
             ReflectingFloorComponent.class, TransformComponent.class);
 
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
-            ReflectedComponent.class, TransformComponent.class, SpriteComponent.class);
+            TransformComponent.class, SpriteComponent.class);
 
     private static final record SpriteBatchEntry(SpriteComponent spriteComponent, Vector position)
             implements Comparable<SpriteBatchEntry> {
@@ -37,42 +37,46 @@ public class ReflectionFloorSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         List<Entity> reflectableEntities = engine.entityEngine().fetchAll(RELECTED_ENTITIES);
-        var visibleArea = engine.graphics().world().visibleArea();
+        World world = engine.graphics().world();
+        var visibleArea = world.visibleArea();
         for (Entity floor : engine.entityEngine().fetchAll(REFLECTING_FLOORS)) {
             var transform = floor.get(TransformComponent.class);
-            var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()));
-            final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
+            if (transform.bounds.intersects(visibleArea)) {
+                var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()));
+                final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
 
-            for (var reflectableEntity : reflectableEntities) {
-                var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
-                if (reflectableBounds.intersects(reflectedArea)) {
+                for (var reflectableEntity : reflectableEntities) {
+                    var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
+                    if (reflectableBounds.intersects(reflectedArea)) {
 
-                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                    final var sprite = spriteComponent.sprite;
-                    final var spriteDimension = sprite.size();
-                    final var spriteBounds = Bounds.atOrigin(
-                            reflectableBounds.position().x() - spriteDimension.width() / 2.0,
-                            reflectableBounds.position().y() - spriteDimension.height() / 2.0,
-                            spriteDimension.width() * spriteComponent.scale,
-                            spriteDimension.height() * spriteComponent.scale);
+                        final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
+                        final var sprite = spriteComponent.sprite;
+                        final var spriteDimension = sprite.size();
+                        final var spriteBounds = Bounds.atOrigin(
+                                reflectableBounds.position().x() - spriteDimension.width() / 2.0,
+                                reflectableBounds.position().y() - spriteDimension.height() / 2.0,
+                                spriteDimension.width() * spriteComponent.scale,
+                                spriteDimension.height() * spriteComponent.scale);
 
-                    if (spriteBounds.intersects(visibleArea)) {
-                        spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                        if (spriteBounds.intersects(visibleArea)) {
+                            spriteBatch.add(new SpriteBatchEntry(spriteComponent, spriteBounds.origin()));
+                        }
                     }
                 }
-            }
-            Collections.sort(spriteBatch);
-            for (final SpriteBatchEntry entry : spriteBatch) {
-                final SpriteComponent spriteC = entry.spriteComponent;
-                engine.graphics().world().restrictedToArea(transform).drawSprite(
-                        spriteC.sprite,
-                        Vector.of(entry.position.x(),
-                                transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
-                                        - entry.spriteComponent.sprite.size().height())),
-                        spriteC.scale,
-                        spriteC.opacity.substract(0.8),
-                        spriteC.rotation,
-                        spriteC.flipMode.invertVertical());// TODO:invert
+                Collections.sort(spriteBatch);
+                for (final SpriteBatchEntry entry : spriteBatch) {
+                    final SpriteComponent spriteC = entry.spriteComponent;
+//                engine.graphics().world().restrictedToArea(transform).drawSprite(
+                    world.drawSprite(
+                            spriteC.sprite,
+                            Vector.of(entry.position.x(),
+                                    transform.bounds.minY() + (transform.bounds.minY() - entry.position.y()
+                                            - entry.spriteComponent.sprite.size().height())),
+                            spriteC.scale,
+                            spriteC.opacity.substract(0.8),
+                            spriteC.rotation,
+                            spriteC.flipMode.invertVertical());// TODO:invert
+                }
             }
         }
 

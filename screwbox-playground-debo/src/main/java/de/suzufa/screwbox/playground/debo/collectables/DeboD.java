@@ -5,7 +5,6 @@ import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.playground.debo.components.CollectableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Tileset;
@@ -18,7 +17,6 @@ public class DeboD implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity().add(
-                new ReflectedComponent(),
                 new SpriteComponent(SPRITES.findById(0), object.layer().order()),
                 new TransformComponent(object.bounds()),
                 new CollisionSensorComponent(),

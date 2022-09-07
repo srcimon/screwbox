@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
@@ -25,7 +24,6 @@ public class MovingSpikes implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         double speed = object.properties().getDouble("speed").orElse(30.0);
         return new Entity().add(
-                new ReflectedComponent(),
                 new SignalComponent(),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new KillZoneComponent(DeathType.SPIKES),

@@ -815,6 +815,28 @@
                  "width":2640,
                  "x":0,
                  "y":384
+                }, 
+                {
+                 "height":16,
+                 "id":459,
+                 "name":"water",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":111,
+                 "x":192,
+                 "y":288
+                }, 
+                {
+                 "height":0,
+                 "id":460,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":188,
+                 "y":212
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -926,7 +948,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":459,
+ "nextobjectid":461,
  "orientation":"orthogonal",
  "properties":[
         {

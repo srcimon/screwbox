@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.tiled.Tile;
 
 public class OneWayGround implements Converter<Tile> {
@@ -15,7 +14,6 @@ public class OneWayGround implements Converter<Tile> {
     @Override
     public Entity convert(Tile tile) {
         return new Entity().add(
-                new ReflectedComponent(),
                 new SpriteComponent(tile.sprite(), tile.layer().order()),
                 new StaticMarkerComponent(),
                 new TransformComponent(tile.renderBounds()),

@@ -6,7 +6,6 @@ import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DiggableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
@@ -18,7 +17,6 @@ public class Diggable implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         Sprite sprite = Tileset.fromJson("tilesets/props/diggable.json").findById(0);
         return new Entity().add(
-                new ReflectedComponent(),
                 new SpriteComponent(sprite, object.layer().order()),
                 new DiggableComponent(),
                 new TransformComponent(object.bounds()),

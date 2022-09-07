@@ -5,7 +5,6 @@ import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ReflectedComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.CatMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
@@ -15,7 +14,6 @@ public class CatCompanion implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new ReflectedComponent(),
                 new SpriteComponent(object.layer().order()),
                 new CatMarkerComponent(),
                 new CastShadowComponent(),
