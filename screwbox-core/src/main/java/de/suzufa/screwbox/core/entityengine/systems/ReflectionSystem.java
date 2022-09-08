@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
@@ -15,6 +13,7 @@ import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.World;
 
 //TODO: implement relfections left right / top down
@@ -25,16 +24,6 @@ public class ReflectionSystem implements EntitySystem {
 
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, SpriteComponent.class);
-
-    private static final record SpriteBatchEntry(SpriteComponent spriteComponent, Vector position)
-            implements Comparable<SpriteBatchEntry> {
-
-        @Override
-        public int compareTo(final SpriteBatchEntry o) {
-            return Integer.compare(spriteComponent.drawOrder, o.spriteComponent.drawOrder);
-        }
-
-    }
 
     @Override
     public void update(Engine engine) {
@@ -48,7 +37,7 @@ public class ReflectionSystem implements EntitySystem {
                         .intersection(visibleArea);
 
                 Percentage opacityReduction = floor.get(ReflectionComponent.class).opacityReduction;
-                final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
+                final SpriteBatch spriteBatch = new SpriteBatch();
 
                 for (var reflectableEntity : reflectableEntities) {
                     var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
@@ -68,23 +57,19 @@ public class ReflectionSystem implements EntitySystem {
                                     transform.bounds.minY() + (transform.bounds.minY() - oldPosition.y()
                                             - spriteComponent.sprite.size().height()));
 
-                            spriteBatch.add(new SpriteBatchEntry(spriteComponent, actualPosition));
+                            spriteBatch.addEntry(
+                                    spriteComponent.sprite,
+                                    actualPosition,
+                                    spriteComponent.scale,
+                                    spriteComponent.opacity.substract(opacityReduction.value()),
+                                    spriteComponent.rotation,
+                                    spriteComponent.flipMode.invertVertical(),
+                                    spriteComponent.drawOrder);
                         }
                     }
                 }
-                // TODO: world().drawSpriteBatch(batch)
+                engine.graphics().world().drawSpriteBatch(spriteBatch);
                 // TODO: world().drawSpriteBatch(batch, restrictedArea)
-                Collections.sort(spriteBatch);
-                for (final SpriteBatchEntry entry : spriteBatch) {
-                    final SpriteComponent spriteC = entry.spriteComponent;
-                    world.drawSprite(
-                            spriteC.sprite,
-                            entry.position,
-                            spriteC.scale,
-                            spriteC.opacity.substract(opacityReduction.value()),
-                            spriteC.rotation,
-                            spriteC.flipMode.invertVertical());
-                }
             }
         }
 
