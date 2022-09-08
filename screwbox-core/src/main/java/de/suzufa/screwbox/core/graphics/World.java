@@ -14,6 +14,8 @@ public interface World {
 
     Color drawColor();
 
+    World drawSpriteBatch(SpriteBatch spriteBatch);
+
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation,
             FlipMode flipMode);
 

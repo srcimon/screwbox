@@ -14,6 +14,8 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.SpriteBatch;
+import de.suzufa.screwbox.core.graphics.SpriteBatch.SpriteBatchEntry;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 
@@ -70,7 +72,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation, FlipMode flipMode) {
+            final Rotation rotation, final FlipMode flipMode) {
         final var offset = toOffset(origin);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
@@ -156,6 +158,19 @@ public class DefaultWorld implements World {
             final Percentage opacity, final double scale) {
         final Offset offset = toOffset(position);
         window.drawTextCentered(offset, text, font, opacity, scale * zoom);
+        return this;
+    }
+
+    @Override
+    public World drawSpriteBatch(final SpriteBatch spriteBatch) {
+        for (final SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
+            drawSprite(entry.sprite(),
+                    entry.position(),
+                    entry.scale(),
+                    entry.opacity(),
+                    entry.rotation(),
+                    entry.flipMode());
+        }
         return this;
     }
 

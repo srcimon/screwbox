@@ -1,39 +1,19 @@
 package de.suzufa.screwbox.core.entityengine.systems;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
-import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.EntitySystem;
 import de.suzufa.screwbox.core.entityengine.UpdatePriority;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.FlipMode;
-import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.SpriteBatch;
 
 public class SpriteRenderSystem implements EntitySystem {
 
     private final Archetype sprites;
     private final Class<? extends SpriteComponent> spriteComponentClass;
-
-    private static final record SpriteBatchEntry(
-            Sprite sprite, Vector position, double scale, Percentage opacity, Rotation rotation, FlipMode flipMode,
-            int drawOrder)
-            implements Comparable<SpriteBatchEntry> {
-
-        @Override
-        public int compareTo(final SpriteBatchEntry o) {
-            return Integer.compare(drawOrder, o.drawOrder);
-        }
-
-    }
 
     public SpriteRenderSystem() {
         this(SpriteComponent.class);
@@ -46,7 +26,7 @@ public class SpriteRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<SpriteBatchEntry> spriteBatch = new ArrayList<>();
+        final SpriteBatch spriteBatch = new SpriteBatch();
         final Bounds visibleArea = engine.graphics().world().visibleArea();
 
         for (final Entity entity : engine.entityEngine().fetchAll(sprites)) {
@@ -61,31 +41,17 @@ public class SpriteRenderSystem implements EntitySystem {
                     spriteDimension.height() * spriteComponent.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
-                spriteBatch.add(new SpriteBatchEntry(
+                spriteBatch.addEntry(
                         spriteComponent.sprite,
-
                         spriteBounds.origin(),
                         spriteComponent.scale,
                         spriteComponent.opacity,
                         spriteComponent.rotation,
                         spriteComponent.flipMode,
-                        spriteComponent.drawOrder
-
-                ));
+                        spriteComponent.drawOrder);
             }
         }
-
-        Collections.sort(spriteBatch);
-
-        for (final SpriteBatchEntry entry : spriteBatch) {
-            engine.graphics().world().drawSprite(
-                    entry.sprite,
-                    entry.position,
-                    entry.scale,
-                    entry.opacity,
-                    entry.rotation,
-                    entry.flipMode);
-        }
+        engine.graphics().world().drawSpriteBatch(spriteBatch);
     }
 
     @Override
