@@ -10,7 +10,7 @@ public class ReflectionComponent implements Component {
     public final Percentage opacityReduction;
 
     public ReflectionComponent() {
-        this(Percentage.of(0.75));// TODO: threeQuater
+        this(Percentage.threeQuarters());
     }
 
     public ReflectionComponent(Percentage opacityReduction) {
