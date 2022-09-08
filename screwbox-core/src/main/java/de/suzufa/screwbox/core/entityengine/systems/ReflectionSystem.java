@@ -53,9 +53,10 @@ public class ReflectionSystem implements EntitySystem {
 
                         if (spriteBounds.intersects(visibleArea)) {
                             Vector oldPosition = spriteBounds.origin();
-                            var actualPosition = Vector.of(oldPosition.x(),
-                                    transform.bounds.minY() + (transform.bounds.minY() - oldPosition.y()
-                                            - spriteComponent.sprite.size().height()));
+                            double actualY = transform.bounds.minY() +
+                                    (transform.bounds.minY() - oldPosition.y()
+                                            - spriteComponent.sprite.size().height());
+                            var actualPosition = Vector.of(oldPosition.x(), actualY);
 
                             spriteBatch.addEntry(
                                     spriteComponent.sprite,
@@ -70,6 +71,7 @@ public class ReflectionSystem implements EntitySystem {
                 }
                 engine.graphics().world().drawSpriteBatch(spriteBatch);
                 // TODO: world().drawSpriteBatch(batch, restrictedArea)
+                // TODO: alternative: world().restrictDrawingArea()
             }
         }
 
