@@ -161,7 +161,7 @@ public class GameScene implements Scene {
 
         entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
-                .when("reflection").as(new ReflectionZone())
+                .when("reflection-zone").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())
                 .when("moving-spikes").as(new MovingSpikes())
                 .when("vanishing-block").as(new VanishingBlock())

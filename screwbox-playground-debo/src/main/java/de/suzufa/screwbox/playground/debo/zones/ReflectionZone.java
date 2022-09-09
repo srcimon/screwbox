@@ -9,7 +9,6 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class ReflectionZone implements Converter<GameObject> {
 
-    // TODO: add reflection zone template in tiled
     @Override
     public Entity convert(GameObject object) {
         boolean useWaveEffect = object.properties().forceBoolean("useWaveEffect");

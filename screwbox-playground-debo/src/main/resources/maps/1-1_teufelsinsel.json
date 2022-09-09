@@ -483,7 +483,7 @@
                  "template":"..\/templates\/zones\/killzone.json",
                  "width":2243,
                  "x":-2,
-                 "y":382
+                 "y":384
                 }, 
                 {
                  "height":53,
@@ -806,9 +806,19 @@
                  "y":243.5
                 }, 
                 {
+                 "height":0,
+                 "id":460,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":188,
+                 "y":212
+                }, 
+                {
                  "height":32,
-                 "id":458,
-                 "name":"reflection",
+                 "id":461,
                  "properties":[
                         {
                          "name":"opacityModifier",
@@ -820,23 +830,10 @@
                          "type":"bool",
                          "value":true
                         }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
+                 "template":"..\/templates\/zones\/reflection-zone.json",
                  "width":2640,
                  "x":0,
                  "y":384
-                }, 
-                {
-                 "height":0,
-                 "id":460,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":188,
-                 "y":212
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -948,7 +945,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":461,
+ "nextobjectid":462,
  "orientation":"orthogonal",
  "properties":[
         {

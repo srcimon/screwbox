@@ -303,8 +303,7 @@
                 }, 
                 {
                  "height":48,
-                 "id":14,
-                 "name":"reflection",
+                 "id":16,
                  "properties":[
                         {
                          "name":"opacityModifier",
@@ -316,9 +315,7 @@
                          "type":"bool",
                          "value":false
                         }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
+                 "template":"..\/templates\/zones\/reflection-zone.json",
                  "width":1664,
                  "x":0,
                  "y":208
@@ -429,7 +426,7 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":16,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "properties":[
         {
