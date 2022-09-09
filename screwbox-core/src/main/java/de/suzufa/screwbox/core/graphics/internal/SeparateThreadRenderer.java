@@ -77,8 +77,8 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode) {
-        renderTasks.primary().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flipMode));
+            final Rotation rotation, final FlipMode flipMode, WindowBounds clipArea) {
+        renderTasks.primary().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea));
 
     }
 
@@ -108,5 +108,4 @@ public class SeparateThreadRenderer implements Renderer {
             }
         }
     }
-
 }

@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,10 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Sprite;
+import de.suzufa.screwbox.core.graphics.SpriteBatch;
+import de.suzufa.screwbox.core.graphics.SpriteBatch.SpriteBatchEntry;
 import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.World;
 
 public class DefaultWorld implements World {
@@ -70,12 +75,19 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation, FlipMode flipMode) {
+            final Rotation rotation, final FlipMode flipMode, Bounds clipArea) {
         final var offset = toOffset(origin);
+        final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flipMode);
+        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flipMode, windowClipArea);
         return this;
+    }
+
+    private WindowBounds toWindowBounds(Bounds bounds) {
+        var offset = toOffset(bounds.origin());
+        var size = toDimension(bounds.size());
+        return new WindowBounds(offset, size);
     }
 
     @Override
@@ -156,6 +168,20 @@ public class DefaultWorld implements World {
             final Percentage opacity, final double scale) {
         final Offset offset = toOffset(position);
         window.drawTextCentered(offset, text, font, opacity, scale * zoom);
+        return this;
+    }
+
+    @Override
+    public World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea) {
+        for (final SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
+            drawSprite(entry.sprite(),
+                    entry.position(),
+                    entry.scale(),
+                    entry.opacity(),
+                    entry.rotation(),
+                    entry.flipMode(),
+                    clipArea);
+        }
         return this;
     }
 

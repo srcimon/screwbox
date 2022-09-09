@@ -4,9 +4,7 @@
     ],
     "extensionsPath": "extensions",
     "folders": [
-        ".",
-        ".",
-        "templates"
+        "."
     ],
     "objectTypesFile": "",
     "propertyTypes": [

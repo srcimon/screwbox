@@ -1,0 +1,23 @@
+{ "object":
+    {
+     "height":48,
+     "id":14,
+     "name":"reflection-zone",
+     "properties":[
+            {
+             "name":"opacityModifier",
+             "type":"float",
+             "value":0.1
+            }, 
+            {
+             "name":"useWaveEffect",
+             "type":"bool",
+             "value":false
+            }],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":114
+    },
+ "type":"template"
+}

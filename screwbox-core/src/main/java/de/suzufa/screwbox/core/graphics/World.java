@@ -14,12 +14,18 @@ public interface World {
 
     Color drawColor();
 
+    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea);
+
+    default World drawSpriteBatch(final SpriteBatch spriteBatch) {
+        return drawSpriteBatch(spriteBatch, null);
+    }
+
     World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation,
-            FlipMode flipMode);
+            FlipMode flipMode, Bounds clipArea);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity,
-            final Rotation rotation, FlipMode flipMode) {
-        return drawSprite(sprite, origin, 1, opacity, rotation, flipMode);
+            final Rotation rotation, final FlipMode flipMode) {
+        return drawSprite(sprite, origin, 1, opacity, rotation, flipMode, null);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity) {

@@ -14,6 +14,7 @@ import de.suzufa.screwbox.core.entityengine.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entityengine.systems.GravitySystem;
 import de.suzufa.screwbox.core.entityengine.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
+import de.suzufa.screwbox.core.entityengine.systems.ReflectionRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
@@ -74,6 +75,7 @@ import de.suzufa.screwbox.playground.debo.tiles.OneWayGround;
 import de.suzufa.screwbox.playground.debo.tiles.SolidGround;
 import de.suzufa.screwbox.playground.debo.zones.ChangeMapZone;
 import de.suzufa.screwbox.playground.debo.zones.KillZone;
+import de.suzufa.screwbox.playground.debo.zones.ReflectionZone;
 import de.suzufa.screwbox.playground.debo.zones.ShowLabelZone;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
@@ -97,6 +99,7 @@ public class GameScene implements Scene {
 
         entityEngine.add(
                 new LogFpsSystem(),
+                new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlattformSystem(),
                 new CollectableSystem(),
@@ -158,6 +161,7 @@ public class GameScene implements Scene {
 
         entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
+                .when("reflection-zone").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())
                 .when("moving-spikes").as(new MovingSpikes())
                 .when("vanishing-block").as(new VanishingBlock())

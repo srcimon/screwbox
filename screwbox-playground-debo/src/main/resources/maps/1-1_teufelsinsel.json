@@ -483,7 +483,7 @@
                  "template":"..\/templates\/zones\/killzone.json",
                  "width":2243,
                  "x":-2,
-                 "y":382
+                 "y":384
                 }, 
                 {
                  "height":53,
@@ -804,6 +804,36 @@
                  "template":"..\/templates\/props\/box.json",
                  "x":844.5,
                  "y":243.5
+                }, 
+                {
+                 "height":0,
+                 "id":460,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":188,
+                 "y":212
+                }, 
+                {
+                 "height":32,
+                 "id":461,
+                 "properties":[
+                        {
+                         "name":"opacityModifier",
+                         "type":"float",
+                         "value":0.25
+                        }, 
+                        {
+                         "name":"useWaveEffect",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "template":"..\/templates\/zones\/reflection-zone.json",
+                 "width":2640,
+                 "x":0,
+                 "y":384
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -915,7 +945,7 @@
          "y":0
         }],
  "nextlayerid":27,
- "nextobjectid":458,
+ "nextobjectid":462,
  "orientation":"orthogonal",
  "properties":[
         {

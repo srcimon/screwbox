@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtFont;
+import static java.util.Objects.nonNull;
 
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
@@ -41,7 +42,7 @@ public class DefaultRenderer implements Renderer {
         initializeFontDrawing();
         try {
             robot = new Robot();
-        } catch (AWTException e) {
+        } catch (final AWTException e) {
             throw new IllegalStateException("could not create robot for screenshots");
         }
     }
@@ -114,9 +115,14 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode) {
+            final Rotation rotation, final FlipMode flipMode, WindowBounds clipArea) {
         applyOpacityConfig(opacity);
 
+        var oldClip = graphics.getClip();
+        if (nonNull(clipArea)) {
+            graphics.setClip(clipArea.offset().x(), clipArea.offset().y(), clipArea.size().width(),
+                    clipArea.size().height());
+        }
         if (!rotation.isNone()) {
             final double x = origin.x() + sprite.size().width() * scale / 2.0;
             final double y = origin.y() + sprite.size().height() * scale / 2.0;
@@ -126,6 +132,10 @@ public class DefaultRenderer implements Renderer {
             graphics.rotate(-radians, x, y);
         } else {
             drawSpriteInContext(sprite, origin, scale, flipMode);
+        }
+
+        if (nonNull(clipArea)) {
+            graphics.setClip(oldClip);
         }
 
         resetOpacityConfig(opacity);
@@ -149,8 +159,8 @@ public class DefaultRenderer implements Renderer {
         graphics.fillRect(
                 bounds.offset().x(),
                 bounds.offset().y(),
-                bounds.dimension().width(),
-                bounds.dimension().height());
+                bounds.size().width(),
+                bounds.size().height());
     }
 
     @Override
