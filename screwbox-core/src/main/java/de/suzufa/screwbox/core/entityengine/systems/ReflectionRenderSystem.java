@@ -37,15 +37,15 @@ public class ReflectionRenderSystem implements EntitySystem {
                     : 1;
             Percentage opacityModifier = reflection.opacityModifier;
             var transform = reflectionArea.get(TransformComponent.class);
-            if (transform.bounds.intersects(visibleArea)) {
-                var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()))
-                        .intersection(visibleArea);
+            var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()))
+                    .intersection(visibleArea);
+            if (reflectedArea.isPresent()) {
 
                 final SpriteBatch spriteBatch = new SpriteBatch();
 
                 for (var reflectableEntity : reflectableEntities) {
                     var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
-                    if (reflectableBounds.intersects(reflectedArea)) {
+                    if (reflectableBounds.intersects(reflectedArea.get())) {
                         final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
                         final var sprite = spriteComponent.sprite;
                         final var spriteDimension = sprite.size();

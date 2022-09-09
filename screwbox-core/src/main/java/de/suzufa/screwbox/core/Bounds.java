@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 import de.suzufa.screwbox.core.graphics.World;
 
@@ -244,12 +245,17 @@ public final class Bounds implements Serializable {
     }
 
     // TODO: TEST (May be buggy)
-    public Bounds intersection(Bounds other) {
+    public Optional<Bounds> intersection(Bounds other) {
         var newMinX = Math.max(minX(), other.minX());
         var newMaxX = Math.min(maxX(), other.maxX());
         var newMinY = Math.max(minY(), other.minY());
         var newMaxY = Math.min(maxY(), other.maxY());
-        return Bounds.atOrigin(newMinX, newMinY, newMaxX - newMinX, newMaxY - newMinY);
+        double width = newMaxX - newMinX;
+        double height = newMaxY - newMinY;
+        if (width <= 0 || height <= 0) {
+            return Optional.empty();
+        }
+        return Optional.of(Bounds.atOrigin(newMinX, newMinY, width, height));
     }
 
 }
