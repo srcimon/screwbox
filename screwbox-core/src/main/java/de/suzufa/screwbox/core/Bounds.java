@@ -133,6 +133,11 @@ public final class Bounds implements Serializable {
         return Bounds.atPosition(position, width() + inflation, height() + inflation);
     }
 
+    // TODO: javadoc and test
+    public Bounds inflatedTop(int value) {
+        return Bounds.atPosition(position.addY(-value), width(), height() + value);
+    }
+
     /**
      * Checks if this {@link Bounds} touches another {@link Bounds}. Is also
      * {@code true} if it {@link #intersects(Bounds)} the other {@link Bounds}.
