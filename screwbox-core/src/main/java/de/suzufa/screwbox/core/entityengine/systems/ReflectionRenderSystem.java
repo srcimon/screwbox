@@ -36,7 +36,9 @@ public class ReflectionRenderSystem implements EntitySystem {
                     : 1;
             Percentage opacityModifier = reflection.opacityModifier;
             var transform = reflectionArea.get(TransformComponent.class);
-            var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height())).inflated(2)
+            var reflectedArea = transform.bounds
+                    .moveBy(Vector.yOnly(-transform.bounds.height()))
+                    .inflatedTop(reflection.useWaveEffect ? 2 : 0)
                     .intersection(visibleArea);
             if (reflectedArea.isPresent()) {
 
