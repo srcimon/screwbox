@@ -809,23 +809,23 @@
                  "height":32,
                  "id":458,
                  "name":"reflection",
+                 "properties":[
+                        {
+                         "name":"opacityModifier",
+                         "type":"float",
+                         "value":0.25
+                        }, 
+                        {
+                         "name":"useWaveEffect",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":2640,
                  "x":0,
                  "y":384
-                }, 
-                {
-                 "height":16,
-                 "id":459,
-                 "name":"reflection",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":111,
-                 "x":192,
-                 "y":288
                 }, 
                 {
                  "height":0,
