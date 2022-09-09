@@ -34,59 +34,53 @@ public class ReflectionRenderSystem implements EntitySystem {
             double waveEffect = reflection.useWaveEffect
                     ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 0.3 + 0.7
                     : 1;
-            Percentage opacityModifier = reflection.opacityModifier;
-            var transform = reflectionArea.get(TransformComponent.class);
-            var reflectedArea = transform.bounds
-                    .moveBy(Vector.yOnly(-transform.bounds.height()))
-                    .inflatedTop(reflection.useWaveEffect ? 2 : 0)
-                    .intersection(visibleArea);
-            if (reflectedArea.isPresent()) {
+            Bounds reflectionAreaBounds = reflectionArea.get(TransformComponent.class).bounds;
+            var reflectedArea = reflectionAreaBounds
+                    .moveBy(Vector.yOnly(-reflectionAreaBounds.height()))
+                    .inflatedTop(reflection.useWaveEffect ? 2 : 0);
+            final SpriteBatch spriteBatch = new SpriteBatch();
+            for (var reflectableEntity : reflectableEntities) {
+                var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
+                if (reflectableBounds.intersects(reflectedArea)) {
+                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
+                    final var sprite = spriteComponent.sprite;
+                    final var spriteDimension = sprite.size();
+                    final var spriteBounds = Bounds.atOrigin(
+                            reflectableBounds.position().x() - spriteDimension.width() / 2.0,
+                            reflectableBounds.position().y() - spriteDimension.height() / 2.0,
+                            spriteDimension.width() * spriteComponent.scale,
+                            spriteDimension.height() * spriteComponent.scale);
 
-                final SpriteBatch spriteBatch = new SpriteBatch();
+                    Vector oldPosition = spriteBounds.origin();
+                    double actualY = reflectionAreaBounds.minY() +
+                            (reflectionAreaBounds.minY() - oldPosition.y()
+                                    - spriteComponent.sprite.size().height());
+                    var actualPosition = Vector.of(oldPosition.x(), actualY);
 
-                for (var reflectableEntity : reflectableEntities) {
-                    var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
-                    if (reflectableBounds.intersects(reflectedArea.get())) {
-                        final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                        final var sprite = spriteComponent.sprite;
-                        final var spriteDimension = sprite.size();
-                        final var spriteBounds = Bounds.atOrigin(
-                                reflectableBounds.position().x() - spriteDimension.width() / 2.0,
-                                reflectableBounds.position().y() - spriteDimension.height() / 2.0,
-                                spriteDimension.width() * spriteComponent.scale,
-                                spriteDimension.height() * spriteComponent.scale);
+                    if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
+                        Percentage opacity = spriteComponent.opacity
+                                .multiply(reflection.opacityModifier.value())
+                                .multiply(waveEffect);
 
-                        if (spriteBounds.intersects(visibleArea)) {
-                            Vector oldPosition = spriteBounds.origin();
-                            double actualY = transform.bounds.minY() +
-                                    (transform.bounds.minY() - oldPosition.y()
-                                            - spriteComponent.sprite.size().height());
-                            var actualPosition = Vector.of(oldPosition.x(), actualY);
+                        double waveMovementEffectX = reflection.useWaveEffect
+                                ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0 + actualY / 16) * 2 - 1
+                                : 0;
+                        double waveMovementEffectY = reflection.useWaveEffect
+                                ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 2 - 1
+                                : 0;
 
-                            Percentage opacity = spriteComponent.opacity
-                                    .multiply(opacityModifier.value())
-                                    .multiply(waveEffect);
-
-                            double waveMovementEffectX = reflection.useWaveEffect
-                                    ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0 + actualY / 16) * 2 - 1
-                                    : 0;
-                            double waveMovementEffectY = reflection.useWaveEffect
-                                    ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 2 - 1
-                                    : 0;
-
-                            spriteBatch.addEntry(
-                                    spriteComponent.sprite,
-                                    actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY),
-                                    spriteComponent.scale,
-                                    opacity,
-                                    spriteComponent.rotation,
-                                    spriteComponent.flipMode.invertVertical(),
-                                    spriteComponent.drawOrder);
-                        }
+                        spriteBatch.addEntry(
+                                spriteComponent.sprite,
+                                actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY),
+                                spriteComponent.scale,
+                                opacity,
+                                spriteComponent.rotation,
+                                spriteComponent.flipMode.invertVertical(),
+                                spriteComponent.drawOrder);
                     }
                 }
-                engine.graphics().world().drawSpriteBatch(spriteBatch, transform.bounds);
             }
+            engine.graphics().world().drawSpriteBatch(spriteBatch, reflectionAreaBounds);
         }
 
     }
