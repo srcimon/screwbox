@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.entityengine.components.ReflectionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 
-public class WaterZone implements Converter<GameObject> {
+public class ReflectionZone implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {

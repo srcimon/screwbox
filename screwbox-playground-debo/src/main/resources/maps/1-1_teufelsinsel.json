@@ -808,7 +808,7 @@
                 {
                  "height":32,
                  "id":458,
-                 "name":"water",
+                 "name":"reflection",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -819,7 +819,7 @@
                 {
                  "height":16,
                  "id":459,
-                 "name":"water",
+                 "name":"reflection",
                  "rotation":0,
                  "type":"",
                  "visible":true,

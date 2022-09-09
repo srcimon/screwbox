@@ -14,11 +14,11 @@ import de.suzufa.screwbox.core.entityengine.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entityengine.systems.GravitySystem;
 import de.suzufa.screwbox.core.entityengine.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
+import de.suzufa.screwbox.core.entityengine.systems.ReflectionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
 import de.suzufa.screwbox.core.entityengine.systems.TimeoutSystem;
-import de.suzufa.screwbox.core.entityengine.systems.ReflectionSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
 import de.suzufa.screwbox.playground.debo.collectables.DeboB;
@@ -75,8 +75,8 @@ import de.suzufa.screwbox.playground.debo.tiles.OneWayGround;
 import de.suzufa.screwbox.playground.debo.tiles.SolidGround;
 import de.suzufa.screwbox.playground.debo.zones.ChangeMapZone;
 import de.suzufa.screwbox.playground.debo.zones.KillZone;
+import de.suzufa.screwbox.playground.debo.zones.ReflectionZone;
 import de.suzufa.screwbox.playground.debo.zones.ShowLabelZone;
-import de.suzufa.screwbox.playground.debo.zones.WaterZone;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Layer;
 import de.suzufa.screwbox.tiled.Map;
@@ -161,7 +161,7 @@ public class GameScene implements Scene {
 
         entityEngine.importSource(map.objects())
                 .usingIndex(GameObject::name)
-                .when("water").as(new WaterZone())
+                .when("reflection").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())
                 .when("moving-spikes").as(new MovingSpikes())
                 .when("vanishing-block").as(new VanishingBlock())
