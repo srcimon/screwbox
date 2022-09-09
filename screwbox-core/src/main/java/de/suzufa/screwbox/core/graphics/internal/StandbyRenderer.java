@@ -40,7 +40,7 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode) {
+            final Rotation rotation, final FlipMode flipMode, WindowBounds clipArea) {
         // does nothing
     }
 

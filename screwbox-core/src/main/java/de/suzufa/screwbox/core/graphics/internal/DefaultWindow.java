@@ -21,8 +21,8 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
-import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.PredefinedCursor;
@@ -73,7 +73,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             Pixelfont font) {
         Offset currentOffset = offset;
         for (var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), FlipMode.NONE);
+            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), FlipMode.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
@@ -107,7 +107,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), FlipMode.NONE);
+                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), FlipMode.NONE, null);
             }
         }
         return this;
@@ -166,8 +166,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, FlipMode flipMode) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode);
+            final Rotation rotation, FlipMode flipMode, WindowBounds clipArea) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
         return this;
     }
 

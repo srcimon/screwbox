@@ -24,7 +24,7 @@ public interface Renderer {
     void drawCircle(Offset offset, int diameter, Color color);
 
     void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation,
-            FlipMode flipMode);
+            FlipMode flipMode, WindowBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);
 
