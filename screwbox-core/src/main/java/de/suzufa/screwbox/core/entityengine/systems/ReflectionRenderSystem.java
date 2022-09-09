@@ -64,9 +64,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                             Percentage opacity = spriteComponent.opacity
                                     .multiply(opacityModifier.value())
                                     .multiply(waveEffect);
+
+                            double waveMovementEffect = reflection.useWaveEffect
+                                    ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0 + actualY / 16) * 2 - 1
+                                    : 0;
+
                             spriteBatch.addEntry(
                                     spriteComponent.sprite,
-                                    actualPosition,
+                                    actualPosition.addX(waveMovementEffect),
                                     spriteComponent.scale,
                                     opacity,
                                     spriteComponent.rotation,
