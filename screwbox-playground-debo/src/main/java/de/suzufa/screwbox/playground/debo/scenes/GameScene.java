@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entityengine.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entityengine.systems.GravitySystem;
 import de.suzufa.screwbox.core.entityengine.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
-import de.suzufa.screwbox.core.entityengine.systems.ReflectionSystem;
+import de.suzufa.screwbox.core.entityengine.systems.ReflectionRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
@@ -99,7 +99,7 @@ public class GameScene implements Scene {
 
         entityEngine.add(
                 new LogFpsSystem(),
-                new ReflectionSystem(),
+                new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlattformSystem(),
                 new CollectableSystem(),

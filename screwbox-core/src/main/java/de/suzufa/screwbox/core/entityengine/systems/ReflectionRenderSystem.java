@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.World;
 
 //TODO: implement relfections left right / top down
-public class ReflectionSystem implements EntitySystem {
+public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(
             ReflectionComponent.class, TransformComponent.class);
@@ -76,9 +76,7 @@ public class ReflectionSystem implements EntitySystem {
                         }
                     }
                 }
-                engine.graphics().world().drawSpriteBatch(spriteBatch);
-                // TODO: world().drawSpriteBatch(batch, restrictedArea)
-                // TODO: alternative: world().restrictDrawingArea()
+                engine.graphics().world().drawSpriteBatch(spriteBatch, transform.bounds);
             }
         }
 
