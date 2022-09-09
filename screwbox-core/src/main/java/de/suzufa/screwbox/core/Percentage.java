@@ -12,6 +12,7 @@ public class Percentage implements Serializable {
     private static final double MAX_VALUE = 1;
     private static final Percentage MIN_PERCENTAGE = of(MIN_VALUE);
     private static final Percentage MAX_PERCENTAGE = of(MAX_VALUE);
+    private static final Percentage QUARTER_PERCENTAGE = of(0.25);
     private static final Percentage HALF_PERCENTAGE = of(0.5);
     private static final Percentage THREE_QUARTER_PERCENTAGE = of(0.75);
 
@@ -23,6 +24,13 @@ public class Percentage implements Serializable {
 
     public static Percentage of(final double value) {
         return new Percentage(value);
+    }
+
+    /**
+     * Returns 25 percent.
+     */
+    public static Percentage quater() {
+        return QUARTER_PERCENTAGE;
     }
 
     /**
@@ -113,6 +121,11 @@ public class Percentage implements Serializable {
      */
     public Percentage substract(final double value) {
         return new Percentage(this.value - value);
+    }
+
+    // TODO: Test and javadoc
+    public Percentage multiply(double value) {
+        return new Percentage(this.value * value);
     }
 
 }

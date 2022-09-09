@@ -19,7 +19,7 @@ import de.suzufa.screwbox.core.graphics.World;
 //TODO: implement relfections left right / top down
 public class ReflectionSystem implements EntitySystem {
 
-    private static final Archetype REFLECTING_FLOORS = Archetype.of(
+    private static final Archetype REFLECTING_AREAS = Archetype.of(
             ReflectionComponent.class, TransformComponent.class);
 
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
@@ -30,13 +30,17 @@ public class ReflectionSystem implements EntitySystem {
         List<Entity> reflectableEntities = engine.entityEngine().fetchAll(RELECTED_ENTITIES);
         World world = engine.graphics().world();
         var visibleArea = world.visibleArea();
-        for (Entity floor : engine.entityEngine().fetchAll(REFLECTING_FLOORS)) {
-            var transform = floor.get(TransformComponent.class);
+        for (Entity reflectionArea : engine.entityEngine().fetchAll(REFLECTING_AREAS)) {
+            ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
+            double waveEffect = reflection.useWaveEffect
+                    ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 0.3 + 0.7
+                    : 1;
+            Percentage opacityModifier = reflection.opacityModifier;
+            var transform = reflectionArea.get(TransformComponent.class);
             if (transform.bounds.intersects(visibleArea)) {
                 var reflectedArea = transform.bounds.moveBy(Vector.yOnly(-transform.bounds.height()))
                         .intersection(visibleArea);
 
-                Percentage opacityReduction = floor.get(ReflectionComponent.class).opacityReduction;
                 final SpriteBatch spriteBatch = new SpriteBatch();
 
                 for (var reflectableEntity : reflectableEntities) {
@@ -58,11 +62,14 @@ public class ReflectionSystem implements EntitySystem {
                                             - spriteComponent.sprite.size().height());
                             var actualPosition = Vector.of(oldPosition.x(), actualY);
 
+                            Percentage opacity = spriteComponent.opacity
+                                    .multiply(opacityModifier.value())
+                                    .multiply(waveEffect);
                             spriteBatch.addEntry(
                                     spriteComponent.sprite,
                                     actualPosition,
                                     spriteComponent.scale,
-                                    spriteComponent.opacity.substract(opacityReduction.value()),
+                                    opacity,
                                     spriteComponent.rotation,
                                     spriteComponent.flipMode.invertVertical(),
                                     spriteComponent.drawOrder);
