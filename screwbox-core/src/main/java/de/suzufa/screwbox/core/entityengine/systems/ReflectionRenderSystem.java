@@ -34,13 +34,11 @@ public class ReflectionRenderSystem implements EntitySystem {
             double waveEffect = reflection.useWaveEffect
                     ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 0.3 + 0.7
                     : 1;
-            Percentage opacityModifier = reflection.opacityModifier;
-            var transform = reflectionArea.get(TransformComponent.class);
-            var reflectedArea = transform.bounds
-                    .moveBy(Vector.yOnly(-transform.bounds.height()))
+            Bounds reflectionAreaBounds = reflectionArea.get(TransformComponent.class).bounds;
+            var reflectedArea = reflectionAreaBounds
+                    .moveBy(Vector.yOnly(-reflectionAreaBounds.height()))
                     .inflatedTop(reflection.useWaveEffect ? 2 : 0);
             final SpriteBatch spriteBatch = new SpriteBatch();
-
             for (var reflectableEntity : reflectableEntities) {
                 var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
@@ -54,14 +52,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                             spriteDimension.height() * spriteComponent.scale);
 
                     Vector oldPosition = spriteBounds.origin();
-                    double actualY = transform.bounds.minY() +
-                            (transform.bounds.minY() - oldPosition.y()
+                    double actualY = reflectionAreaBounds.minY() +
+                            (reflectionAreaBounds.minY() - oldPosition.y()
                                     - spriteComponent.sprite.size().height());
                     var actualPosition = Vector.of(oldPosition.x(), actualY);
 
                     if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
                         Percentage opacity = spriteComponent.opacity
-                                .multiply(opacityModifier.value())
+                                .multiply(reflection.opacityModifier.value())
                                 .multiply(waveEffect);
 
                         double waveMovementEffectX = reflection.useWaveEffect
@@ -82,7 +80,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     }
                 }
             }
-            engine.graphics().world().drawSpriteBatch(spriteBatch, transform.bounds);
+            engine.graphics().world().drawSpriteBatch(spriteBatch, reflectionAreaBounds);
         }
 
     }
