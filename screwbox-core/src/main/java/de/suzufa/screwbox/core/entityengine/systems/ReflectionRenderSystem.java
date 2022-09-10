@@ -80,7 +80,6 @@ public class ReflectionRenderSystem implements EntitySystem {
             }
             engine.graphics().world().drawSpriteBatch(spriteBatch, reflectionAreaBounds);
         }
-
     }
 
     @Override
