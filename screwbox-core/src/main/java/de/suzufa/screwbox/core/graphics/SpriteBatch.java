@@ -34,4 +34,8 @@ public class SpriteBatch {
         Collections.sort(entries);
         return entries;
     }
+
+    public boolean isEmpty() {
+        return entries.isEmpty();
+    }
 }

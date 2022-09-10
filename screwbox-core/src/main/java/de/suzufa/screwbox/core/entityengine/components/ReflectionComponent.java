@@ -11,7 +11,7 @@ public class ReflectionComponent implements Component {
     public final boolean useWaveEffect;
 
     public ReflectionComponent() {
-        this(Percentage.quater(), true);
+        this(Percentage.quater(), false);
     }
 
     public ReflectionComponent(final Percentage opacityModifier, boolean useWaveEffect) {

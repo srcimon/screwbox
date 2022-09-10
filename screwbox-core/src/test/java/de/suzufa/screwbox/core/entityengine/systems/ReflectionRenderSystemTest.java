@@ -3,11 +3,11 @@ package de.suzufa.screwbox.core.entityengine.systems;
 import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
+import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entityengine.Entity;
 import de.suzufa.screwbox.core.entityengine.components.ReflectionComponent;
@@ -41,7 +42,7 @@ class ReflectionRenderSystemTest {
 
     @Test
     void update_entityInReflectedArea_drawsReflection(DefaultEntityEngine entityEngine, GameLoop loop, World world) {
-        when(loop.lastUpdate()).thenReturn(Time.atNanos(500000));
+        when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
 
         Entity body = new Entity()
@@ -66,13 +67,15 @@ class ReflectionRenderSystemTest {
 
         var spriteBatchEntry = spriteBatchEntries.get(0);
         assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
+        assertThat(spriteBatchEntry.opacity()).isEqualTo(Percentage.of(0.25));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
-        assertThat(spriteBatchEntry.position()).isEqualTo($(-3.152647485592124, 6));
+        assertThat(spriteBatchEntry.position()).isEqualTo($(-3, 7));
     }
 
-    @Test
-    void update_reflectionAreaNotInWindow_drawsNothing(DefaultEntityEngine entityEngine, GameLoop loop, World world) {
-        when(loop.lastUpdate()).thenReturn(Time.atNanos(500000));
+    @RepeatedTest(2)
+    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEntityEngine entityEngine, GameLoop loop,
+            World world) {
+        when(loop.lastUpdate()).thenReturn(Time.now());
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
 
         Entity body = new Entity()
@@ -89,6 +92,41 @@ class ReflectionRenderSystemTest {
 
         entityEngine.update();
 
-        verify(world, never()).drawSpriteBatch(any(), any());
+        verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
+        assertThat(spriteBatch.getValue().entriesInDrawOrder()).isEmpty();
+    }
+
+    @Test
+    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEntityEngine entityEngine, GameLoop loop,
+            World world) {
+        when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
+        when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
+
+        Entity body = new Entity()
+                .add(new TransformComponent($$(0, 0, 10, 10)))
+                .add(new SpriteComponent(SPRITE));
+
+        Entity mirror = new Entity()
+                .add(new TransformComponent($$(0, 10, 10, 10)))
+                .add(new ReflectionComponent(Percentage.half(), true));
+
+        entityEngine.add(body)
+                .add(mirror)
+                .add(new ReflectionRenderSystem());
+
+        entityEngine.update();
+
+        verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
+
+        var spriteBatchEntries = spriteBatch.getValue().entriesInDrawOrder();
+        assertThat(spriteBatchEntries).hasSize(1);
+        assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
+
+        var spriteBatchEntry = spriteBatchEntries.get(0);
+        assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
+        assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
+        assertThat(spriteBatchEntry.opacity().value()).isEqualTo(0.476, offset(0.1));
+        assertThat(spriteBatchEntry.position().x()).isEqualTo(-2.02, offset(0.1));
+        assertThat(spriteBatchEntry.position().y()).isEqualTo(7.68, offset(0.1));
     }
 }
