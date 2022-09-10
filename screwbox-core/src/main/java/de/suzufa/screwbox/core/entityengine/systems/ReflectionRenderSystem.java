@@ -31,9 +31,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         var visibleArea = world.visibleArea();
         for (Entity reflectionArea : engine.entityEngine().fetchAll(REFLECTING_AREAS)) {
             ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
-            double waveEffect = reflection.useWaveEffect
-                    ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 0.3 + 0.7
-                    : 1;
+            double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
             Bounds reflectionAreaBounds = reflectionArea.get(TransformComponent.class).bounds;
             var reflectedArea = reflectionAreaBounds
                     .moveBy(Vector.yOnly(-reflectionAreaBounds.height()))
@@ -60,13 +58,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                     if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
                         Percentage opacity = spriteComponent.opacity
                                 .multiply(reflection.opacityModifier.value())
-                                .multiply(waveEffect);
+                                .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.3 + 0.7 : 1);
 
                         double waveMovementEffectX = reflection.useWaveEffect
-                                ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0 + actualY / 16) * 2 - 1
+                                ? Math.sin(waveSeed + actualY / 16) * 2 - 1
                                 : 0;
                         double waveMovementEffectY = reflection.useWaveEffect
-                                ? Math.sin(engine.loop().lastUpdate().milliseconds() / 500.0) * 2 - 1
+                                ? Math.sin(waveSeed) * 2 - 1
                                 : 0;
 
                         spriteBatch.addEntry(

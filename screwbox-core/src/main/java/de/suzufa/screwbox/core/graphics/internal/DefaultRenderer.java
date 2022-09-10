@@ -115,10 +115,10 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, WindowBounds clipArea) {
+            final Rotation rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         applyOpacityConfig(opacity);
 
-        var oldClip = graphics.getClip();
+        final var oldClip = graphics.getClip();
         if (nonNull(clipArea)) {
             graphics.setClip(clipArea.offset().x(), clipArea.offset().y(), clipArea.size().width(),
                     clipArea.size().height());
