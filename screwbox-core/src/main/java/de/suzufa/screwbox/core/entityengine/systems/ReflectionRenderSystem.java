@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entityengine.Archetype;
 import de.suzufa.screwbox.core.entityengine.Entity;
@@ -49,25 +50,25 @@ public class ReflectionRenderSystem implements EntitySystem {
                     double actualY = reflectionAreaBounds.minY() +
                             (reflectionAreaBounds.minY() - oldPosition.y()
                                     - spriteComponent.sprite.size().height());
-
-                    double waveMovementEffectX = reflection.useWaveEffect
-                            ? Math.sin(waveSeed + actualY / 16) * 2 - 1
-                            : 0;
-                    double waveMovementEffectY = reflection.useWaveEffect
-                            ? Math.sin(waveSeed) * 2 - 1
-                            : 0;
-
-                    double opacityModification = reflection.opacityModifier.value()
-                            * (reflection.useWaveEffect ? Math.sin(waveSeed) * 0.3 + 0.7 : 1);
-                    var actualPosition = Vector.of(oldPosition.x() + waveMovementEffectX,
-                            actualY + waveMovementEffectY);
+                    var actualPosition = Vector.of(oldPosition.x(), actualY);
 
                     if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
+                        Percentage opacity = spriteComponent.opacity
+                                .multiply(reflection.opacityModifier.value())
+                                .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.3 + 0.7 : 1);
+
+                        double waveMovementEffectX = reflection.useWaveEffect
+                                ? Math.sin(waveSeed + actualY / 16) * 2 - 1
+                                : 0;
+                        double waveMovementEffectY = reflection.useWaveEffect
+                                ? Math.sin(waveSeed) * 2 - 1
+                                : 0;
+
                         spriteBatch.addEntry(
                                 spriteComponent.sprite,
-                                actualPosition,
+                                actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY),
                                 spriteComponent.scale,
-                                spriteComponent.opacity.multiply(opacityModification),
+                                opacity,
                                 spriteComponent.rotation,
                                 spriteComponent.flipMode.invertVertical(),
                                 spriteComponent.drawOrder);
