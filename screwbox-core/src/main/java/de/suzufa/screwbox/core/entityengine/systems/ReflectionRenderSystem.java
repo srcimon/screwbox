@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.entityengine.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
 import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
-import de.suzufa.screwbox.core.graphics.World;
 
 public class ReflectionRenderSystem implements EntitySystem {
 
@@ -27,8 +26,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         List<Entity> reflectableEntities = engine.entityEngine().fetchAll(RELECTED_ENTITIES);
-        World world = engine.graphics().world();
-        var visibleArea = world.visibleArea();
+        var visibleArea = engine.graphics().world().visibleArea();
         for (Entity reflectionArea : engine.entityEngine().fetchAll(REFLECTING_AREAS)) {
             ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
             double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
@@ -41,13 +39,12 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
                     final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                    final var sprite = spriteComponent.sprite;
-                    final var spriteDimension = sprite.size();
+                    final var spriteSize = spriteComponent.sprite.size();
                     final var spriteBounds = Bounds.atOrigin(
-                            reflectableBounds.position().x() - spriteDimension.width() / 2.0,
-                            reflectableBounds.position().y() - spriteDimension.height() / 2.0,
-                            spriteDimension.width() * spriteComponent.scale,
-                            spriteDimension.height() * spriteComponent.scale);
+                            reflectableBounds.position().x() - spriteSize.width() / 2.0,
+                            reflectableBounds.position().y() - spriteSize.height() / 2.0,
+                            spriteSize.width() * spriteComponent.scale,
+                            spriteSize.height() * spriteComponent.scale);
 
                     Vector oldPosition = spriteBounds.origin();
                     double actualY = reflectionAreaBounds.minY() +
