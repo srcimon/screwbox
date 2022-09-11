@@ -18,15 +18,15 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class GravitySystemTest {
 
     @Test
-    void update_updatesEntitiesWithGravity(DefaultEntities entityEngine, GameLoop loop) {
+    void update_updatesEntitiesWithGravity(DefaultEntities entities, GameLoop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(new PhysicsBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));
 
-        entityEngine.add(body, gravity);
-        entityEngine.add(new GravitySystem());
+        entities.add(body, gravity);
+        entities.add(new GravitySystem());
 
-        entityEngine.update();
+        entities.update();
 
         Vector momentum = body.get(PhysicsBodyComponent.class).momentum;
         assertThat(momentum).isEqualTo(Vector.of(0, 5));

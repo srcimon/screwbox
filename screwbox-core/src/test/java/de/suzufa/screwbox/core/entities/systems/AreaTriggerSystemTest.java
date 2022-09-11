@@ -19,7 +19,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class AreaTriggerSystemTest {
 
     @Test
-    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEntities entityEngine) {
+    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEntities entities) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -29,16 +29,16 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
                 new StaticMarkerComponent());
 
-        entityEngine.add(deathTrap, sheepDeterminedToDie);
-        entityEngine.add(new AreaTriggerSystem());
+        entities.add(deathTrap, sheepDeterminedToDie);
+        entities.add(new AreaTriggerSystem());
 
-        entityEngine.update();
+        entities.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isTrue();
     }
 
     @Test
-    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEntities entityEngine) {
+    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEntities entities) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -49,10 +49,10 @@ class AreaTriggerSystemTest {
                 new SignalComponent(),
                 new StaticMarkerComponent());
 
-        entityEngine.add(deathTrap, birdWatchingSheepDie);
-        entityEngine.add(new AreaTriggerSystem());
+        entities.add(deathTrap, birdWatchingSheepDie);
+        entities.add(new AreaTriggerSystem());
 
-        entityEngine.update();
+        entities.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isFalse();
     }

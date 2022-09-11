@@ -18,32 +18,32 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class AutoRotationSystemTest {
 
     @Test
-    void update_rotationNonZero_updatesSpriteRotation(DefaultEntities entityEngine) {
+    void update_rotationNonZero_updatesSpriteRotation(DefaultEntities entities) {
         Entity body = new Entity().add(
                 new SpriteComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entityEngine.add(body)
+        entities.add(body)
                 .add(new AutoRotationSystem());
 
-        entityEngine.update();
+        entities.update();
 
         var rotation = body.get(SpriteComponent.class).rotation;
         assertThat(rotation.degrees()).isEqualTo(135);
     }
 
     @Test
-    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEntities entityEngine) {
+    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEntities entities) {
         Entity body = new Entity().add(
                 new SpriteComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.zero()));
 
-        entityEngine.add(body)
+        entities.add(body)
                 .add(new AutoRotationSystem());
 
-        entityEngine.update();
+        entities.update();
 
         var rotation = body.get(SpriteComponent.class).rotation;
         assertThat(rotation.isNone()).isTrue();

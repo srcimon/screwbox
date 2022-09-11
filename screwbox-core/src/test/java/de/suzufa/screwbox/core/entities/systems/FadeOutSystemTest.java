@@ -18,31 +18,31 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class FadeOutSystemTest {
 
     @Test
-    void update_reduecesOpacityOfSprites(DefaultEntities entityEngine, GameLoop loop) {
+    void update_reduecesOpacityOfSprites(DefaultEntities entities, GameLoop loop) {
         when(loop.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));
 
-        entityEngine.add(smoke);
-        entityEngine.add(new FadeOutSystem());
+        entities.add(smoke);
+        entities.add(new FadeOutSystem());
 
-        entityEngine.update();
+        entities.update();
 
         Percentage opacity = smoke.get(SpriteComponent.class).opacity;
         assertThat(opacity).isEqualTo(Percentage.of(0.5));
     }
 
     @Test
-    void update_removesOutFadedComponents(DefaultEntities entityEngine, GameLoop loop) {
+    void update_removesOutFadedComponents(DefaultEntities entities, GameLoop loop) {
         when(loop.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));
 
-        entityEngine.add(smoke);
-        entityEngine.add(new FadeOutSystem());
+        entities.add(smoke);
+        entities.add(new FadeOutSystem());
 
-        entityEngine.updateTimes(3);
+        entities.updateTimes(3);
 
-        assertThat(entityEngine.entityCount()).isZero();
+        assertThat(entities.entityCount()).isZero();
     }
 }

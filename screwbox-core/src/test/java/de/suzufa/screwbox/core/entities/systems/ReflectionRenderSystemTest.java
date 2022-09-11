@@ -41,7 +41,7 @@ class ReflectionRenderSystemTest {
     ArgumentCaptor<Bounds> restrictedArea;
 
     @Test
-    void update_entityInReflectedArea_drawsReflection(DefaultEntities entityEngine, GameLoop loop, World world) {
+    void update_entityInReflectedArea_drawsReflection(DefaultEntities entities, GameLoop loop, World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
 
@@ -53,11 +53,11 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entityEngine.add(body)
+        entities.add(body)
                 .add(mirror)
                 .add(new ReflectionRenderSystem());
 
-        entityEngine.update();
+        entities.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
 
@@ -73,7 +73,7 @@ class ReflectionRenderSystemTest {
     }
 
     @RepeatedTest(2)
-    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEntities entityEngine, GameLoop loop,
+    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEntities entities, GameLoop loop,
             World world) {
         when(loop.lastUpdate()).thenReturn(Time.now());
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
@@ -86,18 +86,18 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(2000, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entityEngine.add(body)
+        entities.add(body)
                 .add(mirror)
                 .add(new ReflectionRenderSystem());
 
-        entityEngine.update();
+        entities.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
         assertThat(spriteBatch.getValue().entriesInDrawOrder()).isEmpty();
     }
 
     @Test
-    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEntities entityEngine, GameLoop loop,
+    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEntities entities, GameLoop loop,
             World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
@@ -110,11 +110,11 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent(Percentage.half(), true));
 
-        entityEngine.add(body)
+        entities.add(body)
                 .add(mirror)
                 .add(new ReflectionRenderSystem());
 
-        entityEngine.update();
+        entities.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
 

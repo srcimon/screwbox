@@ -22,23 +22,23 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class PhysicsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEntities entityEngine, GameLoop loop) {
+    void update_updatesPositionOfPhysicItems(DefaultEntities entities, GameLoop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entityEngine.add(body);
-        entityEngine.add(new PhysicsSystem());
+        entities.add(body);
+        entities.add(new PhysicsSystem());
 
-        entityEngine.update();
+        entities.update();
 
         Vector center = body.get(TransformComponent.class).bounds.position();
         assertThat(center).isEqualTo(Vector.of(2, 2));
     }
 
     @Test
-    void update_physicBodiesCollideWithEnvironment(DefaultEntities entityEngine, GameLoop loop) {
+    void update_physicBodiesCollideWithEnvironment(DefaultEntities entities, GameLoop loop) {
         when(loop.delta()).thenReturn(0.8);
 
         Entity ball = new Entity().add(
@@ -52,14 +52,14 @@ class PhysicsSystemTest {
 
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 20)));
 
-        entityEngine.add(ball, ground, gravity);
+        entities.add(ball, ground, gravity);
 
-        entityEngine.add(
+        entities.add(
                 new PhysicsSystem(),
                 new GravitySystem(),
                 new CollisionSensorSystem());
 
-        entityEngine.updateTimes(6);
+        entities.updateTimes(6);
 
         Vector ballPosition = ball.get(TransformComponent.class).bounds.position();
         assertThat(ballPosition).isEqualTo(Vector.of(60, 190));

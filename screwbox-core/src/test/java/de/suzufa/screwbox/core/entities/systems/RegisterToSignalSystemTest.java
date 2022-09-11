@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class RegisterToSignalSystemTest {
 
     @Test
-    void update_registersAllSignalReceiversToSender(DefaultEntities entityEngine) {
+    void update_registersAllSignalReceiversToSender(DefaultEntities entities) {
         Entity sender = new Entity(4711).add(
                 new ForwardSignalComponent());
 
@@ -26,30 +26,30 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entityEngine.add(sender, receiverA, receiverB);
-        entityEngine.add(new RegisterToSignalSystem());
+        entities.add(sender, receiverA, receiverB);
+        entities.add(new RegisterToSignalSystem());
 
-        entityEngine.update();
+        entities.update();
 
         var listenerIds = sender.get(ForwardSignalComponent.class).listenerIds;
         assertThat(listenerIds).contains(10, 11);
     }
 
     @Test
-    void update_raisesExceptionOnMissingSender(DefaultEntities entityEngine) {
+    void update_raisesExceptionOnMissingSender(DefaultEntities entities) {
         Entity receiver = new Entity(10).add(
                 new RegisterToSignalComponent(4711));
 
-        entityEngine.add(receiver);
-        entityEngine.add(new RegisterToSignalSystem());
+        entities.add(receiver);
+        entities.add(new RegisterToSignalSystem());
 
-        assertThatThrownBy(() -> entityEngine.update())
+        assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("could not find entity with id 4711");
     }
 
     @Test
-    void update_removesComponentsAndItselfWhenNotNeededAnymore(DefaultEntities entityEngine) {
+    void update_removesComponentsAndItselfWhenNotNeededAnymore(DefaultEntities entities) {
         Entity sender = new Entity(4711).add(
                 new ForwardSignalComponent());
 
@@ -59,13 +59,13 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entityEngine.add(sender, receiverA, receiverB);
-        entityEngine.add(new RegisterToSignalSystem());
+        entities.add(sender, receiverA, receiverB);
+        entities.add(new RegisterToSignalSystem());
 
-        entityEngine.updateTimes(2);
+        entities.updateTimes(2);
 
         assertThat(receiverA.hasComponent(RegisterToSignalComponent.class)).isFalse();
         assertThat(receiverB.hasComponent(RegisterToSignalComponent.class)).isFalse();
-        assertThat(entityEngine.getSystems()).isEmpty();
+        assertThat(entities.getSystems()).isEmpty();
     }
 }

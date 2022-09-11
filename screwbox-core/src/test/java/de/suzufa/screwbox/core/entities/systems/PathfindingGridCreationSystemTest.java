@@ -24,17 +24,17 @@ import de.suzufa.screwbox.core.utils.Timer;
 class PathfindingGridCreationSystemTest {
 
     @Test
-    void update_noWorldBounds_throwsException(DefaultEntities entityEngine) {
+    void update_noWorldBounds_throwsException(DefaultEntities entities) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
-        entityEngine.add(new PathfindingGridCreationSystem(16, timer));
+        entities.add(new PathfindingGridCreationSystem(16, timer));
 
-        assertThatThrownBy(() -> entityEngine.update())
+        assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("didn't find exactly one entity matching Archetype");
     }
 
     @Test
-    void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entityEngine, Physics physics) {
+    void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entities, Physics physics) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
@@ -47,13 +47,13 @@ class PathfindingGridCreationSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        entityEngine
+        entities
                 .add(new PathfindingGridCreationSystem(100, timer))
                 .add(wall)
                 .add(air)
                 .add(worldBounds);
 
-        entityEngine.update();
+        entities.update();
 
         var gridCaptor = ArgumentCaptor.forClass(Grid.class);
         verify(physics).updatePathfindingGrid(gridCaptor.capture());

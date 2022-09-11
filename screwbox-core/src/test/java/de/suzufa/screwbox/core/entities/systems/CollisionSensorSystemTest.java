@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class CollisionSensorSystemTest {
 
     @Test
-    void update_informsCollidedEntities(DefaultEntities entityEngine) {
+    void update_informsCollidedEntities(DefaultEntities entities) {
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 2, 2)),
                 new ColliderComponent());
@@ -26,17 +26,17 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        entityEngine.add(ball, player)
+        entities.add(ball, player)
                 .add(new CollisionSensorSystem());
 
-        entityEngine.update();
+        entities.update();
 
         var collidedEntities = player.get(CollisionSensorComponent.class).collidedEntities;
         assertThat(collidedEntities).contains(ball);
     }
 
     @Test
-    void update_ignoresNonCollidedEntities(DefaultEntities entityEngine) {
+    void update_ignoresNonCollidedEntities(DefaultEntities entities) {
         Entity bird = new Entity().add(
                 new TransformComponent(Bounds.atPosition(20, 10, 2, 2)),
                 new ColliderComponent());
@@ -45,10 +45,10 @@ class CollisionSensorSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionSensorComponent());
 
-        entityEngine.add(bird, player)
+        entities.add(bird, player)
                 .add(new CollisionSensorSystem());
 
-        entityEngine.update();
+        entities.update();
 
         var collidedEntities = player.get(CollisionSensorComponent.class).collidedEntities;
         assertThat(collidedEntities).isEmpty();

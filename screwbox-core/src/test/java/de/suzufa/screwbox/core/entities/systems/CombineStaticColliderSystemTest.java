@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class CombineStaticColliderSystemTest {
 
     @Test
-    void update_combinesHorizontallyAlignedColliders(DefaultEntities entityEngine) {
+    void update_combinesHorizontallyAlignedColliders(DefaultEntities entities) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -34,20 +34,20 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 20)));
 
-        entityEngine.add(brickA, brickB, brickC);
-        entityEngine.add(new CombineStaticCollidersSystem());
+        entities.add(brickA, brickB, brickC);
+        entities.add(new CombineStaticCollidersSystem());
 
-        entityEngine.update(); // one brick per cycle aligned
-        entityEngine.update(); // ...and another one
+        entities.update(); // one brick per cycle aligned
+        entities.update(); // ...and another one
 
-        var colliders = entityEngine.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
         var bounds = colliders.get(0).get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 60, 20));
     }
 
     @Test
-    void update_combinesVerticallyAlignedColliders(DefaultEntities entityEngine) {
+    void update_combinesVerticallyAlignedColliders(DefaultEntities entities) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -63,20 +63,20 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 40, 20, 20)));
 
-        entityEngine.add(brickA, brickB, brickC);
-        entityEngine.add(new CombineStaticCollidersSystem());
+        entities.add(brickA, brickB, brickC);
+        entities.add(new CombineStaticCollidersSystem());
 
-        entityEngine.update(); // one brick per cycle aligned
-        entityEngine.update(); // ...and another one
+        entities.update(); // one brick per cycle aligned
+        entities.update(); // ...and another one
 
-        var colliders = entityEngine.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
         var bounds = colliders.get(0).get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 20, 60));
     }
 
     @Test
-    void update_ignoresDifferentColliders(DefaultEntities entityEngine) {
+    void update_ignoresDifferentColliders(DefaultEntities entities) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(4),
@@ -92,21 +92,21 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 30)));
 
-        entityEngine.add(brickA, brickB, brickC);
-        entityEngine.add(new CombineStaticCollidersSystem());
+        entities.add(brickA, brickB, brickC);
+        entities.add(new CombineStaticCollidersSystem());
 
-        entityEngine.update();
+        entities.update();
 
-        var colliders = entityEngine.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
         assertThat(colliders).hasSize(3);
     }
 
     @Test
-    void update_removesItselfAfterFinishingAllColliders(DefaultEntities entityEngine) {
-        entityEngine.add(new CombineStaticCollidersSystem());
+    void update_removesItselfAfterFinishingAllColliders(DefaultEntities entities) {
+        entities.add(new CombineStaticCollidersSystem());
 
-        entityEngine.update();
+        entities.update();
 
-        assertThat(entityEngine.getSystems()).isEmpty();
+        assertThat(entities.getSystems()).isEmpty();
     }
 }

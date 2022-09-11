@@ -87,60 +87,60 @@ class StateSystemTest {
     }
 
     @Test
-    void update_firstStateEnterMethodIsExecuted(DefaultEntities entityEngine) {
+    void update_firstStateEnterMethodIsExecuted(DefaultEntities entities) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entityEngine.add(entity);
-        entityEngine.add(new StateSystem());
+        entities.add(entity);
+        entities.add(new StateSystem());
 
-        entityEngine.update();
+        entities.update();
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(PingState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);
     }
 
     @Test
-    void update_nextStateIsNull_throwsException(DefaultEntities entityEngine) {
+    void update_nextStateIsNull_throwsException(DefaultEntities entities) {
         Entity entity = new Entity().add(
                 new StateComponent(new NextStateIsNull()),
                 new CounterComponent());
 
-        entityEngine
+        entities
                 .add(entity)
                 .add(new StateSystem());
 
-        assertThatThrownBy(() -> entityEngine.updateTimes(2))
+        assertThatThrownBy(() -> entities.updateTimes(2))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Next state must not be null. Returned from EntityState: NextStateIsNull");
     }
 
     @Test
-    void update_updatesState(DefaultEntities entityEngine) {
+    void update_updatesState(DefaultEntities entities) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entityEngine.add(entity);
-        entityEngine.add(new StateSystem());
+        entities.add(entity);
+        entities.add(new StateSystem());
 
-        entityEngine.updateTimes(6);
+        entities.updateTimes(6);
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(PongState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(5);
     }
 
     @Test
-    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEntities entityEngine) {
+    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEntities entities) {
         Entity entity = new Entity().add(
                 new StateComponent(new BoringState()),
                 new CounterComponent());
 
-        entityEngine.add(entity);
-        entityEngine.add(new StateSystem());
+        entities.add(entity);
+        entities.add(new StateSystem());
 
-        entityEngine.updateTimes(6);
+        entities.updateTimes(6);
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(BoringState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);
