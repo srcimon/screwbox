@@ -133,9 +133,12 @@ public final class Bounds implements Serializable {
         return Bounds.atPosition(position, width() + inflation, height() + inflation);
     }
 
-    // TODO: javadoc and test
+    /**
+     * Same as {@link #inflated(double)} but only inflates the top {@link Segment}
+     * of the {@link Bounds}.
+     */
     public Bounds inflatedTop(int value) {
-        return Bounds.atPosition(position.addY(-value), width(), height() + value);
+        return Bounds.atOrigin(origin.addY(-value), width(), height() + value);
     }
 
     /**

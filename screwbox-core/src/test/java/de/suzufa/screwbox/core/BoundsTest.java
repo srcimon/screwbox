@@ -29,7 +29,15 @@ class BoundsTest {
         Bounds player = $$(10, 10, 20, 20);
         Bounds playerAfterLargeMeal = player.inflated(2);
 
-        assertThat(playerAfterLargeMeal).isEqualTo(Bounds.atOrigin(9, 9, 22, 22));
+        assertThat(playerAfterLargeMeal).isEqualTo($$(9, 9, 22, 22));
+    }
+
+    @Test
+    void inflatedTop_returnsNewLargerInstance() {
+        Bounds player = $$(10, 10, 20, 20);
+        Bounds playerAfterStrechingLegs = player.inflatedTop(2);
+
+        assertThat(playerAfterStrechingLegs).isEqualTo($$(10, 8, 20, 22));
     }
 
     @Test
