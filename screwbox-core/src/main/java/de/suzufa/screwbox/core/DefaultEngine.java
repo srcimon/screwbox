@@ -101,7 +101,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Entities entities() {
-        return scenes.activeEntityEngine();
+        return scenes.activeEntities();
     }
 
     @Override

@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.scenes.Scene;
 public class GameScene implements Scene {
 
     @Override
-    public void initialize(Entities entityEngine) {
+    public void initialize(Entities entities) {
     }
 
 }

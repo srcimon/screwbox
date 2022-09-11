@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entities.Entities;
 
 public interface Scene {
 
-    default void initialize(Entities entityEngine) {
+    default void initialize(Entities entities) {
     }
 
     default void onEnter(Engine engine) {

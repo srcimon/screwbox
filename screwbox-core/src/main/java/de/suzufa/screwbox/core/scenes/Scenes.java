@@ -18,6 +18,6 @@ public interface Scenes {
 
     int sceneCount();
 
-    Entities entityEngineOf(Class<? extends Scene> sceneClass);
+    Entities entitiesOf(Class<? extends Scene> sceneClass);
 
 }

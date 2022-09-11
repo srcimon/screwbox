@@ -20,17 +20,17 @@ import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 public final class SelectEntityBuilder {
 
     private final List<EntitySearchFilter> filters = new ArrayList<>();
-    private final Entities entityEngine;
+    private final Entities entities;
 
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public SelectEntityBuilder(final Entities entityEngine, final Bounds bounds) {
-        this.entityEngine = entityEngine;
+    public SelectEntityBuilder(final Entities entities, final Bounds bounds) {
+        this.entities = entities;
         filters.add(new EntityNotInRangeFilter(bounds));
     }
 
-    public SelectEntityBuilder(final Entities entityEngine, final Vector position) {
-        this.entityEngine = entityEngine;
+    public SelectEntityBuilder(final Entities entities, final Vector position) {
+        this.entities = entities;
         filters.add(new EntityContainsPositionFilter(position));
     }
 
@@ -49,7 +49,7 @@ public final class SelectEntityBuilder {
     }
 
     public Optional<Entity> selectAny() {
-        for (final Entity entity : entityEngine.fetchAll(archetype)) {
+        for (final Entity entity : entities.fetchAll(archetype)) {
             if (isNotFiltered(entity)) {
                 return Optional.of(entity);
             }
@@ -67,13 +67,13 @@ public final class SelectEntityBuilder {
     }
 
     public List<Entity> selectAll() {
-        var entities = new ArrayList<Entity>();
-        for (final Entity entity : entityEngine.fetchAll(archetype)) {
-            if (isNotFiltered(entity)) {
-                entities.add(entity);
+        var selectedEntities = new ArrayList<Entity>();
+        for (final Entity foundEntities : entities.fetchAll(archetype)) {
+            if (isNotFiltered(foundEntities)) {
+                selectedEntities.add(foundEntities);
             }
         }
-        return entities;
+        return selectedEntities;
     }
 
 }

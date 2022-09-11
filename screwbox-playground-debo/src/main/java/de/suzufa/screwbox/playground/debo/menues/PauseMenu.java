@@ -23,7 +23,7 @@ public class PauseMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                List<Entity> allEntities = engine.scenes().entityEngineOf(GameScene.class).allEntities();
+                List<Entity> allEntities = engine.scenes().entitiesOf(GameScene.class).allEntities();
                 serialize(allEntities, "savegame.sav");
                 new PauseMenuResumeGame().onActivate(engine);
             }
@@ -44,7 +44,7 @@ public class PauseMenu extends UiMenu {
             @Override
             public void onActivate(Engine engine) {
                 List<Entity> allEntities = deserialize("savegame.sav");
-                Entities entityEngine = engine.scenes().entityEngineOf(GameScene.class);
+                Entities entityEngine = engine.scenes().entitiesOf(GameScene.class);
                 for (Entity entity : entityEngine.allEntities()) {
                     entityEngine.remove(entity);
                 }

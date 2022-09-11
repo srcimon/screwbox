@@ -19,14 +19,14 @@ import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public final class RaycastBuilder {
 
-    private final Entities entityEngine;
+    private final Entities entities;
     private final Vector from;
     private final List<EntitySearchFilter> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public RaycastBuilder(final Entities entityEngine, final Vector from) {
-        this.entityEngine = entityEngine;
+    public RaycastBuilder(final Entities entities, final Vector from) {
+        this.entities = entities;
         this.from = from;
     }
 
@@ -43,8 +43,8 @@ public final class RaycastBuilder {
         return this;
     }
 
-    public RaycastBuilder ignoringEntities(final Entity... entities) {
-        filters.add(new EntityIsInRaycastFilter(entities));
+    public RaycastBuilder ignoringEntities(final Entity... ignoredEntities) {
+        filters.add(new EntityIsInRaycastFilter(ignoredEntities));
         return this;
     }
 
@@ -64,8 +64,8 @@ public final class RaycastBuilder {
 
     public Raycast castingTo(final Vector to) {
         final var ray = Segment.between(from, to);
-        final List<Entity> entities = entityEngine.fetchAll(archetype);
-        return new Raycast(ray, entities, filters, borders.extractSegmentsMethod());
+        final List<Entity> matchingEntities = entities.fetchAll(archetype);
+        return new Raycast(ray, matchingEntities, filters, borders.extractSegmentsMethod());
     }
 
     public Raycast castingVertical(final double length) {
