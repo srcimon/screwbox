@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.physics.internal;
 
 import java.util.List;
 
-import de.suzufa.screwbox.core.entityengine.Entity;
+import de.suzufa.screwbox.core.entities.Entity;
 
 public final class EntityIsInRaycastFilter implements EntitySearchFilter {
 

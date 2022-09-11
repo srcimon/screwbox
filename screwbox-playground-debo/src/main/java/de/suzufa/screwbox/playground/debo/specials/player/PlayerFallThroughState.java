@@ -3,9 +3,9 @@ package de.suzufa.screwbox.playground.debo.specials.player;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 

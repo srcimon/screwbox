@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.playground.debo.effects;
 
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
 import de.suzufa.screwbox.tiled.Layer;

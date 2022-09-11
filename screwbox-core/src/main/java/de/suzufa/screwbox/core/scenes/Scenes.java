@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.core.scenes;
 
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 
 public interface Scenes {
 
@@ -18,6 +18,6 @@ public interface Scenes {
 
     int sceneCount();
 
-    EntityEngine entityEngineOf(Class<? extends Scene> sceneClass);
+    Entities entitiesOf(Class<? extends Scene> sceneClass);
 
 }

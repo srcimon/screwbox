@@ -5,11 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
@@ -24,7 +24,7 @@ public class BackgroundSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var cameraPosition = engine.graphics().cameraPosition();
-        final List<Entity> backgroundEntities = engine.entityEngine().fetchAll(BACKGROUNDS);
+        final List<Entity> backgroundEntities = engine.entities().fetchAll(BACKGROUNDS);
 
         Collections.sort(backgroundEntities, BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {

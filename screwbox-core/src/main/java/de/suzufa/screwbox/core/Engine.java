@@ -1,8 +1,9 @@
 package de.suzufa.screwbox.core;
 
 import de.suzufa.screwbox.core.audio.Audio;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -24,7 +25,11 @@ import de.suzufa.screwbox.core.ui.UiMenu;
  */
 public interface Engine {
 
-    EntityEngine entityEngine();
+    /**
+     * Returns the games {@link Entity} management system. This is where all the
+     * game logic and objects are kept.
+     */
+    Entities entities();
 
     /**
      * Provides access to current performance metrics and to controls the target

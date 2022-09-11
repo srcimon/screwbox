@@ -6,12 +6,12 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.utils.MathUtil;
@@ -27,7 +27,7 @@ public class ShadowSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity shadowCaster : engine.entityEngine().fetchAll(SHADOW_CASTERS)) {
+        for (final Entity shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
             final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.size().width(),
                     SHADOW.size().height());
             final int drawOrder = shadowCaster.get(SpriteComponent.class).drawOrder;
@@ -35,13 +35,13 @@ public class ShadowSystem implements EntitySystem {
                     new TransformComponent(bounds),
                     new SpriteComponent(SHADOW, drawOrder),
                     new ShadowComponent(shadowCaster.id().orElseThrow()));
-            engine.entityEngine().add(shadow);
+            engine.entities().add(shadow);
             shadowCaster.remove(CastShadowComponent.class);
         }
 
-        for (final Entity shadow : engine.entityEngine().fetchAll(SHADOWS)) {
+        for (final Entity shadow : engine.entities().fetchAll(SHADOWS)) {
             final int linkedId = shadow.get(ShadowComponent.class).linkedTo;
-            final var linked = engine.entityEngine().fetchById(linkedId);
+            final var linked = engine.entities().fetchById(linkedId);
             if (linked.isPresent()) {
                 final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
                 final Optional<Vector> position = engine.physics()
@@ -62,7 +62,7 @@ public class ShadowSystem implements EntitySystem {
                     shadow.get(SpriteComponent.class).opacity = Percentage.of(calculatedOpacity);
                 }
             } else {
-                engine.entityEngine().remove(shadow);
+                engine.entities().remove(shadow);
             }
         }
     }

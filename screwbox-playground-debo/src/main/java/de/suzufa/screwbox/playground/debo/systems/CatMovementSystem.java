@@ -10,15 +10,15 @@ import java.util.Optional;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.StateComponent;
-import de.suzufa.screwbox.core.entityengine.components.TimeoutComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.StateComponent;
+import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.CatMarkerComponent;
 import de.suzufa.screwbox.playground.debo.components.NavpointComponent;
@@ -63,12 +63,12 @@ public class CatMovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> catEntity = engine.entityEngine().fetch(CAT);
+        Optional<Entity> catEntity = engine.entities().fetch(CAT);
         if (catEntity.isEmpty()) {
             return;
         }
 
-        Entity player = engine.entityEngine().forcedFetch(PLAYER);
+        Entity player = engine.entities().forcedFetch(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
         var flipMode = player.get(SpriteComponent.class).flipMode;
@@ -77,9 +77,9 @@ public class CatMovementSystem implements EntitySystem {
                 new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
                 new NavpointComponent(state.getClass(), flipMode));
 
-        engine.entityEngine().add(navpoint);
+        engine.entities().add(navpoint);
 
-        List<Entity> navpoints = engine.entityEngine().fetchAll(NAVPOINTS);
+        List<Entity> navpoints = engine.entities().fetchAll(NAVPOINTS);
         if (navpoints.isEmpty()) {
             return;
         }

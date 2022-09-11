@@ -1,11 +1,11 @@
 package de.suzufa.screwbox.playground.debo.zones;
 
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.SignalComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;

@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.playground.debo.components.BackgroundHolderComponent;
 import de.suzufa.screwbox.playground.debo.components.ScreenshotComponent;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
@@ -15,8 +15,8 @@ public class GetSreenshotOfGameSceneSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var holder = engine.entityEngine().forcedFetch(HOLDER).get(BackgroundHolderComponent.class);
-        Entity screenshotEntity = engine.scenes().entityEngineOf(GameScene.class).forcedFetch(SCREENSHOT);
+        var holder = engine.entities().forcedFetch(HOLDER).get(BackgroundHolderComponent.class);
+        Entity screenshotEntity = engine.scenes().entitiesOf(GameScene.class).forcedFetch(SCREENSHOT);
         holder.background = screenshotEntity.get(ScreenshotComponent.class).screenshot;
 
     }

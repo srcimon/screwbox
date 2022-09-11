@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.playground.debo.components.MovableComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -24,7 +24,7 @@ public class MovableSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.entityEngine().forcedFetch(PLAYER);
+        Entity player = engine.entities().forcedFetch(PLAYER);
         var playerMomentum = player.get(PhysicsBodyComponent.class).momentum;
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 

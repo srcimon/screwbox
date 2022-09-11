@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.components;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Component;
+import de.suzufa.screwbox.core.entities.Component;
 
 public class VanishingOnCollisionComponent implements Component {
 

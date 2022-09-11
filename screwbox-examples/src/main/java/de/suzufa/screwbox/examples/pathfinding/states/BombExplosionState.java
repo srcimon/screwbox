@@ -6,10 +6,10 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.audio.Sound;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import de.suzufa.screwbox.tiled.Tileset;
@@ -34,13 +34,13 @@ public class BombExplosionState implements EntityState {
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
-        engine.entityEngine().remove(entitiesInExplosionRange);
+        engine.entities().remove(entitiesInExplosionRange);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
         if (Time.now().isAfter(endOfAnimation)) {
-            engine.entityEngine().remove(entity);
+            engine.entities().remove(entity);
         }
         return this;
     }

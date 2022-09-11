@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.ScreenshotComponent;
 import de.suzufa.screwbox.playground.debo.scenes.PauseScene;
@@ -18,7 +18,7 @@ public class PauseSystem implements EntitySystem {
                 || engine.keyboard().justPressed(Key.ESCAPE)
                 || !engine.graphics().window().hasFocus()) {
 
-            Entity screenshotEntity = engine.entityEngine().forcedFetch(SCREENSHOT);
+            Entity screenshotEntity = engine.entities().forcedFetch(SCREENSHOT);
             screenshotEntity.get(ScreenshotComponent.class).screenshot = engine.graphics().window().takeScreenshot();
             engine.audio().stopAllSounds();
             engine.scenes().switchTo(PauseScene.class);

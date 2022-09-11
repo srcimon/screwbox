@@ -3,27 +3,27 @@ package de.suzufa.screwbox.examples.pathfinding.scenes;
 import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.AutoRotationComponent;
-import de.suzufa.screwbox.core.entityengine.components.AutomovementComponent;
-import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
-import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
-import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
-import de.suzufa.screwbox.core.entityengine.components.PathfindingBlockingComponent;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.entityengine.systems.AutoRotationSystem;
-import de.suzufa.screwbox.core.entityengine.systems.AutomovementDebugSystem;
-import de.suzufa.screwbox.core.entityengine.systems.AutomovementSystem;
-import de.suzufa.screwbox.core.entityengine.systems.CameraMovementSystem;
-import de.suzufa.screwbox.core.entityengine.systems.PathfindingGridCreationSystem;
-import de.suzufa.screwbox.core.entityengine.systems.PhysicsSystem;
-import de.suzufa.screwbox.core.entityengine.systems.SpriteRenderSystem;
-import de.suzufa.screwbox.core.entityengine.systems.StateSystem;
+import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.AutoRotationComponent;
+import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
+import de.suzufa.screwbox.core.entities.components.CameraComponent;
+import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
+import de.suzufa.screwbox.core.entities.components.ColliderComponent;
+import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
+import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
+import de.suzufa.screwbox.core.entities.systems.AutomovementDebugSystem;
+import de.suzufa.screwbox.core.entities.systems.AutomovementSystem;
+import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
+import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
+import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
+import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.StateSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -45,11 +45,10 @@ public class DemoScene implements Scene {
     }
 
     @Override
-    public void initialize(final EntityEngine entityEngine) {
-        importEntities(entityEngine);
+    public void initialize(final Entities entities) {
+        importEntities(entities);
 
-        entityEngine
-                .add(new SpriteRenderSystem())
+        entities.add(new SpriteRenderSystem())
                 .add(new CameraMovementSystem())
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
@@ -62,16 +61,16 @@ public class DemoScene implements Scene {
                 .add(new PhysicsSystem());
     }
 
-    void importEntities(final EntityEngine entityEngine) {
-        entityEngine.importSource(map.tiles())
+    void importEntities(final Entities entities) {
+        entities.importSource(map.tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entityEngine.importSource(map)
+        entities.importSource(map)
                 .as(worldBounds());
 
-        entityEngine.importSource(map.objects())
+        entities.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
@@ -124,5 +123,4 @@ public class DemoScene implements Scene {
                 .add(new TransformComponent(map.bounds()))
                 .add(new WorldBoundsComponent());
     }
-
 }

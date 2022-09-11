@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.CameraMovementComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
@@ -20,14 +20,14 @@ public class CameraShiftSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.entityEngine().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.entities().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
 
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
-        var cameraTrackerComponent = engine.entityEngine().forcedFetch(CAMERA).get(CameraMovementComponent.class);
+        var cameraTrackerComponent = engine.entities().forcedFetch(CAMERA).get(CameraMovementComponent.class);
         if (FlipMode.HORIZONTAL.equals(player.get(SpriteComponent.class).flipMode)) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,

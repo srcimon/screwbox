@@ -36,17 +36,17 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public RaycastBuilder raycastFrom(final Vector position) {
-        return new RaycastBuilder(engine.entityEngine(), position);
+        return new RaycastBuilder(engine.entities(), position);
     }
 
     @Override
     public SelectEntityBuilder searchAtPosition(final Vector position) {
-        return new SelectEntityBuilder(engine.entityEngine(), position);
+        return new SelectEntityBuilder(engine.entities(), position);
     }
 
     @Override
     public SelectEntityBuilder searchInRange(final Bounds range) {
-        return new SelectEntityBuilder(engine.entityEngine(), range);
+        return new SelectEntityBuilder(engine.entities(), range);
     }
 
     public PathfindingAlgorithm algorithm() {

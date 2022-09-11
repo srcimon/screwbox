@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.playground.debo.map;
 
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.GravityComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.GravityComponent;
 import de.suzufa.screwbox.tiled.Map;
 
 public class MapGravity implements Converter<Map> {

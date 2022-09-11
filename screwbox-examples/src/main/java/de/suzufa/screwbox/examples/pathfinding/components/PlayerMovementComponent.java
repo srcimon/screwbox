@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.examples.pathfinding.components;
 
-import de.suzufa.screwbox.core.entityengine.Component;
+import de.suzufa.screwbox.core.entities.Component;
 
 public class PlayerMovementComponent implements Component {
 

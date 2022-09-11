@@ -1,10 +1,10 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.components.CameraComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
 
 public class ZoomSystem implements EntitySystem {
@@ -13,7 +13,7 @@ public class ZoomSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity camera = engine.entityEngine().forcedFetch(CAMERA);
+        Entity camera = engine.entities().forcedFetch(CAMERA);
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
             camera.get(CameraComponent.class).zoom += engine.loop().delta() * 2.5;

@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.AudioAdapter;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
@@ -100,8 +100,8 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public EntityEngine entityEngine() {
-        return scenes.activeEntityEngine();
+    public Entities entities() {
+        return scenes.activeEntities();
     }
 
     @Override

@@ -7,13 +7,13 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.audio.Sound;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.CollisionSensorComponent;
-import de.suzufa.screwbox.core.entityengine.components.FadeOutComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
+import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.utils.ListUtil;
 import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
@@ -31,7 +31,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Time now = engine.loop().lastUpdate();
 
-        Entity player = engine.entityEngine().forcedFetch(PLAYER);
+        Entity player = engine.entities().forcedFetch(PLAYER);
         Bounds playerBounds = player.get(TransformComponent.class).bounds;
 
         List<Entity> activatedEntities = ListUtil.merge(
@@ -56,7 +56,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
             }
         }
 
-        for (Entity vanishEntity : engine.entityEngine().fetchAll(VANISHINGS)) {
+        for (Entity vanishEntity : engine.entities().fetchAll(VANISHINGS)) {
             if (now.isAfter(vanishEntity.get(VanishingOnCollisionComponent.class).vanishTime)) {
                 Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
                 Vector targetPosition = center.addY(200);

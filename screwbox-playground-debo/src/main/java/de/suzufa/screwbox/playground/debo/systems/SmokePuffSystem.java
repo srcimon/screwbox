@@ -4,13 +4,13 @@ import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.FadeOutComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.SmokeEmitterComponent;
 import de.suzufa.screwbox.tiled.Tileset;
 
@@ -23,7 +23,7 @@ public class SmokePuffSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var playerEntity = engine.entityEngine().fetch(PLAYER);
+        var playerEntity = engine.entities().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
                     new SpriteComponent(randomFrom(SPRITES.all()), order)
 
             );
-            engine.entityEngine().add(smokePuff);
+            engine.entities().add(smokePuff);
         }
     }
 

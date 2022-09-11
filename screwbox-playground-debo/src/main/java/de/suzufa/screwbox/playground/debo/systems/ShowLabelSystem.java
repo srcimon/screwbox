@@ -4,12 +4,12 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.SignalComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.playground.debo.components.LabelComponent;
@@ -21,7 +21,7 @@ public class ShowLabelSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAll(LABELD)) {
+        for (Entity entity : engine.entities().fetchAll(LABELD)) {
             if (entity.get(SignalComponent.class).isTriggered) {
                 LabelComponent labelComponent = entity.get(LabelComponent.class);
                 Bounds bounds = entity.get(TransformComponent.class).bounds;

@@ -2,11 +2,11 @@ package de.suzufa.screwbox.playground.debo.enemies.slime;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TimeoutComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;

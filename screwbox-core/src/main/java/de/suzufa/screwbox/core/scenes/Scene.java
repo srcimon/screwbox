@@ -1,11 +1,11 @@
 package de.suzufa.screwbox.core.scenes;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 
 public interface Scene {
 
-    default void initialize(EntityEngine entityEngine) {
+    default void initialize(Entities entities) {
     }
 
     default void onEnter(Engine engine) {

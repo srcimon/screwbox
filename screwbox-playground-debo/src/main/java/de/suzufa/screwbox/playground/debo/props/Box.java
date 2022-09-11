@@ -1,12 +1,12 @@
 package de.suzufa.screwbox.playground.debo.props;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.ColliderComponent;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovableComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Tileset;

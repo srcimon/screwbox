@@ -8,8 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.ui.UiMenu;
 import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
@@ -23,7 +23,7 @@ public class PauseMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                List<Entity> allEntities = engine.scenes().entityEngineOf(GameScene.class).allEntities();
+                List<Entity> allEntities = engine.scenes().entitiesOf(GameScene.class).allEntities();
                 serialize(allEntities, "savegame.sav");
                 new PauseMenuResumeGame().onActivate(engine);
             }
@@ -44,11 +44,11 @@ public class PauseMenu extends UiMenu {
             @Override
             public void onActivate(Engine engine) {
                 List<Entity> allEntities = deserialize("savegame.sav");
-                EntityEngine entityEngine = engine.scenes().entityEngineOf(GameScene.class);
-                for (Entity entity : entityEngine.allEntities()) {
-                    entityEngine.remove(entity);
+                Entities entities = engine.scenes().entitiesOf(GameScene.class);
+                for (Entity entity : entities.allEntities()) {
+                    entities.remove(entity);
                 }
-                entityEngine.add(allEntities);
+                entities.add(allEntities);
                 new PauseMenuResumeGame().onActivate(engine);
 
             }

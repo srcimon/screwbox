@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.scenes.DefaultScene;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -34,8 +34,8 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
-    public DefaultEntityEngine activeEntityEngine() {
-        return activeScene.entityEngine();
+    public DefaultEntities activeEntities() {
+        return activeScene.entities();
     }
 
     @Override
@@ -59,10 +59,10 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes add(final Scene scene) {
         final var entityManager = new DefaultEntityManager();
         final var systemManager = new DefaultSystemManager(engine, entityManager);
-        final var entityEngine = new DefaultEntityEngine(entityManager, systemManager);
+        final var entities = new DefaultEntities(entityManager, systemManager);
 
-        final SceneContainer sceneContainer = new SceneContainer(scene, entityEngine);
-        scene.initialize(sceneContainer.entityEngine());
+        final SceneContainer sceneContainer = new SceneContainer(scene, entities);
+        scene.initialize(sceneContainer.entities());
         scenes.put(scene.getClass(), sceneContainer);
 
         if (isNull(nextActiveScene)) {
@@ -91,9 +91,9 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public EntityEngine entityEngineOf(final Class<? extends Scene> sceneClass) {
+    public Entities entitiesOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).entityEngine();
+        return scenes.get(sceneClass).entities();
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
@@ -105,7 +105,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public void update() {
         applySceneChanges();
-        activeEntityEngine().update();
+        activeEntities().update();
     }
 
     private void applySceneChanges() {

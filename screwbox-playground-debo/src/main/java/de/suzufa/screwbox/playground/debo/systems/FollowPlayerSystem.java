@@ -6,12 +6,12 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.MathUtil;
 import de.suzufa.screwbox.playground.debo.components.FollowPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -24,14 +24,14 @@ public class FollowPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.entityEngine().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.entities().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
         Entity player = playerEntity.get();
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 
-        for (Entity followEntity : engine.entityEngine().fetchAll(FOLLOWING)) {
+        for (Entity followEntity : engine.entities().fetchAll(FOLLOWING)) {
             var followComponent = followEntity.get(FollowPlayerComponent.class);
             final TransformComponent followTransform = followEntity.get(TransformComponent.class);
 

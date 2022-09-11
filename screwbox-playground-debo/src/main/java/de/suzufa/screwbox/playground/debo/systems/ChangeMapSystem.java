@@ -7,12 +7,12 @@ import java.util.List;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
-import de.suzufa.screwbox.core.entityengine.components.ScreenTransitionComponent;
-import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
+import de.suzufa.screwbox.core.entities.components.SignalComponent;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadeOutTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;
@@ -37,7 +37,7 @@ public class ChangeMapSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAll(CHANGE_MAP_ZONES)) {
+        for (Entity entity : engine.entities().fetchAll(CHANGE_MAP_ZONES)) {
             ChangeMapComponent changeMapComponent = entity.get(ChangeMapComponent.class);
             if (changeMapComponent.time.isSet()) {
                 if (Time.now().isAfter(changeMapComponent.time)) {
@@ -45,7 +45,7 @@ public class ChangeMapSystem implements EntitySystem {
                     engine.scenes().switchTo(GameScene.class);
                 }
             } else if (engine.keyboard().justPressed(Key.SPACE) && entity.get(SignalComponent.class).isTriggered) {
-                engine.entityEngine().add(new Entity().add(
+                engine.entities().add(new Entity().add(
                         new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofMillis(3200))));
                 changeMapComponent.time = Time.now().plusSeconds(3);
             }
