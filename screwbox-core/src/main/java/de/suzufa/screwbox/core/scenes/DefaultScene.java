@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.core.scenes;
 
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.EntityEngine;
 
 public final class DefaultScene implements Scene {
 

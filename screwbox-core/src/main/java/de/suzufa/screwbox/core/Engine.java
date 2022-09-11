@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.core;
 
 import de.suzufa.screwbox.core.audio.Audio;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Window;

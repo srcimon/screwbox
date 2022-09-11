@@ -9,11 +9,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 
 @ExtendWith(MockitoExtension.class)

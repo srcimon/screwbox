@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;

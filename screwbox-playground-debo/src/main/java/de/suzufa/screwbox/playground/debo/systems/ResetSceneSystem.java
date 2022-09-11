@@ -2,9 +2,9 @@ package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
-import de.suzufa.screwbox.core.entityengine.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.playground.debo.components.ResetSceneComponent;
 import de.suzufa.screwbox.playground.debo.scenes.DeadScene;
 

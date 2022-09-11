@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.core.physics.internal;
 
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
 public class EntityContainsPositionFilter implements EntitySearchFilter {
 

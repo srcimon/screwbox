@@ -3,9 +3,9 @@ package de.suzufa.screwbox.playground.debo.effects;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.ScreenTransitionComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;
 import de.suzufa.screwbox.core.graphics.transitions.HorizontalLinesTransition;

@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.components;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.entityengine.Component;
+import de.suzufa.screwbox.core.entities.Component;
 
 public class LetsGoComponent implements Component {
 

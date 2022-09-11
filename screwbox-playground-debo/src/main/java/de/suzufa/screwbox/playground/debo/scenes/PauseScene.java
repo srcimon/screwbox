@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityEngine;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.components.BackgroundHolderComponent;
 import de.suzufa.screwbox.playground.debo.menues.PauseMenu;

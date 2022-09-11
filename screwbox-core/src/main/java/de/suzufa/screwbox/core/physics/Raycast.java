@@ -11,8 +11,8 @@ import java.util.function.Function;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 

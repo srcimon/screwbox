@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.EntityEngine;
 import de.suzufa.screwbox.tiled.internal.MapEntity;
 
 /**

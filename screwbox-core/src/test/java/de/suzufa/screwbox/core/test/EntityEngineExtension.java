@@ -13,9 +13,9 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;

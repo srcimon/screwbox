@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityEngine;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entityengine.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.scenes.DefaultScene;
 import de.suzufa.screwbox.core.scenes.Scene;

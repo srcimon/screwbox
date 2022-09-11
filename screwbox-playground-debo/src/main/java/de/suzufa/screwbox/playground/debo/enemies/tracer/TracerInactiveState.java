@@ -1,9 +1,9 @@
 package de.suzufa.screwbox.playground.debo.enemies.tracer;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 
 public class TracerInactiveState implements EntityState {

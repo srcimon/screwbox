@@ -1,14 +1,14 @@
 package de.suzufa.screwbox.playground.debo.enemies.tracer;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.entityengine.Archetype;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.SourceImport.Converter;
-import de.suzufa.screwbox.core.entityengine.components.SignalComponent;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
-import de.suzufa.screwbox.core.entityengine.components.StateComponent;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.TriggerAreaComponent;
+import de.suzufa.screwbox.core.entities.Archetype;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.SourceImport.Converter;
+import de.suzufa.screwbox.core.entities.components.SignalComponent;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.StateComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
+import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;

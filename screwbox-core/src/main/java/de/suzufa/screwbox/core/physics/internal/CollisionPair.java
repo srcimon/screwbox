@@ -3,10 +3,10 @@ package de.suzufa.screwbox.core.physics.internal;
 import java.util.Objects;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.components.TransformComponent;
-import de.suzufa.screwbox.core.entityengine.components.ColliderComponent;
-import de.suzufa.screwbox.core.entityengine.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.components.ColliderComponent;
+import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
 //TODO: Refactor: I hate this class
 public final class CollisionPair implements Comparable<CollisionPair> {

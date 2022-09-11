@@ -2,9 +2,9 @@ package de.suzufa.screwbox.examples.pathfinding.states;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityState;
-import de.suzufa.screwbox.core.entityengine.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityState;
+import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.Tileset;
 

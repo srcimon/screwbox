@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.scenes;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.EntityEngine;
 
 public interface Scene {
 

@@ -8,8 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.Entity;
-import de.suzufa.screwbox.core.entityengine.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntityEngine;
 import de.suzufa.screwbox.core.ui.UiMenu;
 import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;

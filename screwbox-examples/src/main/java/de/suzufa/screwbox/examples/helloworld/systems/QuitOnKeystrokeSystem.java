@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.examples.helloworld.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entityengine.EntitySystem;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.keyboard.Key;
 
 public class QuitOnKeystrokeSystem implements EntitySystem {
