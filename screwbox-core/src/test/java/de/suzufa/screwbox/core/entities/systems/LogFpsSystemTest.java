@@ -10,9 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 
-@ExtendWith(EntityEngineExtension.class)
+@ExtendWith(EntitiesExtension.class)
 class LogFpsSystemTest {
 
     @Test

@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 
-@ExtendWith(EntityEngineExtension.class)
+@ExtendWith(EntitiesExtension.class)
 class SourceImportTest {
 
     @Test
-    void as_converterNull_throwsException(DefaultEntities entityEngine) {
-        SourceImport<String> sourceImport = entityEngine.importSource("Source of Inspiration");
+    void as_converterNull_throwsException(DefaultEntities entities) {
+        SourceImport<String> sourceImport = entities.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport.as(null))
                 .isInstanceOf(NullPointerException.class)
@@ -24,8 +24,8 @@ class SourceImportTest {
     }
 
     @Test
-    void usingIndex_indexFunctionIsNull_throwsException(DefaultEntities entityEngine) {
-        var sourceImport = entityEngine.importSource("Source of Inspiration");
+    void usingIndex_indexFunctionIsNull_throwsException(DefaultEntities entities) {
+        var sourceImport = entities.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport
                 .usingIndex(null))
@@ -34,8 +34,8 @@ class SourceImportTest {
     }
 
     @Test
-    void when_indexIsNull_throwsException(DefaultEntities entityEngine) {
-        var sourceImport = entityEngine.importSource("Source of Inspiration")
+    void when_indexIsNull_throwsException(DefaultEntities entities) {
+        var sourceImport = entities.importSource("Source of Inspiration")
                 .usingIndex(String::length);
 
         assertThatThrownBy(() -> sourceImport.when(null))
@@ -44,64 +44,64 @@ class SourceImportTest {
     }
 
     @Test
-    void as_inputWithoutCondition_createsEntity(DefaultEntities entityEngine) {
-        entityEngine.importSource("Source of Inspiration")
+    void as_inputWithoutCondition_createsEntity(DefaultEntities entities) {
+        entities.importSource("Source of Inspiration")
                 .as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).hasSize(1);
+        assertThat(entities.allEntities()).hasSize(1);
     }
 
     @Test
-    void as_conditionNotMet_noEntityCreated(DefaultEntities entityEngine) {
-        entityEngine.importSource("Source of Inspiration")
+    void as_conditionNotMet_noEntityCreated(DefaultEntities entities) {
+        entities.importSource("Source of Inspiration")
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).isEmpty();
+        assertThat(entities.allEntities()).isEmpty();
     }
 
     @Test
-    void ias_conditionMet_entityCreated(DefaultEntities entityEngine) {
-        entityEngine.importSource("")
+    void ias_conditionMet_entityCreated(DefaultEntities entities) {
+        entities.importSource("")
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).hasSize(1);
+        assertThat(entities.allEntities()).hasSize(1);
     }
 
     @Test
-    void as_multipleConditionsMet_multipleEntitiesCreated(DefaultEntities entityEngine) {
-        entityEngine.importSource("")
+    void as_multipleConditionsMet_multipleEntitiesCreated(DefaultEntities entities) {
+        entities.importSource("")
                 .when(String::isEmpty).as(source -> new Entity())
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).hasSize(2);
+        assertThat(entities.allEntities()).hasSize(2);
     }
 
     @Test
-    void as_multipleSources_multipleEntitiesCreated(DefaultEntities entityEngine) {
-        entityEngine.importSource(List.of("first", "second", "third"))
+    void as_multipleSources_multipleEntitiesCreated(DefaultEntities entities) {
+        entities.importSource(List.of("first", "second", "third"))
                 .when(i -> i.contains("ir")).as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).hasSize(2);
+        assertThat(entities.allEntities()).hasSize(2);
     }
 
     @Test
-    void usingIndex_multipleSources_multipleEntitiesCreated(DefaultEntities entityEngine) {
-        entityEngine.importSource(List.of("first", "second", "third"))
+    void usingIndex_multipleSources_multipleEntitiesCreated(DefaultEntities entities) {
+        entities.importSource(List.of("first", "second", "third"))
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity(6));
 
-        assertThat(entityEngine.allEntities()).hasSize(1)
+        assertThat(entities.allEntities()).hasSize(1)
                 .allMatch(e -> e.id().get() == 6);
     }
 
     @Test
-    void stopUsingIndex_returnsToDirectConversion(DefaultEntities entityEngine) {
-        entityEngine.importSource(List.of("first", "second", "third"))
+    void stopUsingIndex_returnsToDirectConversion(DefaultEntities entities) {
+        entities.importSource(List.of("first", "second", "third"))
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity())
                 .stopUsingIndex()
                 .as(source -> new Entity());
 
-        assertThat(entityEngine.allEntities()).hasSize(4);
+        assertThat(entities.allEntities()).hasSize(4);
     }
 }

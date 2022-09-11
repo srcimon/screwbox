@@ -3,8 +3,8 @@ package de.suzufa.screwbox.examples.pathfinding.scenes;
 import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.AutoRotationComponent;
 import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
@@ -45,11 +45,10 @@ public class DemoScene implements Scene {
     }
 
     @Override
-    public void initialize(final Entities entityEngine) {
-        importEntities(entityEngine);
+    public void initialize(final Entities entities) {
+        importEntities(entities);
 
-        entityEngine
-                .add(new SpriteRenderSystem())
+        entities.add(new SpriteRenderSystem())
                 .add(new CameraMovementSystem())
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
@@ -62,16 +61,16 @@ public class DemoScene implements Scene {
                 .add(new PhysicsSystem());
     }
 
-    void importEntities(final Entities entityEngine) {
-        entityEngine.importSource(map.tiles())
+    void importEntities(final Entities entities) {
+        entities.importSource(map.tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entityEngine.importSource(map)
+        entities.importSource(map)
                 .as(worldBounds());
 
-        entityEngine.importSource(map.objects())
+        entities.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
@@ -124,5 +123,4 @@ public class DemoScene implements Scene {
                 .add(new TransformComponent(map.bounds()))
                 .add(new WorldBoundsComponent());
     }
-
 }

@@ -25,11 +25,11 @@ class DemoSceneTest {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
-        Entities entityEngine = new DefaultEntities(entityManager, systemManager);
+        Entities entities = new DefaultEntities(entityManager, systemManager);
 
-        new DemoScene(map).importEntities(entityEngine);
+        new DemoScene(map).importEntities(entities);
 
-        assertThat(entityEngine.allEntities()).hasSizeGreaterThan(50)
+        assertThat(entities.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
                 .anyMatch(e -> e.hasComponent(WorldBoundsComponent.class));
     }

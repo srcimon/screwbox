@@ -23,10 +23,10 @@ import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.GameLoop;
 import de.suzufa.screwbox.core.physics.Physics;
 
-public class EntityEngineExtension implements Extension, BeforeEachCallback, ParameterResolver {
+public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
     private final Map<Class<?>, Object> parameters = new HashMap<>();
-    private DefaultEntities entityEngine;
+    private DefaultEntities entities;
 
     @Override
     public void beforeEach(final ExtensionContext context) throws Exception {
@@ -39,10 +39,10 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         final var screen = mock(Window.class);
         final var entityManager = new DefaultEntityManager();
         final var systemManager = new DefaultSystemManager(engine, entityManager);
-        entityEngine = new DefaultEntities(entityManager, systemManager);
+        entities = new DefaultEntities(entityManager, systemManager);
 
         // resolve a real entity engine with many mocked subsystems
-        when(engine.entities()).thenReturn(entityEngine);
+        when(engine.entities()).thenReturn(entities);
 
         // resolve mocks for any subsystem
         when(engine.graphics()).thenReturn(graphics);
@@ -59,7 +59,7 @@ public class EntityEngineExtension implements Extension, BeforeEachCallback, Par
         parameters.put(Window.class, screen);
         parameters.put(Log.class, log);
         parameters.put(Physics.class, physics);
-        parameters.put(DefaultEntities.class, entityEngine);
+        parameters.put(DefaultEntities.class, entities);
     }
 
     @Override

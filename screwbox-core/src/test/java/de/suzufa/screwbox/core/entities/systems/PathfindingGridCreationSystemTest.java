@@ -17,10 +17,10 @@ import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Physics;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 import de.suzufa.screwbox.core.utils.Timer;
 
-@ExtendWith(EntityEngineExtension.class)
+@ExtendWith(EntitiesExtension.class)
 class PathfindingGridCreationSystemTest {
 
     @Test
@@ -66,15 +66,15 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_invalidGridSize_throwsException(DefaultEntities entityEngine) {
+    void update_invalidGridSize_throwsException(DefaultEntities entities) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
-        entityEngine.add(new PathfindingGridCreationSystem(16, timer)).add(worldBounds);
+        entities.add(new PathfindingGridCreationSystem(16, timer)).add(worldBounds);
 
-        assertThatThrownBy(() -> entityEngine.update())
+        assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Area origin x should be dividable by grid size.");
     }

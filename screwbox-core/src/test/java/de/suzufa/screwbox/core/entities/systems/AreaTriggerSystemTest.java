@@ -13,9 +13,9 @@ import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 
-@ExtendWith(EntityEngineExtension.class)
+@ExtendWith(EntitiesExtension.class)
 class AreaTriggerSystemTest {
 
     @Test

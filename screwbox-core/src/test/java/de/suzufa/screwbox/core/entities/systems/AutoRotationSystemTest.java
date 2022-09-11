@@ -12,9 +12,9 @@ import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 
-@ExtendWith(EntityEngineExtension.class)
+@ExtendWith(EntitiesExtension.class)
 class AutoRotationSystemTest {
 
     @Test

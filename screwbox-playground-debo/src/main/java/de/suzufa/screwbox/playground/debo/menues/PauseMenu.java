@@ -44,11 +44,11 @@ public class PauseMenu extends UiMenu {
             @Override
             public void onActivate(Engine engine) {
                 List<Entity> allEntities = deserialize("savegame.sav");
-                Entities entityEngine = engine.scenes().entitiesOf(GameScene.class);
-                for (Entity entity : entityEngine.allEntities()) {
-                    entityEngine.remove(entity);
+                Entities entities = engine.scenes().entitiesOf(GameScene.class);
+                for (Entity entity : entities.allEntities()) {
+                    entities.remove(entity);
                 }
-                entityEngine.add(allEntities);
+                entities.add(allEntities);
                 new PauseMenuResumeGame().onActivate(engine);
 
             }

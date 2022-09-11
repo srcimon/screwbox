@@ -17,12 +17,12 @@ public class PauseScene implements Scene {
     }
 
     @Override
-    public void initialize(Entities entityEngine) {
-        entityEngine.add(
+    public void initialize(Entities entities) {
+        entities.add(
                 new GetSreenshotOfGameSceneSystem(),
                 new RenderPauseScreenshotSystem());
 
-        entityEngine.add(new Entity().add(
+        entities.add(new Entity().add(
                 new BackgroundHolderComponent()));
     }
 

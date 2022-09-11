@@ -9,8 +9,8 @@ import de.suzufa.screwbox.playground.debo.systems.StartBackgroundSystem;
 public class StartScene implements Scene {
 
     @Override
-    public void initialize(Entities entityEngine) {
-        entityEngine.add(new StartBackgroundSystem());
+    public void initialize(Entities entities) {
+        entities.add(new StartBackgroundSystem());
     }
 
     @Override

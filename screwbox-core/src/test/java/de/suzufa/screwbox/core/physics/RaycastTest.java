@@ -25,18 +25,18 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 class RaycastTest {
 
     @Mock
-    private Entities entityEngine;
+    private Entities entities;
 
     private RaycastBuilder raycastBuilder;
 
     @BeforeEach
     void beforeEach() {
-        raycastBuilder = new RaycastBuilder(entityEngine, Vector.zero());
+        raycastBuilder = new RaycastBuilder(entities, Vector.zero());
     }
 
     @Test
     void hasHit_rayIntersectsBox_isTrue() {
-        when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(50, 0)));
 
         var result = raycastBuilder
@@ -48,7 +48,7 @@ class RaycastTest {
 
     @Test
     void hasHit_checkingForNotCrossedBorders_isFalse() {
-        when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(50, 0)));
 
         var result = raycastBuilder
@@ -69,7 +69,7 @@ class RaycastTest {
         Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new SpriteComponent(0));
         Entity ignoredBecauseNotInBounds = boxAt(0, 600);
 
-        when(entityEngine.fetchAll(physicsEntites)).thenReturn(List.of(
+        when(entities.fetchAll(physicsEntites)).thenReturn(List.of(
                 ignoredBecauseOfComponent,
                 foundA,
                 ignoredEntity,
@@ -89,7 +89,7 @@ class RaycastTest {
 
     @Test
     void findHits_multipleHits_returnsAllHits() {
-    	when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+    	when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
     			boxAt(0, 50),
     			boxAt(0, 150),
     			boxAt(0, 250)));
@@ -103,7 +103,7 @@ class RaycastTest {
     }
     @Test
     void nearestHit_multipleHits_returnsNearestHitPosition() {
-        when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
                 boxAt(0, 150),
                 boxAt(0, 250)));
@@ -118,7 +118,7 @@ class RaycastTest {
 
     @Test
     void selectAnyEntity_noHit_isEmpty() {
-        when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
                 boxAt(0, 150),
                 boxAt(0, 250)));
@@ -133,7 +133,7 @@ class RaycastTest {
 
     @Test
     void selectAnyEntity_multiplePossibleHits_returnsAnyOfHits() {
-        when(entityEngine.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 30),
                 boxAt(0, 50),
                 boxAt(0, 40)));

@@ -27,9 +27,9 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.core.test.EntityEngineExtension;
+import de.suzufa.screwbox.core.test.EntitiesExtension;
 
-@ExtendWith({ EntityEngineExtension.class, MockitoExtension.class })
+@ExtendWith({ EntitiesExtension.class, MockitoExtension.class })
 class ReflectionRenderSystemTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("tile.bmp");

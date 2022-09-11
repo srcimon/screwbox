@@ -3,8 +3,8 @@ package de.suzufa.screwbox.playground.debo.scenes;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
@@ -91,13 +91,15 @@ public class GameScene implements Scene {
     }
 
     @Override
-    public void initialize(Entities entityEngine) {
-        importEntities(entityEngine);
+    public void initialize(Entities entities) {
+        importEntities(entities);
 
-        entityEngine
-                .add(new Entity().add(new ScreenshotComponent(), new CurrentLevelComponent(mapName)));
+        Entity currentLevelHolder = new Entity()
+                .add(new ScreenshotComponent())
+                .add(new CurrentLevelComponent(mapName));
+        entities.add(currentLevelHolder);
 
-        entityEngine.add(
+        entities.add(
                 new LogFpsSystem(),
                 new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
@@ -139,10 +141,10 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    void importEntities(Entities entityEngine) {
+    void importEntities(Entities entities) {
         Map map = Map.fromJson(mapName);
 
-        entityEngine.importSource(map)
+        entities.importSource(map)
                 .as(new MapGravity())
                 .as(new WorldBounds())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
@@ -150,16 +152,16 @@ public class GameScene implements Scene {
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-        entityEngine.importSource(map.layers())
+        entities.importSource(map.layers())
                 .when(Layer::isImageLayer).as(new Background());
 
-        entityEngine.importSource(map.tiles())
+        entities.importSource(map.tiles())
                 .usingIndex(this::tileType)
                 .when("non-solid").as(new NonSolidTile())
                 .when("solid").as(new SolidGround())
                 .when("one-way").as(new OneWayGround());
 
-        entityEngine.importSource(map.objects())
+        entities.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("reflection-zone").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())

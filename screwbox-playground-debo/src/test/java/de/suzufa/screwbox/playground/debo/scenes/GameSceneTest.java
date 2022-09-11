@@ -22,11 +22,11 @@ class GameSceneTest {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
-        Entities entityEngine = new DefaultEntities(entityManager, systemManager);
+        Entities entities = new DefaultEntities(entityManager, systemManager);
 
-        new GameScene(mapName).importEntities(entityEngine);
+        new GameScene(mapName).importEntities(entities);
 
-        assertThat(entityEngine.allEntities()).hasSizeGreaterThan(50)
+        assertThat(entities.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
                 .anyMatch(e -> e.hasComponent(PlayerMarkerComponent.class));
     }

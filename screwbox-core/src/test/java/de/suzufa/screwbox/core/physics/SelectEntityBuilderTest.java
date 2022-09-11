@@ -27,13 +27,13 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 class SelectEntityBuilderTest {
 
     @Mock
-    Entities entityEngine;
+    Entities entities;
 
     SelectEntityBuilder selectEntityBuilder;
 
     @BeforeEach
     void beforeEach() {
-        selectEntityBuilder = new SelectEntityBuilder(entityEngine, $(40, 60));
+        selectEntityBuilder = new SelectEntityBuilder(entities, $(40, 60));
     }
 
     @Test
@@ -41,10 +41,10 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(0, 10);
         Entity second = boxAt(55, 45);
         Entity notInBounds = boxAt(155, 45);
-        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
+        when(entities.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
                 .thenReturn(List.of(first, second, notInBounds));
 
-        SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(entityEngine, $$(0, 0, 100, 100));
+        SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(entities, $$(0, 0, 100, 100));
 
         assertThat(boundsEntityBuilder.selectAll()).contains(first, second).doesNotContain(notInBounds);
 
@@ -61,7 +61,7 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_noEntityAtPosition_returnsEmpty() {
-        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(
                         boxAt(55, 45),
                         boxAt(25, 45).add(new SpriteComponent(0)),
@@ -77,7 +77,7 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_entityAtPosition_returnsEntity() {
-        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(boxAt(39, 59)));
 
         var result = selectEntityBuilder
@@ -93,7 +93,7 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(39, 59);
         Entity second = boxAt(38, 58);
         Entity notAtPosition = boxAt(0, 0);
-        when(entityEngine.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(first, second, notAtPosition));
 
         var result = selectEntityBuilder
