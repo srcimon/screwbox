@@ -3,4 +3,5 @@
 - DrawingUtil.noUneccessaryDrawings(window) returns window + world
 - add A*-Pathfinding Algorithm (as default)
 - add WaterReflectionAreas (graphics.createTempArea(worldpositon, size)
-- Particle Emitters
+- particle emitters
+- split screen / every render task has to add clip area
