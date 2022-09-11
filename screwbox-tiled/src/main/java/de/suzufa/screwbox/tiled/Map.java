@@ -5,14 +5,14 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.tiled.internal.MapEntity;
 
 /**
  * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
  * in your game.
  * 
- * @see EntityEngine#importSource(Object)
+ * @see Entities#importSource(Object)
  */
 public class Map {
 

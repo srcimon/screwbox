@@ -11,14 +11,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class CombineStaticColliderSystemTest {
 
     @Test
-    void update_combinesHorizontallyAlignedColliders(DefaultEntityEngine entityEngine) {
+    void update_combinesHorizontallyAlignedColliders(DefaultEntities entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -47,7 +47,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_combinesVerticallyAlignedColliders(DefaultEntityEngine entityEngine) {
+    void update_combinesVerticallyAlignedColliders(DefaultEntities entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -76,7 +76,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_ignoresDifferentColliders(DefaultEntityEngine entityEngine) {
+    void update_ignoresDifferentColliders(DefaultEntities entityEngine) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(4),
@@ -102,7 +102,7 @@ class CombineStaticColliderSystemTest {
     }
 
     @Test
-    void update_removesItselfAfterFinishingAllColliders(DefaultEntityEngine entityEngine) {
+    void update_removesItselfAfterFinishingAllColliders(DefaultEntities entityEngine) {
         entityEngine.add(new CombineStaticCollidersSystem());
 
         entityEngine.update();

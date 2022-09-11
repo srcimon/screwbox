@@ -16,7 +16,7 @@ public class ScreenTransitionSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAll(TRANSITIONS)) {
+        for (Entity entity : engine.entities().fetchAll(TRANSITIONS)) {
             var transitionComponent = entity.get(ScreenTransitionComponent.class);
             if (transitionComponent.startTime == null) {
                 transitionComponent.startTime = Time.now();

@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Component;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.EntityHasComponentFilter;
@@ -19,13 +19,13 @@ import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public final class RaycastBuilder {
 
-    private final EntityEngine entityEngine;
+    private final Entities entityEngine;
     private final Vector from;
     private final List<EntitySearchFilter> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public RaycastBuilder(final EntityEngine entityEngine, final Vector from) {
+    public RaycastBuilder(final Entities entityEngine, final Vector from) {
         this.entityEngine = entityEngine;
         this.from = from;
     }

@@ -16,7 +16,7 @@ public class AutoRotationSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.entityEngine().fetchAll(ROTATING_BODIES)) {
+        for (final Entity entity : engine.entities().fetchAll(ROTATING_BODIES)) {
             final var physicsBody = entity.get(PhysicsBodyComponent.class);
             final var sprite = entity.get(SpriteComponent.class);
             if (!physicsBody.momentum.isZero()) {

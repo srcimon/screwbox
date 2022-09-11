@@ -15,9 +15,9 @@ public class TimeoutSystem implements EntitySystem {
     public void update(Engine engine) {
         Time now = engine.loop().lastUpdate();
 
-        for (var entity : engine.entityEngine().fetchAll(TIMEOUT_ENTITIES)) {
+        for (var entity : engine.entities().fetchAll(TIMEOUT_ENTITIES)) {
             if (now.isAfter(entity.get(TimeoutComponent.class).timeout)) {
-                engine.entityEngine().remove(entity);
+                engine.entities().remove(entity);
             }
         }
     }

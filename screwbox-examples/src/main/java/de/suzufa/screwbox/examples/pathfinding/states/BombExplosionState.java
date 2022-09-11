@@ -34,13 +34,13 @@ public class BombExplosionState implements EntityState {
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
-        engine.entityEngine().remove(entitiesInExplosionRange);
+        engine.entities().remove(entitiesInExplosionRange);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
         if (Time.now().isAfter(endOfAnimation)) {
-            engine.entityEngine().remove(entity);
+            engine.entities().remove(entity);
         }
         return this;
     }

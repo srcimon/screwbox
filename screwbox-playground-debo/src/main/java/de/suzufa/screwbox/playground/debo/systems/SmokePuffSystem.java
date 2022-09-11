@@ -23,7 +23,7 @@ public class SmokePuffSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var playerEntity = engine.entityEngine().fetch(PLAYER);
+        var playerEntity = engine.entities().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
                     new SpriteComponent(randomFrom(SPRITES.all()), order)
 
             );
-            engine.entityEngine().add(smokePuff);
+            engine.entities().add(smokePuff);
         }
     }
 

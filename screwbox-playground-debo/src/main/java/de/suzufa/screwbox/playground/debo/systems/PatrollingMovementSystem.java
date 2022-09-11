@@ -18,7 +18,7 @@ public class PatrollingMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.entityEngine().fetchAll(PATROLLING)) {
+        for (final Entity entity : engine.entities().fetchAll(PATROLLING)) {
             final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
             final var patrollingMovementComponent = entity.get(PatrollingMovementComponent.class);
 

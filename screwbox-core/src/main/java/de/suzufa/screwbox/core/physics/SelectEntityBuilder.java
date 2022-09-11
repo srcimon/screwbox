@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Component;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.EntityContainsPositionFilter;
@@ -20,16 +20,16 @@ import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 public final class SelectEntityBuilder {
 
     private final List<EntitySearchFilter> filters = new ArrayList<>();
-    private final EntityEngine entityEngine;
+    private final Entities entityEngine;
 
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public SelectEntityBuilder(final EntityEngine entityEngine, final Bounds bounds) {
+    public SelectEntityBuilder(final Entities entityEngine, final Bounds bounds) {
         this.entityEngine = entityEngine;
         filters.add(new EntityNotInRangeFilter(bounds));
     }
 
-    public SelectEntityBuilder(final EntityEngine entityEngine, final Vector position) {
+    public SelectEntityBuilder(final Entities entityEngine, final Vector position) {
         this.entityEngine = entityEngine;
         filters.add(new EntityContainsPositionFilter(position));
     }

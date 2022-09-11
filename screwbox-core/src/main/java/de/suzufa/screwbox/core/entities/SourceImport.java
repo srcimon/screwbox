@@ -76,9 +76,9 @@ public final class SourceImport<T> {
     }
 
     private final List<T> inputs;
-    private final EntityEngine engine;
+    private final Entities engine;
 
-    public SourceImport(final List<T> inputs, final EntityEngine engine) {
+    public SourceImport(final List<T> inputs, final Entities engine) {
         this.inputs = inputs;
         this.engine = Objects.requireNonNull(engine, "Engine must not be null");
     }

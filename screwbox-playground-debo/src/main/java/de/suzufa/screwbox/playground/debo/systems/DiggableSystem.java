@@ -29,7 +29,7 @@ public class DiggableSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (final var digging : engine.entityEngine().fetchAll(DIGGINGS)) {
+        for (final var digging : engine.entities().fetchAll(DIGGINGS)) {
             var diggingBody = digging.get(TransformComponent.class);
             Optional<Entity> hitEntity = engine.physics().raycastFrom(diggingBody.bounds.position())
                     .checkingFor(DIGGABLES)

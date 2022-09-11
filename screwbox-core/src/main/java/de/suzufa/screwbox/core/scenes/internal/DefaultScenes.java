@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entities.EntityEngine;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
@@ -34,7 +34,7 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
-    public DefaultEntityEngine activeEntityEngine() {
+    public DefaultEntities activeEntityEngine() {
         return activeScene.entityEngine();
     }
 
@@ -59,7 +59,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes add(final Scene scene) {
         final var entityManager = new DefaultEntityManager();
         final var systemManager = new DefaultSystemManager(engine, entityManager);
-        final var entityEngine = new DefaultEntityEngine(entityManager, systemManager);
+        final var entityEngine = new DefaultEntities(entityManager, systemManager);
 
         final SceneContainer sceneContainer = new SceneContainer(scene, entityEngine);
         scene.initialize(sceneContainer.entityEngine());
@@ -91,7 +91,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public EntityEngine entityEngineOf(final Class<? extends Scene> sceneClass) {
+    public Entities entityEngineOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
         return scenes.get(sceneClass).entityEngine();
     }

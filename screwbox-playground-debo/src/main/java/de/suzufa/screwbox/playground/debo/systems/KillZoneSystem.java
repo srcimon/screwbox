@@ -19,9 +19,9 @@ public class KillZoneSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity area : engine.entityEngine().fetchAll(TRIGGER_AREAS)) {
+        for (Entity area : engine.entities().fetchAll(TRIGGER_AREAS)) {
             if (area.get(SignalComponent.class).isTriggered) {
-                Optional<Entity> fetch = engine.entityEngine().fetch(PLAYER);
+                Optional<Entity> fetch = engine.entities().fetch(PLAYER);
                 if (fetch.isPresent() && !fetch.get().hasComponent(DeathEventComponent.class)) {
                     fetch.get().add(new DeathEventComponent(area.get(KillZoneComponent.class).deathType));
                 }

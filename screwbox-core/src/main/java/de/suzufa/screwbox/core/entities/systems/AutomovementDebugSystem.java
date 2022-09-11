@@ -21,7 +21,7 @@ public class AutomovementDebugSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         World world = engine.graphics().world();
-        for (Entity entity : engine.entityEngine().fetchAll(PATH_CONTAINING)) {
+        for (Entity entity : engine.entities().fetchAll(PATH_CONTAINING)) {
             Path path = entity.get(AutomovementComponent.class).path;
             if (nonNull(path)) {
                 for (var segment : path.segments()) {

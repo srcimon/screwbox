@@ -10,14 +10,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class CollisionSensorSystemTest {
 
     @Test
-    void update_informsCollidedEntities(DefaultEntityEngine entityEngine) {
+    void update_informsCollidedEntities(DefaultEntities entityEngine) {
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 2, 2)),
                 new ColliderComponent());
@@ -36,7 +36,7 @@ class CollisionSensorSystemTest {
     }
 
     @Test
-    void update_ignoresNonCollidedEntities(DefaultEntityEngine entityEngine) {
+    void update_ignoresNonCollidedEntities(DefaultEntities entityEngine) {
         Entity bird = new Entity().add(
                 new TransformComponent(Bounds.atPosition(20, 10, 2, 2)),
                 new ColliderComponent());

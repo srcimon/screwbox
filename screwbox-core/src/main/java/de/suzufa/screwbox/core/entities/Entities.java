@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 
-public interface EntityEngine {
+public interface Entities {
 
-    EntityEngine add(Entity entity);
+    Entities add(Entity entity);
 
-    EntityEngine add(List<Entity> entities);
+    Entities add(List<Entity> entities);
 
-    EntityEngine add(EntitySystem system);
+    Entities add(EntitySystem system);
 
-    EntityEngine add(EntitySystem... systems);
+    Entities add(EntitySystem... systems);
 
     List<Entity> fetchAll(Archetype archetype);
 
@@ -49,9 +49,9 @@ public interface EntityEngine {
 
     Optional<Entity> fetchById(int id);
 
-    EntityEngine remove(Entity entity);
+    Entities remove(Entity entity);
 
-    EntityEngine remove(List<Entity> entities);
+    Entities remove(List<Entity> entities);
 
     void remove(Class<? extends EntitySystem> systemType);
 
@@ -59,7 +59,7 @@ public interface EntityEngine {
 
     boolean contains(Archetype archetype);
 
-    EntityEngine add(Entity... entities);
+    Entities add(Entity... entities);
 
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 

@@ -20,14 +20,14 @@ public class PhysicsDebugSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final var entity : engine.entityEngine().fetchAll(COLLIDERS)) {
+        for (final var entity : engine.entities().fetchAll(COLLIDERS)) {
             renderEntity(engine, entity, Color.BLUE);
         }
 
-        for (final var entity : engine.entityEngine().fetchAll(PHYSICS)) {
+        for (final var entity : engine.entities().fetchAll(PHYSICS)) {
             renderEntity(engine, entity, Color.RED);
         }
-        for (final var entity : engine.entityEngine().fetchAll(SENSORS)) {
+        for (final var entity : engine.entities().fetchAll(SENSORS)) {
             final var collisions = entity.get(CollisionSensorComponent.class).collidedEntities;
             for (final var collision : collisions) {
                 renderEntity(engine, collision, Color.GREEN);

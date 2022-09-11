@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.scenes;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.components.BackgroundHolderComponent;
 import de.suzufa.screwbox.playground.debo.menues.PauseMenu;
@@ -17,7 +17,7 @@ public class PauseScene implements Scene {
     }
 
     @Override
-    public void initialize(EntityEngine entityEngine) {
+    public void initialize(Entities entityEngine) {
         entityEngine.add(
                 new GetSreenshotOfGameSceneSystem(),
                 new RenderPauseScreenshotSystem());

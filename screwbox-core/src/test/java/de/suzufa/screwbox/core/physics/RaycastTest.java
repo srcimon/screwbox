@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
@@ -25,7 +25,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 class RaycastTest {
 
     @Mock
-    private EntityEngine entityEngine;
+    private Entities entityEngine;
 
     private RaycastBuilder raycastBuilder;
 

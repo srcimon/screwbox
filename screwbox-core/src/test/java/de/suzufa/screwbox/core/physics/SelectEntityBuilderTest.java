@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
@@ -27,7 +27,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 class SelectEntityBuilderTest {
 
     @Mock
-    EntityEngine entityEngine;
+    Entities entityEngine;
 
     SelectEntityBuilder selectEntityBuilder;
 

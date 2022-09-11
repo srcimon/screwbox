@@ -13,13 +13,13 @@ public class FadeOutSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.entityEngine().fetchAll(FADEOUTS)) {
+        for (final Entity entity : engine.entities().fetchAll(FADEOUTS)) {
             final var speed = entity.get(FadeOutComponent.class).speed;
             final var spriteComponent = entity.get(SpriteComponent.class);
             final double delta = engine.loop().delta();
             spriteComponent.opacity = spriteComponent.opacity.substract(speed * delta);
             if (spriteComponent.opacity.isMinValue()) {
-                engine.entityEngine().remove(entity);
+                engine.entities().remove(entity);
             }
         }
 

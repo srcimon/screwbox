@@ -24,14 +24,14 @@ public class FollowPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.entityEngine().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.entities().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
         Entity player = playerEntity.get();
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 
-        for (Entity followEntity : engine.entityEngine().fetchAll(FOLLOWING)) {
+        for (Entity followEntity : engine.entities().fetchAll(FOLLOWING)) {
             var followComponent = followEntity.get(FollowPlayerComponent.class);
             final TransformComponent followTransform = followEntity.get(TransformComponent.class);
 

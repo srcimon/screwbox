@@ -24,7 +24,7 @@ public class KilledFromAboveSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.entityEngine().forcedFetch(PLAYER);
+        Entity player = engine.entities().forcedFetch(PLAYER);
         var playerBounds = player.get(TransformComponent.class).bounds;
 
         var left = Vector.of(playerBounds.minX() + 1, playerBounds.maxY());

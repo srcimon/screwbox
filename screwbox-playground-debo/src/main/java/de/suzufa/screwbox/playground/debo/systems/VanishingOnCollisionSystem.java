@@ -31,7 +31,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Time now = engine.loop().lastUpdate();
 
-        Entity player = engine.entityEngine().forcedFetch(PLAYER);
+        Entity player = engine.entities().forcedFetch(PLAYER);
         Bounds playerBounds = player.get(TransformComponent.class).bounds;
 
         List<Entity> activatedEntities = ListUtil.merge(
@@ -56,7 +56,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
             }
         }
 
-        for (Entity vanishEntity : engine.entityEngine().fetchAll(VANISHINGS)) {
+        for (Entity vanishEntity : engine.entities().fetchAll(VANISHINGS)) {
             if (now.isAfter(vanishEntity.get(VanishingOnCollisionComponent.class).vanishTime)) {
                 Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
                 Vector targetPosition = center.addY(200);

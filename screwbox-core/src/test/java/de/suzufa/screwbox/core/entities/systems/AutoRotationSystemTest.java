@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.AutoRotationComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class AutoRotationSystemTest {
 
     @Test
-    void update_rotationNonZero_updatesSpriteRotation(DefaultEntityEngine entityEngine) {
+    void update_rotationNonZero_updatesSpriteRotation(DefaultEntities entityEngine) {
         Entity body = new Entity().add(
                 new SpriteComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
@@ -34,7 +34,7 @@ class AutoRotationSystemTest {
     }
 
     @Test
-    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEntityEngine entityEngine) {
+    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEntities entityEngine) {
         Entity body = new Entity().add(
                 new SpriteComponent(Sprite.invisible()),
                 new AutoRotationComponent(),

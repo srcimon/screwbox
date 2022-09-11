@@ -15,7 +15,7 @@ public final class StateSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.entityEngine().fetchAll(STATEFUL_ENTITIES)) {
+        for (final Entity entity : engine.entities().fetchAll(STATEFUL_ENTITIES)) {
             final var stateComponent = entity.get(StateComponent.class);
             final var originalState = stateComponent.state;
             stateComponent.state = originalState.update(entity, engine);

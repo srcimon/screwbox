@@ -18,7 +18,7 @@ public class PauseMenuResumeGame extends UiMenuItem {
     @Override
     public void onActivate(Engine engine) {
         engine.ui().closeMenu();
-        Entity backgroundEntity = engine.entityEngine().forcedFetch(BACKGROUND);
+        Entity backgroundEntity = engine.entities().forcedFetch(BACKGROUND);
         backgroundEntity.get(BackgroundHolderComponent.class).background = null;
         engine.scenes().switchTo(GameScene.class);
     }

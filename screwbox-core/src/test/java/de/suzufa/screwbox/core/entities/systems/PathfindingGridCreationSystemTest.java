@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
@@ -24,7 +24,7 @@ import de.suzufa.screwbox.core.utils.Timer;
 class PathfindingGridCreationSystemTest {
 
     @Test
-    void update_noWorldBounds_throwsException(DefaultEntityEngine entityEngine) {
+    void update_noWorldBounds_throwsException(DefaultEntities entityEngine) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         entityEngine.add(new PathfindingGridCreationSystem(16, timer));
 
@@ -34,7 +34,7 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_noGridPresent_updatesPathfindingGrid(DefaultEntityEngine entityEngine, Physics physics) {
+    void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entityEngine, Physics physics) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
@@ -66,7 +66,7 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_invalidGridSize_throwsException(DefaultEntityEngine entityEngine) {
+    void update_invalidGridSize_throwsException(DefaultEntities entityEngine) {
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())

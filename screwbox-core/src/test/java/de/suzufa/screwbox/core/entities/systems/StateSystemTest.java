@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.Component;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
@@ -87,7 +87,7 @@ class StateSystemTest {
     }
 
     @Test
-    void update_firstStateEnterMethodIsExecuted(DefaultEntityEngine entityEngine) {
+    void update_firstStateEnterMethodIsExecuted(DefaultEntities entityEngine) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
@@ -102,7 +102,7 @@ class StateSystemTest {
     }
 
     @Test
-    void update_nextStateIsNull_throwsException(DefaultEntityEngine entityEngine) {
+    void update_nextStateIsNull_throwsException(DefaultEntities entityEngine) {
         Entity entity = new Entity().add(
                 new StateComponent(new NextStateIsNull()),
                 new CounterComponent());
@@ -117,7 +117,7 @@ class StateSystemTest {
     }
 
     @Test
-    void update_updatesState(DefaultEntityEngine entityEngine) {
+    void update_updatesState(DefaultEntities entityEngine) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
@@ -132,7 +132,7 @@ class StateSystemTest {
     }
 
     @Test
-    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEntityEngine entityEngine) {
+    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEntities entityEngine) {
         Entity entity = new Entity().add(
                 new StateComponent(new BoringState()),
                 new CounterComponent());

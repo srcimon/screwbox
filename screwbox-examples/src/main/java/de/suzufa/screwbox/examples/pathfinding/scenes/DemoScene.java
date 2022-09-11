@@ -4,7 +4,7 @@ import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.AutoRotationComponent;
 import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
@@ -45,7 +45,7 @@ public class DemoScene implements Scene {
     }
 
     @Override
-    public void initialize(final EntityEngine entityEngine) {
+    public void initialize(final Entities entityEngine) {
         importEntities(entityEngine);
 
         entityEngine
@@ -62,7 +62,7 @@ public class DemoScene implements Scene {
                 .add(new PhysicsSystem());
     }
 
-    void importEntities(final EntityEngine entityEngine) {
+    void importEntities(final Entities entityEngine) {
         entityEngine.importSource(map.tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())

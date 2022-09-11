@@ -21,7 +21,7 @@ public class ShowLabelSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAll(LABELD)) {
+        for (Entity entity : engine.entities().fetchAll(LABELD)) {
             if (entity.get(SignalComponent.class).isTriggered) {
                 LabelComponent labelComponent = entity.get(LabelComponent.class);
                 Bounds bounds = entity.get(TransformComponent.class).bounds;

@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -25,7 +25,7 @@ class DemoSceneTest {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
-        EntityEngine entityEngine = new DefaultEntityEngine(entityManager, systemManager);
+        Entities entityEngine = new DefaultEntities(entityManager, systemManager);
 
         new DemoScene(map).importEntities(entityEngine);
 

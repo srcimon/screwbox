@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.test.EntityEngineExtension;
 class AutFlipSpriteSystemTest {
 
     @Test
-    void update_updatesSpritComponentFlipMode(DefaultEntityEngine entityEngine) {
+    void update_updatesSpritComponentFlipMode(DefaultEntities entityEngine) {
         Entity movingRight = new Entity()
                 .add(new SpriteComponent())
                 .add(new PhysicsBodyComponent(Vector.xOnly(4)))

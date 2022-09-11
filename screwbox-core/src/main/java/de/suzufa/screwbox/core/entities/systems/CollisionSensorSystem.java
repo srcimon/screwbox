@@ -15,8 +15,8 @@ public class CollisionSensorSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var colliders = engine.entityEngine().fetchAll(COLLIDERS);
-        for (final var sensorEntity : engine.entityEngine().fetchAll(SENSORS)) {
+        final var colliders = engine.entities().fetchAll(COLLIDERS);
+        for (final var sensorEntity : engine.entities().fetchAll(SENSORS)) {
             final var collidedEntities = sensorEntity.get(CollisionSensorComponent.class).collidedEntities;
             collidedEntities.clear();
 

@@ -12,14 +12,14 @@ import de.suzufa.screwbox.core.entities.components.SignalComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.test.EntityEngineExtension;
 
 @ExtendWith(EntityEngineExtension.class)
 class AreaTriggerSystemTest {
 
     @Test
-    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEntityEngine entityEngine) {
+    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEntities entityEngine) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -38,7 +38,7 @@ class AreaTriggerSystemTest {
     }
 
     @Test
-    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEntityEngine entityEngine) {
+    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEntities entityEngine) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),

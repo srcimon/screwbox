@@ -25,8 +25,8 @@ public class PhysicsSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final double factor = engine.loop().delta();
-        final var colliders = engine.entityEngine().fetchAll(COLLIDERS);
-        for (final Entity entity : engine.entityEngine().fetchAll(PHYSICS)) {
+        final var colliders = engine.entities().fetchAll(COLLIDERS);
+        for (final Entity entity : engine.entities().fetchAll(PHYSICS)) {
             final var currentMomentum = entity.get(PhysicsBodyComponent.class).momentum;
             final var transform = entity.get(TransformComponent.class);
 

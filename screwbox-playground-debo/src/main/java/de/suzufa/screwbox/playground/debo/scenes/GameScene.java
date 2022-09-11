@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
@@ -91,7 +91,7 @@ public class GameScene implements Scene {
     }
 
     @Override
-    public void initialize(EntityEngine entityEngine) {
+    public void initialize(Entities entityEngine) {
         importEntities(entityEngine);
 
         entityEngine
@@ -139,7 +139,7 @@ public class GameScene implements Scene {
                 new SpriteRenderSystem());
     }
 
-    void importEntities(EntityEngine entityEngine) {
+    void importEntities(Entities entityEngine) {
         Map map = Map.fromJson(mapName);
 
         entityEngine.importSource(map)

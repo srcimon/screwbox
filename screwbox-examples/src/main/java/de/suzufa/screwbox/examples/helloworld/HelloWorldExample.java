@@ -19,7 +19,7 @@ public class HelloWorldExample {
                 .setWindowCursor(PredefinedCursor.HIDDEN);
 
         // add systems to the game loop
-        engine.entityEngine().add(
+        engine.entities().add(
                 new PrintHelloWorldSystem(), // print hello world next to mouse position
                 new QuitOnKeystrokeSystem(Key.ESCAPE)); // quits the engine on pressing ESC
 

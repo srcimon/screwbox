@@ -22,20 +22,20 @@ public class MovingPlattformSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         double delta = engine.loop().delta();
-        for (var entity : engine.entityEngine().fetchAll(PLATTFORMS)) {
+        for (var entity : engine.entities().fetchAll(PLATTFORMS)) {
             var plattformComponent = entity.get(MovingPlattformComponent.class);
             var transform = entity.get(TransformComponent.class);
 
             if (plattformComponent.targetPosition == null) {
-                Entity tartetEntity = engine.entityEngine().forcedFetchById(plattformComponent.waypoint);
+                Entity tartetEntity = engine.entities().forcedFetchById(plattformComponent.waypoint);
                 plattformComponent.targetPosition = tartetEntity.get(TransformComponent.class).bounds.position();
             }
 
             Vector distance = transform.bounds.position().substract(plattformComponent.targetPosition);
 
             if (distance.x() == 0 && distance.y() == 0) {
-                Entity currentTarget = engine.entityEngine().forcedFetchById(plattformComponent.waypoint);
-                Entity nextTarget = engine.entityEngine()
+                Entity currentTarget = engine.entities().forcedFetchById(plattformComponent.waypoint);
+                Entity nextTarget = engine.entities()
                         .forcedFetchById(currentTarget.get(WaypointComponent.class).next);
                 plattformComponent.targetPosition = nextTarget.get(TransformComponent.class).bounds.position();
                 plattformComponent.waypoint = nextTarget.id().orElseThrow();

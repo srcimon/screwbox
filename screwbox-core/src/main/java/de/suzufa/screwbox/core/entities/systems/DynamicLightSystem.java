@@ -25,9 +25,9 @@ public class DynamicLightSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        List<Entity> colliders = engine.entityEngine().fetchAll(COLLIDERS);
+        List<Entity> colliders = engine.entities().fetchAll(COLLIDERS);
 
-        for (Entity entity : engine.entityEngine().fetchAll(LIGHTS)) {
+        for (Entity entity : engine.entities().fetchAll(LIGHTS)) {
             Vector position = entity.get(TransformComponent.class).bounds.position();
             LightEmitterComponent lightEmitter = entity.get(LightEmitterComponent.class);
             double range = lightEmitter.range;

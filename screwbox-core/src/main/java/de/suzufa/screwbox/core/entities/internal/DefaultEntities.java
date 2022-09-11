@@ -8,29 +8,29 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.SourceImport;
 
-public class DefaultEntityEngine implements EntityEngine {
+public class DefaultEntities implements Entities {
 
     private final EntityManager entityManager;
     private final SystemManager systemManager;
 
-    public DefaultEntityEngine(final EntityManager entityManager, final SystemManager systemManager) {
+    public DefaultEntities(final EntityManager entityManager, final SystemManager systemManager) {
         this.entityManager = entityManager;
         this.systemManager = systemManager;
     }
 
     @Override
-    public EntityEngine add(final Entity entity) {
+    public Entities add(final Entity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);
         return this;
     }
 
     @Override
-    public EntityEngine add(final EntitySystem system) {
+    public Entities add(final EntitySystem system) {
         Objects.requireNonNull(system, "system must not be null");
         systemManager.addSystem(system);
         return this;
@@ -64,13 +64,13 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public EntityEngine remove(final Entity entity) {
+    public Entities remove(final Entity entity) {
         entityManager.removeEntity(entity);
         return this;
     }
 
     @Override
-    public EntityEngine remove(List<Entity> entities) {
+    public Entities remove(List<Entity> entities) {
         for (final var entity : entities) {
             remove(entity);
         }
@@ -88,7 +88,7 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public EntityEngine add(final EntitySystem... systems) {
+    public Entities add(final EntitySystem... systems) {
         for (final var system : systems) {
             add(system);
         }
@@ -96,7 +96,7 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public EntityEngine add(final Entity... entities) {
+    public Entities add(final Entity... entities) {
         for (final var entity : entities) {
             add(entity);
         }
@@ -139,7 +139,7 @@ public class DefaultEntityEngine implements EntityEngine {
     }
 
     @Override
-    public EntityEngine add(final List<Entity> entities) {
+    public Entities add(final List<Entity> entities) {
         for (final var entity : entities) {
             add(entity);
         }

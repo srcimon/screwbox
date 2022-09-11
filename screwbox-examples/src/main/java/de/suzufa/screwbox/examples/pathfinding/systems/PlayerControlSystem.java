@@ -21,7 +21,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.entityEngine().forcedFetch(PLAYER);
+        final var player = engine.entities().forcedFetch(PLAYER);
         final Vector momentum = determinMomemntum(engine.keyboard());
         player.get(PhysicsBodyComponent.class).momentum = momentum;
 
@@ -32,7 +32,7 @@ public class PlayerControlSystem implements EntitySystem {
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 
-            engine.entityEngine().add(bomb);
+            engine.entities().add(bomb);
         }
     }
 

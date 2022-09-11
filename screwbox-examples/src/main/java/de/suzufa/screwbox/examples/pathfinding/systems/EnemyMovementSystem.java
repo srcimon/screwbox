@@ -26,9 +26,9 @@ public class EnemyMovementSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         if (timer.isTick(engine.loop().lastUpdate())) {
-            final Entity player = engine.entityEngine().forcedFetch(PLAYER);
+            final Entity player = engine.entities().forcedFetch(PLAYER);
             final Vector playerPosition = player.get(TransformComponent.class).bounds.position();
-            for (final Entity enemy : engine.entityEngine().fetchAll(ENEMIES)) {
+            for (final Entity enemy : engine.entities().fetchAll(ENEMIES)) {
                 final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
                 engine.physics().findPathAsync(enemyPosition, playerPosition,
                         path -> enemy.get(AutomovementComponent.class).path = path);

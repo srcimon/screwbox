@@ -9,7 +9,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.ui.UiMenu;
 import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
@@ -44,7 +44,7 @@ public class PauseMenu extends UiMenu {
             @Override
             public void onActivate(Engine engine) {
                 List<Entity> allEntities = deserialize("savegame.sav");
-                EntityEngine entityEngine = engine.scenes().entityEngineOf(GameScene.class);
+                Entities entityEngine = engine.scenes().entityEngineOf(GameScene.class);
                 for (Entity entity : entityEngine.allEntities()) {
                     entityEngine.remove(entity);
                 }

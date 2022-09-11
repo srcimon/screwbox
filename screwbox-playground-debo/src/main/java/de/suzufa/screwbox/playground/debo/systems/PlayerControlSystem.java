@@ -17,7 +17,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAll(PLAYER)) {
+        for (Entity entity : engine.entities().fetchAll(PLAYER)) {
             var control = entity.get(PlayerControlComponent.class);
             final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
             control.jumpDownPressed = engine.keyboard().isDown(JUMP_DOWN);

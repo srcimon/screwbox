@@ -17,7 +17,7 @@ public class AutomovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity mover : engine.entityEngine().fetchAll(AUTO_MOVERS)) {
+        for (final Entity mover : engine.entities().fetchAll(AUTO_MOVERS)) {
             final Vector position = mover.get(TransformComponent.class).bounds.position();
             final var automovement = mover.get(AutomovementComponent.class);
             Path path = automovement.path;

@@ -29,7 +29,7 @@ public class SpriteRenderSystem implements EntitySystem {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Bounds visibleArea = engine.graphics().world().visibleArea();
 
-        for (final Entity entity : engine.entityEngine().fetchAll(sprites)) {
+        for (final Entity entity : engine.entities().fetchAll(sprites)) {
             final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
             final SpriteComponent spriteComponent = entity.get(spriteComponentClass);
             final var sprite = spriteComponent.sprite;

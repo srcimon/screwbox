@@ -12,27 +12,27 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.entities.Entity;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultEntityEngineTest {
+class DefaultEntitiesTest {
 
     @InjectMocks
-    private DefaultEntityEngine entityEngine;
+    private DefaultEntities entities;
 
     @Test
     void add_entityNull_throwsException() {
-        assertThatThrownBy(() -> entityEngine.add((Entity) null))
+        assertThatThrownBy(() -> entities.add((Entity) null))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @Test
     void importSource_sourceNull_throwsException() {
-        assertThatThrownBy(() -> entityEngine.importSource((String) null))
+        assertThatThrownBy(() -> entities.importSource((String) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
     }
 
     @Test
     void importSource_sourceLiszNull_throwsException() {
-        assertThatThrownBy(() -> entityEngine.importSource((List<String>) null))
+        assertThatThrownBy(() -> entities.importSource((List<String>) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
     }

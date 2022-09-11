@@ -18,7 +18,7 @@ public class PrintSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (var entity : engine.entityEngine().fetchAll(TEXTS)) {
+        for (var entity : engine.entities().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Window window = engine.graphics().window();
             window.drawTextCentered(window.center(), textComponent.text, FONT, Percentage.max(), 7);

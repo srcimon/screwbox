@@ -14,7 +14,7 @@ public class ResetSceneSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (var resetter : engine.entityEngine().fetchAll(RESETTERS)) {
+        for (var resetter : engine.entities().fetchAll(RESETTERS)) {
             Time resetTime = resetter.get(ResetSceneComponent.class).atTime;
             if (Time.now().isAfter(resetTime)) {
                 engine.audio().stopAllSounds();

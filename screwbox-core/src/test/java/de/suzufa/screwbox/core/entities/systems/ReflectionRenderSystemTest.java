@@ -21,7 +21,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
@@ -41,7 +41,7 @@ class ReflectionRenderSystemTest {
     ArgumentCaptor<Bounds> restrictedArea;
 
     @Test
-    void update_entityInReflectedArea_drawsReflection(DefaultEntityEngine entityEngine, GameLoop loop, World world) {
+    void update_entityInReflectedArea_drawsReflection(DefaultEntities entityEngine, GameLoop loop, World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
 
@@ -73,7 +73,7 @@ class ReflectionRenderSystemTest {
     }
 
     @RepeatedTest(2)
-    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEntityEngine entityEngine, GameLoop loop,
+    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEntities entityEngine, GameLoop loop,
             World world) {
         when(loop.lastUpdate()).thenReturn(Time.now());
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
@@ -97,7 +97,7 @@ class ReflectionRenderSystemTest {
     }
 
     @Test
-    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEntityEngine entityEngine, GameLoop loop,
+    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEntities entityEngine, GameLoop loop,
             World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));

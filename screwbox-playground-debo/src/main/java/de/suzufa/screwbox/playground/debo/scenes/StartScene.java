@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.menues.StartGameMenu;
 import de.suzufa.screwbox.playground.debo.systems.StartBackgroundSystem;
@@ -9,7 +9,7 @@ import de.suzufa.screwbox.playground.debo.systems.StartBackgroundSystem;
 public class StartScene implements Scene {
 
     @Override
-    public void initialize(EntityEngine entityEngine) {
+    public void initialize(Entities entityEngine) {
         entityEngine.add(new StartBackgroundSystem());
     }
 

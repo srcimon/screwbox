@@ -22,7 +22,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> combinables = engine.entityEngine().fetchAll(COMBINABLES);
+        final List<Entity> combinables = engine.entities().fetchAll(COMBINABLES);
         for (final var entity : combinables) {
             for (final var combinable : combinables) {
                 var pair = new CollisionPair(entity, combinable);
@@ -35,7 +35,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         for (final var entity : combinables) {
             entity.remove(StaticMarkerComponent.class);
         }
-        engine.entityEngine().remove(CombineStaticCollidersSystem.class);
+        engine.entities().remove(CombineStaticCollidersSystem.class);
     }
 
     private boolean tryToCombine(final CollisionPair check, final Engine engine) {
@@ -60,7 +60,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
                 new StaticMarkerComponent(),
                 new TransformComponent(combined.get()));
 
-        engine.entityEngine().add(newEntity);
+        engine.entities().add(newEntity);
 
         check.collider().remove(ColliderComponent.class);
         check.collider().remove(StaticMarkerComponent.class);

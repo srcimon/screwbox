@@ -16,10 +16,10 @@ public class GravitySystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity gravityEntity = engine.entityEngine().forcedFetch(GRAVITY);
+        Entity gravityEntity = engine.entities().forcedFetch(GRAVITY);
         Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
         Vector gravityDelta = gravity.multiply(engine.loop().delta());
-        for (var entity : engine.entityEngine().fetchAll(GRAVITY_AFFECTED)) {
+        for (var entity : engine.entities().fetchAll(GRAVITY_AFFECTED)) {
             var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
             physicsBodyComponent.momentum = physicsBodyComponent.momentum
                     .add(gravityDelta.multiply(physicsBodyComponent.gravityModifier));

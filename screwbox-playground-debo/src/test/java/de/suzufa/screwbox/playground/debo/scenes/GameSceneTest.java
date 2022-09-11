@@ -7,9 +7,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entities.EntityEngine;
+import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityEngine;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -22,7 +22,7 @@ class GameSceneTest {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
-        EntityEngine entityEngine = new DefaultEntityEngine(entityManager, systemManager);
+        Entities entityEngine = new DefaultEntities(entityManager, systemManager);
 
         new GameScene(mapName).importEntities(entityEngine);
 

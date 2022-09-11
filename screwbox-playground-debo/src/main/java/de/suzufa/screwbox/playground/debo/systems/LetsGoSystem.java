@@ -28,7 +28,7 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().justPressed(Key.Q)) {
-            var playerCenter = engine.entityEngine().forcedFetch(PLAYER).get(TransformComponent.class).bounds
+            var playerCenter = engine.entities().forcedFetch(PLAYER).get(TransformComponent.class).bounds
                     .position();
             engine.audio().playEffect(LETS_GO_SOUND);
 
@@ -38,11 +38,11 @@ public class LetsGoSystem implements EntitySystem {
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
-            engine.entityEngine().add(letsGoBubble);
+            engine.entities().add(letsGoBubble);
         }
 
         var delta = engine.loop().delta();
-        for (Entity bubble : engine.entityEngine().fetchAll(BUBBLES)) {
+        for (Entity bubble : engine.entities().fetchAll(BUBBLES)) {
             final var bubbleTranform = bubble.get(TransformComponent.class);
             var letsGoComponent = bubble.get(LetsGoComponent.class);
             Bounds updatedBounds = bubbleTranform.bounds

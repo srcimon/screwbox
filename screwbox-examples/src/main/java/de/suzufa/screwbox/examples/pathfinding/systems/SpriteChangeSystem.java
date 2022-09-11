@@ -11,7 +11,7 @@ public class SpriteChangeSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entityEngine().fetchAllHaving(SpriteChangeComponent.class, SpriteComponent.class)) {
+        for (Entity entity : engine.entities().fetchAllHaving(SpriteChangeComponent.class, SpriteComponent.class)) {
             var standsStill = entity.get(PhysicsBodyComponent.class).momentum.isZero();
             var sprite = entity.get(SpriteComponent.class);
             var spriteChange = entity.get(SpriteChangeComponent.class);

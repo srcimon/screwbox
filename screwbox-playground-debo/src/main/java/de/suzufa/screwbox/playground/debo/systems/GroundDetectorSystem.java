@@ -17,7 +17,7 @@ public class GroundDetectorSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.entityEngine().fetchAll(GROUND_DETECTORS)) {
+        for (final Entity entity : engine.entities().fetchAll(GROUND_DETECTORS)) {
             entity.get(GroundDetectorComponent.class).isOnGround = isOnGround(entity);
         }
     }

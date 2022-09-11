@@ -13,15 +13,15 @@ public class RegisterToSignalSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity unregistered : engine.entityEngine().fetchAll(UNREGISTERED)) {
+        for (Entity unregistered : engine.entities().fetchAll(UNREGISTERED)) {
             var signalId = unregistered.get(RegisterToSignalComponent.class).id;
 
-            Entity signal = engine.entityEngine().forcedFetchById(signalId);
+            Entity signal = engine.entities().forcedFetchById(signalId);
             signal.get(ForwardSignalComponent.class).listenerIds.add(unregistered.id().orElseThrow());
             unregistered.remove(RegisterToSignalComponent.class);
         }
-        if (engine.entityEngine().fetchAll(UNREGISTERED).isEmpty()) {
-            engine.entityEngine().remove(RegisterToSignalSystem.class);
+        if (engine.entities().fetchAll(UNREGISTERED).isEmpty()) {
+            engine.entities().remove(RegisterToSignalSystem.class);
         }
     }
 }

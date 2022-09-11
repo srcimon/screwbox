@@ -15,11 +15,11 @@ public class MagnetSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var magnets = engine.entityEngine().fetchAll(MAGNETS);
+        final var magnets = engine.entities().fetchAll(MAGNETS);
         if (magnets.isEmpty()) {
             return;
         }
-        final var bodies = engine.entityEngine().fetchAll(BODIES);
+        final var bodies = engine.entities().fetchAll(BODIES);
         double delta = engine.loop().delta();
         for (final var magnet : magnets) {
             Vector magnetPosition = magnet.get(TransformComponent.class).bounds.position();
