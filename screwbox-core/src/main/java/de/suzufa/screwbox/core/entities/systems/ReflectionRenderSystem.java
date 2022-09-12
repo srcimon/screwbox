@@ -55,7 +55,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
                         Percentage opacity = spriteComponent.opacity
                                 .multiply(reflection.opacityModifier.value())
-                                .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.3 + 0.7 : 1);
+                                .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
 
                         double waveMovementEffectX = reflection.useWaveEffect
                                 ? Math.sin(waveSeed + actualY / 16) * 2 - 1
