@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static java.lang.Math.round;
 import static java.util.Arrays.asList;
+import static java.util.Comparator.reverseOrder;
 import static java.util.Objects.nonNull;
 
 import java.awt.Cursor;
@@ -231,6 +232,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     public List<Dimension> supportedResolutions() {
         return asList(graphicsDevice.getDisplayModes()).stream().map(dm -> Dimension.of(dm.getWidth(), dm.getHeight()))
+                .distinct()
+                .sorted(reverseOrder())
                 .toList();
     }
 
