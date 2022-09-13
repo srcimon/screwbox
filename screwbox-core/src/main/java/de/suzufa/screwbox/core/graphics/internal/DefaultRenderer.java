@@ -58,6 +58,7 @@ public class DefaultRenderer implements Renderer {
         frame.getBufferStrategy().show();
         graphics.dispose();
         graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
+        lastUsedColor = null;
         if (antialiased) {
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
