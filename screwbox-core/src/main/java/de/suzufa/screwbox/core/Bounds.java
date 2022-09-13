@@ -155,6 +155,7 @@ public final class Bounds implements Serializable {
      * Checks if this {@link Bounds} intersects another {@link Bounds}.
      * 
      * @see #touches(Bounds)
+     * @see #intersection(Bounds)
      */
     public boolean intersects(final Bounds other) {
         return maxX() > other.minX() && minX() < other.maxX() && maxY() > other.minY() && minY() < other.maxY();
@@ -256,6 +257,8 @@ public final class Bounds implements Serializable {
      * Returns the intersection between this {@link Bounds} and the other
      * {@link Bounds}. Returns {@link Optional#empty()} if there is no intersection
      * between both {@link Bounds}.
+     * 
+     * @see #intersects(Bounds)
      */
     public Optional<Bounds> intersection(final Bounds other) {
         final var newMinX = Math.max(minX(), other.minX());
