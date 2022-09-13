@@ -11,7 +11,7 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
             final var menuItemBounds = layouter.calculateBounds(item, menu, engine.graphics().window());
             if (menuItemBounds.contains(engine.mouse().position())) {
                 menu.selectItem(item);
-                if (engine.mouse().justPressed(MouseButton.LEFT)) {
+                if (engine.mouse().justClicked(MouseButton.LEFT)) {
                     item.onActivate(engine);
                 }
             }

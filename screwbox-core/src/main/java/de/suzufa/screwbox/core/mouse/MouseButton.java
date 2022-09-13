@@ -3,8 +3,8 @@ package de.suzufa.screwbox.core.mouse;
 /**
  * The mouse-Buttons.
  * 
- * @see Mouse#isButtonDown(MouseButton)
- * @see Mouse#justPressed(MouseButton)
+ * @see Mouse#isDown(MouseButton)
+ * @see Mouse#justClicked(MouseButton)
  *
  */
 public enum MouseButton {

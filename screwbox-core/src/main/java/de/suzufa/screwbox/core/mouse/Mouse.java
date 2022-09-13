@@ -27,11 +27,11 @@ public interface Mouse {
     /**
      * Checks if the given {@link MouseButton} is pressed.
      */
-    boolean isButtonDown(MouseButton button);
+    boolean isDown(MouseButton button);
 
     /**
      * Checks if the given {@link MouseButton} was just pressed (Will be false in
      * the next frame.).
      */
-    boolean justPressed(MouseButton button);
+    boolean justClicked(MouseButton button);
 }

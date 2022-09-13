@@ -44,7 +44,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     @Override
-    public boolean isButtonDown(final MouseButton button) {
+    public boolean isDown(final MouseButton button) {
         return pressed.contains(button);
     }
 
@@ -77,7 +77,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     @Override
-    public boolean justPressed(final MouseButton button) {
+    public boolean justClicked(final MouseButton button) {
         return justPressed.backup().contains(button);
     }
 
