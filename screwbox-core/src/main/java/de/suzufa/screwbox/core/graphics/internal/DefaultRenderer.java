@@ -34,6 +34,7 @@ public class DefaultRenderer implements Renderer {
     private final Frame frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
+    private Color lastUsedColor;
 
     public DefaultRenderer(final Frame frame) {
         this.frame = frame;
@@ -65,7 +66,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }
 
@@ -78,7 +79,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawPolygon(final List<Offset> points, final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         final Polygon awtPolygon = new Polygon();
         for (final var point : points) {
             awtPolygon.addPoint(point.x(), point.y());
@@ -100,7 +101,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         graphics.setFont(toAwtFont(font));
 
         graphics.drawString(text, offset.x(), offset.y());
@@ -155,7 +156,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawRectangle(final WindowBounds bounds, final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         graphics.fillRect(
                 bounds.offset().x(),
                 bounds.offset().y(),
@@ -165,7 +166,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawCircle(final Offset offset, final int diameter, final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
@@ -173,8 +174,15 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final Color color) {
-        graphics.setColor(toAwtColor(color));
+        applyNewColor(color);
         graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+    }
+
+    private void applyNewColor(final Color color) {
+        if (lastUsedColor != color) {
+            lastUsedColor = color;
+            graphics.setColor(toAwtColor(color));
+        }
     }
 
 }
