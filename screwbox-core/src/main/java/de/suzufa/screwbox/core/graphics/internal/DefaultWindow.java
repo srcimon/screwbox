@@ -185,7 +185,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window moveTo(final Offset position) {
-        if (!frame.isResizable()) {
+        if (configuration.isFullscreen()) {
             throw new IllegalStateException("Can't move Window in fullscreen.");
         }
         frame.setBounds(position.x(), position.y(), frame.getWidth(), frame.getHeight());
