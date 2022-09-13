@@ -116,7 +116,7 @@ public class Sprite implements Serializable {
      */
     public Frame getFrame(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
-        return getFrame(frameNr);
+        return frames.get(frameNr);
     }
 
     /**
