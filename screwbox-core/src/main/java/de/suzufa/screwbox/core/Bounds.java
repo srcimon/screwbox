@@ -101,14 +101,37 @@ public final class Bounds implements Serializable {
         this.bottomRight = position.add(extents);
     }
 
+    /**
+     * Returns a instance of this {@link Bounds} that was moved by the given
+     * {@link Vector} to a new position. {@link #width()} and {@link #height()} stay
+     * the same.
+     * 
+     * @see #moveBy(double, double)
+     * @see #moveTo(Vector)
+     */
     public Bounds moveBy(final Vector vector) {
         return moveBy(vector.x(), vector.y());
     }
 
+    /**
+     * Returns a instance of this {@link Bounds} that was moved by the given X and Y
+     * values to a new position. {@link #width()} and {@link #height()} stay the
+     * same.
+     * 
+     * @see #moveBy(Vector)
+     * @see #moveTo(Vector)
+     */
     public Bounds moveBy(final double x, final double y) {
         return new Bounds(position.add(x, y), extents);
     }
 
+    /**
+     * Returns a instance of this {@link Bounds} that was moved to the given
+     * {@link #position}. {@link #width()} and {@link #height()} stay the same.
+     * 
+     * @see #moveBy(Vector)
+     * @see #moveBy(double, double)
+     */
     public Bounds moveTo(final Vector newPosition) {
         return new Bounds(newPosition, extents);
     }
