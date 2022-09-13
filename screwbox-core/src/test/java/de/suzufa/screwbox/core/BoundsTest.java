@@ -4,6 +4,8 @@ import static de.suzufa.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 class BoundsTest {
@@ -206,4 +208,29 @@ class BoundsTest {
         assertThat(bounds.height()).isEqualTo(Double.MAX_VALUE);
     }
 
+    @Test
+    void intersection_dontIntersect_isEmpty() {
+        Bounds first = $$(0, 0, 40, 100);
+        Bounds onTheRight = $$(200, 0, 40, 100);
+        Bounds onTop = $$(0, -400, 40, 100);
+
+        assertThat(first.intersection(onTheRight)).isEmpty();
+        assertThat(first.intersection(onTop)).isEmpty();
+    }
+
+    @Test
+    void intersection_identical_isIdentical() {
+        Bounds first = $$(0, 0, 40, 100);
+        Bounds second = $$(0, 0, 40, 100);
+
+        assertThat(first.intersection(second)).isEqualTo(Optional.of(first));
+    }
+
+    @Test
+    void intersection_intersects_returnsIntersection() {
+        Bounds first = $$(10, 0, 40, 80);
+        Bounds second = $$(0, 0, 20, 100);
+
+        assertThat(first.intersection(second)).isEqualTo(Optional.of($$(10, 0, 10, 80)));
+    }
 }

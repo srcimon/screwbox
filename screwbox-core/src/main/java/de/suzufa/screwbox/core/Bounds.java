@@ -137,7 +137,7 @@ public final class Bounds implements Serializable {
      * Same as {@link #inflated(double)} but only inflates the top {@link Segment}
      * of the {@link Bounds}.
      */
-    public Bounds inflatedTop(int value) {
+    public Bounds inflatedTop(final int value) {
         return Bounds.atOrigin(origin.addY(-value), width(), height() + value);
     }
 
@@ -225,14 +225,14 @@ public final class Bounds implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Bounds other = (Bounds) obj;
+        final Bounds other = (Bounds) obj;
         return Objects.equals(extents, other.extents) && Objects.equals(position, other.position);
     }
 
@@ -252,18 +252,26 @@ public final class Bounds implements Serializable {
         return Vector.of(minX(), minY());
     }
 
-    // TODO: TEST (May be buggy)
-    public Optional<Bounds> intersection(Bounds other) {
-        var newMinX = Math.max(minX(), other.minX());
-        var newMaxX = Math.min(maxX(), other.maxX());
-        var newMinY = Math.max(minY(), other.minY());
-        var newMaxY = Math.min(maxY(), other.maxY());
-        double width = newMaxX - newMinX;
-        double height = newMaxY - newMinY;
-        if (width <= 0 || height <= 0) {
+    /**
+     * Returns the intersection between this {@link Bounds} and the other
+     * {@link Bounds}. Returns {@link Optional#empty()} if there is no intersection
+     * between both {@link Bounds}.
+     */
+    public Optional<Bounds> intersection(final Bounds other) {
+        final var newMinX = Math.max(minX(), other.minX());
+        final var newMaxX = Math.min(maxX(), other.maxX());
+        if (newMaxX - newMinX <= 0) {
             return Optional.empty();
         }
-        return Optional.of(Bounds.atOrigin(newMinX, newMinY, width, height));
+
+        final var newMinY = Math.max(minY(), other.minY());
+        final var newMaxY = Math.min(maxY(), other.maxY());
+
+        if (newMaxY - newMinY <= 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(Bounds.atOrigin(newMinX, newMinY, newMaxX - newMinX, newMaxY - newMinY));
     }
 
 }
