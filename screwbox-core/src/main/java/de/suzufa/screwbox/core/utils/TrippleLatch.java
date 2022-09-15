@@ -20,14 +20,14 @@ public class TrippleLatch<T> {
     }
 
     public T backup() {
-        return values.get(higherIndex(1));
+        return values.get(increase(1));
     }
 
     public T secondaryBackup() {
-        return values.get(higherIndex(2));
+        return values.get(increase(2));
     }
 
-    private int higherIndex(final int change) {
+    private int increase(final int change) {
         final int value = index + change;
         return value > 2 ? value - 3 : value;
     }
