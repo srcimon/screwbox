@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.utils;
 
 import java.util.List;
 
-//TODO: merge with Latch(generic constructor?)
 public class TrippleLatch<T> {
 
     private final List<T> values;
