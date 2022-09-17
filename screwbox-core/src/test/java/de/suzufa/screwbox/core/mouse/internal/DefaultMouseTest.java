@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -99,11 +98,11 @@ class DefaultMouseTest {
         when(graphics.screenToWorld(Offset.at(179, 8))).thenReturn($(10, 30));
         mouse.mouseMoved(mouseEvent);
 
-        assertThat(mouse.worldPosition()).isEqualTo(Vector.of(40, 90));
+        assertThat(mouse.worldPosition()).isEqualTo($(40, 90));
 
         mouse.mouseDragged(mouseEvent);
 
-        assertThat(mouse.worldPosition()).isEqualTo(Vector.of(10, 30));
+        assertThat(mouse.worldPosition()).isEqualTo($(10, 30));
     }
 
     private MouseEvent rightMouseButtonEvent() {
