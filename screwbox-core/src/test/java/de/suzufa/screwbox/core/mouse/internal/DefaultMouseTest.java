@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.mouse.internal;
 
+import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -90,14 +91,19 @@ class DefaultMouseTest {
     @Test
     void worldPosition_returnsTheLatestWorldPosition() {
         MouseEvent mouseEvent = mock(MouseEvent.class);
-        when(mouseEvent.getXOnScreen()).thenReturn(151);
-        when(mouseEvent.getYOnScreen()).thenReturn(242);
+        when(mouseEvent.getXOnScreen()).thenReturn(151, 219);
+        when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
         when(graphics.window()).thenReturn(window);
         when(window.position()).thenReturn(Offset.at(40, 12));
-        when(graphics.screenToWorld(Offset.at(111, 230))).thenReturn(Vector.of(40, 90));
+        when(graphics.screenToWorld(Offset.at(111, 230))).thenReturn($(40, 90));
+        when(graphics.screenToWorld(Offset.at(179, 8))).thenReturn($(10, 30));
         mouse.mouseMoved(mouseEvent);
 
         assertThat(mouse.worldPosition()).isEqualTo(Vector.of(40, 90));
+
+        mouse.mouseDragged(mouseEvent);
+
+        assertThat(mouse.worldPosition()).isEqualTo(Vector.of(10, 30));
     }
 
     private MouseEvent rightMouseButtonEvent() {

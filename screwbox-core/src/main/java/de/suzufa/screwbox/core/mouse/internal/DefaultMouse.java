@@ -89,11 +89,15 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseDragged(final MouseEvent e) {
-        // not used
+        updateMousePosition(e);
     }
 
     @Override
     public void mouseMoved(final MouseEvent e) {
+        updateMousePosition(e);
+    }
+
+    private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
         position = windowPosition.substract(graphics.window().position());
     }
