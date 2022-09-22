@@ -41,11 +41,12 @@ public class GridSystem implements EntitySystem {
             Bounds worldBounds = grid.toWorldBounds(node);
             if (!grid.isFree(node)) {
                 int count = grid.blockedNeighbors(node).size();
-                engine.graphics().world().drawRectangle(worldBounds, count > 2 ? Color.RED : Color.WHITE);
+                engine.graphics().world().drawRectangle(worldBounds, count > 2 ? Color.DARK_BLUE : Color.WHITE);
             }
         }
     }
 
+//TODO: engine.graphics.restrictCameraArea()
     private Grid createInitialGrid() {
         Grid grid = new Grid(Bounds.$$(-240, -240, 600, 600), 8);
         for (int i = 0; i < 500; i++) {
