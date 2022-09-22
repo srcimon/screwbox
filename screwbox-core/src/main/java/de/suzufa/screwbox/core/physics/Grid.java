@@ -169,7 +169,7 @@ public class Grid {
         return height;
     }
 
-    public List<Node> neighbors(final Node node) {
+    public List<Node> freeNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);
