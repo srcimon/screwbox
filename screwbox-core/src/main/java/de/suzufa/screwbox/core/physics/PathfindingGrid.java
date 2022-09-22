@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
+import static java.util.Objects.nonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,10 +11,14 @@ import de.suzufa.screwbox.core.Vector;
 
 public class PathfindingGrid {
 
-    public record Node(int x, int y) {
+    public record Node(int x, int y, Node parent) {
+
+        private Node(final int x, final int y) {
+            this(x, y, null);
+        }
 
         public Node offset(final int deltaX, final int deltaY) {
-            return new Node(x + deltaX, y + deltaY);
+            return new Node(x + deltaX, y + deltaY, this);
         }
 
         @Override
@@ -180,5 +186,14 @@ public class PathfindingGrid {
 
     private int gridValue(final double value) {
         return Math.floorDiv((int) value, gridSize);
+    }
+
+    public List<Node> backtrackPath(Node node) {
+        final List<Node> path = new ArrayList<>();
+        while (nonNull(node.parent())) {
+            path.add(0, node);
+            node = node.parent();
+        }
+        return path;
     }
 }

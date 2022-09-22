@@ -9,15 +9,6 @@ import de.suzufa.screwbox.core.physics.PathfindingGrid.Node;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
-    public List<Node> backtrackPath(Node node) {
-        final List<Node> path = new ArrayList<>();
-        while (nonNull(node.parent())) {
-            path.add(0, node);
-            node = node.parent();
-        }
-        return path;
-    }
-
     @Override
     public List<Node> findPath(final PathfindingGrid grid, final Node start, final Node end) {
         final var usedNodes = new ArrayList<Node>();
@@ -30,7 +21,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
                 usedNodes.add(point);
                 if (end.equals(point)) {
                     final Node lastNode = usedNodes.get(usedNodes.size() - 1);
-                    return backtrackPath(lastNode);
+                    return grid.backtrackPath(lastNode);
                 }
             }
 
