@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.Grid;
+import de.suzufa.screwbox.core.physics.PathfindingGrid;
 import de.suzufa.screwbox.core.physics.PathfindingCallback;
 
 class DefaultPhysicsTest {
@@ -81,7 +81,7 @@ class DefaultPhysicsTest {
     }
 
     private void updateGrid() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
+        PathfindingGrid grid = new PathfindingGrid($$(0, 0, 10, 10), 2, false);
 
         physics.updatePathfindingGrid(grid);
     }

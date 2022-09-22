@@ -14,15 +14,15 @@ public interface Physics {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
-    Optional<Path> findPath(Grid grid, Vector start, Vector end);
+    Optional<Path> findPath(PathfindingGrid grid, Vector start, Vector end);
 
     Optional<Path> findPath(Vector start, Vector end);
 
     Physics findPathAsync(Vector start, Vector end, PathfindingCallback callback);
 
-    Physics updatePathfindingGrid(Grid grid);
+    Physics updatePathfindingGrid(PathfindingGrid grid);
 
     Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
 
-    Grid pathfindingGrid();
+    PathfindingGrid pathfindingGrid();
 }

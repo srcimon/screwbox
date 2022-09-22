@@ -9,7 +9,7 @@ import java.util.Objects;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 
-public class Grid {
+public class PathfindingGrid {
 
     public record Node(int x, int y, Node parent) {
 
@@ -51,7 +51,7 @@ public class Grid {
     private final boolean diagonalMovementAllowed;
     private final Vector offset;
 
-    public Grid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
+    public PathfindingGrid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
         validate(area, gridSize);
         this.gridSize = gridSize;
         this.offset = area.origin();
