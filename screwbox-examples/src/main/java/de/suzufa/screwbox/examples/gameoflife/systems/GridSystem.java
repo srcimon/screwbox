@@ -23,14 +23,12 @@ public class GridSystem implements EntitySystem {
 
             for (Node node2 : grid.nodes()) {
                 int count = grid.blockedNeighbors(node2).size();
-                if (!grid.isFree(node2)) {
-                    if (count == 2 || count == 3) {
-                        newGrid.block(node2);
-                    }
-                } else {
+                if (grid.isFree(node2)) {
                     if (count == 3) {
                         newGrid.block(node2);
                     }
+                } else if (count == 2 || count == 3) {
+                    newGrid.block(node2);
                 }
             }
             grid = newGrid;
@@ -38,13 +36,14 @@ public class GridSystem implements EntitySystem {
         for (var node : grid.nodes()) {
             Bounds worldBounds = grid.toWorldBounds(node);
             if (!grid.isFree(node)) {
-                engine.graphics().world().drawRectangle(worldBounds, Color.WHITE);
+                int count = grid.blockedNeighbors(node).size();
+                engine.graphics().world().drawRectangle(worldBounds, count > 2 ? Color.RED : Color.WHITE);
             }
         }
     }
 
     private Grid createInitialGrid() {
-        Grid grid = new Grid(Bounds.$$(0, 0, 600, 600), 8);
+        Grid grid = new Grid(Bounds.$$(-240, -240, 600, 600), 8);
         for (int i = 0; i < 500; i++) {
             grid.block(ListUtil.randomFrom(grid.nodes()));
         }

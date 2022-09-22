@@ -10,10 +10,10 @@ public class MouseCameraSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().justPressed(Key.NUMBER_1)) {
-            engine.graphics().updateCameraZoom(engine.graphics().cameraZoom() + 1);
+            engine.graphics().updateCameraZoom(engine.graphics().cameraZoom() + 0.5);
         }
         if (engine.keyboard().justPressed(Key.NUMBER_2)) {
-            engine.graphics().updateCameraZoom(engine.graphics().cameraZoom() - 1);
+            engine.graphics().updateCameraZoom(engine.graphics().cameraZoom() - 0.5);
         }
         if (engine.keyboard().isDown(Key.ARROW_DOWN)) {
             engine.graphics().moveCameraBy(Vector.yOnly(100).multiply(engine.loop().delta()));
