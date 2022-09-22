@@ -150,7 +150,10 @@ public class Grid implements Serializable {
     }
 
     public void freeAt(final Vector position) {
-        freeArea(atPosition(position, 1, 1));
+        final Node node = toGrid(position);
+        if (isInGrid(node)) {
+            isBlocked[node.x][node.y] = false;
+        }
     }
 
     public void freeArea(final Bounds area) {
@@ -158,14 +161,17 @@ public class Grid implements Serializable {
     }
 
     public void blockAt(final Vector position) {
-        blockArea(Bounds.atOrigin(position, 1, 1));
+        final Node node = toGrid(position);
+        if (isInGrid(node)) {
+            isBlocked[node.x][node.y] = true;
+        }
     }
 
     public void blockArea(final Bounds area) {
         markArea(area, true);
     }
 
-    private void markArea(final Bounds area, boolean status) {
+    private void markArea(final Bounds area, final boolean status) {
         final var tArea = tanslate(area).inflated(-0.1);
         final int minX = Math.max(gridValue(tArea.origin().x()), 0);
         final int maxX = Math.min(gridValue(tArea.bottomRight().x()), width - 1);
@@ -351,6 +357,11 @@ public class Grid implements Serializable {
             node = node.parent;
         }
         return path;
+    }
+
+    public Vector snap(final Vector position) {
+        final Node node = toGrid(position);
+        return toWorld(node);
     }
 
 }

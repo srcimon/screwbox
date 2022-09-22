@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.examples.gameoflife;
 
-import static de.suzufa.screwbox.core.graphics.PredefinedCursor.DEFAULT;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -33,8 +31,6 @@ public class GameOfLifeExample {
         engine.graphics().configuration()
                 .toggleFullscreen()
                 .setUseAntialiasing(true);
-
-        engine.graphics().window().setCursor(DEFAULT);
 
         engine.graphics().updateCameraZoom(4);
         engine.start();
