@@ -9,23 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 
 public class PathfindingGrid {
 
-    public class Node {
-
-        private final int x;
-        private final int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int x() {
-            return x;
-        }
-
-        public int gx() {
-            return y;
-        }
+    public record Node(int x, int y) {
 
         public Node offset(final int deltaX, final int deltaY) {
             return new Node(x + deltaX, y + deltaY);

@@ -9,10 +9,6 @@ import de.suzufa.screwbox.core.physics.PathfindingGrid.Node;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
-    private class BacktrackNode {
-
-    }
-
     public List<Node> backtrackPath(Node node) {
         final List<Node> path = new ArrayList<>();
         while (nonNull(node.parent())) {
