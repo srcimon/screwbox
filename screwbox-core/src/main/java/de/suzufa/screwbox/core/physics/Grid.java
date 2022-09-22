@@ -73,6 +73,7 @@ public class Grid {
     private final int gridSize;
     private final boolean useDiagonalMovement;
     private final Vector offset;
+    private final Bounds area;
 
     public Grid(final Bounds area, final int gridSize) {
         this(area, gridSize, true);
@@ -96,6 +97,15 @@ public class Grid {
         this.height = gridValue(area.height());
         isBlocked = new boolean[this.width][this.height];
         this.useDiagonalMovement = useDiagonalMovement;
+        this.area = area;
+    }
+
+    public Grid cleared() {
+        return new Grid(area, gridSize, useDiagonalMovement);
+    }
+
+    public Bounds area() {
+        return area;
     }
 
     public Node nodeAt(final int x, final int y) {

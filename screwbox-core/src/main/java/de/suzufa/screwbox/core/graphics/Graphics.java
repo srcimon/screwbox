@@ -24,6 +24,10 @@ public interface Graphics {
 
     Graphics updateCameraPosition(Vector position);
 
+    default Graphics moveCameraBy(final Vector delta) {
+        return updateCameraPosition(cameraPosition().add(delta));
+    }
+
     Vector cameraPosition();
 
     double cameraZoom();

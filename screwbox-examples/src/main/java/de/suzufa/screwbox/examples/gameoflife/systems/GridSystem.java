@@ -14,16 +14,16 @@ public class GridSystem implements EntitySystem {
 
     // TODO: render and update system / entity that holds grid
     private Grid grid = createInitialGrid();
-    private Timer timer = Timer.withInterval(Duration.ofMillis(10));
+    private Timer timer = Timer.withInterval(Duration.ofMillis(100));
 
     @Override
     public void update(Engine engine) {
         if (timer.isTick()) {
-            Grid newGrid = new Grid(Bounds.$$(0, 0, 200, 200), 8);// TODO: clone?
+            Grid newGrid = grid.cleared();
 
             for (Node node2 : grid.nodes()) {
                 int count = grid.blockedNeighbors(node2).size();
-                if (grid.isFree(node2)) {
+                if (!grid.isFree(node2)) {
                     if (count == 2 || count == 3) {
                         newGrid.block(node2);
                     }
@@ -37,13 +37,15 @@ public class GridSystem implements EntitySystem {
         }
         for (var node : grid.nodes()) {
             Bounds worldBounds = grid.toWorldBounds(node);
-            engine.graphics().world().drawRectangle(worldBounds, grid.isFree(node) ? Color.GREEN : Color.BLUE);
+            if (!grid.isFree(node)) {
+                engine.graphics().world().drawRectangle(worldBounds, Color.WHITE);
+            }
         }
     }
 
     private Grid createInitialGrid() {
-        Grid grid = new Grid(Bounds.$$(0, 0, 200, 200), 8);
-        for (int i = 0; i < 20; i++) {
+        Grid grid = new Grid(Bounds.$$(0, 0, 600, 600), 8);
+        for (int i = 0; i < 500; i++) {
             grid.block(ListUtil.randomFrom(grid.nodes()));
         }
         return grid;
