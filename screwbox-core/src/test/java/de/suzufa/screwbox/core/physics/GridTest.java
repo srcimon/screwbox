@@ -17,7 +17,7 @@ class GridTest {
 
     @Test
     void newInstance_widthNegative_throwsException() {
-        assertThatThrownBy(() -> new Grid(null, 4, true))
+        assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Grid area must not be null");
     }
@@ -25,7 +25,7 @@ class GridTest {
     @Test
     void newInstance_gridSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> new Grid(area, 0, true))
+        assertThatThrownBy(() -> new Grid(area, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("GridSize must have value above zero");
     }
@@ -33,7 +33,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaOriginX_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16, true))
+        assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Area origin x should be dividable by grid size.");
     }
@@ -41,7 +41,7 @@ class GridTest {
     @Test
     void newInstance_invalidAreaOriginY_throwsException() {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
-        assertThatThrownBy(() -> new Grid(area, 16, true))
+        assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Area origin y should be dividable by grid size.");
     }
@@ -78,7 +78,7 @@ class GridTest {
     void findNeighbors_diagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
 
         assertThat(grid.findNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(8)
@@ -108,7 +108,7 @@ class GridTest {
     @Test
     void backtrack_noParent_returnsNoNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
         Node node = grid.nodeAt(0, 0);
 
         assertThat(grid.backtrack(node)).isEmpty();
@@ -117,7 +117,7 @@ class GridTest {
     @Test
     void backtrack_parentPresent_returnsNodesPath() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
         Node first = grid.nodeAt(0, 0);
 
         List<Node> secondGeneration = grid.findNeighbors(first);
@@ -134,7 +134,7 @@ class GridTest {
     @Test
     void toGrid_translatesVectorToGrid() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
 
         Node node = grid.toGrid($(192, -64));
 
@@ -144,7 +144,7 @@ class GridTest {
     @Test
     void toWorld_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
 
         Node node = grid.toGrid($(192, -64));
         Vector vector = grid.toWorld(node);
@@ -155,7 +155,7 @@ class GridTest {
     @Test
     void blockArea_areaInGrid_blocksGridArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new Grid(area, 4, true);
+        var grid = new Grid(area, 4);
 
         grid.blockArea($$(3, 2, 2, 3));
 

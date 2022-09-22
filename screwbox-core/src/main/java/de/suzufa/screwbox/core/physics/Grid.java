@@ -74,6 +74,10 @@ public class Grid {
     private final boolean useDiagonalMovement;
     private final Vector offset;
 
+    public Grid(final Bounds area, final int gridSize) {
+        this(area, gridSize, true);
+    }
+
     public Grid(final Bounds area, final int gridSize, final boolean useDiagonalMovement) {
         requireNonNull(area, "Grid area must not be null");
 

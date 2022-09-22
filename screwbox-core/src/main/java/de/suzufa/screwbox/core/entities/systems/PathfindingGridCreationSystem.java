@@ -35,7 +35,7 @@ public class PathfindingGridCreationSystem implements EntitySystem {
         if (needsUpdate(engine)) {
             final Bounds bounds = engine.entities().forcedFetch(WORLD).get(TransformComponent.class).bounds;
 
-            final Grid grid = new Grid(bounds, gridSize, true);
+            final Grid grid = new Grid(bounds, gridSize);
             for (final Entity blocking : engine.entities().fetchAll(BLOCKING)) {
                 grid.blockArea(blocking.get(TransformComponent.class).bounds);
             }
