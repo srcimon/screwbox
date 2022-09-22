@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.physics.Grid;
+import de.suzufa.screwbox.core.physics.PathfindingGrid;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 import de.suzufa.screwbox.core.utils.Timer;
@@ -55,10 +55,10 @@ class PathfindingGridCreationSystemTest {
 
         entities.update();
 
-        var gridCaptor = ArgumentCaptor.forClass(Grid.class);
+        var gridCaptor = ArgumentCaptor.forClass(PathfindingGrid.class);
         verify(physics).updatePathfindingGrid(gridCaptor.capture());
 
-        Grid grid = gridCaptor.getValue();
+        PathfindingGrid grid = gridCaptor.getValue();
         assertThat(grid.isFree(0, 0)).isTrue();
         assertThat(grid.isFree(0, 1)).isTrue();
         assertThat(grid.isFree(1, 0)).isTrue();

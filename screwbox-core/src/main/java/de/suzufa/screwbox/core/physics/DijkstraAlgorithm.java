@@ -5,12 +5,12 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.physics.PathfindingGrid.Node;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
-    public List<Node> findPath(final Grid grid, final Node start, final Node end) {
+    public List<Node> findPath(final PathfindingGrid grid, final Node start, final Node end) {
         final var usedNodes = new ArrayList<Node>();
         usedNodes.add(start);
 
@@ -30,7 +30,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         }
     }
 
-    private List<Node> calculateOpenNodes(final Grid grid, final ArrayList<Node> usedNodes) {
+    private List<Node> calculateOpenNodes(final PathfindingGrid grid, final List<Node> usedNodes) {
         final List<Node> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
             for (final Node neighbor : grid.findNeighbors(usedNode)) {
