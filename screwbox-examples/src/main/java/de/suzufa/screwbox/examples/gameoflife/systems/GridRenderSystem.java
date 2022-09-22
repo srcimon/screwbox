@@ -12,7 +12,6 @@ import de.suzufa.screwbox.examples.gameoflife.components.GridComponent;
 public class GridRenderSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-    int i = 0;
 
     @Override
     public void update(final Engine engine) {
