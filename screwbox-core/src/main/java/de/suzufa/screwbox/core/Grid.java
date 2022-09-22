@@ -3,11 +3,14 @@ package de.suzufa.screwbox.core;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Grid {
+public class Grid implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public class Node {
 
@@ -129,7 +132,7 @@ public class Grid {
 
     // TODO: test
     public Bounds toWorldBounds(final Node node) {
-        Vector position = toWorld(node);
+        final Vector position = toWorld(node);
         return Bounds.atPosition(position, gridSize, gridSize);
     }
 
@@ -160,11 +163,11 @@ public class Grid {
     }
 
     // TODO: Test
-    public void block(Node node) {
+    public void block(final Node node) {
         block(node.x, node.y);
     }
 
-    private void block(int x, int y) {
+    private void block(final int x, final int y) {
         isBlocked[x][y] = true;
     }
 
@@ -205,7 +208,7 @@ public class Grid {
         return neighbors;
     }
 
-    private boolean isInGrid(Node node) {
+    private boolean isInGrid(final Node node) {
         return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
     }
 

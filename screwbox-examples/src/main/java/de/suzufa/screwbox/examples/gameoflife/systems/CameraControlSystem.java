@@ -4,7 +4,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.mouse.MouseButton;
 
-public class MouseCameraSystem implements EntitySystem {
+public class CameraControlSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
