@@ -15,6 +15,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
+import de.suzufa.screwbox.core.utils.Latch;
 import de.suzufa.screwbox.core.utils.TrippleLatch;
 
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -31,7 +32,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private Offset position = Offset.origin();
     private boolean isCursorOnWindow;
     private Offset lastPosition = Offset.origin();
-    private int unitsScrolled = 0;
+    private Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
     public DefaultMouse(final Graphics graphics) {
         this.graphics = graphics;
@@ -94,7 +95,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void update() {
-        unitsScrolled = 0;
+        unitsScrolled.swap();
+        unitsScrolled.assignPrimary(0);
         lastPosition = position;
         justPressed.secondaryBackup().clear();
         justPressed.swap();
@@ -122,12 +124,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseWheelMoved(final MouseWheelEvent e) {
-        unitsScrolled += e.getUnitsToScroll();
+        unitsScrolled.assignPrimary(unitsScrolled.primary() + e.getUnitsToScroll());
     }
 
     @Override
     public int unitsScrolled() {
-        return unitsScrolled;
+        return unitsScrolled.backup();
     }
 
     @Override

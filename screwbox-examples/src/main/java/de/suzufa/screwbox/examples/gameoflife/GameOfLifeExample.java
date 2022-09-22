@@ -32,7 +32,7 @@ public class GameOfLifeExample {
                 .toggleFullscreen()
                 .setUseAntialiasing(true);
 
-        engine.graphics().updateCameraZoom(4);
+        engine.graphics().updateCameraZoom(6);
         engine.start();
     }
 }

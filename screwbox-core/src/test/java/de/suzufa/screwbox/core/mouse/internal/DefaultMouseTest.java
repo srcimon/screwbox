@@ -129,6 +129,12 @@ class DefaultMouseTest {
         when(scrollDownEvent.getUnitsToScroll()).thenReturn(-7);
         mouse.mouseWheelMoved(scrollDownEvent);
 
+        mouse.update();
+
+        MouseWheelEvent ignoredScrolling = mock(MouseWheelEvent.class);
+        when(ignoredScrolling.getUnitsToScroll()).thenReturn(40);
+        mouse.mouseWheelMoved(ignoredScrolling);
+
         assertThat(mouse.unitsScrolled()).isEqualTo(-3);
     }
 
