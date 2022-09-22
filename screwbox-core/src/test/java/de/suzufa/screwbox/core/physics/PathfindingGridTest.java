@@ -52,7 +52,7 @@ class PathfindingGridTest {
 
         var grid = new PathfindingGrid(area, 20, false);
 
-        assertThat(grid.allNodes())
+        assertThat(grid.nodes())
                 .hasSize(200)
                 .allMatch(grid::isFree);
 

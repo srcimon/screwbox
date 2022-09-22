@@ -182,13 +182,13 @@ public class PathfindingGrid {
         return neighbors;
     }
 
-    private void addIfFree(final List<Node> neighbors, final Node down) {
-        if (isFree(down)) {
-            neighbors.add(down);
+    private void addIfFree(final List<Node> neighbors, final Node node) {
+        if (isFree(node)) {
+            neighbors.add(node);
         }
     }
 
-    public List<Node> allNodes() {
+    public List<Node> nodes() {
         final var nodes = new ArrayList<Node>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
