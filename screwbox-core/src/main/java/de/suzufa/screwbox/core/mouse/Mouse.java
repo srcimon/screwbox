@@ -44,4 +44,7 @@ public interface Mouse {
 
     // TODO: test and javadoc
     public boolean hasScrolled();
+
+    // TODO: test and javadoc
+    boolean isAnyButtonDown();
 }

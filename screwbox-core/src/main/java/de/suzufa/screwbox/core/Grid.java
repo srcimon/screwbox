@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core;
 
+import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -126,14 +127,13 @@ public class Grid implements Serializable {
     public Vector toWorld(final Node node) {
         final double x = (node.x + 0.5) * gridSize + offset.x();
         final double y = (node.y + 0.5) * gridSize + offset.y();
-
         return Vector.of(x, y);
     }
 
     // TODO: test
     public Bounds toWorldBounds(final Node node) {
         final Vector position = toWorld(node);
-        return Bounds.atPosition(position, gridSize, gridSize);
+        return atPosition(position, gridSize, gridSize);
     }
 
     public Node toGrid(final Vector position) {
@@ -149,7 +149,23 @@ public class Grid implements Serializable {
         return area.moveBy(-offset.x(), -offset.y());
     }
 
+    public void freeAt(final Vector position) {
+        freeArea(atPosition(position, 1, 1));
+    }
+
+    public void freeArea(final Bounds area) {
+        markArea(area, false);
+    }
+
+    public void blockAt(final Vector position) {
+        blockArea(Bounds.atOrigin(position, 1, 1));
+    }
+
     public void blockArea(final Bounds area) {
+        markArea(area, true);
+    }
+
+    private void markArea(final Bounds area, boolean status) {
         final var tArea = tanslate(area).inflated(-0.1);
         final int minX = Math.max(gridValue(tArea.origin().x()), 0);
         final int maxX = Math.min(gridValue(tArea.bottomRight().x()), width - 1);
@@ -157,7 +173,7 @@ public class Grid implements Serializable {
         final int maxY = Math.min(gridValue(tArea.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                block(x, y);
+                isBlocked[x][y] = status;
             }
         }
     }

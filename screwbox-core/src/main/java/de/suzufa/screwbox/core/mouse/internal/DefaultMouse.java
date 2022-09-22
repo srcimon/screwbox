@@ -136,4 +136,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return unitsScrolled() != 0;
     }
 
+    @Override
+    public boolean isAnyButtonDown() {
+        return !pressed.isEmpty();
+    }
+
 }

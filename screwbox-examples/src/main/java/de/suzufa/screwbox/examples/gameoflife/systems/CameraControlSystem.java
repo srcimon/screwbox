@@ -8,7 +8,7 @@ public class CameraControlSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.mouse().isDown(MouseButton.LEFT)) {
+        if (engine.mouse().isDown(MouseButton.MIDDLE)) {
             engine.graphics().moveCameraBy(engine.mouse().drag());
         }
 

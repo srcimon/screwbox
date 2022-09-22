@@ -12,26 +12,26 @@ import de.suzufa.screwbox.examples.gameoflife.components.GridComponent;
 public class GridUpdateSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-    private final Timer timer = Timer.withInterval(Duration.ofMillis(40));
+    private final Timer timer = Timer.withInterval(Duration.ofMillis(100));
 
     @Override
     public void update(final Engine engine) {
-
         if (timer.isTick()) {
             final var gridComponent = engine.entities().forcedFetch(GRID_HOLDER).get(GridComponent.class);
-            final Grid newGrid = gridComponent.grid.cleared();
+            Grid oldGrid = gridComponent.grid;
+            final Grid grid = oldGrid.cleared();
 
-            for (final Node node2 : gridComponent.grid.nodes()) {
-                final int count = gridComponent.grid.blockedNeighbors(node2).size();
-                if (gridComponent.grid.isFree(node2)) {
+            for (final Node node : oldGrid.nodes()) {
+                final int count = oldGrid.blockedNeighbors(node).size();
+                if (oldGrid.isFree(node)) {
                     if (count == 3) {
-                        newGrid.block(node2);
+                        grid.block(node);
                     }
                 } else if (count == 2 || count == 3) {
-                    newGrid.block(node2);
+                    grid.block(node);
                 }
             }
-            gridComponent.grid = newGrid;
+            gridComponent.grid = grid;
         }
     }
 
