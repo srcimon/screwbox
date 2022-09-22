@@ -169,6 +169,66 @@ public class Grid {
         return height;
     }
 
+    // TODO: Combine three methods
+    // TODO: test and javadoc
+    public List<Node> blockedNeighbors(final Node node) {
+        final List<Node> neighbors = new ArrayList<>();
+        final Node down = node.offset(0, 1);
+        final Node up = node.offset(0, -1);
+        final Node left = node.offset(-1, 0);
+        final Node right = node.offset(1, 0);
+
+        addIfInGridAndBlocked(neighbors, down);
+        addIfInGridAndBlocked(neighbors, up);
+        addIfInGridAndBlocked(neighbors, left);
+        addIfInGridAndBlocked(neighbors, right);
+
+        if (!useDiagonalMovement) {
+            return neighbors;
+        }
+        final Node downLeft = node.offset(-1, 1);
+        final Node downRight = node.offset(1, 1);
+        final Node upLeft = node.offset(-1, -1);
+        final Node upRight = node.offset(1, -1);
+
+        addIfInGridAndBlocked(neighbors, downLeft);
+        addIfInGridAndBlocked(neighbors, downRight);
+        addIfInGridAndBlocked(neighbors, upLeft);
+        addIfInGridAndBlocked(neighbors, upRight);
+        return neighbors;
+    }
+
+    private boolean isInGrid(Node node) {
+        return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
+    }
+
+    public List<Node> neighbors(final Node node) {
+        final List<Node> neighbors = new ArrayList<>();
+        final Node down = node.offset(0, 1);
+        final Node up = node.offset(0, -1);
+        final Node left = node.offset(-1, 0);
+        final Node right = node.offset(1, 0);
+
+        addIfInGrid(neighbors, down);
+        addIfInGrid(neighbors, up);
+        addIfInGrid(neighbors, left);
+        addIfInGrid(neighbors, right);
+
+        if (!useDiagonalMovement) {
+            return neighbors;
+        }
+        final Node downLeft = node.offset(-1, 1);
+        final Node downRight = node.offset(1, 1);
+        final Node upLeft = node.offset(-1, -1);
+        final Node upRight = node.offset(1, -1);
+
+        addIfInGrid(neighbors, downLeft);
+        addIfInGrid(neighbors, downRight);
+        addIfInGrid(neighbors, upLeft);
+        addIfInGrid(neighbors, upRight);
+        return neighbors;
+    }
+
     public List<Node> freeNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
@@ -185,6 +245,7 @@ public class Grid {
         }
         final Node downLeft = node.offset(-1, 1);
         final Node downRight = node.offset(1, 1);
+
         if (isFree(down)) {
             if (isFree(right)) {
                 addIfFree(neighbors, downRight);
@@ -205,6 +266,18 @@ public class Grid {
             }
         }
         return neighbors;
+    }
+
+    private void addIfInGridAndBlocked(final List<Node> neighbors, final Node node) {
+        if (isInGrid(node) && !isFree(node)) {
+            neighbors.add(node);
+        }
+    }
+
+    private void addIfInGrid(final List<Node> neighbors, final Node node) {
+        if (isInGrid(node)) {
+            neighbors.add(node);
+        }
     }
 
     private void addIfFree(final List<Node> neighbors, final Node node) {
