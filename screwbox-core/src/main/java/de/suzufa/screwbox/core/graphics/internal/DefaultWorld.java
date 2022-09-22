@@ -56,8 +56,13 @@ public class DefaultWorld implements World {
         return drawColor;
     }
 
-    public void restrictZoomRangeTo(double min, double max) {
-        // TODO: validations
+    public void restrictZoomRangeTo(final double min, final double max) {
+        if (min <= 0) {
+            throw new IllegalArgumentException("min zoom must be positive");
+        }
+        if (min > max) {
+            throw new IllegalArgumentException("max zoom must not be lower than min zoom");
+        }
         this.minZoom = min;
         this.maxZoom = max;
     }
@@ -91,7 +96,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, Bounds clipArea) {
+            final Rotation rotation, final FlipMode flipMode, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
@@ -100,9 +105,9 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    private WindowBounds toWindowBounds(Bounds bounds) {
-        var offset = toOffset(bounds.origin());
-        var size = toDimension(bounds.size());
+    private WindowBounds toWindowBounds(final Bounds bounds) {
+        final var offset = toOffset(bounds.origin());
+        final var size = toDimension(bounds.size());
         return new WindowBounds(offset, size);
     }
 
@@ -188,7 +193,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea) {
+    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clipArea) {
         for (final SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(),
                     entry.position(),

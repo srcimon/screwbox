@@ -39,8 +39,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Vector drag() {
-        Vector current = worldPosition();
-        Vector last = graphics.screenToWorld(lastPosition);
+        final Vector current = worldPosition();
+        final Vector last = graphics.screenToWorld(lastPosition);
         return last.substract(current);
     }
 
@@ -121,9 +121,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        unitsScrolled = e.getUnitsToScroll();
-
+    public void mouseWheelMoved(final MouseWheelEvent e) {
+        unitsScrolled += e.getUnitsToScroll();
     }
 
     @Override
