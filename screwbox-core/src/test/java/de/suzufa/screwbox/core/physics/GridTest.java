@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.PathfindingGrid.Node;
+import de.suzufa.screwbox.core.physics.Grid.Node;
 
-class PathfindingGridTest {
+class GridTest {
 
     @Test
     void newInstance_widthNegative_throwsException() {
-        assertThatThrownBy(() -> new PathfindingGrid(null, 4, true))
+        assertThatThrownBy(() -> new Grid(null, 4, true))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Grid area must not be null");
     }
@@ -25,7 +25,7 @@ class PathfindingGridTest {
     @Test
     void newInstance_gridSizeZero_throwsException() {
         Bounds area = Bounds.max();
-        assertThatThrownBy(() -> new PathfindingGrid(area, 0, true))
+        assertThatThrownBy(() -> new Grid(area, 0, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("GridSize must have value above zero");
     }
@@ -33,7 +33,7 @@ class PathfindingGridTest {
     @Test
     void newInstance_invalidAreaOriginX_throwsException() {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
-        assertThatThrownBy(() -> new PathfindingGrid(area, 16, true))
+        assertThatThrownBy(() -> new Grid(area, 16, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Area origin x should be dividable by grid size.");
     }
@@ -41,7 +41,7 @@ class PathfindingGridTest {
     @Test
     void newInstance_invalidAreaOriginY_throwsException() {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
-        assertThatThrownBy(() -> new PathfindingGrid(area, 16, true))
+        assertThatThrownBy(() -> new Grid(area, 16, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Area origin y should be dividable by grid size.");
     }
@@ -50,7 +50,7 @@ class PathfindingGridTest {
     void newInstance_validArguments_createsEmptyGrid() {
         Bounds area = Bounds.atOrigin(Vector.zero(), 400, 200);
 
-        var grid = new PathfindingGrid(area, 20, false);
+        var grid = new Grid(area, 20, false);
 
         assertThat(grid.nodes())
                 .hasSize(200)
@@ -64,7 +64,7 @@ class PathfindingGridTest {
     void findNeighbors_noDiagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new PathfindingGrid(area, 16, false);
+        var grid = new Grid(area, 16, false);
 
         assertThat(grid.findNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(4)
@@ -78,7 +78,7 @@ class PathfindingGridTest {
     void findNeighbors_diagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
 
         assertThat(grid.findNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(8)
@@ -96,7 +96,7 @@ class PathfindingGridTest {
     void findNeighbors_onEdge_returnsNeighboursInGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
 
         assertThat(grid.findNeighbors(grid.nodeAt(0, 0)))
                 .hasSize(3)
@@ -106,18 +106,18 @@ class PathfindingGridTest {
     }
 
     @Test
-    void backtrackPath_noParent_returnsNoNodes() {
+    void backtrack_noParent_returnsNoNodes() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
         Node node = grid.nodeAt(0, 0);
 
-        assertThat(grid.backtrackPath(node)).isEmpty();
+        assertThat(grid.backtrack(node)).isEmpty();
     }
 
     @Test
-    void backtrackPath_parentPresent_returnsNodesPath() {
+    void backtrack_parentPresent_returnsNodesPath() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
         Node first = grid.nodeAt(0, 0);
 
         List<Node> secondGeneration = grid.findNeighbors(first);
@@ -126,7 +126,7 @@ class PathfindingGridTest {
         List<Node> thirdGeneration = grid.findNeighbors(second);
         Node third = thirdGeneration.get(0);
 
-        List<Node> path = grid.backtrackPath(third);
+        List<Node> path = grid.backtrack(third);
 
         assertThat(path).containsExactlyInAnyOrder(second, third);
     }
@@ -134,7 +134,7 @@ class PathfindingGridTest {
     @Test
     void toGrid_translatesVectorToGrid() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
 
         Node node = grid.toGrid($(192, -64));
 
@@ -144,7 +144,7 @@ class PathfindingGridTest {
     @Test
     void toWorld_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
-        var grid = new PathfindingGrid(area, 16, true);
+        var grid = new Grid(area, 16, true);
 
         Node node = grid.toGrid($(192, -64));
         Vector vector = grid.toWorld(node);
@@ -155,7 +155,7 @@ class PathfindingGridTest {
     @Test
     void blockArea_areaInGrid_blocksGridArea() {
         Bounds area = $$(0, 0, 12, 12);
-        var grid = new PathfindingGrid(area, 4, true);
+        var grid = new Grid(area, 4, true);
 
         grid.blockArea($$(3, 2, 2, 3));
 

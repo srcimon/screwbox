@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Objects;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 
-public class PathfindingGrid {
+public class Grid {
 
     public class Node {
 
@@ -70,21 +71,12 @@ public class PathfindingGrid {
     private final int width;
     private final int height;
     private final int gridSize;
-    private final boolean diagonalMovementAllowed;
+    private final boolean useDiagonalMovement;
     private final Vector offset;
 
-    public PathfindingGrid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
-        validate(area, gridSize);
-        this.gridSize = gridSize;
-        this.offset = area.origin();
-        this.width = gridValue(area.width());
-        this.height = gridValue(area.height());
-        isBlocked = new boolean[this.width][this.height];
-        this.diagonalMovementAllowed = diagonalMovementAllowed;
-    }
+    public Grid(final Bounds area, final int gridSize, final boolean useDiagonalMovement) {
+        requireNonNull(area, "Grid area must not be null");
 
-    private void validate(final Bounds area, final int gridSize) {
-        Objects.requireNonNull(area, "Grid area must not be null");
         if (gridSize <= 0) {
             throw new IllegalArgumentException("GridSize must have value above zero");
         }
@@ -94,6 +86,12 @@ public class PathfindingGrid {
         if (area.origin().y() % gridSize != 0) {
             throw new IllegalArgumentException("Area origin y should be dividable by grid size.");
         }
+        this.gridSize = gridSize;
+        this.offset = area.origin();
+        this.width = gridValue(area.width());
+        this.height = gridValue(area.height());
+        isBlocked = new boolean[this.width][this.height];
+        this.useDiagonalMovement = useDiagonalMovement;
     }
 
     public Node nodeAt(final int x, final int y) {
@@ -163,13 +161,11 @@ public class PathfindingGrid {
         addIfFree(neighbors, left);
         addIfFree(neighbors, right);
 
-        if (!diagonalMovementAllowed) {
+        if (!useDiagonalMovement) {
             return neighbors;
         }
         final Node downLeft = node.offset(-1, 1);
         final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
         if (isFree(down)) {
             if (isFree(right)) {
                 addIfFree(neighbors, downRight);
@@ -179,6 +175,8 @@ public class PathfindingGrid {
             }
         }
 
+        final Node upLeft = node.offset(-1, -1);
+        final Node upRight = node.offset(1, -1);
         if (isFree(up)) {
             if (isFree(upLeft) && isFree(left)) {
                 addIfFree(neighbors, upLeft);
@@ -210,7 +208,7 @@ public class PathfindingGrid {
         return Math.floorDiv((int) value, gridSize);
     }
 
-    public List<Node> backtrackPath(Node node) {
+    public List<Node> backtrack(Node node) {
         final List<Node> path = new ArrayList<>();
         while (nonNull(node.parent)) {
             path.add(0, node);

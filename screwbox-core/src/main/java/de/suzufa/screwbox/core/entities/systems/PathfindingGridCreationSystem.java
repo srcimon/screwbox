@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.physics.PathfindingGrid;
+import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.utils.Timer;
 
 public class PathfindingGridCreationSystem implements EntitySystem {
@@ -35,7 +35,7 @@ public class PathfindingGridCreationSystem implements EntitySystem {
         if (needsUpdate(engine)) {
             final Bounds bounds = engine.entities().forcedFetch(WORLD).get(TransformComponent.class).bounds;
 
-            final PathfindingGrid grid = new PathfindingGrid(bounds, gridSize, true);
+            final Grid grid = new Grid(bounds, gridSize, true);
             for (final Entity blocking : engine.entities().fetchAll(BLOCKING)) {
                 grid.blockArea(blocking.get(TransformComponent.class).bounds);
             }
