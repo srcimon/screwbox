@@ -28,7 +28,7 @@ public class Grid {
             this.parent = parent;
         }
 
-        public Node offset(final int deltaX, final int deltaY) {
+        private Node offset(final int deltaX, final int deltaY) {
             return new Node(x + deltaX, y + deltaY, this);
         }
 
@@ -154,7 +154,7 @@ public class Grid {
         return height;
     }
 
-    public List<Node> findNeighbors(final Node node) {
+    public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);

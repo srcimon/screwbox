@@ -61,12 +61,12 @@ class GridTest {
     }
 
     @Test
-    void findNeighbors_noDiagonalMovement_returnsNeighbours() {
+    void neighbors_noDiagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.findNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.neighbors(grid.nodeAt(1, 1)))
                 .hasSize(4)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -75,12 +75,12 @@ class GridTest {
     }
 
     @Test
-    void findNeighbors_diagonalMovement_returnsNeighbours() {
+    void neighbors_diagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.findNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.neighbors(grid.nodeAt(1, 1)))
                 .hasSize(8)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -93,12 +93,12 @@ class GridTest {
     }
 
     @Test
-    void findNeighbors_onEdge_returnsNeighboursInGrid() {
+    void neighbors_onEdge_returnsNeighboursInGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16, true);
 
-        assertThat(grid.findNeighbors(grid.nodeAt(0, 0)))
+        assertThat(grid.neighbors(grid.nodeAt(0, 0)))
                 .hasSize(3)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(1, 1))
@@ -120,10 +120,10 @@ class GridTest {
         var grid = new Grid(area, 16);
         Node first = grid.nodeAt(0, 0);
 
-        List<Node> secondGeneration = grid.findNeighbors(first);
+        List<Node> secondGeneration = grid.neighbors(first);
         Node second = secondGeneration.get(0);
 
-        List<Node> thirdGeneration = grid.findNeighbors(second);
+        List<Node> thirdGeneration = grid.neighbors(second);
         Node third = thirdGeneration.get(0);
 
         List<Node> path = grid.backtrack(third);
