@@ -3,11 +3,11 @@ package de.suzufa.screwbox.examples.gameoflife.systems;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Grid;
+import de.suzufa.screwbox.core.Grid.Node;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.keyboard.Key;
-import de.suzufa.screwbox.core.physics.Grid;
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.mouse.MouseButton;
 import de.suzufa.screwbox.core.utils.ListUtil;
 import de.suzufa.screwbox.core.utils.Timer;
 
@@ -15,11 +15,11 @@ public class GridSystem implements EntitySystem {
 
     // TODO: render and update system / entity that holds grid
     private Grid grid = createInitialGrid();
-    private Timer timer = Timer.withInterval(Duration.ofMillis(100));
+    private Timer timer = Timer.withInterval(Duration.ofMillis(80));
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().isDown(Key.SPACE)) {
+        if (engine.mouse().isDown(MouseButton.RIGHT)) {
             grid.blockArea(Bounds.atPosition(engine.mouse().worldPosition(), 4, 4));
         }
         if (timer.isTick()) {

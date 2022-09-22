@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.physics;
+package de.suzufa.screwbox.core;
 
 import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.Vector.$;
@@ -9,9 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.Grid.Node;
 
 class GridTest {
 

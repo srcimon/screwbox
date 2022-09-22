@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -12,7 +13,6 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
-import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.utils.Timer;
 
 public class PathfindingGridCreationSystem implements EntitySystem {

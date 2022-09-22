@@ -16,9 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.PathfindingCallback;
 
 class DefaultPhysicsTest {

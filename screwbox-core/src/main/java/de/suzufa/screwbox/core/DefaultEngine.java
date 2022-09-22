@@ -80,7 +80,7 @@ class DefaultEngine implements Engine {
         if (scenes.sceneCount() == 0) {
             throw new IllegalStateException("no scene present");
         }
-        log.info("engine started");
+        log.info(format("engine started [%s]", name));
         try {
             graphics.window().open();
             gameLoop.start();

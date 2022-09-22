@@ -8,7 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.Grid;
+import de.suzufa.screwbox.core.Grid.Node;
 
 class DijkstraAlgorithmTest {
 

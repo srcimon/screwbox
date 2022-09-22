@@ -10,7 +10,7 @@ import de.suzufa.screwbox.playground.debo.scenes.StartScene;
 public class DeboApplication {
 
     public static void main(String[] args) {
-        Engine engine = ScrewBox.createEngine();
+        Engine engine = ScrewBox.createEngine("Debo Game");
 
         engine.ui().setLayouter(new WobblyUiLayouter());
 

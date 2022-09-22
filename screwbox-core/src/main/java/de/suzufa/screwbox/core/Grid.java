@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.physics;
+package de.suzufa.screwbox.core;
 
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -6,9 +6,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Vector;
 
 public class Grid {
 
@@ -71,7 +68,7 @@ public class Grid {
     private final int width;
     private final int height;
     private final int gridSize;
-    private final boolean useDiagonalMovement;
+    private final boolean useDiagonalSearch;
     private final Vector offset;
     private final Bounds area;
 
@@ -79,7 +76,7 @@ public class Grid {
         this(area, gridSize, true);
     }
 
-    public Grid(final Bounds area, final int gridSize, final boolean useDiagonalMovement) {
+    public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
         requireNonNull(area, "Grid area must not be null");
 
         if (gridSize <= 0) {
@@ -96,12 +93,12 @@ public class Grid {
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
         isBlocked = new boolean[this.width][this.height];
-        this.useDiagonalMovement = useDiagonalMovement;
+        this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
     }
 
     public Grid cleared() {
-        return new Grid(area, gridSize, useDiagonalMovement);
+        return new Grid(area, gridSize, useDiagonalSearch);
     }
 
     public Bounds area() {
@@ -193,7 +190,7 @@ public class Grid {
         addIfInGridAndBlocked(neighbors, left);
         addIfInGridAndBlocked(neighbors, right);
 
-        if (!useDiagonalMovement) {
+        if (!useDiagonalSearch) {
             return neighbors;
         }
         final Node downLeft = node.offset(-1, 1);
@@ -224,7 +221,7 @@ public class Grid {
         addIfInGrid(neighbors, left);
         addIfInGrid(neighbors, right);
 
-        if (!useDiagonalMovement) {
+        if (!useDiagonalSearch) {
             return neighbors;
         }
         final Node downLeft = node.offset(-1, 1);
@@ -250,7 +247,7 @@ public class Grid {
         addIfFree(neighbors, left);
         addIfFree(neighbors, right);
 
-        if (!useDiagonalMovement) {
+        if (!useDiagonalSearch) {
             return neighbors;
         }
         final Node downLeft = node.offset(-1, 1);
@@ -304,6 +301,24 @@ public class Grid {
             }
         }
         return nodes;
+    }
+
+    // TODO: test and javadoc
+    public int blockedCount() {
+        return width * height - freeCount();
+    }
+
+    // TODO: test and javadoc
+    public int freeCount() {
+        int freeCount = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y <= height; y++) {
+                if (isFree(x, y)) {
+                    freeCount++;
+                }
+            }
+        }
+        return freeCount;
     }
 
     private int gridValue(final double value) {
