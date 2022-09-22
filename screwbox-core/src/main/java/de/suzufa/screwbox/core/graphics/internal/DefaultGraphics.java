@@ -100,4 +100,10 @@ public class DefaultGraphics implements Graphics, Updatable {
         world.recalculateVisibleArea();
     }
 
+    @Override
+    public Graphics restrictZoomRangeTo(double min, double max) {
+        world.restrictZoomRangeTo(min, max);
+        return this;
+    }
+
 }

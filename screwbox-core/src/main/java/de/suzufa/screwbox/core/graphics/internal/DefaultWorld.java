@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.utils.MathUtil.clamp;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
@@ -29,7 +30,9 @@ public class DefaultWorld implements World {
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
     private double wantedZoom = zoom;
-
+    private double minZoom = 0.5;
+    private double maxZoom = 10;
+//TODO: extract Camera class
     private Bounds visibleArea = Bounds.atOrigin(
             -Double.MAX_VALUE / 2,
             -Double.MAX_VALUE / 2,
@@ -53,13 +56,19 @@ public class DefaultWorld implements World {
         return drawColor;
     }
 
+    public void restrictZoomRangeTo(double min, double max) {
+        // TODO: validations
+        this.minZoom = min;
+        this.maxZoom = max;
+    }
+
     public double wantedZoom() {
         return wantedZoom;
     }
 
     public double updateCameraZoom(final double zoom) {
-        this.wantedZoom = zoom;
-        final double actualZoomValue = Math.floor(zoom * 16.0) / 16.0;
+        this.wantedZoom = clamp(minZoom, zoom, maxZoom);
+        final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         recalculateVisibleArea();
         return actualZoomValue;

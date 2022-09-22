@@ -31,6 +31,9 @@ public interface Graphics {
         return updateCameraPosition(cameraPosition().add(delta));
     }
 
+    // TODO: javadoc and test
+    Graphics restrictZoomRangeTo(double min, double max);
+
     Vector cameraPosition();
 
     double cameraZoom();
