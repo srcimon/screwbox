@@ -16,6 +16,7 @@ public class GridUpdateSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        engine.loop().setTargetFps(9999);
         if (timer.isTick()) {
             final var gridComponent = engine.entities().forcedFetch(GRID_HOLDER).get(GridComponent.class);
             Grid oldGrid = gridComponent.grid;
