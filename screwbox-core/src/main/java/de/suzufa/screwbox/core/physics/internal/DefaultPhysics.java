@@ -12,8 +12,8 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
-import de.suzufa.screwbox.core.physics.PathfindingGrid;
-import de.suzufa.screwbox.core.physics.PathfindingGrid.Node;
+import de.suzufa.screwbox.core.physics.Grid;
+import de.suzufa.screwbox.core.physics.Grid.Node;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
 import de.suzufa.screwbox.core.physics.PathfindingCallback;
 import de.suzufa.screwbox.core.physics.Physics;
@@ -27,7 +27,7 @@ public class DefaultPhysics implements Physics {
 
     private PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
 
-    private PathfindingGrid grid;
+    private Grid grid;
 
     public DefaultPhysics(final Engine engine, ExecutorService executor) {
         this.engine = engine;
@@ -58,7 +58,7 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Optional<Path> findPath(final PathfindingGrid grid, final Vector start, final Vector end) {
+    public Optional<Path> findPath(final Grid grid, final Vector start, final Vector end) {
         final Node startPoint = grid.toGrid(start);
         final Node endPoint = grid.toGrid(end);
 
@@ -100,13 +100,13 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Physics updatePathfindingGrid(final PathfindingGrid grid) {
+    public Physics updatePathfindingGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }
 
     @Override
-    public PathfindingGrid pathfindingGrid() {
+    public Grid pathfindingGrid() {
         return grid;
     }
 

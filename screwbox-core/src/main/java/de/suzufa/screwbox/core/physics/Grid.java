@@ -9,25 +9,12 @@ import java.util.Objects;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Vector;
 
-public class PathfindingGrid {
+public class Grid {
 
-    public class Node {
-        private final int x;
-        private final int y;
-        private final Node parent;
-
-        private Node(final int x, final int y, final Node parent) {
-            this.x = x;
-            this.y = y;
-            this.parent = parent;
-        }
+    public record Node(int x, int y, Node parent) {
 
         private Node(final int x, final int y) {
             this(x, y, null);
-        }
-
-        public Node parent() {
-            return parent;
         }
 
         public Node offset(final int deltaX, final int deltaY) {
@@ -55,7 +42,6 @@ public class PathfindingGrid {
         public String toString() {
             return "Node [x=" + x + ", y=" + y + "]";
         }
-
     }
 
     private final boolean[][] isBlocked;
@@ -65,7 +51,7 @@ public class PathfindingGrid {
     private final boolean diagonalMovementAllowed;
     private final Vector offset;
 
-    public PathfindingGrid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
+    public Grid(final Bounds area, final int gridSize, final boolean diagonalMovementAllowed) {
         validate(area, gridSize);
         this.gridSize = gridSize;
         this.offset = area.origin();
