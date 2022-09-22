@@ -63,6 +63,7 @@ class DefaultEngine implements Engine {
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
+        frame.addMouseWheelListener(mouse);
         frame.addKeyListener(keyboard);
     }
 

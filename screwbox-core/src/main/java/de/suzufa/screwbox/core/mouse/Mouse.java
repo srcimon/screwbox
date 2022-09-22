@@ -38,4 +38,10 @@ public interface Mouse {
 
     // TODO: test and javadoc
     public Vector drag();
+
+    // TODO: test and javadoc
+    public int unitsScrolled();
+
+    // TODO: test and javadoc
+    public boolean hasScrolled();
 }

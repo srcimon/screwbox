@@ -44,6 +44,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public double updateCameraZoomBy(double delta) {
+        return world.updateCameraZoom(world.wantedZoom() + delta);
+    }
+
+    @Override
     public double updateCameraZoom(final double zoom) {
         return world.updateCameraZoom(zoom);
     }

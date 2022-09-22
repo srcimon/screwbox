@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core.mouse.internal;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +17,7 @@ import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.MouseButton;
 import de.suzufa.screwbox.core.utils.TrippleLatch;
 
-public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener {
+public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final Map<Integer, MouseButton> MAPPINGS = Map.of(
             1, MouseButton.LEFT,
@@ -29,6 +31,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private Offset position = Offset.origin();
     private boolean isCursorOnWindow;
     private Offset lastPosition = Offset.origin();
+    private int unitsScrolled = 0;
 
     public DefaultMouse(final Graphics graphics) {
         this.graphics = graphics;
@@ -114,6 +117,22 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public boolean isCursorOnWindow() {
         return isCursorOnWindow;
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        unitsScrolled = e.getUnitsToScroll();
+
+    }
+
+    @Override
+    public int unitsScrolled() {
+        return unitsScrolled;
+    }
+
+    @Override
+    public boolean hasScrolled() {
+        return unitsScrolled() != 0;
     }
 
 }

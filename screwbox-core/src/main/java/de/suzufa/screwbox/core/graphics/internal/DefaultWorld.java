@@ -28,6 +28,8 @@ public class DefaultWorld implements World {
 
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
+    private double wantedZoom = zoom;
+
     private Bounds visibleArea = Bounds.atOrigin(
             -Double.MAX_VALUE / 2,
             -Double.MAX_VALUE / 2,
@@ -51,7 +53,12 @@ public class DefaultWorld implements World {
         return drawColor;
     }
 
+    public double wantedZoom() {
+        return wantedZoom;
+    }
+
     public double updateCameraZoom(final double zoom) {
+        this.wantedZoom = zoom;
         final double actualZoomValue = Math.floor(zoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         recalculateVisibleArea();

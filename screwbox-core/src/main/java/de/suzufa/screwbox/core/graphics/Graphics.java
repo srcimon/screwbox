@@ -24,6 +24,9 @@ public interface Graphics {
 
     Graphics updateCameraPosition(Vector position);
 
+    // TODO: javadoc (smooth zooming / considering wanted zoom not real zoom)
+    double updateCameraZoomBy(double delta);
+
     default Graphics moveCameraBy(final Vector delta) {
         return updateCameraPosition(cameraPosition().add(delta));
     }
