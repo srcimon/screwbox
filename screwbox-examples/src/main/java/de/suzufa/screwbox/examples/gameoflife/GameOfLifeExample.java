@@ -29,7 +29,7 @@ public class GameOfLifeExample {
                 .add(new CameraControlSystem());
 
         engine.graphics().configuration()
-                .toggleFullscreen()
+//                .toggleFullscreen()
                 .setUseAntialiasing(true);
 
         engine.graphics().updateCameraZoom(4);

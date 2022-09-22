@@ -364,4 +364,8 @@ public class Grid implements Serializable {
         return toWorld(node);
     }
 
+    public boolean isBlocked(final Node node) {
+        return !isFree(node);
+    }
+
 }
