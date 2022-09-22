@@ -11,10 +11,20 @@ import de.suzufa.screwbox.core.Vector;
 
 public class PathfindingGrid {
 
-    public record Node(int x, int y, Node parent) {
+    public class Node {
+
+        final int x;
+        final int y;
+        final Node parent;
 
         private Node(final int x, final int y) {
             this(x, y, null);
+        }
+
+        private Node(final int x, final int y, final Node parent) {
+            this.x = x;
+            this.y = y;
+            this.parent = parent;
         }
 
         public Node offset(final int deltaX, final int deltaY) {
@@ -24,6 +34,18 @@ public class PathfindingGrid {
         @Override
         public int hashCode() {
             return Objects.hash(x, y);
+        }
+
+        public int x() {
+            return x;
+        }
+
+        public int y() {
+            return y;
+        }
+
+        public Node getParent() {
+            return parent;
         }
 
         @Override
@@ -190,9 +212,9 @@ public class PathfindingGrid {
 
     public List<Node> backtrackPath(Node node) {
         final List<Node> path = new ArrayList<>();
-        while (nonNull(node.parent())) {
+        while (nonNull(node.parent)) {
             path.add(0, node);
-            node = node.parent();
+            node = node.parent;
         }
         return path;
     }
