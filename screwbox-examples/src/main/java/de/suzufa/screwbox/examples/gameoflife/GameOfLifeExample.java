@@ -8,9 +8,9 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.examples.gameoflife.components.GridComponent;
 import de.suzufa.screwbox.examples.gameoflife.systems.CameraControlSystem;
+import de.suzufa.screwbox.examples.gameoflife.systems.GridInteractionSystem;
 import de.suzufa.screwbox.examples.gameoflife.systems.GridRenderSystem;
 import de.suzufa.screwbox.examples.gameoflife.systems.GridUpdateSystem;
-import de.suzufa.screwbox.examples.gameoflife.systems.GridInteractionSystem;
 
 public class GameOfLifeExample {
 
@@ -25,6 +25,7 @@ public class GameOfLifeExample {
                 .add(new LogFpsSystem())
                 .add(new CameraControlSystem());
 
+        engine.graphics().configuration().toggleFullscreen();
         engine.graphics().window().setCursor(DEFAULT);
         engine.start();
     }

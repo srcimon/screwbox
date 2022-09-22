@@ -12,7 +12,7 @@ import de.suzufa.screwbox.examples.gameoflife.components.GridComponent;
 public class GridUpdateSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-    private final Timer timer = Timer.withInterval(Duration.ofMillis(80));
+    private final Timer timer = Timer.withInterval(Duration.ofMillis(40));
 
     @Override
     public void update(final Engine engine) {
