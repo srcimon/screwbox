@@ -30,7 +30,13 @@ public class GameOfLifeExample {
                 .add(new LogFpsSystem())
                 .add(new CameraControlSystem());
 
+        engine.graphics().configuration()
+                .toggleFullscreen()
+                .setUseAntialiasing(true);
+
         engine.graphics().window().setCursor(DEFAULT);
+
+        engine.graphics().updateCameraZoom(4);
         engine.start();
     }
 }

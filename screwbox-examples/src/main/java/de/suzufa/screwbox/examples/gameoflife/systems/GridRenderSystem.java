@@ -20,8 +20,8 @@ public class GridRenderSystem implements EntitySystem {
         for (final var node : gridComponent.grid.nodes()) {
             final Bounds worldBounds = gridComponent.grid.toWorldBounds(node);
             if (!gridComponent.grid.isFree(node)) {
-                final int count = gridComponent.grid.blockedNeighbors(node).size();
-                world.drawRectangle(worldBounds, count > 2 ? Color.RED : Color.WHITE);
+                final var color = gridComponent.grid.blockedNeighbors(node).size() > 2 ? Color.RED : Color.WHITE;
+                world.drawCircle(worldBounds.position(), (int) worldBounds.width(), color);
             }
         }
 
