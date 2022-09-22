@@ -7,9 +7,9 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 
-public class DefaultGameLoop implements GameLoop {
+public class DefaultLoop implements Loop {
 
     private static final int CRITICAL_FPS_COUNT = 10;
     private final List<Updatable> updatables;
@@ -22,9 +22,9 @@ public class DefaultGameLoop implements GameLoop {
     private Time startTime = Time.unset();
     private Duration runningTime = Duration.none();
     private boolean active = false;
-    private int targetFps = GameLoop.MIN_TARGET_FPS;
+    private int targetFps = Loop.MIN_TARGET_FPS;
 
-    public DefaultGameLoop(final List<Updatable> updatables) {
+    public DefaultLoop(final List<Updatable> updatables) {
         this.updatables = updatables;
     }
 
@@ -45,9 +45,9 @@ public class DefaultGameLoop implements GameLoop {
     }
 
     @Override
-    public GameLoop setTargetFps(final int targetFps) {
-        if (targetFps < GameLoop.MIN_TARGET_FPS) {
-            throw new IllegalArgumentException("target fps must be at least " + GameLoop.MIN_TARGET_FPS);
+    public Loop setTargetFps(final int targetFps) {
+        if (targetFps < Loop.MIN_TARGET_FPS) {
+            throw new IllegalArgumentException("target fps must be at least " + Loop.MIN_TARGET_FPS);
         }
         this.targetFps = targetFps;
         return this;

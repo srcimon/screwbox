@@ -20,7 +20,7 @@ import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.log.Log;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.physics.Physics;
 
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
@@ -30,7 +30,7 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
 
     @Override
     public void beforeEach(final ExtensionContext context) throws Exception {
-        final var gameLoop = mock(GameLoop.class);
+        final var gameLoop = mock(Loop.class);
         final var engine = mock(Engine.class);
         final var graphics = mock(Graphics.class);
         final var world = mock(World.class);
@@ -53,7 +53,7 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         when(graphics.window()).thenReturn(screen);
 
         // resolve test method parameters
-        parameters.put(GameLoop.class, gameLoop);
+        parameters.put(Loop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);

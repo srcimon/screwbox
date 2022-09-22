@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.Time;
  * Provides access to current performance metrics and to controls the target
  * frames per second.
  */
-public interface GameLoop {
+public interface Loop {
 
     /**
      * The minimum target frames per second.
@@ -19,7 +19,7 @@ public interface GameLoop {
      * Sets the games target frames per second. Default value is
      * {@link #MIN_TARGET_FPS}. Setting target fps below that value is not allowed.
      */
-    GameLoop setTargetFps(int targetFps);
+    Loop setTargetFps(int targetFps);
 
     /**
      * Returns the current target frames per second.
@@ -45,7 +45,7 @@ public interface GameLoop {
     Duration runningTime();
 
     /**
-     * Returns the time the {@link GameLoop} was started for the last time. This is
+     * Returns the time the {@link Loop} was started for the last time. This is
      * the {@link Duration} since last time calling {@link Engine#start()}.
      * 
      * @see #runningTime()
@@ -57,10 +57,14 @@ public interface GameLoop {
      * recommended to use this value to multiply with any kind of steady movement in
      * the game to avoid changes in the game speed in dependency to the frame rate
      * ({@link #fps()}).
+     * 
+     * @see #delta(double)
      */
     double delta();
 
-    // TODO: test and javadoc
+    /**
+     * Same as {@link #delta()} but multiplies the result by the given factor.
+     */
     default double delta(final double factor) {
         return delta() * factor;
     }
