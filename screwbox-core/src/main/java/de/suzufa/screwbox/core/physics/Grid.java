@@ -120,6 +120,12 @@ public class Grid {
         return Vector.of(x, y);
     }
 
+    // TODO: test
+    public Bounds toWorldBounds(final Node node) {
+        Vector position = toWorld(node);
+        return Bounds.atPosition(position, gridSize, gridSize);
+    }
+
     public Node toGrid(final Vector position) {
         final var translated = tanslate(position);
         return new Node(gridValue(translated.x()), gridValue(translated.y()));
@@ -141,9 +147,18 @@ public class Grid {
         final int maxY = Math.min(gridValue(tArea.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked[x][y] = true;
+                block(x, y);
             }
         }
+    }
+
+    // TODO: Test
+    public void block(Node node) {
+        block(node.x, node.y);
+    }
+
+    private void block(int x, int y) {
+        isBlocked[x][y] = true;
     }
 
     public int width() {
@@ -220,4 +235,5 @@ public class Grid {
         }
         return path;
     }
+
 }
