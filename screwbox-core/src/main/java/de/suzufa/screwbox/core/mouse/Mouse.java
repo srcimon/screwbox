@@ -35,4 +35,7 @@ public interface Mouse {
      * the next frame.).
      */
     boolean justClicked(MouseButton button);
+
+    // TODO: test and javadoc
+    public Vector drag();
 }

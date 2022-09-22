@@ -15,6 +15,7 @@ public class GameOfLifeExample {
                 .add(new GridSystem())
                 .add(new LogFpsSystem())
                 .add(new MouseCameraSystem());
+        engine.graphics().window().setTitle("Game Of Life example");
         engine.start();
     }
 }

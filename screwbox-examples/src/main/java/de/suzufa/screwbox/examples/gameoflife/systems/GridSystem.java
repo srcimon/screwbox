@@ -5,6 +5,7 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Grid.Node;
 import de.suzufa.screwbox.core.utils.ListUtil;
@@ -18,6 +19,9 @@ public class GridSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
+        if (engine.keyboard().isDown(Key.SPACE)) {
+            grid.blockArea(Bounds.atPosition(engine.mouse().worldPosition(), 4, 4));
+        }
         if (timer.isTick()) {
             Grid newGrid = grid.cleared();
 

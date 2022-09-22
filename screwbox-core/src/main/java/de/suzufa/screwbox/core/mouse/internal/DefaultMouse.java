@@ -28,9 +28,17 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final Graphics graphics;
     private Offset position = Offset.origin();
     private boolean isCursorOnWindow;
+    private Offset lastPosition = Offset.origin();
 
     public DefaultMouse(final Graphics graphics) {
         this.graphics = graphics;
+    }
+
+    @Override
+    public Vector drag() {
+        Vector current = worldPosition();
+        Vector last = graphics.screenToWorld(lastPosition);
+        return last.substract(current);
     }
 
     @Override
@@ -83,6 +91,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void update() {
+        lastPosition = position;
         justPressed.secondaryBackup().clear();
         justPressed.swap();
     }
