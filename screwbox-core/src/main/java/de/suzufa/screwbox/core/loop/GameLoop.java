@@ -60,6 +60,11 @@ public interface GameLoop {
      */
     double delta();
 
+    // TODO: test and javadoc
+    default double delta(final double factor) {
+        return delta() * factor;
+    }
+
     /**
      * Returns the {@link Time} of the last update cycle.
      */

@@ -11,12 +11,10 @@ public class HelloWorldExample {
 
     public static void main(String[] args) {
         // create the engine
-        Engine engine = ScrewBox.createEngine();
+        Engine engine = ScrewBox.createEngine("Hello World Example");
 
         // change window title and hide cursor
-        engine.graphics().window()
-                .setTitle("Hello World Example")
-                .setWindowCursor(PredefinedCursor.HIDDEN);
+        engine.graphics().window().setWindowCursor(PredefinedCursor.HIDDEN);
 
         // add systems to the game loop
         engine.entities()

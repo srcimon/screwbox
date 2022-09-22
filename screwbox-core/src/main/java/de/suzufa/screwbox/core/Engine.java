@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.core;
 
 import de.suzufa.screwbox.core.audio.Audio;
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
@@ -92,4 +92,8 @@ public interface Engine {
      */
     void stop();
 
+    /**
+     * Returns the name of the {@link Engine}.
+     */
+    String name();
 }

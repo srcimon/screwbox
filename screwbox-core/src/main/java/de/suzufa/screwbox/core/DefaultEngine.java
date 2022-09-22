@@ -45,12 +45,13 @@ class DefaultEngine implements Engine {
     private final DefaultUi ui;
     private final DefaultLog log;
     private final ExecutorService executor;
+    private final String name;
 
-    DefaultEngine() {
+    DefaultEngine(final String name) {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
-        final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
+        final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
@@ -65,6 +66,7 @@ class DefaultEngine implements Engine {
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
         frame.addKeyListener(keyboard);
+        this.name = name;
     }
 
     @Override
@@ -148,6 +150,11 @@ class DefaultEngine implements Engine {
     @Override
     public Log log() {
         return log;
+    }
+
+    @Override
+    public String name() {
+        return name;
     }
 
 }
