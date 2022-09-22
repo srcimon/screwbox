@@ -111,7 +111,7 @@ class PathfindingGridTest {
         var grid = new PathfindingGrid(area, 16, true);
         Node node = grid.nodeAt(0, 0);
 
-        assertThat(node.backtrackPath()).isEmpty();
+        assertThat(grid.backtrackPath(node)).isEmpty();
     }
 
     @Test
@@ -126,7 +126,7 @@ class PathfindingGridTest {
         List<Node> thirdGeneration = grid.findNeighbors(second);
         Node third = thirdGeneration.get(0);
 
-        List<Node> path = third.backtrackPath();
+        List<Node> path = grid.backtrackPath(third);
 
         assertThat(path).containsExactlyInAnyOrder(second, third);
     }

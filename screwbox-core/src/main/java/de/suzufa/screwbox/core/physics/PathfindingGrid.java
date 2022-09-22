@@ -34,16 +34,6 @@ public class PathfindingGrid {
             return new Node(x + deltaX, y + deltaY, this);
         }
 
-        public List<Node> backtrackPath() {
-            final List<Node> path = new ArrayList<>();
-            Node point = this;
-            while (nonNull(point.parent())) {
-                path.add(0, point);
-                point = point.parent();
-            }
-            return path;
-        }
-
         @Override
         public int hashCode() {
             return Objects.hash(x, y);
@@ -130,7 +120,6 @@ public class PathfindingGrid {
     }
 
     private Bounds tanslate(final Bounds area) {
-
         return area.moveBy(-offset.x(), -offset.y());
     }
 
@@ -211,5 +200,14 @@ public class PathfindingGrid {
 
     private int gridValue(final double value) {
         return Math.floorDiv((int) value, gridSize);
+    }
+
+    public List<Node> backtrackPath(Node node) {
+        final List<Node> path = new ArrayList<>();
+        while (nonNull(node.parent())) {
+            path.add(0, node);
+            node = node.parent();
+        }
+        return path;
     }
 }
