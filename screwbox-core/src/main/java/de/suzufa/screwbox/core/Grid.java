@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import static de.suzufa.screwbox.core.Bounds.atPosition;
+import static de.suzufa.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -11,24 +12,23 @@ import java.util.Objects;
 
 import de.suzufa.screwbox.core.graphics.World;
 
+/**
+ * A {@link Grid} to raster your game world. The {@link Grid} is a two
+ * dimensional area with blocked and free {@link Node}s that is aligned to the
+ * game world.
+ */
 public class Grid implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public class Node {
-
-        final int x;
-        final int y;
-        final Node parent;
+    /**
+     * A node in (or out of) the {@link Grid}. Can have {@link #parent()}
+     * {@link Node}s when created relatively to other {@link Node}s.
+     */
+    public record Node(int x, int y, Node parent) {
 
         private Node(final int x, final int y) {
             this(x, y, null);
-        }
-
-        private Node(final int x, final int y, final Node parent) {
-            this.x = x;
-            this.y = y;
-            this.parent = parent;
         }
 
         private Node offset(final int deltaX, final int deltaY) {
@@ -38,18 +38,6 @@ public class Grid implements Serializable {
         @Override
         public int hashCode() {
             return Objects.hash(x, y);
-        }
-
-        public int x() {
-            return x;
-        }
-
-        public int y() {
-            return y;
-        }
-
-        public Node getParent() {
-            return parent;
         }
 
         @Override
@@ -137,15 +125,19 @@ public class Grid implements Serializable {
         return isFree(node.x, node.y);
     }
 
-    public Vector toWorld(final Node node) {
+    public Vector worldPosition(final Node node) {
         final double x = (node.x + 0.5) * gridSize + offset.x();
         final double y = (node.y + 0.5) * gridSize + offset.y();
-        return Vector.of(x, y);
+        return $(x, y);
     }
 
-    // TODO: test
-    public Bounds toWorldBounds(final Node node) {
-        final Vector position = toWorld(node);
+    /**
+     * Returns the corresponding area of the {@link Node} in the {@link Grid} in the
+     * game world. Returns valid areas, even if the {@link Node} is out of the
+     * {@link Grid}.
+     */
+    public Bounds worldArea(final Node node) {
+        final Vector position = worldPosition(node);
         return atPosition(position, gridSize, gridSize);
     }
 
@@ -374,7 +366,7 @@ public class Grid implements Serializable {
 
     public Vector snap(final Vector position) {
         final Node node = toGrid(position);
-        return toWorld(node);
+        return worldPosition(node);
     }
 
     public boolean isBlocked(final int x, final int y) {

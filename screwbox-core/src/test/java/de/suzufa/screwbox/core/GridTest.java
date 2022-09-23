@@ -152,12 +152,12 @@ class GridTest {
     }
 
     @Test
-    void toWorld_translatesNodeFromGridToWorld() {
+    void worldPosition_translatesNodeFromGridToWorld() {
         Bounds area = Bounds.atOrigin(16, -32, 64, 64);
         var grid = new Grid(area, 16);
 
         Node node = grid.toGrid($(192, -64));
-        Vector vector = grid.toWorld(node);
+        Vector vector = grid.worldPosition(node);
 
         assertThat(vector).isEqualTo($(200, -56));
     }
@@ -228,6 +228,36 @@ class GridTest {
 
         assertThat(grid.isFree(1, 1)).isTrue();
         assertThat(grid.blockedCount()).isEqualTo(8);
+    }
+
+    @Test
+    void nodeAt_returnsNodeAtPosition() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        Node node = grid.nodeAt(3, 4);
+
+        assertThat(node.x()).isEqualTo(3);
+        assertThat(node.y()).isEqualTo(4);
+        assertThat(node).hasToString("Node [x=3, y=4]");
+    }
+
+    @Test
+    void worldArea_nodeInGrid_returnsAreaInWorld() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        var result = grid.worldArea(grid.nodeAt(3, 3));
+        assertThat(result).isEqualTo($$(12, 12, 4, 4));
+    }
+
+    @Test
+    void worldArea_nodeOutOfGrid_returnsAreaInWorld() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        var result = grid.worldArea(grid.nodeAt(30, 30));
+        assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
 }

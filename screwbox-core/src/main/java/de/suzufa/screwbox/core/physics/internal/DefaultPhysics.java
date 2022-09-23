@@ -71,7 +71,7 @@ public class DefaultPhysics implements Physics {
         list.add(start);
 
         for (var node : path) {
-            list.add(grid.toWorld(node));
+            list.add(grid.worldPosition(node));
         }
 
         list.add(end);
