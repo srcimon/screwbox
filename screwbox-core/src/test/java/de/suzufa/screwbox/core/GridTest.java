@@ -260,4 +260,24 @@ class GridTest {
         assertThat(result).isEqualTo($$(120, 120, 4, 4));
     }
 
+    @Test
+    void blockedCount_someBlocked_returnsCount() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+        grid.block(1, 1);
+        grid.block(2, 1);
+
+        assertThat(grid.blockedCount()).isEqualTo(2);
+    }
+
+    @Test
+    void freeCount_someBlocked_returnsCount() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+        grid.block(1, 1);
+        grid.block(2, 1);
+
+        assertThat(grid.freeCount()).isEqualTo(7);
+    }
+
 }

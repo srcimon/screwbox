@@ -206,8 +206,6 @@ public class Grid implements Serializable {
         return height;
     }
 
-    // TODO: Combine three methods
-    // TODO: test and javadoc
     public List<Node> blockedNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
@@ -333,12 +331,10 @@ public class Grid implements Serializable {
         return nodes;
     }
 
-    // TODO: test and javadoc
     public int blockedCount() {
         return width * height - freeCount();
     }
 
-    // TODO: test and javadoc
     public int freeCount() {
         int freeCount = 0;
         for (int x = 0; x < width; x++) {
