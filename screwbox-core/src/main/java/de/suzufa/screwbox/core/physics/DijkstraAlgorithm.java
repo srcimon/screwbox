@@ -35,7 +35,7 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
     private List<Node> calculateOpenNodes(final Grid grid, final List<Node> usedNodes) {
         final List<Node> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Node neighbor : grid.freeNeighbors(usedNode)) {
+            for (final Node neighbor : grid.reachableNeighbors(usedNode)) {
                 if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
                     openNodes.add(neighbor);
                 }

@@ -172,11 +172,11 @@ public class Grid implements Serializable {
     }
 
     private void markArea(final Bounds area, final boolean status) {
-        final var tArea = tanslate(area).inflated(-0.1);
-        final int minX = Math.max(gridValue(tArea.origin().x()), 0);
-        final int maxX = Math.min(gridValue(tArea.bottomRight().x()), width - 1);
-        final int minY = Math.max(gridValue(tArea.origin().y()), 0);
-        final int maxY = Math.min(gridValue(tArea.bottomRight().y()), height - 1);
+        final var areaTranslated = tanslate(area).inflated(-0.1);
+        final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
+        final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
+        final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
+        final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 isBlocked[x][y] = status;
@@ -184,7 +184,6 @@ public class Grid implements Serializable {
         }
     }
 
-    // TODO: Test
     public void block(final Node node) {
         block(node.x, node.y);
     }
@@ -261,7 +260,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
-    public List<Node> freeNeighbors(final Node node) {
+    public List<Node> reachableNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);

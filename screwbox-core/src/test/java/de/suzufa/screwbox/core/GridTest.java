@@ -71,12 +71,12 @@ class GridTest {
     }
 
     @Test
-    void freeNeighbors_noDiagonalMovement_returnsNeighbours() {
+    void reachableNeighbors_noDiagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.freeNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(4)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -85,12 +85,12 @@ class GridTest {
     }
 
     @Test
-    void freeNeighbors_diagonalMovement_returnsNeighbours() {
+    void reachableNeighbors_diagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.freeNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(8)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -103,12 +103,12 @@ class GridTest {
     }
 
     @Test
-    void freeNeighbors_onEdge_returnsNeighboursInGrid() {
+    void reachableNeighbors_onEdge_returnsNeighboursInGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.freeNeighbors(grid.nodeAt(0, 0)))
+        assertThat(grid.reachableNeighbors(grid.nodeAt(0, 0)))
                 .hasSize(3)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(1, 1))
@@ -130,10 +130,10 @@ class GridTest {
         var grid = new Grid(area, 16);
         Node first = grid.nodeAt(0, 0);
 
-        List<Node> secondGeneration = grid.freeNeighbors(first);
+        List<Node> secondGeneration = grid.reachableNeighbors(first);
         Node second = secondGeneration.get(0);
 
-        List<Node> thirdGeneration = grid.freeNeighbors(second);
+        List<Node> thirdGeneration = grid.reachableNeighbors(second);
         Node third = thirdGeneration.get(0);
 
         List<Node> path = grid.backtrack(third);
@@ -178,6 +178,33 @@ class GridTest {
         assertThat(grid.isFree(0, 2)).isTrue();
         assertThat(grid.isFree(1, 2)).isTrue();
         assertThat(grid.isFree(2, 2)).isTrue();
+    }
+
+    @Test
+    void blockedNeighbors_someNeighborsBlocked_returnsBlockedOnes() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        grid.blockArea($$(3, 2, 8, 8));
+
+        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+                .hasSize(3)
+                .contains(grid.nodeAt(1, 1))
+                .contains(grid.nodeAt(2, 1))
+                .contains(grid.nodeAt(2, 2));
+    }
+
+    @Test
+    void blockedNeighbors_noDiagonalSearch_returnsBlockedOnes() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4, false);
+
+        grid.blockArea($$(3, 2, 8, 8));
+
+        assertThat(grid.blockedNeighbors(grid.nodeAt(1, 2)))
+                .hasSize(2)
+                .contains(grid.nodeAt(1, 1))
+                .contains(grid.nodeAt(2, 2));
     }
 
 }
