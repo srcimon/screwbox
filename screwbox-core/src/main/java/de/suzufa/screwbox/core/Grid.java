@@ -114,10 +114,11 @@ public class Grid implements Serializable {
     }
 
     public boolean isFree(final int x, final int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
-            return false;
-        }
-        return !isBlocked[x][y];
+        return isInGrid(x, y) && !isBlocked[x][y];
+    }
+
+    private boolean isInGrid(final int x, final int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public boolean isFree(final Node node) {
