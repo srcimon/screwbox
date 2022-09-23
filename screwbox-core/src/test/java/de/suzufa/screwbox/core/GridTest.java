@@ -14,6 +14,18 @@ import de.suzufa.screwbox.core.Grid.Node;
 class GridTest {
 
     @Test
+    void cleared_someFieldsBlocked_returnsEmptyGrid() {
+        Bounds area = Bounds.atOrigin(0, 0, 64, 64);
+        Grid grid = new Grid(area, 2);
+        grid.block(1, 4);
+
+        Grid result = grid.cleared();
+
+        assertThat(result.isBlocked(1, 4)).isFalse();
+        assertThat(result.area()).isEqualTo(area);
+    }
+
+    @Test
     void newInstance_widthNegative_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
@@ -94,7 +106,7 @@ class GridTest {
     void freeNeighbors_onEdge_returnsNeighboursInGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
-        var grid = new Grid(area, 16, true);
+        var grid = new Grid(area, 16);
 
         assertThat(grid.freeNeighbors(grid.nodeAt(0, 0)))
                 .hasSize(3)

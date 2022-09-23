@@ -189,7 +189,7 @@ public class Grid implements Serializable {
         block(node.x, node.y);
     }
 
-    private void block(final int x, final int y) {
+    public void block(final int x, final int y) {
         isBlocked[x][y] = true;
     }
 
@@ -364,8 +364,12 @@ public class Grid implements Serializable {
         return toWorld(node);
     }
 
+    public boolean isBlocked(final int x, final int y) {
+        return !isFree(x, y);
+    }
+
     public boolean isBlocked(final Node node) {
-        return !isFree(node);
+        return isBlocked(node.x, node.y);
     }
 
 }
