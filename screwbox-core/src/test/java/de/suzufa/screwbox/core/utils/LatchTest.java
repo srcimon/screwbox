@@ -37,4 +37,21 @@ class LatchTest {
 
         assertThat(latch.backup()).isEqualTo("A");
     }
+
+    @Test
+    void assignPrimary_swapped_assignesSecond() {
+        latch.swap();
+        latch.assignPrimary("C");
+
+        assertThat(latch.primary()).isEqualTo("C");
+        assertThat(latch.backup()).isEqualTo("A");
+    }
+
+    @Test
+    void assignPrimary_notSwapped_assignesFist() {
+        latch.assignPrimary("C");
+
+        assertThat(latch.primary()).isEqualTo("C");
+        assertThat(latch.backup()).isEqualTo("B");
+    }
 }

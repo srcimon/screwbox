@@ -1,5 +1,8 @@
 package de.suzufa.screwbox.core.utils;
 
+/**
+ * Utitlity class that holds two instances of a class to be easily swapped.
+ */
 public class Latch<T> {
 
     private T first;
@@ -27,7 +30,6 @@ public class Latch<T> {
         swapped = !swapped;
     }
 
-    // TODO: TEST
     public void assignPrimary(T primary) {
         if (swapped) {
             second = primary;
