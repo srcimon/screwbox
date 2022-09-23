@@ -134,6 +134,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public boolean hasScrolled() {
+        // ignores scrolling up and down again with the same values (because it's rather
+        // unlikely that this will happen within a fraction of a second)
         return unitsScrolled() != 0;
     }
 

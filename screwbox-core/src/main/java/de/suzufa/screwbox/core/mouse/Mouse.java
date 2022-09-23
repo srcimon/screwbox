@@ -47,9 +47,13 @@ public interface Mouse {
      */
     public int unitsScrolled();
 
-    // TODO: test and javadoc
+    /**
+     * Returns true if there was any scrolling since the last frame.
+     */
     public boolean hasScrolled();
 
-    // TODO: test and javadoc
+    /**
+     * Returns true if there was {@link MouseButton} down.
+     */
     boolean isAnyButtonDown();
 }

@@ -138,6 +138,44 @@ class DefaultMouseTest {
         assertThat(mouse.unitsScrolled()).isEqualTo(-3);
     }
 
+    @Test
+    void hasScrolled_scrollupAndDown_true() {
+        MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
+        when(scrollUpEvent.getUnitsToScroll()).thenReturn(4);
+        mouse.mouseWheelMoved(scrollUpEvent);
+
+        MouseWheelEvent scrollDownEvent = mock(MouseWheelEvent.class);
+        when(scrollDownEvent.getUnitsToScroll()).thenReturn(-7);
+        mouse.mouseWheelMoved(scrollDownEvent);
+
+        mouse.update();
+
+        assertThat(mouse.hasScrolled()).isTrue();
+    }
+
+    @Test
+    void hasScrolled_snotScrolled_false() {
+        mouse.update();
+
+        assertThat(mouse.hasScrolled()).isFalse();
+    }
+
+    @Test
+    void isAnyButtonDown_noButtonDown_false() {
+        mouse.update();
+
+        assertThat(mouse.isAnyButtonDown()).isFalse();
+    }
+
+    @Test
+    void isAnyButtonDown_leftClicked_true() {
+        mouse.mousePressed(rightMouseButtonEvent());
+
+        mouse.update();
+
+        assertThat(mouse.isAnyButtonDown()).isTrue();
+    }
+
     private MouseEvent rightMouseButtonEvent() {
         MouseEvent event = mock(MouseEvent.class);
         when(event.getButton()).thenReturn(3);
