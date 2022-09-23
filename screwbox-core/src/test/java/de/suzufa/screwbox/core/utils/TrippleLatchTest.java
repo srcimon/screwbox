@@ -15,57 +15,57 @@ class TrippleLatchTest {
     }
 
     @Test
-    void primary_notSwapped_returnsFirstValue() {
-        assertThat(latch.primary()).isEqualTo("A");
+    void active_notToggled_returnsFirstValue() {
+        assertThat(latch.active()).isEqualTo("A");
     }
 
     @Test
-    void backup_notSwapped_returnsSecondValue() {
-        assertThat(latch.backup()).isEqualTo("B");
+    void inactive_notToggled_returnsSecondValue() {
+        assertThat(latch.inactive()).isEqualTo("B");
     }
 
     @Test
-    void secondaryBackup_notSwapped_returnsThirdValue() {
-        assertThat(latch.secondaryBackup()).isEqualTo("C");
+    void backupInactive_notToggled_returnsThirdValue() {
+        assertThat(latch.backupInactive()).isEqualTo("C");
     }
 
     @Test
-    void primary_swappedOnce_returnsThirdValue() {
-        latch.swap();
+    void active_toggledOnce_returnsThirdValue() {
+        latch.toggle();
 
-        assertThat(latch.primary()).isEqualTo("C");
+        assertThat(latch.active()).isEqualTo("C");
     }
 
     @Test
-    void primary_swappedTwicde_returnsSecondValue() {
-        latch.swap();
-        latch.swap();
+    void active_toggledTwice_returnsSecondValue() {
+        latch.toggle();
+        latch.toggle();
 
-        assertThat(latch.primary()).isEqualTo("B");
+        assertThat(latch.active()).isEqualTo("B");
     }
 
     @Test
-    void backup_swappedOnce_returnsFirstValue() {
-        latch.swap();
+    void inactive_toggledOnce_returnsFirstValue() {
+        latch.toggle();
 
-        assertThat(latch.backup()).isEqualTo("A");
+        assertThat(latch.inactive()).isEqualTo("A");
     }
 
     @Test
-    void backup_swappedTwice_returnsThirdValue() {
-        latch.swap();
-        latch.swap();
+    void inactive_toggledTwice_returnsThirdValue() {
+        latch.toggle();
+        latch.toggle();
 
-        assertThat(latch.backup()).isEqualTo("C");
+        assertThat(latch.inactive()).isEqualTo("C");
     }
 
     @Test
-    void secondaryBackup_swappedFoutTimes_returnsSecondValue() {
-        latch.swap();
-        latch.swap();
-        latch.swap();
-        latch.swap();
+    void backupInactive_toggledFourTimes_returnsSecondValue() {
+        latch.toggle();
+        latch.toggle();
+        latch.toggle();
+        latch.toggle();
 
-        assertThat(latch.secondaryBackup()).isEqualTo("B");
+        assertThat(latch.backupInactive()).isEqualTo("B");
     }
 }

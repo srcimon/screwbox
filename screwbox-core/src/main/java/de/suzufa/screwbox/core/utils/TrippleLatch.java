@@ -15,15 +15,15 @@ public class TrippleLatch<T> {
         this.values = values;
     }
 
-    public T primary() {
+    public T active() {
         return values.get(index);
     }
 
-    public T backup() {
+    public T inactive() {
         return values.get(increase(1));
     }
 
-    public T secondaryBackup() {
+    public T backupInactive() {
         return values.get(increase(2));
     }
 
@@ -32,7 +32,7 @@ public class TrippleLatch<T> {
         return value > 2 ? value - 3 : value;
     }
 
-    public void swap() {
+    public void toggle() {
         index = index == 0 ? 2 : index - 1;
     }
 

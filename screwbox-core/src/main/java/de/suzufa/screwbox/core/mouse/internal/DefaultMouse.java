@@ -69,7 +69,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public void mousePressed(final MouseEvent e) {
         final var mouseButton = MAPPINGS.get(e.getButton());
         pressed.add(mouseButton);
-        justPressed.primary().add(mouseButton);
+        justPressed.active().add(mouseButton);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public boolean justClicked(final MouseButton button) {
-        return justPressed.backup().contains(button);
+        return justPressed.inactive().contains(button);
     }
 
     @Override
@@ -98,8 +98,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         unitsScrolled.toggle();
         unitsScrolled.assignActive(0);
         lastPosition = position;
-        justPressed.secondaryBackup().clear();
-        justPressed.swap();
+        justPressed.backupInactive().clear();
+        justPressed.toggle();
     }
 
     @Override
