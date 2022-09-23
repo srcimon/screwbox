@@ -32,7 +32,7 @@ public class DefaultWorld implements World {
     private double wantedZoom = zoom;
     private double minZoom = 0.5;
     private double maxZoom = 10;
-//TODO: extract Camera class
+
     private Bounds visibleArea = Bounds.atOrigin(
             -Double.MAX_VALUE / 2,
             -Double.MAX_VALUE / 2,
