@@ -15,43 +15,43 @@ class LatchTest {
     }
 
     @Test
-    void primary_notSwapped_returnsPrimary() {
-        assertThat(latch.primary()).isEqualTo("A");
+    void active_notToggled_returnsFirst() {
+        assertThat(latch.active()).isEqualTo("A");
     }
 
     @Test
-    void primary_swapped_returnsSecondary() {
-        latch.swap();
+    void active_toggled_returnsSecond() {
+        latch.toggle();
 
-        assertThat(latch.primary()).isEqualTo("B");
+        assertThat(latch.active()).isEqualTo("B");
     }
 
     @Test
-    void backup_notSwapped_returnsSecondary() {
-        assertThat(latch.backup()).isEqualTo("B");
+    void inactive_notToggled_returnsSecond() {
+        assertThat(latch.inactive()).isEqualTo("B");
     }
 
     @Test
-    void backup_swapped_returnsPrimary() {
-        latch.swap();
+    void inactive_toggled_returnsFirst() {
+        latch.toggle();
 
-        assertThat(latch.backup()).isEqualTo("A");
+        assertThat(latch.inactive()).isEqualTo("A");
     }
 
     @Test
-    void assignPrimary_swapped_assignesSecond() {
-        latch.swap();
-        latch.assignPrimary("C");
+    void assignActive_toggled_assignesSecond() {
+        latch.toggle();
+        latch.assignActive("C");
 
-        assertThat(latch.primary()).isEqualTo("C");
-        assertThat(latch.backup()).isEqualTo("A");
+        assertThat(latch.active()).isEqualTo("C");
+        assertThat(latch.inactive()).isEqualTo("A");
     }
 
     @Test
-    void assignPrimary_notSwapped_assignesFist() {
-        latch.assignPrimary("C");
+    void assignActive_notToggled_assignesFist() {
+        latch.assignActive("C");
 
-        assertThat(latch.primary()).isEqualTo("C");
-        assertThat(latch.backup()).isEqualTo("B");
+        assertThat(latch.active()).isEqualTo("C");
+        assertThat(latch.inactive()).isEqualTo("B");
     }
 }

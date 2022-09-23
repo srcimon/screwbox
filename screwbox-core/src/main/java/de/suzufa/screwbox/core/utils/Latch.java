@@ -1,16 +1,20 @@
 package de.suzufa.screwbox.core.utils;
 
 /**
- * Utitlity class that holds two instances of a class to be easily swapped.
+ * Utitlity class that holds two instances of a class to be easily swapped
+ * between an active and inactive state.
  */
 public class Latch<T> {
 
     private T first;
     private T second;
-    private boolean swapped;
+    private boolean toggled;
 
-    public static <T> Latch<T> of(final T first, final T second) {
-        return new Latch<>(first, second);
+    /**
+     * New instance with the given variables.
+     */
+    public static <T> Latch<T> of(final T active, final T inactive) {
+        return new Latch<>(active, inactive);
     }
 
     private Latch(final T first, final T second) {
@@ -18,20 +22,32 @@ public class Latch<T> {
         this.second = second;
     }
 
-    public T primary() {
-        return swapped ? second : first;
+    /**
+     * Returns the currently active one value.
+     */
+    public T active() {
+        return toggled ? second : first;
     }
 
-    public T backup() {
-        return swapped ? first : second;
+    /**
+     * Returns the currently inactive value.
+     */
+    public T inactive() {
+        return toggled ? first : second;
     }
 
-    public void swap() {
-        swapped = !swapped;
+    /**
+     * Toggles between active and inactive value.
+     */
+    public void toggle() {
+        toggled = !toggled;
     }
 
-    public void assignPrimary(T primary) {
-        if (swapped) {
+    /**
+     * Overwrites the currently active value.
+     */
+    public void assignActive(final T primary) {
+        if (toggled) {
             second = primary;
         } else {
             first = primary;

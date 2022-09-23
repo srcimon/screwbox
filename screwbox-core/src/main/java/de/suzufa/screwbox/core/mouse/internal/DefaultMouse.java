@@ -95,8 +95,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void update() {
-        unitsScrolled.swap();
-        unitsScrolled.assignPrimary(0);
+        unitsScrolled.toggle();
+        unitsScrolled.assignActive(0);
         lastPosition = position;
         justPressed.secondaryBackup().clear();
         justPressed.swap();
@@ -124,12 +124,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseWheelMoved(final MouseWheelEvent e) {
-        unitsScrolled.assignPrimary(unitsScrolled.primary() + e.getUnitsToScroll());
+        unitsScrolled.assignActive(unitsScrolled.active() + e.getUnitsToScroll());
     }
 
     @Override
     public int unitsScrolled() {
-        return unitsScrolled.backup();
+        return unitsScrolled.inactive();
     }
 
     @Override
