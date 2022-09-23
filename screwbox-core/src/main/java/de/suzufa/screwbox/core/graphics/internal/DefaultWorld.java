@@ -105,12 +105,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    private WindowBounds toWindowBounds(final Bounds bounds) {
-        final var offset = toOffset(bounds.origin());
-        final var size = toDimension(bounds.size());
-        return new WindowBounds(offset, size);
-    }
-
     @Override
     public Bounds visibleArea() {
         return visibleArea;
@@ -131,12 +125,6 @@ public class DefaultWorld implements World {
         final double y = (offset.y() - (window.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
-    }
-
-    private Dimension toDimension(final Vector size) {
-        final long x = Math.round(size.x() * zoom);
-        final long y = Math.round(size.y() * zoom);
-        return Dimension.of(x, y);
     }
 
     @Override
@@ -206,4 +194,15 @@ public class DefaultWorld implements World {
         return this;
     }
 
+    private Dimension toDimension(final Vector size) {
+        final long x = Math.round(size.x() * zoom);
+        final long y = Math.round(size.y() * zoom);
+        return Dimension.of(x, y);
+    }
+
+    private WindowBounds toWindowBounds(final Bounds bounds) {
+        final var offset = toOffset(bounds.origin());
+        final var size = toDimension(bounds.size());
+        return new WindowBounds(offset, size);
+    }
 }

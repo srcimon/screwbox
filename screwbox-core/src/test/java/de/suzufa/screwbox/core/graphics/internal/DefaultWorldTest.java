@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.Vector.$;
 import static de.suzufa.screwbox.core.Vector.zero;
+import static de.suzufa.screwbox.core.graphics.Sprite.invisible;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -13,11 +15,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,5 +77,33 @@ class DefaultWorldTest {
         assertThatThrownBy(() -> world.restrictZoomRangeTo(1, 0.3))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("max zoom must not be lower than min zoom");
+    }
+
+    @Test
+    void restrictZoomRangeTo_validMinAndMax_restrictsZoomRange() {
+        when(window.size()).thenReturn(Dimension.of(1024, 768));
+
+        world.restrictZoomRangeTo(1, 5);
+
+        assertThat(world.updateCameraZoom(0.2)).isEqualTo(1);
+        assertThat(world.wantedZoom()).isEqualTo(1);
+
+        assertThat(world.updateCameraZoom(12)).isEqualTo(5);
+        assertThat(world.wantedZoom()).isEqualTo(5);
+    }
+
+    @Test
+    void drawSprite_callsWindow() {
+        when(window.size()).thenReturn(Dimension.of(1024, 768));
+        Sprite sprite = invisible();
+
+        world.updateCameraPosition($(4, 2));
+        world.updateCameraZoom(1.5);
+
+        world.drawSprite(sprite, $(20, 4), 2, Percentage.half(), Rotation.ofDegrees(4), FlipMode.NONE, null);
+
+        verify(window)
+                .drawSprite(sprite, Offset.at(535, 386), 3, Percentage.half(), Rotation.ofDegrees(4), FlipMode.NONE,
+                        null);
     }
 }
