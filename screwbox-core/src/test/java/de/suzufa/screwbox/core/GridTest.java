@@ -17,11 +17,11 @@ class GridTest {
     void cleared_someFieldsBlocked_returnsEmptyGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
         Grid grid = new Grid(area, 2);
-        grid.block(1, 4);
+        grid.block(1, 2);
 
         Grid result = grid.cleared();
 
-        assertThat(result.isBlocked(1, 4)).isFalse();
+        assertThat(result.isBlocked(1, 2)).isFalse();
         assertThat(result.area()).isEqualTo(area);
     }
 
@@ -205,6 +205,29 @@ class GridTest {
                 .hasSize(2)
                 .contains(grid.nodeAt(1, 1))
                 .contains(grid.nodeAt(2, 2));
+    }
+
+    @Test
+    void blockAt_positionInGrid_blocksNodeAtPosition() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        grid.blockAt($(5, 5));
+
+        assertThat(grid.isBlocked(1, 1)).isTrue();
+        assertThat(grid.blockedCount()).isEqualTo(1);
+    }
+
+    @Test
+    void freeAt_positionInGrid_freesPosition() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+        grid.blockArea(area);
+
+        grid.freeAt($(5, 5));
+
+        assertThat(grid.isFree(1, 1)).isTrue();
+        assertThat(grid.blockedCount()).isEqualTo(8);
     }
 
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import de.suzufa.screwbox.core.graphics.World;
+
 public class Grid implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -101,14 +103,24 @@ public class Grid implements Serializable {
         this.area = area;
     }
 
+    /**
+     * Returns a new instance without any blocked {@link Node}s.
+     */
     public Grid cleared() {
         return new Grid(area, gridSize, useDiagonalSearch);
     }
 
+    /**
+     * Returns the area of this {@link Grid} in the {@link World}.
+     */
     public Bounds area() {
         return area;
     }
 
+    /**
+     * Returns the {@link Node} at the given Position. May return {@link Node}s out
+     * of grid. This can be checked via {@link #isInGrid(Node)}.
+     */
     public Node nodeAt(final int x, final int y) {
         return new Node(x, y);
     }
@@ -155,11 +167,11 @@ public class Grid implements Serializable {
     }
 
     public void freeAt(final Vector position) {
-        statusChangeAt(position, true);
+        statusChangeAt(position, false);
     }
 
     public void blockAt(final Vector position) {
-        statusChangeAt(position, false);
+        statusChangeAt(position, true);
     }
 
     private void statusChangeAt(final Vector position, boolean status) {
@@ -366,7 +378,7 @@ public class Grid implements Serializable {
     }
 
     public boolean isBlocked(final int x, final int y) {
-        return !isFree(x, y);
+        return isInGrid(x, y) && isBlocked[x][y];
     }
 
     public boolean isBlocked(final Node node) {
