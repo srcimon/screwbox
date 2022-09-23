@@ -150,21 +150,22 @@ public class Grid implements Serializable {
         return area.moveBy(-offset.x(), -offset.y());
     }
 
-    public void freeAt(final Vector position) {
-        final Node node = toGrid(position);
-        if (isInGrid(node)) {
-            isBlocked[node.x][node.y] = false;
-        }
-    }
-
     public void freeArea(final Bounds area) {
         markArea(area, false);
     }
 
+    public void freeAt(final Vector position) {
+        statusChangeAt(position, true);
+    }
+
     public void blockAt(final Vector position) {
+        statusChangeAt(position, false);
+    }
+
+    private void statusChangeAt(final Vector position, boolean status) {
         final Node node = toGrid(position);
         if (isInGrid(node)) {
-            isBlocked[node.x][node.y] = true;
+            isBlocked[node.x][node.y] = status;
         }
     }
 
