@@ -8,7 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.Grid;
+import de.suzufa.screwbox.core.Grid.Node;
 
 class DijkstraAlgorithmTest {
 
@@ -21,7 +22,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_noPath_returnsEmpty() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1, true);
+        Grid grid = new Grid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 0, 1, 5));
 
         Node start = grid.nodeAt(0, 0);
@@ -34,7 +35,7 @@ class DijkstraAlgorithmTest {
 
     @Test
     void findPath_pathPresent_returnsShortestPath() {
-        Grid grid = new Grid($$(0, 0, 5, 5), 1, true);
+        Grid grid = new Grid($$(0, 0, 5, 5), 1);
         grid.blockArea($$(2, 2, 2, 2));
 
         Node start = grid.nodeAt(0, 0);

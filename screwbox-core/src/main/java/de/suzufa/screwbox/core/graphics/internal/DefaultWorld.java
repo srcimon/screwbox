@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.utils.MathUtil.clamp;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
@@ -28,6 +29,10 @@ public class DefaultWorld implements World {
 
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
+    private double wantedZoom = zoom;
+    private double minZoom = 0.5;
+    private double maxZoom = 10;
+
     private Bounds visibleArea = Bounds.atOrigin(
             -Double.MAX_VALUE / 2,
             -Double.MAX_VALUE / 2,
@@ -51,8 +56,24 @@ public class DefaultWorld implements World {
         return drawColor;
     }
 
+    public void restrictZoomRangeTo(final double min, final double max) {
+        if (min <= 0) {
+            throw new IllegalArgumentException("min zoom must be positive");
+        }
+        if (min > max) {
+            throw new IllegalArgumentException("max zoom must not be lower than min zoom");
+        }
+        this.minZoom = min;
+        this.maxZoom = max;
+    }
+
+    public double wantedZoom() {
+        return wantedZoom;
+    }
+
     public double updateCameraZoom(final double zoom) {
-        final double actualZoomValue = Math.floor(zoom * 16.0) / 16.0;
+        this.wantedZoom = clamp(minZoom, zoom, maxZoom);
+        final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         recalculateVisibleArea();
         return actualZoomValue;
@@ -75,19 +96,13 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, Bounds clipArea) {
+            final Rotation rotation, final FlipMode flipMode, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
         window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flipMode, windowClipArea);
         return this;
-    }
-
-    private WindowBounds toWindowBounds(Bounds bounds) {
-        var offset = toOffset(bounds.origin());
-        var size = toDimension(bounds.size());
-        return new WindowBounds(offset, size);
     }
 
     @Override
@@ -110,12 +125,6 @@ public class DefaultWorld implements World {
         final double y = (offset.y() - (window.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
-    }
-
-    private Dimension toDimension(final Vector size) {
-        final long x = Math.round(size.x() * zoom);
-        final long y = Math.round(size.y() * zoom);
-        return Dimension.of(x, y);
     }
 
     @Override
@@ -172,7 +181,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea) {
+    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clipArea) {
         for (final SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(),
                     entry.position(),
@@ -185,4 +194,15 @@ public class DefaultWorld implements World {
         return this;
     }
 
+    private Dimension toDimension(final Vector size) {
+        final long x = Math.round(size.x() * zoom);
+        final long y = Math.round(size.y() * zoom);
+        return Dimension.of(x, y);
+    }
+
+    private WindowBounds toWindowBounds(final Bounds bounds) {
+        final var offset = toOffset(bounds.origin());
+        final var size = toDimension(bounds.size());
+        return new WindowBounds(offset, size);
+    }
 }

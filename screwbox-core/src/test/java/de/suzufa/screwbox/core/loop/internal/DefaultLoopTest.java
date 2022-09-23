@@ -15,15 +15,15 @@ import org.junit.jupiter.api.Test;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 
-class DefaultGameLoopTest {
+class DefaultLoopTest {
 
-    DefaultGameLoop loop;
+    DefaultLoop loop;
     List<Updatable> updatables;
 
     @BeforeEach
     void beforeEach() {
         updatables = new ArrayList<>();
-        loop = new DefaultGameLoop(updatables);
+        loop = new DefaultLoop(updatables);
     }
 
     @Test

@@ -238,4 +238,11 @@ public interface Window {
 
     boolean isVisible(WindowBounds bounds);
 
+    /**
+     * Returns the title of the {@link Window}.
+     * 
+     * @see #title()
+     * @return
+     */
+    String title();
 }

@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.physics;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 

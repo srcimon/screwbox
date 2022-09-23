@@ -10,12 +10,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.physics.Grid;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 import de.suzufa.screwbox.core.utils.Timer;

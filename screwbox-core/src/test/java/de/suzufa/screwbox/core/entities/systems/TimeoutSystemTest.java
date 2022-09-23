@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
@@ -20,7 +20,7 @@ class TimeoutSystemTest {
     private static final Time LATER = NOW.plusSeconds(1);
 
     @Test
-    void update_removesTimedOutComponents(DefaultEntities entities, GameLoop loop) {
+    void update_removesTimedOutComponents(DefaultEntities entities, Loop loop) {
         when(loop.lastUpdate()).thenReturn(LATER);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(NOW));
         entities
@@ -33,7 +33,7 @@ class TimeoutSystemTest {
     }
 
     @Test
-    void update_dosntTouchNonTimedOutComponents(DefaultEntities entities, GameLoop loop) {
+    void update_dosntTouchNonTimedOutComponents(DefaultEntities entities, Loop loop) {
         when(loop.lastUpdate()).thenReturn(NOW);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(LATER));
         entities

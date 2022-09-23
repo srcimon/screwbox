@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -103,6 +105,75 @@ class DefaultMouseTest {
         mouse.mouseDragged(mouseEvent);
 
         assertThat(mouse.worldPosition()).isEqualTo($(10, 30));
+    }
+
+    @Test
+    void drag_noMovement_isZero() {
+        when(graphics.screenToWorld(Offset.origin())).thenReturn($(40, 90));
+
+        assertThat(mouse.drag()).isEqualTo(Vector.zero());
+    }
+
+    @Test
+    void unitsScrolled_noScrolling_isZero() {
+        assertThat(mouse.unitsScrolled()).isZero();
+    }
+
+    @Test
+    void unitsScrolled_scrollupAndDown_returnsSum() {
+        MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
+        when(scrollUpEvent.getUnitsToScroll()).thenReturn(4);
+        mouse.mouseWheelMoved(scrollUpEvent);
+
+        MouseWheelEvent scrollDownEvent = mock(MouseWheelEvent.class);
+        when(scrollDownEvent.getUnitsToScroll()).thenReturn(-7);
+        mouse.mouseWheelMoved(scrollDownEvent);
+
+        mouse.update();
+
+        MouseWheelEvent ignoredScrolling = mock(MouseWheelEvent.class);
+        when(ignoredScrolling.getUnitsToScroll()).thenReturn(40);
+        mouse.mouseWheelMoved(ignoredScrolling);
+
+        assertThat(mouse.unitsScrolled()).isEqualTo(-3);
+    }
+
+    @Test
+    void hasScrolled_scrollupAndDown_true() {
+        MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
+        when(scrollUpEvent.getUnitsToScroll()).thenReturn(4);
+        mouse.mouseWheelMoved(scrollUpEvent);
+
+        MouseWheelEvent scrollDownEvent = mock(MouseWheelEvent.class);
+        when(scrollDownEvent.getUnitsToScroll()).thenReturn(-7);
+        mouse.mouseWheelMoved(scrollDownEvent);
+
+        mouse.update();
+
+        assertThat(mouse.hasScrolled()).isTrue();
+    }
+
+    @Test
+    void hasScrolled_snotScrolled_false() {
+        mouse.update();
+
+        assertThat(mouse.hasScrolled()).isFalse();
+    }
+
+    @Test
+    void isAnyButtonDown_noButtonDown_false() {
+        mouse.update();
+
+        assertThat(mouse.isAnyButtonDown()).isFalse();
+    }
+
+    @Test
+    void isAnyButtonDown_leftClicked_true() {
+        mouse.mousePressed(rightMouseButtonEvent());
+
+        mouse.update();
+
+        assertThat(mouse.isAnyButtonDown()).isTrue();
     }
 
     private MouseEvent rightMouseButtonEvent() {

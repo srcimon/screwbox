@@ -43,12 +43,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
 
-    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor,
+            String title) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
-        setTitle("ScrewBox");
+        setTitle(title);
         configuration.registerListener(this);
     }
 
@@ -305,5 +306,10 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Cursor createCustomCursor(final Image image) {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
+    }
+
+    @Override
+    public String title() {
+        return frame.getTitle();
     }
 }

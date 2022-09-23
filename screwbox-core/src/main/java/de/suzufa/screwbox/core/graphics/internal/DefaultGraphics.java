@@ -44,6 +44,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public double updateCameraZoomBy(double delta) {
+        return world.updateCameraZoom(world.wantedZoom() + delta);
+    }
+
+    @Override
     public double updateCameraZoom(final double zoom) {
         return world.updateCameraZoom(zoom);
     }
@@ -93,6 +98,12 @@ public class DefaultGraphics implements Graphics, Updatable {
     public void update() {
         window.updateScreen(configuration.isUseAntialising());
         world.recalculateVisibleArea();
+    }
+
+    @Override
+    public Graphics restrictZoomRangeTo(double min, double max) {
+        world.restrictZoomRangeTo(min, max);
+        return this;
     }
 
 }

@@ -9,14 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.log.Log;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
 class LogFpsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEntities entities, GameLoop loop, Log log) {
+    void update_updatesPositionOfPhysicItems(DefaultEntities entities, Loop loop, Log log) {
         when(loop.fps()).thenReturn(50, 30, 10);
         when(loop.lastUpdate()).thenReturn(
                 now().plusSeconds(-10), // no logging yet

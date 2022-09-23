@@ -26,7 +26,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         final int keyCode = event.getKeyCode();
-        justPressedKeys.primary().add(keyCode);
+        justPressedKeys.active().add(keyCode);
         pressedKeys.add(keyCode);
     }
 
@@ -52,7 +52,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean justPressed(final Key key) {
-        return justPressedKeys.backup().contains(key.code());
+        return justPressedKeys.inactive().contains(key.code());
     }
 
     @Override
@@ -62,8 +62,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public void update() {
-        justPressedKeys.secondaryBackup().clear();
-        justPressedKeys.swap();
+        justPressedKeys.backupInactive().clear();
+        justPressedKeys.toggle();
     }
 
 }

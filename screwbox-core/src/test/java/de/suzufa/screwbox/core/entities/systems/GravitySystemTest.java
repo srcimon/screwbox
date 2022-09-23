@@ -11,14 +11,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.GravityComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
 class GravitySystemTest {
 
     @Test
-    void update_updatesEntitiesWithGravity(DefaultEntities entities, GameLoop loop) {
+    void update_updatesEntitiesWithGravity(DefaultEntities entities, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(new PhysicsBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));

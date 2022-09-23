@@ -5,7 +5,8 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.suzufa.screwbox.core.physics.Grid.Node;
+import de.suzufa.screwbox.core.Grid;
+import de.suzufa.screwbox.core.Grid.Node;
 
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
@@ -20,7 +21,8 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
             for (final Node point : openNodes) {
                 usedNodes.add(point);
                 if (end.equals(point)) {
-                    return usedNodes.get(usedNodes.size() - 1).backtrackPath();
+                    final Node lastNode = usedNodes.get(usedNodes.size() - 1);
+                    return grid.backtrack(lastNode);
                 }
             }
 
@@ -30,10 +32,10 @@ public class DijkstraAlgorithm implements PathfindingAlgorithm {
         }
     }
 
-    private List<Node> calculateOpenNodes(final Grid grid, final ArrayList<Node> usedNodes) {
+    private List<Node> calculateOpenNodes(final Grid grid, final List<Node> usedNodes) {
         final List<Node> openNodes = new ArrayList<>();
         for (final var usedNode : usedNodes) {
-            for (final Node neighbor : grid.findNeighbors(usedNode)) {
+            for (final Node neighbor : grid.reachableNeighbors(usedNode)) {
                 if (!usedNodes.contains(neighbor) && !openNodes.contains(neighbor)) {
                     openNodes.add(neighbor);
                 }

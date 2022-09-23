@@ -1,15 +1,15 @@
 package de.suzufa.screwbox.core;
 
 import de.suzufa.screwbox.core.audio.Audio;
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.log.Log;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -35,7 +35,7 @@ public interface Engine {
      * Provides access to current performance metrics and to controls the target
      * frames per second.
      */
-    GameLoop loop();
+    Loop loop();
 
     /**
      * Provides access to the {@link Graphics}, which has methods for drawing on
@@ -69,7 +69,7 @@ public interface Engine {
 
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
-     * {@link GameLoop}. The {@link Engine} can be stopped by calling
+     * {@link Loop}. The {@link Engine} can be stopped by calling
      * {@link #stop()} from within an {@link EntitySystem} or a {@link UiMenu}.
      * 
      * @see {@link #start(Class)}
@@ -78,7 +78,7 @@ public interface Engine {
 
     /**
      * Starts the {@link Engine} with the given {@link Scene}. This opens the game
-     * {@link Window} and starts the {@link GameLoop}. The {@link Engine} can be
+     * {@link Window} and starts the {@link Loop}. The {@link Engine} can be
      * stopped by calling {@link #stop()} from within an {@link EntitySystem} or a
      * {@link UiMenu}.
      * 
@@ -87,9 +87,13 @@ public interface Engine {
     void start(Class<? extends Scene> sceneClass);
 
     /**
-     * Stops a running {@link GameLoop} and closes the game {@link Window}. Can be
+     * Stops a running {@link Loop} and closes the game {@link Window}. Can be
      * called from within an {@link EntitySystem} or a {@link UiMenu}.
      */
     void stop();
 
+    /**
+     * Returns the name of the {@link Engine}.
+     */
+    String name();
 }

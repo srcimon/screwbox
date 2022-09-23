@@ -37,16 +37,16 @@ public class SeparateThreadRenderer implements Renderer {
         waitForCurrentRenderingToEnd();
         next.updateScreen(antialiased);
 
-        renderTasks.swap();
+        renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());
     }
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
-            for (final var task : renderTasks.backup()) {
+            for (final var task : renderTasks.inactive()) {
                 task.run();
             }
-            renderTasks.backup().clear();
+            renderTasks.inactive().clear();
         }, null);
     }
 
@@ -57,46 +57,46 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        renderTasks.primary().add(() -> next.drawTextCentered(position, text, font, color));
+        renderTasks.active().add(() -> next.drawTextCentered(position, text, font, color));
     }
 
     @Override
     public void fillWith(final Color color) {
-        renderTasks.primary().add(() -> next.fillWith(color));
+        renderTasks.active().add(() -> next.fillWith(color));
     }
 
     @Override
     public void drawRectangle(final WindowBounds bounds, final Color color) {
-        renderTasks.primary().add(() -> next.drawRectangle(bounds, color));
+        renderTasks.active().add(() -> next.drawRectangle(bounds, color));
     }
 
     @Override
     public void drawCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.primary().add(() -> next.drawCircle(offset, diameter, color));
+        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color));
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
             final Rotation rotation, final FlipMode flipMode, final WindowBounds clipArea) {
-        renderTasks.primary().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea));
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea));
 
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        renderTasks.primary().add(() -> next.drawText(offset, text, font, color));
+        renderTasks.active().add(() -> next.drawText(offset, text, font, color));
 
     }
 
     @Override
     public void drawLine(final Offset from, final Offset to, final Color color) {
-        renderTasks.primary().add(() -> next.drawLine(from, to, color));
+        renderTasks.active().add(() -> next.drawLine(from, to, color));
 
     }
 
     @Override
     public void drawPolygon(final List<Offset> points, final Color color) {
-        renderTasks.primary().add(() -> next.drawPolygon(points, color));
+        renderTasks.active().add(() -> next.drawPolygon(points, color));
     }
 
     private void waitForCurrentRenderingToEnd() {

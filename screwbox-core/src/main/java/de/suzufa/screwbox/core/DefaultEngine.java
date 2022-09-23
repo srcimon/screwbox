@@ -20,8 +20,8 @@ import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.log.ConsoleLoggingAdapter;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.log.internal.DefaultLog;
-import de.suzufa.screwbox.core.loop.GameLoop;
-import de.suzufa.screwbox.core.loop.internal.DefaultGameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
+import de.suzufa.screwbox.core.loop.internal.DefaultLoop;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
@@ -35,7 +35,7 @@ import de.suzufa.screwbox.core.ui.internal.DefaultUi;
 
 class DefaultEngine implements Engine {
 
-    private final DefaultGameLoop gameLoop;
+    private final DefaultLoop gameLoop;
     private final DefaultGraphics graphics;
     private final DefaultKeyboard keyboard;
     private final DefaultScenes scenes;
@@ -45,12 +45,13 @@ class DefaultEngine implements Engine {
     private final DefaultUi ui;
     private final DefaultLog log;
     private final ExecutorService executor;
+    private final String name;
 
-    DefaultEngine() {
+    DefaultEngine(final String name) {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
-        final DefaultWindow window = new DefaultWindow(frame, configuration, executor);
+        final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         graphics = new DefaultGraphics(configuration, window);
         scenes = new DefaultScenes(this);
@@ -58,12 +59,14 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
-        gameLoop = new DefaultGameLoop(updatables);
+        gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
+        frame.addMouseWheelListener(mouse);
         frame.addKeyListener(keyboard);
+        this.name = name;
     }
 
     @Override
@@ -77,7 +80,7 @@ class DefaultEngine implements Engine {
         if (scenes.sceneCount() == 0) {
             throw new IllegalStateException("no scene present");
         }
-        log.info("engine started");
+        log.info(format("engine started [%s]", name));
         try {
             graphics.window().open();
             gameLoop.start();
@@ -105,7 +108,7 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public GameLoop loop() {
+    public Loop loop() {
         return gameLoop;
     }
 
@@ -147,6 +150,11 @@ class DefaultEngine implements Engine {
     @Override
     public Log log() {
         return log;
+    }
+
+    @Override
+    public String name() {
+        return name;
     }
 
 }

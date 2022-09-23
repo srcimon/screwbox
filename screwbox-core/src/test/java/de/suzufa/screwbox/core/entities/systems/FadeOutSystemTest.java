@@ -11,14 +11,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
 class FadeOutSystemTest {
 
     @Test
-    void update_reduecesOpacityOfSprites(DefaultEntities entities, GameLoop loop) {
+    void update_reduecesOpacityOfSprites(DefaultEntities entities, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));
@@ -33,7 +33,7 @@ class FadeOutSystemTest {
     }
 
     @Test
-    void update_removesOutFadedComponents(DefaultEntities entities, GameLoop loop) {
+    void update_removesOutFadedComponents(DefaultEntities entities, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new SpriteComponent(1));

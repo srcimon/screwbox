@@ -15,14 +15,14 @@ import de.suzufa.screwbox.core.entities.components.GravityComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
 class PhysicsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEntities entities, GameLoop loop) {
+    void update_updatesPositionOfPhysicItems(DefaultEntities entities, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
@@ -38,7 +38,7 @@ class PhysicsSystemTest {
     }
 
     @Test
-    void update_physicBodiesCollideWithEnvironment(DefaultEntities entities, GameLoop loop) {
+    void update_physicBodiesCollideWithEnvironment(DefaultEntities entities, Loop loop) {
         when(loop.delta()).thenReturn(0.8);
 
         Entity ball = new Entity().add(

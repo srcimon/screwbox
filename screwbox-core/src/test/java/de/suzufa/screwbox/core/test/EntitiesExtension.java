@@ -19,8 +19,9 @@ import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
+import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.log.Log;
-import de.suzufa.screwbox.core.loop.GameLoop;
+import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.physics.Physics;
 
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
@@ -30,12 +31,13 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
 
     @Override
     public void beforeEach(final ExtensionContext context) throws Exception {
-        final var gameLoop = mock(GameLoop.class);
+        final var gameLoop = mock(Loop.class);
         final var engine = mock(Engine.class);
         final var graphics = mock(Graphics.class);
         final var world = mock(World.class);
         final var log = mock(Log.class);
         final var physics = mock(Physics.class);
+        final var keyboard = mock(Keyboard.class);
         final var screen = mock(Window.class);
         final var entityManager = new DefaultEntityManager();
         final var systemManager = new DefaultSystemManager(engine, entityManager);
@@ -49,16 +51,19 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         when(engine.log()).thenReturn(log);
         when(engine.physics()).thenReturn(physics);
         when(engine.loop()).thenReturn(gameLoop);
+        when(engine.keyboard()).thenReturn(keyboard);
         when(graphics.world()).thenReturn(world);
         when(graphics.window()).thenReturn(screen);
 
         // resolve test method parameters
-        parameters.put(GameLoop.class, gameLoop);
+        parameters.put(Loop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
         parameters.put(World.class, world);
         parameters.put(Window.class, screen);
         parameters.put(Log.class, log);
         parameters.put(Physics.class, physics);
+        parameters.put(Keyboard.class, keyboard);
+        parameters.put(Engine.class, engine);
         parameters.put(DefaultEntities.class, entities);
     }
 

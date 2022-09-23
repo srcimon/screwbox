@@ -9,11 +9,11 @@ import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Grid;
+import de.suzufa.screwbox.core.Grid.Node;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
-import de.suzufa.screwbox.core.physics.Grid;
-import de.suzufa.screwbox.core.physics.Grid.Node;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
 import de.suzufa.screwbox.core.physics.PathfindingCallback;
 import de.suzufa.screwbox.core.physics.Physics;
@@ -71,7 +71,7 @@ public class DefaultPhysics implements Physics {
         list.add(start);
 
         for (var node : path) {
-            list.add(grid.toWorld(node));
+            list.add(grid.worldPosition(node));
         }
 
         list.add(end);
