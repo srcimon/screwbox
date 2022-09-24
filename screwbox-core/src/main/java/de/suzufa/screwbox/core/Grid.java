@@ -195,7 +195,9 @@ public class Grid implements Serializable {
     }
 
     public void block(final int x, final int y) {
-        isBlocked[x][y] = true;
+        if (isInGrid(x, y)) {
+            isBlocked[x][y] = true;
+        }
     }
 
     public int width() {

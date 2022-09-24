@@ -18,8 +18,10 @@ public class GameOfLifeExample {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Game Of Life Example");
 
+        Entity grid = new Entity().add(new GridComponent());
+
         engine.entities()
-                .add(new Entity().add(new GridComponent()))
+                .add(grid)
                 .add(new GridUpdateSystem())
                 .add(new GridRenderSystem())
                 .add(new GridInteractionSystem())
@@ -28,7 +30,7 @@ public class GameOfLifeExample {
                 .add(new LogFpsSystem())
                 .add(new CameraControlSystem());
 
-        engine.graphics().configuration().setUseAntialiasing(true);
+        engine.graphics().configuration().setUseAntialiasing(true).toggleFullscreen();
 
         engine.graphics().updateCameraZoom(6);
         engine.start();

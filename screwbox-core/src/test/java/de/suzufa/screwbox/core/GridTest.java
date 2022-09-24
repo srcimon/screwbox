@@ -280,4 +280,38 @@ class GridTest {
         assertThat(grid.freeCount()).isEqualTo(7);
     }
 
+    @Test
+    void freeArea_someBlocked_freesArea() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+        grid.block(0, 0);
+        grid.block(0, 1);
+
+        grid.freeArea($$(0, 0, 2, 2));
+
+        assertThat(grid.isFree(0, 0)).isTrue();
+        assertThat(grid.isFree(0, 1)).isFalse();
+    }
+
+    @Test
+    void block_nodeNotInGrid_doesntBlock() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        Node node = grid.nodeAt(6, 6);
+        grid.block(node);
+
+        assertThat(grid.blockedCount()).isZero();
+    }
+
+    @Test
+    void block_nodeInGrid_blocksNode() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        Node node = grid.nodeAt(1, 2);
+        grid.block(node);
+
+        assertThat(grid.isBlocked(node)).isTrue();
+    }
 }
