@@ -2,7 +2,10 @@ package de.suzufa.screwbox.examples.pathfinding.systems;
 
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
+import java.util.Optional;
+
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -29,9 +32,12 @@ public class EnemyMovementSystem implements EntitySystem {
             final Entity player = engine.entities().forcedFetch(PLAYER);
             final Vector playerPosition = player.get(TransformComponent.class).bounds.position();
             for (final Entity enemy : engine.entities().fetchAll(ENEMIES)) {
-                var automovement = enemy.get(AutomovementComponent.class);
                 final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
-                engine.physics().findPathAsync(enemyPosition, playerPosition, path -> automovement.path = path);
+                Optional<Path> path = engine.physics().findPath(enemyPosition, playerPosition);
+                if (path.isPresent()) {
+                    var automovement = enemy.get(AutomovementComponent.class);
+                    automovement.path = path.get();
+                }
             }
         }
     }

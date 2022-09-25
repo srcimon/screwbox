@@ -15,7 +15,6 @@ import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
-import de.suzufa.screwbox.core.physics.PathfindingCallback;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.RaycastBuilder;
 import de.suzufa.screwbox.core.physics.SelectEntityBuilder;
@@ -84,19 +83,6 @@ public class DefaultPhysics implements Physics {
             throw new IllegalStateException("No grid for pathfinding present.");
         }
         return findPath(grid, start, end);
-    }
-
-    @Override
-    public Physics findPathAsync(final Vector start, final Vector end, final PathfindingCallback callback) {
-        executor.submit(() -> {
-            final var path = findPath(start, end);
-            if (path.isPresent()) {
-                callback.onPathFound(path.get());
-            } else {
-                callback.onPathNotFound();
-            }
-        });
-        return this;
     }
 
     @Override
