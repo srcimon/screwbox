@@ -19,10 +19,11 @@ import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponen
 
 public class EnemyMovementSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerMovementComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.of(
+            PlayerMovementComponent.class, TransformComponent.class);
+
     private static final Archetype ENEMIES = Archetype.of(
-            PhysicsBodyComponent.class, SpriteComponent.class,
-            AutomovementComponent.class);
+            PhysicsBodyComponent.class, SpriteComponent.class, AutomovementComponent.class);
 
     private final Timer timer = Timer.withInterval(ofSeconds(1));
 
@@ -33,10 +34,15 @@ public class EnemyMovementSystem implements EntitySystem {
             final Vector playerPosition = player.get(TransformComponent.class).bounds.position();
             for (final Entity enemy : engine.entities().fetchAll(ENEMIES)) {
                 final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
-                Optional<Path> path = engine.physics().findPath(enemyPosition, playerPosition);
-                if (path.isPresent()) {
-                    var automovement = enemy.get(AutomovementComponent.class);
-                    automovement.path = path.get();
+                var automovement = enemy.get(AutomovementComponent.class);
+
+                if (!engine.async().hasActiveTasks(automovement)) {
+                    engine.async().run(automovement, () -> {
+                        Optional<Path> path = engine.physics().findPath(enemyPosition, playerPosition);
+                        if (path.isPresent()) {
+                            automovement.path = path.get();
+                        }
+                    });
                 }
             }
         }

@@ -6,26 +6,24 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.async.Async;
+import de.suzufa.screwbox.core.entities.Component;
 
 public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
-    private final Map<UUID, Object> runningTasks = new HashMap<>();
+    private final Map<UUID, Component> runningTasks = new HashMap<>();
 
     public DefaultAsync(final ExecutorService executor) {
         this.executor = executor;
     }
 
     @Override
-    public boolean contextHasActiveTasks(final Object context) {
-        if (runningTasks.values().contains(context)) {
-            System.out.println("!!!");
-        }
+    public boolean hasActiveTasks(final Component context) {
         return runningTasks.values().contains(context);
     }
 
     @Override
-    public void runInContext(final Object context, final Runnable task) {
+    public Async run(final Component context, final Runnable task) {
         final UUID id = UUID.randomUUID();
         runningTasks.put(id, context);
         executor.submit(new Runnable() {
@@ -36,6 +34,7 @@ public class DefaultAsync implements Async {
                 runningTasks.remove(id);
             }
         });
+        return this;
     }
 
 }

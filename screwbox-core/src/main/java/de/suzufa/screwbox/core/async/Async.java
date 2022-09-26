@@ -1,13 +1,11 @@
 package de.suzufa.screwbox.core.async;
 
+import de.suzufa.screwbox.core.entities.Component;
+
 public interface Async {
 
-    boolean contextHasActiveTasks(Object context);
+    boolean hasActiveTasks(Component context);
 
-    default boolean hasNoActiveTasksInContext(Object context) {
-        return !contextHasActiveTasks(context);
-    }
-
-    void runInContext(Object context, Runnable task);
+    Async run(Component context, Runnable task);
 
 }
