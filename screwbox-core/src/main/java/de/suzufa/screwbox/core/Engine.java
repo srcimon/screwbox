@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core;
 
+import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -69,8 +70,8 @@ public interface Engine {
 
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
-     * {@link Loop}. The {@link Engine} can be stopped by calling
-     * {@link #stop()} from within an {@link EntitySystem} or a {@link UiMenu}.
+     * {@link Loop}. The {@link Engine} can be stopped by calling {@link #stop()}
+     * from within an {@link EntitySystem} or a {@link UiMenu}.
      * 
      * @see {@link #start(Class)}
      */
@@ -78,8 +79,8 @@ public interface Engine {
 
     /**
      * Starts the {@link Engine} with the given {@link Scene}. This opens the game
-     * {@link Window} and starts the {@link Loop}. The {@link Engine} can be
-     * stopped by calling {@link #stop()} from within an {@link EntitySystem} or a
+     * {@link Window} and starts the {@link Loop}. The {@link Engine} can be stopped
+     * by calling {@link #stop()} from within an {@link EntitySystem} or a
      * {@link UiMenu}.
      * 
      * @see {@link #start()}
@@ -96,4 +97,7 @@ public interface Engine {
      * Returns the name of the {@link Engine}.
      */
     String name();
+
+    // TODO: javadoc
+    Async async();
 }

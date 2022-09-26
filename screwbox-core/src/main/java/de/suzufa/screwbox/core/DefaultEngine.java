@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.suzufa.screwbox.core.async.Async;
+import de.suzufa.screwbox.core.async.internal.DefaultAsync;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.internal.AudioAdapter;
 import de.suzufa.screwbox.core.audio.internal.DefaultAudio;
@@ -44,6 +46,7 @@ class DefaultEngine implements Engine {
     private final DefaultMouse mouse;
     private final DefaultUi ui;
     private final DefaultLog log;
+    private final DefaultAsync async;
     private final ExecutorService executor;
     private final String name;
 
@@ -62,6 +65,7 @@ class DefaultEngine implements Engine {
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
+        async = new DefaultAsync(executor);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
@@ -93,13 +97,11 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        final var frames = loop().frameNumber();
-
-        log.info(format("engine stopped (%,d frames total)", frames));
         ui.closeMenu();
         gameLoop.stop();
         executor.shutdown();
         graphics.window().close();
+        log.info(format("engine stopped (%,d frames total)", loop().frameNumber()));
     }
 
     @Override
@@ -155,6 +157,11 @@ class DefaultEngine implements Engine {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public Async async() {
+        return async;
     }
 
 }
