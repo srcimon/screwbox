@@ -1,29 +1,34 @@
 package de.suzufa.screwbox.core.async.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.async.Async;
-import de.suzufa.screwbox.core.entities.Component;
 
 public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
-    private final Map<UUID, Component> runningTasks = new HashMap<>();
+    private final Map<UUID, Object> runningTasks = new HashMap<>();
 
     public DefaultAsync(final ExecutorService executor) {
         this.executor = executor;
     }
 
     @Override
-    public boolean hasActiveTasks(final Component context) {
+    public boolean hasActiveTasks(final Object context) {
+        requireNonNull(context, "context must not be null");
         return runningTasks.values().contains(context);
     }
 
     @Override
-    public Async run(final Component context, final Runnable task) {
+    public Async run(final Object context, final Runnable task) {
+        requireNonNull(context, "context must not be null");
+        requireNonNull(task, "task must not be null");
+
         final UUID id = UUID.randomUUID();
         runningTasks.put(id, context);
         executor.submit(new Runnable() {
