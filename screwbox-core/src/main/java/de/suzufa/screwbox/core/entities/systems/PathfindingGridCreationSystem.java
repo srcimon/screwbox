@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.entities.systems;
 
-import static java.util.Objects.isNull;
-
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Grid;
@@ -45,7 +43,7 @@ public class PathfindingGridCreationSystem implements EntitySystem {
 
     private boolean needsUpdate(final Engine engine) {
         final Time time = engine.loop().lastUpdate();
-        return isNull(engine.physics().grid()) || updateTimer.isTick(time);
+        return engine.physics().grid().isEmpty() || updateTimer.isTick(time);
     }
 
     @Override

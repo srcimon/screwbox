@@ -23,7 +23,7 @@ public interface Physics {
 
     Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
 
-    Grid grid();
+    Optional<Grid> grid();
 
     Bounds snapToGrid(Bounds bounds);
 

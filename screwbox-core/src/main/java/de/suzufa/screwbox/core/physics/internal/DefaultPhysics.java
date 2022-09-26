@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.physics.internal;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +94,8 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Grid grid() {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
-        return grid;
+    public Optional<Grid> grid() {
+        return ofNullable(grid);
     }
 
     @Override
@@ -109,13 +107,21 @@ public class DefaultPhysics implements Physics {
     @Override
     public Bounds snapToGrid(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        return bounds.moveTo(grid().snap(bounds.position()));
+        Optional<Grid> grid = grid();
+        if (grid.isEmpty()) {
+            throw new IllegalStateException("no grid present");
+        }
+        return bounds.moveTo(grid.get().snap(bounds.position()));
     }
 
     @Override
     public Vector snapToGrid(final Vector position) {
         requireNonNull(position, "position must not be null");
-        return grid().snap(position);
+        Optional<Grid> grid = grid();
+        if (grid.isEmpty()) {
+            throw new IllegalStateException("no grid present");
+        }
+        return grid.get().snap(position);
     }
 
     public void shutdown() {
