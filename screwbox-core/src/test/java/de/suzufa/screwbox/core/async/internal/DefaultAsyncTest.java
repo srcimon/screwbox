@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ class DefaultAsyncTest {
 
     @Test
     void run_contextNull_exception() {
-        assertThatThrownBy(() -> async.run(null, () -> sleepForMs(100)))
+        assertThatThrownBy(() -> async.run(null, () -> someLongRunningTask()))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("context must not be null");
     }
@@ -51,39 +52,41 @@ class DefaultAsyncTest {
 
     @Test
     void hasActiveTasks_hasTasksInSameContext_isTrue() {
-        async.run("myContext", () -> sleepForMs(100));
+        async.run("myContext", () -> someLongRunningTask());
         assertThat(async.hasActiveTasks("myContext")).isTrue();
     }
 
     @Test
-    @Timeout(2)
+    @Timeout(1)
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
-        async.run("another Context", () -> sleepForMs(100));
+        async.run("another Context", () -> someLongRunningTask());
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
-    @Timeout(2)
+    @Timeout(1)
     void hasActiveTasks_taskCompleted_isFalse() {
-        async.run("myContext", () -> sleepForMs(400));
+        async.run("myContext", () -> someLongRunningTask());
 
         while (async.hasActiveTasks("myContext")) {
-            sleepForMs(100);
+            // wait
         }
 
         assertThat(async.hasActiveTasks("myContext")).isFalse();
+    }
+
+    private void someLongRunningTask() {
+        // do nothing
     }
 
     @AfterEach
     void afterEach() {
         executor.shutdown();
-    }
-
-    private void sleepForMs(int ms) {
         try {
-            Thread.sleep(ms);
+            executor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
+
 }
