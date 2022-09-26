@@ -61,6 +61,11 @@ public interface Engine {
     Ui ui();
 
     /**
+     * Execute long running tasks within the {@link Engine}.
+     */
+    Async async();
+
+    /**
      * Provides some super basic logging features and the ability to pick up engine
      * log events via {@link Log#setAdapter(log.LoggingAdapter)}.
      * 
@@ -98,6 +103,4 @@ public interface Engine {
      */
     String name();
 
-    // TODO: javadoc
-    Async async();
 }

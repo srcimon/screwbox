@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
@@ -34,7 +35,7 @@ class DefaultPhysicsTest {
 
         assertThatThrownBy(() -> physics.findPath(start, end))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("No grid for pathfinding present.");
+                .hasMessage("no grid for pathfinding present");
     }
 
     @Test
@@ -47,6 +48,47 @@ class DefaultPhysicsTest {
         assertThat(path.start()).isEqualTo($(0, 0));
         assertThat(path.end()).isEqualTo($(9, 9));
         assertThat(path.nodeCount()).isEqualTo(10);
+    }
+
+    @Test
+    void snapToGrid_boundsNull_exception() {
+        assertThatThrownBy(() -> physics.snapToGrid((Bounds) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("bounds must not be null");
+    }
+
+    @Test
+    void snapToGrid_positionNull_exception() {
+        assertThatThrownBy(() -> physics.snapToGrid((Vector) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("position must not be null");
+    }
+
+    @Test
+    void snapToGrid_noGrid_exception() {
+        Vector position = $(3, 10);
+
+        assertThatThrownBy(() -> physics.snapToGrid(position))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("no grid present");
+    }
+
+    @Test
+    void snapToGrid_gridPresent_snapsVectorToGrid() {
+        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+
+        var result = physics.snapToGrid($(3, 10));
+
+        assertThat(result).isEqualTo($(8, 8));
+    }
+
+    @Test
+    void snapToGrid_gridPresent_snapsBoundsToGrid() {
+        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+
+        var result = physics.snapToGrid($$(3, 10, 8, 8));
+
+        assertThat(result).isEqualTo($$(4, 4, 8, 8));
     }
 
     @AfterEach

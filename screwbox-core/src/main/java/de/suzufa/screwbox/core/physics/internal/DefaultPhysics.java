@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.physics.internal;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class DefaultPhysics implements Physics {
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
         if (isNull(grid)) {
-            throw new IllegalStateException("No grid for pathfinding present.");
+            throw new IllegalStateException("no grid for pathfinding present");
         }
         return findPath(grid, start, end);
     }
@@ -93,6 +94,9 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public Grid grid() {
+        if (isNull(grid)) {
+            throw new IllegalStateException("no grid present");
+        }
         return grid;
     }
 
@@ -100,6 +104,18 @@ public class DefaultPhysics implements Physics {
     public Physics setPathfindingAlgorithm(final PathfindingAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
+    }
+
+    @Override
+    public Bounds snapToGrid(final Bounds bounds) {
+        requireNonNull(bounds, "bounds must not be null");
+        return bounds.moveTo(grid().snap(bounds.position()));
+    }
+
+    @Override
+    public Vector snapToGrid(final Vector position) {
+        requireNonNull(position, "position must not be null");
+        return grid().snap(position);
     }
 
     public void shutdown() {

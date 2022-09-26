@@ -2,9 +2,9 @@ package de.suzufa.screwbox.core.async.internal;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.async.Async;
@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.async.Async;
 public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
-    private final Map<UUID, Object> runningTasks = new HashMap<>();
+    private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
 
     public DefaultAsync(final ExecutorService executor) {
         this.executor = executor;
@@ -31,13 +31,9 @@ public class DefaultAsync implements Async {
 
         final UUID id = UUID.randomUUID();
         runningTasks.put(id, context);
-        executor.submit(new Runnable() {
-
-            @Override
-            public void run() {
-                task.run();
-                runningTasks.remove(id);
-            }
+        executor.submit(() -> {
+            task.run();
+            runningTasks.remove(id);
         });
         return this;
     }
