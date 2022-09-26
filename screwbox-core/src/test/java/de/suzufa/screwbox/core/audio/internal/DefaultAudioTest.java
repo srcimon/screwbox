@@ -43,7 +43,7 @@ class DefaultAudioTest {
 
     @BeforeEach
     void beforeEach() {
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter);
     }
 
