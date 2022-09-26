@@ -4,10 +4,6 @@ import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,10 +12,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.PathfindingCallback;
 
 class DefaultPhysicsTest {
 
@@ -39,12 +35,13 @@ class DefaultPhysicsTest {
 
         assertThatThrownBy(() -> physics.findPath(start, end))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("No grid for pathfinding present.");
+                .hasMessage("no grid for pathfinding present");
     }
 
     @Test
     void findPath_gridPresent_addsStartEndEndPositions() {
-        updateGrid();
+        Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
+        physics.setGrid(grid);
 
         Path path = physics.findPath($(0, 0), $(9, 9)).get();
 
@@ -54,35 +51,48 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void findPathAsync_noPathFound_callsCallback() {
-        updateGrid();
-
-        var callback = mock(PathfindingCallback.class);
-        physics.findPathAsync($(-5, -5), $(9, 9), callback);
-
-        verify(callback, timeout(1000)).onPathNotFound();
-
+    void snapToGrid_boundsNull_exception() {
+        assertThatThrownBy(() -> physics.snapToGrid((Bounds) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("bounds must not be null");
     }
 
     @Test
-    void findPathAsync_pathFound_callsCallback() {
-        updateGrid();
+    void snapToGrid_positionNull_exception() {
+        assertThatThrownBy(() -> physics.snapToGrid((Vector) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("position must not be null");
+    }
 
-        var callback = mock(PathfindingCallback.class);
-        physics.findPathAsync($(1, 1), $(9, 9), callback);
+    @Test
+    void snapToGrid_noGrid_exception() {
+        Vector position = $(3, 10);
 
-        verify(callback, timeout(1000)).onPathFound(any());
+        assertThatThrownBy(() -> physics.snapToGrid(position))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("no grid present");
+    }
 
+    @Test
+    void snapToGrid_gridPresent_snapsVectorToGrid() {
+        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+
+        var result = physics.snapToGrid($(3, 10));
+
+        assertThat(result).isEqualTo($(8, 8));
+    }
+
+    @Test
+    void snapToGrid_gridPresent_snapsBoundsToGrid() {
+        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+
+        var result = physics.snapToGrid($$(3, 10, 8, 8));
+
+        assertThat(result).isEqualTo($$(4, 4, 8, 8));
     }
 
     @AfterEach
     void afterEach() {
         executor.shutdown();
-    }
-
-    private void updateGrid() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
-
-        physics.updatePathfindingGrid(grid);
     }
 }

@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.physics.internal;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
-import de.suzufa.screwbox.core.physics.PathfindingCallback;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.RaycastBuilder;
 import de.suzufa.screwbox.core.physics.SelectEntityBuilder;
@@ -81,32 +81,22 @@ public class DefaultPhysics implements Physics {
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
         if (isNull(grid)) {
-            throw new IllegalStateException("No grid for pathfinding present.");
+            throw new IllegalStateException("no grid for pathfinding present");
         }
         return findPath(grid, start, end);
     }
 
     @Override
-    public Physics findPathAsync(final Vector start, final Vector end, final PathfindingCallback callback) {
-        executor.submit(() -> {
-            final var path = findPath(start, end);
-            if (path.isPresent()) {
-                callback.onPathFound(path.get());
-            } else {
-                callback.onPathNotFound();
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public Physics updatePathfindingGrid(final Grid grid) {
+    public Physics setGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }
 
     @Override
-    public Grid pathfindingGrid() {
+    public Grid grid() {
+        if (isNull(grid)) {
+            throw new IllegalStateException("no grid present");
+        }
         return grid;
     }
 
@@ -114,6 +104,18 @@ public class DefaultPhysics implements Physics {
     public Physics setPathfindingAlgorithm(final PathfindingAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
+    }
+
+    @Override
+    public Bounds snapToGrid(final Bounds bounds) {
+        requireNonNull(bounds, "bounds must not be null");
+        return bounds.moveTo(grid().snap(bounds.position()));
+    }
+
+    @Override
+    public Vector snapToGrid(final Vector position) {
+        requireNonNull(position, "position must not be null");
+        return grid().snap(position);
     }
 
     public void shutdown() {

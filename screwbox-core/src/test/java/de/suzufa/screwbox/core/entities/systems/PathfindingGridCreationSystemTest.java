@@ -56,7 +56,7 @@ class PathfindingGridCreationSystemTest {
         entities.update();
 
         var gridCaptor = ArgumentCaptor.forClass(Grid.class);
-        verify(physics).updatePathfindingGrid(gridCaptor.capture());
+        verify(physics).setGrid(gridCaptor.capture());
 
         Grid grid = gridCaptor.getValue();
         assertThat(grid.isFree(0, 0)).isTrue();

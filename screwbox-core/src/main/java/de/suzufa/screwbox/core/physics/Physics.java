@@ -19,11 +19,14 @@ public interface Physics {
 
     Optional<Path> findPath(Vector start, Vector end);
 
-    Physics findPathAsync(Vector start, Vector end, PathfindingCallback callback);
-
-    Physics updatePathfindingGrid(Grid grid);
+    Physics setGrid(Grid grid);
 
     Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
 
-    Grid pathfindingGrid();
+    Grid grid();
+
+    Bounds snapToGrid(Bounds bounds);
+
+    Vector snapToGrid(Vector position);
+
 }
