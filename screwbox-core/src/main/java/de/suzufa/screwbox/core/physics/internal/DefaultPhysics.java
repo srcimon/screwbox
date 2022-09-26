@@ -86,13 +86,13 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Physics updatePathfindingGrid(final Grid grid) {
+    public Physics setGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }
 
     @Override
-    public Grid pathfindingGrid() {
+    public Grid grid() {
         return grid;
     }
 

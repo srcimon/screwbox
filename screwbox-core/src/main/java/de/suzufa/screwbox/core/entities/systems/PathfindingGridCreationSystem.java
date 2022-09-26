@@ -39,13 +39,13 @@ public class PathfindingGridCreationSystem implements EntitySystem {
             for (final Entity blocking : engine.entities().fetchAll(BLOCKING)) {
                 grid.blockArea(blocking.get(TransformComponent.class).bounds);
             }
-            engine.physics().updatePathfindingGrid(grid);
+            engine.physics().setGrid(grid);
         }
     }
 
     private boolean needsUpdate(final Engine engine) {
         final Time time = engine.loop().lastUpdate();
-        return isNull(engine.physics().pathfindingGrid()) || updateTimer.isTick(time);
+        return isNull(engine.physics().grid()) || updateTimer.isTick(time);
     }
 
     @Override

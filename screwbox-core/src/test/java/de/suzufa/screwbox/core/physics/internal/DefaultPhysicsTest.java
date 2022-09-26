@@ -39,7 +39,8 @@ class DefaultPhysicsTest {
 
     @Test
     void findPath_gridPresent_addsStartEndEndPositions() {
-        updateGrid();
+        Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
+        physics.setGrid(grid);
 
         Path path = physics.findPath($(0, 0), $(9, 9)).get();
 
@@ -51,11 +52,5 @@ class DefaultPhysicsTest {
     @AfterEach
     void afterEach() {
         executor.shutdown();
-    }
-
-    private void updateGrid() {
-        Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
-
-        physics.updatePathfindingGrid(grid);
     }
 }

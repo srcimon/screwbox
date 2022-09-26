@@ -20,11 +20,9 @@ public interface Physics {
     Optional<Path> findPath(Vector start, Vector end);
 
     // TODO: Vector snapToGrid()
-    // TODO: grid
-    Physics updatePathfindingGrid(Grid grid);
+    Physics setGrid(Grid grid);
 
     Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
 
-    // TODO: grid()
-    Grid pathfindingGrid();
+    Grid grid();
 }

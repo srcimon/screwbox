@@ -5,5 +5,4 @@
 - add WaterReflectionAreas (graphics.createTempArea(worldpositon, size)
 - particle emitters
 - split screen / every render task has to add clip area
-- engine.executeAsync for async tasks
 - physics.grid (set global grid for snapping, alignment but withoud blocked info)
