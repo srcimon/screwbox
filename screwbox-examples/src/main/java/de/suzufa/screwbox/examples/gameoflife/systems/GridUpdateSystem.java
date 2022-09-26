@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.examples.gameoflife.systems;
 
-import de.suzufa.screwbox.core.Duration;
+import static de.suzufa.screwbox.core.Duration.ofMillis;
+
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Grid.Node;
@@ -12,7 +13,7 @@ import de.suzufa.screwbox.examples.gameoflife.components.GridComponent;
 public class GridUpdateSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-    private static final Timer TIMER = Timer.withInterval(Duration.ofMillis(100));
+    private static final Timer TIMER = Timer.withInterval(ofMillis(100));
 
     @Override
     public void update(final Engine engine) {
@@ -23,8 +24,8 @@ public class GridUpdateSystem implements EntitySystem {
         }
     }
 
-    private void update(GridComponent gridComponent) {
-        Grid oldGrid = gridComponent.grid;
+    private void update(final GridComponent gridComponent) {
+        final Grid oldGrid = gridComponent.grid;
         final Grid grid = oldGrid.cleared();
         for (final Node node : oldGrid.nodes()) {
             final int count = oldGrid.blockedNeighbors(node).size();

@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 class DefaultAsyncTest {
 
@@ -55,12 +56,14 @@ class DefaultAsyncTest {
     }
 
     @Test
+    @Timeout(2)
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
         async.run("another Context", () -> sleepForMs(100));
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
+    @Timeout(2)
     void hasActiveTasks_taskCompleted_isFalse() {
         async.run("myContext", () -> sleepForMs(400));
 
