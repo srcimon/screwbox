@@ -99,7 +99,9 @@ class DefaultEngine implements Engine {
     public void stop() {
         ui.closeMenu();
         gameLoop.stop();
+        // TODO: await gameloop shutdown
         executor.shutdown();
+        // TODO: await executor shutdown
         graphics.window().close();
         log.info(format("engine stopped (%,d frames total)", loop().frameNumber()));
     }
