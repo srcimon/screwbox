@@ -75,6 +75,11 @@ public interface Engine {
     Log log();
 
     /**
+     * Provides methods to save and load the game state.
+     */
+    Savegame savegame();
+
+    /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
      * {@link Loop}. The {@link Engine} can be stopped by calling {@link #stop()}
      * from within an {@link EntitySystem} or a {@link UiMenu}.
@@ -104,6 +109,4 @@ public interface Engine {
      */
     String name();
 
-    // TODO: Javadoc and test
-    Savegame savegame();
 }

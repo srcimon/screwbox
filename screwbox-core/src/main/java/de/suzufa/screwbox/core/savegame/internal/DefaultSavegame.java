@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -34,6 +35,7 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public Savegame create(final String name, final Class<? extends Scene> scene) {
+        Objects.requireNonNull(name, "name must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
         try (OutputStream fos = new FileOutputStream(name)) {
