@@ -26,7 +26,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
-        var visibleArea = engine.graphics().world().visibleArea().inflated(16);// add 8 to avoid glitches on wave effect
+        var visibleArea = engine.graphics().world().visibleArea().inflated(8);// add 8 to avoid glitches on wave effect
         for (Entity reflectionArea : engine.entities().fetchAll(REFLECTING_AREAS)) {
             ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
             double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
