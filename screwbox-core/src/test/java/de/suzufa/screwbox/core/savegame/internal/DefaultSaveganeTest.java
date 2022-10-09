@@ -74,6 +74,40 @@ class DefaultSaveganeTest {
                 .hasMessage("name must not be null");
     }
 
+    @Test
+    void exists_doesntExist_false() {
+        boolean exists = savegame.exists("unknown");
+
+        assertThat(exists).isFalse();
+    }
+
+    @Test
+    void exists_exists_true() {
+        var entities = mock(Entities.class);
+        when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
+        doReturn(GameScene.class).when(scenes).activeScene();
+
+        savegame.create("mygame.sav");
+
+        boolean exists = savegame.exists("mygame.sav");
+
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    void load_nameNull_throwsException() {
+        assertThatThrownBy(() -> savegame.load(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("name must not be null");
+    }
+
+    @Test
+    void load_sceneNull_throwsException() {
+        assertThatThrownBy(() -> savegame.load("mygame.sav", null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("scene must not be null");
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {

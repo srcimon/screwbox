@@ -31,7 +31,9 @@ public interface Savegame {
     // TODO: JAVADOC AND TEST
     Savegame load(String name, Class<? extends Scene> scene);
 
-    // TODO: JAVADOC AND TEST
+    /**
+     * Returns true if there is a savegame with the given name.
+     */
     boolean exists(String name);
 
 }

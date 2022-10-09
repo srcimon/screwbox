@@ -40,10 +40,10 @@ public class DefaultSavegame implements Savegame {
         requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
-        try (OutputStream fos = new FileOutputStream(name)) {
-            try (OutputStream zipOs = new GZIPOutputStream(fos)) {
-                try (ObjectOutputStream oos = new ObjectOutputStream(zipOs)) {
-                    oos.writeObject(allEntities);
+        try (OutputStream outputStream = new FileOutputStream(name)) {
+            try (OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
+                try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
+                    objectOutputStream.writeObject(allEntities);
                 }
             }
         } catch (final IOException e) {
@@ -60,12 +60,14 @@ public class DefaultSavegame implements Savegame {
     @Override
     @SuppressWarnings("unchecked")
     public Savegame load(final String name, final Class<? extends Scene> scene) {
+        requireNonNull(name, "name must not be null");
+        requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         entities.clearEntities();
-        try (InputStream fis = new FileInputStream(name)) {
-            try (InputStream zis = new GZIPInputStream(fis)) {
-                try (ObjectInputStream oos = new ObjectInputStream(zis)) {
-                    final var allEntities = (List<Entity>) oos.readObject();
+        try (InputStream inputStream = new FileInputStream(name)) {
+            try (InputStream zippedInputStream = new GZIPInputStream(inputStream)) {
+                try (ObjectInputStream objectInputStream = new ObjectInputStream(zippedInputStream)) {
+                    final var allEntities = (List<Entity>) objectInputStream.readObject();
                     entities.add(allEntities);
                 }
             }
