@@ -8,4 +8,6 @@ public interface UiRenderer {
     void renderSelectableItem(UiMenuItem item, WindowBounds bounds, Window window);
 
     void renderSelectedItem(UiMenuItem item, WindowBounds bounds, Window window);
+
+    void renderInactiveItem(UiMenuItem item, WindowBounds bounds, Window window);
 }

@@ -16,4 +16,7 @@ public abstract class UiMenuItem {
 
     public abstract void onActivate(Engine engine);
 
+    public boolean isActive(Engine engine) {
+        return true;
+    }
 }

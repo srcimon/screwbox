@@ -51,7 +51,11 @@ public class DefaultUi implements Ui, Updatable {
                 if (menu.isSelectedItem(item)) {
                     renderer.renderSelectedItem(item, bounds, window);
                 } else {
-                    renderer.renderSelectableItem(item, bounds, window);
+                    if (item.isActive(engine)) {
+                        renderer.renderSelectableItem(item, bounds, window);
+                    } else {
+                        renderer.renderInactiveItem(item, bounds, window);
+                    }
                 }
             }
         }
