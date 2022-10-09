@@ -126,7 +126,7 @@ class ReflectionRenderSystemTest {
         assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.opacity().value()).isEqualTo(0.48, offset(0.01));
-        assertThat(spriteBatchEntry.position().x()).isEqualTo(-2.02, offset(0.01));
-        assertThat(spriteBatchEntry.position().y()).isEqualTo(7.68, offset(0.01));
+        assertThat(spriteBatchEntry.position().x()).isEqualTo(-1.132, offset(0.01));
+        assertThat(spriteBatchEntry.position().y()).isEqualTo(8.68, offset(0.01));
     }
 }
