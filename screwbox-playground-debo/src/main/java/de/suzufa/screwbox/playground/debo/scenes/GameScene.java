@@ -94,11 +94,6 @@ public class GameScene implements Scene {
     public void initialize(Entities entities) {
         importEntities(entities);
 
-        Entity currentLevelHolder = new Entity()
-                .add(new ScreenshotComponent())
-                .add(new CurrentLevelComponent(mapName));
-        entities.add(currentLevelHolder);
-
         entities.add(
                 new LogFpsSystem(),
                 new ReflectionRenderSystem(),
@@ -142,6 +137,14 @@ public class GameScene implements Scene {
     }
 
     void importEntities(Entities entities) {
+        if (mapName == null) {
+            return;
+        }
+
+        entities.add(new Entity()
+                .add(new ScreenshotComponent())
+                .add(new CurrentLevelComponent(mapName)));
+
         Map map = Map.fromJson(mapName);
 
         entities.importSource(map)
