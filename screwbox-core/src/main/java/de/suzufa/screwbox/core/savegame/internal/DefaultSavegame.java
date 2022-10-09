@@ -54,6 +54,7 @@ public class DefaultSavegame implements Savegame {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Savegame load(String name, Class<? extends Scene> scene) {
         final Entities entities = scenes.entitiesOf(scene);
         entities.clearEntities();

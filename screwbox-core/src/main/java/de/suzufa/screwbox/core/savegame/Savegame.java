@@ -20,4 +20,6 @@ public interface Savegame {
     // TODO: JAVADOC AND TEST
     boolean exists(String name);
 
+    // TODO: setFolder(String folder)
+
 }
