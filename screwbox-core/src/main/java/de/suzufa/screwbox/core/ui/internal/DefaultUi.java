@@ -48,10 +48,10 @@ public class DefaultUi implements Ui, Updatable {
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, window);
             if (window.isVisible(bounds)) {
-                if (menu.isActiveItem(item)) {
-                    renderer.renderActiveItem(item, bounds, window);
+                if (menu.isSelectedItem(item)) {
+                    renderer.renderSelectedItem(item, bounds, window);
                 } else {
-                    renderer.renderInactiveItem(item, bounds, window);
+                    renderer.renderSelectableItem(item, bounds, window);
                 }
             }
         }

@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface UiRenderer {
 
-    void renderInactiveItem(UiMenuItem item, WindowBounds bounds, Window window);
+    void renderSelectableItem(UiMenuItem item, WindowBounds bounds, Window window);
 
-    void renderActiveItem(UiMenuItem item, WindowBounds bounds, Window window);
+    void renderSelectedItem(UiMenuItem item, WindowBounds bounds, Window window);
 }

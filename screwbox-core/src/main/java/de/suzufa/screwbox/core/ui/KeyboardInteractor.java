@@ -16,7 +16,7 @@ public class KeyboardInteractor implements UiInteractor {
             menu.previousItem();
         }
         if (keyboard.justPressed(Key.ENTER)) {
-            menu.activeItem().onActivate(engine);
+            menu.selectedItem().onActivate(engine);
         }
         if (keyboard.justPressed(Key.ESCAPE)) {
             menu.onExit(engine);

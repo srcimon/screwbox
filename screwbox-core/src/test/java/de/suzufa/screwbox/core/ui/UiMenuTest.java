@@ -17,21 +17,21 @@ class UiMenuTest {
     }
 
     @Test
-    void activeItem_noItems_throwsException() {
-        assertThatThrownBy(() -> menu.activeItem())
+    void selectedItem_noItems_throwsException() {
+        assertThatThrownBy(() -> menu.selectedItem())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("no menu item present");
     }
 
     @Test
-    void activeItem_itemsPresent_returnsActiveItem() {
+    void selectedItem_itemsPresent_returnsSelectedItem() {
         UiMenuItem gameOptions = mock(UiMenuItem.class);
         UiMenuItem quitGame = mock(UiMenuItem.class);
 
         menu.add(gameOptions);
         menu.add(quitGame);
 
-        assertThat(menu.activeItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
     }
 
     @Test
@@ -44,7 +44,7 @@ class UiMenuTest {
 
         menu.nextItem();
 
-        assertThat(menu.activeItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitGame);
     }
 
     @Test
@@ -59,7 +59,7 @@ class UiMenuTest {
         menu.nextItem();
         menu.nextItem();
 
-        assertThat(menu.activeItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitGame);
     }
 
     @Test

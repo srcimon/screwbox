@@ -21,11 +21,11 @@ public class UiMenu {
         return items;
     }
 
-    public final boolean isActiveItem(UiMenuItem item) {
+    public final boolean isSelectedItem(UiMenuItem item) {
         return items().get(activeItemIndex).equals(item);
     }
 
-    public final UiMenuItem activeItem() {
+    public final UiMenuItem selectedItem() {
         return items().get(activeItemIndex);
     }
 

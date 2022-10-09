@@ -11,12 +11,12 @@ public class SimpleUiRenderer implements UiRenderer {
     private static final Pixelfont SELECTED = Pixelfont.defaultFont(Color.YELLOW);
 
     @Override
-    public void renderInactiveItem(UiMenuItem item, WindowBounds bounds, Window window) {
+    public void renderSelectableItem(UiMenuItem item, WindowBounds bounds, Window window) {
         window.drawTextCentered(bounds.center(), item.label(), NOT_SELECTED, 2);
     }
 
     @Override
-    public void renderActiveItem(UiMenuItem item, WindowBounds bounds, Window window) {
+    public void renderSelectedItem(UiMenuItem item, WindowBounds bounds, Window window) {
         window.drawTextCentered(bounds.center(), item.label(), SELECTED, 2.5);
     }
 
