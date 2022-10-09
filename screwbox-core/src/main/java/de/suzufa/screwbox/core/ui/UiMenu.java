@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import de.suzufa.screwbox.core.Engine;
 
@@ -33,7 +34,7 @@ public class UiMenu {
         if (selectedItemIndex < items().size() - 1) {
             selectedItemIndex++;
         }
-        while (!items.get(selectedItemIndex).isActive(engine)) {
+        while (isInactive(selectedItemIndex, engine)) {
             nextItem(engine);
         }
         // TODO: endless loop bug
@@ -45,11 +46,25 @@ public class UiMenu {
             selectedItemIndex--;
         }
 
-        while (!items.get(selectedItemIndex).isActive(engine)) {
+        while (isInactive(selectedItemIndex, engine)) {
             previousItem(engine);
         }
         // TODO: endless loop bug
         // TODO: add Test
+    }
+
+    public boolean isActive(UiMenuItem item, Engine engine) {
+        return !isInactive(itemIndex(item), engine);
+    }
+
+    boolean isInactive(int index, Engine engine) {
+        List<Function<Engine, Boolean>> activeConditions = items.get(index).activeConditions();
+        for (var condition : activeConditions) {
+            if (!condition.apply(engine)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onExit(Engine engine) {

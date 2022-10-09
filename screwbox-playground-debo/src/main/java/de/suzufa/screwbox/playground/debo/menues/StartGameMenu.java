@@ -15,11 +15,6 @@ public class StartGameMenu extends UiMenu {
         add(new UiMenuItem("Load Game") {
 
             @Override
-            public boolean isActive(Engine engine) {
-                return engine.savegame().exists("savegame.sav");
-            }
-
-            @Override
             public void onActivate(Engine engine) {
                 engine.scenes().add(new GameScene(null));
                 engine.savegame().load("savegame.sav", GameScene.class);
@@ -28,7 +23,7 @@ public class StartGameMenu extends UiMenu {
 
             }
 
-        });
+        }.addActiveCondition(engine -> engine.savegame().exists("savegame.sav")));
 
         add(new UiMenuItem("Options") {
             @Override

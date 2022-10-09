@@ -22,18 +22,14 @@ public class PauseMenu extends UiMenu {
         add(new UiMenuItem("Load Game") {
 
             @Override
-            public boolean isActive(Engine engine) {
-                return engine.savegame().exists("savegame.sav");
-            }
-
-            @Override
             public void onActivate(Engine engine) {
                 engine.savegame().load("savegame.sav", GameScene.class);
                 new PauseMenuResumeGame().onActivate(engine);
 
             }
 
-        });
+        }.addActiveCondition(engine -> engine.savegame().exists("savegame.sav")));
+
         add(new UiMenuItem("Options") {
 
             @Override
