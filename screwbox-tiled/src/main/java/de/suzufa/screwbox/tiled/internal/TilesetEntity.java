@@ -3,7 +3,7 @@ package de.suzufa.screwbox.tiled.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.suzufa.screwbox.core.utils.ResourceUtil;
+import de.suzufa.screwbox.core.utils.Resources;
 
 public class TilesetEntity {// cannot be replaced by record: not all properties are final
 
@@ -33,7 +33,7 @@ public class TilesetEntity {// cannot be replaced by record: not all properties 
     private double version;
 
     public static TilesetEntity load(final String fileName) {
-        final TilesetEntity tilesetEntity = ResourceUtil.loadJson(fileName, TilesetEntity.class);
+        final TilesetEntity tilesetEntity = Resources.loadJson(fileName, TilesetEntity.class);
         final String fileNameWithoudDirectories = fileName.split("/")[fileName.split("/").length - 1];
         final String correctPath = fileName.replace(fileNameWithoudDirectories, tilesetEntity.getImage());
         tilesetEntity.setImage(correctPath);

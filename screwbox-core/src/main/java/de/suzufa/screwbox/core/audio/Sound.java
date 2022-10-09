@@ -5,7 +5,7 @@ import static java.util.Objects.nonNull;
 import java.io.Serializable;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.utils.ResourceUtil;
+import de.suzufa.screwbox.core.utils.Resources;
 
 /**
  * A {@link Sound} that can be played via {@link Engine#audio()}.
@@ -23,7 +23,7 @@ public final class Sound implements Serializable {
         if (nonNull(fileName) && !fileName.endsWith(".wav")) {
             throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
         }
-        return new Sound(ResourceUtil.loadBinary(fileName));
+        return new Sound(Resources.loadBinary(fileName));
     }
 
     Sound(byte[] content) {

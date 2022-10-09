@@ -5,7 +5,7 @@ import static java.util.Objects.nonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.suzufa.screwbox.core.utils.ResourceUtil;
+import de.suzufa.screwbox.core.utils.Resources;
 
 public class MapEntity { // cannot be replaced by record: tilesets are not final
 
@@ -31,7 +31,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
     private List<TilesetEntity> tilesets;
 
     public static MapEntity load(final String fileName) {
-        final MapEntity map = ResourceUtil.loadJson(fileName, MapEntity.class);
+        final MapEntity map = Resources.loadJson(fileName, MapEntity.class);
         final String directory = getDirectory(fileName);
         map.embedExternalTilesets(directory);
         map.embedObjectTemplates(directory);
@@ -49,7 +49,7 @@ public class MapEntity { // cannot be replaced by record: tilesets are not final
             for (int i = 0; i < layer.objects().size(); i++) {
                 final ObjectEntity object = layer.objects().get(i);
                 if (nonNull(object.getTemplate())) {
-                    final var replacement = ResourceUtil.loadJson(
+                    final var replacement = Resources.loadJson(
                             directory + object.getTemplate(),
                             ObjectTemplateEntity.class)
                             .object();

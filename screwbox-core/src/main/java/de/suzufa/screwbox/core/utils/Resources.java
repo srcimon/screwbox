@@ -16,11 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Provides convenience methods to access {@link ClassLoader} accessible
  * resources. Used to import packed resouces into your game.
  */
-public final class ResourceUtil {
+public final class Resources {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private ResourceUtil() {
+    private Resources() {
     }
 
     /**
@@ -53,7 +53,7 @@ public final class ResourceUtil {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
         try {
-            final var fileContent = ResourceUtil.loadBinary(fileName);
+            final var fileContent = Resources.loadBinary(fileName);
             return OBJECT_MAPPER.readValue(fileContent, type);
         } catch (final IOException e) {
             throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
@@ -62,6 +62,6 @@ public final class ResourceUtil {
 
     private static URL fileUrl(final String fileName) {
         Objects.requireNonNull(fileName, "fileName must not be null");
-        return ResourceUtil.class.getClassLoader().getResource(fileName);
+        return Resources.class.getClassLoader().getResource(fileName);
     }
 }
