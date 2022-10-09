@@ -71,7 +71,7 @@ public class PauseMenu extends UiMenu {
                 return (List<Entity>) oos.readObject();
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new IllegalStateException("Could not deserialize File.", e);
+            throw new IllegalStateException("could not deserialize file.", e);
         }
     }
 
@@ -82,7 +82,7 @@ public class PauseMenu extends UiMenu {
                 oos.writeObject(allEntities);
             }
         } catch (IOException e) {
-            throw new IllegalStateException("Could not serialize Entities.", e);
+            throw new IllegalStateException("could not serialize entities.", e);
         }
     }
 
