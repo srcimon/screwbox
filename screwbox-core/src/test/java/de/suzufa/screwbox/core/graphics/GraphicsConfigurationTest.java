@@ -51,4 +51,16 @@ class GraphicsConfigurationTest {
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
         verify(graphicsConfigListener, times(2)).configurationChanged();
     }
+
+    @Test
+    void toggleAntialising_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.toggleAntialising();
+
+        assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
+
+        graphicsConfiguration.toggleAntialising();
+
+        assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
+        verify(graphicsConfigListener, times(2)).configurationChanged();
+    }
 }
