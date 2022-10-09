@@ -8,13 +8,15 @@ import de.suzufa.screwbox.playground.debo.scenes.StartScene;
 
 public class PauseMenu extends UiMenu {
 
+    private static final String SAVEGAME_NAME = "savegame.sav";
+
     public PauseMenu() {
         add(new PauseMenuResumeGame());
         add(new UiMenuItem("Save Game") {
 
             @Override
             public void onActivate(Engine engine) {
-                engine.savegame().create("savegame.sav", GameScene.class);
+                engine.savegame().create(SAVEGAME_NAME, GameScene.class);
                 new PauseMenuResumeGame().onActivate(engine);
             }
 
@@ -23,12 +25,12 @@ public class PauseMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                engine.savegame().load("savegame.sav", GameScene.class);
+                engine.savegame().load(SAVEGAME_NAME, GameScene.class);
                 new PauseMenuResumeGame().onActivate(engine);
 
             }
 
-        }.activeCondition(engine -> engine.savegame().exists("savegame.sav")));
+        }.activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME)));
 
         add(new UiMenuItem("Options") {
 
