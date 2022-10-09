@@ -36,6 +36,7 @@ public class DefaultSavegame implements Savegame {
     @Override
     public Savegame create(final String name, final Class<? extends Scene> scene) {
         Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
         try (OutputStream fos = new FileOutputStream(name)) {

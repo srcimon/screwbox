@@ -9,7 +9,6 @@ import de.suzufa.screwbox.core.scenes.Scene;
  */
 public interface Savegame {
 
-//TODO:  TEST
     /**
      * Creates a savegame file with the given name. The savegame contains all
      * {@link Entities} attached to the {@link Engine#entities()}.
