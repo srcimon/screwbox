@@ -2,7 +2,6 @@ package de.suzufa.screwbox.core.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import de.suzufa.screwbox.core.Engine;
 
@@ -58,9 +57,8 @@ public class UiMenu {
     }
 
     boolean isInactive(int index, Engine engine) {
-        List<Function<Engine, Boolean>> activeConditions = items.get(index).activeConditions();
-        for (var condition : activeConditions) {
-            if (!condition.apply(engine)) {
+        for (var condition : items.get(index).activeConditions()) {
+            if (!condition.test(engine)) {
                 return true;
             }
         }
