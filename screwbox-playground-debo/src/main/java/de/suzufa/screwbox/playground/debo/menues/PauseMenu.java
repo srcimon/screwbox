@@ -33,10 +33,9 @@ public class PauseMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                List<Entity> allEntities = deserialize("savegame.sav");
                 Entities entities = engine.scenes().entitiesOf(GameScene.class);
                 entities.clearEntities();
-                entities.add(allEntities);
+                addAllFrom(entities, "savegame.sav");
                 new PauseMenuResumeGame().onActivate(engine);
 
             }
@@ -65,10 +64,11 @@ public class PauseMenu extends UiMenu {
         });
     }
 
-    private List<Entity> deserialize(String filename) {
+    private void addAllFrom(Entities entities, String filename) {
         try (FileInputStream fis = new FileInputStream(filename)) {
             try (ObjectInputStream oos = new ObjectInputStream(fis)) {
-                return (List<Entity>) oos.readObject();
+                var allEntities = (List<Entity>) oos.readObject();
+                entities.add(allEntities);
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new IllegalStateException("could not deserialize file.", e);
