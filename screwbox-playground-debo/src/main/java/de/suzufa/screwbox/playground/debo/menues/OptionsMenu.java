@@ -27,6 +27,16 @@ public class OptionsMenu extends UiSubMenu {
             }
         });
 
+        add(new UiMenuItem(engine -> engine.graphics().configuration().isUseAntialising() ? "turn off antialising"
+                : "turn on antialising") {
+
+            @Override
+            public void onActivate(Engine engine) {
+                engine.graphics().configuration().toggleAntialising();
+
+            }
+        });
+
         add(new UiMenuItem("change resolution") {
 
             @Override

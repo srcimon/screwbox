@@ -33,6 +33,12 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    // TODO: test and javadoc
+    public GraphicsConfiguration toggleAntialising() {
+        setUseAntialiasing(!isUseAntialising());
+        return this;
+    }
+
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
         notifyListeners();
