@@ -33,7 +33,7 @@ public class UiMenu {
         if (selectedItemIndex < items().size() - 1) {
             selectedItemIndex++;
         }
-        while (isInactive(selectedItemIndex, engine)) {
+        while (!isActive(selectedItemIndex, engine)) {
             nextItem(engine);
         }
         // TODO: endless loop bug
@@ -45,7 +45,7 @@ public class UiMenu {
             selectedItemIndex--;
         }
 
-        while (isInactive(selectedItemIndex, engine)) {
+        while (!isActive(selectedItemIndex, engine)) {
             previousItem(engine);
         }
         // TODO: endless loop bug
@@ -53,16 +53,11 @@ public class UiMenu {
     }
 
     public boolean isActive(UiMenuItem item, Engine engine) {
-        return !isInactive(itemIndex(item), engine);
+        return isActive(itemIndex(item), engine);
     }
 
-    boolean isInactive(int index, Engine engine) {
-        for (var condition : items.get(index).activeConditions()) {
-            if (!condition.test(engine)) {
-                return true;
-            }
-        }
-        return false;
+    boolean isActive(int index, Engine engine) {
+        return items.get(index).activeCondition().test(engine);
     }
 
     public void onExit(Engine engine) {

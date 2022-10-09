@@ -28,7 +28,7 @@ public class PauseMenu extends UiMenu {
 
             }
 
-        }.addActiveCondition(engine -> engine.savegame().exists("savegame.sav")));
+        }.activeCondition(engine -> engine.savegame().exists("savegame.sav")));
 
         add(new UiMenuItem("Options") {
 
