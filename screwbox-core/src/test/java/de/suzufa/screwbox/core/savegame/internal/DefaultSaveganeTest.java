@@ -57,6 +57,23 @@ class DefaultSaveganeTest {
         assertThat(Files.exists(SAVEGAME)).isTrue();
     }
 
+    @Test
+    void create_sceneClassGiven_createsSaveFile() {
+        var entities = mock(Entities.class);
+        when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
+
+        savegame.create("mysave.sav", GameScene.class);
+
+        assertThat(Files.exists(SAVEGAME)).isTrue();
+    }
+
+    @Test
+    void exists_nameNull_throwsException() {
+        assertThatThrownBy(() -> savegame.exists(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("name must not be null");
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {

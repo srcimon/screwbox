@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.savegame.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,7 +12,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -35,8 +36,8 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public Savegame create(final String name, final Class<? extends Scene> scene) {
-        Objects.requireNonNull(name, "name must not be null");
-        Objects.requireNonNull(scene, "scene must not be null");
+        requireNonNull(name, "name must not be null");
+        requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
         try (OutputStream fos = new FileOutputStream(name)) {
@@ -46,37 +47,39 @@ public class DefaultSavegame implements Savegame {
                 }
             }
         } catch (final IOException e) {
-            throw new IllegalStateException("could not serialize entities.", e);
+            throw new IllegalStateException("could not save entities", e);
         }
         return this;
     }
 
     @Override
-    public Savegame load(String name) {
+    public Savegame load(final String name) {
         return load(name, scenes.activeScene());
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Savegame load(String name, Class<? extends Scene> scene) {
+    public Savegame load(final String name, final Class<? extends Scene> scene) {
         final Entities entities = scenes.entitiesOf(scene);
         entities.clearEntities();
         try (InputStream fis = new FileInputStream(name)) {
             try (InputStream zis = new GZIPInputStream(fis)) {
                 try (ObjectInputStream oos = new ObjectInputStream(zis)) {
-                    var allEntities = (List<Entity>) oos.readObject();
+                    final var allEntities = (List<Entity>) oos.readObject();
                     entities.add(allEntities);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new IllegalStateException("could not deserialize file.", e);
+            throw new IllegalStateException("could not load entities", e);
         }
         return this;
     }
 
     @Override
-    public boolean exists(String name) {
-        return Files.exists(Path.of(name));
+    public boolean exists(final String name) {
+        requireNonNull(name, "name must not be null");
+        final Path path = Path.of(name);
+        return Files.exists(path);
     }
 
 }

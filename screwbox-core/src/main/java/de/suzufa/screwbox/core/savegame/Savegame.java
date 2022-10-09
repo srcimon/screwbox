@@ -17,7 +17,6 @@ public interface Savegame {
      */
     Savegame create(String name);
 
-//TODO:  TEST
     /**
      * Creates a savegame file with the given name. The savegame contains all
      * {@link Entities} attached to the given {@link Scene}.
