@@ -66,6 +66,6 @@ class RegisterToSignalSystemTest {
 
         assertThat(receiverA.hasComponent(RegisterToSignalComponent.class)).isFalse();
         assertThat(receiverB.hasComponent(RegisterToSignalComponent.class)).isFalse();
-        assertThat(entities.getSystems()).isEmpty();
+        assertThat(entities.systems()).isEmpty();
     }
 }

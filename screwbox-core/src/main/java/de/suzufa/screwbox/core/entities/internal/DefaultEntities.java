@@ -7,8 +7,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.entities.Archetype;
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.SourceImport;
 
@@ -70,7 +70,7 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public Entities remove(List<Entity> entities) {
+    public Entities remove(final List<Entity> entities) {
         for (final var entity : entities) {
             remove(entity);
         }
@@ -103,7 +103,8 @@ public class DefaultEntities implements Entities {
         return this;
     }
 
-    public List<EntitySystem> getSystems() {
+    @Override
+    public List<EntitySystem> systems() {
         return systemManager.allSystems();
     }
 
@@ -111,6 +112,14 @@ public class DefaultEntities implements Entities {
         for (int iteration = 1; iteration <= count; iteration++) {
             update();
         }
+    }
+
+    @Override
+    public Entities clearEntities() {
+        for (final var entity : allEntities()) {
+            remove(entity);
+        }
+        return this;
     }
 
     @Override
@@ -152,13 +161,13 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public <T> SourceImport<T> importSource(T source) {
+    public <T> SourceImport<T> importSource(final T source) {
         Objects.requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
     }
 
     @Override
-    public <T> SourceImport<T> importSource(List<T> source) {
+    public <T> SourceImport<T> importSource(final List<T> source) {
         Objects.requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
     }

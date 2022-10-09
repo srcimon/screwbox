@@ -53,6 +53,11 @@ public interface Entities {
 
     Entities remove(List<Entity> entities);
 
+    /**
+     * Drops all current {@link Entity}s. All {@link EntitySystem}s stay untouched.
+     */
+    Entities clearEntities();
+
     void remove(Class<? extends EntitySystem> systemType);
 
     long entityCount();
@@ -63,8 +68,14 @@ public interface Entities {
 
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
+    /**
+     * Returns all {@link Entity}s currently attached.
+     */
     List<Entity> allEntities();
 
+    /**
+     * Returns all {@link EntitySystem}s currently attached.
+     */
     List<EntitySystem> allSystems();
 
     /**
@@ -82,5 +93,7 @@ public interface Entities {
      * @see #importSource(Object) for single source
      */
     <T> SourceImport<T> importSource(List<T> source);
+
+    List<EntitySystem> systems();
 
 }

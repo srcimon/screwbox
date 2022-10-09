@@ -23,8 +23,8 @@ public class PauseMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                List<Entity> allEntities = engine.scenes().entitiesOf(GameScene.class).allEntities();
-                serialize(allEntities, "savegame.sav");
+                Entities entities = engine.scenes().entitiesOf(GameScene.class);
+                serialize(entities, "savegame.sav");
                 new PauseMenuResumeGame().onActivate(engine);
             }
 
@@ -35,9 +35,7 @@ public class PauseMenu extends UiMenu {
             public void onActivate(Engine engine) {
                 List<Entity> allEntities = deserialize("savegame.sav");
                 Entities entities = engine.scenes().entitiesOf(GameScene.class);
-                for (Entity entity : entities.allEntities()) {
-                    entities.remove(entity);
-                }
+                entities.clearEntities();
                 entities.add(allEntities);
                 new PauseMenuResumeGame().onActivate(engine);
 
@@ -77,10 +75,11 @@ public class PauseMenu extends UiMenu {
         }
     }
 
-    private void serialize(List<Entity> entities, String filename) {
+    private void serialize(Entities entities, String filename) {
+        List<Entity> allEntities = entities.allEntities();
         try (FileOutputStream fos = new FileOutputStream(filename)) {
             try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-                oos.writeObject(entities);
+                oos.writeObject(allEntities);
             }
         } catch (IOException e) {
             throw new IllegalStateException("Could not serialize Entities.", e);

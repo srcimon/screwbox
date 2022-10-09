@@ -107,6 +107,6 @@ class CombineStaticColliderSystemTest {
 
         entities.update();
 
-        assertThat(entities.getSystems()).isEmpty();
+        assertThat(entities.systems()).isEmpty();
     }
 }
