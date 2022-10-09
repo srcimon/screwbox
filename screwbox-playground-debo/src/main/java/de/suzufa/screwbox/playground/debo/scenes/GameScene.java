@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.playground.debo.scenes;
 
+import static java.util.Objects.nonNull;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -86,13 +88,19 @@ public class GameScene implements Scene {
 
     private final String mapName;
 
+    public GameScene() {
+        this(null);
+    }
+
     public GameScene(final String mapName) {
         this.mapName = mapName;
     }
 
     @Override
     public void initialize(Entities entities) {
-        importEntities(entities);
+        if (nonNull(mapName)) {
+            importEntities(entities);
+        }
 
         entities.add(
                 new LogFpsSystem(),
@@ -137,10 +145,6 @@ public class GameScene implements Scene {
     }
 
     void importEntities(Entities entities) {
-        if (mapName == null) {
-            return;
-        }
-
         entities.add(new Entity()
                 .add(new ScreenshotComponent())
                 .add(new CurrentLevelComponent(mapName)));

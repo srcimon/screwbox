@@ -16,7 +16,7 @@ public class StartGameMenu extends UiMenu {
 
             @Override
             public void onActivate(Engine engine) {
-                engine.scenes().add(new GameScene(null));
+                engine.scenes().add(new GameScene());
                 engine.savegame().load("savegame.sav", GameScene.class);
                 engine.scenes().switchTo(GameScene.class);
                 engine.ui().closeMenu();
