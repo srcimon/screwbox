@@ -29,6 +29,8 @@ import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.internal.DefaultPhysics;
+import de.suzufa.screwbox.core.savegame.Savegame;
+import de.suzufa.screwbox.core.savegame.internal.DefaultSavegame;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.scenes.Scenes;
 import de.suzufa.screwbox.core.scenes.internal.DefaultScenes;
@@ -47,6 +49,7 @@ class DefaultEngine implements Engine {
     private final DefaultUi ui;
     private final DefaultLog log;
     private final DefaultAsync async;
+    private final DefaultSavegame savegame;
     private final ExecutorService executor;
     private final String name;
 
@@ -66,6 +69,7 @@ class DefaultEngine implements Engine {
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         async = new DefaultAsync(executor);
+        savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
@@ -164,6 +168,11 @@ class DefaultEngine implements Engine {
     @Override
     public Async async() {
         return async;
+    }
+
+    @Override
+    public Savegame savegame() {
+        return savegame;
     }
 
 }

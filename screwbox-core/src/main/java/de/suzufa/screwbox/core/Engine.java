@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.physics.Physics;
+import de.suzufa.screwbox.core.savegame.Savegame;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.scenes.Scenes;
 import de.suzufa.screwbox.core.ui.Ui;
@@ -103,4 +104,6 @@ public interface Engine {
      */
     String name();
 
+    // TODO: Javadoc and test
+    Savegame savegame();
 }
