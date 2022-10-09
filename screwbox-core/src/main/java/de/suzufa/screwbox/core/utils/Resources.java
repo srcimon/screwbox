@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.utils;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
@@ -18,9 +19,16 @@ public final class Resources {
     private Resources() {
     }
 
+    /**
+     * Returns true if there is a resource with the given file name.
+     */
+    public static boolean resourceExists(final String fileName) {
+        final URL url = fileUrl(fileName);
+        return nonNull(url);
+    }
+
     public static byte[] loadBinary(final String fileName) {
-        Objects.requireNonNull(fileName, "fileName must not be null");
-        final URL url = Resources.class.getClassLoader().getResource(fileName);
+        final URL url = fileUrl(fileName);
         if (isNull(url)) {
             throw new IllegalArgumentException("file not found: " + fileName);
         }
@@ -48,4 +56,8 @@ public final class Resources {
         }
     }
 
+    private static URL fileUrl(final String fileName) {
+        Objects.requireNonNull(fileName, "fileName must not be null");
+        return Resources.class.getClassLoader().getResource(fileName);
+    }
 }
