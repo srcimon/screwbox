@@ -12,7 +12,7 @@ public class StartGameMenu extends UiMenu {
         add(new SwitchMapMenuItem("Start Level 1", "maps/1-1_teufelsinsel.json"));
         add(new SwitchMapMenuItem("Start Level 2", "maps/1-2_misty_caves.json"));
 
-        add(new UiMenuItem("Load Game") {
+        add(new UiMenuItem("continue") {
 
             @Override
             public void onActivate(Engine engine) {

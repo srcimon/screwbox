@@ -1,20 +1,25 @@
 package de.suzufa.screwbox.core.ui;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Engine;
 
 public abstract class UiMenuItem {
 
-    private final String label;
+    private final Function<Engine, String> label;
     private Predicate<Engine> activeCondition = engine -> true;
 
     protected UiMenuItem(final String label) {
-        this.label = label;
+        this.label = engine -> label;
     }
 
-    public String label() {
-        return label;
+    protected UiMenuItem(final Function<Engine, String> dynamicLabel) {
+        this.label = dynamicLabel;
+    }
+
+    public String label(Engine engine) {
+        return label.apply(engine);
     }
 
     public abstract void onActivate(Engine engine);

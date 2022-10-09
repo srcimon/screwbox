@@ -48,14 +48,13 @@ public class DefaultUi implements Ui, Updatable {
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, window);
             if (window.isVisible(bounds)) {
+                String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(item, bounds, window);
+                    renderer.renderSelectedItem(label, bounds, window);
+                } else if (menu.isActive(item, engine)) {
+                    renderer.renderSelectableItem(label, bounds, window);
                 } else {
-                    if (menu.isActive(item, engine)) {
-                        renderer.renderSelectableItem(item, bounds, window);
-                    } else {
-                        renderer.renderInactiveItem(item, bounds, window);
-                    }
+                    renderer.renderInactiveItem(label, bounds, window);
                 }
             }
         }

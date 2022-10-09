@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.playground.debo.menues;
 
 import java.util.List;
+import java.util.function.Function;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -14,7 +15,11 @@ public class OptionsMenu extends UiSubMenu {
     public OptionsMenu(UiMenu caller) {
         super(caller);
 
-        add(new UiMenuItem("toggle Fullscreen") {
+        Function<Engine, String> toogleFullscreenLabel = engine -> engine.graphics().configuration().isFullscreen()
+                ? "switch to window"
+                : "switch to fullscreen";
+
+        add(new UiMenuItem(toogleFullscreenLabel) {
 
             @Override
             public void onActivate(Engine engine) {

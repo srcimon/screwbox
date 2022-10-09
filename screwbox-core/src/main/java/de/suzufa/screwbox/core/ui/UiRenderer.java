@@ -5,9 +5,9 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public interface UiRenderer {
 
-    void renderSelectableItem(UiMenuItem item, WindowBounds bounds, Window window);
+    void renderSelectableItem(String label, WindowBounds bounds, Window window);
 
-    void renderSelectedItem(UiMenuItem item, WindowBounds bounds, Window window);
+    void renderSelectedItem(String label, WindowBounds bounds, Window window);
 
-    void renderInactiveItem(UiMenuItem item, WindowBounds bounds, Window window);
+    void renderInactiveItem(String label, WindowBounds bounds, Window window);
 }
