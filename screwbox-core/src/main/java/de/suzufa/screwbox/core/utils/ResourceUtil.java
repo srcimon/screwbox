@@ -12,11 +12,15 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public final class Resources {
+/**
+ * Provides convenience methods to access {@link ClassLoader} accessible
+ * resources. Used to import packed resouces into your game.
+ */
+public final class ResourceUtil {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private Resources() {
+    private ResourceUtil() {
     }
 
     /**
@@ -49,7 +53,7 @@ public final class Resources {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
         try {
-            final var fileContent = Resources.loadBinary(fileName);
+            final var fileContent = ResourceUtil.loadBinary(fileName);
             return OBJECT_MAPPER.readValue(fileContent, type);
         } catch (final IOException e) {
             throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
@@ -58,6 +62,6 @@ public final class Resources {
 
     private static URL fileUrl(final String fileName) {
         Objects.requireNonNull(fileName, "fileName must not be null");
-        return Resources.class.getClassLoader().getResource(fileName);
+        return ResourceUtil.class.getClassLoader().getResource(fileName);
     }
 }
