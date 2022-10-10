@@ -38,9 +38,6 @@ public class DefaultLoop implements Loop {
     }
 
     public void stop() {
-        if (!active) {
-            throw new IllegalStateException("game loop hast not been started yet");
-        }
         this.active = false;
     }
 
