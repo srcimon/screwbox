@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DefaultAsyncTest {
 
     @Mock
-    Consumer<RuntimeException> exceptionHandler;
+    Consumer<Throwable> exceptionHandler;
 
     DefaultAsync async;
 

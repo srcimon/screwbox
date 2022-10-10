@@ -173,8 +173,8 @@ class DefaultEngine implements Engine {
         return savegame;
     }
 
-    private void exceptionHandler(final RuntimeException exception) {
+    private void exceptionHandler(final Throwable throwable) {
         stop();
-        exception.printStackTrace();
+        log().error(throwable);
     }
 }

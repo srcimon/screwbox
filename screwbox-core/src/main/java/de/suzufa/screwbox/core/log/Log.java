@@ -37,6 +37,12 @@ public interface Log {
     Log error(String message);
 
     /**
+     * Logs a message using {@link LogLevel#ERROR} containing the stacktrace of the
+     * given {@link Throwable}.
+     */
+    Log error(Throwable throwable);
+
+    /**
      * Sets the {@link LoggingAdapter} that is used for logging all messages. Can be
      * used to attach the {@link Engine} logging events to your preferred logging
      * system.

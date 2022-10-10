@@ -14,9 +14,9 @@ public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
-    private final Consumer<RuntimeException> exceptionHandler;
+    private final Consumer<Throwable> exceptionHandler;
 
-    public DefaultAsync(final ExecutorService executor, Consumer<RuntimeException> exceptionHandler) {
+    public DefaultAsync(final ExecutorService executor, Consumer<Throwable> exceptionHandler) {
         this.executor = executor;
         this.exceptionHandler = exceptionHandler;
     }

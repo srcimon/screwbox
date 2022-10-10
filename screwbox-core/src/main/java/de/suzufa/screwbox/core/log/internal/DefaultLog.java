@@ -2,6 +2,10 @@ package de.suzufa.screwbox.core.log.internal;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.log.LogLevel;
 import de.suzufa.screwbox.core.log.LoggingAdapter;
@@ -76,5 +80,17 @@ public class DefaultLog implements Log {
 
     private boolean isActiveForLevel(final LogLevel level) {
         return level.ordinal() >= minimumLevel.ordinal();
+    }
+
+    @Override
+    public Log error(Throwable throwable) {
+        try (StringWriter stringWriter = new StringWriter()) {
+            try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
+                throwable.printStackTrace(printWriter);
+                return error(stringWriter.toString());
+            }
+        } catch (final IOException e) {
+            throw new RuntimeException("error handling failed", e);
+        }
     }
 }
