@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 
 import de.suzufa.screwbox.core.async.Async;
 
@@ -13,9 +14,11 @@ public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
+    private final Consumer<RuntimeException> exceptionHandler;
 
-    public DefaultAsync(final ExecutorService executor) {
+    public DefaultAsync(final ExecutorService executor, Consumer<RuntimeException> exceptionHandler) {
         this.executor = executor;
+        this.exceptionHandler = exceptionHandler;
     }
 
     @Override
@@ -32,7 +35,12 @@ public class DefaultAsync implements Async {
         final UUID id = UUID.randomUUID();
         runningTasks.put(id, context);
         executor.submit(() -> {
-            task.run();
+            try {
+                task.run();
+            } catch (Throwable throwable) {
+                var wrappedException = new RuntimeException("Exception in asynchronous context: " + context, throwable);
+                exceptionHandler.accept(wrappedException);
+            }
             runningTasks.remove(id);
         });
         return this;

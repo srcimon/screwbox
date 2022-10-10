@@ -56,7 +56,7 @@ class DefaultEngine implements Engine {
     DefaultEngine(final String name) {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newCachedThreadPool();// TODO: Exceptions in Async Tasks should end the game
+        executor = Executors.newCachedThreadPool();
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         graphics = new DefaultGraphics(configuration, window);
@@ -68,7 +68,7 @@ class DefaultEngine implements Engine {
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        async = new DefaultAsync(executor);
+        async = new DefaultAsync(executor, this::exceptionHandler);
         savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
@@ -93,9 +93,7 @@ class DefaultEngine implements Engine {
             graphics.window().open();
             gameLoop.start();
         } catch (final RuntimeException e) {
-            audio.shutdown();
-            graphics.window().close();
-            throw e;
+            exceptionHandler(e);
         }
     }
 
@@ -175,4 +173,8 @@ class DefaultEngine implements Engine {
         return savegame;
     }
 
+    private void exceptionHandler(final RuntimeException exception) {
+        stop();
+        exception.printStackTrace();
+    }
 }
