@@ -13,7 +13,7 @@ public class HelloWorldExample {
         // create the engine
         Engine engine = ScrewBox.createEngine("Hello World Example");
 
-        // change window title and hide cursor
+        // hide cursor in window mode
         engine.graphics().window().setWindowCursor(PredefinedCursor.HIDDEN);
 
         // add systems to the game loop
