@@ -36,7 +36,7 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public Savegame create(final String name, final Class<? extends Scene> scene) {
-        requireNonNull(name, "name must not be null");
+        verifyName(name);
         requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
@@ -60,7 +60,7 @@ public class DefaultSavegame implements Savegame {
     @Override
     @SuppressWarnings("unchecked")
     public Savegame load(final String name, final Class<? extends Scene> scene) {
-        requireNonNull(name, "name must not be null");
+        verifyName(name);
         requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         entities.clearEntities();
@@ -79,9 +79,12 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public boolean exists(final String name) {
-        requireNonNull(name, "name must not be null");
+        verifyName(name);
         final Path path = Path.of(name);
         return Files.exists(path);
     }
 
+    private void verifyName(final String name) {
+        requireNonNull(name, "name must not be null");
+    }
 }

@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.savegame;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.scenes.Scene;
 
 /**
@@ -25,10 +26,16 @@ public interface Savegame {
      */
     Savegame create(String name, Class<? extends Scene> scene);
 
-    // TODO: JAVADOC AND TEST
+    /**
+     * Loads a previously created savegame file from disc and restores the saved
+     * {@link Entity}s in {@link Engine#entities()}.
+     */
     Savegame load(String name);
 
-    // TODO: JAVADOC AND TEST
+    /**
+     * Loads a previously created savegame file from disc and restores the saved
+     * {@link Entity}s in the given {@link Scene}.
+     */
     Savegame load(String name, Class<? extends Scene> scene);
 
     /**
