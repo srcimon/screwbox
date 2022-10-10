@@ -56,7 +56,7 @@ class DefaultEngine implements Engine {
     DefaultEngine(final String name) {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newCachedThreadPool();// TODO: Exceptions in Async Tasks should end the game
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         graphics = new DefaultGraphics(configuration, window);
