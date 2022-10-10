@@ -16,7 +16,7 @@ public class DefaultAsync implements Async {
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
     private final Consumer<Throwable> exceptionHandler;
 
-    public DefaultAsync(final ExecutorService executor, Consumer<Throwable> exceptionHandler) {
+    public DefaultAsync(final ExecutorService executor, final Consumer<Throwable> exceptionHandler) {
         this.executor = executor;
         this.exceptionHandler = exceptionHandler;
     }
@@ -37,8 +37,9 @@ public class DefaultAsync implements Async {
         executor.submit(() -> {
             try {
                 task.run();
-            } catch (Throwable throwable) {
-                var wrappedException = new RuntimeException("Exception in asynchronous context: " + context, throwable);
+            } catch (final Exception exception) {
+                final var wrappedException = new RuntimeException("Exception in asynchronous context: " + context,
+                        exception);
                 exceptionHandler.accept(wrappedException);
             }
             runningTasks.remove(id);

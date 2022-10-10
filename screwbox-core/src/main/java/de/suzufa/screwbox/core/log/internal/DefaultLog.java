@@ -90,7 +90,7 @@ public class DefaultLog implements Log {
                 return error(stringWriter.toString());
             }
         } catch (final IOException e) {
-            throw new RuntimeException("error handling failed", e);
+            throw new IllegalStateException("error handling failed", e);
         }
     }
 }
