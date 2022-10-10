@@ -1,9 +1,10 @@
 package de.suzufa.screwbox.core.entities.internal;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.entities.Archetype;
@@ -24,14 +25,14 @@ public class DefaultEntities implements Entities {
 
     @Override
     public Entities add(final Entity entity) {
-        Objects.requireNonNull(entity, "entity must not be null");
+        requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);
         return this;
     }
 
     @Override
     public Entities add(final EntitySystem system) {
-        Objects.requireNonNull(system, "system must not be null");
+        requireNonNull(system, "system must not be null");
         systemManager.addSystem(system);
         return this;
     }
@@ -116,7 +117,7 @@ public class DefaultEntities implements Entities {
 
     @Override
     public Entities clearEntities() {
-        for (final var entity : allEntities()) {
+        for (final var entity : new ArrayList<>(allEntities())) {
             remove(entity);
         }
         return this;
@@ -162,13 +163,13 @@ public class DefaultEntities implements Entities {
 
     @Override
     public <T> SourceImport<T> importSource(final T source) {
-        Objects.requireNonNull(source, "Source must not be null");
+        requireNonNull(source, "Source must not be null");
         return importSource(List.of(source));
     }
 
     @Override
     public <T> SourceImport<T> importSource(final List<T> source) {
-        Objects.requireNonNull(source, "Source must not be null");
+        requireNonNull(source, "Source must not be null");
         return new SourceImport<>(source, this);
     }
 
