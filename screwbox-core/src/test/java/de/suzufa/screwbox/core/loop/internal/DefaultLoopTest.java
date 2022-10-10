@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.loop.internal;
 import static de.suzufa.screwbox.core.Duration.none;
 import static de.suzufa.screwbox.core.Time.unset;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.within;
 
@@ -103,10 +104,8 @@ class DefaultLoopTest {
     }
 
     @Test
-    void stop_notStarted_throwsException() {
-        assertThatThrownBy(() -> loop.stop())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("game loop hast not been started yet");
+    void stop_notStarted_ignored() {
+        assertThatNoException().isThrownBy(() -> loop.stop());
     }
 
     @Test

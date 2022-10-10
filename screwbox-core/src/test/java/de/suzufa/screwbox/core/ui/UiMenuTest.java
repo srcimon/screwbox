@@ -2,14 +2,22 @@ package de.suzufa.screwbox.core.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import de.suzufa.screwbox.core.Engine;
+
+@ExtendWith(MockitoExtension.class)
 class UiMenuTest {
 
-    private UiMenu menu;
+    UiMenu menu;
+
+    @Mock
+    Engine engine;
 
     @BeforeEach
     void beforeEach() {
@@ -17,56 +25,66 @@ class UiMenuTest {
     }
 
     @Test
-    void activeItem_noItems_throwsException() {
-        assertThatThrownBy(() -> menu.activeItem())
+    void selectedItem_noItems_throwsException() {
+        assertThatThrownBy(() -> menu.selectedItem())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("no menu item present");
     }
 
     @Test
-    void activeItem_itemsPresent_returnsActiveItem() {
-        UiMenuItem gameOptions = mock(UiMenuItem.class);
-        UiMenuItem quitGame = mock(UiMenuItem.class);
+    void selectedItem_itemsPresent_returnsSelectedItem() {
+        UiMenuItem gameOptions = menuItem();
+        UiMenuItem quitGame = menuItem();
 
         menu.add(gameOptions);
         menu.add(quitGame);
 
-        assertThat(menu.activeItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
     }
 
     @Test
     void nextItem_itemsPresent_switchesActiveItem() {
-        UiMenuItem gameOptions = mock(UiMenuItem.class);
-        UiMenuItem quitGame = mock(UiMenuItem.class);
+        UiMenuItem gameOptions = menuItem();
+        UiMenuItem quitGame = menuItem();
 
         menu.add(gameOptions);
         menu.add(quitGame);
 
-        menu.nextItem();
+        menu.nextItem(engine);
 
-        assertThat(menu.activeItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitGame);
     }
 
     @Test
     void nextItem_atEndOfList_doenstSwitchItem() {
-        UiMenuItem gameOptions = mock(UiMenuItem.class);
-        UiMenuItem quitGame = mock(UiMenuItem.class);
+        UiMenuItem gameOptions = menuItem();
+        UiMenuItem quitGame = menuItem();
 
         menu.add(gameOptions);
         menu.add(quitGame);
 
-        menu.nextItem();
-        menu.nextItem();
-        menu.nextItem();
+        menu.nextItem(engine);
+        menu.nextItem(engine);
+        menu.nextItem(engine);
 
-        assertThat(menu.activeItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitGame);
     }
 
     @Test
     void itemCount_returnsItemCount() {
-        menu.add(mock(UiMenuItem.class));
+        menu.add(menuItem());
 
         assertThat(menu.itemCount()).isEqualTo(1);
+    }
+
+    private UiMenuItem menuItem() {
+        UiMenuItem quitGame = new UiMenuItem("Unnamed") {
+
+            @Override
+            public void onActivate(Engine engine) {
+            }
+        };
+        return quitGame;
     }
 
 }

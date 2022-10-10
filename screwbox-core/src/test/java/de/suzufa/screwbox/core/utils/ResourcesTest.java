@@ -53,7 +53,7 @@ class ResourcesTest {
     }
 
     @Test
-    void loadJson_corruptJson_throwsExceptuon() {
+    void loadJson_corruptJson_throwsException() {
         assertThatThrownBy(() -> Resources.loadJson("fake.json", String.class))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("file could not be deserialized: fake.json");
@@ -63,5 +63,26 @@ class ResourcesTest {
     void loadJson_jsonOkay_returnsObject() {
         JsonDemo result = Resources.loadJson("real.json", JsonDemo.class);
         assertThat(result.name).isEqualTo("jason");
+    }
+
+    @Test
+    void resourceExists_fileNameNull_throwsException() {
+        assertThatThrownBy(() -> Resources.resourceExists(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("fileName must not be null");
+    }
+
+    @Test
+    void resourceExists_resourcePresent_true() {
+        var result = Resources.resourceExists("fake.json");
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void resourceExists_resourceAbsent_false() {
+        var result = Resources.resourceExists("unknown");
+
+        assertThat(result).isFalse();
     }
 }

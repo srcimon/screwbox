@@ -29,6 +29,8 @@ import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.mouse.internal.DefaultMouse;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.internal.DefaultPhysics;
+import de.suzufa.screwbox.core.savegame.Savegame;
+import de.suzufa.screwbox.core.savegame.internal.DefaultSavegame;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.scenes.Scenes;
 import de.suzufa.screwbox.core.scenes.internal.DefaultScenes;
@@ -47,6 +49,7 @@ class DefaultEngine implements Engine {
     private final DefaultUi ui;
     private final DefaultLog log;
     private final DefaultAsync async;
+    private final DefaultSavegame savegame;
     private final ExecutorService executor;
     private final String name;
 
@@ -65,7 +68,8 @@ class DefaultEngine implements Engine {
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        async = new DefaultAsync(executor);
+        async = new DefaultAsync(executor, this::exceptionHandler);
+        savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
@@ -84,14 +88,12 @@ class DefaultEngine implements Engine {
         if (scenes.sceneCount() == 0) {
             throw new IllegalStateException("no scene present");
         }
-        log.info(format("engine started [%s]", name));
+        log.info(format("engine started (%s)", name));
         try {
             graphics.window().open();
             gameLoop.start();
         } catch (final RuntimeException e) {
-            audio.shutdown();
-            graphics.window().close();
-            throw e;
+            exceptionHandler(e);
         }
     }
 
@@ -166,4 +168,13 @@ class DefaultEngine implements Engine {
         return async;
     }
 
+    @Override
+    public Savegame savegame() {
+        return savegame;
+    }
+
+    private void exceptionHandler(final Throwable throwable) {
+        stop();
+        log().error(throwable);
+    }
 }

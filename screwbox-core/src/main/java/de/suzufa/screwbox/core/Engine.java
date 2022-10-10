@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.mouse.Mouse;
 import de.suzufa.screwbox.core.physics.Physics;
+import de.suzufa.screwbox.core.savegame.Savegame;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.scenes.Scenes;
 import de.suzufa.screwbox.core.ui.Ui;
@@ -72,6 +73,11 @@ public interface Engine {
      * @see Log
      */
     Log log();
+
+    /**
+     * Provides methods to save and load the game state.
+     */
+    Savegame savegame();
 
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the

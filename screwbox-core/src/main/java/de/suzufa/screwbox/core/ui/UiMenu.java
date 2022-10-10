@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.Engine;
 public class UiMenu {
 
     private final List<UiMenuItem> items = new ArrayList<>();
-    private int activeItemIndex = 0;
+    private int selectedItemIndex = 0;
 
     public final void add(UiMenuItem item) {
         items.add(item);
@@ -21,25 +21,43 @@ public class UiMenu {
         return items;
     }
 
-    public final boolean isActiveItem(UiMenuItem item) {
-        return items().get(activeItemIndex).equals(item);
+    public final boolean isSelectedItem(UiMenuItem item) {
+        return items().get(selectedItemIndex).equals(item);
     }
 
-    public final UiMenuItem activeItem() {
-        return items().get(activeItemIndex);
+    public final UiMenuItem selectedItem() {
+        return items().get(selectedItemIndex);
     }
 
-    public final void nextItem() {
-        if (activeItemIndex < items().size() - 1) {
-            activeItemIndex++;
+    public final void nextItem(Engine engine) {
+        if (selectedItemIndex < items().size() - 1) {
+            selectedItemIndex++;
+        }
+        while (!isActive(selectedItemIndex, engine)) {
+            nextItem(engine);
+        }
+        // TODO: endless loop bug
+        // TODO: add Test
+    }
+
+    public final void previousItem(Engine engine) {
+        if (selectedItemIndex > 0) {
+            selectedItemIndex--;
         }
 
+        while (!isActive(selectedItemIndex, engine)) {
+            previousItem(engine);
+        }
+        // TODO: endless loop bug
+        // TODO: add Test
     }
 
-    public final void previousItem() {
-        if (activeItemIndex > 0) {
-            activeItemIndex--;
-        }
+    public boolean isActive(UiMenuItem item, Engine engine) {
+        return isActive(itemIndex(item), engine);
+    }
+
+    boolean isActive(int index, Engine engine) {
+        return items.get(index).activeCondition().test(engine);
     }
 
     public void onExit(Engine engine) {
@@ -51,7 +69,7 @@ public class UiMenu {
     }
 
     public final int activeItemIndex() {
-        return activeItemIndex;
+        return selectedItemIndex;
     }
 
     public final int itemIndex(UiMenuItem menuItem) {
@@ -66,7 +84,7 @@ public class UiMenu {
     }
 
     public final void selectItem(UiMenuItem menuItem) {
-        activeItemIndex = itemIndex(menuItem);
+        selectedItemIndex = itemIndex(menuItem);
     }
 
 }

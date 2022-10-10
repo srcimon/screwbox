@@ -2,25 +2,37 @@ package de.suzufa.screwbox.core.async.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@Timeout(1)
+@ExtendWith(MockitoExtension.class)
 class DefaultAsyncTest {
 
+    @Mock
+    Consumer<Throwable> exceptionHandler;
+
     DefaultAsync async;
+
     ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        async = new DefaultAsync(executor);
+        async = new DefaultAsync(executor, exceptionHandler);
     }
 
     @Test
@@ -57,14 +69,12 @@ class DefaultAsyncTest {
     }
 
     @Test
-    @Timeout(1)
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
         async.run("another Context", () -> someLongRunningTask());
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
-    @Timeout(1)
     void hasActiveTasks_taskCompleted_isFalse() {
         async.run("myContext", () -> someLongRunningTask());
 
@@ -73,6 +83,25 @@ class DefaultAsyncTest {
         }
 
         assertThat(async.hasActiveTasks("myContext")).isFalse();
+    }
+
+    @Test
+    void run_taskThrowsException_exeptionHandlerIsInformed() {
+        async.run("myContext", () -> {
+            throw new IllegalArgumentException("Other thread Exception");
+        });
+
+        while (async.hasActiveTasks("myContext")) {
+            // wait
+        }
+
+        assertThat(async.hasActiveTasks("myContext")).isFalse();
+        var exceptionCaptor = ArgumentCaptor.forClass(RuntimeException.class);
+        verify(exceptionHandler).accept(exceptionCaptor.capture());
+
+        assertThat(exceptionCaptor.getValue())
+                .hasMessage("Exception in asynchronous context: myContext")
+                .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     private void someLongRunningTask() {

@@ -11,6 +11,11 @@ public class GraphicsConfiguration {
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
 
+    /**
+     * Sets the antialising state. Antialising is used to draw with system fonts and
+     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising costs
+     * some fps.
+     */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
         this.useAntialiasing = useAntialiasing;
         notifyListeners();
@@ -30,6 +35,16 @@ public class GraphicsConfiguration {
 
     public GraphicsConfiguration toggleFullscreen() {
         setFullscreen(!isFullscreen());
+        return this;
+    }
+
+    /**
+     * Toggles the antialising on/off. Antialising is used to draw with system fonts
+     * and shapes. It doesn't enhance {@link Sprite} drawing. Using antialising
+     * costs some fps.
+     */
+    public GraphicsConfiguration toggleAntialising() {
+        setUseAntialiasing(!isUseAntialising());
         return this;
     }
 
@@ -55,6 +70,11 @@ public class GraphicsConfiguration {
         return fullscreen;
     }
 
+    /**
+     * Returns true if antialising is used. Antialising is used to draw with system
+     * fonts and shapes. It doesn't enhance {@link Sprite} drawing. Using
+     * antialising costs some fps.
+     */
     public boolean isUseAntialising() {
         return useAntialiasing;
     }

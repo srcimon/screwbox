@@ -10,13 +10,13 @@ public class KeyboardInteractor implements UiInteractor {
         final var keyboard = engine.keyboard();
 
         if (keyboard.justPressed(Key.ARROW_DOWN)) {
-            menu.nextItem();
+            menu.nextItem(engine);
         }
         if (keyboard.justPressed(Key.ARROW_UP)) {
-            menu.previousItem();
+            menu.previousItem(engine);
         }
         if (keyboard.justPressed(Key.ENTER)) {
-            menu.activeItem().onActivate(engine);
+            menu.selectedItem().onActivate(engine);
         }
         if (keyboard.justPressed(Key.ESCAPE)) {
             menu.onExit(engine);

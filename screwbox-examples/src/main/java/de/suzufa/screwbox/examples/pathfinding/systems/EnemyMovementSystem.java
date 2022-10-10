@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.examples.pathfinding.systems;
 
-import static de.suzufa.screwbox.core.Duration.ofSeconds;
-
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Engine;
@@ -25,7 +23,7 @@ public class EnemyMovementSystem implements EntitySystem {
     private static final Archetype ENEMIES = Archetype.of(
             PhysicsBodyComponent.class, SpriteComponent.class, AutomovementComponent.class);
 
-    private final Timer timer = Timer.withInterval(ofSeconds(1));
+    private final Timer timer = Timer.everySecond();
 
     @Override
     public void update(final Engine engine) {

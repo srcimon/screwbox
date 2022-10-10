@@ -31,6 +31,20 @@ public class Timer implements Serializable {
     }
 
     /**
+     * Creates a new {@link Timer} with one minute interval.
+     */
+    public static Timer everyMinute() {
+        return withInterval(Duration.ofSeconds(60));
+    }
+
+    /**
+     * Creates a new {@link Timer} with one second interval.
+     */
+    public static Timer everySecond() {
+        return withInterval(Duration.ofSeconds(1));
+    }
+
+    /**
      * Checks if the timer is triggered at the given {@link Time}. If the timer is
      * then reseted. {@link Time} should be provided from outside to reduce CPU
      * load.

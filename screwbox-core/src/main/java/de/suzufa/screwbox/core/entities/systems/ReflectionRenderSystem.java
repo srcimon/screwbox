@@ -46,27 +46,29 @@ public class ReflectionRenderSystem implements EntitySystem {
                             spriteSize.width() * spriteComponent.scale,
                             spriteSize.height() * spriteComponent.scale);
 
-                    Vector oldPosition = spriteBounds.origin();
+                    Vector oldPosition = spriteBounds.position();
                     double actualY = reflectionAreaBounds.minY() +
-                            (reflectionAreaBounds.minY() - oldPosition.y()
-                                    - spriteComponent.sprite.size().height());
+                            (reflectionAreaBounds.minY() - oldPosition.y());
                     var actualPosition = Vector.of(oldPosition.x(), actualY);
 
-                    if (spriteBounds.moveTo(actualPosition).intersects(visibleArea)) {
+                    double waveMovementEffectX = reflection.useWaveEffect
+                            ? Math.sin(waveSeed + actualY / 16) * 2
+                            : 0;
+                    double waveMovementEffectY = reflection.useWaveEffect
+                            ? Math.sin(waveSeed) * 2
+                            : 0;
+
+                    Vector waveEffectPosition = actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY);
+
+                    Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
+                    if (reflectionBounds.intersects(visibleArea)) {
                         Percentage opacity = spriteComponent.opacity
                                 .multiply(reflection.opacityModifier.value())
                                 .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
 
-                        double waveMovementEffectX = reflection.useWaveEffect
-                                ? Math.sin(waveSeed + actualY / 16) * 2 - 1
-                                : 0;
-                        double waveMovementEffectY = reflection.useWaveEffect
-                                ? Math.sin(waveSeed) * 2 - 1
-                                : 0;
-
                         spriteBatch.addEntry(
                                 spriteComponent.sprite,
-                                actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY),
+                                reflectionBounds.origin(),
                                 spriteComponent.scale,
                                 opacity,
                                 spriteComponent.rotation,
