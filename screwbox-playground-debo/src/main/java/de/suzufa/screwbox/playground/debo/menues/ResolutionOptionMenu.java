@@ -19,7 +19,7 @@ public class ResolutionOptionMenu extends UiSubMenu {
                 selectItem(item);
             }
         }
-        addItem("back to options").onActivate(engine -> onExit(engine));
+        addItem("back to options").onActivate(this::onExit);
     }
 
     @Override

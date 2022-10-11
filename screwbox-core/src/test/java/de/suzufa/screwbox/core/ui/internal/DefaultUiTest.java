@@ -81,7 +81,7 @@ class DefaultUiTest {
         when(layouter.calculateBounds(firstItem, menu, window)).thenReturn(layoutBounds);
         ui.openMenu(menu);
 
-        assertThat(menu.activeItemIndex()).isEqualTo(0);
+        assertThat(menu.activeItemIndex()).isZero();
 
         ui.update();
 

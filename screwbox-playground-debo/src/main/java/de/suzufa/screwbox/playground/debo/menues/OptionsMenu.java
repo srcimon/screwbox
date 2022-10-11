@@ -39,7 +39,7 @@ public class OptionsMenu extends UiSubMenu {
                 .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
                 .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-        addItem("back").onActivate(engine -> onExit(engine));
+        addItem("back").onActivate(this::onExit);
     }
 
 }
