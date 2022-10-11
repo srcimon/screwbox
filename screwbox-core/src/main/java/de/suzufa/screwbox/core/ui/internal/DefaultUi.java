@@ -39,9 +39,9 @@ public class DefaultUi implements Ui, Updatable {
         if (currentMenu.isPresent()) {
             final var menu = currentMenu.get();
             interactor.interactWith(menu, layouter, engine);
-//            if (!menu.isActive(menu.selectedItem(), engine)) {
-//                menu.nextItem(engine);
-//            }
+            if (!menu.isActive(menu.selectedItem(), engine)) {
+                menu.nextItem(engine);
+            }
             renderMenu(menu, engine.graphics().window());
         }
     }
