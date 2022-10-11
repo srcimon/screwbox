@@ -84,7 +84,20 @@ public class DefaultSavegame implements Savegame {
         return Files.exists(path);
     }
 
+    @Override
+    public Savegame delete(String name) {
+        try {
+            verifyName(name);
+            final Path path = Path.of(name);
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new IllegalStateException("could not delete savegame: " + name, e);
+        }
+        return this;
+    }
+
     private void verifyName(final String name) {
         requireNonNull(name, "name must not be null");
     }
+
 }

@@ -29,7 +29,9 @@ import de.suzufa.screwbox.core.scenes.internal.GameScene;
 @ExtendWith(MockitoExtension.class)
 class DefaultSaveganeTest {
 
-    private static final Path SAVEGAME = Path.of("mysave.sav");
+    private static final String SAVEGAME_NAME = "mysave.sav";
+
+    private static final Path SAVEGAME = Path.of(SAVEGAME_NAME);
 
     @InjectMocks
     DefaultSavegame savegame;
@@ -49,7 +51,7 @@ class DefaultSaveganeTest {
 
     @Test
     void create_sceneNull_throwsException() {
-        assertThatThrownBy(() -> savegame.create("mysave.sav", null))
+        assertThatThrownBy(() -> savegame.create(SAVEGAME_NAME, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("scene must not be null");
     }
@@ -60,7 +62,7 @@ class DefaultSaveganeTest {
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
 
-        savegame.create("mysave.sav");
+        savegame.create(SAVEGAME_NAME);
 
         assertThat(Files.exists(SAVEGAME)).isTrue();
     }
@@ -70,7 +72,7 @@ class DefaultSaveganeTest {
         var entities = mock(Entities.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
 
-        savegame.create("mysave.sav", GameScene.class);
+        savegame.create(SAVEGAME_NAME, GameScene.class);
 
         assertThat(Files.exists(SAVEGAME)).isTrue();
     }
@@ -95,9 +97,9 @@ class DefaultSaveganeTest {
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
 
-        savegame.create("mysave.sav");
+        savegame.create(SAVEGAME_NAME);
 
-        boolean exists = savegame.exists("mysave.sav");
+        boolean exists = savegame.exists(SAVEGAME_NAME);
 
         assertThat(exists).isTrue();
     }
@@ -111,7 +113,7 @@ class DefaultSaveganeTest {
 
     @Test
     void load_sceneNull_throwsException() {
-        assertThatThrownBy(() -> savegame.load("mysave.sav", null))
+        assertThatThrownBy(() -> savegame.load(SAVEGAME_NAME, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("scene must not be null");
     }
@@ -132,9 +134,9 @@ class DefaultSaveganeTest {
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         when(entities.allEntities()).thenReturn(List.of(new Entity(1), new Entity(2)));
         doReturn(GameScene.class).when(scenes).activeScene();
-        savegame.create("mysave.sav");
+        savegame.create(SAVEGAME_NAME);
 
-        savegame.load("mysave.sav");
+        savegame.load(SAVEGAME_NAME);
 
         verify(entities).clearEntities();
         verify(entities).add(entitiesCaptor.capture());
@@ -143,6 +145,32 @@ class DefaultSaveganeTest {
                 .anyMatch(e -> e.id().get() == 1)
                 .anyMatch(e -> e.id().get() == 2)
                 .hasSize(2);
+    }
+
+    @Test
+    void delete_nameNull_throwsException() {
+        assertThatThrownBy(() -> savegame.delete(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("name must not be null");
+    }
+
+    @Test
+    void delete_savegameDoesntExist_throwsException() {
+        assertThatThrownBy(() -> savegame.delete("not-there.sav"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("could not delete savegame: not-there.sav");
+    }
+
+    @Test
+    void delete_savegameExists_deletesSAve() {
+        var entities = mock(Entities.class);
+        when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
+        doReturn(GameScene.class).when(scenes).activeScene();
+        savegame.create(SAVEGAME_NAME);
+
+        savegame.delete(SAVEGAME_NAME);
+
+        assertThat(savegame.exists(SAVEGAME_NAME)).isFalse();
     }
 
     @AfterEach

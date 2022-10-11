@@ -39,6 +39,12 @@ public interface Savegame {
     Savegame load(String name, Class<? extends Scene> scene);
 
     /**
+     * Deletes the savegame with the given name. Triggers an {@link Exception} if
+     * there is no such savegame.
+     */
+    Savegame delete(String name);
+
+    /**
      * Returns true if there is a savegame with the given name.
      */
     boolean exists(String name);

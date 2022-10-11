@@ -36,6 +36,10 @@ public class OptionsMenu extends UiSubMenu {
             engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
         }));
 
+        add(new UiMenuItem("delete savegame")
+                .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
+                .onActivate(engine -> engine.savegame().delete("savegame.sav")));
+
         add(new UiMenuItem("back").onActivate(engine -> onExit(engine)));
     }
 
