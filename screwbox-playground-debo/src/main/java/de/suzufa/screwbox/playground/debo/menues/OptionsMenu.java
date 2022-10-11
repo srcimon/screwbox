@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.ui.ScrollingUiLayouter;
 import de.suzufa.screwbox.core.ui.UiMenu;
-import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.core.ui.UiSubMenu;
 
 public class OptionsMenu extends UiSubMenu {
@@ -23,24 +22,24 @@ public class OptionsMenu extends UiSubMenu {
                 ? "turn off antialising"
                 : "turn on antialising";
 
-        add(new UiMenuItem(toogleFullscreenLabel)
-                .onActivate(engine -> engine.graphics().configuration().toggleFullscreen()));
+        addItem(toogleFullscreenLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
 
-        add(new UiMenuItem(toggleAntialisingLabel)
-                .onActivate(engine -> engine.graphics().configuration().toggleAntialising()));
+        addItem(toggleAntialisingLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
 
-        add(new UiMenuItem("change resolution").onActivate(engine -> {
+        addItem("change resolution").onActivate(engine -> {
             List<Dimension> resolutions = engine.graphics().supportedResolutions();
             Dimension resolution = engine.graphics().configuration().resolution();
             engine.ui().setLayouter(new ScrollingUiLayouter());
             engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
-        }));
+        });
 
-        add(new UiMenuItem("delete savegame")
+        addItem("delete savegame")
                 .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
-                .onActivate(engine -> engine.savegame().delete("savegame.sav")));
+                .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-        add(new UiMenuItem("back").onActivate(engine -> onExit(engine)));
+        addItem("back").onActivate(engine -> onExit(engine));
     }
 
 }

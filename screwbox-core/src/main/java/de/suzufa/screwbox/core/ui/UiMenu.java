@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import de.suzufa.screwbox.core.Engine;
 
@@ -10,6 +11,19 @@ public class UiMenu {
     private final List<UiMenuItem> items = new ArrayList<>();
     private int selectedItemIndex = 0;
 
+    public final UiMenuItem addItem(String label) {
+        UiMenuItem item = new UiMenuItem(label);
+        add(item);
+        return item;
+    }
+
+    public final UiMenuItem addItem(final Function<Engine, String> dynamicLabel) {
+        UiMenuItem item = new UiMenuItem(dynamicLabel);
+        add(item);
+        return item;
+    }
+
+    @Deprecated
     public final UiMenu add(final UiMenuItem item) {
         items.add(item);
         return this;
