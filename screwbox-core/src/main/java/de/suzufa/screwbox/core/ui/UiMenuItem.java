@@ -13,7 +13,6 @@ public final class UiMenuItem {
     private Consumer<Engine> onActivate = engine -> {
     };
 
-    // TODO: STATIC CONSTRUTORS
     UiMenuItem(final String label) {
         this.label = engine -> label;
     }
@@ -31,7 +30,7 @@ public final class UiMenuItem {
         return this;
     }
 
-    public void trigger(Engine engine) {
+    public void trigger(final Engine engine) {
         onActivate.accept(engine);
     }
 
