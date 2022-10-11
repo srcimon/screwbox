@@ -8,8 +8,7 @@ import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
-//TODO: Refactor: I hate this class
-public final class CollisionPair implements Comparable<CollisionPair> {
+public final class CollisionCheck implements Comparable<CollisionCheck> {
 
     private final Entity physics;
     private final Entity collider;
@@ -17,7 +16,7 @@ public final class CollisionPair implements Comparable<CollisionPair> {
     private final ColliderComponent colliderComponent;
     private final PhysicsBodyComponent physicsBodyComponent;
 
-    public CollisionPair(final Entity physics, final Entity collider) {
+    public CollisionCheck(final Entity physics, final Entity collider) {
         this.colliderBounds = collider.get(TransformComponent.class).bounds;
         this.physics = physics;
         this.collider = collider;
@@ -83,19 +82,19 @@ public final class CollisionPair implements Comparable<CollisionPair> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CollisionPair other = (CollisionPair) obj;
+        final CollisionCheck other = (CollisionCheck) obj;
         return Objects.equals(collider, other.collider) && Objects.equals(physics, other.physics);
     }
 
     @Override
-    public int compareTo(final CollisionPair other) {
+    public int compareTo(final CollisionCheck other) {
         return Double.compare(other.overlap(), overlap());
     }
 

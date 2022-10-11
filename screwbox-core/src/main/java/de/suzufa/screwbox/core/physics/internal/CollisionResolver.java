@@ -11,19 +11,19 @@ public final class CollisionResolver {
     private CollisionResolver() {
     }
 
-    public static void resolveCollision(final CollisionPair pair, final double updateFactor) {
-        final Vector correction = getResolveVector(pair);
+    public static void resolveCollision(final CollisionCheck check, final double updateFactor) {
+        final Vector correction = getResolveVector(check);
         if (correction.x() == 0) {
-            reactOnVerticalCollision(pair, updateFactor);
+            reactOnVerticalCollision(check, updateFactor);
         } else {
-            reactOnHorizontalCollision(pair, correction);
+            reactOnHorizontalCollision(check, correction);
         }
-        pair.physicsBounds().bounds = pair.physicsBounds().bounds.moveBy(correction);
+        check.physicsBounds().bounds = check.physicsBounds().bounds.moveBy(correction);
     }
 
-    private static Vector getResolveVector(final CollisionPair pair) {
-        final var colliderBounds = pair.colliderBounds();
-        final var entityBounds = pair.physicsBounds().bounds;
+    private static Vector getResolveVector(final CollisionCheck check) {
+        final var colliderBounds = check.colliderBounds();
+        final var entityBounds = check.physicsBounds().bounds;
 
         final boolean colliderBelowPhysics = abs(colliderBounds.maxY() - entityBounds.minY()) < abs(
                 colliderBounds.minY() - entityBounds.maxY());
@@ -45,7 +45,7 @@ public final class CollisionResolver {
         return Vector.xOnly(deltaX);
     }
 
-    private static void reactOnHorizontalCollision(final CollisionPair pair, final Vector correction) {
+    private static void reactOnHorizontalCollision(final CollisionCheck pair, final Vector correction) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
         // prevents getting stuck when going off a cliff
@@ -58,7 +58,7 @@ public final class CollisionResolver {
         physicsBodyComponent.momentum = newMomentum;
     }
 
-    private static void reactOnVerticalCollision(final CollisionPair pair, final double updateFactor) {
+    private static void reactOnVerticalCollision(final CollisionCheck pair, final double updateFactor) {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
         final Vector newMomentum = Vector.of(

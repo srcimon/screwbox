@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.physics.internal.CollisionPair;
+import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 
 public class CollisionSensorSystem implements EntitySystem {
 
@@ -21,7 +21,7 @@ public class CollisionSensorSystem implements EntitySystem {
             collidedEntities.clear();
 
             for (final var collider : colliders) {
-                final CollisionPair check = new CollisionPair(sensorEntity, collider);
+                final CollisionCheck check = new CollisionCheck(sensorEntity, collider);
                 if (check.bodiesTouch() && check.isNoSelfCollision() && check.isNoOneWayFalsePositive()) {
                     collidedEntities.add(collider);
                 }

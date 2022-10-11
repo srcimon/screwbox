@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.physics.internal.CollisionPair;
+import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
 public class CombineStaticCollidersSystem implements EntitySystem {
@@ -25,7 +25,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         final List<Entity> combinables = engine.entities().fetchAll(COMBINABLES);
         for (final var entity : combinables) {
             for (final var combinable : combinables) {
-                var pair = new CollisionPair(entity, combinable);
+                var pair = new CollisionCheck(entity, combinable);
                 if (pair.bodiesTouch() && pair.isNoSelfCollision() && tryToCombine(pair, engine)) {
                     return; // only one combination per frame
                 }
@@ -38,7 +38,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         engine.entities().remove(CombineStaticCollidersSystem.class);
     }
 
-    private boolean tryToCombine(final CollisionPair check, final Engine engine) {
+    private boolean tryToCombine(final CollisionCheck check, final Engine engine) {
         final ColliderComponent colliderCollider = check.colliderComponent();
         final ColliderComponent bodyCollider = check.physics().get(ColliderComponent.class);
         if (!bodyCollider.bounce.equals(colliderCollider.bounce)

@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.physics.internal.CollisionPair;
+import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 import de.suzufa.screwbox.core.physics.internal.CollisionResolver;
 
 public class PhysicsSystem implements EntitySystem {
@@ -34,9 +34,9 @@ public class PhysicsSystem implements EntitySystem {
             final Bounds updatedBounds = transform.bounds.moveBy(momentum);
             transform.bounds = updatedBounds;
 
-            final List<CollisionPair> collisionPairs = new ArrayList<>(colliders.size());
+            final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
             for (final var collider : colliders) {
-                final CollisionPair check = new CollisionPair(entity, collider);
+                final CollisionCheck check = new CollisionCheck(entity, collider);
                 if (check.bodiesIntersect() &&
                         check.checkWanted()
                         && check.isNoSelfCollision()
