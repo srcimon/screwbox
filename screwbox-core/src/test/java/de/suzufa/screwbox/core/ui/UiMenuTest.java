@@ -77,14 +77,40 @@ class UiMenuTest {
         assertThat(menu.itemCount()).isEqualTo(1);
     }
 
+    @Test
+    void nextItem_noActiveItem_doenstSwitchItem() {
+        UiMenuItem gameOptions = menuItem().activeCondition(e -> false);
+        UiMenuItem quitGame = menuItem().activeCondition(e -> false);
+
+        menu.add(gameOptions);
+        menu.add(quitGame);
+
+        menu.nextItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+    }
+
+    @Test
+    void previousItem_noActiveItem_doenstSwitchItem() {
+        UiMenuItem gameOptions = menuItem().activeCondition(e -> false);
+        UiMenuItem quitGame = menuItem().activeCondition(e -> false);
+
+        menu.add(gameOptions);
+        menu.add(quitGame);
+
+        menu.previousItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+    }
+
     private UiMenuItem menuItem() {
-        UiMenuItem quitGame = new UiMenuItem("Unnamed") {
+        UiMenuItem menuItem = new UiMenuItem("Unnamed") {
 
             @Override
             public void onActivate(Engine engine) {
             }
         };
-        return quitGame;
+        return menuItem;
     }
 
 }
