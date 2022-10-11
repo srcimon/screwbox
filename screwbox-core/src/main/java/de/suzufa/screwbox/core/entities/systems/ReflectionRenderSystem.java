@@ -23,6 +23,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, SpriteComponent.class);
 
+    // TODO: send reflection algorithm (top-down, water...) into reflectioncomponent
     @Override
     public void update(Engine engine) {
         List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
