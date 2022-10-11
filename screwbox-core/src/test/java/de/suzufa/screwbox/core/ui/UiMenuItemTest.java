@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -51,5 +53,21 @@ class UiMenuItemTest {
                 .activeCondition(engine -> engine.name().equals("active"));
 
         assertThat(menuItem.isActive(engine)).isFalse();
+    }
+
+    @Test
+    void trigger_noAction_noException() {
+        var menuItem = new UiMenuItem("Active on Engine named 'active'");
+
+        assertThatNoException().isThrownBy(() -> menuItem.trigger(engine));
+    }
+
+    @Test
+    void trigger_withAction_triggersAction() {
+        var menuItem = new UiMenuItem("Active on Engine named 'active'").onActivate(Engine::stop);
+
+        menuItem.trigger(engine);
+
+        verify(engine).stop();
     }
 }

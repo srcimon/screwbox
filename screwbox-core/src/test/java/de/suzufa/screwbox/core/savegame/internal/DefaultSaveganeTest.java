@@ -95,9 +95,9 @@ class DefaultSaveganeTest {
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
 
-        savegame.create("mygame.sav");
+        savegame.create("mysave.sav");
 
-        boolean exists = savegame.exists("mygame.sav");
+        boolean exists = savegame.exists("mysave.sav");
 
         assertThat(exists).isTrue();
     }
@@ -111,7 +111,7 @@ class DefaultSaveganeTest {
 
     @Test
     void load_sceneNull_throwsException() {
-        assertThatThrownBy(() -> savegame.load("mygame.sav", null))
+        assertThatThrownBy(() -> savegame.load("mysave.sav", null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("scene must not be null");
     }

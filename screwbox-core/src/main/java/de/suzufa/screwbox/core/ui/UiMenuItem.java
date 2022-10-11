@@ -10,7 +10,8 @@ public class UiMenuItem {
 
     private final Function<Engine, String> label;
     private Predicate<Engine> activeCondition = engine -> true;
-    private Consumer<Engine> onActivate;
+    private Consumer<Engine> onActivate = engine -> {
+    };
 
     // TODO: STATIC CONSTRUTORS
     public UiMenuItem(final String label) {
