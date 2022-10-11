@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Engine;
 
-public class UiMenuItem {
+public final class UiMenuItem {
 
     private final Function<Engine, String> label;
     private Predicate<Engine> activeCondition = engine -> true;
@@ -14,11 +14,11 @@ public class UiMenuItem {
     };
 
     // TODO: STATIC CONSTRUTORS
-    public UiMenuItem(final String label) {
+    UiMenuItem(final String label) {
         this.label = engine -> label;
     }
 
-    public UiMenuItem(final Function<Engine, String> dynamicLabel) {
+    UiMenuItem(final Function<Engine, String> dynamicLabel) {
         this.label = dynamicLabel;
     }
 
