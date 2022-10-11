@@ -8,10 +8,9 @@ import de.suzufa.screwbox.playground.debo.scenes.GameScene;
 public class StartGameMenu extends UiMenu {
 
     public StartGameMenu() {
-        add(new SwitchMapMenuItem("Start Tutorial", "maps/0-1_intro.json"));
-        add(new SwitchMapMenuItem("Start Level 1", "maps/1-1_teufelsinsel.json"));
-        add(new SwitchMapMenuItem("Start Level 2", "maps/1-2_misty_caves.json"));
-
+        add(new UiMenuItem("Start Tutorial").onActivate(engine -> startMap("maps/0-1_intro.json", engine)));
+        add(new UiMenuItem("Start Level 1").onActivate(engine -> startMap("maps/1-1_teufelsinsel.json", engine)));
+        add(new UiMenuItem("Start Level 2").onActivate(engine -> startMap("maps/1-2_misty_caves.json", engine)));
         add(new UiMenuItem("continue").onActivate(engine -> {
             engine.scenes().add(new GameScene());
             engine.savegame().load("savegame.sav", GameScene.class);
@@ -26,5 +25,11 @@ public class StartGameMenu extends UiMenu {
     @Override
     public void onExit(Engine engine) {
         engine.stop();
+    }
+
+    private void startMap(String map, Engine engine) {
+        engine.ui().closeMenu();
+        engine.scenes().add(new GameScene(map));
+        engine.scenes().switchTo(GameScene.class);
     }
 }
