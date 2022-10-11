@@ -19,44 +19,24 @@ public class OptionsMenu extends UiSubMenu {
                 ? "switch to window"
                 : "switch to fullscreen";
 
-        add(new UiMenuItem(toogleFullscreenLabel) {
+        Function<Engine, String> toggleAntialisingLabel = engine -> engine.graphics().configuration().isUseAntialising()
+                ? "turn off antialising"
+                : "turn on antialising";
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.graphics().configuration().toggleFullscreen();
-            }
-        });
+        add(new UiMenuItem(toogleFullscreenLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleFullscreen()));
 
-        add(new UiMenuItem(engine -> engine.graphics().configuration().isUseAntialising() ? "turn off antialising"
-                : "turn on antialising") {
+        add(new UiMenuItem(toggleAntialisingLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleAntialising()));
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.graphics().configuration().toggleAntialising();
+        add(new UiMenuItem("change resolution").onActivate(engine -> {
+            List<Dimension> resolutions = engine.graphics().supportedResolutions();
+            Dimension resolution = engine.graphics().configuration().resolution();
+            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
+        }));
 
-            }
-        });
-
-        add(new UiMenuItem("change resolution") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                List<Dimension> resolutions = engine.graphics().supportedResolutions();
-                Dimension resolution = engine.graphics().configuration().resolution();
-                engine.ui().setLayouter(new ScrollingUiLayouter());
-                engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
-
-            }
-        });
-
-        add(new UiMenuItem("back") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                onExit(engine);
-
-            }
-        });
+        add(new UiMenuItem("back").onActivate(engine -> onExit(engine)));
     }
 
 }

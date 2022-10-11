@@ -12,46 +12,19 @@ public class PauseMenu extends UiMenu {
 
     public PauseMenu() {
         add(new PauseMenuResumeGame());
-        add(new UiMenuItem("Save Game") {
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.savegame().create(SAVEGAME_NAME, GameScene.class);
-                new PauseMenuResumeGame().onActivate(engine);
-            }
+        add(new UiMenuItem("Save Game").onActivate(engine -> {
+            engine.savegame().create(SAVEGAME_NAME, GameScene.class);
+            new PauseMenuResumeGame().trigger(engine);
+        }));
 
-        });
-        add(new UiMenuItem("Load Game") {
+        add(new UiMenuItem("Load Game").onActivate(engine -> {
+            engine.savegame().load(SAVEGAME_NAME, GameScene.class);
+            new PauseMenuResumeGame().trigger(engine);
+        }).activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME)));
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.savegame().load(SAVEGAME_NAME, GameScene.class);
-                new PauseMenuResumeGame().onActivate(engine);
-
-            }
-
-        }.activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME)));
-
-        add(new UiMenuItem("Options") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.ui().openMenu(new OptionsMenu(new PauseMenu()));
-            }
-        });
-        add(new UiMenuItem("Back to menu") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.scenes().switchTo(StartScene.class);
-            }
-        });
-        add(new UiMenuItem("Quit Game") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.stop();
-            }
-        });
+        add(new UiMenuItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu(new PauseMenu()))));
+        add(new UiMenuItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class)));
+        add(new UiMenuItem("Quit Game").onActivate(Engine::stop));
     }
 }

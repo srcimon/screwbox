@@ -12,7 +12,7 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
             if (menuItemBounds.contains(engine.mouse().position())) {
                 menu.selectItem(item);
                 if (engine.mouse().justClicked(MouseButton.LEFT)) {
-                    item.onActivate(engine);
+                    item.trigger(engine);
                 }
             }
         }

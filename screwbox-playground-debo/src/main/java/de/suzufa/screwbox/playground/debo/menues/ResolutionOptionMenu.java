@@ -13,18 +13,10 @@ public class ResolutionOptionMenu extends UiSubMenu {
 
     private class ResolutionMenuItem extends UiMenuItem {
 
-        private Dimension resolution;
-
         public ResolutionMenuItem(Dimension resolution) {
             super(resolution.width() + " : " + resolution.height());
-            this.resolution = resolution;
+            onActivate(engine -> engine.graphics().configuration().setResolution(resolution));
         }
-
-        @Override
-        public void onActivate(Engine engine) {
-            engine.graphics().configuration().setResolution(resolution);
-        }
-
     }
 
     protected ResolutionOptionMenu(UiMenu caller, List<Dimension> resolutions, Dimension currentResolution) {
@@ -36,13 +28,7 @@ public class ResolutionOptionMenu extends UiSubMenu {
                 selectItem(item);
             }
         }
-        add(new UiMenuItem("back to options") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                onExit(engine);
-            }
-        });
+        add(new UiMenuItem("back to options").onActivate(engine -> onExit(engine)));
     }
 
     @Override

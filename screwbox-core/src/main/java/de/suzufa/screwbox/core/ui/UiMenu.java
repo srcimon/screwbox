@@ -47,7 +47,7 @@ public class UiMenu {
     }
 
     private int fetchPreviousSelectableItem(final Engine engine) {
-        for (int index = selectedItemIndex - 1; index > 0; index--) {
+        for (int index = selectedItemIndex - 1; index >= 0; index--) {
             if (isActive(index, engine)) {
                 return index;
             }

@@ -33,8 +33,8 @@ class UiMenuTest {
 
     @Test
     void selectedItem_itemsPresent_returnsSelectedItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
+        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
+        UiMenuItem quitGame = new UiMenuItem("Unnamed");
 
         menu.add(gameOptions);
         menu.add(quitGame);
@@ -44,8 +44,8 @@ class UiMenuTest {
 
     @Test
     void nextItem_itemsPresent_switchesActiveItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
+        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
+        UiMenuItem quitGame = new UiMenuItem("Unnamed");
 
         menu.add(gameOptions);
         menu.add(quitGame);
@@ -57,8 +57,8 @@ class UiMenuTest {
 
     @Test
     void nextItem_atEndOfList_doenstSwitchItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
+        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
+        UiMenuItem quitGame = new UiMenuItem("Unnamed");
 
         menu.add(gameOptions);
         menu.add(quitGame);
@@ -72,15 +72,15 @@ class UiMenuTest {
 
     @Test
     void itemCount_returnsItemCount() {
-        menu.add(menuItem());
+        menu.add(new UiMenuItem("Unnamed"));
 
         assertThat(menu.itemCount()).isEqualTo(1);
     }
 
     @Test
     void nextItem_noActiveItem_doenstSwitchItem() {
-        UiMenuItem gameOptions = menuItem().activeCondition(e -> false);
-        UiMenuItem quitGame = menuItem().activeCondition(e -> false);
+        UiMenuItem gameOptions = new UiMenuItem("Unnamed").activeCondition(e -> false);
+        UiMenuItem quitGame = new UiMenuItem("Unnamed").activeCondition(e -> false);
 
         menu.add(gameOptions);
         menu.add(quitGame);
@@ -92,8 +92,8 @@ class UiMenuTest {
 
     @Test
     void previousItem_noActiveItem_doenstSwitchItem() {
-        UiMenuItem gameOptions = menuItem().activeCondition(e -> false);
-        UiMenuItem quitGame = menuItem().activeCondition(e -> false);
+        UiMenuItem gameOptions = new UiMenuItem("Unnamed").activeCondition(e -> false);
+        UiMenuItem quitGame = new UiMenuItem("Unnamed").activeCondition(e -> false);
 
         menu.add(gameOptions);
         menu.add(quitGame);
@@ -101,16 +101,6 @@ class UiMenuTest {
         menu.previousItem(engine);
 
         assertThat(menu.selectedItem()).isEqualTo(gameOptions);
-    }
-
-    private UiMenuItem menuItem() {
-        UiMenuItem menuItem = new UiMenuItem("Unnamed") {
-
-            @Override
-            public void onActivate(Engine engine) {
-            }
-        };
-        return menuItem;
     }
 
 }

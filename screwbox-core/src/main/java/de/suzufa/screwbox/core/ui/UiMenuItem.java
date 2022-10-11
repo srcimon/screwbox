@@ -1,20 +1,23 @@
 package de.suzufa.screwbox.core.ui;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Engine;
 
-public abstract class UiMenuItem {
+public class UiMenuItem {
 
     private final Function<Engine, String> label;
     private Predicate<Engine> activeCondition = engine -> true;
+    private Consumer<Engine> onActivate;
 
-    protected UiMenuItem(final String label) {
+    // TODO: STATIC CONSTRUTORS
+    public UiMenuItem(final String label) {
         this.label = engine -> label;
     }
 
-    protected UiMenuItem(final Function<Engine, String> dynamicLabel) {
+    public UiMenuItem(final Function<Engine, String> dynamicLabel) {
         this.label = dynamicLabel;
     }
 
@@ -22,7 +25,14 @@ public abstract class UiMenuItem {
         return label.apply(engine);
     }
 
-    public abstract void onActivate(Engine engine);
+    public UiMenuItem onActivate(final Consumer<Engine> onActivate) {
+        this.onActivate = onActivate;
+        return this;
+    }
+
+    public void trigger(Engine engine) {
+        onActivate.accept(engine);
+    }
 
     public UiMenuItem activeCondition(final Predicate<Engine> condition) {
         activeCondition = condition;
