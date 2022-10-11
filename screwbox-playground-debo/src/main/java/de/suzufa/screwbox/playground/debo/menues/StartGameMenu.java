@@ -2,48 +2,33 @@ package de.suzufa.screwbox.playground.debo.menues;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ui.UiMenu;
-import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
 
 public class StartGameMenu extends UiMenu {
 
     public StartGameMenu() {
-        add(new SwitchMapMenuItem("Start Tutorial", "maps/0-1_intro.json"));
-        add(new SwitchMapMenuItem("Start Level 1", "maps/1-1_teufelsinsel.json"));
-        add(new SwitchMapMenuItem("Start Level 2", "maps/1-2_misty_caves.json"));
+        addItem("Start Tutorial").onActivate(engine -> startMap("maps/0-1_intro.json", engine));
+        addItem("Start Level 1").onActivate(engine -> startMap("maps/1-1_teufelsinsel.json", engine));
+        addItem("Start Level 2").onActivate(engine -> startMap("maps/1-2_misty_caves.json", engine));
+        addItem("continue").onActivate(engine -> {
+            engine.scenes().add(new GameScene());
+            engine.savegame().load("savegame.sav", GameScene.class);
+            engine.scenes().switchTo(GameScene.class);
+            engine.ui().closeMenu();
+        }).activeCondition(engine -> engine.savegame().exists("savegame.sav"));
 
-        add(new UiMenuItem("continue") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.scenes().add(new GameScene());
-                engine.savegame().load("savegame.sav", GameScene.class);
-                engine.scenes().switchTo(GameScene.class);
-                engine.ui().closeMenu();
-
-            }
-
-        }.activeCondition(engine -> engine.savegame().exists("savegame.sav")));
-
-        add(new UiMenuItem("Options") {
-            @Override
-            public void onActivate(Engine engine) {
-                engine.ui().openMenu(new OptionsMenu(new StartGameMenu()));
-
-            }
-        });
-        add(new UiMenuItem("Quit") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.stop();
-
-            }
-        });
+        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu(new StartGameMenu())));
+        addItem("Quit").onActivate(Engine::stop);
     }
 
     @Override
     public void onExit(Engine engine) {
         engine.stop();
+    }
+
+    private void startMap(String map, Engine engine) {
+        engine.ui().closeMenu();
+        engine.scenes().add(new GameScene(map));
+        engine.scenes().switchTo(GameScene.class);
     }
 }

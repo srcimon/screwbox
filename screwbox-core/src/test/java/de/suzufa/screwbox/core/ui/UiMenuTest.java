@@ -33,58 +33,59 @@ class UiMenuTest {
 
     @Test
     void selectedItem_itemsPresent_returnsSelectedItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
+        var optionsItem = menu.addItem("Options");
+        menu.addItem("Quit");
 
-        menu.add(gameOptions);
-        menu.add(quitGame);
-
-        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
     @Test
     void nextItem_itemsPresent_switchesActiveItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        menu.addItem("Options");
+        var quitItem = menu.addItem("Quit");
 
         menu.nextItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitItem);
     }
 
     @Test
     void nextItem_atEndOfList_doenstSwitchItem() {
-        UiMenuItem gameOptions = menuItem();
-        UiMenuItem quitGame = menuItem();
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        menu.addItem("Options");
+        var quitItem = menu.addItem("Quit");
 
         menu.nextItem(engine);
         menu.nextItem(engine);
         menu.nextItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitItem);
     }
 
     @Test
     void itemCount_returnsItemCount() {
-        menu.add(menuItem());
+        menu.addItem("Options");
 
         assertThat(menu.itemCount()).isEqualTo(1);
     }
 
-    private UiMenuItem menuItem() {
-        UiMenuItem quitGame = new UiMenuItem("Unnamed") {
+    @Test
+    void nextItem_noActiveItem_doenstSwitchItem() {
+        var optionsItem = menu.addItem("Options").activeCondition(e -> false);
+        menu.addItem("Quit").activeCondition(e -> false);
 
-            @Override
-            public void onActivate(Engine engine) {
-            }
-        };
-        return quitGame;
+        menu.nextItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
+    }
+
+    @Test
+    void previousItem_noActiveItem_doenstSwitchItem() {
+        var optionsItem = menu.addItem("Options");
+        menu.addItem("Quit");
+
+        menu.previousItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
 }

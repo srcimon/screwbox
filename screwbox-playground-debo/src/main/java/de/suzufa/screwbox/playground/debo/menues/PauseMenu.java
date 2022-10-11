@@ -2,7 +2,6 @@ package de.suzufa.screwbox.playground.debo.menues;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ui.UiMenu;
-import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
 import de.suzufa.screwbox.playground.debo.scenes.StartScene;
 
@@ -11,47 +10,25 @@ public class PauseMenu extends UiMenu {
     private static final String SAVEGAME_NAME = "savegame.sav";
 
     public PauseMenu() {
-        add(new PauseMenuResumeGame());
-        add(new UiMenuItem("Save Game") {
+        addItem("Resume game").onActivate(this::resumeGame);
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.savegame().create(SAVEGAME_NAME, GameScene.class);
-                new PauseMenuResumeGame().onActivate(engine);
-            }
-
+        addItem("Save Game").onActivate(engine -> {
+            engine.savegame().create(SAVEGAME_NAME, GameScene.class);
+            resumeGame(engine);
         });
-        add(new UiMenuItem("Load Game") {
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.savegame().load(SAVEGAME_NAME, GameScene.class);
-                new PauseMenuResumeGame().onActivate(engine);
+        addItem("Load Game").onActivate(engine -> {
+            engine.savegame().load(SAVEGAME_NAME, GameScene.class);
+            resumeGame(engine);
+        }).activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME));
 
-            }
+        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu(new PauseMenu())));
+        addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class));
+        addItem("Quit Game").onActivate(Engine::stop);
+    }
 
-        }.activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME)));
-
-        add(new UiMenuItem("Options") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.ui().openMenu(new OptionsMenu(new PauseMenu()));
-            }
-        });
-        add(new UiMenuItem("Back to menu") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.scenes().switchTo(StartScene.class);
-            }
-        });
-        add(new UiMenuItem("Quit Game") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                engine.stop();
-            }
-        });
+    private void resumeGame(Engine engine) {
+        engine.ui().closeMenu();
+        engine.scenes().switchTo(GameScene.class);
     }
 }

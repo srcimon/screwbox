@@ -7,7 +7,6 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.ui.ScrollingUiLayouter;
 import de.suzufa.screwbox.core.ui.UiMenu;
-import de.suzufa.screwbox.core.ui.UiMenuItem;
 import de.suzufa.screwbox.core.ui.UiSubMenu;
 
 public class OptionsMenu extends UiSubMenu {
@@ -19,44 +18,28 @@ public class OptionsMenu extends UiSubMenu {
                 ? "switch to window"
                 : "switch to fullscreen";
 
-        add(new UiMenuItem(toogleFullscreenLabel) {
+        Function<Engine, String> toggleAntialisingLabel = engine -> engine.graphics().configuration().isUseAntialising()
+                ? "turn off antialising"
+                : "turn on antialising";
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.graphics().configuration().toggleFullscreen();
-            }
+        addItem(toogleFullscreenLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
+
+        addItem(toggleAntialisingLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
+
+        addItem("change resolution").onActivate(engine -> {
+            List<Dimension> resolutions = engine.graphics().supportedResolutions();
+            Dimension resolution = engine.graphics().configuration().resolution();
+            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
         });
 
-        add(new UiMenuItem(engine -> engine.graphics().configuration().isUseAntialising() ? "turn off antialising"
-                : "turn on antialising") {
+        addItem("delete savegame")
+                .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
+                .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-            @Override
-            public void onActivate(Engine engine) {
-                engine.graphics().configuration().toggleAntialising();
-
-            }
-        });
-
-        add(new UiMenuItem("change resolution") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                List<Dimension> resolutions = engine.graphics().supportedResolutions();
-                Dimension resolution = engine.graphics().configuration().resolution();
-                engine.ui().setLayouter(new ScrollingUiLayouter());
-                engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
-
-            }
-        });
-
-        add(new UiMenuItem("back") {
-
-            @Override
-            public void onActivate(Engine engine) {
-                onExit(engine);
-
-            }
-        });
+        addItem("back").onActivate(this::onExit);
     }
 
 }
