@@ -17,29 +17,62 @@ class UiMenuItemTest {
     Engine engine;
 
     @Test
-    void label_withDynamicLabel_returnsDynamicValue() {
-        when(engine.name()).thenReturn("Demo engine");
+    void label_dynamicLabel_returnsDynamicValue() {
+        when(engine.name()).thenReturn("dynamic label demo");
         var menuItem = new UiMenuItem(engine -> engine.name()) {
 
             @Override
             public void onActivate(Engine engine) {
-                // TODO Auto-generated method stub
-
             }
         };
-        assertThat(menuItem.label(engine)).isEqualTo("Demo engine");
+        assertThat(menuItem.label(engine)).isEqualTo("dynamic label demo");
     }
 
     @Test
-    void label_withStaticLabel_returnsStaticValue() {
+    void label_staticLabel_returnsStaticValue() {
         var menuItem = new UiMenuItem("Static Label") {
 
             @Override
             public void onActivate(Engine engine) {
-                // TODO Auto-generated method stub
-
             }
         };
         assertThat(menuItem.label(engine)).isEqualTo("Static Label");
+    }
+
+    @Test
+    void isActive_noActiveCondition_true() {
+        var menuItem = new UiMenuItem("Always active") {
+
+            @Override
+            public void onActivate(Engine engine) {
+            }
+        };
+        assertThat(menuItem.isActive(engine)).isTrue();
+    }
+
+    @Test
+    void isActive_activeConditionMet_true() {
+        when(engine.name()).thenReturn("active");
+        var menuItem = new UiMenuItem("Active on Engine named 'active'") {
+
+            @Override
+            public void onActivate(Engine engine) {
+            }
+        }.activeCondition(engine -> engine.name().equals("active"));
+
+        assertThat(menuItem.isActive(engine)).isTrue();
+    }
+
+    @Test
+    void isActive_activeConditionNotMet_false() {
+        when(engine.name()).thenReturn("inactive");
+        var menuItem = new UiMenuItem("Active on Engine named 'active'") {
+
+            @Override
+            public void onActivate(Engine engine) {
+            }
+        }.activeCondition(engine -> engine.name().equals("active"));
+
+        assertThat(menuItem.isActive(engine)).isFalse();
     }
 }

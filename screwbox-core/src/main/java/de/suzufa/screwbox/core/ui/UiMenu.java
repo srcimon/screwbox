@@ -60,7 +60,7 @@ public class UiMenu {
     }
 
     boolean isActive(final int index, final Engine engine) {
-        return items.get(index).activeCondition().test(engine);
+        return items.get(index).isActive(engine);
     }
 
     public void onExit(final Engine engine) {

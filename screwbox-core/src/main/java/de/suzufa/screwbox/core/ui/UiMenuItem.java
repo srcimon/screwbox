@@ -18,18 +18,18 @@ public abstract class UiMenuItem {
         this.label = dynamicLabel;
     }
 
-    public String label(Engine engine) {
+    public String label(final Engine engine) {
         return label.apply(engine);
     }
 
     public abstract void onActivate(Engine engine);
 
-    public UiMenuItem activeCondition(Predicate<Engine> condition) {
+    public UiMenuItem activeCondition(final Predicate<Engine> condition) {
         activeCondition = condition;
         return this;
     }
 
-    Predicate<Engine> activeCondition() {
-        return activeCondition;
+    public boolean isActive(final Engine engine) {
+        return activeCondition.test(engine);
     }
 }
