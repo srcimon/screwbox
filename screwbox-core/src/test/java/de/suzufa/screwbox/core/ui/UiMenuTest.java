@@ -33,74 +33,59 @@ class UiMenuTest {
 
     @Test
     void selectedItem_itemsPresent_returnsSelectedItem() {
-        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
-        UiMenuItem quitGame = new UiMenuItem("Unnamed");
+        var optionsItem = menu.addItem("Options");
+        menu.addItem("Quit");
 
-        menu.add(gameOptions);
-        menu.add(quitGame);
-
-        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
     @Test
     void nextItem_itemsPresent_switchesActiveItem() {
-        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
-        UiMenuItem quitGame = new UiMenuItem("Unnamed");
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        menu.addItem("Options");
+        var quitItem = menu.addItem("Quit");
 
         menu.nextItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitItem);
     }
 
     @Test
     void nextItem_atEndOfList_doenstSwitchItem() {
-        UiMenuItem gameOptions = new UiMenuItem("Unnamed");
-        UiMenuItem quitGame = new UiMenuItem("Unnamed");
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        menu.addItem("Options");
+        var quitItem = menu.addItem("Quit");
 
         menu.nextItem(engine);
         menu.nextItem(engine);
         menu.nextItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(quitGame);
+        assertThat(menu.selectedItem()).isEqualTo(quitItem);
     }
 
     @Test
     void itemCount_returnsItemCount() {
-        menu.add(new UiMenuItem("Unnamed"));
+        menu.addItem("Options");
 
         assertThat(menu.itemCount()).isEqualTo(1);
     }
 
     @Test
     void nextItem_noActiveItem_doenstSwitchItem() {
-        UiMenuItem gameOptions = new UiMenuItem("Unnamed").activeCondition(e -> false);
-        UiMenuItem quitGame = new UiMenuItem("Unnamed").activeCondition(e -> false);
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        var optionsItem = menu.addItem("Options").activeCondition(e -> false);
+        menu.addItem("Quit").activeCondition(e -> false);
 
         menu.nextItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
     @Test
     void previousItem_noActiveItem_doenstSwitchItem() {
-        UiMenuItem gameOptions = new UiMenuItem("Unnamed").activeCondition(e -> false);
-        UiMenuItem quitGame = new UiMenuItem("Unnamed").activeCondition(e -> false);
-
-        menu.add(gameOptions);
-        menu.add(quitGame);
+        var optionsItem = menu.addItem("Options");
+        menu.addItem("Quit");
 
         menu.previousItem(engine);
 
-        assertThat(menu.selectedItem()).isEqualTo(gameOptions);
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
 }

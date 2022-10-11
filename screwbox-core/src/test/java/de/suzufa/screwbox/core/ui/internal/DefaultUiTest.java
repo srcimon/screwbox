@@ -72,10 +72,10 @@ class DefaultUiTest {
         Window window = mock(Window.class);
         when(graphics.window()).thenReturn(window);
         when(engine.graphics()).thenReturn(graphics);
-        UiMenuItem firstItem = new UiMenuItem("some button").activeCondition(e -> activated.active())
+        UiMenu menu = new UiMenu();
+        UiMenuItem firstItem = menu.addItem("some button").activeCondition(e -> activated.active())
                 .onActivate(engine -> activated.toggle());
-        UiMenuItem secondItem = new UiMenuItem("some button");
-        UiMenu menu = new UiMenu().add(firstItem).add(secondItem);
+        menu.addItem("some button");
         WindowBounds layoutBounds = new WindowBounds(at(20, 40), of(100, 20));
         when(window.isVisible(layoutBounds)).thenReturn(true);
         when(layouter.calculateBounds(firstItem, menu, window)).thenReturn(layoutBounds);
@@ -94,8 +94,8 @@ class DefaultUiTest {
         Window window = mock(Window.class);
         when(graphics.window()).thenReturn(window);
         when(engine.graphics()).thenReturn(graphics);
-        UiMenuItem item = new UiMenuItem("some button");
-        UiMenu menu = new UiMenu().add(item);
+        UiMenu menu = new UiMenu();
+        UiMenuItem item = menu.addItem("some button");
         WindowBounds layoutBounds = new WindowBounds(at(20, 40), of(100, 20));
         when(window.isVisible(layoutBounds)).thenReturn(true);
         when(layouter.calculateBounds(item, menu, window)).thenReturn(layoutBounds);
