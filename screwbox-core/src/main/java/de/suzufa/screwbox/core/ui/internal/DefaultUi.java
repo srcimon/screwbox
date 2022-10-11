@@ -37,10 +37,12 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public void update() {
         if (currentMenu.isPresent()) {
-            final var window = engine.graphics().window();
             final var menu = currentMenu.get();
             interactor.interactWith(menu, layouter, engine);
-            renderMenu(menu, window);
+//            if (!menu.isActive(menu.selectedItem(), engine)) {
+//                menu.nextItem(engine);
+//            }
+            renderMenu(menu, engine.graphics().window());
         }
     }
 

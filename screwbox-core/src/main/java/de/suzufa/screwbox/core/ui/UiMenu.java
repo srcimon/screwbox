@@ -10,8 +10,9 @@ public class UiMenu {
     private final List<UiMenuItem> items = new ArrayList<>();
     private int selectedItemIndex = 0;
 
-    public final void add(final UiMenuItem item) {
+    public final UiMenu add(final UiMenuItem item) {
         items.add(item);
+        return this;
     }
 
     public final List<UiMenuItem> items() {
