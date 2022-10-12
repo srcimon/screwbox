@@ -4,7 +4,6 @@ import static java.util.Arrays.asList;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Vector;
@@ -109,8 +108,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Dimension currentResolution() {
-        var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        return Dimension.of(screenSize.width, screenSize.height);
+        return window.currentResolution();
     }
 
 }

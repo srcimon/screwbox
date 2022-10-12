@@ -39,12 +39,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
-    private ExecutorService executor;
+    private final ExecutorService executor;
     private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
 
-    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration, ExecutorService executor,
-            String title) {
+    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
+            final ExecutorService executor,
+            final String title) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
@@ -54,10 +55,11 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
-        List<Sprite> allSprites = font.spritesFor(text);
+    public Window drawTextCentered(final Offset offset, final String text, final Pixelfont font,
+            final Percentage opacity, final double scale) {
+        final List<Sprite> allSprites = font.spritesFor(text);
         int totalWith = 0;
-        for (var sprite : allSprites) {
+        for (final var sprite : allSprites) {
             totalWith += (int) ((sprite.size().width() + font.padding()) * scale);
         }
         drawTextSprites(offset.addX(totalWith / -2), opacity, scale, allSprites, font);
@@ -65,16 +67,18 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale) {
-        List<Sprite> allSprites = font.spritesFor(text);
+    public Window drawText(final Offset offset, final String text, final Pixelfont font, final Percentage opacity,
+            final double scale) {
+        final List<Sprite> allSprites = font.spritesFor(text);
         drawTextSprites(offset, opacity, scale, allSprites, font);
         return this;
     }
 
-    private void drawTextSprites(Offset offset, Percentage opacity, double scale, List<Sprite> allSprites,
-            Pixelfont font) {
+    private void drawTextSprites(final Offset offset, final Percentage opacity, final double scale,
+            final List<Sprite> allSprites,
+            final Pixelfont font) {
         Offset currentOffset = offset;
-        for (var sprite : allSprites) {
+        for (final var sprite : allSprites) {
             drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), FlipMode.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
@@ -161,14 +165,14 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawTextCentered(Offset position, String text, Font font, Color color) {
+    public Window drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         renderer.drawTextCentered(position, text, font, color);
         return this;
     }
 
     @Override
     public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, FlipMode flipMode, WindowBounds clipArea) {
+            final Rotation rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
         return this;
     }
@@ -232,7 +236,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     public List<Dimension> supportedResolutions() {
-        return asList(graphicsDevice.getDisplayModes()).stream().map(dm -> Dimension.of(dm.getWidth(), dm.getHeight()))
+        return asList(graphicsDevice.getDisplayModes()).stream()
+                .map(this::toDimension)
                 .distinct()
                 .sorted(reverseOrder())
                 .toList();
@@ -311,5 +316,14 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     @Override
     public String title() {
         return frame.getTitle();
+    }
+
+    public Dimension currentResolution() {
+        final var screenSize = graphicsDevice.getDisplayMode();
+        return toDimension(screenSize);
+    }
+
+    private Dimension toDimension(final DisplayMode screenSize) {
+        return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
     }
 }
