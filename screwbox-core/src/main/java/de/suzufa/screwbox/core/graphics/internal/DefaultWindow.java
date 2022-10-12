@@ -42,6 +42,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private final ExecutorService executor;
     private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
+    private Offset lastOffset;
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
             final ExecutorService executor,
@@ -216,6 +217,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
+        } else {
+            if (nonNull(lastOffset)) {
+                moveTo(lastOffset);
+            } else {
+                frame.setLocationRelativeTo(null);
+            }
         }
         renderer = new SeparateThreadRenderer(new DefaultRenderer(frame), executor);
         updateCursor();
@@ -227,10 +234,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         renderer = new StandbyRenderer();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
+
         if (nonNull(lastDisplayMode)) {
             graphicsDevice.setFullScreenWindow(null);
             graphicsDevice.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
+        } else {
+            lastOffset = Offset.at(frame.getBounds().x, frame.getBounds().y);
         }
         return this;
     }

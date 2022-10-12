@@ -7,4 +7,3 @@
 - grid class could hold other information as boolean / make generig Grid<Boolean>
 - UI: use method parameters instead of overwritten methods
 - engine.options().apply(Optionset optionset)
-- engine.graphics().window().moveToCenter()
