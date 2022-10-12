@@ -7,3 +7,4 @@
 - grid class could hold other information as boolean / make generig Grid<Boolean>
 - UI: use method parameters instead of overwritten methods
 - engine.options().apply(Optionset optionset)
+- add MenuBar with debug options (when activated via code) -> must move drawing to separate element on frame first
