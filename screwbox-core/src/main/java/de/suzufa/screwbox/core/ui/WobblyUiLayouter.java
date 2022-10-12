@@ -14,11 +14,11 @@ public class WobblyUiLayouter implements UiLayouter {
     @Override
     public WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Window window) {
         int itemIndex = menu.itemIndex(item);
-        int x = (int) (Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex) * 30);
+        double waveSeed = Math.sin(Duration.since(start).milliseconds() / 600.0 + itemIndex);
+        int x = (int) (waveSeed * 30);
         int heightOfItem = 50;
         int heightOfMenu = menu.itemCount() * heightOfItem;
-        int y = window.center().y() - heightOfMenu / 2;
-
+        int y = window.center().y() - heightOfMenu / 2 + (int) (waveSeed * 10);
         var offset = Offset.at(x, y + itemIndex * heightOfItem);
         var dimension = Dimension.of(window.size().width(), heightOfItem);
         return new WindowBounds(offset, dimension);
