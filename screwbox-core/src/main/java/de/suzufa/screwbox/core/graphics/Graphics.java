@@ -57,6 +57,11 @@ public interface Graphics {
 
     List<Dimension> supportedResolutions(AspectRatio ratio);
 
+    /**
+     * Returns the current screen resolution.
+     */
+    Dimension currentResolution();
+
     List<String> availableFonts();
 
 }

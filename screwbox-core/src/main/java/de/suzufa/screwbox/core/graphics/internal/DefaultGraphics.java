@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Vector;
@@ -44,7 +45,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public double updateCameraZoomBy(double delta) {
+    public double updateCameraZoomBy(final double delta) {
         return world.updateCameraZoom(world.wantedZoom() + delta);
     }
 
@@ -101,9 +102,15 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Graphics restrictZoomRangeTo(double min, double max) {
+    public Graphics restrictZoomRangeTo(final double min, final double max) {
         world.restrictZoomRangeTo(min, max);
         return this;
+    }
+
+    @Override
+    public Dimension currentResolution() {
+        var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        return Dimension.of(screenSize.width, screenSize.height);
     }
 
 }
