@@ -96,8 +96,8 @@ class DefaultMouseTest {
         when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
         when(graphics.window()).thenReturn(window);
         when(window.position()).thenReturn(Offset.at(40, 12));
-        when(graphics.screenToWorld(Offset.at(111, 230))).thenReturn($(40, 90));
-        when(graphics.screenToWorld(Offset.at(179, 8))).thenReturn($(10, 30));
+        when(graphics.worldPositionOf(Offset.at(111, 230))).thenReturn($(40, 90));
+        when(graphics.worldPositionOf(Offset.at(179, 8))).thenReturn($(10, 30));
         mouse.mouseMoved(mouseEvent);
 
         assertThat(mouse.worldPosition()).isEqualTo($(40, 90));
@@ -109,7 +109,7 @@ class DefaultMouseTest {
 
     @Test
     void drag_noMovement_isZero() {
-        when(graphics.screenToWorld(Offset.origin())).thenReturn($(40, 90));
+        when(graphics.worldPositionOf(Offset.origin())).thenReturn($(40, 90));
 
         assertThat(mouse.drag()).isEqualTo(Vector.zero());
     }

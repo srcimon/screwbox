@@ -51,7 +51,11 @@ public interface Graphics {
 
     double cameraZoom();
 
-    Vector screenToWorld(Offset offset);
+    /**
+     * Determins the position the given Window {@link Offset} in the game
+     * {@link World}.
+     */
+    Vector worldPositionOf(Offset offset);
 
     List<Dimension> supportedResolutions();
 

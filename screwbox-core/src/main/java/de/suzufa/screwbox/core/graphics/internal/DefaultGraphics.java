@@ -70,7 +70,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Vector screenToWorld(final Offset offset) {
+    public Vector worldPositionOf(final Offset offset) {
         return world.toPosition(offset);
     }
 
