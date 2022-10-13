@@ -1,9 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
-import java.util.List;
-
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 
 public interface Window {
 
@@ -35,15 +33,15 @@ public interface Window {
         return drawCircle(offset, diameter, drawColor());
     }
 
-    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation,
+    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation,
             FlipMode flipMode, WindowBounds clipArea);
 
-    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Rotation rotation) {
+    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, FlipMode.NONE, null);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin, final Percentage opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), FlipMode.NONE, null);
+        return drawSprite(sprite, origin, 1, opacity, Angle.none(), FlipMode.NONE, null);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin) {
@@ -112,12 +110,6 @@ public interface Window {
 
     default Window drawLine(final Offset from, final Offset to) {
         return drawLine(from, to, drawColor());
-    }
-
-    Window drawPolygon(List<Offset> points, Color color);
-
-    default Window drawPolygon(final List<Offset> points) {
-        return drawPolygon(points, drawColor());
     }
 
     Window fillWith(Color color);

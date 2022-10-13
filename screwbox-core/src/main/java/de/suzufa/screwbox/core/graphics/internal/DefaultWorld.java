@@ -3,12 +3,9 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static de.suzufa.screwbox.core.utils.MathUtil.clamp;
 import static java.util.Objects.isNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -96,7 +93,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, final Bounds clipArea) {
+            final Angle rotation, final FlipMode flipMode, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
@@ -144,16 +141,6 @@ public class DefaultWorld implements World {
     @Override
     public World drawLine(final Vector from, final Vector to, final Color color) {
         window.drawLine(toOffset(from), toOffset(to), color);
-        return this;
-    }
-
-    @Override
-    public World drawPolygon(final List<Vector> points, final Color color) {
-        final List<Offset> offsets = new ArrayList<>();
-        for (final var point : points) {
-            offsets.add(toOffset(point));
-        }
-        window.drawPolygon(offsets, color);
         return this;
     }
 

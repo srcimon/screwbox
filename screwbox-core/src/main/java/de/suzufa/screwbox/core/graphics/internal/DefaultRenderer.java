@@ -9,16 +9,14 @@ import java.awt.AlphaComposite;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -78,16 +76,6 @@ public class DefaultRenderer implements Renderer {
         return Sprite.fromImage(screenCapture);
     }
 
-    @Override
-    public void drawPolygon(final List<Offset> points, final Color color) {
-        applyNewColor(color);
-        final Polygon awtPolygon = new Polygon();
-        for (final var point : points) {
-            awtPolygon.addPoint(point.x(), point.y());
-        }
-        graphics.fillPolygon(awtPolygon);
-    }
-
     private void applyOpacityConfig(final Percentage opacity) {
         if (!opacity.isMaxValue()) {
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity.valueFloat()));
@@ -96,7 +84,7 @@ public class DefaultRenderer implements Renderer {
 
     private void resetOpacityConfig(final Percentage opacity) {
         if (!opacity.isMaxValue()) {
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+            graphics.setComposite(AlphaComposite.SrcOver);
         }
     }
 
@@ -117,7 +105,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, final WindowBounds clipArea) {
+            final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         applyOpacityConfig(opacity);
 
         final var oldClip = graphics.getClip();

@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.timeout;
@@ -44,12 +43,12 @@ class SeparateThreadRendererTest {
 
     @Test
     void applyDrawActions_update_nextRendererInvoked() {
-        separateThreadRenderer.drawPolygon(emptyList(), Color.BLACK);
+        separateThreadRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         separateThreadRenderer.drawCircle(Offset.origin(), 25, Color.BLUE);
 
         separateThreadRenderer.updateScreen(true);
 
-        verify(renderer, timeout(1000)).drawPolygon(emptyList(), Color.BLACK);
+        verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, Color.BLUE);
         verify(renderer, timeout(1000)).updateScreen(true);
     }

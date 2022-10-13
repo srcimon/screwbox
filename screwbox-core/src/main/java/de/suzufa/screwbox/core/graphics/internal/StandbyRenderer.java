@@ -1,9 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import java.util.List;
-
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -40,7 +38,7 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, WindowBounds clipArea) {
+            final Angle rotation, final FlipMode flipMode, WindowBounds clipArea) {
         // does nothing
     }
 
@@ -51,11 +49,6 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final Color color) {
-        // does nothing
-    }
-
-    @Override
-    public void drawPolygon(final List<Offset> points, final Color color) {
         // does nothing
     }
 

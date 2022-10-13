@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.entities.components;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.entities.Component;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -14,7 +14,7 @@ public class SpriteComponent implements Component {
     public int drawOrder;
     public Percentage opacity;
     public double scale = 1;
-    public Rotation rotation = Rotation.none();
+    public Angle rotation = Angle.none();
     public FlipMode flipMode = FlipMode.NONE;
 
     public SpriteComponent() {

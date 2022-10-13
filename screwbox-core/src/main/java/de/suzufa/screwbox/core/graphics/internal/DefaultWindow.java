@@ -15,8 +15,8 @@ import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.FlipMode;
@@ -80,7 +80,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final Pixelfont font) {
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), FlipMode.NONE, null);
+            drawSprite(sprite, currentOffset, scale, opacity, Angle.none(), FlipMode.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
@@ -114,7 +114,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), FlipMode.NONE, null);
+                drawSprite(sprite, thisOffset, scale, opacity, Angle.none(), FlipMode.NONE, null);
             }
         }
         return this;
@@ -154,12 +154,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawPolygon(final List<Offset> points, final Color color) {
-        renderer.drawPolygon(points, color);
-        return this;
-    }
-
-    @Override
     public Window drawText(final Offset offset, final String text, final Font font, final Color color) {
         renderer.drawText(offset, text, font, color);
         return this;
@@ -173,7 +167,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode, final WindowBounds clipArea) {
+            final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
         return this;
     }

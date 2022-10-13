@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Vector;
 
 public class SpriteBatch {
@@ -13,7 +13,7 @@ public class SpriteBatch {
     private List<SpriteBatchEntry> entries = new ArrayList<>();
 
     public final record SpriteBatchEntry(
-            Sprite sprite, Vector position, double scale, Percentage opacity, Rotation rotation, FlipMode flipMode,
+            Sprite sprite, Vector position, double scale, Percentage opacity, Angle rotation, FlipMode flipMode,
             int drawOrder)
             implements Comparable<SpriteBatchEntry> {
 
@@ -24,7 +24,7 @@ public class SpriteBatch {
     }
 
     public void addEntry(final Sprite sprite, final Vector position, final double scale, final Percentage opacity,
-            final Rotation rotation,
+            final Angle rotation,
             final FlipMode flipMode,
             final int drawOrder) {
         this.entries.add(new SpriteBatchEntry(sprite, position, scale, opacity, rotation, flipMode, drawOrder));

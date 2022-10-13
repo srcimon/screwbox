@@ -1,10 +1,8 @@
 package de.suzufa.screwbox.core.graphics;
 
-import java.util.List;
-
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 
@@ -20,16 +18,16 @@ public interface World {
         return drawSpriteBatch(spriteBatch, null);
     }
 
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Rotation rotation,
+    World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Angle rotation,
             FlipMode flipMode, Bounds clipArea);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity,
-            final Rotation rotation, final FlipMode flipMode) {
+            final Angle rotation, final FlipMode flipMode) {
         return drawSprite(sprite, origin, 1, opacity, rotation, flipMode, null);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity) {
-        return drawSprite(sprite, origin, opacity, Rotation.none(), FlipMode.NONE);
+        return drawSprite(sprite, origin, opacity, Angle.none(), FlipMode.NONE);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {
@@ -66,12 +64,6 @@ public interface World {
 
     default World drawCircle(final Vector position, final int diameter) {
         return drawCircle(position, diameter, drawColor());
-    }
-
-    World drawPolygon(List<Vector> points, Color color);
-
-    default World drawPolygon(final List<Vector> points) {
-        return drawPolygon(points, drawColor());
     }
 
     World drawRectangle(Bounds bounds, Color color);

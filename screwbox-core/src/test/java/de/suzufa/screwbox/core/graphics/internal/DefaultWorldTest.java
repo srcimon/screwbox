@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
-import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
@@ -100,10 +100,10 @@ class DefaultWorldTest {
         world.updateCameraPosition($(4, 2));
         world.updateCameraZoom(1.5);
 
-        world.drawSprite(sprite, $(20, 4), 2, Percentage.half(), Rotation.ofDegrees(4), FlipMode.NONE, null);
+        world.drawSprite(sprite, $(20, 4), 2, Percentage.half(), Angle.ofDegrees(4), FlipMode.NONE, null);
 
         verify(window)
-                .drawSprite(sprite, Offset.at(535, 386), 3, Percentage.half(), Rotation.ofDegrees(4), FlipMode.NONE,
+                .drawSprite(sprite, Offset.at(535, 386), 3, Percentage.half(), Angle.ofDegrees(4), FlipMode.NONE,
                         null);
     }
 }

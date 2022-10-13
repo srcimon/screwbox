@@ -4,71 +4,71 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents the Rotation of an Object.
+ * Represents the {@link Angle} between two {@link Segment}s.
  */
-public final class Rotation implements Serializable {
+public final class Angle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
-    private static final Rotation NONE = ofDegrees(MIN_VALUE);
+    private static final Angle NONE = ofDegrees(MIN_VALUE);
 
     private final double degrees;
 
-    private Rotation(final double degrees) {
+    private Angle(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
     /**
-     * Creates a new Rotation by the given {@link #degrees()}.
+     * Creates a new {@link Angle} by the given {@link #degrees()}.
      */
-    public static Rotation ofDegrees(final double degrees) {
-        return new Rotation(degrees);
+    public static Angle ofDegrees(final double degrees) {
+        return new Angle(degrees);
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects momentum. This value equals
-     * the angle between a vertical line and the {@link Vector} starting on the
-     * button of this line.
+     * Returns the {@link Angle}-value of an objects momentum. This value equals the
+     * angle between a vertical line and the {@link Vector} starting on the button
+     * of this line.
      * 
      * @see #ofMomentum(Vector)
      */
-    public static Rotation ofMomentum(final double x, final double y) {
+    public static Angle ofMomentum(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
         final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
-        return Rotation.ofDegrees(inRangeDegrees);
+        return Angle.ofDegrees(inRangeDegrees);
     }
 
     /**
-     * Returns the {@link Rotation}-value of an objects momentum. This value equals
-     * the angle between a vertical line and the {@link Vector} starting on the
-     * button of this line.
+     * Returns the {@link Angle}-value of an objects momentum. This value equals the
+     * angle between a vertical line and the {@link Vector} starting on the button
+     * of this line.
      * 
      * 
      * @see #ofMomentum(double, double)
      */
-    public static Rotation ofMomentum(final Vector momentum) {
+    public static Angle ofMomentum(final Vector momentum) {
         return ofMomentum(momentum.x(), momentum.y());
     }
 
     /**
-     * Creates a new Rotation of zero {@link #degrees()}.
+     * Creates a new {@link Angle} of zero {@link #degrees()}.
      */
-    public static Rotation none() {
+    public static Angle none() {
         return NONE;
     }
 
     /**
-     * Returns the radians value of this {@link Rotation}.
+     * Returns the radians value of this {@link Angle}.
      */
     public double radians() {
         return Math.toRadians(degrees);
     }
 
     /**
-     * Returns the degrees value of this {@link Rotation}.
+     * Returns the degrees value of this {@link Angle}.
      */
     public double degrees() {
         return degrees;
@@ -87,13 +87,13 @@ public final class Rotation implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Rotation other = (Rotation) obj;
+        final Angle other = (Angle) obj;
         return Double.doubleToLongBits(degrees) == Double.doubleToLongBits(other.degrees);
     }
 
     @Override
     public String toString() {
-        return "Rotation [degrees=" + degrees + "]";
+        return "Angle [degrees=" + degrees + "]";
     }
 
     /**

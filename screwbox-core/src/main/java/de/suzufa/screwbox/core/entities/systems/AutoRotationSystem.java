@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.entities.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Rotation;
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
@@ -20,7 +20,7 @@ public class AutoRotationSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsBodyComponent.class);
             final var sprite = entity.get(SpriteComponent.class);
             if (!physicsBody.momentum.isZero()) {
-                sprite.rotation = Rotation.ofMomentum(physicsBody.momentum);
+                sprite.rotation = Angle.ofMomentum(physicsBody.momentum);
             }
         }
 
