@@ -12,17 +12,7 @@ import de.suzufa.screwbox.core.graphics.SpriteBatch;
 
 public class SpriteRenderSystem implements EntitySystem {
 
-    private final Archetype sprites;
-    private final Class<? extends SpriteComponent> spriteComponentClass;
-
-    public SpriteRenderSystem() {
-        this(SpriteComponent.class);
-    }
-
-    SpriteRenderSystem(final Class<? extends SpriteComponent> spriteComponentClass) {
-        this.spriteComponentClass = spriteComponentClass;
-        this.sprites = Archetype.of(spriteComponentClass, TransformComponent.class);
-    }
+    private final Archetype sprites = Archetype.of(SpriteComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -31,7 +21,7 @@ public class SpriteRenderSystem implements EntitySystem {
 
         for (final Entity entity : engine.entities().fetchAll(sprites)) {
             final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
-            final SpriteComponent spriteComponent = entity.get(spriteComponentClass);
+            final SpriteComponent spriteComponent = entity.get(SpriteComponent.class);
             final var sprite = spriteComponent.sprite;
             final var spriteDimension = sprite.size();
             final var spriteBounds = Bounds.atOrigin(
