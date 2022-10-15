@@ -56,11 +56,22 @@ public class DynamicLightSystem implements EntitySystem {
     public void update(final Engine engine) {
         List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
         List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
+        List<Entity> relevantLights = new ArrayList<>();
+
         List<Bounds> allLightBounds = new ArrayList<>();
         for (var light : allLights) {
             var lightRange = light.get(PointLightComponent.class).range;
-            allLightBounds.add(
-                    Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange, lightRange));
+            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange,
+                    lightRange);
+            if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
+                relevantLights.add(light);
+            }
+        }
+        for (var light : relevantLights) {
+            var lightRange = light.get(PointLightComponent.class).range;
+            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange,
+                    lightRange);
+            allLightBounds.add(pointLightBounds);
         }
         List<Segment> allSegments = new ArrayList<>();
         for (var blocking : lightBlocking) {
@@ -73,41 +84,38 @@ public class DynamicLightSystem implements EntitySystem {
                 allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
             }
         }
-
+        System.err.println(allSegments.size());
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : allLights) {
                 final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
                 final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
-                var pointLightBounds = Bounds.atPosition(pointLightPosition, pointLight.range, pointLight.range);
                 final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
                 final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
                 final List<Offset> area = new ArrayList<>();
-                if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
-                    for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
-                        // TODO: make utility method in Angle for this:
-                        double radians = Angle.ofDegrees(degrees).radians();
-                        Vector raycastEnd = Vector.$(
-                                pointLightPosition.x() + (range * Math.sin(radians)),
-                                pointLightPosition.y() + (range * -Math.cos(radians)));
+                for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
+                    // TODO: make utility method in Angle for this:
+                    double radians = Angle.ofDegrees(degrees).radians();
+                    Vector raycastEnd = Vector.$(
+                            pointLightPosition.x() + (range * Math.sin(radians)),
+                            pointLightPosition.y() + (range * -Math.cos(radians)));
 
-                        Segment raycast = Segment.between(pointLightPosition, raycastEnd);
+                    Segment raycast = Segment.between(pointLightPosition, raycastEnd);
 
-                        List<Vector> hits = new ArrayList<>();
-                        for (var s : allSegments) {
-                            Vector intersectionPoint = s.intersectionPoint(raycast);
-                            if (intersectionPoint != null) {
-                                hits.add(intersectionPoint);
-                            }
+                    List<Vector> hits = new ArrayList<>();
+                    for (var s : allSegments) {
+                        Vector intersectionPoint = s.intersectionPoint(raycast);
+                        if (intersectionPoint != null) {
+                            hits.add(intersectionPoint);
                         }
-                        Collections.sort(hits, new DistanceComparator(pointLightPosition));
-
-                        Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
-                        area.add(engine.graphics().windowPositionOf(endpoint));
                     }
-                    lightmap.addPointLight(offset, range, area);
+                    Collections.sort(hits, new DistanceComparator(pointLightPosition));
 
+                    Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
+                    area.add(engine.graphics().windowPositionOf(endpoint));
                 }
+                lightmap.addPointLight(offset, range, area);
+
             }
             engine.graphics().window().drawLightmap(lightmap);
         }
