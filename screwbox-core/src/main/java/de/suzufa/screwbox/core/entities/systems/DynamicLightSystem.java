@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -30,17 +31,20 @@ public class DynamicLightSystem implements EntitySystem {
 
     private final double raycastAngle;
 
+    private int resolution;
+
     public DynamicLightSystem() {
-        this(1);
+        this(2, 4);
     }
 
-    public DynamicLightSystem(final double raycastAngle) {
+    public DynamicLightSystem(final double raycastAngle, int resolution) {
         this.raycastAngle = raycastAngle;
+        this.resolution = resolution;
     }
 
     @Override
     public void update(final Engine engine) {
-        try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size())) {
+        try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
                 final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
@@ -64,9 +68,9 @@ public class DynamicLightSystem implements EntitySystem {
                 lightmap.addPointLight(offset, range, area);
 
             }
-            engine.graphics().window().drawSprite(lightmap.createImage(), Offset.origin());
+            engine.graphics().window().drawSprite(lightmap.createImage(), Offset.origin(), resolution, Percentage.max(),
+                    Angle.none());
         }
-        // TODO: add defaultmethod to draw at origin
     }
 
     @Override

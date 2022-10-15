@@ -20,25 +20,29 @@ public class Lightmap implements AutoCloseable {
 
     private final BufferedImage image;
     private final Graphics2D graphics;
+    private final int resolution;
 
-    public Lightmap(final Dimension size) {
-        this.image = new BufferedImage(size.width(), size.height(),
+    public Lightmap(final Dimension size, final int resolution) {
+        this.image = new BufferedImage(
+                size.width() / resolution,
+                size.height() / resolution,
                 BufferedImage.TYPE_INT_ARGB);
+        this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
     }
 
     public Lightmap addPointLight(final Offset position, final int range, final List<Offset> area) {
         float[] fractions = new float[2];
-        fractions[0] = 0.1f;
+        fractions[0] = 0f;
         fractions[1] = 1f;
 
         Polygon polygon = new Polygon();
         for (var node : area) {
-            polygon.addPoint(node.x(), node.y());
+            polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
         RadialGradientPaint paint = new RadialGradientPaint(
-                position.x(), position.y(),
-                range,
+                position.x() / resolution, position.y() / resolution,
+                range / resolution,
                 fractions, COLORS);
 
         graphics.setPaint(paint);
