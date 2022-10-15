@@ -1,9 +1,10 @@
-package de.suzufa.screwbox.core.graphics.internal;
+package de.suzufa.screwbox.core.graphics;
 
 import java.awt.Color;
 import java.awt.image.RGBImageFilter;
 
-public class InvertAlphaFilter extends RGBImageFilter {
+//TODO: test
+class InvertAlphaFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {

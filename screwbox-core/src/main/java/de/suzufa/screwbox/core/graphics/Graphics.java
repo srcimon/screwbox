@@ -12,9 +12,6 @@ public interface Graphics {
 
     World world();
 
-    // TODO: JAVADOC
-    Lightmap lightmap();
-
     /**
      * Updates the camera zoom nearly to the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
