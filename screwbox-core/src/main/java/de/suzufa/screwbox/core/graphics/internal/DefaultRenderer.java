@@ -9,6 +9,8 @@ import java.awt.AlphaComposite;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Robot;
@@ -46,12 +48,41 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void initializeFontDrawing() {
-        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
-    }
-
     @Override
     public void updateScreen(final boolean antialiased) {
+        BufferedImage lightmapImage = new BufferedImage(frame.getWidth(), frame.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D lightmapGraphics = (Graphics2D) lightmapImage.getGraphics();
+        Polygon polygon = new Polygon();
+        polygon.addPoint(120, 120);
+        polygon.addPoint(240, 215);
+        polygon.addPoint(205, 208);
+        polygon.addPoint(42, 130);
+
+        Polygon polygon2 = new Polygon();
+        polygon2.addPoint(50, 80);
+        polygon2.addPoint(400, 80);
+        polygon2.addPoint(404, 208);
+        polygon2.addPoint(10, 40);
+
+        java.awt.Color[] colors = new java.awt.Color[2];
+        colors[0] = toAwtColor(Color.BLACK);
+        colors[1] = toAwtColor(Color.TRANSPARENT);
+        float[] fractions = new float[2];
+        fractions[0] = 0.1f;
+        fractions[1] = 1f;
+        RadialGradientPaint paint = new RadialGradientPaint(120, 120, 40, fractions, colors);
+        lightmapGraphics.setPaint(paint);
+        lightmapGraphics.fillPolygon(polygon);
+        RadialGradientPaint paint2 = new RadialGradientPaint(120, 120, 140, fractions, colors);
+        lightmapGraphics.setPaint(paint2);
+        lightmapGraphics.fillPolygon(polygon2);
+        Image result = ImageUtil.applyFilter(lightmapImage, new InvertAlphaFilter());
+
+        graphics.drawImage(result, 0, 0, null);
+
+        // ==============
         lastUpdateTime = Time.now();
         frame.getBufferStrategy().show();
         graphics.dispose();
@@ -61,6 +92,10 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
+    }
+
+    private void initializeFontDrawing() {
+        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
     }
 
     @Override
