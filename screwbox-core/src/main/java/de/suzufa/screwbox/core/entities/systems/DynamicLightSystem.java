@@ -62,8 +62,8 @@ public class DynamicLightSystem implements EntitySystem {
         for (var light : allLights) {
             var lightRange = light.get(PointLightComponent.class).range;
             var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
-                    lightRange / 2,
-                    lightRange / 2);
+                    lightRange,
+                    lightRange);
             if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
                 relevantLights.add(light);
             }
@@ -71,8 +71,8 @@ public class DynamicLightSystem implements EntitySystem {
         for (var light : relevantLights) {
             var lightRange = light.get(PointLightComponent.class).range;
             var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
-                    lightRange / 2,
-                    lightRange / 2);
+                    lightRange,
+                    lightRange);
             allLightBounds.add(pointLightBounds);
         }
         List<Segment> allSegments = new ArrayList<>();
@@ -92,14 +92,14 @@ public class DynamicLightSystem implements EntitySystem {
                 final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
                 final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
                 final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
-                final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
+                final int range = (int) pointLight.range;
                 final List<Offset> area = new ArrayList<>();
                 for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
                     // TODO: make utility method in Angle for this:
                     double radians = Angle.ofDegrees(degrees).radians();
                     Vector raycastEnd = Vector.$(
-                            pointLightPosition.x() + (range * Math.sin(radians)),
-                            pointLightPosition.y() + (range * -Math.cos(radians)));
+                            pointLightPosition.x() + (range / 2 * Math.sin(radians)),
+                            pointLightPosition.y() + (range / 2 * -Math.cos(radians)));
 
                     Segment raycast = Segment.between(pointLightPosition, raycastEnd);
 
@@ -115,9 +115,10 @@ public class DynamicLightSystem implements EntitySystem {
                     Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
                 }
-                lightmap.addPointLight(offset, range, area);
+                lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area);
 
             }
+
             engine.graphics().window().drawLightmap(lightmap);
         }
     }

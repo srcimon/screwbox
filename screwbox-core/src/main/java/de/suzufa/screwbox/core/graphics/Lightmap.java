@@ -39,8 +39,9 @@ public class Lightmap implements AutoCloseable {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
         RadialGradientPaint paint = new RadialGradientPaint(
-                position.x() / resolution, position.y() / resolution,
-                range / resolution,
+                position.x() / resolution,
+                position.y() / resolution,
+                range / resolution / 2,
                 FRACTIONS, COLORS);
 
         graphics.setPaint(paint);
