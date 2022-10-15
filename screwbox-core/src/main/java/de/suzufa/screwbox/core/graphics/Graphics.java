@@ -57,6 +57,9 @@ public interface Graphics {
      */
     Vector worldPositionOf(Offset offset);
 
+    // TODO: javadoc
+    Offset windowPositionOf(Vector position);
+
     List<Dimension> supportedResolutions();
 
     List<Dimension> supportedResolutions(AspectRatio ratio);

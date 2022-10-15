@@ -75,6 +75,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Offset windowPositionOf(Vector position) {
+        return world.toOffset(position);
+    }
+
+    @Override
     public List<Dimension> supportedResolutions() {
         return window.supportedResolutions();
     }
