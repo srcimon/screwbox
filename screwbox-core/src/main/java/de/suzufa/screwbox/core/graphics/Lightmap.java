@@ -45,7 +45,14 @@ public class Lightmap implements AutoCloseable {
                 FRACTIONS, COLORS);
 
         graphics.setPaint(paint);
-        graphics.fillPolygon(polygon);
+//        graphics.fillPolygon(polygon);
+        // TODO: Support for non blocked lights
+        graphics.fillOval(
+                position.x() / resolution - range / resolution / 2,
+                position.y() / resolution - range / resolution / 2,
+                range / resolution,
+                range / resolution);
+
         return this;
     }
 
