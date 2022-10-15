@@ -112,6 +112,8 @@ public interface Window {
         return drawLine(from, to, drawColor());
     }
 
+    Window drawLightmap(Lightmap lightmap);
+
     Window fillWith(Color color);
 
     Sprite takeScreenshot();

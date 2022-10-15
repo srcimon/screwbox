@@ -7,7 +7,6 @@ import java.util.List;
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
@@ -19,7 +18,6 @@ import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class DynamicLightSystem implements EntitySystem {
@@ -95,9 +93,7 @@ public class DynamicLightSystem implements EntitySystem {
 
                 }
             }
-            Sprite createImage = lightmap.createImage();
-            engine.graphics().window().drawSprite(createImage, Offset.origin(), resolution, Percentage.max(),
-                    Angle.none());
+            engine.graphics().window().drawLightmap(lightmap);
         }
     }
 

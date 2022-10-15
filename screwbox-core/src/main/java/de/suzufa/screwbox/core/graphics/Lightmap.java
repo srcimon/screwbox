@@ -58,4 +58,8 @@ public class Lightmap implements AutoCloseable {
         graphics.dispose();
 
     }
+
+    public double resolution() {
+        return resolution;
+    }
 }
