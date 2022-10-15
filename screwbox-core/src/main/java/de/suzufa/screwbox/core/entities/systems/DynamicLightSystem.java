@@ -17,6 +17,7 @@ import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.physics.RaycastBuilder;
 
 public class DynamicLightSystem implements EntitySystem {
@@ -34,7 +35,7 @@ public class DynamicLightSystem implements EntitySystem {
     private int resolution;
 
     public DynamicLightSystem() {
-        this(2, 4);
+        this(3, 4);
     }
 
     public DynamicLightSystem(final double raycastAngle, int resolution) {
@@ -68,7 +69,8 @@ public class DynamicLightSystem implements EntitySystem {
                 lightmap.addPointLight(offset, range, area);
 
             }
-            engine.graphics().window().drawSprite(lightmap.createImage(), Offset.origin(), resolution, Percentage.max(),
+            Sprite createImage = lightmap.createImage();
+            engine.graphics().window().drawSprite(createImage, Offset.origin(), resolution, Percentage.max(),
                     Angle.none());
         }
     }

@@ -10,7 +10,7 @@ public class PathfindingExample {
         Engine engine = ScrewBox.createEngine("Pathfinding Example");
 
         engine.scenes().add(new DemoScene("maze/map.json"));
-        engine.graphics().configuration().toggleFullscreen();
+//        engine.graphics().configuration().toggleFullscreen();
         engine.loop().setTargetFps(9999);
         engine.start(DemoScene.class);
     }
