@@ -14,9 +14,8 @@ public class PathfindingExample {
         engine.start(DemoScene.class);
     }
 
-    // TODO: this ist the plan:
-//    engine.graphics().lightmap().activate() / -> auto adds RenderLightmapSystem
-
-    // TODO: same with ui: ui adds InteractWithUi and RenderUi System by itself
+    // TODO: this is the plan: engine.graphics().lightmap().addPointLight /
+    // addNeonLight, addBlock
+    // TODO: fix jiggering when lightmap is out of sync with world
 
 }
