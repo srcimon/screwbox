@@ -11,10 +11,8 @@ import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
-import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
@@ -22,7 +20,6 @@ import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementDebugSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
-import de.suzufa.screwbox.core.entities.systems.DynamicLightSystem;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
@@ -56,7 +53,6 @@ public class DemoScene implements Scene {
                 .add(new CameraMovementSystem())
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
-                .add(new DynamicLightSystem())
                 .add(new AutoRotationSystem())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
@@ -97,7 +93,6 @@ public class DemoScene implements Scene {
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
-                .add(new PointLightComponent(800))
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -108,7 +103,6 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
-                .add(new PointLightComponent(600))
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
@@ -123,7 +117,6 @@ public class DemoScene implements Scene {
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
                 .add(new PathfindingBlockingComponent())
-                .add(new LightBlockingComponent())
                 .add(new ColliderComponent());
     }
 

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Angle;
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Segment;
@@ -36,7 +37,7 @@ public class DynamicLightSystem implements EntitySystem {
     private int resolution;
 
     public DynamicLightSystem() {
-        this(6, 4);
+        this(6, 7);
     }
 
     public DynamicLightSystem(final double raycastAngle, int resolution) {
@@ -63,34 +64,36 @@ public class DynamicLightSystem implements EntitySystem {
             for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
                 final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
                 final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
+                var pointLightBounds = Bounds.atPosition(pointLightPosition, pointLight.range, pointLight.range);
                 final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
                 final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
                 final List<Offset> area = new ArrayList<>();
+                if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
+                    for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
+                        // TODO: make utility method in Angle for this:
+                        double radians = Angle.ofDegrees(degrees).radians();
+                        Vector raycastEnd = Vector.$(
+                                pointLightPosition.x() + (range * Math.sin(radians)),
+                                pointLightPosition.y() + (range * -Math.cos(radians)));
 
-                for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
-                    // TODO: make utility method in Angle for this:
-                    double radians = Angle.ofDegrees(degrees).radians();
-                    Vector raycastEnd = Vector.$(
-                            pointLightPosition.x() + (range * Math.sin(radians)),
-                            pointLightPosition.y() + (range * -Math.cos(radians)));
+                        Segment raycast = Segment.between(pointLightPosition, raycastEnd);
 
-                    Segment raycast = Segment.between(pointLightPosition, raycastEnd);
-
-                    List<Vector> hits = new ArrayList<>();
-                    for (var s : allSegments) {
-                        Vector intersectionPoint = s.intersectionPoint(raycast);
-                        if (intersectionPoint != null) {
-                            hits.add(intersectionPoint);
+                        List<Vector> hits = new ArrayList<>();
+                        for (var s : allSegments) {
+                            Vector intersectionPoint = s.intersectionPoint(raycast);
+                            if (intersectionPoint != null) {
+                                hits.add(intersectionPoint);
+                            }
                         }
+
+                        Collections.sort(hits, new DistanceComparator(pointLightPosition));
+
+                        Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
+                        area.add(engine.graphics().windowPositionOf(endpoint));
                     }
+                    lightmap.addPointLight(offset, range, area);
 
-                    Collections.sort(hits, new DistanceComparator(pointLightPosition));
-
-                    Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
-                    area.add(engine.graphics().windowPositionOf(endpoint));
                 }
-                lightmap.addPointLight(offset, range, area);
-
             }
             Sprite createImage = lightmap.createImage();
             engine.graphics().window().drawSprite(createImage, Offset.origin(), resolution, Percentage.max(),
