@@ -35,7 +35,7 @@ public class DynamicLightSystem implements EntitySystem {
     private int resolution;
 
     public DynamicLightSystem() {
-        this(6, 7);
+        this(6, 6);
     }
 
     public DynamicLightSystem(final double raycastAngle, int resolution) {
@@ -43,23 +43,40 @@ public class DynamicLightSystem implements EntitySystem {
         this.resolution = resolution;
     }
 
+    boolean intersects(List<Bounds> allLightBounds, Bounds bounds) {
+        for (var lightBounds : allLightBounds) {
+            if (lightBounds.intersects(bounds)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void update(final Engine engine) {
         List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
+        List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
+        List<Bounds> allLightBounds = new ArrayList<>();
+        for (var light : allLights) {
+            var lightRange = light.get(PointLightComponent.class).range;
+            allLightBounds.add(
+                    Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange, lightRange));
+        }
         List<Segment> allSegments = new ArrayList<>();
         for (var blocking : lightBlocking) {
             TransformComponent transformComponent = blocking.get(TransformComponent.class);
             var bounds = transformComponent.bounds;
-            allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
-            allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
-            allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
-            allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
-
+            if (intersects(allLightBounds, bounds)) {
+                allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
+                allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
+                allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
+                allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
+            }
         }
 
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
-            for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
+            for (final Entity pointLightEntity : allLights) {
                 final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
                 final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
                 var pointLightBounds = Bounds.atPosition(pointLightPosition, pointLight.range, pointLight.range);
@@ -83,7 +100,6 @@ public class DynamicLightSystem implements EntitySystem {
                                 hits.add(intersectionPoint);
                             }
                         }
-
                         Collections.sort(hits, new DistanceComparator(pointLightPosition));
 
                         Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
