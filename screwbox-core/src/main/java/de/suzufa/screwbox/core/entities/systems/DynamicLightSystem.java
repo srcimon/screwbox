@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Angle;
+import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
@@ -54,7 +55,11 @@ public class DynamicLightSystem implements EntitySystem {
                 final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
                 final List<Offset> area = new ArrayList<>();
 
-                RaycastBuilder raycast = engine.physics().raycastFrom(pointLightPosition).checkingFor(LIGHT_BLOCKING);
+                Bounds pointLightRange = Bounds.atPosition(pointLightPosition, pointLight.range / 2,
+                        pointLight.range / 2);
+                RaycastBuilder raycast = engine.physics()
+                        .raycastFrom(pointLightPosition).checkingFor(LIGHT_BLOCKING)
+                        .ignoringEntitesNotIn(pointLightRange);
                 for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
                     // TODO: make utility method in Angle for this:
                     double radians = Angle.ofDegrees(degrees).radians();
