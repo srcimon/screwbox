@@ -40,33 +40,33 @@ public class DynamicLightSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Lightmap lightmap = new Lightmap(engine.graphics().window().size());
+        try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size())) {
 
-        for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
-            final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
-            final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
-            final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
-            final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
-            final List<Offset> area = new ArrayList<>();
-            lightmap.addPointLight(offset, range, area);
+            for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
+                final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
+                final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
+                final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
+                final int range = (int) (pointLight.range / engine.graphics().cameraZoom());
+                final List<Offset> area = new ArrayList<>();
 
-            RaycastBuilder raycast = engine.physics().raycastFrom(pointLightPosition).checkingFor(LIGHT_BLOCKING);
-            for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
-                // TODO: make utility method in Angle for this:
-                double radians = Angle.ofDegrees(degrees).radians();
-                // TODO: Rangee longer?
-                Vector raycastEnd = Vector.$(
-                        pointLightPosition.x() + (range * Math.sin(radians)),
-                        pointLightPosition.y() + (range * -Math.cos(radians)));
+                RaycastBuilder raycast = engine.physics().raycastFrom(pointLightPosition).checkingFor(LIGHT_BLOCKING);
+                for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
+                    // TODO: make utility method in Angle for this:
+                    double radians = Angle.ofDegrees(degrees).radians();
+                    Vector raycastEnd = Vector.$(
+                            pointLightPosition.x() + (range * Math.sin(radians)),
+                            pointLightPosition.y() + (range * -Math.cos(radians)));
 
-                Optional<Vector> hit = raycast.castingTo(raycastEnd).nearestHit();
-                Vector endpoint = hit.isPresent() ? hit.get() : raycastEnd;
-                area.add(engine.graphics().windowPositionOf(endpoint));
+                    Optional<Vector> hit = raycast.castingTo(raycastEnd).nearestHit();
+                    Vector endpoint = hit.isPresent() ? hit.get() : raycastEnd;
+                    area.add(engine.graphics().windowPositionOf(endpoint));
+                }
+                lightmap.addPointLight(offset, range, area);
+
             }
-
+            engine.graphics().window().drawSprite(lightmap.createImage(), Offset.origin());
         }
-        engine.graphics().window().drawSprite(lightmap.createImage(), Offset.origin());// TODO: add defaultmethod to
-                                                                                       // draw at origin
+        // TODO: add defaultmethod to draw at origin
     }
 
     @Override

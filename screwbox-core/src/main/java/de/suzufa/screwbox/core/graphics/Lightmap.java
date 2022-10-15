@@ -7,59 +7,53 @@ import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
 //TODO: javadoc and test
-public class Lightmap {
+public class Lightmap implements AutoCloseable {
 
-    private final Dimension size;
     private static final java.awt.Color[] COLORS = new java.awt.Color[] {
             toAwtColor(Color.BLACK),
             toAwtColor(Color.TRANSPARENT) };
 
+    private final BufferedImage image;
+    private final Graphics2D graphics;
+
     public Lightmap(final Dimension size) {
-        this.size = size;
+        this.image = new BufferedImage(size.width(), size.height(),
+                BufferedImage.TYPE_INT_ARGB);
+        this.graphics = (Graphics2D) image.getGraphics();
     }
-
-    private record PointLight(Offset position, int range, List<Offset> area) {
-
-    }
-
-    private final List<PointLight> pointLights = new ArrayList<>();
 
     public Lightmap addPointLight(final Offset position, final int range, final List<Offset> area) {
-        pointLights.add(new PointLight(position, range, area));
-        return this;
-    }
-
-    public Sprite createImage() {
-        BufferedImage lightmapImage = new BufferedImage(size.width(), size.height(),
-                BufferedImage.TYPE_INT_ARGB);
-
-        // TODO: static?
         float[] fractions = new float[2];
         fractions[0] = 0.1f;
         fractions[1] = 1f;
 
-        Graphics2D lightmapGraphics = (Graphics2D) lightmapImage.getGraphics();
-        for (var pointLight : pointLights) {
-            Polygon polygon = new Polygon();
-            for (var node : pointLight.area) {
-                polygon.addPoint(node.x(), node.y());
-            }
-            RadialGradientPaint paint = new RadialGradientPaint(
-                    pointLight.position.x(), pointLight.position.y(),
-                    pointLight.range,
-                    fractions, COLORS);
-
-            lightmapGraphics.setPaint(paint);
-            lightmapGraphics.fillPolygon(polygon);
+        Polygon polygon = new Polygon();
+        for (var node : area) {
+            polygon.addPoint(node.x(), node.y());
         }
+        RadialGradientPaint paint = new RadialGradientPaint(
+                position.x(), position.y(),
+                range,
+                fractions, COLORS);
 
-        Image result = ImageUtil.applyFilter(lightmapImage, new InvertAlphaFilter());
+        graphics.setPaint(paint);
+        graphics.fillPolygon(polygon);
+        return this;
+    }
+
+    public Sprite createImage() {
+        Image result = ImageUtil.applyFilter(image, new InvertAlphaFilter());
         return Sprite.fromImage(result);
+    }
+
+    @Override
+    public void close() {
+        graphics.dispose();
+
     }
 }
