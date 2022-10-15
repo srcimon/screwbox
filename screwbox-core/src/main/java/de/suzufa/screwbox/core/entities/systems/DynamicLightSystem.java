@@ -1,13 +1,14 @@
 package de.suzufa.screwbox.core.entities.systems;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -19,7 +20,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.physics.RaycastBuilder;
+import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class DynamicLightSystem implements EntitySystem {
 
@@ -46,6 +47,18 @@ public class DynamicLightSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
+        List<Segment> allSegments = new ArrayList<>();
+        for (var blocking : lightBlocking) {
+            TransformComponent transformComponent = blocking.get(TransformComponent.class);
+            var bounds = transformComponent.bounds;
+            allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
+            allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
+            allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
+            allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
+
+        }
+
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
@@ -57,9 +70,7 @@ public class DynamicLightSystem implements EntitySystem {
 
                 Bounds pointLightRange = Bounds.atPosition(pointLightPosition, pointLight.range / 2,
                         pointLight.range / 2);
-                RaycastBuilder raycast = engine.physics()
-                        .raycastFrom(pointLightPosition).checkingFor(LIGHT_BLOCKING)
-                        .ignoringEntitesNotIn(pointLightRange);
+
                 for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
                     // TODO: make utility method in Angle for this:
                     double radians = Angle.ofDegrees(degrees).radians();
@@ -67,8 +78,19 @@ public class DynamicLightSystem implements EntitySystem {
                             pointLightPosition.x() + (range * Math.sin(radians)),
                             pointLightPosition.y() + (range * -Math.cos(radians)));
 
-                    Optional<Vector> hit = raycast.castingTo(raycastEnd).nearestHit();
-                    Vector endpoint = hit.isPresent() ? hit.get() : raycastEnd;
+                    Segment raycast = Segment.between(pointLightPosition, raycastEnd);
+
+                    List<Vector> hits = new ArrayList<>();
+                    for (var s : allSegments) {
+                        Vector intersectionPoint = s.intersectionPoint(raycast);
+                        if (intersectionPoint != null) {
+                            hits.add(intersectionPoint);
+                        }
+                    }
+
+                    Collections.sort(hits, new DistanceComparator(pointLightPosition));
+
+                    Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
                 }
                 lightmap.addPointLight(offset, range, area);
