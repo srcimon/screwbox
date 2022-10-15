@@ -61,16 +61,18 @@ public class DynamicLightSystem implements EntitySystem {
         List<Bounds> allLightBounds = new ArrayList<>();
         for (var light : allLights) {
             var lightRange = light.get(PointLightComponent.class).range;
-            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange,
-                    lightRange);
+            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
+                    lightRange / 2,
+                    lightRange / 2);
             if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
                 relevantLights.add(light);
             }
         }
         for (var light : relevantLights) {
             var lightRange = light.get(PointLightComponent.class).range;
-            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(), lightRange,
-                    lightRange);
+            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
+                    lightRange / 2,
+                    lightRange / 2);
             allLightBounds.add(pointLightBounds);
         }
         List<Segment> allSegments = new ArrayList<>();
@@ -84,7 +86,6 @@ public class DynamicLightSystem implements EntitySystem {
                 allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
             }
         }
-        System.err.println(allSegments.size());
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : allLights) {
