@@ -104,7 +104,8 @@ public class DynamicLightSystem implements EntitySystem {
             final var relevantBlockingBounds = pointLightBounds.allIntersecting(lightBlockingBounds);
             final List<Offset> area = new ArrayList<>();
 
-            for (final var raycast : getRelevantRaytraces(pointLightBounds, relevantBlockingBounds)) {
+            List<Segment> raycasts = getRelevantRaytraces(pointLightBounds, relevantBlockingBounds);
+            for (final var raycast : raycasts) {
                 final List<Vector> hits = new ArrayList<>();
                 for (final var segment : getSegmentsOf(relevantBlockingBounds)) {
                     final Vector intersectionPoint = segment.intersectionPoint(raycast);

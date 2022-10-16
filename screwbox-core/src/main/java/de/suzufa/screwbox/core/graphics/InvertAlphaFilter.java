@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import java.awt.Color;
 import java.awt.image.RGBImageFilter;
 
-//TODO: test
+//TODO: test RENAME!
 class InvertAlphaFilter extends RGBImageFilter {
 
     @Override
@@ -14,7 +14,7 @@ class InvertAlphaFilter extends RGBImageFilter {
                 currentColor.getRed(),
                 currentColor.getGreen(),
                 currentColor.getBlue(),
-                Math.max(255 - alpha, 20)).getRGB();
+                Math.max(255 - alpha, 10)).getRGB();
     }
 
 }
