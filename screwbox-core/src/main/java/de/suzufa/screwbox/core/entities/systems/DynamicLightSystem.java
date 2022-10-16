@@ -49,12 +49,10 @@ public class DynamicLightSystem implements EntitySystem {
         segments.add(Segment.between(source.position(), source.topRight()));
         final var range = source.extents().length();
         for (final var collider : colliders) {
-            if (collider.intersects(source)) {
-                segments.addAll(segmentsOf(source, range, collider.bottomLeft()));
-                segments.addAll(segmentsOf(source, range, collider.bottomRight()));
-                segments.addAll(segmentsOf(source, range, collider.topLeft()));
-                segments.addAll(segmentsOf(source, range, collider.topRight()));
-            }
+            segments.addAll(segmentsOf(source, range, collider.bottomLeft()));
+            segments.addAll(segmentsOf(source, range, collider.bottomRight()));
+            segments.addAll(segmentsOf(source, range, collider.topLeft()));
+            segments.addAll(segmentsOf(source, range, collider.topRight()));
         }
         segments.sort(new Comparator<Segment>() {
 
