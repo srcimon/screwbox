@@ -29,7 +29,7 @@ public class CombineLightEmittersSystem implements EntitySystem {
                 }
             }
         }
-        // at this point all colliders have been combined
+        // at this point all light blockers have been combined
         for (final var entity : combinables) {
             entity.remove(StaticLightBlockerMarkerComponent.class);
         }
@@ -45,6 +45,7 @@ public class CombineLightEmittersSystem implements EntitySystem {
         if (result.isPresent()) {
             Entity combined = new Entity()
                     .add(new LightBlockingComponent())
+                    .add(new StaticLightBlockerMarkerComponent())
                     .add(new TransformComponent(result.get()));
             engine.entities().add(combined);
             first.remove(StaticLightBlockerMarkerComponent.class);
