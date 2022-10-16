@@ -19,6 +19,7 @@ import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class DynamicLightSystem implements EntitySystem {
@@ -125,10 +126,7 @@ public class DynamicLightSystem implements EntitySystem {
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
         final List<Segment> allSegments = new ArrayList<>();
         for (final var bounds : allBounds) {
-            allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
-            allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
-            allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
-            allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
+            allSegments.addAll(Borders.ALL.extractSegmentsMethod().apply(bounds));
         }
         return allSegments;
     }
