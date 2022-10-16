@@ -108,19 +108,11 @@ public final class Angle implements Serializable, Comparable<Angle> {
         return ofMomentum(segment.to().substract(segment.from()));
     }
 
-    public static void main(String[] args) {
-        Segment between = Segment.between(Vector.of(0, 0), Vector.of(10, 0));
-        System.out.println(Angle.ofDegrees(0).rotate(between).to());
-        // BUG!!!!
-    }
-
     // TODO: doc and test
     public Segment rotate(Segment segment) {
         var dx = segment.to().x() - segment.from().x();
         var dy = segment.to().y() - segment.from().y();
-        var currentAngle = Angle.of(segment);
         var destDegrees = degrees();
-        var destRadians = Angle.ofDegrees(destDegrees).radians();
         var destPoint = segment.from().add(Vector.of(
                 dx * Math.cos(destDegrees) - dy * Math.sin(destDegrees),
                 dx * Math.sin(destDegrees) + dy * Math.cos(destDegrees)));

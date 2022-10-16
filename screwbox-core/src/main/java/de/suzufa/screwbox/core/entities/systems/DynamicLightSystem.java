@@ -53,12 +53,17 @@ public class DynamicLightSystem implements EntitySystem {
 
     private List<Segment> getRelevantRaytraces(Bounds source, List<Bounds> colliders) {
         List<Segment> segments = new ArrayList<>();
+        segments.add(Segment.between(source.position(), source.bottomLeft()));
+        segments.add(Segment.between(source.position(), source.bottomRight()));
+        segments.add(Segment.between(source.position(), source.topLeft()));
+        segments.add(Segment.between(source.position(), source.topRight()));
+        var range = source.extents().length();
         for (var collider : colliders) {
             if (collider.intersects(source)) {
-                segments.addAll(segmentsOf(source, collider.bottomLeft()));
-                segments.addAll(segmentsOf(source, collider.bottomRight()));
-                segments.addAll(segmentsOf(source, collider.topLeft()));
-                segments.addAll(segmentsOf(source, collider.topRight()));
+                segments.addAll(segmentsOf(source, range, collider.bottomLeft()));
+                segments.addAll(segmentsOf(source, range, collider.bottomRight()));
+                segments.addAll(segmentsOf(source, range, collider.topLeft()));
+                segments.addAll(segmentsOf(source, range, collider.topRight()));
             }
         }
         segments.sort(new Comparator<Segment>() {
@@ -73,11 +78,17 @@ public class DynamicLightSystem implements EntitySystem {
 
     private List<Segment> segmentsOf(Bounds source, double range, Vector destination) {
         Segment directTrace = Segment.between(source.position(), destination);
+        Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
+        var rotationOfDirectTrace = Angle.of(directTrace).degrees();
+        System.out.println(rotationOfDirectTrace + "..."
+                + Angle.of(Angle.ofDegrees(rotationOfDirectTrace).rotate(normalTrace)));
         return List.of(
-                Angle.ofDegrees(-0.1).rotate(directTrace).stretchToLength(range),
-                directTrace,
-                Angle.ofDegrees(0.1).rotate(directTrace).stretchToLength(range));
+                Angle.ofDegrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
+                directTrace);
+//                Angle.ofDegrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
     }
+
+    private static double degrees = 0;
 
     @Override
     public void update(final Engine engine) {
@@ -143,13 +154,13 @@ public class DynamicLightSystem implements EntitySystem {
 
                     Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
-                    engine.graphics().world().drawCircle(raycast.to(), 2, Color.RED);
+                    engine.graphics().world().drawLine(raycast, Color.RED);
                 }
                 lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
                         getColor(colorNr));
                 colorNr++;
             }
-
+            degrees += engine.loop().delta() * 10;
             engine.graphics().window().drawLightmap(lightmap);
         }
 
