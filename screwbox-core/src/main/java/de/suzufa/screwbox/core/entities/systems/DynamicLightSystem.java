@@ -101,13 +101,13 @@ public class DynamicLightSystem implements EntitySystem {
             final var pointLightBounds = Bounds.atPosition(pointLightPosition,
                     pointLight.range,
                     pointLight.range);
-            final var relevantBlockingBounds = getRelevantBlockingBounds(lightBlockingBounds, pointLightBounds);
+            final var relevantBlockingBounds = pointLightBounds.allIntersecting(lightBlockingBounds);
             final List<Offset> area = new ArrayList<>();
 
             for (final var raycast : getRelevantRaytraces(pointLightBounds, relevantBlockingBounds)) {
                 final List<Vector> hits = new ArrayList<>();
-                for (final var s : getSegmentsOf(relevantBlockingBounds)) {
-                    final Vector intersectionPoint = s.intersectionPoint(raycast);
+                for (final var segment : getSegmentsOf(relevantBlockingBounds)) {
+                    final Vector intersectionPoint = segment.intersectionPoint(raycast);
                     if (intersectionPoint != null) {
                         hits.add(intersectionPoint);
                     }
@@ -129,17 +129,6 @@ public class DynamicLightSystem implements EntitySystem {
             allSegments.addAll(Borders.ALL.extractSegmentsMethod().apply(bounds));
         }
         return allSegments;
-    }
-
-    private List<Bounds> getRelevantBlockingBounds(final List<Bounds> lightBlockingBounds,
-            final Bounds pointLightBounds) {
-        final List<Bounds> allIntersecting = new ArrayList<>();
-        for (final var bounds : lightBlockingBounds) {
-            if (pointLightBounds.intersects(bounds)) {
-                allIntersecting.add(bounds);
-            }
-        }
-        return allIntersecting;
     }
 
     @Override

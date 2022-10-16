@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -298,6 +300,17 @@ public final class Bounds implements Serializable {
         }
 
         return Optional.of(Bounds.atOrigin(newMinX, newMinY, newMaxX - newMinX, newMaxY - newMinY));
+    }
+
+    // TODO: test and javadoc
+    public final List<Bounds> allIntersecting(final List<Bounds> others) {
+        final List<Bounds> allIntersecting = new ArrayList<>();
+        for (final var other : others) {
+            if (intersects(other)) {
+                allIntersecting.add(other);
+            }
+        }
+        return allIntersecting;
     }
 
 }
