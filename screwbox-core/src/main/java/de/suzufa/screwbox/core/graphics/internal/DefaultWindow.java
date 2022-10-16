@@ -175,7 +175,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window drawLightmap(Lightmap lightmap) {
-        return drawSprite(lightmap.createImage(), Offset.origin(), lightmap.resolution(), Percentage.max(),
+        return drawSprite(lightmap.createImage(), Offset.origin(), lightmap.resolution(), Percentage.of(0.7),
                 Angle.none());
     }
 

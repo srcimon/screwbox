@@ -14,11 +14,7 @@ import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 //TODO: javadoc and test
 public class Lightmap implements AutoCloseable {
 
-    private static final float[] FRACTIONS = new float[] { 0f, 1f };
-
-    private static final java.awt.Color[] COLORS = new java.awt.Color[] {
-            toAwtColor(Color.BLACK),
-            toAwtColor(Color.TRANSPARENT) };
+    private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
 
     private final BufferedImage image;
     private final Graphics2D graphics;
@@ -33,17 +29,22 @@ public class Lightmap implements AutoCloseable {
         this.graphics = (Graphics2D) image.getGraphics();
     }
 
-    public Lightmap addPointLight(final Offset position, final int range, final List<Offset> area) {
+    public Lightmap addPointLight(final Offset position, final int range, final List<Offset> area, Color color) {
         Polygon polygon = new Polygon();
         for (var node : area) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
+
+        java.awt.Color[] COLORS = new java.awt.Color[] {
+                toAwtColor(color),
+                toAwtColor(Color.TRANSPARENT)
+        };
+
         RadialGradientPaint paint = new RadialGradientPaint(
                 position.x() / resolution,
                 position.y() / resolution,
                 range / resolution / 2,
                 FRACTIONS, COLORS);
-
         graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
         // TODO: Support for non blocked lights

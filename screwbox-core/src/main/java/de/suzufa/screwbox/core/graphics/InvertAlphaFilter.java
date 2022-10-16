@@ -10,7 +10,11 @@ class InvertAlphaFilter extends RGBImageFilter {
     public int filterRGB(int x, int y, int rgb) {
         Color currentColor = new Color(rgb, true);
         int alpha = currentColor.getAlpha();
-        return new Color(0, 0, 0, 255 - alpha).getRGB();
+        return new Color(
+                currentColor.getRed(),
+                currentColor.getGreen(),
+                currentColor.getBlue(),
+                Math.max(255 - alpha, 40)).getRGB();
     }
 
 }

@@ -16,6 +16,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
@@ -86,6 +87,7 @@ public class DynamicLightSystem implements EntitySystem {
                 allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
             }
         }
+        int colorNr = 0;
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : allLights) {
@@ -115,12 +117,18 @@ public class DynamicLightSystem implements EntitySystem {
                     Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
                 }
-                lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area);
-
+                lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
+                        getColor(colorNr));
+                colorNr++;
             }
 
             engine.graphics().window().drawLightmap(lightmap);
         }
+    }
+
+    private Color getColor(int colorNr) {
+        List<Color> colors = List.of(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.DARK_BLUE);
+        return colors.get(Math.min(colors.size() - 1, colorNr));
     }
 
     @Override
