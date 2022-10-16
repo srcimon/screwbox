@@ -3,10 +3,12 @@ package de.suzufa.screwbox.core.graphics;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
@@ -29,6 +31,7 @@ public class Lightmap {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);// TODO:COnfigurable!!!
     }
 
     public Lightmap addPointLight(final Offset position, final int range, final List<Offset> area, final Color color) {
@@ -57,10 +60,24 @@ public class Lightmap {
     }
 
     public Sprite createImage() {
-        final Image result = ImageUtil.applyFilter(image, new InvertAlphaFilter());
+        final BufferedImage result = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
+//TODO: configurable !!!!! RADIUS and off
+//        return Sprite.fromImage(result);
+        int radius = 2;
+        int size = radius * 2 + 1;
+        float weight = 1.0f / (size * size);
+        float[] data = new float[size * size];
+
+        for (int i = 0; i < data.length; i++) {
+            data[i] = weight;
+        }
+
+        Kernel kernel = new Kernel(size, size, data);
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        BufferedImage filter = op.filter(result, null);
         graphics.dispose();
         // TODO: exception on second call
-        return Sprite.fromImage(result);
+        return Sprite.fromImage(filter);
     }
 
     public double resolution() {
