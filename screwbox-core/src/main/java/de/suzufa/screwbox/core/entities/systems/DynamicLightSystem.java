@@ -41,15 +41,6 @@ public class DynamicLightSystem implements EntitySystem {
         this.resolution = resolution;
     }
 
-    boolean intersects(final List<Bounds> allLightBounds, final Bounds bounds) {
-        for (final var lightBounds : allLightBounds) {
-            if (lightBounds.intersects(bounds)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
         var segments = new ArrayList<Segment>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
@@ -147,9 +138,9 @@ public class DynamicLightSystem implements EntitySystem {
     private List<Bounds> getRelevantBlockingBounds(final List<Bounds> lightBlockingBounds,
             final Bounds pointLightBounds) {
         final List<Bounds> allIntersecting = new ArrayList<>();
-        for (final var b : lightBlockingBounds) {
-            if (pointLightBounds.intersects(b)) {
-                allIntersecting.add(b);
+        for (final var bounds : lightBlockingBounds) {
+            if (pointLightBounds.intersects(bounds)) {
+                allIntersecting.add(bounds);
             }
         }
         return allIntersecting;
