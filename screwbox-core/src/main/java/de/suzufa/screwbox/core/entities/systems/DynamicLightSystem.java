@@ -80,15 +80,11 @@ public class DynamicLightSystem implements EntitySystem {
         Segment directTrace = Segment.between(source.position(), destination);
         Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
         var rotationOfDirectTrace = Angle.of(directTrace).degrees();
-        System.out.println(rotationOfDirectTrace + "..."
-                + Angle.of(Angle.ofDegrees(rotationOfDirectTrace).rotate(normalTrace)));
         return List.of(
-                Angle.ofDegrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
-                directTrace);
-//                Angle.ofDegrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
+                Angle.ofDegrees(rotationOfDirectTrace - 0.1).rotate(normalTrace),
+                directTrace,
+                Angle.ofDegrees(rotationOfDirectTrace + 0.1).rotate(normalTrace));
     }
-
-    private static double degrees = 0;
 
     @Override
     public void update(final Engine engine) {
@@ -154,13 +150,11 @@ public class DynamicLightSystem implements EntitySystem {
 
                     Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
-                    engine.graphics().world().drawLine(raycast, Color.RED);
                 }
                 lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
                         getColor(colorNr));
                 colorNr++;
             }
-            degrees += engine.loop().delta() * 10;
             engine.graphics().window().drawLightmap(lightmap);
         }
 

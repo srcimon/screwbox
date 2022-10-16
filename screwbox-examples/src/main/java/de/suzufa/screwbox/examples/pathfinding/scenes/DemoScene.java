@@ -109,6 +109,7 @@ public class DemoScene implements Scene {
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())
+                .add(new PointLightComponent(100))
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
