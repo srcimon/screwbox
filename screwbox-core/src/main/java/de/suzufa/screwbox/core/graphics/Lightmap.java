@@ -12,7 +12,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
 //TODO: javadoc and test
-public class Lightmap implements AutoCloseable {
+public class Lightmap {
 
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
 
@@ -59,13 +59,9 @@ public class Lightmap implements AutoCloseable {
 
     public Sprite createImage() {
         Image result = ImageUtil.applyFilter(image, new InvertAlphaFilter());
-        return Sprite.fromImage(result);
-    }
-
-    @Override
-    public void close() {
         graphics.dispose();
-
+        // TODO: exception on second call
+        return Sprite.fromImage(result);
     }
 
     public double resolution() {

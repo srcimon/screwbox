@@ -32,18 +32,18 @@ public class DynamicLightSystem implements EntitySystem {
     private static final Archetype LIGHT_BLOCKING = Archetype.of(
             LightBlockingComponent.class, TransformComponent.class);
 
-    private int resolution;
+    private final int resolution;
 
     public DynamicLightSystem() {
         this(6);
     }
 
-    public DynamicLightSystem(int resolution) {
+    public DynamicLightSystem(final int resolution) {
         this.resolution = resolution;
     }
 
-    boolean intersects(List<Bounds> allLightBounds, Bounds bounds) {
-        for (var lightBounds : allLightBounds) {
+    boolean intersects(final List<Bounds> allLightBounds, final Bounds bounds) {
+        for (final var lightBounds : allLightBounds) {
             if (lightBounds.intersects(bounds)) {
                 return true;
             }
@@ -51,14 +51,14 @@ public class DynamicLightSystem implements EntitySystem {
         return false;
     }
 
-    private List<Segment> getRelevantRaytraces(Bounds source, List<Bounds> colliders) {
-        List<Segment> segments = new ArrayList<>();
+    private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
+        final List<Segment> segments = new ArrayList<>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
         segments.add(Segment.between(source.position(), source.bottomRight()));
         segments.add(Segment.between(source.position(), source.topLeft()));
         segments.add(Segment.between(source.position(), source.topRight()));
-        var range = source.extents().length();
-        for (var collider : colliders) {
+        final var range = source.extents().length();
+        for (final var collider : colliders) {
             if (collider.intersects(source)) {
                 segments.addAll(segmentsOf(source, range, collider.bottomLeft()));
                 segments.addAll(segmentsOf(source, range, collider.bottomRight()));
@@ -69,99 +69,110 @@ public class DynamicLightSystem implements EntitySystem {
         segments.sort(new Comparator<Segment>() {
 
             @Override
-            public int compare(Segment o1, Segment o2) {
+            public int compare(final Segment o1, final Segment o2) {
                 return Angle.of(o1).compareTo(Angle.of(o2));
             }
         });
         return segments;
     }
 
-    private List<Segment> segmentsOf(Bounds source, double range, Vector destination) {
-        Segment directTrace = Segment.between(source.position(), destination);
-        Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
-        var rotationOfDirectTrace = Angle.of(directTrace).degrees();
+    private List<Segment> segmentsOf(final Bounds source, final double range, final Vector destination) {
+        final Segment directTrace = Segment.between(source.position(), destination);
+        final Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
+        final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
         return List.of(
-                Angle.ofDegrees(rotationOfDirectTrace - 0.1).rotate(normalTrace),
+                Angle.ofDegrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
                 directTrace,
-                Angle.ofDegrees(rotationOfDirectTrace + 0.1).rotate(normalTrace));
+                Angle.ofDegrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
     }
 
     @Override
     public void update(final Engine engine) {
-        List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
-        List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
-        List<Entity> relevantLights = new ArrayList<>();
+        final List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
+        final List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
+        final List<Entity> relevantLights = new ArrayList<>();
 
-        List<Bounds> allLightBounds = new ArrayList<>();
-        for (var light : allLights) {
-            var lightRange = light.get(PointLightComponent.class).range;
-            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
+        final List<Bounds> allLightBounds = new ArrayList<>();
+        for (final var light : allLights) {
+            final var lightRange = light.get(PointLightComponent.class).range;
+            final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
                     lightRange,
                     lightRange);
             if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
                 relevantLights.add(light);
             }
         }
-        List<Bounds> lightBlockingBounds = new ArrayList<>();
-        for (var e : lightBlocking) {
+        final List<Bounds> lightBlockingBounds = new ArrayList<>();
+        for (final var e : lightBlocking) {
             lightBlockingBounds.add(e.get(TransformComponent.class).bounds);
         }
-        for (var light : relevantLights) {
-            var lightRange = light.get(PointLightComponent.class).range;
-            var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
+        for (final var light : relevantLights) {
+            final var lightRange = light.get(PointLightComponent.class).range;
+            final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
                     lightRange,
                     lightRange);
             allLightBounds.add(pointLightBounds);
         }
-        List<Segment> allSegments = new ArrayList<>();
-        for (var blocking : lightBlocking) {
-            TransformComponent transformComponent = blocking.get(TransformComponent.class);
-            var bounds = transformComponent.bounds;
-            if (intersects(allLightBounds, bounds)) {
-                allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
-                allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
-                allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
-                allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
-            }
-        }
         int colorNr = 0;
 
-        try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
+        final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution);
 
-            for (final Entity pointLightEntity : allLights) {
-                final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
-                final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
-                final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
-                final int range = (int) pointLight.range;
-                final List<Offset> area = new ArrayList<>();
-                var pointLightBounds = Bounds.atPosition(pointLightPosition,
-                        range,
-                        range);
+        for (final Entity pointLightEntity : allLights) {
 
-                for (var raycast : getRelevantRaytraces(pointLightBounds, lightBlockingBounds)) {
-                    List<Vector> hits = new ArrayList<>();
-                    for (var s : allSegments) {
-                        Vector intersectionPoint = s.intersectionPoint(raycast);
-                        if (intersectionPoint != null) {
-                            hits.add(intersectionPoint);
-                        }
+            final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
+            final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
+            final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
+            final double range = pointLight.range;
+            final var pointLightBounds = Bounds.atPosition(pointLightPosition,
+                    range,
+                    range);
+            final var relevantBlockingBounds = getRelevantBlockingBounds(lightBlockingBounds, pointLightBounds);
+            final List<Offset> area = new ArrayList<>();
+
+            for (final var raycast : getRelevantRaytraces(pointLightBounds, relevantBlockingBounds)) {
+                final List<Vector> hits = new ArrayList<>();
+                for (final var s : getSegmentsOf(relevantBlockingBounds)) {
+                    final Vector intersectionPoint = s.intersectionPoint(raycast);
+                    if (intersectionPoint != null) {
+                        hits.add(intersectionPoint);
                     }
-                    Collections.sort(hits, new DistanceComparator(pointLightPosition));
-
-                    Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
-                    area.add(engine.graphics().windowPositionOf(endpoint));
                 }
-                lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
-                        getColor(colorNr));
-                colorNr++;
-            }
-            engine.graphics().window().drawLightmap(lightmap);
-        }
+                Collections.sort(hits, new DistanceComparator(pointLightPosition));
 
+                final Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
+                area.add(engine.graphics().windowPositionOf(endpoint));
+            }
+            lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
+                    getColor(colorNr));
+            colorNr++;
+        }
+        engine.graphics().window().drawLightmap(lightmap);
     }
 
-    private Color getColor(int colorNr) {
-        List<Color> colors = List.of(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.DARK_BLUE);
+    private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
+        final List<Segment> allSegments = new ArrayList<>();
+        for (final var bounds : allBounds) {
+            allSegments.add(Segment.between(bounds.origin(), bounds.topRight()));
+            allSegments.add(Segment.between(bounds.topRight(), bounds.bottomRight()));
+            allSegments.add(Segment.between(bounds.bottomRight(), bounds.bottomLeft()));
+            allSegments.add(Segment.between(bounds.bottomLeft(), bounds.origin()));
+        }
+        return allSegments;
+    }
+
+    private List<Bounds> getRelevantBlockingBounds(final List<Bounds> lightBlockingBounds,
+            final Bounds pointLightBounds) {
+        final List<Bounds> allIntersecting = new ArrayList<>();
+        for (final var b : lightBlockingBounds) {
+            if (pointLightBounds.intersects(b)) {
+                allIntersecting.add(b);
+            }
+        }
+        return allIntersecting;
+    }
+
+    private Color getColor(final int colorNr) {
+        final List<Color> colors = List.of(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.DARK_BLUE);
         return colors.get(Math.min(colors.size() - 1, colorNr));
     }
 
