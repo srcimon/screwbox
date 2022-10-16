@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Represents the {@link Angle} between two {@link Segment}s.
  */
-public final class Angle implements Serializable {
+public final class Angle implements Serializable, Comparable<Angle> {
 
     private static final long serialVersionUID = 1L;
 
@@ -103,4 +103,31 @@ public final class Angle implements Serializable {
         return degrees == MIN_VALUE;
     }
 
+    // TODO: doc and test
+    public static Angle of(Segment segment) {
+        return ofMomentum(segment.to().substract(segment.from()));
+    }
+
+    public static void main(String[] args) {
+        Segment between = Segment.between(Vector.of(0, 0), Vector.of(10, 0));
+        System.out.println(Angle.ofDegrees(45).rotate(between).to());
+        // BUG!!!!
+    }
+
+    // TODO: doc and test
+    public Segment rotate(Segment segment) {
+        var length = segment.length();
+        var currentAngle = Angle.of(segment);
+        var destDegrees = currentAngle.degrees + degrees();
+        double radians = Angle.ofDegrees(destDegrees).radians();
+        var destPoint = segment.from().add(
+                length * Math.sin(-radians),
+                length * Math.cos(radians));
+        return Segment.between(segment.from(), destPoint);
+    }
+
+    @Override
+    public int compareTo(Angle other) {
+        return Double.compare(degrees, other.degrees);
+    }
 }

@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.entities.systems;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Angle;
@@ -31,16 +32,13 @@ public class DynamicLightSystem implements EntitySystem {
     private static final Archetype LIGHT_BLOCKING = Archetype.of(
             LightBlockingComponent.class, TransformComponent.class);
 
-    private final double raycastAngle;
-
     private int resolution;
 
     public DynamicLightSystem() {
-        this(6, 6);
+        this(6);
     }
 
-    public DynamicLightSystem(final double raycastAngle, int resolution) {
-        this.raycastAngle = raycastAngle;
+    public DynamicLightSystem(int resolution) {
         this.resolution = resolution;
     }
 
@@ -51,6 +49,35 @@ public class DynamicLightSystem implements EntitySystem {
             }
         }
         return false;
+    }
+
+    private List<Segment> getRelevantRaytraces(Bounds source, List<Bounds> colliders) {
+        List<Segment> segments = new ArrayList<>();
+        for (var collider : colliders) {
+            if (collider.intersects(source)) {
+                segments.addAll(segmentsOf(source, collider.bottomLeft()));
+                segments.addAll(segmentsOf(source, collider.bottomRight()));
+                segments.addAll(segmentsOf(source, collider.topLeft()));
+                segments.addAll(segmentsOf(source, collider.topRight()));
+            }
+        }
+        segments.sort(new Comparator<Segment>() {
+
+            @Override
+            public int compare(Segment o1, Segment o2) {
+                return Angle.of(o1).compareTo(Angle.of(o2));
+            }
+        });
+        return segments;
+    }
+
+    private List<Segment> segmentsOf(Bounds source, Vector destination) {
+        Segment directTrace = Segment.between(source.position(), destination);
+        return List.of(
+//                Angle.ofDegrees(-0.1).rotate(directTrace),
+                directTrace
+//                Angle.ofDegrees(0.1).rotate(directTrace)
+        );
     }
 
     @Override
@@ -68,6 +95,10 @@ public class DynamicLightSystem implements EntitySystem {
             if (engine.graphics().world().visibleArea().intersects(pointLightBounds)) {
                 relevantLights.add(light);
             }
+        }
+        List<Bounds> lightBlockingBounds = new ArrayList<>();
+        for (var e : lightBlocking) {
+            lightBlockingBounds.add(e.get(TransformComponent.class).bounds);
         }
         for (var light : relevantLights) {
             var lightRange = light.get(PointLightComponent.class).range;
@@ -88,6 +119,7 @@ public class DynamicLightSystem implements EntitySystem {
             }
         }
         int colorNr = 0;
+
         try (final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution)) {
 
             for (final Entity pointLightEntity : allLights) {
@@ -96,15 +128,11 @@ public class DynamicLightSystem implements EntitySystem {
                 final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
                 final int range = (int) pointLight.range;
                 final List<Offset> area = new ArrayList<>();
-                for (double degrees = 0; degrees < 360; degrees += raycastAngle) {
-                    // TODO: make utility method in Angle for this:
-                    double radians = Angle.ofDegrees(degrees).radians();
-                    Vector raycastEnd = Vector.$(
-                            pointLightPosition.x() + (range / 2 * Math.sin(radians)),
-                            pointLightPosition.y() + (range / 2 * -Math.cos(radians)));
+                var pointLightBounds = Bounds.atPosition(pointLightPosition,
+                        range,
+                        range);
 
-                    Segment raycast = Segment.between(pointLightPosition, raycastEnd);
-
+                for (var raycast : getRelevantRaytraces(pointLightBounds, lightBlockingBounds)) {
                     List<Vector> hits = new ArrayList<>();
                     for (var s : allSegments) {
                         Vector intersectionPoint = s.intersectionPoint(raycast);
@@ -114,8 +142,9 @@ public class DynamicLightSystem implements EntitySystem {
                     }
                     Collections.sort(hits, new DistanceComparator(pointLightPosition));
 
-                    Vector endpoint = hits.isEmpty() ? raycastEnd : hits.get(0);
+                    Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
+                    engine.graphics().world().drawCircle(endpoint, 2);
                 }
                 lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
                         getColor(colorNr));
@@ -124,6 +153,7 @@ public class DynamicLightSystem implements EntitySystem {
 
             engine.graphics().window().drawLightmap(lightmap);
         }
+
     }
 
     private Color getColor(int colorNr) {
