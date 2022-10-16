@@ -51,7 +51,7 @@ public class DynamicLightSystem implements EntitySystem {
     }
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
-        final List<Segment> segments = new ArrayList<>();
+        var segments = new ArrayList<Segment>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
         segments.add(Segment.between(source.position(), source.bottomRight()));
         segments.add(Segment.between(source.position(), source.topLeft()));
@@ -87,9 +87,8 @@ public class DynamicLightSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
         final List<Entity> relevantLights = new ArrayList<>();
-        for (final var light : allLights) {
+        for (final var light : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
             final var lightRange = light.get(PointLightComponent.class).range;
             final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
                     lightRange,
@@ -102,18 +101,9 @@ public class DynamicLightSystem implements EntitySystem {
         for (final var e : engine.entities().fetchAll(LIGHT_BLOCKING)) {
             lightBlockingBounds.add(e.get(TransformComponent.class).bounds);
         }
-        final List<Bounds> allLightBounds = new ArrayList<>();
-        for (final var light : relevantLights) {
-            final var lightRange = light.get(PointLightComponent.class).range;
-            final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
-                    lightRange,
-                    lightRange);
-            allLightBounds.add(pointLightBounds);
-        }
 
         final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution);
-
-        for (final Entity pointLightEntity : allLights) {
+        for (final Entity pointLightEntity : relevantLights) {
 
             final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
             final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();

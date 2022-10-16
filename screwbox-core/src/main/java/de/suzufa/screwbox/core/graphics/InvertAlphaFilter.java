@@ -7,14 +7,14 @@ import java.awt.image.RGBImageFilter;
 class InvertAlphaFilter extends RGBImageFilter {
 
     @Override
-    public int filterRGB(int x, int y, int rgb) {
-        Color currentColor = new Color(rgb, true);
-        int alpha = currentColor.getAlpha();
+    public int filterRGB(final int x, final int y, final int rgb) {
+        final Color currentColor = new Color(rgb, true);
+        final int alpha = currentColor.getAlpha();
         return new Color(
                 currentColor.getRed(),
                 currentColor.getGreen(),
                 currentColor.getBlue(),
-                Math.max(255 - alpha, 40)).getRGB();
+                Math.max(255 - alpha, 20)).getRGB();
     }
 
 }
