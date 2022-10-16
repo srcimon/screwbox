@@ -37,6 +37,9 @@ public class CombineLightEmittersSystem implements EntitySystem {
     }
 
     private boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
+        if (first == second) {
+            return false;
+        }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.get(TransformComponent.class).bounds,
                 second.get(TransformComponent.class).bounds);
         if (result.isPresent()) {
