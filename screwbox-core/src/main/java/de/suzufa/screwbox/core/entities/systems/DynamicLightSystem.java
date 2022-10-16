@@ -35,7 +35,7 @@ public class DynamicLightSystem implements EntitySystem {
     private final int resolution;
 
     public DynamicLightSystem() {
-        this(6);
+        this(4);
     }
 
     public DynamicLightSystem(final int resolution) {
