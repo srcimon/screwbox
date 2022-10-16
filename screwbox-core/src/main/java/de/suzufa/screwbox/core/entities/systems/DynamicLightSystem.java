@@ -17,7 +17,6 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
@@ -88,11 +87,8 @@ public class DynamicLightSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> lightBlocking = engine.entities().fetchAll(LIGHT_BLOCKING);
         final List<Entity> allLights = engine.entities().fetchAll(POINTLIGHT_EMITTERS);
         final List<Entity> relevantLights = new ArrayList<>();
-
-        final List<Bounds> allLightBounds = new ArrayList<>();
         for (final var light : allLights) {
             final var lightRange = light.get(PointLightComponent.class).range;
             final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
@@ -103,9 +99,10 @@ public class DynamicLightSystem implements EntitySystem {
             }
         }
         final List<Bounds> lightBlockingBounds = new ArrayList<>();
-        for (final var e : lightBlocking) {
+        for (final var e : engine.entities().fetchAll(LIGHT_BLOCKING)) {
             lightBlockingBounds.add(e.get(TransformComponent.class).bounds);
         }
+        final List<Bounds> allLightBounds = new ArrayList<>();
         for (final var light : relevantLights) {
             final var lightRange = light.get(PointLightComponent.class).range;
             final var pointLightBounds = Bounds.atPosition(light.get(TransformComponent.class).bounds.position(),
@@ -113,7 +110,6 @@ public class DynamicLightSystem implements EntitySystem {
                     lightRange);
             allLightBounds.add(pointLightBounds);
         }
-        int colorNr = 0;
 
         final Lightmap lightmap = new Lightmap(engine.graphics().window().size(), resolution);
 
@@ -122,10 +118,9 @@ public class DynamicLightSystem implements EntitySystem {
             final PointLightComponent pointLight = pointLightEntity.get(PointLightComponent.class);
             final Vector pointLightPosition = pointLightEntity.get(TransformComponent.class).bounds.position();
             final Offset offset = engine.graphics().windowPositionOf(pointLightPosition);
-            final double range = pointLight.range;
             final var pointLightBounds = Bounds.atPosition(pointLightPosition,
-                    range,
-                    range);
+                    pointLight.range,
+                    pointLight.range);
             final var relevantBlockingBounds = getRelevantBlockingBounds(lightBlockingBounds, pointLightBounds);
             final List<Offset> area = new ArrayList<>();
 
@@ -142,9 +137,8 @@ public class DynamicLightSystem implements EntitySystem {
                 final Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
                 area.add(engine.graphics().windowPositionOf(endpoint));
             }
-            lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
-                    getColor(colorNr));
-            colorNr++;
+            lightmap.addPointLight(offset, (int) (pointLight.range * engine.graphics().cameraZoom()), area,
+                    pointLight.color);
         }
         engine.graphics().window().drawLightmap(lightmap);
     }
@@ -169,11 +163,6 @@ public class DynamicLightSystem implements EntitySystem {
             }
         }
         return allIntersecting;
-    }
-
-    private Color getColor(final int colorNr) {
-        final List<Color> colors = List.of(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.DARK_BLUE);
-        return colors.get(Math.min(colors.size() - 1, colorNr));
     }
 
     @Override

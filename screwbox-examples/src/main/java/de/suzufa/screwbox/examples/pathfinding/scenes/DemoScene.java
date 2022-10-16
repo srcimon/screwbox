@@ -28,6 +28,7 @@ import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -96,7 +97,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
-                .add(new PointLightComponent(120))
+                .add(new PointLightComponent(120, Color.RED))
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
@@ -109,7 +110,7 @@ public class DemoScene implements Scene {
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())
-                .add(new PointLightComponent(100))
+                .add(new PointLightComponent(100, Color.YELLOW))
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }

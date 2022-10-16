@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.entities.components;
 
 import de.suzufa.screwbox.core.entities.Component;
+import de.suzufa.screwbox.core.graphics.Color;
 
 public class PointLightComponent implements Component {
 
@@ -8,7 +9,10 @@ public class PointLightComponent implements Component {
 
     public double range;
 
-    public PointLightComponent(double range) {
+    public Color color;
+
+    public PointLightComponent(double range, Color color) {
         this.range = range;
+        this.color = color;
     }
 }
