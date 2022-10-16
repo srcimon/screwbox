@@ -63,7 +63,7 @@ public class Lightmap {
         final BufferedImage result = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
 //TODO: configurable !!!!! RADIUS and off
 //        return Sprite.fromImage(result);
-        int radius = 2;
+        int radius = 2;// TODO: cutoff edges to avoid shit
         int size = radius * 2 + 1;
         float weight = 1.0f / (size * size);
         float[] data = new float[size * size];
@@ -73,7 +73,7 @@ public class Lightmap {
         }
 
         Kernel kernel = new Kernel(size, size, data);
-        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);// TODO: cutoff edges to avoid shit
         BufferedImage filter = op.filter(result, null);
         graphics.dispose();
         // TODO: exception on second call
