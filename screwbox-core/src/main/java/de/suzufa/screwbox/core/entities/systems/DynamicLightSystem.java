@@ -71,13 +71,12 @@ public class DynamicLightSystem implements EntitySystem {
         return segments;
     }
 
-    private List<Segment> segmentsOf(Bounds source, Vector destination) {
+    private List<Segment> segmentsOf(Bounds source, double range, Vector destination) {
         Segment directTrace = Segment.between(source.position(), destination);
         return List.of(
-//                Angle.ofDegrees(-0.1).rotate(directTrace),
-                directTrace
-//                Angle.ofDegrees(0.1).rotate(directTrace)
-        );
+                Angle.ofDegrees(-0.1).rotate(directTrace).stretchToLength(range),
+                directTrace,
+                Angle.ofDegrees(0.1).rotate(directTrace).stretchToLength(range));
     }
 
     @Override
@@ -144,7 +143,7 @@ public class DynamicLightSystem implements EntitySystem {
 
                     Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
                     area.add(engine.graphics().windowPositionOf(endpoint));
-                    engine.graphics().world().drawCircle(endpoint, 2);
+                    engine.graphics().world().drawCircle(raycast.to(), 2, Color.RED);
                 }
                 lightmap.addPointLight(offset, (int) (range * engine.graphics().cameraZoom()), area,
                         getColor(colorNr));
