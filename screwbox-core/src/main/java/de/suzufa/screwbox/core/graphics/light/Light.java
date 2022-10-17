@@ -13,4 +13,7 @@ public interface Light {
     Light updateObstacles(List<Bounds> obstacles);
 
     List<Bounds> obstacles();
+
+    // TODO: lens flares
+    // TODO: anamorphic lens flares
 }
