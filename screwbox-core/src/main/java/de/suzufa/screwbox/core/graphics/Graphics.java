@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.graphics.light.Light;
 
 public interface Graphics {
 
@@ -11,6 +12,8 @@ public interface Graphics {
     Window window();
 
     World world();
+
+    Light light();
 
     /**
      * Updates the camera zoom nearly to the given value. The actual zoom value may
