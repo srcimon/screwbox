@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import de.suzufa.screwbox.core.Percentage;
@@ -7,7 +8,9 @@ import de.suzufa.screwbox.core.Percentage;
 /**
  * Used to store color information used in {@link Graphics}.
  */
-public final class Color {
+public final class Color implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final int r;
     private final int g;
