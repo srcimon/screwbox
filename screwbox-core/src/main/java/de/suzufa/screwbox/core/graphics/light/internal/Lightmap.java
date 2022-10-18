@@ -19,7 +19,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
-public class LightmapNewAndCool {
+public class Lightmap {
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
@@ -28,7 +28,7 @@ public class LightmapNewAndCool {
     private final Graphics2D graphics;
     private final int resolution;
 
-    public LightmapNewAndCool(final Dimension size, final int resolution, final boolean isAntialiased) {
+    public Lightmap(final Dimension size, final int resolution, final boolean isAntialiased) {
         this.image = new BufferedImage(
                 size.width() / resolution + 1, // to avoid glitches add 1
                 size.height() / resolution + 1, // to avoid glitches add 1
@@ -53,8 +53,8 @@ public class LightmapNewAndCool {
                 position.y() / resolution,
                 range / resolution / 2,
                 FRACTIONS, colors);
-        applyOpacityConfig(color);
         graphics.setPaint(paint);
+        applyOpacityConfig(color);
         graphics.fillPolygon(polygon);
     }
 
@@ -66,8 +66,8 @@ public class LightmapNewAndCool {
                 position.y() / resolution,
                 range / resolution / 2,
                 FRACTIONS, colors);
-        applyOpacityConfig(color);
         graphics.setPaint(paint);
+        applyOpacityConfig(color);
         graphics.fillOval(
                 position.x() / resolution - range / resolution / 2,
                 position.y() / resolution - range / resolution / 2,

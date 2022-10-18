@@ -29,7 +29,7 @@ public class DefaultLight implements Light, Updatable {
     private Percentage ambientLight = Percentage.min();
     private int resolution = 4;
     private boolean isUseAntialiasing = true;
-    private LightmapNewAndCool lightmap;
+    private Lightmap lightmap;
     private DefaultWorld world;
 
     private List<Runnable> drawingTasks = new ArrayList<>();
@@ -113,7 +113,7 @@ public class DefaultLight implements Light, Updatable {
     }
 
     private void initializeLightmap() {
-        lightmap = new LightmapNewAndCool(window.size(), resolution, isUseAntialiasing);
+        lightmap = new Lightmap(window.size(), resolution, isUseAntialiasing);
     }
 
     @Override
