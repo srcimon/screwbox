@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.light.Light;
 
-public class DynamicLightSystemNewAndCoolPrepare implements EntitySystem {
+public class CreateLightSystem implements EntitySystem {
 
     private static final Archetype POINTLIGHT_EMITTERS = Archetype.of(
             PointLightComponent.class, TransformComponent.class);

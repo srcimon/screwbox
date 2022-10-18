@@ -58,6 +58,23 @@ public class LightmapNewAndCool {
         graphics.fillPolygon(polygon);
     }
 
+    public void addSpotLight(final Offset position, final int range, final Color color) {
+        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
+
+        final RadialGradientPaint paint = new RadialGradientPaint(
+                position.x() / resolution,
+                position.y() / resolution,
+                range / resolution / 2,
+                FRACTIONS, colors);
+        applyOpacityConfig(color);
+        graphics.setPaint(paint);
+        graphics.fillOval(
+                position.x() / resolution - range / resolution / 2,
+                position.y() / resolution - range / resolution / 2,
+                range / resolution,
+                range / resolution);
+    }
+
     public Sprite createSprite() {
         final BufferedImage result = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
 //TODO: configurable !!!!! RADIUS and off

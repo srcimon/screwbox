@@ -22,7 +22,7 @@ import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementDebugSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
-import de.suzufa.screwbox.core.entities.systems.DynamicLightSystemNewAndCool;
+import de.suzufa.screwbox.core.entities.systems.DrawLightSystem;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
@@ -58,7 +58,7 @@ public class DemoScene implements Scene {
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
-                .add(new DynamicLightSystemNewAndCool())
+                .add(new DrawLightSystem())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
                 .add(new LogFpsSystem())

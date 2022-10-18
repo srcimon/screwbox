@@ -4,7 +4,6 @@ import static de.suzufa.screwbox.core.graphics.Offset.origin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -57,18 +56,20 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light addPointLight(final Vector position, final double range, final Color color) {
-        drawingTasks.add(new Runnable() {
+        Bounds lightBox = Bounds.atPosition(position, range, range);
+        if (isVisible(lightBox)) {
+            drawingTasks.add(new Runnable() {
 
-            @Override
-            public void run() {
-                Bounds lightBox = Bounds.atPosition(position, range, range);
-                if (isVisible(lightBox)) {
+                @Override
+                public void run() {
                     List<Offset> area = lightPhysics.calculateArea(lightBox);
                     lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
+//                    lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color);
                 }
 
-            }
-        });
+            });
+        }
+        // TODO: invocations can get Lost here!!!!
         if (currentTaskWorker == null) {
 
             List<Runnable> tasks = new ArrayList<>(drawingTasks);
@@ -87,7 +88,6 @@ public class DefaultLight implements Light, Updatable {
             };
             currentTaskWorker = executor.submit(t);
         }
-
         return this;
     }
 
@@ -98,7 +98,6 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public void update() {
         initializeLightmap();
-
     }
 
     @Override
@@ -131,21 +130,16 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light drawLightmap() {
-        if (currentTaskWorker != null) {
+        var taskWorker = currentTaskWorker;
+        if (taskWorker != null) {
             try {
-                currentTaskWorker.get();
+                taskWorker.get();
             } catch (InterruptedException | ExecutionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        Future<Sprite> submit = executor.submit(new Callable<Sprite>() {
-
-            @Override
-            public Sprite call() throws Exception {
-                return lightmap.createSprite();
-            }
-        });
+        Future<Sprite> submit = executor.submit(() -> lightmap.createSprite());
         window.drawSprite(submit, origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
         return this;
     }

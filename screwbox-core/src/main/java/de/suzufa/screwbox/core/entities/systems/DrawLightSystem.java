@@ -4,7 +4,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 
-public class DynamicLightSystemNewAndCool implements EntitySystem {
+public class DrawLightSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
