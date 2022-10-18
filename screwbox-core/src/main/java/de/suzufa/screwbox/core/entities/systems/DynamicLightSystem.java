@@ -22,10 +22,9 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
+@Deprecated
 public class DynamicLightSystem implements EntitySystem {
 
-    // TODO: What classes to see? / make lightmap part of the engine.graphics() /
-    // async rendering of image
     private static final Archetype POINTLIGHT_EMITTERS = Archetype.of(
             PointLightComponent.class, TransformComponent.class);
 

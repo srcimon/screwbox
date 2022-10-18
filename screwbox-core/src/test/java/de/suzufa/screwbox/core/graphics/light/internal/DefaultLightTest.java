@@ -14,9 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
@@ -24,12 +27,18 @@ class DefaultLightTest {
 
     ExecutorService executor;
 
+    @Mock
+    Window window;
+
+    @Mock
+    DefaultWorld world;
+
     DefaultLight light;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(executor);
+        light = new DefaultLight(window, world, executor);
     }
 
     @Test

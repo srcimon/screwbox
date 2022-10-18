@@ -25,12 +25,12 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultWorld world;
     private final DefaultLight light;
 
-    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window,
+    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window, DefaultWorld world,
             final DefaultLight light) {
         this.configuration = configuration;
         this.window = window;
         this.light = light;
-        world = new DefaultWorld(window);
+        this.world = world;
     }
 
     @Override
