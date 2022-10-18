@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.graphics.light;
+package de.suzufa.screwbox.core.graphics.light.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 
@@ -58,7 +58,7 @@ public class LightmapNewAndCool {
         graphics.fillPolygon(polygon);
     }
 
-    public Sprite createImage() {
+    public Sprite createSprite() {
         final BufferedImage result = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
 //TODO: configurable !!!!! RADIUS and off
 //        return Sprite.fromImage(result);
@@ -81,6 +81,10 @@ public class LightmapNewAndCool {
 
     private void applyOpacityConfig(final Color color) {
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, color.opacity().valueFloat()));
+    }
+
+    public int resolution() {
+        return resolution;
     }
 
 }

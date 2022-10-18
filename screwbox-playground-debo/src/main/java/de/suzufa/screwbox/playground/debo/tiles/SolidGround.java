@@ -4,7 +4,7 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
-import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
+import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.StaticLightBlockerMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
@@ -20,7 +20,7 @@ public class SolidGround implements Converter<Tile> {
                 new TransformComponent(tile.renderBounds()),
                 new StaticMarkerComponent(),
                 new StaticLightBlockerMarkerComponent(),
-                new LightBlockingComponent(),
+                new LightObstacleComponent(),
                 new ColliderComponent(500, Percentage.min()));
     }
 

@@ -194,6 +194,6 @@ public class DefaultWorld implements World {
     }
 
     public int toDistance(double distance) {
-        return (int) Math.round(distance / zoom);
+        return (int) Math.round(distance * zoom);
     }
 }

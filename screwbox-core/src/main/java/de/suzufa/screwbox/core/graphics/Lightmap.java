@@ -13,7 +13,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
-//TODO: javadoc and test
+@Deprecated
 public class Lightmap {
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);

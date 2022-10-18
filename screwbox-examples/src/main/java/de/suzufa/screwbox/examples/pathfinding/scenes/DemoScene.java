@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
-import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
+import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
@@ -22,7 +22,7 @@ import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementDebugSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
-import de.suzufa.screwbox.core.entities.systems.DynamicLightSystem;
+import de.suzufa.screwbox.core.entities.systems.DynamicLightSystemNewAndCool;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
@@ -58,7 +58,7 @@ public class DemoScene implements Scene {
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
-                .add(new DynamicLightSystem())
+                .add(new DynamicLightSystemNewAndCool())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
                 .add(new LogFpsSystem())
@@ -124,7 +124,7 @@ public class DemoScene implements Scene {
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
                 .add(new PathfindingBlockingComponent())
-                .add(new LightBlockingComponent())
+                .add(new LightObstacleComponent())
                 .add(new ColliderComponent());
     }
 

@@ -24,7 +24,6 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
-import de.suzufa.screwbox.core.graphics.Lightmap;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.PredefinedCursor;
@@ -171,12 +170,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
         return this;
-    }
-
-    @Override
-    public Window drawLightmap(Lightmap lightmap) {
-        return drawSprite(lightmap.createImage(), Offset.origin(), lightmap.resolution(), Percentage.of(0.9),
-                Angle.none());
     }
 
     @Override
@@ -337,4 +330,5 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Dimension toDimension(final DisplayMode screenSize) {
         return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
     }
+
 }

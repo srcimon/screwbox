@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.LightBlockingComponent;
+import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Lightmap;
@@ -29,7 +29,7 @@ public class DynamicLightSystem implements EntitySystem {
             PointLightComponent.class, TransformComponent.class);
 
     private static final Archetype LIGHT_BLOCKING = Archetype.of(
-            LightBlockingComponent.class, TransformComponent.class);
+            LightObstacleComponent.class, TransformComponent.class);
 
     private final int resolution;
 
@@ -120,7 +120,7 @@ public class DynamicLightSystem implements EntitySystem {
             lightmap.addPointLight(offset, (int) (pointLight.range * engine.graphics().cameraZoom()), area,
                     pointLight.color);
         }
-        engine.graphics().window().drawLightmap(lightmap);
+//        engine.graphics().window().drawLightmap(lightmap);
     }
 
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {

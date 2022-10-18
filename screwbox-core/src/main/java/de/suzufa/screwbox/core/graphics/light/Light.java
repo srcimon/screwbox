@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.graphics.light;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 
@@ -19,11 +20,16 @@ public interface Light {
 
     Light setUseAntialiasing(boolean useAntialiasing);
 
+    Light setAmbientLight(Percentage ambientLight);
+
+    Percentage ambientLight();
+
     boolean isUseAntialiasing();
 
     List<Bounds> obstacles();
 
-    public LightmapNewAndCool lightmap();
+    Light drawLightmap();
+
     // TODO: lens flares
     // TODO: anamorphic lens flares
 }

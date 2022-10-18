@@ -10,11 +10,11 @@ public class PathfindingExample {
         Engine engine = ScrewBox.createEngine("Pathfinding Example");
 
         engine.scenes().add(new DemoScene("maze/map.json"));
-
+        engine.loop().setTargetFps(99999);// TODO remove
         engine.start(DemoScene.class);
     }
 //TODO: add LightDebugSystem()
     // TODO: this is the plan: engine.graphics().lightmap().addPointLight /
-    // addNeonLight, addBlock
+    // addNeonLight, add Spot, add ray
 
 }
