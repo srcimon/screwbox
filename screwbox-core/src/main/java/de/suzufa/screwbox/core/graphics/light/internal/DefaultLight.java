@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.light.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -13,7 +15,7 @@ public class DefaultLight implements Light {
 
     private final ExecutorService executor;
 
-    List<Bounds> obstacles = new ArrayList<>();
+    private List<Bounds> obstacles = new ArrayList<>();
 
     public DefaultLight(final ExecutorService executor) {
         this.executor = executor;
@@ -21,7 +23,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light updateObstacles(final List<Bounds> obstacles) {
-        this.obstacles = obstacles;
+        this.obstacles = requireNonNull(obstacles, "obstacles must not be null");
         return this;
     }
 
@@ -31,7 +33,7 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addPointLight(Vector position, double range, Color color) {
+    public Light addPointLight(final Vector position, final double range, final Color color) {
         // TODO Auto-generated method stub
         return null;
     }
