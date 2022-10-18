@@ -2,8 +2,12 @@ package de.suzufa.screwbox.core.graphics.light.internal;
 
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
@@ -29,6 +33,9 @@ public class DefaultLight implements Light, Updatable {
     private LightmapNewAndCool lightmap;
     private DefaultWorld world;
 
+    private List<Runnable> drawingTasks = new ArrayList<>();
+    Future<?> currentTaskWorker = null;
+
     public DefaultLight(final Window window, final DefaultWorld world, final ExecutorService executor) {
         this.executor = executor;
         this.window = window;
@@ -50,10 +57,35 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light addPointLight(final Vector position, final double range, final Color color) {
-        Bounds lightBox = Bounds.atPosition(position, range, range);
-        if (isVisible(lightBox)) {
-            List<Offset> area = lightPhysics.calculateArea(lightBox);
-            lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
+        drawingTasks.add(new Runnable() {
+
+            @Override
+            public void run() {
+                Bounds lightBox = Bounds.atPosition(position, range, range);
+                if (isVisible(lightBox)) {
+                    List<Offset> area = lightPhysics.calculateArea(lightBox);
+                    lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
+                }
+
+            }
+        });
+        if (currentTaskWorker == null) {
+
+            List<Runnable> tasks = new ArrayList<>(drawingTasks);
+            drawingTasks.clear();
+
+            var t = new Runnable() {
+
+                @Override
+                public void run() {
+
+                    for (Runnable runnable : tasks) {
+                        runnable.run();
+                    }
+                    currentTaskWorker = null;
+                }
+            };
+            currentTaskWorker = executor.submit(t);
         }
 
         return this;
@@ -99,8 +131,22 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light drawLightmap() {
-        Sprite sprite = lightmap.createSprite();
-        window.drawSprite(sprite, origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
+        if (currentTaskWorker != null) {
+            try {
+                currentTaskWorker.get();
+            } catch (InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        Future<Sprite> submit = executor.submit(new Callable<Sprite>() {
+
+            @Override
+            public Sprite call() throws Exception {
+                return lightmap.createSprite();
+            }
+        });
+        window.drawSprite(submit, origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
         return this;
     }
 

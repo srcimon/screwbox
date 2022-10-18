@@ -13,7 +13,8 @@ import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineLightEmittersSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
-import de.suzufa.screwbox.core.entities.systems.DynamicLightSystem;
+import de.suzufa.screwbox.core.entities.systems.DynamicLightSystemNewAndCool;
+import de.suzufa.screwbox.core.entities.systems.DynamicLightSystemNewAndCoolPrepare;
 import de.suzufa.screwbox.core.entities.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entities.systems.GravitySystem;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
@@ -107,7 +108,8 @@ public class GameScene implements Scene {
         entities.add(
                 new CombineLightEmittersSystem(),
                 new LogFpsSystem(),
-                new DynamicLightSystem(),
+                new DynamicLightSystemNewAndCoolPrepare(),
+                new DynamicLightSystemNewAndCool(),
                 new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlattformSystem(),
