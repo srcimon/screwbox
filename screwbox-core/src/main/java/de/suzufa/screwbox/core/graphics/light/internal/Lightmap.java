@@ -8,18 +8,15 @@ import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.InvertAlphaFilter;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
-public class Lightmap {
+public class Lightmap implements AutoCloseable {
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
@@ -40,7 +37,7 @@ public class Lightmap {
         }
     }
 
-    public void addPointLight(final Offset position, int range, List<Offset> area, final Color color) {
+    public void addPointLight(final Offset position, final int range, final List<Offset> area, final Color color) {
         final Polygon polygon = new Polygon();
         for (final var node : area) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
@@ -75,25 +72,8 @@ public class Lightmap {
                 range / resolution);
     }
 
-    public Sprite createSprite() {
-        final BufferedImage result = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
-//TODO: configurable !!!!! RADIUS and off
-//        return Sprite.fromImage(result);
-        int radius = 2;// TODO: cutoff edges to avoid shit
-        int size = radius * 2 + 1;
-        float weight = 1.0f / (size * size);
-        float[] data = new float[size * size];
-
-        for (int i = 0; i < data.length; i++) {
-            data[i] = weight;
-        }
-
-        Kernel kernel = new Kernel(size, size, data);
-        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);// TODO: cutoff edges to avoid shit
-        BufferedImage filter = op.filter(result, null);
-        graphics.dispose();// TODO: REALLY?
-        // TODO: exception on second call
-        return Sprite.fromImage(filter);
+    public BufferedImage createSprite() {
+        return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }
 
     private void applyOpacityConfig(final Color color) {
@@ -102,6 +82,12 @@ public class Lightmap {
 
     public int resolution() {
         return resolution;
+    }
+
+    @Override
+    public void close() {
+        graphics.dispose();
+
     }
 
 }

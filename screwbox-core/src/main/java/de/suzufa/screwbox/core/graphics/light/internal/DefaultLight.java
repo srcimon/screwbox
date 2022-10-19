@@ -2,12 +2,14 @@ package de.suzufa.screwbox.core.graphics.light.internal;
 
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
@@ -32,7 +34,7 @@ public class DefaultLight implements Light, Updatable {
     private boolean isUseAntialiasing = true;
     private Lightmap lightmap;
     private DefaultWorld world;
-
+    private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(2);
     private List<Future<Runnable>> drawingTasks = new ArrayList<>();
     Future<Sprite> sprite = null;
 
@@ -102,6 +104,9 @@ public class DefaultLight implements Light, Updatable {
     }
 
     private void initializeLightmap() {
+        if (lightmap != null) {
+            lightmap.close();
+        }
         lightmap = new Lightmap(window.size(), resolution, isUseAntialiasing);
     }
 
@@ -138,7 +143,9 @@ public class DefaultLight implements Light, Updatable {
                 drawingTask.get().run();
             }
             drawingTasks.clear();
-            return lightmap.createSprite();
+            var image = lightmap.createSprite();
+            var filtered = postFilter.apply(image);
+            return Sprite.fromImage(filtered);
         });
         return this;
     }
@@ -153,6 +160,13 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Percentage ambientLight() {
         return ambientLight;
+    }
+
+    @Override
+    public Light setBlur(int blur) {
+        // TODO: validate blur
+        this.postFilter = new BlurImageFilter(blur);
+        return this;
     }
 
 }

@@ -30,6 +30,8 @@ public interface Light {
 
     Light drawLightmap();
 
+    Light setBlur(int blur);
+
     Light seal();
 
     // TODO: lens flares
