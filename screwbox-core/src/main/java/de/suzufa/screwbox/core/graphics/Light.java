@@ -1,11 +1,10 @@
-package de.suzufa.screwbox.core.graphics.light;
+package de.suzufa.screwbox.core.graphics;
 
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.Color;
 
 //TODO: javadoc and tests
 public interface Light {

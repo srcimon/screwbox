@@ -248,8 +248,11 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public void configurationChanged() {
-        if (frame.isVisible()) {
+    public void configurationChanged(ConfigurationProperty changedProperty) {
+        boolean mustReopenWindow = List.of(ConfigurationProperty.WINDOW_MODE, ConfigurationProperty.RESOLUTION)
+                .contains(changedProperty);
+
+        if (mustReopenWindow && frame.isVisible()) {
             close();
             open();
         }

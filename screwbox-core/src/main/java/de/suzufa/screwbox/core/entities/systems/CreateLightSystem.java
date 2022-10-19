@@ -13,7 +13,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.light.Light;
+import de.suzufa.screwbox.core.graphics.Light;
 
 public class CreateLightSystem implements EntitySystem {
 

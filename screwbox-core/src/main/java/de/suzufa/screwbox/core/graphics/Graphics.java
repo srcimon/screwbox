@@ -3,7 +3,6 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.light.Light;
 
 public interface Graphics {
 

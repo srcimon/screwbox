@@ -11,11 +11,10 @@ import de.suzufa.screwbox.core.graphics.AspectRatio;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
-import de.suzufa.screwbox.core.graphics.light.Light;
-import de.suzufa.screwbox.core.graphics.light.internal.DefaultLight;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultGraphics implements Graphics, Updatable {

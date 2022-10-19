@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty;
+
 public class GraphicsConfiguration {
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
@@ -13,12 +15,12 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the antialising state. Antialising is used to draw with system fonts and
-     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising costs
-     * some fps.
+     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising may cost
+     * some precious fps.
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
         this.useAntialiasing = useAntialiasing;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.ANTIALIASING);
         return this;
     }
 
@@ -29,7 +31,7 @@ public class GraphicsConfiguration {
 
     public GraphicsConfiguration setResolution(final Dimension resolution) {
         this.resolution = resolution;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.RESOLUTION);
         return this;
     }
 
@@ -50,7 +52,7 @@ public class GraphicsConfiguration {
 
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.WINDOW_MODE);
         return this;
     }
 
@@ -79,9 +81,9 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
-    private void notifyListeners() {
+    private void notifyListeners(ConfigurationProperty changedProperty) {
         for (final var listener : listeners) {
-            listener.configurationChanged();
+            listener.configurationChanged(changedProperty);
         }
     }
 

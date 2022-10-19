@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.graphics.light.internal;
+package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 
@@ -16,11 +16,10 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
-import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
-import de.suzufa.screwbox.core.graphics.light.Light;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable {

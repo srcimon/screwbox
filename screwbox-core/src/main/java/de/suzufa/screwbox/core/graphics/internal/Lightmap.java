@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.graphics.light.internal;
+package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 
@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.InvertAlphaFilter;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.internal.ImageUtil;
 
 public class Lightmap implements AutoCloseable {
 

@@ -18,5 +18,4 @@ public class CircleTransition implements ScreenTransition {
         final int diameter = (int) (maxRadius * progress.invert().value());
         window.drawCircle(offset, diameter, Color.BLACK);
     }
-
 }

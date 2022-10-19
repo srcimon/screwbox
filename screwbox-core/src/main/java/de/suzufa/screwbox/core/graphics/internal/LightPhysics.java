@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.graphics.light.internal;
+package de.suzufa.screwbox.core.graphics.internal;
 
 import static java.util.Objects.requireNonNull;
 
@@ -12,7 +12,6 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 

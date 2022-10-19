@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty;
+
 @ExtendWith(MockitoExtension.class)
 class GraphicsConfigurationTest {
 
@@ -29,7 +31,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setUseAntialiasing(true);
 
         assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
-        verify(graphicsConfigListener).configurationChanged();
+        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.ANTIALIASING);
     }
 
     @Test
@@ -37,7 +39,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Dimension.of(640, 480));
-        verify(graphicsConfigListener).configurationChanged();
+        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.RESOLUTION);
     }
 
     @Test
@@ -49,7 +51,7 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged();
+        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.WINDOW_MODE);
     }
 
     @Test
@@ -61,6 +63,6 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialising();
 
         assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged();
+        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.WINDOW_MODE);
     }
 }
