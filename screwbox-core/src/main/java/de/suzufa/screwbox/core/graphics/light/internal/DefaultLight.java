@@ -164,8 +164,11 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light setBlur(int blur) {
-        // TODO: validate blur
-        this.postFilter = new BlurImageFilter(blur);
+        if (blur == 0) {
+            this.postFilter = doNothing -> doNothing;
+        } else {
+            this.postFilter = new BlurImageFilter(blur);
+        }
         return this;
     }
 

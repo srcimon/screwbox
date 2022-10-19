@@ -7,16 +7,9 @@ import java.util.function.Function;
 
 public class BlurImageFilter implements Function<BufferedImage, BufferedImage> {
 
-    private final int radius;
+    private final ConvolveOp convolveOperation;
 
     public BlurImageFilter(final int radius) {
-        this.radius = radius;
-    }
-
-    // TODO: cutoff edges to avoid shit
-
-    @Override
-    public BufferedImage apply(final BufferedImage source) {
         final int size = radius * 2 + 1;
         final float weight = 1.0f / (size * size);
         final float[] data = new float[size * size];
@@ -26,8 +19,15 @@ public class BlurImageFilter implements Function<BufferedImage, BufferedImage> {
         }
 
         final Kernel kernel = new Kernel(size, size, data);
-        final ConvolveOp convolveOperation = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);// TODO: cutoff edges
-                                                                                                 // to avoid shit
+        convolveOperation = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);// TODO: cutoff edges
+                                                                                // to avoid shit
+    }
+
+    // TODO: cutoff edges to avoid shit
+
+    @Override
+    public BufferedImage apply(final BufferedImage source) {
+
         return convolveOperation.filter(source, null);
     }
 
