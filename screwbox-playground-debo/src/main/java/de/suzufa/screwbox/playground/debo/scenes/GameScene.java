@@ -41,7 +41,7 @@ import de.suzufa.screwbox.playground.debo.map.MapBorderLeft;
 import de.suzufa.screwbox.playground.debo.map.MapBorderRight;
 import de.suzufa.screwbox.playground.debo.map.MapBorderTop;
 import de.suzufa.screwbox.playground.debo.map.MapGravity;
-import de.suzufa.screwbox.playground.debo.map.WorldBounds;
+import de.suzufa.screwbox.playground.debo.map.WorldInformation;
 import de.suzufa.screwbox.playground.debo.props.Box;
 import de.suzufa.screwbox.playground.debo.props.Diggable;
 import de.suzufa.screwbox.playground.debo.props.Platfom;
@@ -73,6 +73,7 @@ import de.suzufa.screwbox.playground.debo.systems.ResetSceneSystem;
 import de.suzufa.screwbox.playground.debo.systems.ShadowSystem;
 import de.suzufa.screwbox.playground.debo.systems.ShowLabelSystem;
 import de.suzufa.screwbox.playground.debo.systems.SmokePuffSystem;
+import de.suzufa.screwbox.playground.debo.systems.ToggleLightSystemsSystem;
 import de.suzufa.screwbox.playground.debo.systems.VanishingOnCollisionSystem;
 import de.suzufa.screwbox.playground.debo.systems.ZoomSystem;
 import de.suzufa.screwbox.playground.debo.tiles.NonSolidTile;
@@ -117,6 +118,7 @@ public class GameScene implements Scene {
                 new CameraMovementSystem(),
                 new StateSystem(),
                 new VanishingOnCollisionSystem(),
+                new ToggleLightSystemsSystem(),
                 new KilledFromAboveSystem(),
                 new GroundDetectorSystem(),
                 new KillZoneSystem(),
@@ -159,7 +161,7 @@ public class GameScene implements Scene {
 
         entities.importSource(map)
                 .as(new MapGravity())
-                .as(new WorldBounds())
+                .as(new WorldInformation())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
