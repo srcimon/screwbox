@@ -33,7 +33,7 @@ public class DefaultLight implements Light, Updatable {
     private DefaultWorld world;
 
     private List<Runnable> drawingTasks = new ArrayList<>();
-    Future<?> currentTaskWorker = null;
+    Future<Sprite> sprite = null;
 
     public DefaultLight(final Window window, final DefaultWorld world, final ExecutorService executor) {
         this.executor = executor;
@@ -68,25 +68,6 @@ public class DefaultLight implements Light, Updatable {
                 }
 
             });
-        }
-        // TODO: invocations can get Lost here!!!!
-        if (currentTaskWorker == null) {
-
-            List<Runnable> tasks = new ArrayList<>(drawingTasks);
-            drawingTasks.clear();
-
-            var t = new Runnable() {
-
-                @Override
-                public void run() {
-
-                    for (Runnable runnable : tasks) {
-                        runnable.run();
-                    }
-                    currentTaskWorker = null;
-                }
-            };
-            currentTaskWorker = executor.submit(t);
         }
         return this;
     }
@@ -130,17 +111,27 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light drawLightmap() {
-        var taskWorker = currentTaskWorker;
-        if (taskWorker != null) {
-            try {
-                taskWorker.get();
-            } catch (InterruptedException | ExecutionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        if (sprite == null) {
+            throw new IllegalStateException("lightmap has not been sealed yet");
         }
-        Future<Sprite> submit = executor.submit(() -> lightmap.createSprite());
-        window.drawSprite(submit, origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
+        // TODO: if not seal create but log warning on first time
+        try {
+            window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new IllegalStateException("error receiving lightmap sprite", e);
+        }
+        return this;
+    }
+
+    @Override
+    public Light seal() {
+        sprite = executor.submit(() -> {
+            for (var drawingTask : drawingTasks) {
+                drawingTask.run();
+            }
+            drawingTasks.clear();
+            return lightmap.createSprite();
+        });
         return this;
     }
 

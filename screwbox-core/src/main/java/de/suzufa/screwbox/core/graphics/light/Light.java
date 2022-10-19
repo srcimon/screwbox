@@ -30,6 +30,8 @@ public interface Light {
 
     Light drawLightmap();
 
+    Light seal();
+
     // TODO: lens flares
     // TODO: anamorphic lens flares
 }

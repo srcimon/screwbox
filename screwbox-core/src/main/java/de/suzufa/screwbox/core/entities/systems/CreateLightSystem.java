@@ -38,6 +38,7 @@ public class CreateLightSystem implements EntitySystem {
             final Vector position = pointLightEntity.get(TransformComponent.class).bounds.position();
             light.addPointLight(position, pointLight.range, pointLight.color);
         }
+        light.seal();
     }
 
     @Override
