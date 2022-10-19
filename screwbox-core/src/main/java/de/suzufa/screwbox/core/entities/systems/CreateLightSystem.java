@@ -26,7 +26,6 @@ public class CreateLightSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Light light = engine.graphics().light();
-
         final List<Bounds> obstacles = new ArrayList<>();
         for (final var obstacle : engine.entities().fetchAll(OBSTACLES)) {
             obstacles.add(obstacle.get(TransformComponent.class).bounds);

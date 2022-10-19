@@ -34,7 +34,7 @@ public class DefaultLight implements Light, Updatable {
     private boolean isUseAntialiasing = true;
     private Lightmap lightmap;
     private DefaultWorld world;
-    private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(2);
+    private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
     private List<Future<Runnable>> drawingTasks = new ArrayList<>();
     Future<Sprite> sprite = null;
 
