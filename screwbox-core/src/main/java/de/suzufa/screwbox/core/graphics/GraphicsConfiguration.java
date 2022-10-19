@@ -13,9 +13,21 @@ public class GraphicsConfiguration {
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
     private int lightmapBlur = 3;
+    private int lightmapResolution = 4;
+
+    public GraphicsConfiguration setLightmapResolution(int lightmapResolution) {
+        // TODO: 0 - 6 validation / NON NULL
+        this.lightmapResolution = lightmapResolution;
+        notifyListeners(ConfigurationProperty.LIGHTMAP_RESOLUTION);
+        return this;
+    }
+
+    public int lightmapResolution() {
+        return lightmapResolution;
+    }
 
     public GraphicsConfiguration setLightmapBlur(int lightmapBlur) {
-        // TODO: 0 - 5 validation
+        // TODO: 0 - 6 validation / NON NULL
         this.lightmapBlur = lightmapBlur;
         notifyListeners(ConfigurationProperty.LIGHTMAP_BLUR);
         return this;

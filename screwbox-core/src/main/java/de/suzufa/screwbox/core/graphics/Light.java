@@ -11,11 +11,9 @@ public interface Light {
 
     Light addPointLight(Vector position, final double range, final Color color);
 
+    Light addSpotLight(Vector position, final double range, final Color color);
+
     Light updateObstacles(List<Bounds> obstacles);
-
-    Light setResolution(int resolution);
-
-    int resolution();
 
     Light setAmbientLight(Percentage ambientLight);
 

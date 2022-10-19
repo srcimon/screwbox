@@ -30,7 +30,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final LightPhysics lightPhysics;
 
     private Percentage ambientLight = Percentage.min();
-    private int resolution = 4;
+
     private Lightmap lightmap;
     private final DefaultWorld world;
     private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
@@ -64,23 +64,23 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light addPointLight(final Vector position, final double range, final Color color) {
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
-            drawingTasks.add(new Runnable() {
-
-                @Override
-                public void run() {
-                    final List<Offset> area = lightPhysics.calculateArea(lightBox);
-                    lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
-//                  lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color);
-
-                }
+            drawingTasks.add(() -> {
+                final List<Offset> area = lightPhysics.calculateArea(lightBox);
+                lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
             });
 
         }
         return this;
     }
 
-    private boolean isVisible(final Bounds lightBox) {
-        return window.isVisible(world.toWindowBounds(lightBox));
+    @Override
+    public Light addSpotLight(final Vector position, final double range, final Color color) {
+        final Bounds lightBox = Bounds.atPosition(position, range, range);
+        if (isVisible(lightBox)) {
+            drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color));
+
+        }
+        return this;
     }
 
     @Override
@@ -88,23 +88,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         initializeLightmap();
     }
 
-    @Override
-    public Light setResolution(final int resolution) {
-        // TODO: validation
-        this.resolution = resolution;
-        return this;
-    }
-
-    @Override
-    public int resolution() {
-        return resolution;
-    }
-
     private void initializeLightmap() {
         if (lightmap != null) {
             lightmap.close();
         }
-        lightmap = new Lightmap(window.size(), resolution, configuration.isUseAntialising());
+        lightmap = new Lightmap(window.size(), configuration.lightmapResolution(), configuration.isUseAntialising());
     }
 
     @Override
@@ -148,13 +136,17 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public void configurationChanged(ConfigurationProperty changedProperty) {
+    public void configurationChanged(final ConfigurationProperty changedProperty) {
         if (ConfigurationProperty.LIGHTMAP_BLUR.equals(changedProperty)) {
             postFilter = configuration.lightmapBlur() == 0
                     ? doNothing -> doNothing
                     : new BlurImageFilter(configuration.lightmapBlur());
         }
 
+    }
+
+    private boolean isVisible(final Bounds lightBox) {
+        return window.isVisible(world.toWindowBounds(lightBox));
     }
 
 }

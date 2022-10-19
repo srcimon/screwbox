@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
+import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
@@ -25,6 +26,7 @@ public class Player implements Converter<GameObject> {
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
                 new PointLightComponent(120, Color.BLACK),
+                new SpotLightComponent(120, Color.BLACK.withOpacity(0.4)),
                 new StateComponent(new PlayerStandingState()),
                 new PhysicsBodyComponent(),
                 new GroundDetectorComponent(),
