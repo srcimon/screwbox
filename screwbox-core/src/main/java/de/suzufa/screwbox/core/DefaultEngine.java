@@ -62,7 +62,7 @@ class DefaultEngine implements Engine {
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(window);
-        final DefaultLight light = new DefaultLight(window, world, executor);
+        final DefaultLight light = new DefaultLight(window, world, configuration, executor);
         graphics = new DefaultGraphics(configuration, window, world, light);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();

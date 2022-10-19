@@ -4,6 +4,7 @@ import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.graphics.Dimension;
+import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
@@ -34,12 +37,16 @@ class DefaultLightTest {
     @Mock
     DefaultWorld world;
 
+    GraphicsConfiguration configuration;
+
     DefaultLight light;
 
     @BeforeEach
     void beforeEach() {
+        when(window.size()).thenReturn(Dimension.of(640, 480));
+        configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(window, world, executor);
+        light = new DefaultLight(window, world, configuration, executor);
     }
 
     @Test

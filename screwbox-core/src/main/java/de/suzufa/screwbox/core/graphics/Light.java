@@ -17,13 +17,9 @@ public interface Light {
 
     int resolution();
 
-    Light setUseAntialiasing(boolean useAntialiasing);
-
     Light setAmbientLight(Percentage ambientLight);
 
     Percentage ambientLight();
-
-    boolean isUseAntialiasing();
 
     List<Bounds> obstacles();
 

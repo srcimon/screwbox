@@ -16,6 +16,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -30,17 +31,19 @@ public class DefaultLight implements Light, Updatable {
 
     private Percentage ambientLight = Percentage.min();
     private int resolution = 4;
-    private boolean isUseAntialiasing = true;
     private Lightmap lightmap;
-    private DefaultWorld world;
+    private final DefaultWorld world;
     private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
-    private List<Future<Runnable>> drawingTasks = new ArrayList<>();
+    private final List<Future<Runnable>> drawingTasks = new ArrayList<>();
     Future<Sprite> sprite = null;
+    private final GraphicsConfiguration configuration;
 
-    public DefaultLight(final Window window, final DefaultWorld world, final ExecutorService executor) {
+    public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
+            final ExecutorService executor) {
         this.executor = executor;
         this.window = window;
         this.world = world;
+        this.configuration = configuration;
         this.lightPhysics = new LightPhysics(world);
         initializeLightmap();
     }
@@ -58,13 +61,13 @@ public class DefaultLight implements Light, Updatable {
 
     @Override
     public Light addPointLight(final Vector position, final double range, final Color color) {
-        Bounds lightBox = Bounds.atPosition(position, range, range);
+        final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
             drawingTasks.add(executor.submit(new Callable<Runnable>() {
 
                 @Override
                 public Runnable call() throws Exception {
-                    List<Offset> area = lightPhysics.calculateArea(lightBox);
+                    final List<Offset> area = lightPhysics.calculateArea(lightBox);
                     return new Runnable() {
 
                         @Override
@@ -81,7 +84,7 @@ public class DefaultLight implements Light, Updatable {
         return this;
     }
 
-    private boolean isVisible(Bounds lightBox) {
+    private boolean isVisible(final Bounds lightBox) {
         return window.isVisible(world.toWindowBounds(lightBox));
     }
 
@@ -106,19 +109,7 @@ public class DefaultLight implements Light, Updatable {
         if (lightmap != null) {
             lightmap.close();
         }
-        lightmap = new Lightmap(window.size(), resolution, isUseAntialiasing);
-    }
-
-    @Override
-    public Light setUseAntialiasing(final boolean useAntialiasing) {
-        // TODO: validation
-        this.isUseAntialiasing = useAntialiasing;
-        return this;
-    }
-
-    @Override
-    public boolean isUseAntialiasing() {
-        return isUseAntialiasing;
+        lightmap = new Lightmap(window.size(), resolution, configuration.isUseAntialising());
     }
 
     @Override
@@ -138,19 +129,19 @@ public class DefaultLight implements Light, Updatable {
     @Override
     public Light seal() {
         sprite = executor.submit(() -> {
-            for (var drawingTask : drawingTasks) {
+            for (final var drawingTask : drawingTasks) {
                 drawingTask.get().run();
             }
             drawingTasks.clear();
-            var image = lightmap.createSprite();
-            var filtered = postFilter.apply(image);
+            final var image = lightmap.createSprite();
+            final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
         return this;
     }
 
     @Override
-    public Light setAmbientLight(Percentage ambientLight) {
+    public Light setAmbientLight(final Percentage ambientLight) {
         // TODO: non null
         this.ambientLight = ambientLight;
         return this;
@@ -162,7 +153,7 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light setBlur(int blur) {
+    public Light setBlur(final int blur) {
         if (blur == 0) {
             this.postFilter = doNothing -> doNothing;
         } else {

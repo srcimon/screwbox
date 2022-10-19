@@ -19,6 +19,7 @@ public class GraphicsConfiguration {
      * some precious fps.
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
+        // TODO:non null
         this.useAntialiasing = useAntialiasing;
         notifyListeners(ConfigurationProperty.ANTIALIASING);
         return this;
@@ -30,6 +31,7 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setResolution(final Dimension resolution) {
+        // TODO:non null
         this.resolution = resolution;
         notifyListeners(ConfigurationProperty.RESOLUTION);
         return this;
@@ -51,16 +53,19 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
+        // TODO:non null
         this.fullscreen = fullscreen;
         notifyListeners(ConfigurationProperty.WINDOW_MODE);
         return this;
     }
 
     public void registerListener(final GraphicsConfigurationListener listener) {
+        // TODO:non null
         listeners.add(listener);
     }
 
     public void removeListener(final GraphicsConfigurationListener listener) {
+        // TODO:non null
         listeners.remove(listener);
     }
 
@@ -81,7 +86,7 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
-    private void notifyListeners(ConfigurationProperty changedProperty) {
+    private void notifyListeners(final ConfigurationProperty changedProperty) {
         for (final var listener : listeners) {
             listener.configurationChanged(changedProperty);
         }
