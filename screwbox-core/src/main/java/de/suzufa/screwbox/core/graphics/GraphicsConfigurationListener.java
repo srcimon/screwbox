@@ -7,7 +7,8 @@ public interface GraphicsConfigurationListener extends EventListener {
     enum ConfigurationProperty {
         RESOLUTION,
         WINDOW_MODE,
-        ANTIALIASING
+        ANTIALIASING,
+        LIGHTMAP_BLUR
     }
 
     void configurationChanged(ConfigurationProperty changedProperty);

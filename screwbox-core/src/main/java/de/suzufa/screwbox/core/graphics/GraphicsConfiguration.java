@@ -12,6 +12,18 @@ public class GraphicsConfiguration {
     private Dimension resolution = Dimension.of(960, 540);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
+    private int lightmapBlur = 3;
+
+    public GraphicsConfiguration setLightmapBlur(int lightmapBlur) {
+        // TODO: 0 - 5 validation
+        this.lightmapBlur = lightmapBlur;
+        notifyListeners(ConfigurationProperty.LIGHTMAP_BLUR);
+        return this;
+    }
+
+    public int lightmapBlur() {
+        return lightmapBlur;
+    }
 
     /**
      * Sets the antialising state. Antialising is used to draw with system fonts and

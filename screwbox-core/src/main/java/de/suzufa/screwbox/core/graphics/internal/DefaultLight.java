@@ -16,13 +16,14 @@ import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
-public class DefaultLight implements Light, Updatable {
+public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
     private final ExecutorService executor; // TODO: use for async preperation
     private final Window window;
@@ -44,6 +45,7 @@ public class DefaultLight implements Light, Updatable {
         this.world = world;
         this.configuration = configuration;
         this.lightPhysics = new LightPhysics(world);
+        configuration.registerListener(this);
         initializeLightmap();
     }
 
@@ -146,13 +148,13 @@ public class DefaultLight implements Light, Updatable {
     }
 
     @Override
-    public Light setBlur(final int blur) {
-        if (blur == 0) {
-            this.postFilter = doNothing -> doNothing;
-        } else {
-            this.postFilter = new BlurImageFilter(blur);
+    public void configurationChanged(ConfigurationProperty changedProperty) {
+        if (ConfigurationProperty.LIGHTMAP_BLUR.equals(changedProperty)) {
+            postFilter = configuration.lightmapBlur() == 0
+                    ? doNothing -> doNothing
+                    : new BlurImageFilter(configuration.lightmapBlur());
         }
-        return this;
+
     }
 
 }
