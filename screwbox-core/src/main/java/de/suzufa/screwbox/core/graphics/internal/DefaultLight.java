@@ -5,7 +5,6 @@ import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -34,7 +33,7 @@ public class DefaultLight implements Light, Updatable {
     private Lightmap lightmap;
     private final DefaultWorld world;
     private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
-    private final List<Future<Runnable>> drawingTasks = new ArrayList<>();
+    private final List<Runnable> drawingTasks = new ArrayList<>();
     Future<Sprite> sprite = null;
     private final GraphicsConfiguration configuration;
 
@@ -63,22 +62,16 @@ public class DefaultLight implements Light, Updatable {
     public Light addPointLight(final Vector position, final double range, final Color color) {
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
-            drawingTasks.add(executor.submit(new Callable<Runnable>() {
+            drawingTasks.add(new Runnable() {
 
                 @Override
-                public Runnable call() throws Exception {
+                public void run() {
                     final List<Offset> area = lightPhysics.calculateArea(lightBox);
-                    return new Runnable() {
+                    lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
+//                  lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color);
 
-                        @Override
-                        public void run() {
-                            lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
-//                            lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color);
-                        }
-
-                    };
                 }
-            }));
+            });
 
         }
         return this;
@@ -130,7 +123,7 @@ public class DefaultLight implements Light, Updatable {
     public Light seal() {
         sprite = executor.submit(() -> {
             for (final var drawingTask : drawingTasks) {
-                drawingTask.get().run();
+                drawingTask.run();
             }
             drawingTasks.clear();
             final var image = lightmap.createSprite();
