@@ -1,8 +1,5 @@
 package de.suzufa.screwbox.core.graphics;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percentage;
 
@@ -38,15 +35,6 @@ public interface Window {
 
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation,
             FlipMode flipMode, WindowBounds clipArea);
-
-    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percentage opacity, Angle rotation) {
-        try {
-            // TODO: ab in Service
-            return drawSprite(sprite.get(), origin, scale, opacity, rotation, FlipMode.NONE, null);
-        } catch (InterruptedException | ExecutionException e) {
-            throw new IllegalStateException("bla");
-        }
-    }
 
     default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, FlipMode.NONE, null);

@@ -1,10 +1,14 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
+import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -25,18 +29,17 @@ import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
-    private final ExecutorService executor; // TODO: use for async preperation
+    private final List<Runnable> drawingTasks = new ArrayList<>();
+    private final ExecutorService executor;
     private final Window window;
     private final LightPhysics lightPhysics;
-
-    private Percentage ambientLight = Percentage.min();
+    private final DefaultWorld world;
+    private final GraphicsConfiguration configuration;
 
     private Lightmap lightmap;
-    private final DefaultWorld world;
+    private Percentage ambientLight = Percentage.min();
     private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
-    private final List<Runnable> drawingTasks = new ArrayList<>();
-    Future<Sprite> sprite = null;
-    private final GraphicsConfiguration configuration;
+    private Future<Sprite> sprite = null;
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -89,7 +92,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     private void initializeLightmap() {
-        if (lightmap != null) {
+        if (Objects.nonNull(lightmap)) {
             lightmap.close();
         }
         lightmap = new Lightmap(window.size(), configuration.lightmapResolution(), configuration.isUseAntialising());
@@ -97,10 +100,10 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light drawLightmap() {
-        if (sprite == null) {
+        if (isNull(sprite)) {
+            // TODO: if not seal create but log warning on first time
             throw new IllegalStateException("lightmap has not been sealed yet");
         }
-        // TODO: if not seal create but log warning on first time
         try {
             window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
         } catch (InterruptedException | ExecutionException e) {
@@ -125,7 +128,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light setAmbientLight(final Percentage ambientLight) {
-        // TODO: non null
+        requireNonNull(ambientLight, "ambientLight must not be null");
         this.ambientLight = ambientLight;
         return this;
     }
@@ -137,12 +140,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public void configurationChanged(final ConfigurationProperty changedProperty) {
-        if (ConfigurationProperty.LIGHTMAP_BLUR.equals(changedProperty)) {
+        if (LIGHTMAP_BLUR.equals(changedProperty)) {
             postFilter = configuration.lightmapBlur() == 0
                     ? doNothing -> doNothing
                     : new BlurImageFilter(configuration.lightmapBlur());
         }
-
     }
 
     private boolean isVisible(final Bounds lightBox) {
