@@ -63,6 +63,6 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialising();
 
         assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.WINDOW_MODE);
+        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.ANTIALIASING);
     }
 }

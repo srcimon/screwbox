@@ -13,8 +13,5 @@ public class PathfindingExample {
         engine.loop().setTargetFps(99999);// TODO remove
         engine.start(DemoScene.class);
     }
-//TODO: add LightDebugSystem()
-    // TODO: this is the plan: engine.graphics().lightmap().addPointLight /
-    // addNeonLight, add Spot, add ray
 
 }
