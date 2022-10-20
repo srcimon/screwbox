@@ -3,12 +3,12 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -89,10 +89,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public void update() {
         initializeLightmap();
+        sprite = null;
     }
 
     private void initializeLightmap() {
-        if (Objects.nonNull(lightmap)) {
+        if (nonNull(lightmap)) {
             lightmap.close();
         }
         lightmap = new Lightmap(window.size(), configuration.lightmapResolution(), configuration.isUseAntialising());
