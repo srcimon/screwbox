@@ -24,7 +24,7 @@ public enum Borders {
         this.extractSegmentsMethod = extractSegmentsMethod;
     }
 
-    Function<Bounds, List<Segment>> extractSegmentsMethod() {
+    public Function<Bounds, List<Segment>> extractSegmentsMethod() {
         return extractSegmentsMethod;
     }
 

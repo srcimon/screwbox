@@ -178,4 +178,15 @@ public class DefaultEntities implements Entities {
         return systemManager.allSystems();
     }
 
+    @Override
+    public Entities toggleSystem(EntitySystem entitySystem) {
+        Class<? extends EntitySystem> systemClass = entitySystem.getClass();
+        if (isSystemPresent(systemClass)) {
+            remove(systemClass);
+        } else {
+            add(entitySystem);
+        }
+        return this;
+    }
+
 }

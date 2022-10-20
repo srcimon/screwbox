@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.physics.internal;
 
 import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.Vector.$;
+import static de.suzufa.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -93,6 +94,6 @@ class DefaultPhysicsTest {
 
     @AfterEach
     void afterEach() {
-        executor.shutdown();
+        shutdown(executor);
     }
 }

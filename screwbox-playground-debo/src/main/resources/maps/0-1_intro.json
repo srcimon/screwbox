@@ -438,6 +438,11 @@
          "name":"closed-right",
          "type":"bool",
          "value":true
+        }, 
+        {
+         "name":"uses-light",
+         "type":"bool",
+         "value":false
         }],
  "renderorder":"right-down",
  "tiledversion":"1.8.4",

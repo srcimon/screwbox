@@ -15,7 +15,9 @@ import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.internal.DefaultGraphics;
+import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
+import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
@@ -59,12 +61,14 @@ class DefaultEngine implements Engine {
         executor = Executors.newCachedThreadPool();
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
-        graphics = new DefaultGraphics(configuration, window);
+        final DefaultWorld world = new DefaultWorld(window);
+        final DefaultLight light = new DefaultLight(window, world, configuration, executor);
+        graphics = new DefaultGraphics(configuration, window, world, light);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
-        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
+        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
@@ -88,7 +92,7 @@ class DefaultEngine implements Engine {
         if (scenes.sceneCount() == 0) {
             throw new IllegalStateException("no scene present");
         }
-        log.info(format("engine started (%s)", name));
+        log.info(format("engine with name '%s' started", name));
         try {
             graphics.window().open();
             gameLoop.start();

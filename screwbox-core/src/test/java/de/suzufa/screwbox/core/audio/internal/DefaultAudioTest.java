@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.audio.internal;
 
+import static de.suzufa.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -9,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
@@ -227,11 +227,7 @@ class DefaultAudioTest {
     }
 
     private void awaitShutdown() {
-        try {
-            audio.shutdown();
-            executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        audio.shutdown();
+        shutdown(executor);
     }
 }

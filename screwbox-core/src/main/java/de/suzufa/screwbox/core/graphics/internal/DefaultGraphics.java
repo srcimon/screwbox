@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.graphics.AspectRatio;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
@@ -21,11 +22,14 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsConfiguration configuration;
     private final DefaultWindow window;
     private final DefaultWorld world;
+    private final DefaultLight light;
 
-    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window) {
+    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window, DefaultWorld world,
+            final DefaultLight light) {
         this.configuration = configuration;
         this.window = window;
-        world = new DefaultWorld(window);
+        this.light = light;
+        this.world = world;
     }
 
     @Override
@@ -75,6 +79,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Offset windowPositionOf(final Vector position) {
+        return world.toOffset(position);
+    }
+
+    @Override
     public List<Dimension> supportedResolutions() {
         return window.supportedResolutions();
     }
@@ -109,6 +118,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Dimension currentResolution() {
         return window.currentResolution();
+    }
+
+    @Override
+    public Light light() {
+        return light;
     }
 
 }

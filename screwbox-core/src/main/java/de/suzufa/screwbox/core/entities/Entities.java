@@ -58,6 +58,8 @@ public interface Entities {
      */
     Entities clearEntities();
 
+    Entities toggleSystem(EntitySystem entitySystem);
+
     void remove(Class<? extends EntitySystem> systemType);
 
     long entityCount();

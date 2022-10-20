@@ -3,6 +3,8 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty;
+
 public class GraphicsConfiguration {
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
@@ -10,15 +12,40 @@ public class GraphicsConfiguration {
     private Dimension resolution = Dimension.of(960, 540);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
+    private int lightmapBlur = 3;
+    private int lightmapResolution = 4;
+
+    public GraphicsConfiguration setLightmapResolution(int lightmapResolution) {
+        // TODO: 0 - 6 validation / NON NULL
+        this.lightmapResolution = lightmapResolution;
+        notifyListeners(ConfigurationProperty.LIGHTMAP_RESOLUTION);
+        return this;
+    }
+
+    public int lightmapResolution() {
+        return lightmapResolution;
+    }
+
+    public GraphicsConfiguration setLightmapBlur(int lightmapBlur) {
+        // TODO: 0 - 6 validation / NON NULL
+        this.lightmapBlur = lightmapBlur;
+        notifyListeners(ConfigurationProperty.LIGHTMAP_BLUR);
+        return this;
+    }
+
+    public int lightmapBlur() {
+        return lightmapBlur;
+    }
 
     /**
      * Sets the antialising state. Antialising is used to draw with system fonts and
-     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising costs
-     * some fps.
+     * shapes. It doesn't enhance {@link Sprite} drawing. Using antialising may cost
+     * some precious fps.
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
+        // TODO:non null
         this.useAntialiasing = useAntialiasing;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.ANTIALIASING);
         return this;
     }
 
@@ -28,8 +55,9 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setResolution(final Dimension resolution) {
+        // TODO:non null
         this.resolution = resolution;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.RESOLUTION);
         return this;
     }
 
@@ -49,16 +77,19 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
+        // TODO:non null
         this.fullscreen = fullscreen;
-        notifyListeners();
+        notifyListeners(ConfigurationProperty.WINDOW_MODE);
         return this;
     }
 
     public void registerListener(final GraphicsConfigurationListener listener) {
+        // TODO:non null
         listeners.add(listener);
     }
 
     public void removeListener(final GraphicsConfigurationListener listener) {
+        // TODO:non null
         listeners.remove(listener);
     }
 
@@ -79,9 +110,9 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
-    private void notifyListeners() {
+    private void notifyListeners(final ConfigurationProperty changedProperty) {
         for (final var listener : listeners) {
-            listener.configurationChanged();
+            listener.configurationChanged(changedProperty);
         }
     }
 

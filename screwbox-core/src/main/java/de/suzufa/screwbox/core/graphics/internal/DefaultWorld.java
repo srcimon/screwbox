@@ -187,9 +187,13 @@ public class DefaultWorld implements World {
         return Dimension.of(x, y);
     }
 
-    private WindowBounds toWindowBounds(final Bounds bounds) {
+    public WindowBounds toWindowBounds(final Bounds bounds) {
         final var offset = toOffset(bounds.origin());
         final var size = toDimension(bounds.size());
         return new WindowBounds(offset, size);
+    }
+
+    public int toDistance(double distance) {
+        return (int) Math.round(distance * zoom);
     }
 }

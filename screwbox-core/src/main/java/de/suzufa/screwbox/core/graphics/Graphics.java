@@ -12,6 +12,8 @@ public interface Graphics {
 
     World world();
 
+    Light light();
+
     /**
      * Updates the camera zoom nearly to the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
@@ -56,6 +58,9 @@ public interface Graphics {
      * {@link World}.
      */
     Vector worldPositionOf(Offset offset);
+
+    // TODO: javadoc
+    Offset windowPositionOf(Vector position);
 
     List<Dimension> supportedResolutions();
 

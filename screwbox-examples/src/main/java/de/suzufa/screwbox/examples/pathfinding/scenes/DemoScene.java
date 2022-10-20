@@ -11,8 +11,10 @@ import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
+import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
+import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
@@ -20,10 +22,14 @@ import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementDebugSystem;
 import de.suzufa.screwbox.core.entities.systems.AutomovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
+import de.suzufa.screwbox.core.entities.systems.CreateLightSystem;
+import de.suzufa.screwbox.core.entities.systems.DrawLightSystem;
+import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -53,8 +59,11 @@ public class DemoScene implements Scene {
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
                 .add(new AutoRotationSystem())
+                .add(new DrawLightSystem())
+                .add(new CreateLightSystem())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
+                .add(new LogFpsSystem())
                 .add(new PathfindingGridCreationSystem(16, Timer.withInterval(ofSeconds(1))))
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
@@ -90,6 +99,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
+                .add(new PointLightComponent(100, Color.RED))
                 .add(new AutoRotationComponent())
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
@@ -102,6 +112,7 @@ public class DemoScene implements Scene {
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())
+                .add(new PointLightComponent(80, Color.BLACK))
                 .add(new SpriteComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -115,6 +126,7 @@ public class DemoScene implements Scene {
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
                 .add(new PathfindingBlockingComponent())
+                .add(new LightObstacleComponent())
                 .add(new ColliderComponent());
     }
 

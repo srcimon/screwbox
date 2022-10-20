@@ -46,10 +46,6 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void initializeFontDrawing() {
-        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
-    }
-
     @Override
     public void updateScreen(final boolean antialiased) {
         lastUpdateTime = Time.now();
@@ -61,6 +57,10 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
+    }
+
+    private void initializeFontDrawing() {
+        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
     }
 
     @Override

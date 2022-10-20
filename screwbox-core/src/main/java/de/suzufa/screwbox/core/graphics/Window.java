@@ -36,6 +36,10 @@ public interface Window {
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation,
             FlipMode flipMode, WindowBounds clipArea);
 
+    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity) {
+        return drawSprite(sprite, origin, scale, opacity, Angle.none(), FlipMode.NONE, null);
+    }
+
     default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, FlipMode.NONE, null);
     }
@@ -237,4 +241,5 @@ public interface Window {
      * @return
      */
     String title();
+
 }

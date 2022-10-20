@@ -1,12 +1,15 @@
 package de.suzufa.screwbox.core;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents the {@link Angle} between two {@link Segment}s.
  */
-public final class Angle implements Serializable {
+public final class Angle implements Serializable, Comparable<Angle> {
 
     private static final long serialVersionUID = 1L;
 
@@ -103,4 +106,35 @@ public final class Angle implements Serializable {
         return degrees == MIN_VALUE;
     }
 
+    // TODO: doc and test
+    public static Angle of(Segment segment) {
+        return ofMomentum(segment.to().substract(segment.from()));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Angle.ofDegrees(0).rotate(Segment.between(Vector.$(0, 0), Vector.$(0, -20))).to());
+    }
+
+    // TODO: doc and test
+    public Segment rotate(Segment segment) {
+        double s = sin(Angle.ofDegrees(degrees).radians());
+        double c = cos(Angle.ofDegrees(degrees).radians());
+        Vector translated = segment.to().substract(segment.from());
+        double xnew = translated.x() * c - translated.y() * s;
+        double ynew = translated.x() * s + translated.y() * c;
+
+        return Segment.between(segment.from(), Vector.$(xnew, ynew).add(segment.from()));
+//        var dx = segment.to().x() - segment.from().x();
+//        var dy = segment.to().y() - segment.from().y();
+//        var destDegrees = degrees();
+//        var destPoint = segment.from().add(Vector.of(
+//                dx * cos(destDegrees) - dy * sin(destDegrees),
+//                dx * sin(destDegrees) + dy * cos(destDegrees)));
+//        return Segment.between(segment.from(), destPoint);
+    }
+
+    @Override
+    public int compareTo(Angle other) {
+        return Double.compare(degrees, other.degrees);
+    }
 }

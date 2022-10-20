@@ -4,5 +4,13 @@ import java.util.EventListener;
 
 public interface GraphicsConfigurationListener extends EventListener {
 
-    void configurationChanged();
+    enum ConfigurationProperty {
+        RESOLUTION,
+        WINDOW_MODE,
+        ANTIALIASING,
+        LIGHTMAP_BLUR,
+        LIGHTMAP_RESOLUTION
+    }
+
+    void configurationChanged(ConfigurationProperty changedProperty);
 }
