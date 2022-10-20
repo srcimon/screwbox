@@ -42,26 +42,14 @@ public class Lightmap implements AutoCloseable {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
 
-        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
-
-        final RadialGradientPaint paint = new RadialGradientPaint(
-                position.x() / resolution,
-                position.y() / resolution,
-                range / resolution / 2,
-                FRACTIONS, colors);
+        final RadialGradientPaint paint = radialPaint(position, range, color);
         graphics.setPaint(paint);
         applyOpacityConfig(color);
         graphics.fillPolygon(polygon);
     }
 
     public void addSpotLight(final Offset position, final int range, final Color color) {
-        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
-
-        final RadialGradientPaint paint = new RadialGradientPaint(
-                position.x() / resolution,
-                position.y() / resolution,
-                range / resolution / 2,
-                FRACTIONS, colors);
+        final RadialGradientPaint paint = radialPaint(position, range, color);
         graphics.setPaint(paint);
         applyOpacityConfig(color);
         graphics.fillOval(
@@ -89,4 +77,13 @@ public class Lightmap implements AutoCloseable {
 
     }
 
+    private RadialGradientPaint radialPaint(final Offset position, final int range, final Color color) {
+        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
+
+        return new RadialGradientPaint(
+                position.x() / (float) resolution,
+                position.y() / (float) resolution,
+                range / resolution / 2f,
+                FRACTIONS, colors);
+    }
 }
