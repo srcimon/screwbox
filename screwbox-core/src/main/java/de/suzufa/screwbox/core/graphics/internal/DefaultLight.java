@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
@@ -102,11 +101,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light drawLightmap() {
         if (isNull(sprite)) {
-            // TODO: if not seal create but log warning on first time
-            throw new IllegalStateException("lightmap has not been sealed yet");
+            throw new IllegalStateException(
+                    "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
         }
         try {
-            window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert(), Angle.none());
+            window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert());
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalStateException("error receiving lightmap sprite", e);
         }
