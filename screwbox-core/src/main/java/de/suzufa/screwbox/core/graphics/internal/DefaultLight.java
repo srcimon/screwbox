@@ -64,6 +64,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addPointLight(final Vector position, final double range, final Color color) {
+        // TODO: error after sealed
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> {
@@ -77,6 +78,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addSpotLight(final Vector position, final double range, final Color color) {
+        // TODO: error after sealed
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color));
