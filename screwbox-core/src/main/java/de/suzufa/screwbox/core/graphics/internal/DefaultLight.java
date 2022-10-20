@@ -115,6 +115,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light seal() {
+        if (nonNull(sprite)) {
+            throw new IllegalStateException("lightmap has already been sealed");
+        }
         sprite = executor.submit(() -> {
             for (final var drawingTask : drawingTasks) {
                 drawingTask.run();

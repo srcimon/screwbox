@@ -65,6 +65,15 @@ class DefaultLightTest {
         assertThat(light.obstacles()).containsExactly(obstacle);
     }
 
+    @Test
+    void seal_alreadySealed_throwsException() {
+        light.seal();
+
+        assertThatThrownBy(() -> light.seal())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("lightmap has already been sealed");
+    }
+
     @AfterEach
     void afterEach() {
         shutdown(executor);
