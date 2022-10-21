@@ -91,21 +91,24 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light addLensFlare(Vector origin, double size, Color color) {
         // TODO: error after sealed
-        Offset offset = world.toOffset(origin);
-        if (window.isVisible(offset)) {
+        final Bounds lightBox = Bounds.atPosition(origin, size * 2, size * 2);
+        if (isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
 
                 @Override
                 public void run() {
+                    Offset offset = world.toOffset(origin);
                     Offset target = window.center();
-                    int xStep = (target.x() - offset.x()) / 4;
-                    int yStep = (target.y() - offset.y()) / 4;
-                    var sizes = List.of(1.0, 1.2, 0.3, 0.5, 1.0, 0.4, 2.0);
-
-                    for (int i = 1; i < 6; i++) {
-                        int sizeCurrent = (int) (sizes.get(i) * size);
-                        var position = offset.addX(xStep * i).addY(yStep * i);
-                        window.drawCircle(position, sizeCurrent, color.withOpacity(0.1));
+                    int xStep = (target.x() - offset.x()) / 14;
+                    int yStep = (target.y() - offset.y()) / 14;
+                    var sizes = List.of(1.0, 1.2, 0.5, 0.8, 0.6, 0.4, 0.6);
+                    var distance = List.of(1.4, 3.3, 1.1, 1.3, 0.6, 2.5, 0.7);
+                    for (int i = 1; i < 4; i++) {
+                        int sizeCurrent = (int) (sizes.get(i) * size * 4);
+                        int currentDistanceX = (int) (xStep * distance.get(i));
+                        int currentDistanceY = (int) (yStep * distance.get(i));
+                        var position = offset.addX(currentDistanceX).addY(currentDistanceY);
+                        window.drawFadingCircle(position, sizeCurrent, color.withOpacity(0.1));
                     }
 
                 }
@@ -138,6 +141,10 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
         }
+        for (final var drawingTask : postDrawingTasks) {
+            drawingTask.run();
+        }
+        postDrawingTasks.clear();
         return this;
     }
 
@@ -151,11 +158,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 drawingTask.run();
             }
             drawingTasks.clear();
-
-            for (final var drawingTask : postDrawingTasks) {
-                drawingTask.run();
-            }
-            postDrawingTasks.clear();
 
             final var image = lightmap.image();
             final var filtered = postFilter.apply(image);

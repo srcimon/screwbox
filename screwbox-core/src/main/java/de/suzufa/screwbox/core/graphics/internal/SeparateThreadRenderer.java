@@ -66,6 +66,12 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
+    public void drawFadingCircle(Offset offset, int diameter, Color color) {
+        renderTasks.active().add(() -> next.drawFadingCircle(offset, diameter, color));
+
+    }
+
+    @Override
     public void drawRectangle(final WindowBounds bounds, final Color color) {
         renderTasks.active().add(() -> next.drawRectangle(bounds, color));
     }
@@ -103,4 +109,5 @@ public class SeparateThreadRenderer implements Renderer {
             }
         }
     }
+
 }

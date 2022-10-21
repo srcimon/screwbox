@@ -346,4 +346,10 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
     }
 
+    @Override
+    public Window drawFadingCircle(Offset offset, int diameter, Color color) {
+        renderer.drawFadingCircle(offset, diameter, color);
+        return this;
+    }
+
 }

@@ -57,4 +57,9 @@ public class StandbyRenderer implements Renderer {
         // does nothing
     }
 
+    @Override
+    public void drawFadingCircle(Offset offset, int diameter, Color color) {
+        // does nothing
+    }
+
 }

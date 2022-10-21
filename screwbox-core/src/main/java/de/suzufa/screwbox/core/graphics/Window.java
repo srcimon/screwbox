@@ -27,6 +27,8 @@ public interface Window {
         return drawRectangle(new WindowBounds(origin, size), drawColor());
     }
 
+    Window drawFadingCircle(Offset offset, int diameter, Color color);
+
     Window drawCircle(Offset offset, int diameter, Color color);
 
     default Window drawCircle(final Offset offset, final int diameter) {

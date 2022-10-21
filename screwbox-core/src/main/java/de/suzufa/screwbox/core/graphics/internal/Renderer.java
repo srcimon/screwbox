@@ -30,4 +30,6 @@ public interface Renderer {
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
+    void drawFadingCircle(Offset offset, int diameter, Color color);
+
 }
