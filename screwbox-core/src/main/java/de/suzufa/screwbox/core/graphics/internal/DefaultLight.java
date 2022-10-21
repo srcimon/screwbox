@@ -100,8 +100,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 public void run() {
                     Offset offset = world.toOffset(origin);
                     Offset target = window.center();
-                    int xStep = (int) MathUtil.clamp(-10.0, (target.x() - offset.x()) / 3, 10.0);
-                    int yStep = (int) MathUtil.clamp(-10.0, (target.y() - offset.y()) / 3, 10.0);
+                    int xStep = (int) MathUtil.clamp(-10.0, (target.x() - offset.x()) / 4, 10.0);
+                    int yStep = (int) MathUtil.clamp(-10.0, (target.y() - offset.y()) / 4, 10.0);
                     for (int i = 1; i < 4; i++) {
                         var position = offset.addX(xStep * i).addY(yStep * i);
                         world.drawFadingCircle(world.toPosition(position), i * size,
