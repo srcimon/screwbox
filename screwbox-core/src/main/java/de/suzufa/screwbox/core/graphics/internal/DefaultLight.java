@@ -90,7 +90,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addDynamicGlow(Vector origin, double size, Color color) {
+    public Light addGlow(Vector origin, double size, Color color) {
         // TODO: error after sealed
         final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
         if (isVisible(lightBox)) {

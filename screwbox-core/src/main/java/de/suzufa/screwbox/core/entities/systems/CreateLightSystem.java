@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.GlowLightComponent;
+import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
@@ -26,7 +26,7 @@ public class CreateLightSystem implements EntitySystem {
             SpotLightComponent.class, TransformComponent.class);
 
     private static final Archetype GLOW_EMITTERS = Archetype.of(
-            GlowLightComponent.class, TransformComponent.class);
+            LightGlowComponent.class, TransformComponent.class);
 
     private static final Archetype OBSTACLES = Archetype.of(
             LightObstacleComponent.class, TransformComponent.class);
@@ -52,9 +52,9 @@ public class CreateLightSystem implements EntitySystem {
             light.addSpotLight(position, spotLight.range, spotLight.color);
         }
         for (final Entity glowLightEntity : engine.entities().fetchAll(GLOW_EMITTERS)) {
-            final var glowLight = glowLightEntity.get(GlowLightComponent.class);
+            final var glowLight = glowLightEntity.get(LightGlowComponent.class);
             final Vector position = glowLightEntity.get(TransformComponent.class).bounds.position();
-            light.addDynamicGlow(position, glowLight.size, glowLight.color);
+            light.addGlow(position, glowLight.size, glowLight.color);
         }
         light.seal();
     }
