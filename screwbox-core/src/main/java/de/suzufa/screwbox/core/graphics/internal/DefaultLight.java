@@ -89,11 +89,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addLensFlare(Vector origin, double size) {
+    public Light addLensFlare(Vector origin, double size, Color color) {
         // TODO: error after sealed
         Offset offset = world.toOffset(origin);
         if (window.isVisible(offset)) {
-            postDrawingTasks.add(() -> lightmap.addLensFlare(offset, window.center(), world.toDistance(size)));
+            postDrawingTasks.add(() -> lightmap.addLensFlare(offset, window.center(), world.toDistance(size), color));
         }
         return this;
     }

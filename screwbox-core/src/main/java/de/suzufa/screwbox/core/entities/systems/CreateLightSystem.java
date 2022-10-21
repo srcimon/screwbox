@@ -10,6 +10,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.components.LensFlareComponent;
 import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
@@ -23,6 +24,9 @@ public class CreateLightSystem implements EntitySystem {
 
     private static final Archetype SPOTLIGHT_EMITTERS = Archetype.of(
             SpotLightComponent.class, TransformComponent.class);
+
+    private static final Archetype LENSFLARE_EMITTERS = Archetype.of(
+            LensFlareComponent.class, TransformComponent.class);
 
     private static final Archetype OBSTACLES = Archetype.of(
             LightObstacleComponent.class, TransformComponent.class);
@@ -41,12 +45,17 @@ public class CreateLightSystem implements EntitySystem {
             final Vector position = pointLightEntity.get(TransformComponent.class).bounds.position();
             light.addPointLight(position, pointLight.range, pointLight.color);
         }
+
         for (final Entity spotLightEntity : engine.entities().fetchAll(SPOTLIGHT_EMITTERS)) {
             final var spotLight = spotLightEntity.get(SpotLightComponent.class);
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.range, spotLight.color);
         }
-        light.addLensFlare(engine.mouse().worldPosition(), 20);// TODO:FIX
+        for (final Entity lensFlareEntity : engine.entities().fetchAll(LENSFLARE_EMITTERS)) {
+            final var lensFlare = lensFlareEntity.get(LensFlareComponent.class);
+            final Vector position = lensFlareEntity.get(TransformComponent.class).bounds.position();
+            light.addLensFlare(position, lensFlare.size, lensFlare.color);
+        }
         light.seal();
     }
 

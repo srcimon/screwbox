@@ -59,20 +59,19 @@ public class Lightmap implements AutoCloseable {
                 range / resolution);
     }
 
-    public void addLensFlare(Offset origin, Offset target, int size) {
-        applyOpacityConfig(0.05f);
-        graphics.setColor(toAwtColor(Color.RED));
+    public void addLensFlare(Offset origin, Offset target, int size, Color color) {
+        graphics.setColor(toAwtColor(color));
 
         int xStep = (target.x() - origin.x()) / 4 / resolution;
         int yStep = (target.y() - origin.y()) / 4 / resolution;
         var sizes = List.of(1.0, 1.2, 0.3, 0.5, 1.0, 0.4, 2.0);
 
         for (int i = 1; i < 6; i++) {
+            applyOpacityConfig((float) (0.07 * (2 - sizes.get(i))));
             int sizeCurrent = (int) (sizes.get(i) * size) / resolution;
-            graphics.fillOval(origin.x() / resolution + xStep * i, origin.y() / resolution + yStep * i, sizeCurrent,
-                    sizeCurrent);
-//            graphics.fillOval(40, 40, 40, 40);
-//            graphics.fillOval(40, 40, 20, 20);
+            graphics.fillOval(
+                    origin.x() / resolution + xStep * i - sizeCurrent / 2,
+                    origin.y() / resolution + yStep * i - sizeCurrent / 2, sizeCurrent, sizeCurrent);
         }
 
     }

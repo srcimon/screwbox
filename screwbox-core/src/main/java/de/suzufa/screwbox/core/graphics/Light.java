@@ -17,7 +17,7 @@ public interface Light {
 
     Light addSpotLight(Vector position, final double range, final Color color);
 
-    Light addLensFlare(Vector origin, double size);
+    Light addLensFlare(Vector origin, double size, Color color);
 
     Light updateObstacles(List<Bounds> obstacles);
 
@@ -30,4 +30,5 @@ public interface Light {
     Light drawLightmap();
 
     Light seal();
+
 }
