@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.LensFlareComponent;
+import de.suzufa.screwbox.core.entities.components.GlowLightComponent;
 import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
@@ -25,8 +25,8 @@ public class CreateLightSystem implements EntitySystem {
     private static final Archetype SPOTLIGHT_EMITTERS = Archetype.of(
             SpotLightComponent.class, TransformComponent.class);
 
-    private static final Archetype LENSFLARE_EMITTERS = Archetype.of(
-            LensFlareComponent.class, TransformComponent.class);
+    private static final Archetype GLOW_EMITTERS = Archetype.of(
+            GlowLightComponent.class, TransformComponent.class);
 
     private static final Archetype OBSTACLES = Archetype.of(
             LightObstacleComponent.class, TransformComponent.class);
@@ -51,10 +51,10 @@ public class CreateLightSystem implements EntitySystem {
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.range, spotLight.color);
         }
-        for (final Entity lensFlareEntity : engine.entities().fetchAll(LENSFLARE_EMITTERS)) {
-            final var lensFlare = lensFlareEntity.get(LensFlareComponent.class);
-            final Vector position = lensFlareEntity.get(TransformComponent.class).bounds.position();
-            light.addDynamicGlow(position, lensFlare.size, lensFlare.color);
+        for (final Entity glowLightEntity : engine.entities().fetchAll(GLOW_EMITTERS)) {
+            final var glowLight = glowLightEntity.get(GlowLightComponent.class);
+            final Vector position = glowLightEntity.get(TransformComponent.class).bounds.position();
+            light.addDynamicGlow(position, glowLight.size, glowLight.color);
         }
         light.seal();
     }

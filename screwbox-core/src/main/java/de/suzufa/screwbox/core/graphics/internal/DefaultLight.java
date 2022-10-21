@@ -109,7 +109,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                         int currentDistanceX = (int) (xStep * distance.get(i));
                         int currentDistanceY = (int) (yStep * distance.get(i));
                         var position = offset.addX(currentDistanceX).addY(currentDistanceY);
-                        window.drawFadingCircle(position, sizeCurrent, color.withOpacity(0.1));
+                        window.drawFadingCircle(position, sizeCurrent,
+                                color.withOpacity(0.2 * color.opacity().value()));
                     }
 
                 }
