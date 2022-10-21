@@ -180,6 +180,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawFadingCircle(Offset offset, int diameter, Color color) {
+        var oldPaint = graphics.getPaint();
         var colors = new java.awt.Color[] { toAwtColor(color), FADEOUT_COLOR };
         graphics.setPaint(new RadialGradientPaint(
                 offset.x(),
@@ -190,6 +191,7 @@ public class DefaultRenderer implements Renderer {
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
+        graphics.setPaint(oldPaint);
     }
 
 }

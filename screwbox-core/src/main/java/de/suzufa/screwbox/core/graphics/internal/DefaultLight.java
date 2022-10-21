@@ -92,7 +92,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light addDynamicGlow(Vector origin, double size, Color color) {
         // TODO: error after sealed
-        final Bounds lightBox = Bounds.atPosition(origin, size * 2, size * 2);
+        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
         if (isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
 
@@ -102,12 +102,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                     Offset target = window.center();
                     int xStep = (int) MathUtil.clamp(-15.0, (target.x() - offset.x()) / 2, 15.0);
                     int yStep = (int) MathUtil.clamp(-15.0, (target.y() - offset.y()) / 2, 15.0);
-                    var sizes = List.of(3, 6, 8);
+                    var sizes = List.of(1, 2, 3);
                     for (var x : sizes) {
-                        int sizeCurrent = (int) (x * size);
-                        var position = offset.addX(xStep).addY(yStep);
-                        window.drawFadingCircle(position, sizeCurrent,
-                                color.withOpacity(0.15 * color.opacity().value()));
+                        var sizeCurrent = x * size;
+                        var position = offset.addX(xStep * x).addY(yStep * x);
+                        world.drawFadingCircle(world.toPosition(position), sizeCurrent,
+                                color.withOpacity(color.opacity().value() / sizes.size()));
                     }
                 }
             });

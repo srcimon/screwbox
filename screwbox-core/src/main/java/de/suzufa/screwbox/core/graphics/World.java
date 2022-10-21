@@ -12,6 +12,8 @@ public interface World {
 
     Color drawColor();
 
+    World drawFadingCircle(Vector position, double diameter, Color color);
+
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea);
 
     default World drawSpriteBatch(final SpriteBatch spriteBatch) {

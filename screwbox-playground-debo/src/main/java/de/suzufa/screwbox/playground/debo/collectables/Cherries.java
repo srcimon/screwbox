@@ -20,7 +20,7 @@ public class Cherries implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity().add(
-                new GlowLightComponent(40, Color.RED.withOpacity(0.75)),
+                new GlowLightComponent(30, Color.RED.withOpacity(0.4)),
                 new PointLightComponent(40, Color.RED),
                 new TransformComponent(object.bounds()),
                 new SpriteComponent(SPRITES.findById(0), object.layer().order()),

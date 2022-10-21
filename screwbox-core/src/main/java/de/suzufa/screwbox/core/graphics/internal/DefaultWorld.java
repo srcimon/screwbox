@@ -196,4 +196,10 @@ public class DefaultWorld implements World {
     public int toDistance(double distance) {
         return (int) Math.round(distance * zoom);
     }
+
+    @Override
+    public World drawFadingCircle(Vector position, double diameter, Color color) {
+        window.drawFadingCircle(toOffset(position), toDistance(diameter), color);
+        return this;
+    }
 }

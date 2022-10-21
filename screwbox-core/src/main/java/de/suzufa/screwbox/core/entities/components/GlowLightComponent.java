@@ -16,7 +16,7 @@ public class GlowLightComponent implements Component {
     }
 
     public GlowLightComponent(final double size) {
-        this(size, Color.WHITE.withOpacity(0.75));
+        this(size, Color.WHITE.withOpacity(0.05));
     }
 
 }

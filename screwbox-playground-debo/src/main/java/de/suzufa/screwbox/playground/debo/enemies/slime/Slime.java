@@ -30,7 +30,7 @@ public class Slime implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new GlowLightComponent(40, Color.YELLOW.withOpacity(0.75)),
+                new GlowLightComponent(30, Color.YELLOW.withOpacity(0.5)),
                 new PointLightComponent(40, Color.YELLOW),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),
