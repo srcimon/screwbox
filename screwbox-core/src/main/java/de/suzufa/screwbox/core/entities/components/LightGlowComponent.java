@@ -16,7 +16,7 @@ public class LightGlowComponent implements Component {
     }
 
     public LightGlowComponent(final double size) {
-        this(size, Color.WHITE.withOpacity(0.05));
+        this(size, Color.WHITE.opacity(0.05));
     }
 
 }

@@ -33,8 +33,8 @@ class ColorTest {
     }
 
     @Test
-    void withOpacity_returnsNewInstanceWithDifferentOpacity() {
-        Color color = Color.rgb(10, 20, 30).withOpacity(0.5);
+    void opacity_returnsNewInstanceWithDifferentOpacity() {
+        Color color = Color.rgb(10, 20, 30).opacity(0.5);
 
         assertThat(color.r()).isEqualTo(10);
         assertThat(color.g()).isEqualTo(20);
@@ -44,7 +44,7 @@ class ColorTest {
 
     @Test
     void toString_returnsString() {
-        var color = Color.rgb(10, 20, 30).withOpacity(0.5);
+        var color = Color.rgb(10, 20, 30).opacity(0.5);
 
         assertThat(color).hasToString("Color [r=10, g=20, b=30, opacity=0.5]");
     }

@@ -82,7 +82,7 @@ public final class Color implements Serializable {
      * 
      * @see #withOpacity(Percentage)
      */
-    public Color withOpacity(double opacity) {
+    public Color opacity(double opacity) {
         return withOpacity(Percentage.of(opacity));
     }
 
@@ -90,7 +90,7 @@ public final class Color implements Serializable {
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
      * 
-     * @see #withOpacity(double)
+     * @see #opacity(double)
      */
     public Color withOpacity(Percentage opacity) {
         return new Color(r, g, b, opacity);

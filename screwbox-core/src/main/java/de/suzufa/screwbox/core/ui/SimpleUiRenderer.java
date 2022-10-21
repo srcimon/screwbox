@@ -9,7 +9,7 @@ public class SimpleUiRenderer implements UiRenderer {
 
     private static final Pixelfont NOT_SELECTED = Pixelfont.defaultFont(Color.WHITE);
     private static final Pixelfont SELECTED = Pixelfont.defaultFont(Color.YELLOW);
-    private static final Pixelfont INACTIVE = Pixelfont.defaultFont(Color.WHITE.withOpacity(0.2));
+    private static final Pixelfont INACTIVE = Pixelfont.defaultFont(Color.WHITE.opacity(0.2));
 
     @Override
     public void renderSelectableItem(String label, WindowBounds bounds, Window window) {

@@ -26,9 +26,9 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new LightGlowComponent(60, Color.WHITE.withOpacity(0.15)),
+                new LightGlowComponent(60, Color.WHITE.opacity(0.15)),
                 new PointLightComponent(120, Color.BLACK),
-                new SpotLightComponent(120, Color.BLACK.withOpacity(0.4)),
+                new SpotLightComponent(120, Color.BLACK.opacity(0.4)),
                 new StateComponent(new PlayerStandingState()),
                 new PhysicsBodyComponent(),
                 new GroundDetectorComponent(),

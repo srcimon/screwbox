@@ -105,7 +105,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                     for (int i = 1; i < 4; i++) {
                         var position = offset.addX(xStep * i).addY(yStep * i);
                         world.drawFadingCircle(world.toPosition(position), i * size,
-                                color.withOpacity(color.opacity().value() / 3));
+                                color.opacity(color.opacity().value() / 3));
                     }
                 }
             });
