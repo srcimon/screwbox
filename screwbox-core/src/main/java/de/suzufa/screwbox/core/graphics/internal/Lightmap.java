@@ -43,8 +43,8 @@ public class Lightmap implements AutoCloseable {
         }
 
         final RadialGradientPaint paint = radialPaint(position, range, color);
-        graphics.setPaint(paint);
         applyOpacityConfig(color);
+        graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
     }
 
@@ -81,7 +81,7 @@ public class Lightmap implements AutoCloseable {
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int range, final Color color) {
-        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
+        final var colors = new java.awt.Color[] { toAwtColor(color.withOpacity(1)), FADE_TO_COLOR };
 
         return new RadialGradientPaint(
                 position.x() / (float) resolution,

@@ -31,7 +31,7 @@ public class Slime implements Converter<GameObject> {
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
                 new LensFlareComponent(40, Color.YELLOW),
-                new PointLightComponent(40, Color.YELLOW),
+                new PointLightComponent(40, Color.rgb(200, 200, 100)),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),
                 new KillZoneComponent(DeathType.ENEMY_TOUCHED),
