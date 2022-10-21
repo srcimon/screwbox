@@ -46,6 +46,7 @@ public class CreateLightSystem implements EntitySystem {
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.range, spotLight.color);
         }
+        light.addLensFlare(engine.mouse().worldPosition(), 20);// TODO:FIX
         light.seal();
     }
 

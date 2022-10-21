@@ -26,7 +26,6 @@ public class LightPhysics {
 
     public void setObstacles(final List<Bounds> obstacles) {
         this.obstacles = requireNonNull(obstacles, "obstacles must not be null");
-
     }
 
     public List<Bounds> obstacles() {

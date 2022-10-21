@@ -135,7 +135,15 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 drawingTask.run();
             }
             drawingTasks.clear();
-            final var image = lightmap.createSprite();
+
+            lightmap.invertImage();
+
+            for (final var drawingTask : postDrawingTasks) {
+                drawingTask.run();
+            }
+            postDrawingTasks.clear();
+
+            final var image = lightmap.image();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });

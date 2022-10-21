@@ -20,8 +20,8 @@ public class Lightmap implements AutoCloseable {
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
 
-    private final BufferedImage image;
-    private final Graphics2D graphics;
+    private BufferedImage image;
+    private Graphics2D graphics;
     private final int resolution;
 
     public Lightmap(final Dimension size, final int resolution, final boolean isAntialiased) {
@@ -60,21 +60,31 @@ public class Lightmap implements AutoCloseable {
     }
 
     public void addLensFlare(Offset origin, Offset target, int size) {
-        applyOpacityConfig(0.6f);
-        graphics.setColor(toAwtColor(Color.WHITE));
+        applyOpacityConfig(0.05f);
+        graphics.setColor(toAwtColor(Color.RED));
 
-        int xStep = target.x() - origin.x();
-        int yStep = target.y() - origin.y();
-        var sizes = List.of(1.0, 1.2, 0.3, 0.5, 1.0);
+        int xStep = (target.x() - origin.x()) / 4 / resolution;
+        int yStep = (target.y() - origin.y()) / 4 / resolution;
+        var sizes = List.of(1.0, 1.2, 0.3, 0.5, 1.0, 0.4, 2.0);
 
         for (int i = 1; i < 6; i++) {
-            int sizeCurrent = (int) (sizes.get(i) * size);
-            graphics.fillOval(origin.x() + xStep * i, origin.y() + yStep * 1, sizeCurrent, sizeCurrent);
+            int sizeCurrent = (int) (sizes.get(i) * size) / resolution;
+            graphics.fillOval(origin.x() / resolution + xStep * i, origin.y() / resolution + yStep * i, sizeCurrent,
+                    sizeCurrent);
+//            graphics.fillOval(40, 40, 40, 40);
+//            graphics.fillOval(40, 40, 20, 20);
         }
+
     }
 
-    public BufferedImage createSprite() {
-        return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
+    public void invertImage() {
+        graphics.dispose();
+        image = (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
+        graphics = (Graphics2D) image.getGraphics();
+    }
+
+    public BufferedImage image() {
+        return image;
     }
 
     private void applyOpacityConfig(final Color color) {
@@ -92,7 +102,6 @@ public class Lightmap implements AutoCloseable {
     @Override
     public void close() {
         graphics.dispose();
-
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int range, final Color color) {
