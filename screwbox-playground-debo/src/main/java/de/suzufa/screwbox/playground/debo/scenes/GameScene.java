@@ -5,6 +5,8 @@ import static java.util.Objects.nonNull;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
@@ -13,13 +15,13 @@ import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineLightEmittersSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
-import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
 import de.suzufa.screwbox.core.entities.systems.CreateLightSystem;
 import de.suzufa.screwbox.core.entities.systems.FadeOutSystem;
 import de.suzufa.screwbox.core.entities.systems.GravitySystem;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.ReflectionRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
 import de.suzufa.screwbox.core.entities.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
@@ -98,6 +100,11 @@ public class GameScene implements Scene {
 
     public GameScene(final String mapName) {
         this.mapName = mapName;
+    }
+
+    @Override
+    public void onEnter(Engine engine) {
+        engine.graphics().light().setAmbientLight(Percentage.of(0.06));
     }
 
     @Override
