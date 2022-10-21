@@ -4,11 +4,11 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 
-public class DrawLightSystem implements EntitySystem {
+public class RenderLightSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        engine.graphics().light().drawLightmap();
+        engine.graphics().light().render();
     }
 
     @Override

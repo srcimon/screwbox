@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.graphics.Offset.origin;
 import static java.lang.Math.round;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.reverseOrder;
@@ -248,8 +249,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public void configurationChanged(ConfigurationProperty changedProperty) {
-        boolean mustReopenWindow = List.of(ConfigurationProperty.WINDOW_MODE, ConfigurationProperty.RESOLUTION)
+    public void configurationChanged(final ConfigurationProperty changedProperty) {
+        final boolean mustReopenWindow = List.of(ConfigurationProperty.WINDOW_MODE, ConfigurationProperty.RESOLUTION)
                 .contains(changedProperty);
 
         if (mustReopenWindow && frame.isVisible()) {
@@ -260,7 +261,18 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public boolean isVisible(final WindowBounds bounds) {
-        return bounds.intersects(new WindowBounds(Offset.origin(), size()));
+        return bounds.intersects(windowBounds());
+    }
+
+    // TODO: cache
+    private WindowBounds windowBounds() {
+        return new WindowBounds(origin(), size());
+    }
+
+    // TODO: Test
+    @Override
+    public boolean isVisible(final Offset offset) {
+        return windowBounds().contains(offset);
     }
 
     @Override
@@ -332,6 +344,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     private Dimension toDimension(final DisplayMode screenSize) {
         return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
+    }
+
+    @Override
+    public Window drawFadingCircle(Offset offset, int diameter, Color color) {
+        renderer.drawFadingCircle(offset, diameter, color);
+        return this;
     }
 
 }

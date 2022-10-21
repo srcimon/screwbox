@@ -12,7 +12,7 @@ public class GraphicsConfiguration {
     private Dimension resolution = Dimension.of(960, 540);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
-    private int lightmapBlur = 3;
+    private int lightmapBlur = 4;
     private int lightmapResolution = 4;
 
     public GraphicsConfiguration setLightmapResolution(int lightmapResolution) {

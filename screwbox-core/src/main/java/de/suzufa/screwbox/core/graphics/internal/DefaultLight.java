@@ -25,10 +25,12 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
+import de.suzufa.screwbox.core.utils.MathUtil;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
     private final List<Runnable> drawingTasks = new ArrayList<>();
+    private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
     private final LightPhysics lightPhysics;
@@ -88,6 +90,30 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
+    public Light addGlow(Vector origin, double size, Color color) {
+        // TODO: error after sealed
+        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
+        if (isVisible(lightBox)) {
+            postDrawingTasks.add(new Runnable() {
+
+                @Override
+                public void run() {
+                    Offset offset = world.toOffset(origin);
+                    Offset target = window.center();
+                    int xStep = (int) MathUtil.clamp(-10.0, (target.x() - offset.x()) / 4, 10.0);
+                    int yStep = (int) MathUtil.clamp(-10.0, (target.y() - offset.y()) / 4, 10.0);
+                    for (int i = 1; i < 4; i++) {
+                        var position = offset.addX(xStep * i).addY(yStep * i);
+                        world.drawFadingCircle(world.toPosition(position), i * size,
+                                color.withOpacity(color.opacity().value() / 3));
+                    }
+                }
+            });
+        }
+        return this;
+    }
+
+    @Override
     public void update() {
         initializeLightmap();
         sprite = null;
@@ -101,7 +127,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light drawLightmap() {
+    public Light render() {
         if (isNull(sprite)) {
             throw new IllegalStateException(
                     "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
@@ -111,6 +137,10 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
         }
+        for (final var drawingTask : postDrawingTasks) {
+            drawingTask.run();
+        }
+        postDrawingTasks.clear();
         return this;
     }
 
@@ -124,7 +154,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 drawingTask.run();
             }
             drawingTasks.clear();
-            final var image = lightmap.createSprite();
+
+            final var image = lightmap.image();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });

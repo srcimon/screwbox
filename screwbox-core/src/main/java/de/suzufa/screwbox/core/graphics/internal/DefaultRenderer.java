@@ -9,6 +9,7 @@ import java.awt.AlphaComposite;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Robot;
@@ -27,6 +28,9 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class DefaultRenderer implements Renderer {
+
+    private static final float[] FADEOUT_FRACTIONS = new float[] { 0.1f, 1f };
+    private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private final Robot robot;
     private final Frame frame;
@@ -172,6 +176,22 @@ public class DefaultRenderer implements Renderer {
             lastUsedColor = color;
             graphics.setColor(toAwtColor(color));
         }
+    }
+
+    @Override
+    public void drawFadingCircle(Offset offset, int diameter, Color color) {
+        var oldPaint = graphics.getPaint();
+        var colors = new java.awt.Color[] { toAwtColor(color), FADEOUT_COLOR };
+        graphics.setPaint(new RadialGradientPaint(
+                offset.x(),
+                offset.y(),
+                diameter / 2f,
+                FADEOUT_FRACTIONS, colors));
+
+        final int x = offset.x() - diameter / 2;
+        final int y = offset.y() - diameter / 2;
+        graphics.fillOval(x, y, diameter, diameter);
+        graphics.setPaint(oldPaint);
     }
 
 }

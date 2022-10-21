@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.systems.CreateLightSystem;
-import de.suzufa.screwbox.core.entities.systems.DrawLightSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
 import de.suzufa.screwbox.playground.debo.components.UseLightComponent;
 
 public class ToggleLightSystemsSystem implements EntitySystem {
@@ -19,7 +19,7 @@ public class ToggleLightSystemsSystem implements EntitySystem {
 
         if (worldInformation.get(UseLightComponent.class).useLight != isCurrentlyActive) {
             engine.entities().toggleSystem(new CreateLightSystem());
-            engine.entities().toggleSystem(new DrawLightSystem());
+            engine.entities().toggleSystem(new RenderLightSystem());
         }
     }
 }

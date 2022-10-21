@@ -20,8 +20,8 @@ public class Lightmap implements AutoCloseable {
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
 
-    private final BufferedImage image;
-    private final Graphics2D graphics;
+    private BufferedImage image;
+    private Graphics2D graphics;
     private final int resolution;
 
     public Lightmap(final Dimension size, final int resolution, final boolean isAntialiased) {
@@ -43,8 +43,8 @@ public class Lightmap implements AutoCloseable {
         }
 
         final RadialGradientPaint paint = radialPaint(position, range, color);
-        graphics.setPaint(paint);
         applyOpacityConfig(color);
+        graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
     }
 
@@ -59,12 +59,16 @@ public class Lightmap implements AutoCloseable {
                 range / resolution);
     }
 
-    public BufferedImage createSprite() {
+    public BufferedImage image() {
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }
 
     private void applyOpacityConfig(final Color color) {
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, color.opacity().valueFloat()));
+        applyOpacityConfig(color.opacity().valueFloat());
+    }
+
+    private void applyOpacityConfig(float value) {
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
     }
 
     public int resolution() {
@@ -74,11 +78,10 @@ public class Lightmap implements AutoCloseable {
     @Override
     public void close() {
         graphics.dispose();
-
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int range, final Color color) {
-        final var colors = new java.awt.Color[] { toAwtColor(color), FADE_TO_COLOR };
+        final var colors = new java.awt.Color[] { toAwtColor(color.withOpacity(1)), FADE_TO_COLOR };
 
         return new RadialGradientPaint(
                 position.x() / (float) resolution,
@@ -86,4 +89,5 @@ public class Lightmap implements AutoCloseable {
                 range / resolution / 2f,
                 FRACTIONS, colors);
     }
+
 }

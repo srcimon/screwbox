@@ -448,13 +448,7 @@
                 {
                  "id":21,
                  "template":"..\/templates\/collectables\/cherries.json",
-                 "x":272,
-                 "y":91
-                }, 
-                {
-                 "id":22,
-                 "template":"..\/templates\/collectables\/cherries.json",
-                 "x":300,
+                 "x":289,
                  "y":91
                 }, 
                 {

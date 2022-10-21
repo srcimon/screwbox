@@ -27,6 +27,8 @@ public interface Window {
         return drawRectangle(new WindowBounds(origin, size), drawColor());
     }
 
+    Window drawFadingCircle(Offset offset, int diameter, Color color);
+
     Window drawCircle(Offset offset, int diameter, Color color);
 
     default Window drawCircle(final Offset offset, final int diameter) {
@@ -232,7 +234,11 @@ public interface Window {
      */
     Window setWindowCursor(Frame cursor);
 
+    // TODO: javadoc
     boolean isVisible(WindowBounds bounds);
+
+    // TODO: javadoc
+    boolean isVisible(Offset offset);
 
     /**
      * Returns the title of the {@link Window}.

@@ -10,12 +10,13 @@ import de.suzufa.screwbox.core.Vector;
 public interface Light {
 
     // TODO: addNeonLight()
-    // TODO: addLensFlare()
     // TODO: addAnamorphicLensFlare()
 
     Light addPointLight(Vector position, final double range, final Color color);
 
     Light addSpotLight(Vector position, final double range, final Color color);
+
+    Light addGlow(Vector origin, double size, Color color);
 
     Light updateObstacles(List<Bounds> obstacles);
 
@@ -25,7 +26,8 @@ public interface Light {
 
     List<Bounds> obstacles();
 
-    Light drawLightmap();
+    Light render();
 
     Light seal();
+
 }

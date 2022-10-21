@@ -31,6 +31,7 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 
@@ -84,21 +85,21 @@ class DefaultLightTest {
     }
 
     @Test
-    void drawLightmap_notSealed_throwsException() {
-        assertThatThrownBy(() -> light.drawLightmap())
+    void render_notSealed_throwsException() {
+        assertThatThrownBy(() -> light.render())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage(
                         "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
     }
 
     @Test
-    void drawLightmap_lightAndShadowPresent_createCorrectImage() {
-        when(window.isVisible(any())).thenReturn(true);
+    void render_lightAndShadowPresent_createCorrectImage() {
+        when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
 
         light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), 140, Color.RED);
         light.seal();
-        light.drawLightmap();
+        light.render();
 
         var sprite = ArgumentCaptor.forClass(Sprite.class);
         var offset = ArgumentCaptor.forClass(Offset.class);
