@@ -61,7 +61,7 @@ public class CreateLightSystem implements EntitySystem {
 
     @Override
     public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
+        return UpdatePriority.LIGHT_SEAL;
     }
 
 }
