@@ -25,6 +25,7 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
+import de.suzufa.screwbox.core.utils.MathUtil;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
@@ -89,7 +90,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addLensFlare(Vector origin, double size, Color color) {
+    public Light addDynamicGlow(Vector origin, double size, Color color) {
         // TODO: error after sealed
         final Bounds lightBox = Bounds.atPosition(origin, size * 2, size * 2);
         if (isVisible(lightBox)) {
@@ -99,12 +100,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 public void run() {
                     Offset offset = world.toOffset(origin);
                     Offset target = window.center();
-                    int xStep = (target.x() - offset.x()) / 14;
-                    int yStep = (target.y() - offset.y()) / 14;
+                    int xStep = (int) MathUtil.clamp(-10.0, (target.x() - offset.x()) / 2.0, 10.0);
+                    int yStep = (int) MathUtil.clamp(-10.0, (target.y() - offset.y()) / 2.0, 10.0);
                     var sizes = List.of(1.0, 1.2, 0.5, 0.8, 0.6, 0.4, 0.6);
                     var distance = List.of(1.4, 3.3, 1.1, 1.3, 0.6, 2.5, 0.7);
                     for (int i = 1; i < 4; i++) {
-                        int sizeCurrent = (int) (sizes.get(i) * size * 4);
+                        int sizeCurrent = (int) (sizes.get(i) * size * 7);
                         int currentDistanceX = (int) (xStep * distance.get(i));
                         int currentDistanceY = (int) (yStep * distance.get(i));
                         var position = offset.addX(currentDistanceX).addY(currentDistanceY);

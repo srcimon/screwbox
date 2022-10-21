@@ -54,7 +54,7 @@ public class CreateLightSystem implements EntitySystem {
         for (final Entity lensFlareEntity : engine.entities().fetchAll(LENSFLARE_EMITTERS)) {
             final var lensFlare = lensFlareEntity.get(LensFlareComponent.class);
             final Vector position = lensFlareEntity.get(TransformComponent.class).bounds.position();
-            light.addLensFlare(position, lensFlare.size, lensFlare.color);
+            light.addDynamicGlow(position, lensFlare.size, lensFlare.color);
         }
         light.seal();
     }
