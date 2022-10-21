@@ -17,6 +17,8 @@ public interface Light {
 
     Light addSpotLight(Vector position, final double range, final Color color);
 
+    Light addLensFlare(Vector origin, double size);
+
     Light updateObstacles(List<Bounds> obstacles);
 
     Light setAmbientLight(Percentage ambientLight);

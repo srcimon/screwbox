@@ -31,6 +31,7 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 
@@ -93,7 +94,7 @@ class DefaultLightTest {
 
     @Test
     void drawLightmap_lightAndShadowPresent_createCorrectImage() {
-        when(window.isVisible(any())).thenReturn(true);
+        when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
 
         light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), 140, Color.RED);

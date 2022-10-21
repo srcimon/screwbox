@@ -29,6 +29,7 @@ import de.suzufa.screwbox.core.loop.internal.Updatable;
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
     private final List<Runnable> drawingTasks = new ArrayList<>();
+    private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
     private final LightPhysics lightPhysics;
@@ -83,6 +84,16 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color));
 
+        }
+        return this;
+    }
+
+    @Override
+    public Light addLensFlare(Vector origin, double size) {
+        // TODO: error after sealed
+        Offset offset = world.toOffset(origin);
+        if (window.isVisible(offset)) {
+            postDrawingTasks.add(() -> lightmap.addLensFlare(offset, window.center(), world.toDistance(size)));
         }
         return this;
     }

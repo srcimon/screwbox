@@ -59,12 +59,30 @@ public class Lightmap implements AutoCloseable {
                 range / resolution);
     }
 
+    public void addLensFlare(Offset origin, Offset target, int size) {
+        applyOpacityConfig(0.6f);
+        graphics.setColor(toAwtColor(Color.WHITE));
+
+        int xStep = target.x() - origin.x();
+        int yStep = target.y() - origin.y();
+        var sizes = List.of(1.0, 1.2, 0.3, 0.5, 1.0);
+
+        for (int i = 1; i < 6; i++) {
+            int sizeCurrent = (int) (sizes.get(i) * size);
+            graphics.fillOval(origin.x() + xStep * i, origin.y() + yStep * 1, sizeCurrent, sizeCurrent);
+        }
+    }
+
     public BufferedImage createSprite() {
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }
 
     private void applyOpacityConfig(final Color color) {
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, color.opacity().valueFloat()));
+        applyOpacityConfig(color.opacity().valueFloat());
+    }
+
+    private void applyOpacityConfig(float value) {
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
     }
 
     public int resolution() {
@@ -86,4 +104,5 @@ public class Lightmap implements AutoCloseable {
                 range / resolution / 2f,
                 FRACTIONS, colors);
     }
+
 }

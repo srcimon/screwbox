@@ -232,7 +232,11 @@ public interface Window {
      */
     Window setWindowCursor(Frame cursor);
 
+    // TODO: javadoc
     boolean isVisible(WindowBounds bounds);
+
+    // TODO: javadoc
+    boolean isVisible(Offset offset);
 
     /**
      * Returns the title of the {@link Window}.
