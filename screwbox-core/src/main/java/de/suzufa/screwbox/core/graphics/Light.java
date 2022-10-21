@@ -26,7 +26,7 @@ public interface Light {
 
     List<Bounds> obstacles();
 
-    Light drawLightmap();
+    Light render();
 
     Light seal();
 

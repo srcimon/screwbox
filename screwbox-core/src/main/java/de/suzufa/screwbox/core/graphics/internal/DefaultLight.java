@@ -127,7 +127,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light drawLightmap() {
+    public Light render() {
         if (isNull(sprite)) {
             throw new IllegalStateException(
                     "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
