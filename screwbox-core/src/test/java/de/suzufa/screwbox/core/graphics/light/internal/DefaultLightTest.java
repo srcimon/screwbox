@@ -118,7 +118,7 @@ class DefaultLightTest {
     @Test
     void render_lightAndShadowPresent_createCorrectImage() {
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
-
+        when(window.center()).thenReturn(Offset.at(320, 240));
         light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.seal();
