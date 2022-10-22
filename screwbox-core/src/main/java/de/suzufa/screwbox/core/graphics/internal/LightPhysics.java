@@ -81,9 +81,9 @@ public class LightPhysics {
         final Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
         return List.of(
-                Angle.ofDegrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
+                Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
                 directTrace,
-                Angle.ofDegrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
+                Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
     }
 
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {

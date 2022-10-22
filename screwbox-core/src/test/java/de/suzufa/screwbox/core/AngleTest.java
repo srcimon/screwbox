@@ -31,44 +31,44 @@ class AngleTest {
 
     @Test
     void ofDegrees_degreesOutOfRange_returnsNewInstance() {
-        var angle = Angle.ofDegrees(770);
+        var angle = Angle.degrees(770);
 
         assertThat(angle.degrees()).isEqualTo(50);
     }
 
     @Test
     void ofDegrees_degreesInRange_returnsNewInstance() {
-        var angle = Angle.ofDegrees(359);
+        var angle = Angle.degrees(359);
 
         assertThat(angle.degrees()).isEqualTo(359);
     }
 
     @Test
     void isNone_noangle_isTrue() {
-        var angle = Angle.ofDegrees(0);
+        var angle = Angle.degrees(0);
 
         assertThat(angle.isNone()).isTrue();
     }
 
     @Test
     void isNone_someangle_isFalse() {
-        var angle = Angle.ofDegrees(5);
+        var angle = Angle.degrees(5);
 
         assertThat(angle.isNone()).isFalse();
     }
 
     @Test
     void equals_sameangle_isTrue() {
-        var angle = Angle.ofDegrees(720);
-        var other = Angle.ofDegrees(360);
+        var angle = Angle.degrees(720);
+        var other = Angle.degrees(360);
 
         assertThat(angle).isEqualTo(other);
     }
 
     @Test
     void equals_otherangle_isFalse() {
-        var angle = Angle.ofDegrees(269);
-        var other = Angle.ofDegrees(100);
+        var angle = Angle.degrees(269);
+        var other = Angle.degrees(100);
 
         assertThat(angle).isNotEqualTo(other);
     }
@@ -76,7 +76,7 @@ class AngleTest {
     @Test
     void radians_returnsRadiansValue() {
         assertThat(Angle.none().radians()).isEqualTo(0.0);
-        assertThat(Angle.ofDegrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
+        assertThat(Angle.degrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
     }
 
     @ParameterizedTest
@@ -96,7 +96,7 @@ class AngleTest {
 
     @Test
     void rotate_segmentNull_throwsExceptions() {
-        var angle = Angle.ofDegrees(90);
+        var angle = Angle.degrees(90);
 
         assertThatThrownBy(() -> angle.rotate(null))
                 .isInstanceOf(NullPointerException.class)
@@ -112,7 +112,7 @@ class AngleTest {
     void rotate_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
         Segment input = Segment.between(zero(), $(x, y));
 
-        Segment rotated = Angle.ofDegrees(degrees).rotate(input);
+        Segment rotated = Angle.degrees(degrees).rotate(input);
 
         assertThat(rotated.from()).isEqualTo(zero());
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));

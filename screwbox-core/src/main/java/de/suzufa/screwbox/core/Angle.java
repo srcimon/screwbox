@@ -16,7 +16,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
-    private static final Angle NONE = ofDegrees(MIN_VALUE);
+    private static final Angle NONE = degrees(MIN_VALUE);
 
     private final double degrees;
 
@@ -27,7 +27,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
     /**
      * Creates a new {@link Angle} by the given {@link #degrees()}.
      */
-    public static Angle ofDegrees(final double degrees) {
+    public static Angle degrees(final double degrees) {
         return new Angle(degrees);
     }
 
@@ -42,7 +42,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
         final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
-        return Angle.ofDegrees(inRangeDegrees);
+        return Angle.degrees(inRangeDegrees);
     }
 
     /**
@@ -127,8 +127,8 @@ public final class Angle implements Serializable, Comparable<Angle> {
      */
     public Segment rotate(final Segment segment) {
         requireNonNull(segment, "segment must not be null");
-        final double s = sin(Angle.ofDegrees(degrees).radians());
-        final double c = cos(Angle.ofDegrees(degrees).radians());
+        final double s = sin(Angle.degrees(degrees).radians());
+        final double c = cos(Angle.degrees(degrees).radians());
         final Vector translated = segment.to().substract(segment.from());
         final double xnew = translated.x() * c - translated.y() * s;
         final double ynew = translated.x() * s + translated.y() * c;
