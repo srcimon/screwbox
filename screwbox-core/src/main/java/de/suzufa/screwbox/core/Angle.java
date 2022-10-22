@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -106,35 +107,37 @@ public final class Angle implements Serializable, Comparable<Angle> {
         return degrees == MIN_VALUE;
     }
 
-    // TODO: doc and test
-    public static Angle of(Segment segment) {
+    /**
+     * Returns the {@link Angle} between a given {@link Segment} and a vertical line
+     * from the {@link Segment#from()}.
+     * 
+     * @param segment the {@link Segment} that is used to calculate the angle
+     */
+    public static Angle of(final Segment segment) {
+        requireNonNull(segment, "segment must not be null");
         return ofMomentum(segment.to().substract(segment.from()));
     }
 
-    public static void main(String[] args) {
-        System.out.println(Angle.ofDegrees(0).rotate(Segment.between(Vector.$(0, 0), Vector.$(0, -20))).to());
-    }
-
-    // TODO: doc and test
-    public Segment rotate(Segment segment) {
-        double s = sin(Angle.ofDegrees(degrees).radians());
-        double c = cos(Angle.ofDegrees(degrees).radians());
-        Vector translated = segment.to().substract(segment.from());
-        double xnew = translated.x() * c - translated.y() * s;
-        double ynew = translated.x() * s + translated.y() * c;
+    /**
+     * Rotates the given {@link Segment} by the given {@link Angle} around
+     * {@link Segment#from()}.
+     * 
+     * @param segment the {@link Segment} to be rotated
+     * @return the rotated {@link Segment}
+     */
+    public Segment rotate(final Segment segment) {
+        requireNonNull(segment, "segment must not be null");
+        final double s = sin(Angle.ofDegrees(degrees).radians());
+        final double c = cos(Angle.ofDegrees(degrees).radians());
+        final Vector translated = segment.to().substract(segment.from());
+        final double xnew = translated.x() * c - translated.y() * s;
+        final double ynew = translated.x() * s + translated.y() * c;
 
         return Segment.between(segment.from(), Vector.$(xnew, ynew).add(segment.from()));
-//        var dx = segment.to().x() - segment.from().x();
-//        var dy = segment.to().y() - segment.from().y();
-//        var destDegrees = degrees();
-//        var destPoint = segment.from().add(Vector.of(
-//                dx * cos(destDegrees) - dy * sin(destDegrees),
-//                dx * sin(destDegrees) + dy * cos(destDegrees)));
-//        return Segment.between(segment.from(), destPoint);
     }
 
     @Override
-    public int compareTo(Angle other) {
+    public int compareTo(final Angle other) {
         return Double.compare(degrees, other.degrees);
     }
 }
