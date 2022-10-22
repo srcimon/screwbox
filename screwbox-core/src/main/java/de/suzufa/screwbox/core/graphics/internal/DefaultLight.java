@@ -17,7 +17,6 @@ import java.util.function.Function;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
@@ -75,7 +74,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
                         options.color());
             });
-
+            addPotentialGlow(position, options);
         }
         return this;
     }
@@ -87,35 +86,58 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(options.size()),
                     options.color()));
-
+            addPotentialGlow(position, options);
         }
         return this;
     }
 
-    @Override
-    public Light addGlow(final Vector origin, final double size, final Color color) {
-        raiseExceptionOnSealed();
-        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
-        if (isVisible(lightBox)) {
+    private void addPotentialGlow(Vector position, LightOptions options) {
+        final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
+        if (options.glow() != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
 
                 @Override
                 public void run() {
                     final int maxDistance = world.toDistance(2);
-                    final Offset offset = world.toOffset(origin);
+                    final Offset offset = world.toOffset(position);
                     final Offset target = window.center();
                     final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
                     final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
                     for (int i = 1; i < 4; i++) {
                         final var position = offset.addX(xStep * i).addY(yStep * i);
-                        world.drawFadingCircle(world.toPosition(position), i * size,
-                                color.opacity(color.opacity().value() / 3));
+                        world.drawFadingCircle(
+                                world.toPosition(position),
+                                i * options.size() * options.glow(),
+                                options.glowColor().opacity(options.glowColor().opacity().value() / 3));
                     }
                 }
             });
         }
-        return this;
     }
+
+//    @Override
+//    public Light addGlow(final Vector origin, final double size, final Color color) {
+//        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
+//        if (isVisible(lightBox)) {
+//            postDrawingTasks.add(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    final int maxDistance = world.toDistance(2);
+//                    final Offset offset = world.toOffset(origin);
+//                    final Offset target = window.center();
+//                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
+//                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
+//                    for (int i = 1; i < 4; i++) {
+//                        final var position = offset.addX(xStep * i).addY(yStep * i);
+//                        world.drawFadingCircle(world.toPosition(position), i * size,
+//                                color.opacity(color.opacity().value() / 3));
+//                    }
+//                }
+//            });
+//        }
+//        return this;
+//    }
 
     @Override
     public void update() {

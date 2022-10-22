@@ -4,8 +4,12 @@ import java.io.Serializable;
 
 public record LightOptions(double size, Color color, double glow, Color glowColor) implements Serializable {
 
-    public static LightOptions size(double size) {
+    public static LightOptions glowing(double size) {
         return new LightOptions(size, Color.BLACK, 1.0, Color.WHITE);
+    }
+
+    public static LightOptions noGlow(double size) {
+        return new LightOptions(size, Color.BLACK, 0, Color.WHITE);
     }
 
     public LightOptions resize(double size) {

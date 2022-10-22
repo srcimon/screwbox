@@ -99,7 +99,7 @@ class DefaultLightTest {
 
         light.seal();
 
-        assertThatThrownBy(() -> light.addPointLight(position, LightOptions.size(40).color(Color.BLUE)))
+        assertThatThrownBy(() -> light.addPointLight(position, LightOptions.glowing(40).color(Color.BLUE)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("light has already been sealed");
     }
@@ -110,18 +110,7 @@ class DefaultLightTest {
 
         light.seal();
 
-        assertThatThrownBy(() -> light.addSpotLight(position, LightOptions.size(40).color(Color.BLUE)))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("light has already been sealed");
-    }
-
-    @Test
-    void addGlow_alreadySealed_throwsException() {
-        Vector position = Vector.$(30, 30);
-
-        light.seal();
-
-        assertThatThrownBy(() -> light.addGlow(position, 40, Color.BLUE))
+        assertThatThrownBy(() -> light.addSpotLight(position, LightOptions.glowing(40).color(Color.BLUE)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("light has already been sealed");
     }
@@ -131,7 +120,7 @@ class DefaultLightTest {
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
 
         light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
-        light.addPointLight(Vector.$(40, 80), LightOptions.size(140).color(Color.RED));
+        light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.seal();
         light.render();
 

@@ -3,7 +3,6 @@ package de.suzufa.screwbox.playground.debo.collectables;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
-import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
@@ -21,8 +20,7 @@ public class Cherries implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity().add(
-                new LightGlowComponent(30, Color.RED.opacity(0.4)),
-                new PointLightComponent(LightOptions.size(40)
+                new PointLightComponent(LightOptions.glowing(40)
                         .color(Color.RED)
                         .glow(0.75)
                         .glowColor(Color.RED.opacity(0.4))),

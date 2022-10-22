@@ -8,7 +8,6 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
-import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
@@ -31,8 +30,7 @@ public class Slime implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new LightGlowComponent(30, Color.YELLOW.opacity(0.4)),
-                new PointLightComponent(LightOptions.size(30)
+                new PointLightComponent(LightOptions.glowing(30)
                         .color(Color.BLACK.opacity(0.6))
                         .glow(1)
                         .glowColor(Color.YELLOW.opacity(0.4))),

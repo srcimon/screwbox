@@ -10,7 +10,6 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
@@ -24,9 +23,6 @@ public class CreateLightSystem implements EntitySystem {
 
     private static final Archetype SPOTLIGHT_EMITTERS = Archetype.of(
             SpotLightComponent.class, TransformComponent.class);
-
-    private static final Archetype GLOW_EMITTERS = Archetype.of(
-            LightGlowComponent.class, TransformComponent.class);
 
     private static final Archetype OBSTACLES = Archetype.of(
             LightObstacleComponent.class, TransformComponent.class);
@@ -51,11 +47,7 @@ public class CreateLightSystem implements EntitySystem {
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.options);
         }
-        for (final Entity glowLightEntity : engine.entities().fetchAll(GLOW_EMITTERS)) {
-            final var glowLight = glowLightEntity.get(LightGlowComponent.class);
-            final Vector position = glowLightEntity.get(TransformComponent.class).bounds.position();
-            light.addGlow(position, glowLight.size, glowLight.color);
-        }
+
         light.seal();
     }
 

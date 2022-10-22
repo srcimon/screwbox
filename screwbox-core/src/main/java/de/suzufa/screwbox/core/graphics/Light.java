@@ -16,8 +16,6 @@ public interface Light {
 
     Light addSpotLight(Vector position, LightOptions options);
 
-    Light addGlow(Vector origin, double size, Color color);
-
     Light updateObstacles(List<Bounds> obstacles);
 
     Light setAmbientLight(Percentage ambientLight);

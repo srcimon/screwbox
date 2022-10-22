@@ -6,7 +6,6 @@ import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
-import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
@@ -27,12 +26,11 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new LightGlowComponent(60, Color.WHITE.opacity(0.15)),
-                new PointLightComponent(LightOptions.size(120)
+                new PointLightComponent(LightOptions.glowing(120)
                         .color(Color.BLACK)
                         .glow(0.5)
                         .glowColor(Color.WHITE.opacity(0.15))),
-                new SpotLightComponent(LightOptions.size(120)
+                new SpotLightComponent(LightOptions.glowing(120)
                         .color(Color.BLACK.opacity(0.4))
                         .glow(0)),
                 new StateComponent(new PlayerStandingState()),
