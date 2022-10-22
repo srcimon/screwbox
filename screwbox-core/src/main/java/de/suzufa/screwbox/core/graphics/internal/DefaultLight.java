@@ -90,7 +90,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addGlow(Vector origin, double size, Color color) {
+    public Light addGlow(final Vector origin, final double size, final Color color) {
         raiseExceptionOnSealed();
         final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
         if (isVisible(lightBox)) {
@@ -98,13 +98,13 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
                 @Override
                 public void run() {
-                    int maxDistance = world.toDistance(2);
-                    Offset offset = world.toOffset(origin);
-                    Offset target = window.center();
-                    int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
-                    int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
+                    final int maxDistance = world.toDistance(2);
+                    final Offset offset = world.toOffset(origin);
+                    final Offset target = window.center();
+                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
+                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
                     for (int i = 1; i < 4; i++) {
-                        var position = offset.addX(xStep * i).addY(yStep * i);
+                        final var position = offset.addX(xStep * i).addY(yStep * i);
                         world.drawFadingCircle(world.toPosition(position), i * size,
                                 color.opacity(color.opacity().value() / 3));
                     }
