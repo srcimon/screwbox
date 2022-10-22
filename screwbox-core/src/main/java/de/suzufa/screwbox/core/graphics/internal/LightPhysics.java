@@ -17,23 +17,23 @@ import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
-    private List<Bounds> obstacles = new ArrayList<>();
+    private List<Bounds> shadowCasters = new ArrayList<>();
     private final DefaultWorld world;
 
     public LightPhysics(final DefaultWorld world) {
         this.world = world;
     }
 
-    public void setObstacles(final List<Bounds> obstacles) {
-        this.obstacles = requireNonNull(obstacles, "obstacles must not be null");
+    public void setShadowCasters(final List<Bounds> shadowCasters) {
+        this.shadowCasters = requireNonNull(shadowCasters, "shadowCasters must not be null");
     }
 
-    public List<Bounds> obstacles() {
-        return obstacles;
+    public List<Bounds> shadowCasters() {
+        return shadowCasters;
     }
 
     public List<Offset> calculateArea(final Bounds lightBox) {
-        final var relevantBlockingBounds = lightBox.allIntersecting(obstacles);
+        final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
         final List<Offset> area = new ArrayList<>();
 
         final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);

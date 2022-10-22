@@ -15,13 +15,13 @@ public interface Light {
 
     Light addSpotLight(Vector position, LightOptions options);
 
-    Light updateObstacles(List<Bounds> obstacles);
+    Light updateShadowCasters(List<Bounds> shadowCasters);
 
     Light setAmbientLight(Percentage ambientLight);
 
     Percentage ambientLight();
 
-    List<Bounds> obstacles();
+    List<Bounds> shadowCasters();
 
     Light render();
 

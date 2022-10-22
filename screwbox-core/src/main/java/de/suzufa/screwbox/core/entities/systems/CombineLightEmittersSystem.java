@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
+import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
 import de.suzufa.screwbox.core.entities.components.StaticLightBlockerMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.utils.GeometryUtil;
 public class CombineLightEmittersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticLightBlockerMarkerComponent.class, LightObstacleComponent.class, TransformComponent.class);
+            StaticLightBlockerMarkerComponent.class, ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -44,14 +44,14 @@ public class CombineLightEmittersSystem implements EntitySystem {
                 second.get(TransformComponent.class).bounds);
         if (result.isPresent()) {
             Entity combined = new Entity()
-                    .add(new LightObstacleComponent())
+                    .add(new ShadowCasterComponent())
                     .add(new StaticLightBlockerMarkerComponent())
                     .add(new TransformComponent(result.get()));
             engine.entities().add(combined);
             first.remove(StaticLightBlockerMarkerComponent.class);
-            first.remove(LightObstacleComponent.class);
+            first.remove(ShadowCasterComponent.class);
             second.remove(StaticLightBlockerMarkerComponent.class);
-            second.remove(LightObstacleComponent.class);
+            second.remove(ShadowCasterComponent.class);
             return true;
         }
         return false;
