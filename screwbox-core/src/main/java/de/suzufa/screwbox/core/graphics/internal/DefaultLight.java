@@ -21,6 +21,7 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
+import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -65,13 +66,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addPointLight(final Vector position, final double range, final Color color) {
+    public Light addPointLight(final Vector position, LightOptions options) {
         raiseExceptionOnSealed();
-        final Bounds lightBox = Bounds.atPosition(position, range, range);
+        final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> {
                 final List<Offset> area = lightPhysics.calculateArea(lightBox);
-                lightmap.addPointLight(world.toOffset(position), world.toDistance(range), area, color);
+                lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
+                        options.color());
             });
 
         }
@@ -79,11 +81,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addSpotLight(final Vector position, final double range, final Color color) {
+    public Light addSpotLight(final Vector position, LightOptions options) {
         raiseExceptionOnSealed();
-        final Bounds lightBox = Bounds.atPosition(position, range, range);
+        final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
-            drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color));
+            drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(options.size()),
+                    options.color()));
 
         }
         return this;

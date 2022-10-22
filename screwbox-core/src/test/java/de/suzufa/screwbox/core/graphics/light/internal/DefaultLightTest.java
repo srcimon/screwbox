@@ -28,6 +28,7 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
+import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -98,7 +99,7 @@ class DefaultLightTest {
 
         light.seal();
 
-        assertThatThrownBy(() -> light.addPointLight(position, 40, Color.BLUE))
+        assertThatThrownBy(() -> light.addPointLight(position, LightOptions.size(40).color(Color.BLUE)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("light has already been sealed");
     }
@@ -109,7 +110,7 @@ class DefaultLightTest {
 
         light.seal();
 
-        assertThatThrownBy(() -> light.addSpotLight(position, 40, Color.BLUE))
+        assertThatThrownBy(() -> light.addSpotLight(position, LightOptions.size(40).color(Color.BLUE)))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("light has already been sealed");
     }
@@ -130,7 +131,7 @@ class DefaultLightTest {
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
 
         light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
-        light.addPointLight(Vector.$(40, 80), 140, Color.RED);
+        light.addPointLight(Vector.$(40, 80), LightOptions.size(140).color(Color.RED));
         light.seal();
         light.render();
 

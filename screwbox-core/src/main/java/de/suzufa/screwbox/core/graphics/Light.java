@@ -12,9 +12,9 @@ public interface Light {
     // TODO: addNeonLight()
     // TODO: addAnamorphicLensFlare()
 
-    Light addPointLight(Vector position, final double range, final Color color);
+    Light addPointLight(Vector position, LightOptions options);
 
-    Light addSpotLight(Vector position, final double range, final Color color);
+    Light addSpotLight(Vector position, LightOptions options);
 
     Light addGlow(Vector origin, double size, Color color);
 

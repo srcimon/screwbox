@@ -43,13 +43,13 @@ public class CreateLightSystem implements EntitySystem {
         for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);
             final Vector position = pointLightEntity.get(TransformComponent.class).bounds.position();
-            light.addPointLight(position, pointLight.range, pointLight.color);
+            light.addPointLight(position, pointLight.options);
         }
 
         for (final Entity spotLightEntity : engine.entities().fetchAll(SPOTLIGHT_EMITTERS)) {
             final var spotLight = spotLightEntity.get(SpotLightComponent.class);
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
-            light.addSpotLight(position, spotLight.range, spotLight.color);
+            light.addSpotLight(position, spotLight.options);
         }
         for (final Entity glowLightEntity : engine.entities().fetchAll(GLOW_EMITTERS)) {
             final var glowLight = glowLightEntity.get(LightGlowComponent.class);
