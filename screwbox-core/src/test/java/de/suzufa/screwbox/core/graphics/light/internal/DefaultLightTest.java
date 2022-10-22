@@ -81,7 +81,7 @@ class DefaultLightTest {
 
         assertThatThrownBy(() -> light.seal())
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("lightmap has already been sealed");
+                .hasMessage("light has already been sealed");
     }
 
     @Test
@@ -90,6 +90,39 @@ class DefaultLightTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage(
                         "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
+    }
+
+    @Test
+    void addPointLight_alreadySealed_throwsException() {
+        Vector position = Vector.$(30, 30);
+
+        light.seal();
+
+        assertThatThrownBy(() -> light.addPointLight(position, 40, Color.BLUE))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("light has already been sealed");
+    }
+
+    @Test
+    void addSpotLight_alreadySealed_throwsException() {
+        Vector position = Vector.$(30, 30);
+
+        light.seal();
+
+        assertThatThrownBy(() -> light.addSpotLight(position, 40, Color.BLUE))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("light has already been sealed");
+    }
+
+    @Test
+    void addGlow_alreadySealed_throwsException() {
+        Vector position = Vector.$(30, 30);
+
+        light.seal();
+
+        assertThatThrownBy(() -> light.addGlow(position, 40, Color.BLUE))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("light has already been sealed");
     }
 
     @Test

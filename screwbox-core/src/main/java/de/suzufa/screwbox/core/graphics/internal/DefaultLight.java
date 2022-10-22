@@ -66,7 +66,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addPointLight(final Vector position, final double range, final Color color) {
-        // TODO: error after sealed
+        raiseExceptionOnSealed();
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> {
@@ -80,7 +80,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addSpotLight(final Vector position, final double range, final Color color) {
-        // TODO: error after sealed
+        raiseExceptionOnSealed();
         final Bounds lightBox = Bounds.atPosition(position, range, range);
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(range), color));
@@ -91,17 +91,18 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addGlow(Vector origin, double size, Color color) {
-        // TODO: error after sealed
+        raiseExceptionOnSealed();
         final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
         if (isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
 
                 @Override
                 public void run() {
+                    int maxDistance = world.toDistance(2);
                     Offset offset = world.toOffset(origin);
                     Offset target = window.center();
-                    int xStep = (int) MathUtil.clamp(-10.0, (target.x() - offset.x()) / 4, 10.0);
-                    int yStep = (int) MathUtil.clamp(-10.0, (target.y() - offset.y()) / 4, 10.0);
+                    int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
+                    int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
                     for (int i = 1; i < 4; i++) {
                         var position = offset.addX(xStep * i).addY(yStep * i);
                         world.drawFadingCircle(world.toPosition(position), i * size,
@@ -146,9 +147,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light seal() {
-        if (nonNull(sprite)) {
-            throw new IllegalStateException("lightmap has already been sealed");
-        }
+        raiseExceptionOnSealed();
         sprite = executor.submit(() -> {
             for (final var drawingTask : drawingTasks) {
                 drawingTask.run();
@@ -160,6 +159,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             return Sprite.fromImage(filtered);
         });
         return this;
+    }
+
+    private void raiseExceptionOnSealed() {
+        if (isSealed()) {
+            throw new IllegalStateException("light has already been sealed");
+        }
     }
 
     @Override
@@ -185,6 +190,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private boolean isVisible(final Bounds lightBox) {
         return window.isVisible(world.toWindowBounds(lightBox));
+    }
+
+    @Override
+    public boolean isSealed() {
+        return nonNull(sprite);
     }
 
 }

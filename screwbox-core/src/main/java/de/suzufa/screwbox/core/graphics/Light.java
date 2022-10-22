@@ -30,4 +30,6 @@ public interface Light {
 
     Light seal();
 
+    boolean isSealed();
+
 }
