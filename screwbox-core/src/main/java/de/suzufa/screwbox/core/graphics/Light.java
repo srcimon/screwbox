@@ -9,14 +9,11 @@ import de.suzufa.screwbox.core.Vector;
 //TODO: javadoc and tests
 public interface Light {
 
-    // TODO: addNeonLight()
-    // TODO: addAnamorphicLensFlare()
+    // TODO: addPointLight(position, options, animation) Animation.apply(options ->
+    // new options)
+    Light addPointLight(Vector position, LightOptions options);
 
-    Light addPointLight(Vector position, final double range, final Color color);
-
-    Light addSpotLight(Vector position, final double range, final Color color);
-
-    Light addGlow(Vector origin, double size, Color color);
+    Light addSpotLight(Vector position, LightOptions options);
 
     Light updateObstacles(List<Bounds> obstacles);
 
@@ -29,5 +26,7 @@ public interface Light {
     Light render();
 
     Light seal();
+
+    boolean isSealed();
 
 }

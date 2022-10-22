@@ -12,7 +12,6 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
-import de.suzufa.screwbox.core.graphics.InvertAlphaFilter;
 import de.suzufa.screwbox.core.graphics.Offset;
 
 public class Lightmap implements AutoCloseable {

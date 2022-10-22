@@ -6,7 +6,6 @@ import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
-import de.suzufa.screwbox.core.entities.components.LightGlowComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
@@ -15,6 +14,7 @@ import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
+import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
@@ -26,9 +26,12 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new LightGlowComponent(60, Color.WHITE.opacity(0.15)),
-                new PointLightComponent(120, Color.BLACK),
-                new SpotLightComponent(120, Color.BLACK.opacity(0.4)),
+                new PointLightComponent(LightOptions.glowing(120)
+                        .color(Color.BLACK)
+                        .glow(0.5)),
+                new SpotLightComponent(LightOptions.glowing(120)
+                        .color(Color.BLACK.opacity(0.4))
+                        .glow(0)),
                 new StateComponent(new PlayerStandingState()),
                 new PhysicsBodyComponent(),
                 new GroundDetectorComponent(),
