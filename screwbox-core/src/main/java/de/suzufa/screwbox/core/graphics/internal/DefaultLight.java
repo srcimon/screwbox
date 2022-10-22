@@ -98,11 +98,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
                 @Override
                 public void run() {
-                    final int maxDistance = world.toDistance(2);
+                    final double maxDistance = world.toDistance(2);
                     final Offset offset = world.toOffset(position);
                     final Offset target = window.center();
-                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
-                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
+                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4.0, maxDistance);
+                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4.0, maxDistance);
                     for (int i = 1; i < 4; i++) {
                         final var position = offset.addX(xStep * i).addY(yStep * i);
                         world.drawFadingCircle(

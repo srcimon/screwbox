@@ -31,7 +31,7 @@ public class StartBackgroundSystem implements EntitySystem {
         final Sprite sprite = BACKGROUNDS.get(index);
         final Offset center = engine.graphics().window().center();
 
-        final Angle rotation = Angle.ofDegrees(milliseconds / 200.0);
+        final Angle rotation = Angle.degrees(milliseconds / 200.0);
         final double scale = Math.abs(Math.sin(milliseconds / 1000.0)) * 8 + 12;
         final double xCorrect = sprite.size().width() / 2.0 * scale;
         final double yCorrect = sprite.size().height() / 2.0 * scale;
