@@ -28,8 +28,7 @@ public class Player implements Converter<GameObject> {
         return new Entity(object.id()).add(
                 new PointLightComponent(LightOptions.glowing(120)
                         .color(Color.BLACK)
-                        .glow(0.5)
-                        .glowColor(Color.WHITE.opacity(0.15))),
+                        .glow(0.5)),
                 new SpotLightComponent(LightOptions.glowing(120)
                         .color(Color.BLACK.opacity(0.4))
                         .glow(0)),

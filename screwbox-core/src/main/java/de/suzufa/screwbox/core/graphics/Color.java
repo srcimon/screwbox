@@ -72,7 +72,7 @@ public final class Color implements Serializable {
     /**
      * Creates a color based on RGB-components and custom {@link #opacity()}.
      */
-    public static Color rgb(final int r, final int g, final int b, Percentage opacity) {
+    public static Color rgb(final int r, final int g, final int b, final Percentage opacity) {
         return new Color(r, g, b, opacity);
     }
 
@@ -80,10 +80,10 @@ public final class Color implements Serializable {
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
      * 
-     * @see #withOpacity(Percentage)
+     * @see #opacity(Percentage)
      */
-    public Color opacity(double opacity) {
-        return withOpacity(Percentage.of(opacity));
+    public Color opacity(final double opacity) {
+        return opacity(Percentage.of(opacity));
     }
 
     /**
@@ -92,7 +92,7 @@ public final class Color implements Serializable {
      * 
      * @see #opacity(double)
      */
-    public Color withOpacity(Percentage opacity) {
+    public Color opacity(final Percentage opacity) {
         return new Color(r, g, b, opacity);
     }
 
@@ -128,7 +128,7 @@ public final class Color implements Serializable {
         this(r, g, b, Percentage.max());
     }
 
-    private Color(final int r, final int g, final int b, Percentage opacity) {
+    private Color(final int r, final int g, final int b, final Percentage opacity) {
         validate(r);
         validate(g);
         validate(b);
@@ -150,14 +150,14 @@ public final class Color implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Color other = (Color) obj;
+        final Color other = (Color) obj;
         return b == other.b && g == other.g && Objects.equals(opacity, other.opacity) && r == other.r;
     }
 

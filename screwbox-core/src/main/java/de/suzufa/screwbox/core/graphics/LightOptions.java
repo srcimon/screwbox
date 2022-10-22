@@ -5,7 +5,7 @@ import java.io.Serializable;
 public record LightOptions(double size, Color color, double glow, Color glowColor) implements Serializable {
 
     public static LightOptions glowing(double size) {
-        return new LightOptions(size, Color.BLACK, 1.0, Color.WHITE);
+        return new LightOptions(size, Color.BLACK, 1.0, Color.WHITE.opacity(0.2));
     }
 
     public static LightOptions noGlow(double size) {
