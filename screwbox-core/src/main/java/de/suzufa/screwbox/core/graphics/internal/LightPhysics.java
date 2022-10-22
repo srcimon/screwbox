@@ -54,7 +54,7 @@ public class LightPhysics {
     }
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
-        var segments = new ArrayList<Segment>();
+        final var segments = new ArrayList<Segment>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
         segments.add(Segment.between(source.position(), source.bottomRight()));
         segments.add(Segment.between(source.position(), source.topLeft()));
@@ -92,5 +92,14 @@ public class LightPhysics {
             allSegments.addAll(Borders.ALL.extractSegmentsMethod().apply(bounds));
         }
         return allSegments;
+    }
+
+    public boolean isCoveredByShadowCasters(final Vector position) {
+        for (final var bounds : shadowCasters) {
+            if (bounds.contains(position)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
