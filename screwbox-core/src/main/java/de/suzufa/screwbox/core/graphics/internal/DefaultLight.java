@@ -67,6 +67,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light addPointLight(final Vector position, LightOptions options) {
         raiseExceptionOnSealed();
+        addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> {
@@ -74,7 +75,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
                         options.color());
             });
-            addPotentialGlow(position, options);
         }
         return this;
     }
@@ -82,11 +82,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light addSpotLight(final Vector position, LightOptions options) {
         raiseExceptionOnSealed();
+        addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
             drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(options.size()),
                     options.color()));
-            addPotentialGlow(position, options);
         }
         return this;
     }
