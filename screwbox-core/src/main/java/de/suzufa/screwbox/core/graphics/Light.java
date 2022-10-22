@@ -9,9 +9,8 @@ import de.suzufa.screwbox.core.Vector;
 //TODO: javadoc and tests
 public interface Light {
 
-    // TODO: addNeonLight()
-    // TODO: addAnamorphicLensFlare()
-
+    // TODO: addPointLight(position, options, animation) Animation.apply(options ->
+    // new options)
     Light addPointLight(Vector position, LightOptions options);
 
     Light addSpotLight(Vector position, LightOptions options);
