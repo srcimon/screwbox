@@ -65,7 +65,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addPointLight(final Vector position, LightOptions options) {
+    public Light addPointLight(final Vector position, final LightOptions options) {
         raiseExceptionOnSealed();
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
             addPotentialGlow(position, options);
@@ -83,7 +83,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addSpotLight(final Vector position, LightOptions options) {
+    public Light addSpotLight(final Vector position, final LightOptions options) {
         raiseExceptionOnSealed();
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
@@ -94,7 +94,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         return this;
     }
 
-    private void addPotentialGlow(Vector position, LightOptions options) {
+    private void addPotentialGlow(final Vector position, final LightOptions options) {
         final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
         if (options.glow() != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
