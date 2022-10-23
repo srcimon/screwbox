@@ -118,30 +118,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         }
     }
 
-//    @Override
-//    public Light addGlow(final Vector origin, final double size, final Color color) {
-//        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
-//        if (isVisible(lightBox)) {
-//            postDrawingTasks.add(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    final int maxDistance = world.toDistance(2);
-//                    final Offset offset = world.toOffset(origin);
-//                    final Offset target = window.center();
-//                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
-//                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
-//                    for (int i = 1; i < 4; i++) {
-//                        final var position = offset.addX(xStep * i).addY(yStep * i);
-//                        world.drawFadingCircle(world.toPosition(position), i * size,
-//                                color.opacity(color.opacity().value() / 3));
-//                    }
-//                }
-//            });
-//        }
-//        return this;
-//    }
-
     @Override
     public void update() {
         initializeLightmap();
