@@ -139,35 +139,35 @@ public interface Window {
     Window moveTo(Offset position);
 
     /**
-     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game
      * is in fullscreen and window mode.
      * 
-     * @see #setFullscreenCursor(PredefinedCursor)
-     * @see #setWindowCursor(PredefinedCursor)
+     * @see #setFullscreenCursor(MouseCursor)
+     * @see #setWindowCursor(MouseCursor)
      */
-    default Window setCursor(final PredefinedCursor cursor) {
+    default Window setCursor(final MouseCursor cursor) {
         setWindowCursor(cursor);
         setFullscreenCursor(cursor);
         return this;
     }
 
     /**
-     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game
      * is in window mode.
      * 
-     * @see #setCursor(PredefinedCursor)
-     * @see #setFullscreenCursor(PredefinedCursor)
+     * @see #setCursor(MouseCursor)
+     * @see #setFullscreenCursor(MouseCursor)
      */
-    Window setWindowCursor(PredefinedCursor cursor);
+    Window setWindowCursor(MouseCursor cursor);
 
     /**
-     * Updates the mouse cursor of to the given {@link PredefinedCursor} when game
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game
      * is in fullscreen mode.
      * 
-     * @see #setCursor(PredefinedCursor)
-     * @see #setWindowCursor(PredefinedCursor)
+     * @see #setCursor(MouseCursor)
+     * @see #setWindowCursor(MouseCursor)
      */
-    Window setFullscreenCursor(PredefinedCursor cursor);
+    Window setFullscreenCursor(MouseCursor cursor);
 
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
