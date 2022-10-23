@@ -62,7 +62,9 @@ public class DefaultPhysics implements Physics {
     public Optional<Path> findPath(final Grid grid, final Vector start, final Vector end) {
         final Node startPoint = grid.toGrid(start);
         final Node endPoint = grid.toGrid(end);
-
+        if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
+            return Optional.empty();
+        }
         final List<Node> path = algorithm.findPath(grid, startPoint, endPoint);
         if (path.isEmpty()) {
             return Optional.empty();
