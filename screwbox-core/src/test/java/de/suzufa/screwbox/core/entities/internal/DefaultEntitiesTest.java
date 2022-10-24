@@ -24,8 +24,8 @@ class DefaultEntitiesTest {
 
     @BeforeEach
     void beforeEach() {
-        DefaultEntityManager entityManager = new DefaultEntityManager();
-        entities = new DefaultEntities(entityManager, new DefaultSystemManager(engine, entityManager));
+        EntityManager entityManager = new EntityManager();
+        entities = new DefaultEntities(entityManager, new SystemManager(engine, entityManager));
     }
 
     @Test
