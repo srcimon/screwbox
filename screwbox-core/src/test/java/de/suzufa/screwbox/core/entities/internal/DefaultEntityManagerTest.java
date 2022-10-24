@@ -12,13 +12,13 @@ import de.suzufa.screwbox.core.entities.components.ForwardSignalComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
-class EntityManagerTest {
+class DefaultEntityManagerTest {
 
-    private EntityManager entityManager;
+    private DefaultEntityManager entityManager;
 
     @BeforeEach
     void beforeEach() {
-        entityManager = new EntityManager();
+        entityManager = new DefaultEntityManager();
     }
 
     @Test

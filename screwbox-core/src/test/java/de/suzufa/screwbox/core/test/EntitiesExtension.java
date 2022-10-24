@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.entities.internal.EntityManager;
-import de.suzufa.screwbox.core.entities.internal.SystemManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
@@ -39,8 +39,8 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         final var physics = mock(Physics.class);
         final var keyboard = mock(Keyboard.class);
         final var screen = mock(Window.class);
-        final var entityManager = new EntityManager();
-        final var systemManager = new SystemManager(engine, entityManager);
+        final var entityManager = new DefaultEntityManager();
+        final var systemManager = new DefaultSystemManager(engine, entityManager);
         entities = new DefaultEntities(entityManager, systemManager);
 
         // resolve a real entity engine with many mocked subsystems

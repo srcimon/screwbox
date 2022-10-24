@@ -8,8 +8,8 @@ import java.util.Map;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.entities.internal.EntityManager;
-import de.suzufa.screwbox.core.entities.internal.SystemManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
+import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 import de.suzufa.screwbox.core.scenes.DefaultScene;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -57,8 +57,8 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes add(final Scene scene) {
-        final var entityManager = new EntityManager();
-        final var systemManager = new SystemManager(engine, entityManager);
+        final var entityManager = new DefaultEntityManager();
+        final var systemManager = new DefaultSystemManager(engine, entityManager);
         final var entities = new DefaultEntities(entityManager, systemManager);
 
         final SceneContainer sceneContainer = new SceneContainer(scene, entities);
