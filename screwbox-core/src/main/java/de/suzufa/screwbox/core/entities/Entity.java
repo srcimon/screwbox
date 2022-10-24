@@ -31,13 +31,13 @@ public final class Entity implements Serializable {
     }
 
     public Entity add(final Component... components) {
-        for (var component : components) {
+        for (final var component : components) {
             add(component);
         }
         return this;
     }
 
-    public Entity add(Component component) {
+    public Entity add(final Component component) {
         if (components.containsKey(component.getClass())) {
             throw new IllegalArgumentException("component already present: " + component.getClass().getSimpleName());
         }
