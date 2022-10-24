@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entities.components.StaticLightBlockerMarkerCompo
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
-public class CombineLightEmittersSystem implements EntitySystem {
+public class CombineStaticShadowCastersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
             StaticLightBlockerMarkerComponent.class, ShadowCasterComponent.class, TransformComponent.class);
@@ -33,7 +33,7 @@ public class CombineLightEmittersSystem implements EntitySystem {
         for (final var entity : combinables) {
             entity.remove(StaticLightBlockerMarkerComponent.class);
         }
-        engine.entities().remove(CombineLightEmittersSystem.class);
+        engine.entities().remove(CombineStaticShadowCastersSystem.class);
     }
 
     private boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
