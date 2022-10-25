@@ -61,10 +61,10 @@ public class LightPhysics {
         segments.add(Segment.between(source.position(), source.topRight()));
         final var range = source.extents().length();
         for (final var collider : colliders) {
-            segments.addAll(segmentsOf(source, range, collider.bottomLeft()));
-            segments.addAll(segmentsOf(source, range, collider.bottomRight()));
-            segments.addAll(segmentsOf(source, range, collider.topLeft()));
-            segments.addAll(segmentsOf(source, range, collider.topRight()));
+            segmentsOf(segments, source, range, collider.bottomLeft());
+            segmentsOf(segments, source, range, collider.bottomRight());
+            segmentsOf(segments, source, range, collider.topLeft());
+            segmentsOf(segments, source, range, collider.topRight());
         }
         segments.sort(new Comparator<Segment>() {
 
@@ -76,14 +76,13 @@ public class LightPhysics {
         return segments;
     }
 
-    private List<Segment> segmentsOf(final Bounds source, final double range, final Vector destination) {
+    private void segmentsOf(List<Segment> list, final Bounds source, final double range, final Vector destination) {
         final Segment directTrace = Segment.between(source.position(), destination);
         final Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
-        return List.of(
-                Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace),
-                directTrace,
-                Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
+        list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace));
+        list.add(directTrace);
+        list.add(Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
     }
 
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
