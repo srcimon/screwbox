@@ -88,7 +88,9 @@ public class LightPhysics {
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
         final List<Segment> allSegments = new ArrayList<>();
         for (final var bounds : allBounds) {
-            allSegments.addAll(Borders.ALL.extractSegmentsMethod().apply(bounds));
+            for (var x : Borders.ALL.extractSegmentsMethod().apply(bounds)) {
+                allSegments.add(x);
+            }
         }
         return allSegments;
     }
