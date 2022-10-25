@@ -63,9 +63,7 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : getIntersections(entity)) {
-                    intersection.add(intersection);
-                }
+                intersections.addAll(getIntersections(entity));
             }
         }
         return intersections;
