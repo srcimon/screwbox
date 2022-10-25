@@ -54,33 +54,36 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light updateObstacles(final List<Bounds> obstacles) {
-        lightPhysics.setObstacles(obstacles);
+    public Light updateShadowCasters(final List<Bounds> shadowCasters) {
+        lightPhysics.setShadowCasters(shadowCasters);
         return this;
     }
 
     @Override
-    public List<Bounds> obstacles() {
-        return lightPhysics.obstacles();
+    public List<Bounds> shadowCasters() {
+        return lightPhysics.shadowCasters();
     }
 
     @Override
-    public Light addPointLight(final Vector position, LightOptions options) {
+    public Light addPointLight(final Vector position, final LightOptions options) {
         raiseExceptionOnSealed();
-        addPotentialGlow(position, options);
-        final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
-        if (isVisible(lightBox)) {
-            drawingTasks.add(() -> {
-                final List<Offset> area = lightPhysics.calculateArea(lightBox);
-                lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
-                        options.color());
-            });
+        if (!lightPhysics.isCoveredByShadowCasters(position)) {
+            addPotentialGlow(position, options);
+            final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
+            if (isVisible(lightBox)) {
+                drawingTasks.add(() -> {
+
+                    final List<Offset> area = lightPhysics.calculateArea(lightBox);
+                    lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
+                            options.color());
+                });
+            }
         }
         return this;
     }
 
     @Override
-    public Light addSpotLight(final Vector position, LightOptions options) {
+    public Light addSpotLight(final Vector position, final LightOptions options) {
         raiseExceptionOnSealed();
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
@@ -91,7 +94,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         return this;
     }
 
-    private void addPotentialGlow(Vector position, LightOptions options) {
+    private void addPotentialGlow(final Vector position, final LightOptions options) {
         final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
         if (options.glow() != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(new Runnable() {
@@ -114,30 +117,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             });
         }
     }
-
-//    @Override
-//    public Light addGlow(final Vector origin, final double size, final Color color) {
-//        final Bounds lightBox = Bounds.atPosition(origin, size * 3, size * 3);
-//        if (isVisible(lightBox)) {
-//            postDrawingTasks.add(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    final int maxDistance = world.toDistance(2);
-//                    final Offset offset = world.toOffset(origin);
-//                    final Offset target = window.center();
-//                    final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4, maxDistance);
-//                    final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4, maxDistance);
-//                    for (int i = 1; i < 4; i++) {
-//                        final var position = offset.addX(xStep * i).addY(yStep * i);
-//                        world.drawFadingCircle(world.toPosition(position), i * size,
-//                                color.opacity(color.opacity().value() / 3));
-//                    }
-//                }
-//            });
-//        }
-//        return this;
-//    }
 
     @Override
     public void update() {

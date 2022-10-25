@@ -3,7 +3,7 @@ package de.suzufa.screwbox.examples.helloworld;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.entities.systems.QuitOnKeyPressSystem;
-import de.suzufa.screwbox.core.graphics.PredefinedCursor;
+import de.suzufa.screwbox.core.graphics.MouseCursor;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.examples.helloworld.systems.PrintHelloWorldSystem;
 
@@ -14,7 +14,7 @@ public class HelloWorldExample {
         Engine engine = ScrewBox.createEngine("Hello World Example");
 
         // hide cursor in window mode
-        engine.graphics().window().setWindowCursor(PredefinedCursor.HIDDEN);
+        engine.graphics().window().setWindowCursor(MouseCursor.HIDDEN);
 
         // add systems to the game loop
         engine.entities()

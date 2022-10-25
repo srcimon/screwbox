@@ -25,9 +25,9 @@ import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
+import de.suzufa.screwbox.core.graphics.MouseCursor;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
-import de.suzufa.screwbox.core.graphics.PredefinedCursor;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
@@ -41,8 +41,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private DisplayMode lastDisplayMode;
     private Color drawColor = Color.WHITE;
     private final ExecutorService executor;
-    private Cursor windowCursor = cursorFrom(PredefinedCursor.DEFAULT);
-    private Cursor fullscreenCursor = cursorFrom(PredefinedCursor.HIDDEN);
+    private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
+    private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
 
     public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
@@ -301,25 +301,25 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window setWindowCursor(final PredefinedCursor cursor) {
+    public Window setWindowCursor(final MouseCursor cursor) {
         windowCursor = cursorFrom(cursor);
         return this;
     }
 
     @Override
-    public Window setFullscreenCursor(final PredefinedCursor cursor) {
+    public Window setFullscreenCursor(final MouseCursor cursor) {
         fullscreenCursor = cursorFrom(cursor);
         return this;
     }
 
-    private Cursor cursorFrom(final PredefinedCursor cursor) {
-        if (PredefinedCursor.DEFAULT == cursor) {
+    private Cursor cursorFrom(final MouseCursor cursor) {
+        if (MouseCursor.DEFAULT == cursor) {
             return Cursor.getDefaultCursor();
         }
-        if (PredefinedCursor.HIDDEN == cursor) {
+        if (MouseCursor.HIDDEN == cursor) {
             return createCustomCursor(Frame.invisible().image());
         }
-        throw new IllegalStateException("Unknown predefined cursor: " + cursor);
+        throw new IllegalStateException("Unknown mouse cursor: " + cursor);
     }
 
     private void updateCursor() {

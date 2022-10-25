@@ -20,8 +20,8 @@ public class Archetype implements Serializable {
 
     private Archetype(final Collection<Class<? extends Component>> componentClasses) {
         this.componentClasses = componentClasses;
-        List<String> names = new ArrayList<>();
-        for (Class<? extends Component> componentClass : componentClasses) {
+        final List<String> names = new ArrayList<>();
+        for (final var componentClass : componentClasses) {
             names.add(componentClass.getName());
         }
         Collections.sort(names);

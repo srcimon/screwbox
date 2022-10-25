@@ -10,8 +10,8 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
-import de.suzufa.screwbox.core.entities.components.LightObstacleComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
+import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Light;
@@ -24,17 +24,17 @@ public class CreateLightSystem implements EntitySystem {
     private static final Archetype SPOTLIGHT_EMITTERS = Archetype.of(
             SpotLightComponent.class, TransformComponent.class);
 
-    private static final Archetype OBSTACLES = Archetype.of(
-            LightObstacleComponent.class, TransformComponent.class);
+    private static final Archetype SHADOW_CASTERS = Archetype.of(
+            ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(Engine engine) {
         Light light = engine.graphics().light();
         final List<Bounds> obstacles = new ArrayList<>();
-        for (final var obstacle : engine.entities().fetchAll(OBSTACLES)) {
+        for (final var obstacle : engine.entities().fetchAll(SHADOW_CASTERS)) {
             obstacles.add(obstacle.get(TransformComponent.class).bounds);
         }
-        light.updateObstacles(obstacles);
+        light.updateShadowCasters(obstacles);
 
         for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);

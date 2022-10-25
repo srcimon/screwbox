@@ -52,6 +52,28 @@ class DefaultPhysicsTest {
     }
 
     @Test
+    void findPath_startIsBlocked_noPath() {
+        Grid grid = new Grid($$(0, 0, 10, 10), 1, false);
+        Vector startPoint = $(0, 0);
+        grid.block(grid.toGrid(startPoint));
+
+        var path = physics.findPath(grid, startPoint, $(9, 9));
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
+    void findPath_endIsBlocked_noPath() {
+        Grid grid = new Grid($$(0, 0, 10, 10), 1, false);
+        Vector endPoint = $(10, 10);
+        grid.block(grid.toGrid(endPoint));
+
+        var path = physics.findPath(grid, $(0, 0), endPoint);
+
+        assertThat(path).isEmpty();
+    }
+
+    @Test
     void snapToGrid_boundsNull_exception() {
         assertThatThrownBy(() -> physics.snapToGrid((Bounds) null))
                 .isInstanceOf(NullPointerException.class)

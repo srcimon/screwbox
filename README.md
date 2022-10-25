@@ -10,12 +10,12 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 
 ## Features
 - **Entity Component System** Add and remove game objects and behaviour. Save and load the game state.
-- **Render Engine** Fast rendering of basic shapes, animated graphics text. Enhance the graphics with dynamic light effects.
+- **Render Engine** Fast rendering of basic shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.
 - **Physics System** Apply movement to objects. Resolve collisions. Detect objects via raycasting.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from the [Tiled Editor](https://www.mapeditor.org)
 - **Basic UI** Create an animated game ui in an instant.
-- **Input Support** Receive players interactions via keyboard and mouse.
-- **Game Scene** Use scenes to structure your game.
+- **Input Support** Receive player interactions via keyboard and mouse.
+- **Game Scene** Use scenes to structure different game situations.
 - **Audio Support** Play wav and midi sounds. Control the volume. Thats it. Only the basics.
 
 ## Libraries used

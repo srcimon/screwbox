@@ -17,23 +17,23 @@ import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
-    private List<Bounds> obstacles = new ArrayList<>();
+    private List<Bounds> shadowCasters = new ArrayList<>();
     private final DefaultWorld world;
 
     public LightPhysics(final DefaultWorld world) {
         this.world = world;
     }
 
-    public void setObstacles(final List<Bounds> obstacles) {
-        this.obstacles = requireNonNull(obstacles, "obstacles must not be null");
+    public void setShadowCasters(final List<Bounds> shadowCasters) {
+        this.shadowCasters = requireNonNull(shadowCasters, "shadowCasters must not be null");
     }
 
-    public List<Bounds> obstacles() {
-        return obstacles;
+    public List<Bounds> shadowCasters() {
+        return shadowCasters;
     }
 
     public List<Offset> calculateArea(final Bounds lightBox) {
-        final var relevantBlockingBounds = lightBox.allIntersecting(obstacles);
+        final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
         final List<Offset> area = new ArrayList<>();
 
         final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);
@@ -54,7 +54,7 @@ public class LightPhysics {
     }
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
-        var segments = new ArrayList<Segment>();
+        final var segments = new ArrayList<Segment>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
         segments.add(Segment.between(source.position(), source.bottomRight()));
         segments.add(Segment.between(source.position(), source.topLeft()));
@@ -92,5 +92,14 @@ public class LightPhysics {
             allSegments.addAll(Borders.ALL.extractSegmentsMethod().apply(bounds));
         }
         return allSegments;
+    }
+
+    public boolean isCoveredByShadowCasters(final Vector position) {
+        for (final var bounds : shadowCasters) {
+            if (bounds.contains(position)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

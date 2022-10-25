@@ -105,10 +105,10 @@ class WindowTest {
 
     @Test
     void setCursor_predefinedCursor_setsFullscreenAndWindowCursor() {
-        window.setCursor(PredefinedCursor.HIDDEN);
+        window.setCursor(MouseCursor.HIDDEN);
 
-        verify(window).setWindowCursor(PredefinedCursor.HIDDEN);
-        verify(window).setFullscreenCursor(PredefinedCursor.HIDDEN);
+        verify(window).setWindowCursor(MouseCursor.HIDDEN);
+        verify(window).setFullscreenCursor(MouseCursor.HIDDEN);
     }
 
     @Test

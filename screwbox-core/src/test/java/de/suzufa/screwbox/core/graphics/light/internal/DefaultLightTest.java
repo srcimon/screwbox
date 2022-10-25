@@ -61,19 +61,19 @@ class DefaultLightTest {
     }
 
     @Test
-    void updateObstacles_obstaclesNull_throwsException() {
-        assertThatThrownBy(() -> light.updateObstacles(null))
+    void updateShadowCasters_castersNull_throwsException() {
+        assertThatThrownBy(() -> light.updateShadowCasters(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("obstacles must not be null");
+                .hasMessage("shadowCasters must not be null");
     }
 
     @Test
-    void updateObstacles_obstaclesPresent_updatesObstacles() {
+    void updateShadowCasters_castersPresent_updatesObstacles() {
         Bounds obstacle = $$(0, 10, 20, 20);
 
-        light.updateObstacles(List.of(obstacle));
+        light.updateShadowCasters(List.of(obstacle));
 
-        assertThat(light.obstacles()).containsExactly(obstacle);
+        assertThat(light.shadowCasters()).containsExactly(obstacle);
     }
 
     @Test
@@ -119,7 +119,7 @@ class DefaultLightTest {
     void render_lightAndShadowPresent_createCorrectImage() {
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
         when(window.center()).thenReturn(Offset.at(320, 240));
-        light.updateObstacles(List.of(Bounds.$$(30, 75, 6, 6)));
+        light.updateShadowCasters(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.seal();
         light.render();

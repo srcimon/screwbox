@@ -13,5 +13,4 @@ public class AutomovementComponent implements Component {
     public AutomovementComponent(final double speed) {
         this.speed = speed;
     }
-
 }

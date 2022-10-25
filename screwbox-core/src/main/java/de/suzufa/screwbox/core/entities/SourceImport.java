@@ -72,7 +72,6 @@ public final class SourceImport<T> {
 
             return caller;
         }
-
     }
 
     private final List<T> inputs;
