@@ -16,9 +16,9 @@ class BordersTest {
         var method = Borders.ALL.extractSegmentsMethod();
 
         assertThat(method.apply(BOX)).contains(
-                Segment.between(BOX.topLeft(), BOX.topRight()),
+                Segment.between(BOX.origin(), BOX.topRight()),
                 Segment.between(BOX.topRight(), BOX.bottomRight()),
-                Segment.between(BOX.bottomLeft(), BOX.topLeft()),
+                Segment.between(BOX.bottomLeft(), BOX.origin()),
                 Segment.between(BOX.topRight(), BOX.bottomRight()))
                 .hasSize(4);
     }
@@ -28,7 +28,7 @@ class BordersTest {
         var method = Borders.TOP_ONLY.extractSegmentsMethod();
 
         assertThat(method.apply(BOX))
-                .contains(Segment.between(BOX.topLeft(), BOX.topRight()))
+                .contains(Segment.between(BOX.origin(), BOX.topRight()))
                 .hasSize(1);
     }
 
@@ -37,7 +37,7 @@ class BordersTest {
         var method = Borders.VERTICAL_ONLY.extractSegmentsMethod();
 
         assertThat(method.apply(BOX)).contains(
-                Segment.between(BOX.bottomLeft(), BOX.topLeft()),
+                Segment.between(BOX.bottomLeft(), BOX.origin()),
                 Segment.between(BOX.topRight(), BOX.bottomRight()))
                 .hasSize(2);
     }

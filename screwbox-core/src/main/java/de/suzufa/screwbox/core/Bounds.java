@@ -274,10 +274,6 @@ public final class Bounds implements Serializable {
         return Vector.of(maxX(), minY());
     }
 
-    public Vector topLeft() {
-        return Vector.of(minX(), minY());
-    }
-
     /**
      * Returns the intersection between this {@link Bounds} and the other
      * {@link Bounds}. Returns {@link Optional#empty()} if there is no intersection

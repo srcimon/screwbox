@@ -57,13 +57,13 @@ public class LightPhysics {
         final var segments = new ArrayList<Segment>();
         segments.add(Segment.between(source.position(), source.bottomLeft()));
         segments.add(Segment.between(source.position(), source.bottomRight()));
-        segments.add(Segment.between(source.position(), source.topLeft()));
+        segments.add(Segment.between(source.position(), source.origin()));
         segments.add(Segment.between(source.position(), source.topRight()));
         final var range = source.extents().length();
         for (final var collider : colliders) {
             segmentsOf(segments, source, range, collider.bottomLeft());
             segmentsOf(segments, source, range, collider.bottomRight());
-            segmentsOf(segments, source, range, collider.topLeft());
+            segmentsOf(segments, source, range, collider.origin());
             segmentsOf(segments, source, range, collider.topRight());
         }
         segments.sort(new Comparator<Segment>() {
