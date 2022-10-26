@@ -3,7 +3,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.physics.Borders;
-import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
@@ -35,20 +33,22 @@ public class LightPhysics {
     public List<Offset> calculateArea(final Bounds lightBox) {
         final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
         final List<Offset> area = new ArrayList<>();
-
         final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);
         for (final var raycast : raycasts) {
-            final List<Vector> hits = new ArrayList<>();
+            var mostDistantHit = raycast.to();
+            var mostDistance = lightBox.position().distanceTo(mostDistantHit);
+
             for (final var segment : getSegmentsOf(relevantBlockingBounds)) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
                 if (intersectionPoint != null) {
-                    hits.add(intersectionPoint);
+                    final double distance = intersectionPoint.distanceTo(lightBox.position());
+                    if (mostDistance < distance) {
+                        mostDistantHit = intersectionPoint;
+                        mostDistance = distance;
+                    }
                 }
             }
-            Collections.sort(hits, new DistanceComparator(lightBox.position()));
-
-            final Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
-            area.add(world.toOffset(endpoint));
+            area.add(world.toOffset(mostDistantHit));
         }
         return area;
     }
@@ -76,7 +76,8 @@ public class LightPhysics {
         return segments;
     }
 
-    private void segmentsOf(List<Segment> list, final Bounds source, final double range, final Vector destination) {
+    private void segmentsOf(final List<Segment> list, final Bounds source, final double range,
+            final Vector destination) {
         final Segment directTrace = Segment.between(source.position(), destination);
         final Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
@@ -88,7 +89,7 @@ public class LightPhysics {
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
         final List<Segment> allSegments = new ArrayList<>();
         for (final var bounds : allBounds) {
-            for (var x : Borders.ALL.extractSegmentsMethod().apply(bounds)) {
+            for (final var x : Borders.ALL.extractSegmentsMethod().apply(bounds)) {
                 allSegments.add(x);
             }
         }
