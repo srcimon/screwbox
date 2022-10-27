@@ -10,14 +10,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
-import de.suzufa.screwbox.core.entities.components.StaticLightBlockerMarkerComponent;
+import de.suzufa.screwbox.core.entities.components.StaticShadowCasterMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
 public class CombineStaticShadowCastersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticLightBlockerMarkerComponent.class, ShadowCasterComponent.class, TransformComponent.class);
+            StaticShadowCasterMarkerComponent.class, ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -31,7 +31,7 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
         }
         // at this point all light blockers have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticLightBlockerMarkerComponent.class);
+            entity.remove(StaticShadowCasterMarkerComponent.class);
         }
         engine.entities().remove(CombineStaticShadowCastersSystem.class);
     }
@@ -45,12 +45,12 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
         if (result.isPresent()) {
             Entity combined = new Entity()
                     .add(new ShadowCasterComponent())
-                    .add(new StaticLightBlockerMarkerComponent())
+                    .add(new StaticShadowCasterMarkerComponent())
                     .add(new TransformComponent(result.get()));
             engine.entities().add(combined);
-            first.remove(StaticLightBlockerMarkerComponent.class);
+            first.remove(StaticShadowCasterMarkerComponent.class);
             first.remove(ShadowCasterComponent.class);
-            second.remove(StaticLightBlockerMarkerComponent.class);
+            second.remove(StaticShadowCasterMarkerComponent.class);
             second.remove(ShadowCasterComponent.class);
             return true;
         }

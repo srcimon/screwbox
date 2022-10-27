@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
-import de.suzufa.screwbox.core.entities.components.StaticLightBlockerMarkerComponent;
+import de.suzufa.screwbox.core.entities.components.StaticShadowCasterMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
@@ -20,17 +20,17 @@ class CombineStaticShadowCastersSystemTest {
     @Test
     void update_combinesHorizontallyAlignedColliders(DefaultEntities entities) {
         Entity brickA = new Entity().add(
-                new StaticLightBlockerMarkerComponent(),
+                new StaticShadowCasterMarkerComponent(),
                 new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(0, 0, 20, 20)));
 
         Entity brickB = new Entity().add(
-                new StaticLightBlockerMarkerComponent(),
+                new StaticShadowCasterMarkerComponent(),
                 new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(20, 0, 20, 20)));
 
         Entity brickC = new Entity().add(
-                new StaticLightBlockerMarkerComponent(),
+                new StaticShadowCasterMarkerComponent(),
                 new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(40, 0, 20, 20)));
 
