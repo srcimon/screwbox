@@ -1,9 +1,7 @@
 # Project roadmap
-- DrawingUtil.noUneccessaryDrawings(window) returns window + world
+- reflection areas draw separate image (that gets blurred)
 - add A*-Pathfinding Algorithm (as default)
 - particle emitters
-- grid class could hold other information as boolean / make generig Grid<Boolean>
-- UI: use method parameters instead of overwritten methods
 - engine.options().apply(Optionset optionset)
-- engine.quick().trackCamer
+- engine.quick() -> for common used actions
 - assets project for sounds / graphics and non default systems
