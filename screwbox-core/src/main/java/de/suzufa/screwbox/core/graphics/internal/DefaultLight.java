@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
@@ -39,7 +39,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private Lightmap lightmap;
     private Percentage ambientLight = Percentage.min();
-    private Function<BufferedImage, BufferedImage> postFilter = new BlurImageFilter(3);
+    private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private Future<Sprite> sprite = null;
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
