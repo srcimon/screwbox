@@ -54,12 +54,18 @@ public interface Graphics {
     double cameraZoom();
 
     /**
-     * Determins the position the given Window {@link Offset} in the game
+     * Returns the position the given Window {@link Offset} in the game
      * {@link World}.
      */
     Vector worldPositionOf(Offset offset);
 
-    // TODO: javadoc
+    /**
+     * Returns the {@link Offset} on the {@link Window} of the given {@link Vector}
+     * in the game {@link World}.
+     * 
+     * @param position the position that will be translated
+     * @return the {@link Offset} on the {@link Window}
+     */
     Offset windowPositionOf(Vector position);
 
     List<Dimension> supportedResolutions();

@@ -15,7 +15,7 @@ public class GraphicsConfiguration {
     private int lightmapBlur = 4;
     private int lightmapResolution = 4;
 
-    public GraphicsConfiguration setLightmapResolution(int lightmapResolution) {
+    public GraphicsConfiguration setLightmapResolution(final int lightmapResolution) {
         // TODO: 0 - 6 validation / NON NULL
         this.lightmapResolution = lightmapResolution;
         notifyListeners(ConfigurationProperty.LIGHTMAP_RESOLUTION);
@@ -26,7 +26,7 @@ public class GraphicsConfiguration {
         return lightmapResolution;
     }
 
-    public GraphicsConfiguration setLightmapBlur(int lightmapBlur) {
+    public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
         // TODO: 0 - 6 validation / NON NULL
         this.lightmapBlur = lightmapBlur;
         notifyListeners(ConfigurationProperty.LIGHTMAP_BLUR);
