@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent.DeathType;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
-import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
+import de.suzufa.screwbox.playground.debo.components.MovingPlatformComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Tileset;
@@ -29,7 +29,7 @@ public class MovingSpikes implements Converter<GameObject> {
                 new KillZoneComponent(DeathType.SPIKES),
                 new SpriteComponent(SPRITE, object.layer().order()),
                 new TransformComponent(object.bounds()),
-                new MovingPlattformComponent(object.properties().forceInt("waypoint"), speed));
+                new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
     }
 
 }
