@@ -23,4 +23,12 @@ class FlipModeTest {
         assertThat(FlipMode.VERTICAL.isHorizontal()).isFalse();
         assertThat(FlipMode.NONE.isHorizontal()).isFalse();
     }
+
+    @Test
+    void invertVertical_invertsVerticalComponent() {
+        assertThat(FlipMode.NONE.invertVertical()).isEqualTo(FlipMode.VERTICAL);
+        assertThat(FlipMode.HORIZONTAL.invertVertical()).isEqualTo(FlipMode.BOTH);
+        assertThat(FlipMode.VERTICAL.invertVertical()).isEqualTo(FlipMode.NONE);
+        assertThat(FlipMode.BOTH.invertVertical()).isEqualTo(FlipMode.HORIZONTAL);
+    }
 }

@@ -30,7 +30,7 @@ public class DefaultPhysics implements Physics {
 
     private Grid grid;
 
-    public DefaultPhysics(final Engine engine, ExecutorService executor) {
+    public DefaultPhysics(final Engine engine, final ExecutorService executor) {
         this.engine = engine;
         this.executor = executor;
     }
@@ -73,7 +73,7 @@ public class DefaultPhysics implements Physics {
         final List<Vector> list = new ArrayList<>();
         list.add(start);
 
-        for (var node : path) {
+        for (final var node : path) {
             list.add(grid.worldPosition(node));
         }
 
@@ -109,21 +109,19 @@ public class DefaultPhysics implements Physics {
     @Override
     public Bounds snapToGrid(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        Optional<Grid> grid = grid();
-        if (grid.isEmpty()) {
+        if (isNull(grid)) {
             throw new IllegalStateException("no grid present");
         }
-        return bounds.moveTo(grid.get().snap(bounds.position()));
+        return bounds.moveTo(grid.snap(bounds.position()));
     }
 
     @Override
     public Vector snapToGrid(final Vector position) {
         requireNonNull(position, "position must not be null");
-        Optional<Grid> grid = grid();
-        if (grid.isEmpty()) {
+        if (isNull(grid)) {
             throw new IllegalStateException("no grid present");
         }
-        return grid.get().snap(position);
+        return grid.snap(position);
     }
 
     public void shutdown() {

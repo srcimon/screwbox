@@ -42,10 +42,17 @@ public enum FlipMode {
         return vertical;
     }
 
-    // TODO: Test
-    // TODO: FIX
+    /**
+     * Returns the {@link FlipMode} with inverted vertical component.
+     * 
+     * @return the inverted {@link FlipMode}
+     */
     public FlipMode invertVertical() {
-        return isHorizontal() ? BOTH : VERTICAL;
+        if (isHorizontal()) {
+            return isVertical() ? HORIZONTAL : BOTH;
+        }
+
+        return isVertical() ? NONE : VERTICAL;
     }
 
 }

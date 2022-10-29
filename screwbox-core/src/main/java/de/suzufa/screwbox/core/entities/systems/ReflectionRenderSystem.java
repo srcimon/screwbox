@@ -23,15 +23,12 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, SpriteComponent.class);
 
-    // TODO: draw on separate image to smooth graphics, avoid sprite overlay glitch
-    // TODO: send reflection algorithm (top-down, water...) into reflectioncomponent
     @Override
     public void update(Engine engine) {
+        double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
         List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
-        var visibleArea = engine.graphics().world().visibleArea();
         for (Entity reflectionArea : engine.entities().fetchAll(REFLECTING_AREAS)) {
             ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
-            double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
             Bounds reflectionAreaBounds = reflectionArea.get(TransformComponent.class).bounds;
             var reflectedArea = reflectionAreaBounds
                     .moveBy(Vector.yOnly(-reflectionAreaBounds.height()))
@@ -63,7 +60,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     Vector waveEffectPosition = actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY);
 
                     Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
-                    if (reflectionBounds.intersects(visibleArea)) {
+                    if (reflectionBounds.intersects(engine.graphics().world().visibleArea())) {
                         Percentage opacity = spriteComponent.opacity
                                 .multiply(reflection.opacityModifier.value())
                                 .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);

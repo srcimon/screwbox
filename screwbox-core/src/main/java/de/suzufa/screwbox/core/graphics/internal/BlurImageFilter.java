@@ -3,9 +3,9 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
-public class BlurImageFilter implements Function<BufferedImage, BufferedImage> {
+public class BlurImageFilter implements UnaryOperator<BufferedImage> {
 
     private final ConvolveOp convolveOperation;
 

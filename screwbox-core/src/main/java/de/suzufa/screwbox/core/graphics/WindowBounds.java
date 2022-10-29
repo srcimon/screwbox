@@ -1,7 +1,13 @@
 package de.suzufa.screwbox.core.graphics;
 
-//TODO: Test and javadoc
+/**
+ * Defines the area on the {@link Window}.
+ */
 public final record WindowBounds(Offset offset, Dimension size) {
+
+    public WindowBounds(final int x, final int y, final int width, final int height) {
+        this(Offset.at(x, y), Dimension.of(width, height));
+    }
 
     public Offset center() {
         final int x = offset.x() + size.width() / 2;
@@ -9,6 +15,13 @@ public final record WindowBounds(Offset offset, Dimension size) {
         return Offset.at(x, y);
     }
 
+    /**
+     * Returns {@code true} if the given {@link Offset} is within the
+     * {@link WindowBounds}.
+     * 
+     * @param offset the {@link Offset} that is checked
+     * @return {@code true} if the {@link Offset} is within
+     */
     public boolean contains(final Offset offset) {
         return this.offset.x() <= offset.x()
                 && this.offset.x() + size.width() >= offset.x()
