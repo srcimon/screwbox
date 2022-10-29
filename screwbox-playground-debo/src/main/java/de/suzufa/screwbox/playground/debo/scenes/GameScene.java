@@ -66,7 +66,7 @@ import de.suzufa.screwbox.playground.debo.systems.KillZoneSystem;
 import de.suzufa.screwbox.playground.debo.systems.KilledFromAboveSystem;
 import de.suzufa.screwbox.playground.debo.systems.LetsGoSystem;
 import de.suzufa.screwbox.playground.debo.systems.MovableSystem;
-import de.suzufa.screwbox.playground.debo.systems.MovingPlattformSystem;
+import de.suzufa.screwbox.playground.debo.systems.MovingPlatformSystem;
 import de.suzufa.screwbox.playground.debo.systems.PatrollingMovementSystem;
 import de.suzufa.screwbox.playground.debo.systems.PauseSystem;
 import de.suzufa.screwbox.playground.debo.systems.PlayerControlSystem;
@@ -120,7 +120,7 @@ public class GameScene implements Scene {
                 new RenderLightSystem(),
                 new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
-                new MovingPlattformSystem(),
+                new MovingPlatformSystem(),
                 new CollectableSystem(),
                 new CameraMovementSystem(),
                 new StateSystem(),

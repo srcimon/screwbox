@@ -6,7 +6,6 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -23,16 +22,13 @@ public class Lightmap implements AutoCloseable {
     private Graphics2D graphics;
     private final int resolution;
 
-    public Lightmap(final Dimension size, final int resolution, final boolean isAntialiased) {
+    public Lightmap(final Dimension size, final int resolution) {
         this.image = new BufferedImage(
                 size.width() / resolution + 1, // to avoid glitches add 1
                 size.height() / resolution + 1, // to avoid glitches add 1
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
-        if (isAntialiased) {
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        }
     }
 
     public void addPointLight(final Offset position, final int range, final List<Offset> area, final Color color) {

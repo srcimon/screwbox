@@ -16,7 +16,7 @@ import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.utils.ListUtil;
-import de.suzufa.screwbox.playground.debo.components.MovingPlattformComponent;
+import de.suzufa.screwbox.playground.debo.components.MovingPlatformComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 
@@ -62,7 +62,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
                 Vector targetPosition = center.addY(200);
                 vanishEntity.add(new FadeOutComponent(1))
                         .add(new CollisionSensorComponent())
-                        .add(new MovingPlattformComponent(targetPosition, 20))
+                        .add(new MovingPlatformComponent(targetPosition, 20))
                         .remove(VanishingOnCollisionComponent.class);
             }
         }

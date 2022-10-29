@@ -33,7 +33,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
-    private final LightPhysics lightPhysics;
+    private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
 
@@ -48,7 +48,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         this.window = window;
         this.world = world;
         this.configuration = configuration;
-        this.lightPhysics = new LightPhysics(world);
         configuration.registerListener(this);
         initializeLightmap();
     }
@@ -73,7 +72,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             if (isVisible(lightBox)) {
                 drawingTasks.add(() -> {
 
-                    final List<Offset> area = lightPhysics.calculateArea(lightBox);
+                    final List<Offset> area = new ArrayList<>();
+                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                    for (final var vector : worldArea) {
+                        area.add(world.toOffset(vector));
+                    }
                     lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
                             options.color());
                 });
@@ -124,7 +127,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (nonNull(lightmap)) {
             lightmap.close();
         }
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution(), configuration.isUseAntialising());
+        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
     }
 
     @Override

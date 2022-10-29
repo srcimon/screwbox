@@ -15,6 +15,8 @@ import de.suzufa.screwbox.core.graphics.Color;
 //TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
 public final class ImageUtil {
 
+    private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
+
     private ImageUtil() {
     }
 
@@ -40,7 +42,7 @@ public final class ImageUtil {
         };
 
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        return Toolkit.getDefaultToolkit().createImage(imageProducer);
+        return TOOLKIT.createImage(imageProducer);
     }
 
     // TODO: simplyfiy and test
@@ -64,9 +66,9 @@ public final class ImageUtil {
         return bufferedImage;
     }
 
-    public static Image applyFilter(Image image, RGBImageFilter filter) {
+    public static Image applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        final Image newImage = Toolkit.getDefaultToolkit().createImage(imageProducer);
+        final Image newImage = TOOLKIT.createImage(imageProducer);
         return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
     }
 
