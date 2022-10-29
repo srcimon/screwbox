@@ -29,13 +29,13 @@ public class MovingPlatformSystem implements EntitySystem {
 
     private void movePlattform(Entity platform, Engine engine) {
         var plattformComponent = platform.get(MovingPlatformComponent.class);
-        var transform = platform.get(TransformComponent.class);
 
         if (isNull(plattformComponent.targetPosition)) {
             Entity tartetEntity = engine.entities().forcedFetchById(plattformComponent.waypoint);
             plattformComponent.targetPosition = tartetEntity.get(TransformComponent.class).bounds.position();
         }
 
+        var transform = platform.get(TransformComponent.class);
         Vector distance = transform.bounds.position().substract(plattformComponent.targetPosition);
 
         if (distance.isZero()) {
@@ -46,11 +46,13 @@ public class MovingPlatformSystem implements EntitySystem {
             plattformComponent.waypoint = nextTarget.id().orElseThrow();
         }
         double delta = engine.loop().delta();
-        double xSpeed = clamp(delta * -1 * plattformComponent.speed,
+        double xSpeed = clamp(
+                delta * -1 * plattformComponent.speed,
                 -1 * distance.x(),
                 delta * plattformComponent.speed);
 
-        double ySpeed = clamp(delta * -1 * plattformComponent.speed,
+        double ySpeed = clamp(
+                delta * -1 * plattformComponent.speed,
                 -1 * distance.y(),
                 delta * plattformComponent.speed);
 
@@ -58,9 +60,9 @@ public class MovingPlatformSystem implements EntitySystem {
 
         var sensor = platform.get(CollisionSensorComponent.class);
         if (nonNull(sensor)) {
-            for (final Entity triggeringEntities : sensor.collidedEntities) {
-                if (triggeringEntities.hasComponent(PhysicsBodyComponent.class)) {
-                    final var colliderTransform = triggeringEntities.get(TransformComponent.class);
+            for (final Entity attachedEntity : sensor.collidedEntities) {
+                if (attachedEntity.hasComponent(PhysicsBodyComponent.class)) {
+                    final var colliderTransform = attachedEntity.get(TransformComponent.class);
                     if (transform.bounds.minY() + 1 >= colliderTransform.bounds.maxY()) {
                         colliderTransform.bounds = colliderTransform.bounds.moveBy(movement);
                     }
