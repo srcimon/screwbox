@@ -124,7 +124,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (nonNull(lightmap)) {
             lightmap.close();
         }
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution(), configuration.isUseAntialising());
+        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
     }
 
     @Override
