@@ -11,18 +11,12 @@ import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
     private List<Bounds> shadowCasters = new ArrayList<>();
-    private final DefaultWorld world;
-
-    public LightPhysics(final DefaultWorld world) {
-        this.world = world;
-    }
 
     public void setShadowCasters(final List<Bounds> shadowCasters) {
         this.shadowCasters = requireNonNull(shadowCasters, "shadowCasters must not be null");
@@ -32,9 +26,9 @@ public class LightPhysics {
         return shadowCasters;
     }
 
-    public List<Offset> calculateArea(final Bounds lightBox) {
+    public List<Vector> calculateArea(final Bounds lightBox) {
         final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
-        final List<Offset> area = new ArrayList<>();
+        final List<Vector> area = new ArrayList<>();
 
         final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);
         for (final var raycast : raycasts) {
@@ -47,8 +41,7 @@ public class LightPhysics {
             }
             Collections.sort(hits, new DistanceComparator(lightBox.position()));
 
-            final Vector endpoint = hits.isEmpty() ? raycast.to() : hits.get(0);
-            area.add(world.toOffset(endpoint));
+            area.add(hits.isEmpty() ? raycast.to() : hits.get(0));
         }
         return area;
     }
