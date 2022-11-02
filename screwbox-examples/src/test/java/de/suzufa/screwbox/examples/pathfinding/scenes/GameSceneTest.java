@@ -20,7 +20,7 @@ import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponen
 class DemoSceneTest {
 
     @ParameterizedTest
-    @ValueSource(strings = { "maze/map.json" })
+    @ValueSource(strings = { "pathfinding/map.json" })
     void allMapsCanBeConvertetToEntities(String map) {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
