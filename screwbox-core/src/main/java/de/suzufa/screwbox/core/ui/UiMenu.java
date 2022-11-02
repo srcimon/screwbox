@@ -27,7 +27,7 @@ public class UiMenu {
         if (itemCount() == 0) {
             throw new IllegalStateException("no menu item present");
         }
-        return items;
+        return new ArrayList<>(items);
     }
 
     public final boolean isSelectedItem(final UiMenuItem item) {
