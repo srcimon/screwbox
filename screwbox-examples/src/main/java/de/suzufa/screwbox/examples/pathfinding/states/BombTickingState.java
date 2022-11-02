@@ -10,7 +10,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class BombTickingState implements EntityState {
 
-    private static final Sprite SPRITE = Tileset.fromJson("maze/bomb.json").findByName("ticking");
+    private static final Sprite SPRITE = Tileset.fromJson("pathfinding/bomb.json").findByName("ticking");
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;

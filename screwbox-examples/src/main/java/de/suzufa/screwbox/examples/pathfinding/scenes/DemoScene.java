@@ -87,7 +87,7 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> player() {
-        final var tileset = Tileset.fromJson("maze/player.json");
+        final var tileset = Tileset.fromJson("pathfinding/player.json");
         return object -> new Entity(object.id())
                 .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
@@ -98,7 +98,7 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> enemy() {
-        final var sprites = Tileset.fromJson("maze/enemy.json");
+        final var sprites = Tileset.fromJson("pathfinding/enemy.json");
         return object -> new Entity()
                 .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
                 .add(new PhysicsBodyComponent())
