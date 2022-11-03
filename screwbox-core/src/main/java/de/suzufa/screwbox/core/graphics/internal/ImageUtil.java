@@ -57,6 +57,9 @@ public final class ImageUtil {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
+        if (image instanceof BufferedImage) {
+            return (BufferedImage) image;
+        }
         final int width = image.getWidth(null);
         final int height = image.getHeight(null);
         final var bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
