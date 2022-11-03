@@ -59,6 +59,7 @@ public class LightPhysics {
             segmentsOf(segments, source, range, collider.origin());
             segmentsOf(segments, source, range, collider.topRight());
         }
+        // TODO:his is a performance hotspot
         segments.sort(new Comparator<Segment>() {
 
             @Override
