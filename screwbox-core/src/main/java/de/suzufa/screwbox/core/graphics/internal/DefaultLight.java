@@ -70,16 +70,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
             if (isVisible(lightBox)) {
-                drawingTasks.add(() -> {
-
-                    final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                    for (final var vector : worldArea) {
-                        area.add(world.toOffset(vector));
-                    }
-                    lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
-                            options.color());
-                });
+                final List<Offset> area = new ArrayList<>();
+                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                for (final var vector : worldArea) {
+                    area.add(world.toOffset(vector));
+                }
+                Offset offset = world.toOffset(position);
+                drawingTasks.add(
+                        () -> lightmap.addPointLight(offset, world.toDistance(options.size()), area, options.color()));
             }
         }
         return this;
@@ -91,8 +89,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
-            drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(options.size()),
-                    options.color()));
+            Offset offset = world.toOffset(position);
+            int distance = world.toDistance(options.size());
+            drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
         }
         return this;
     }
