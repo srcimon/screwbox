@@ -25,7 +25,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
-import de.suzufa.screwbox.core.utils.MathUtil;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
@@ -100,15 +99,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
         if (options.glow() != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
-                final double maxDistance = world.toDistance(2);
-                final Offset offset = world.toOffset(position);
-                final Offset target = window.center();
-                final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4.0, maxDistance);
-                final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4.0, maxDistance);
                 for (int i = 1; i < 4; i++) {
-                    final var position1 = offset.addX(xStep * i).addY(yStep * i);
                     world.drawFadingCircle(
-                            world.toPosition(position1),
+                            position,
                             i * options.size() * options.glow(),
                             options.glowColor().opacity(options.glowColor().opacity().value() / 3));
                 }
