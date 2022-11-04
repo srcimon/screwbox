@@ -17,6 +17,7 @@ import java.util.function.UnaryOperator;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percentage;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
@@ -98,12 +99,13 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private void addPotentialGlow(final Vector position, final LightOptions options) {
         final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
         if (options.glow() != 0 && isVisible(lightBox)) {
+            Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
                     world.drawFadingCircle(
                             position,
                             i * options.size() * options.glow(),
-                            options.glowColor().opacity(options.glowColor().opacity().value() / 3));
+                            color);
                 }
             });
         }
