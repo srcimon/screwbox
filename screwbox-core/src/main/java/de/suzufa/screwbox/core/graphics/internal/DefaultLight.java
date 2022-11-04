@@ -75,7 +75,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 for (final var vector : worldArea) {
                     area.add(world.toOffset(vector));
                 }
-                Offset offset = world.toOffset(position);
+                final Offset offset = world.toOffset(position);
                 drawingTasks.add(
                         () -> lightmap.addPointLight(offset, world.toDistance(options.size()), area, options.color()));
             }
@@ -89,23 +89,21 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
-            Offset offset = world.toOffset(position);
-            int distance = world.toDistance(options.size());
+            final Offset offset = world.toOffset(position);
+            final int distance = world.toDistance(options.size());
             drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
         }
         return this;
     }
 
     private void addPotentialGlow(final Vector position, final LightOptions options) {
-        final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
+        final double sideLength = options.size() * 3 * options.glow();
+        final Bounds lightBox = Bounds.atPosition(position, sideLength, sideLength);
         if (options.glow() != 0 && isVisible(lightBox)) {
-            Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
+            final Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(
-                            position,
-                            i * options.size() * options.glow(),
-                            color);
+                    world.drawFadingCircle(position, i * options.size() * options.glow(), color);
                 }
             });
         }
