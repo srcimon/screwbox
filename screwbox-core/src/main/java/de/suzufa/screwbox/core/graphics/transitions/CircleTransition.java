@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -10,7 +10,7 @@ public class CircleTransition implements ScreenTransition {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void draw(final Window window, final Percentage progress) {
+    public void draw(final Window window, final Percent progress) {
         final double width = window.size().width();
         final double height = window.size().height();
         final double maxRadius = Math.sqrt(width * width + height * height);

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
@@ -28,8 +28,8 @@ class FadeOutSystemTest {
 
         entities.update();
 
-        Percentage opacity = smoke.get(SpriteComponent.class).opacity;
-        assertThat(opacity).isEqualTo(Percentage.of(0.5));
+        Percent opacity = smoke.get(SpriteComponent.class).opacity;
+        assertThat(opacity).isEqualTo(Percent.of(0.5));
     }
 
     @Test

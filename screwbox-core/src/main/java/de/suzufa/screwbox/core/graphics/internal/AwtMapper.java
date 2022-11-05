@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import java.util.Map;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
@@ -19,7 +19,7 @@ public final class AwtMapper {
     }
 
     public static Color toColor(final java.awt.Color color) {
-        final Percentage opacity = Percentage.of(color.getAlpha() / 255.0);
+        final Percent opacity = Percent.of(color.getAlpha() / 255.0);
         return Color.rgb(color.getRed(), color.getGreen(), color.getBlue(), opacity);
     }
 

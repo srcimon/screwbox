@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.tiles;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
@@ -17,7 +17,7 @@ public class OneWayGround implements Converter<Tile> {
                 new SpriteComponent(tile.sprite(), tile.layer().order()),
                 new StaticMarkerComponent(),
                 new TransformComponent(tile.renderBounds()),
-                new ColliderComponent(500, Percentage.min(), true));
+                new ColliderComponent(500, Percent.min(), true));
     }
 
 }

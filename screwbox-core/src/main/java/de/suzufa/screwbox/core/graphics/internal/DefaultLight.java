@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
@@ -38,7 +38,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final GraphicsConfiguration configuration;
 
     private Lightmap lightmap;
-    private Percentage ambientLight = Percentage.min();
+    private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private Future<Sprite> sprite = null;
 
@@ -163,14 +163,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light setAmbientLight(final Percentage ambientLight) {
+    public Light setAmbientLight(final Percent ambientLight) {
         requireNonNull(ambientLight, "ambientLight must not be null");
         this.ambientLight = ambientLight;
         return this;
     }
 
     @Override
-    public Percentage ambientLight() {
+    public Percent ambientLight() {
         return ambientLight;
     }
 

@@ -4,7 +4,7 @@ import static java.util.Optional.ofNullable;
 
 import java.util.Optional;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.tiled.internal.LayerEntity;
 
 public class Layer {
@@ -35,8 +35,8 @@ public class Layer {
         return new Properties(layerEntity.properties());
     }
 
-    public Percentage opacity() {
-        return Percentage.of(layerEntity.opacity());
+    public Percent opacity() {
+        return Percent.of(layerEntity.opacity());
     }
 
     public boolean isImageLayer() {

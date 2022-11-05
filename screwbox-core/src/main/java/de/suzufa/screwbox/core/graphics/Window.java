@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
 import de.suzufa.screwbox.core.Angle;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 
 public interface Window {
 
@@ -35,51 +35,51 @@ public interface Window {
         return drawCircle(offset, diameter, drawColor());
     }
 
-    Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation,
+    Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             FlipMode flipMode, WindowBounds clipArea);
 
-    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity) {
+    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), FlipMode.NONE, null);
     }
 
-    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation) {
+    default Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, FlipMode.NONE, null);
     }
 
-    default Window drawSprite(final Sprite sprite, final Offset origin, final Percentage opacity) {
+    default Window drawSprite(final Sprite sprite, final Offset origin, final Percent opacity) {
         return drawSprite(sprite, origin, 1, opacity, Angle.none(), FlipMode.NONE, null);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin) {
-        return drawSprite(sprite, origin, Percentage.max());
+        return drawSprite(sprite, origin, Percent.max());
     }
 
-    Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+    Window drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
-    default Window drawText(Offset offset, String text, Pixelfont font, Percentage opacity) {
+    default Window drawText(Offset offset, String text, Pixelfont font, Percent opacity) {
         return drawText(offset, text, font, opacity, 1);
     }
 
     default Window drawText(Offset offset, String text, Pixelfont font) {
-        return drawText(offset, text, font, Percentage.max());
+        return drawText(offset, text, font, Percent.max());
     }
 
     default Window drawText(Offset offset, String text, Pixelfont font, double scale) {
-        return drawText(offset, text, font, Percentage.max(), scale);
+        return drawText(offset, text, font, Percent.max(), scale);
     }
 
-    Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity, double scale);
+    Window drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
-    default Window drawTextCentered(Offset offset, String text, Pixelfont font, Percentage opacity) {
+    default Window drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity) {
         return drawTextCentered(offset, text, font, opacity, 1);
     }
 
     default Window drawTextCentered(Offset offset, String text, Pixelfont font) {
-        return drawTextCentered(offset, text, font, Percentage.max());
+        return drawTextCentered(offset, text, font, Percent.max());
     }
 
     default Window drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
-        return drawTextCentered(offset, text, font, Percentage.max(), scale);
+        return drawTextCentered(offset, text, font, Percent.max(), scale);
     }
 
     Window drawText(Offset offset, String text, Font font, Color color);
@@ -94,14 +94,14 @@ public interface Window {
         return drawTextCentered(offset, text, font, drawColor());
     }
 
-    Window fillWith(Offset offset, Sprite sprite, double scale, Percentage opacity);
+    Window fillWith(Offset offset, Sprite sprite, double scale, Percent opacity);
 
     default Window fillWith(final Sprite sprite, final double scale) {
-        return fillWith(Offset.origin(), sprite, scale, Percentage.max());
+        return fillWith(Offset.origin(), sprite, scale, Percent.max());
     }
 
     default Window fillWith(final Offset offset, final Sprite sprite, final double scale) {
-        return fillWith(offset, sprite, scale, Percentage.max());
+        return fillWith(offset, sprite, scale, Percent.max());
     }
 
     default Window fillWith(final Offset offset, final Sprite sprite) {

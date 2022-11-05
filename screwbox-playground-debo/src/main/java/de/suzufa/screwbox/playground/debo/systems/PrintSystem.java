@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
@@ -21,9 +21,9 @@ public class PrintSystem implements EntitySystem {
         for (var entity : engine.entities().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Window window = engine.graphics().window();
-            window.drawTextCentered(window.center(), textComponent.text, FONT, Percentage.max(), 7);
+            window.drawTextCentered(window.center(), textComponent.text, FONT, Percent.max(), 7);
             Offset subtextOffset = Offset.at(window.center().x(), window.center().y() + 80);
-            window.drawTextCentered(subtextOffset, textComponent.subtext, FONT, Percentage.max(), 4);
+            window.drawTextCentered(subtextOffset, textComponent.subtext, FONT, Percent.max(), 4);
         }
     }
 

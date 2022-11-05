@@ -25,7 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.audio.Sound;
 
 @Timeout(1)
@@ -53,7 +53,7 @@ class DefaultAudioTest {
     void playEffect_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.setEffectVolume(Percentage.min());
+        audio.setEffectVolume(Percent.min());
         audio.playEffect(sound);
 
         awaitShutdown();
@@ -100,7 +100,7 @@ class DefaultAudioTest {
     @Test
     void activeCount_onlyAnotherSoundIsActive_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -112,7 +112,7 @@ class DefaultAudioTest {
     @Test
     void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -126,7 +126,7 @@ class DefaultAudioTest {
     @Test
     void playEffectLooped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
 
         audio.playEffectLooped(sound);
 
@@ -141,7 +141,7 @@ class DefaultAudioTest {
     void activeCount_oneInstanceStartedAndStopped_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -155,7 +155,7 @@ class DefaultAudioTest {
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
         audio.playMusic(sound);
 
         audio.stopAllSounds();
@@ -169,21 +169,21 @@ class DefaultAudioTest {
     @Test
     void setEffectVolume_setsEffectVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.half())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.half())).thenReturn(clip);
 
-        audio.setEffectVolume(Percentage.half());
+        audio.setEffectVolume(Percent.half());
         audio.playEffect(sound);
 
         awaitShutdown();
 
-        assertThat(audio.effectVolume()).isEqualTo(Percentage.half());
+        assertThat(audio.effectVolume()).isEqualTo(Percent.half());
     }
 
     @Test
     void stop_instanceActive_stopsInstance() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        when(audioAdapter.createClip(sound, Percentage.max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
 
         audio.playEffect(sound);
         while (audio.activeCount() == 0) {
@@ -199,14 +199,14 @@ class DefaultAudioTest {
     @Test
     void setMusicVolume_setsMusicVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percentage.of(0.7))).thenReturn(clip);
+        when(audioAdapter.createClip(sound, Percent.of(0.7))).thenReturn(clip);
 
-        audio.setMusicVolume(Percentage.of(0.7));
+        audio.setMusicVolume(Percent.of(0.7));
         audio.playMusic(sound);
 
         awaitShutdown();
 
-        assertThat(audio.musicVolume()).isEqualTo(Percentage.of(0.7));
+        assertThat(audio.musicVolume()).isEqualTo(Percent.of(0.7));
     }
 
     private LineEvent stopEventFor(Clip clipMock) {

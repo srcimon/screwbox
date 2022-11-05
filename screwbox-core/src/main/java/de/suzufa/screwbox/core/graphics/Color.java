@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import java.io.Serializable;
 import java.util.Objects;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 
 /**
  * Used to store color information used in {@link Graphics}.
@@ -15,7 +15,7 @@ public final class Color implements Serializable {
     private final int r;
     private final int g;
     private final int b;
-    private final Percentage opacity;
+    private final Percent opacity;
 
     /**
      * The color black.
@@ -60,7 +60,7 @@ public final class Color implements Serializable {
     /**
      * A transparent color.
      */
-    public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percentage.min());
+    public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.min());
 
     /**
      * Creates a color based on RGB-components with full {@link #opacity()}.
@@ -72,7 +72,7 @@ public final class Color implements Serializable {
     /**
      * Creates a color based on RGB-components and custom {@link #opacity()}.
      */
-    public static Color rgb(final int r, final int g, final int b, final Percentage opacity) {
+    public static Color rgb(final int r, final int g, final int b, final Percent opacity) {
         return new Color(r, g, b, opacity);
     }
 
@@ -80,10 +80,10 @@ public final class Color implements Serializable {
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
      * 
-     * @see #opacity(Percentage)
+     * @see #opacity(Percent)
      */
     public Color opacity(final double opacity) {
-        return opacity(Percentage.of(opacity));
+        return opacity(Percent.of(opacity));
     }
 
     /**
@@ -92,7 +92,7 @@ public final class Color implements Serializable {
      * 
      * @see #opacity(double)
      */
-    public Color opacity(final Percentage opacity) {
+    public Color opacity(final Percent opacity) {
         return new Color(r, g, b, opacity);
     }
 
@@ -120,15 +120,15 @@ public final class Color implements Serializable {
     /**
      * Returns the colors opacity value.
      */
-    public Percentage opacity() {
+    public Percent opacity() {
         return opacity;
     }
 
     private Color(final int r, final int g, final int b) {
-        this(r, g, b, Percentage.max());
+        this(r, g, b, Percent.max());
     }
 
-    private Color(final int r, final int g, final int b, final Percentage opacity) {
+    private Color(final int r, final int g, final int b, final Percent opacity) {
         validate(r);
         validate(g);
         validate(b);

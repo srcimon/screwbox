@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.entities.systems;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -22,7 +22,7 @@ public class ScreenTransitionSystem implements EntitySystem {
                 transitionComponent.startTime = Time.now();
             }
             Duration progressDuration = Duration.since(transitionComponent.startTime);
-            var progress = Percentage.of(1.0 * progressDuration.nanos() / transitionComponent.duration.nanos());
+            var progress = Percent.of(1.0 * progressDuration.nanos() / transitionComponent.duration.nanos());
             transitionComponent.transition.draw(engine.graphics().window(), progress);
             if (progress.isMaxValue()) {
                 entity.remove(ScreenTransitionComponent.class);

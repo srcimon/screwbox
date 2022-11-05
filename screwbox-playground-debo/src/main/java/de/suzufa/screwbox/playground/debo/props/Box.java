@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.props;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
@@ -22,7 +22,7 @@ public class Box implements Converter<GameObject> {
                 new PhysicsBodyComponent(),
                 new MovableComponent(),
                 new TransformComponent(object.bounds()),
-                new ColliderComponent(500, Percentage.min()));
+                new ColliderComponent(500, Percent.min()));
     }
 
 }

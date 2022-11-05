@@ -17,7 +17,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import de.suzufa.screwbox.core.Angle;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -80,13 +80,13 @@ public class DefaultRenderer implements Renderer {
         return Sprite.fromImage(screenCapture);
     }
 
-    private void applyOpacityConfig(final Percentage opacity) {
+    private void applyOpacityConfig(final Percent opacity) {
         if (!opacity.isMaxValue()) {
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity.valueFloat()));
         }
     }
 
-    private void resetOpacityConfig(final Percentage opacity) {
+    private void resetOpacityConfig(final Percent opacity) {
         if (!opacity.isMaxValue()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
@@ -108,7 +108,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
             final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         applyOpacityConfig(opacity);
 

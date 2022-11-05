@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.props;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
@@ -20,7 +20,7 @@ public class Platfom implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         double speed = object.properties().getDouble("speed").orElse(60.0);
         return new Entity().add(
-                new ColliderComponent(500, Percentage.min(), true),
+                new ColliderComponent(500, Percent.min(), true),
                 new SpriteComponent(SPRITE.findById(0), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
                 new CollisionSensorComponent(),

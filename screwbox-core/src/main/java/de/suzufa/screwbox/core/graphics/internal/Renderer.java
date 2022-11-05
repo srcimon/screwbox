@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import de.suzufa.screwbox.core.Angle;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.FlipMode;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -21,7 +21,7 @@ public interface Renderer {
 
     void drawCircle(Offset offset, int diameter, Color color);
 
-    void drawSprite(Sprite sprite, Offset origin, double scale, Percentage opacity, Angle rotation,
+    void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             FlipMode flipMode, WindowBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);

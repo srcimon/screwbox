@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -127,7 +127,7 @@ class DefaultLightTest {
         var sprite = ArgumentCaptor.forClass(Sprite.class);
         var offset = ArgumentCaptor.forClass(Offset.class);
         var resolution = ArgumentCaptor.forClass(Integer.class);
-        var opacity = ArgumentCaptor.forClass(Percentage.class);
+        var opacity = ArgumentCaptor.forClass(Percent.class);
 
         verify(window).drawSprite(
                 sprite.capture(),

@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
@@ -104,7 +104,7 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().light().setAmbientLight(Percentage.of(0.06));
+        engine.graphics().light().setAmbientLight(Percent.of(0.06));
     }
 
     @Override

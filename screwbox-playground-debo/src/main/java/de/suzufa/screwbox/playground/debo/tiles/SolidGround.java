@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.tiles;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
@@ -21,7 +21,7 @@ public class SolidGround implements Converter<Tile> {
                 new StaticMarkerComponent(),
                 new StaticShadowCasterMarkerComponent(),
                 new ShadowCasterComponent(),
-                new ColliderComponent(500, Percentage.min()));
+                new ColliderComponent(500, Percent.min()));
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -52,14 +52,14 @@ public class ShadowSystem implements EntitySystem {
                         .nearestHit();
 
                 if (position.isEmpty()) {
-                    shadow.get(SpriteComponent.class).opacity = Percentage.min();
+                    shadow.get(SpriteComponent.class).opacity = Percent.min();
                 } else {
                     final Vector shadowPosition = position.get();
                     final Bounds updatedBounds = shadow.get(TransformComponent.class).bounds.moveTo(shadowPosition);
                     shadow.get(TransformComponent.class).bounds = updatedBounds;
                     final double length = linkedBounds.position().distanceTo(position.get());
                     final double calculatedOpacity = MathUtil.clamp(0, (64 - length) / 100, 1);
-                    shadow.get(SpriteComponent.class).opacity = Percentage.of(calculatedOpacity);
+                    shadow.get(SpriteComponent.class).opacity = Percent.of(calculatedOpacity);
                 }
             } else {
                 engine.entities().remove(shadow);

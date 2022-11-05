@@ -5,7 +5,7 @@ import static org.assertj.core.data.Offset.offset;
 
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Font.Style;
@@ -37,7 +37,7 @@ class AwtMapperTest {
 
     @Test
     void toAwtColor_mapsOpacity() {
-        Color color = Color.rgb(20, 40, 60, Percentage.half());
+        Color color = Color.rgb(20, 40, 60, Percent.half());
 
         var awtColor = AwtMapper.toAwtColor(color);
 
