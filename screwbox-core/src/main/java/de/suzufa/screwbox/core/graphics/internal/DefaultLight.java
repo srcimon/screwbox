@@ -29,6 +29,7 @@ import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
+    // TODO: add lights not tasks: can ask for light at position
     private final List<Runnable> drawingTasks = new ArrayList<>();
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
