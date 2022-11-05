@@ -42,7 +42,7 @@ class DefaultMouseTest {
     }
 
     @Test
-    void jjustClicked_mousePressed_isTrue() {
+    void justClicked_mousePressed_isTrue() {
         mouse.mousePressed(rightMouseButtonEvent());
         mouse.update();
 

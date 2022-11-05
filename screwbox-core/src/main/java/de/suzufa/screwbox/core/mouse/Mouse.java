@@ -33,8 +33,33 @@ public interface Mouse {
     /**
      * Checks if the given {@link MouseButton} was just pressed (Will be false in
      * the next frame.).
+     * 
+     * @see #justClickedLeft()
+     * @see #justClickedRight()
      */
     boolean justClicked(MouseButton button);
+
+    /**
+     * Checks if the left mouse button was just pressed (Will be false in the next
+     * frame.).
+     * 
+     * @see #justClicked(MouseButton)
+     * @see #justClickedRight()
+     */
+    default boolean justClickedLeft() {
+        return justClicked(MouseButton.LEFT);
+    }
+
+    /**
+     * Checks if the right mouse button was just pressed (Will be false in the next
+     * frame.).
+     * 
+     * @see #justClickedLeft()
+     * @see #justClicked(MouseButton)
+     */
+    default boolean justClickedRight() {
+        return justClicked(MouseButton.RIGHT);
+    }
 
     /**
      * Returns the drag movement of the mouse since the last frame.

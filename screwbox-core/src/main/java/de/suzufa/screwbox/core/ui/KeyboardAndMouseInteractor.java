@@ -1,7 +1,6 @@
 package de.suzufa.screwbox.core.ui;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.mouse.MouseButton;
 
 public class KeyboardAndMouseInteractor extends KeyboardInteractor {
 
@@ -12,7 +11,7 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
             if (menuItemBounds.contains(engine.mouse().position())) {
                 if (item.isActive(engine)) {
                     menu.selectItem(item);
-                    if (engine.mouse().justClicked(MouseButton.LEFT)) {
+                    if (engine.mouse().justClickedLeft()) {
                         item.trigger(engine);
                     }
                 }
