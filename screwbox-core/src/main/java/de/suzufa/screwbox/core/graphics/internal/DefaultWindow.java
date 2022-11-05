@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import de.suzufa.screwbox.core.Angle;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.FlipMode;
@@ -58,7 +58,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window drawTextCentered(final Offset offset, final String text, final Pixelfont font,
-            final Percentage opacity, final double scale) {
+            final Percent opacity, final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         int totalWith = 0;
         for (final var sprite : allSprites) {
@@ -69,14 +69,14 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawText(final Offset offset, final String text, final Pixelfont font, final Percentage opacity,
+    public Window drawText(final Offset offset, final String text, final Pixelfont font, final Percent opacity,
             final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         drawTextSprites(offset, opacity, scale, allSprites, font);
         return this;
     }
 
-    private void drawTextSprites(final Offset offset, final Percentage opacity, final double scale,
+    private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
             final List<Sprite> allSprites,
             final Pixelfont font) {
         Offset currentOffset = offset;
@@ -104,7 +104,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window fillWith(final Offset offset, final Sprite sprite, final double scale, final Percentage opacity) {
+    public Window fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
         final long countX = frame.getWidth() / spriteWidth + 1;
@@ -167,7 +167,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percentage opacity,
+    public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
             final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
         return this;

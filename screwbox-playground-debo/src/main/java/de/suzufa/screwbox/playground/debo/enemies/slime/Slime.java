@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -39,7 +39,7 @@ public class Slime implements Converter<GameObject> {
                 new KillZoneComponent(DeathType.ENEMY_TOUCHED),
                 new CastShadowComponent(),
                 new KilledFromAboveComponent(),
-                new ColliderComponent(0, Percentage.of(0.4)),
+                new ColliderComponent(0, Percent.of(0.4)),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class)),
                 new SignalComponent(),
                 new AutoFlipSpriteComponent(),

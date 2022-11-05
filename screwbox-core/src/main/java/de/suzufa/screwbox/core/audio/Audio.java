@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.audio;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 
 /**
  * Controls the audio playback of the {@link Engine}.
@@ -39,27 +39,27 @@ public interface Audio {
      * Sets the volume of all {@link Sound}s that are played via
      * {@link #playEffect(Sound)} and {@link #playEffectLooped(Sound)}.
      */
-    Audio setEffectVolume(Percentage volume);
+    Audio setEffectVolume(Percent volume);
 
     /**
      * Sets the volume of all {@link Sound}s that are played via
      * {@link #playMusic(Sound)}.
      */
-    Audio setMusicVolume(Percentage volume);
+    Audio setMusicVolume(Percent volume);
 
     /**
      * Returns the current volume for effects.
      * 
      * @see #musicVolume()
      */
-    Percentage effectVolume();
+    Percent effectVolume();
 
     /**
      * Returns the current volume for music.
      * 
      * @see #effectVolume()
      */
-    Percentage musicVolume();
+    Percent musicVolume();
 
     /**
      * Returns the count of currently playing instances of the given {@link Sound}.
@@ -73,13 +73,13 @@ public interface Audio {
 
     /**
      * Sets {@link #musicVolume()} to zero. Can be unmuted via
-     * {@link #setMusicVolume(Percentage)}.
+     * {@link #setMusicVolume(Percent)}.
      */
     Audio muteMusic();
 
     /**
      * Sets {@link #effectVolume()} to zero. Can be unmuted via
-     * {@link #setEffectVolume(Percentage)}.
+     * {@link #setEffectVolume(Percent)}.
      */
     Audio muteEffects();
 

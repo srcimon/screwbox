@@ -10,7 +10,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.audio.Sound;
 
@@ -19,8 +19,8 @@ public class DefaultAudio implements Audio, LineListener {
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Map<Clip, Sound> activeSounds = new HashMap<>();
-    private Percentage effectVolume = Percentage.max();
-    private Percentage musicVolume = Percentage.max();
+    private Percent effectVolume = Percent.max();
+    private Percent musicVolume = Percent.max();
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
@@ -62,13 +62,13 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio setEffectVolume(final Percentage volume) {
+    public Audio setEffectVolume(final Percent volume) {
         this.effectVolume = volume;
         return this;
     }
 
     @Override
-    public Audio setMusicVolume(final Percentage volume) {
+    public Audio setMusicVolume(final Percent volume) {
         this.musicVolume = volume;
         return this;
     }
@@ -108,7 +108,7 @@ public class DefaultAudio implements Audio, LineListener {
         }
     }
 
-    private void playClip(final Sound sound, final Percentage volume, final boolean looped) {
+    private void playClip(final Sound sound, final Percent volume, final boolean looped) {
         executor.execute(() -> {
             final Clip clip = audioAdapter.createClip(sound, volume);
             activeSounds.put(clip, sound);
@@ -137,24 +137,24 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Percentage effectVolume() {
+    public Percent effectVolume() {
         return effectVolume;
     }
 
     @Override
-    public Percentage musicVolume() {
+    public Percent musicVolume() {
         return musicVolume;
     }
 
     @Override
     public Audio muteMusic() {
-        setMusicVolume(Percentage.min());
+        setMusicVolume(Percent.min());
         return this;
     }
 
     @Override
     public Audio muteEffects() {
-        setEffectVolume(Percentage.min());
+        setEffectVolume(Percent.min());
         return this;
     }
 

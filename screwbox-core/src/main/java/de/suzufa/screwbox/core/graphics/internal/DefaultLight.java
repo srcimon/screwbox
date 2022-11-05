@@ -15,8 +15,9 @@ import java.util.concurrent.Future;
 import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
@@ -25,7 +26,6 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
-import de.suzufa.screwbox.core.utils.MathUtil;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
@@ -38,7 +38,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final GraphicsConfiguration configuration;
 
     private Lightmap lightmap;
-    private Percentage ambientLight = Percentage.min();
+    private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private Future<Sprite> sprite = null;
 
@@ -70,16 +70,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
             if (isVisible(lightBox)) {
-                drawingTasks.add(() -> {
-
-                    final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                    for (final var vector : worldArea) {
-                        area.add(world.toOffset(vector));
-                    }
-                    lightmap.addPointLight(world.toOffset(position), world.toDistance(options.size()), area,
-                            options.color());
-                });
+                final List<Offset> area = new ArrayList<>();
+                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                for (final var vector : worldArea) {
+                    area.add(world.toOffset(vector));
+                }
+                final Offset offset = world.toOffset(position);
+                drawingTasks.add(
+                        () -> lightmap.addPointLight(offset, world.toDistance(options.size()), area, options.color()));
             }
         }
         return this;
@@ -91,27 +89,21 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
         if (isVisible(lightBox)) {
-            drawingTasks.add(() -> lightmap.addSpotLight(world.toOffset(position), world.toDistance(options.size()),
-                    options.color()));
+            final Offset offset = world.toOffset(position);
+            final int distance = world.toDistance(options.size());
+            drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
         }
         return this;
     }
 
     private void addPotentialGlow(final Vector position, final LightOptions options) {
-        final Bounds lightBox = Bounds.atPosition(position, options.size() * 3, options.size() * 3);
+        final double sideLength = options.size() * 3 * options.glow();
+        final Bounds lightBox = Bounds.atPosition(position, sideLength, sideLength);
         if (options.glow() != 0 && isVisible(lightBox)) {
+            final Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
             postDrawingTasks.add(() -> {
-                final double maxDistance = world.toDistance(2);
-                final Offset offset = world.toOffset(position);
-                final Offset target = window.center();
-                final int xStep = (int) MathUtil.clamp(-maxDistance, (target.x() - offset.x()) / 4.0, maxDistance);
-                final int yStep = (int) MathUtil.clamp(-maxDistance, (target.y() - offset.y()) / 4.0, maxDistance);
                 for (int i = 1; i < 4; i++) {
-                    final var position1 = offset.addX(xStep * i).addY(yStep * i);
-                    world.drawFadingCircle(
-                            world.toPosition(position1),
-                            i * options.size() * options.glow(),
-                            options.glowColor().opacity(options.glowColor().opacity().value() / 3));
+                    world.drawFadingCircle(position, i * options.size() * options.glow(), color);
                 }
             });
         }
@@ -171,14 +163,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light setAmbientLight(final Percentage ambientLight) {
+    public Light setAmbientLight(final Percent ambientLight) {
         requireNonNull(ambientLight, "ambientLight must not be null");
         this.ambientLight = ambientLight;
         return this;
     }
 
     @Override
-    public Percentage ambientLight() {
+    public Percent ambientLight() {
         return ambientLight;
     }
 

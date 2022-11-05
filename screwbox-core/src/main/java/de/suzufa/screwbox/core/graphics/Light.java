@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 
 //TODO: javadoc and tests
@@ -15,9 +15,9 @@ public interface Light {
 
     Light updateShadowCasters(List<Bounds> shadowCasters);
 
-    Light setAmbientLight(Percentage ambientLight);
+    Light setAmbientLight(Percent ambientLight);
 
-    Percentage ambientLight();
+    Percent ambientLight();
 
     List<Bounds> shadowCasters();
 

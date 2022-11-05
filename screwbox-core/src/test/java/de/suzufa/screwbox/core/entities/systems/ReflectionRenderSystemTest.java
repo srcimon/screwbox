@@ -15,7 +15,7 @@ import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
@@ -67,7 +67,7 @@ class ReflectionRenderSystemTest {
 
         var spriteBatchEntry = spriteBatchEntries.get(0);
         assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
-        assertThat(spriteBatchEntry.opacity()).isEqualTo(Percentage.of(0.25));
+        assertThat(spriteBatchEntry.opacity()).isEqualTo(Percent.of(0.25));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.position()).isEqualTo($(-3, 7));
     }
@@ -108,7 +108,7 @@ class ReflectionRenderSystemTest {
 
         Entity mirror = new Entity()
                 .add(new TransformComponent($$(0, 10, 10, 10)))
-                .add(new ReflectionComponent(Percentage.half(), true));
+                .add(new ReflectionComponent(Percent.half(), true));
 
         entities.add(body)
                 .add(mirror)

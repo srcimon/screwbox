@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.graphics;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 
@@ -20,20 +20,20 @@ public interface World {
         return drawSpriteBatch(spriteBatch, null);
     }
 
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percentage opacity, Angle rotation,
+    World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Angle rotation,
             FlipMode flipMode, Bounds clipArea);
 
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity,
+    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
             final Angle rotation, final FlipMode flipMode) {
         return drawSprite(sprite, origin, 1, opacity, rotation, flipMode, null);
     }
 
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percentage opacity) {
+    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity) {
         return drawSprite(sprite, origin, opacity, Angle.none(), FlipMode.NONE);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {
-        return drawSprite(sprite, origin, Percentage.max());
+        return drawSprite(sprite, origin, Percent.max());
     }
 
     World drawText(Vector offset, String text, Font font, Color color);
@@ -74,10 +74,10 @@ public interface World {
         return drawRectangle(bounds, drawColor());
     }
 
-    World drawTextCentered(Vector position, String text, Pixelfont font, Percentage opacity, double scale);
+    World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
     default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-            final Percentage opacity) {
+            final Percent opacity) {
         return drawTextCentered(position, text, font, opacity, 1);
     }
 

@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -118,7 +118,6 @@ class DefaultLightTest {
     @Test
     void render_lightAndShadowPresent_createCorrectImage() {
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
-        when(window.center()).thenReturn(Offset.at(320, 240));
         light.updateShadowCasters(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.seal();
@@ -127,7 +126,7 @@ class DefaultLightTest {
         var sprite = ArgumentCaptor.forClass(Sprite.class);
         var offset = ArgumentCaptor.forClass(Offset.class);
         var resolution = ArgumentCaptor.forClass(Integer.class);
-        var opacity = ArgumentCaptor.forClass(Percentage.class);
+        var opacity = ArgumentCaptor.forClass(Percent.class);
 
         verify(window).drawSprite(
                 sprite.capture(),
@@ -141,7 +140,7 @@ class DefaultLightTest {
         assertThat(colorInShadow).isEqualTo(Color.BLACK);
 
         Color colorInLight = resultImage.colorAt(93, 83);
-        assertThat(colorInLight.r()).isEqualTo(211);
+        assertThat(colorInLight.r()).isEqualTo(214);
         assertThat(colorInLight.g()).isZero();
         assertThat(colorInLight.b()).isZero();
         assertThat(colorInLight.opacity().value()).isPositive();

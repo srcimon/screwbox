@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -61,7 +61,7 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
                     if (reflectionBounds.intersects(engine.graphics().world().visibleArea())) {
-                        Percentage opacity = spriteComponent.opacity
+                        Percent opacity = spriteComponent.opacity
                                 .multiply(reflection.opacityModifier.value())
                                 .multiply(reflection.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
 

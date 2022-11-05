@@ -2,7 +2,7 @@ package de.suzufa.screwbox.playground.debo.systems;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -27,7 +27,7 @@ public class ShowLabelSystem implements EntitySystem {
                 Bounds bounds = entity.get(TransformComponent.class).bounds;
 
                 Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawTextCentered(position, labelComponent.label, FONT, Percentage.max(),
+                engine.graphics().world().drawTextCentered(position, labelComponent.label, FONT, Percent.max(),
                         labelComponent.size / 15.0);
             }
         }

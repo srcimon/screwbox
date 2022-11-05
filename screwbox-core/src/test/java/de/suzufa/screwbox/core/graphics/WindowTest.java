@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 
 @ExtendWith(MockitoExtension.class)
 class WindowTest {
@@ -26,7 +26,7 @@ class WindowTest {
 
         window.fillWith(sprite);
 
-        verify(window).fillWith(origin(), sprite, 1, Percentage.max());
+        verify(window).fillWith(origin(), sprite, 1, Percent.max());
     }
 
     @Test
@@ -35,7 +35,7 @@ class WindowTest {
 
         window.fillWith(Offset.at(2, 3), sprite);
 
-        verify(window).fillWith(Offset.at(2, 3), sprite, 1, Percentage.max());
+        verify(window).fillWith(Offset.at(2, 3), sprite, 1, Percent.max());
     }
 
     @Test
@@ -55,7 +55,7 @@ class WindowTest {
 
         window.drawText(Offset.at(2, 4), "Test", font);
 
-        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.max(), 1);
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percent.max(), 1);
     }
 
     @Test
@@ -64,16 +64,16 @@ class WindowTest {
 
         window.drawText(Offset.at(2, 4), "Test", font, 4);
 
-        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.max(), 4);
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percent.max(), 4);
     }
 
     @Test
     void drawText_offsetTextFontAndOpacity_callsActualMethod() {
         Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
 
-        window.drawText(Offset.at(2, 4), "Test", font, Percentage.half());
+        window.drawText(Offset.at(2, 4), "Test", font, Percent.half());
 
-        verify(window).drawText(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
+        verify(window).drawText(Offset.at(2, 4), "Test", font, Percent.half(), 1);
     }
 
     @Test
@@ -82,7 +82,7 @@ class WindowTest {
 
         window.drawTextCentered(Offset.at(2, 4), "Test", font);
 
-        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.max(), 1);
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percent.max(), 1);
     }
 
     @Test
@@ -91,16 +91,16 @@ class WindowTest {
 
         window.drawTextCentered(Offset.at(2, 4), "Test", font, 4);
 
-        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.max(), 4);
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percent.max(), 4);
     }
 
     @Test
     void drawTextCentered_offsetTextFontAndOpacity_callsActualMethod() {
         Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
 
-        window.drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half());
+        window.drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half());
 
-        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percentage.half(), 1);
+        verify(window).drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half(), 1);
     }
 
     @Test

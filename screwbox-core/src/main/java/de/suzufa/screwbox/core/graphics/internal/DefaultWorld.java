@@ -5,7 +5,7 @@ import static java.util.Objects.isNull;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -92,7 +92,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percentage opacity,
+    public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
             final Angle rotation, final FlipMode flipMode, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
@@ -161,7 +161,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-            final Percentage opacity, final double scale) {
+            final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);
         window.drawTextCentered(offset, text, font, opacity, scale * zoom);
         return this;

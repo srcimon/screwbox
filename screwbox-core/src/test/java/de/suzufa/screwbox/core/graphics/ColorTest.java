@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-import de.suzufa.screwbox.core.Percentage;
+import de.suzufa.screwbox.core.Percent;
 
 class ColorTest {
 
@@ -39,7 +39,7 @@ class ColorTest {
         assertThat(color.r()).isEqualTo(10);
         assertThat(color.g()).isEqualTo(20);
         assertThat(color.b()).isEqualTo(30);
-        assertThat(color.opacity()).isEqualTo(Percentage.half());
+        assertThat(color.opacity()).isEqualTo(Percent.half());
     }
 
     @Test
