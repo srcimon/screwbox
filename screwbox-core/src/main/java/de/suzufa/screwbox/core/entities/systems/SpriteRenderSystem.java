@@ -20,13 +20,13 @@ public class SpriteRenderSystem implements EntitySystem {
         final Bounds visibleArea = engine.graphics().world().visibleArea();
 
         for (final Entity entity : engine.entities().fetchAll(sprites)) {
-            final Bounds entityBounds = entity.get(TransformComponent.class).bounds;
+            final var entityPosition = entity.get(TransformComponent.class).bounds.position();
             final SpriteComponent spriteComponent = entity.get(SpriteComponent.class);
             final var sprite = spriteComponent.sprite;
             final var spriteDimension = sprite.size();
             final var spriteBounds = Bounds.atOrigin(
-                    entityBounds.position().x() - spriteDimension.width() / 2.0,
-                    entityBounds.position().y() - spriteDimension.height() / 2.0,
+                    entityPosition.x() - spriteDimension.width() / 2.0,
+                    entityPosition.y() - spriteDimension.height() / 2.0,
                     spriteDimension.width() * spriteComponent.scale,
                     spriteDimension.height() * spriteComponent.scale);
 
@@ -37,7 +37,7 @@ public class SpriteRenderSystem implements EntitySystem {
                         spriteComponent.scale,
                         spriteComponent.opacity,
                         spriteComponent.rotation,
-                        spriteComponent.flipMode,
+                        spriteComponent.flip,
                         spriteComponent.drawOrder);
             }
         }

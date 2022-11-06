@@ -15,7 +15,7 @@ public class SpriteComponent implements Component {
     public Percent opacity;
     public double scale = 1;
     public Angle rotation = Angle.none();
-    public Flip flipMode = Flip.NONE;
+    public Flip flip = Flip.NONE;
 
     public SpriteComponent() {
         this(0);

@@ -19,9 +19,9 @@ public class AutFlipSpriteSystem implements EntitySystem {
         for (final var entity : engine.entities().fetchAll(SPRITE_BODIES)) {
             final var momentum = entity.get(PhysicsBodyComponent.class).momentum;
             if (momentum.x() > 0) {
-                entity.get(SpriteComponent.class).flipMode = Flip.NONE;
+                entity.get(SpriteComponent.class).flip = Flip.NONE;
             } else if (momentum.x() < 0) {
-                entity.get(SpriteComponent.class).flipMode = Flip.HORIZONTAL;
+                entity.get(SpriteComponent.class).flip = Flip.HORIZONTAL;
             }
         }
     }

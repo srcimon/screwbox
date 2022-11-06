@@ -71,7 +71,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                                 spriteComponent.scale,
                                 opacity,
                                 spriteComponent.rotation,
-                                spriteComponent.flipMode.invertVertical(),
+                                spriteComponent.flip.invertVertical(),
                                 spriteComponent.drawOrder);
                     }
                 }

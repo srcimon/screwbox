@@ -28,7 +28,7 @@ public class CameraShiftSystem implements EntitySystem {
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
         var cameraTrackerComponent = engine.entities().forcedFetch(CAMERA).get(CameraMovementComponent.class);
-        if (Flip.HORIZONTAL.equals(player.get(SpriteComponent.class).flipMode)) {
+        if (Flip.HORIZONTAL.equals(player.get(SpriteComponent.class).flip)) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,
                             cameraTrackerComponent.shift.x() - cameraTrackerComponent.speed * delta * 100),

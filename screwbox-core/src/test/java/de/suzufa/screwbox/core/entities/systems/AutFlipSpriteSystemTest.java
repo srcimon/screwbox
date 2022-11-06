@@ -39,9 +39,9 @@ class AutFlipSpriteSystemTest {
 
         entities.update();
 
-        assertThat(movingRight.get(SpriteComponent.class).flipMode).isEqualTo(Flip.NONE);
-        assertThat(movingLeftUp.get(SpriteComponent.class).flipMode).isEqualTo(Flip.HORIZONTAL);
-        assertThat(movingDown.get(SpriteComponent.class).flipMode).isEqualTo(Flip.NONE);
+        assertThat(movingRight.get(SpriteComponent.class).flip).isEqualTo(Flip.NONE);
+        assertThat(movingLeftUp.get(SpriteComponent.class).flip).isEqualTo(Flip.HORIZONTAL);
+        assertThat(movingDown.get(SpriteComponent.class).flip).isEqualTo(Flip.NONE);
     }
 
 }
