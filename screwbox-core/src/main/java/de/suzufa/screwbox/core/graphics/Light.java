@@ -15,6 +15,8 @@ public interface Light {
 
     Light updateShadowCasters(List<Bounds> shadowCasters);
 
+    Light addFullBrightnessArea(Bounds area);
+
     Light setAmbientLight(Percent ambientLight);
 
     Percent ambientLight();

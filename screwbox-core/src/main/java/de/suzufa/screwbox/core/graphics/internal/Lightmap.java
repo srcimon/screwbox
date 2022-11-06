@@ -12,14 +12,15 @@ import java.util.List;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class Lightmap implements AutoCloseable {
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
 
-    private BufferedImage image;
-    private Graphics2D graphics;
+    private final BufferedImage image;
+    private final Graphics2D graphics;
     private final int resolution;
 
     public Lightmap(final Dimension size, final int resolution) {
@@ -29,6 +30,15 @@ public class Lightmap implements AutoCloseable {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+    }
+
+    public void addFullBrightnessArea(final WindowBounds bounds) {
+        graphics.setColor(toAwtColor(Color.BLACK));
+        applyOpacityConfig(Color.BLACK);
+        graphics.fillRect(bounds.offset().x() / resolution,
+                bounds.offset().y() / resolution,
+                bounds.size().width() / resolution,
+                bounds.size().height() / resolution);
     }
 
     public void addPointLight(final Offset position, final int radius, final List<Offset> area, final Color color) {
@@ -62,7 +72,7 @@ public class Lightmap implements AutoCloseable {
         applyOpacityConfig(color.opacity().valueFloat());
     }
 
-    private void applyOpacityConfig(float value) {
+    private void applyOpacityConfig(final float value) {
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
     }
 
@@ -76,7 +86,7 @@ public class Lightmap implements AutoCloseable {
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
-        var usedRadius = radius > resolution ? radius : resolution;
+        final var usedRadius = radius > resolution ? radius : resolution;
         final var colors = new java.awt.Color[] { toAwtColor(color.opacity(1)), FADE_TO_COLOR };
 
         return new RadialGradientPaint(

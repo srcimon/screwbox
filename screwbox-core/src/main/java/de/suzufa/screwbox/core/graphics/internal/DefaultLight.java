@@ -25,6 +25,7 @@ import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
@@ -62,6 +63,15 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public List<Bounds> shadowCasters() {
         return lightPhysics.shadowCasters();
+    }
+
+    @Override
+    public Light addFullBrightnessArea(Bounds area) {
+        if (isVisible(area)) {
+            WindowBounds bounds = world.toWindowBounds(area);
+            lightmap.addFullBrightnessArea(bounds);
+        }
+        return this;
     }
 
     @Override
