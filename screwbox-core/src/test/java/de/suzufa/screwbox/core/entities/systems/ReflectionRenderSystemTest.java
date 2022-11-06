@@ -22,7 +22,7 @@ import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.World;
@@ -66,7 +66,7 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.get(0);
-        assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
+        assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
         assertThat(spriteBatchEntry.opacity()).isEqualTo(Percent.of(0.25));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.position()).isEqualTo($(-3, 7));
@@ -123,7 +123,7 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.get(0);
-        assertThat(spriteBatchEntry.flipMode()).isEqualTo(FlipMode.VERTICAL);
+        assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.opacity().value()).isEqualTo(0.48, offset(0.01));
         assertThat(spriteBatchEntry.position().x()).isEqualTo(-1.132, offset(0.01));

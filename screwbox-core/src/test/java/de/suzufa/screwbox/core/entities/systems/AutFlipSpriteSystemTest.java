@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
@@ -39,9 +39,9 @@ class AutFlipSpriteSystemTest {
 
         entities.update();
 
-        assertThat(movingRight.get(SpriteComponent.class).flipMode).isEqualTo(FlipMode.NONE);
-        assertThat(movingLeftUp.get(SpriteComponent.class).flipMode).isEqualTo(FlipMode.HORIZONTAL);
-        assertThat(movingDown.get(SpriteComponent.class).flipMode).isEqualTo(FlipMode.NONE);
+        assertThat(movingRight.get(SpriteComponent.class).flipMode).isEqualTo(Flip.NONE);
+        assertThat(movingLeftUp.get(SpriteComponent.class).flipMode).isEqualTo(Flip.HORIZONTAL);
+        assertThat(movingDown.get(SpriteComponent.class).flipMode).isEqualTo(Flip.NONE);
     }
 
 }

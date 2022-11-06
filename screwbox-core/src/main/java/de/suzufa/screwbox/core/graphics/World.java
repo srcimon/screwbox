@@ -21,15 +21,15 @@ public interface World {
     }
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Angle rotation,
-            FlipMode flipMode, Bounds clipArea);
+            Flip flip, Bounds clipArea);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
-            final Angle rotation, final FlipMode flipMode) {
-        return drawSprite(sprite, origin, 1, opacity, rotation, flipMode, null);
+            final Angle rotation, final Flip flip) {
+        return drawSprite(sprite, origin, 1, opacity, rotation, flip, null);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity) {
-        return drawSprite(sprite, origin, opacity, Angle.none(), FlipMode.NONE);
+        return drawSprite(sprite, origin, opacity, Angle.none(), Flip.NONE);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {

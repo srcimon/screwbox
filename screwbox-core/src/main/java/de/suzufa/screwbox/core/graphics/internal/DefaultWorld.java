@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
@@ -93,12 +93,12 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
-            final Angle rotation, final FlipMode flipMode, final Bounds clipArea) {
+            final Angle rotation, final Flip flip, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flipMode, windowClipArea);
+        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
         return this;
     }
 
@@ -175,7 +175,7 @@ public class DefaultWorld implements World {
                     entry.scale(),
                     entry.opacity(),
                     entry.rotation(),
-                    entry.flipMode(),
+                    entry.flip(),
                     clipArea);
         }
         return this;

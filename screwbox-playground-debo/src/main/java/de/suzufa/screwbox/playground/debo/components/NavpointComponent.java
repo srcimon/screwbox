@@ -1,16 +1,16 @@
 package de.suzufa.screwbox.playground.debo.components;
 
 import de.suzufa.screwbox.core.entities.Component;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 
 public class NavpointComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
     public final Class<?> state;
-    public final FlipMode flipMode;
+    public final Flip flipMode;
 
-    public NavpointComponent(final Class<?> state, final FlipMode flipMode) {
+    public NavpointComponent(final Class<?> state, final Flip flipMode) {
         this.state = state;
         this.flipMode = flipMode;
     }

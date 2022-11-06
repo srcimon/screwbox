@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
 public class CameraShiftSystem implements EntitySystem {
@@ -28,7 +28,7 @@ public class CameraShiftSystem implements EntitySystem {
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
         var cameraTrackerComponent = engine.entities().forcedFetch(CAMERA).get(CameraMovementComponent.class);
-        if (FlipMode.HORIZONTAL.equals(player.get(SpriteComponent.class).flipMode)) {
+        if (Flip.HORIZONTAL.equals(player.get(SpriteComponent.class).flipMode)) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,
                             cameraTrackerComponent.shift.x() - cameraTrackerComponent.speed * delta * 100),

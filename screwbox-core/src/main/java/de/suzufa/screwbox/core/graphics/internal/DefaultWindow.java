@@ -20,7 +20,7 @@ import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
@@ -81,7 +81,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final Pixelfont font) {
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Angle.none(), FlipMode.NONE, null);
+            drawSprite(sprite, currentOffset, scale, opacity, Angle.none(), Flip.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
@@ -115,7 +115,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Angle.none(), FlipMode.NONE, null);
+                drawSprite(sprite, thisOffset, scale, opacity, Angle.none(), Flip.NONE, null);
             }
         }
         return this;
@@ -168,8 +168,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Window drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-            final Angle rotation, final FlipMode flipMode, final WindowBounds clipArea) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flipMode, clipArea);
+            final Angle rotation, final Flip flip, final WindowBounds clipArea) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
     }
 

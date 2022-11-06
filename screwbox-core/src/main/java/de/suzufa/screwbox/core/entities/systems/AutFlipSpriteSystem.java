@@ -7,7 +7,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.AutoFlipSpriteComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 
 public class AutFlipSpriteSystem implements EntitySystem {
 
@@ -19,9 +19,9 @@ public class AutFlipSpriteSystem implements EntitySystem {
         for (final var entity : engine.entities().fetchAll(SPRITE_BODIES)) {
             final var momentum = entity.get(PhysicsBodyComponent.class).momentum;
             if (momentum.x() > 0) {
-                entity.get(SpriteComponent.class).flipMode = FlipMode.NONE;
+                entity.get(SpriteComponent.class).flipMode = Flip.NONE;
             } else if (momentum.x() < 0) {
-                entity.get(SpriteComponent.class).flipMode = FlipMode.HORIZONTAL;
+                entity.get(SpriteComponent.class).flipMode = Flip.HORIZONTAL;
             }
         }
     }

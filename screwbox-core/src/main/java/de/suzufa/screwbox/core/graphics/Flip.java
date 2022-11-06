@@ -4,7 +4,7 @@ package de.suzufa.screwbox.core.graphics;
  * Returns the vertical and or horizontal flip (mirror) mode for an
  * {@link Sprite}.
  */
-public enum FlipMode {
+public enum Flip {
 
     /**
      * flipped horizontally
@@ -29,7 +29,7 @@ public enum FlipMode {
     private final boolean horizontal;
     private final boolean vertical;
 
-    private FlipMode(final boolean horizontal, final boolean vertical) {
+    private Flip(final boolean horizontal, final boolean vertical) {
         this.horizontal = horizontal;
         this.vertical = vertical;
     }
@@ -43,11 +43,11 @@ public enum FlipMode {
     }
 
     /**
-     * Returns the {@link FlipMode} with inverted vertical component.
+     * Returns the {@link Flip} with inverted vertical component.
      * 
-     * @return the inverted {@link FlipMode}
+     * @return the inverted {@link Flip}
      */
-    public FlipMode invertVertical() {
+    public Flip invertVertical() {
         if (isHorizontal()) {
             return isVertical() ? HORIZONTAL : BOTH;
         }

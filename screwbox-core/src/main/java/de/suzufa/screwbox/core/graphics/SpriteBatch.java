@@ -13,7 +13,7 @@ public class SpriteBatch {
     private List<SpriteBatchEntry> entries = new ArrayList<>();
 
     public final record SpriteBatchEntry(
-            Sprite sprite, Vector position, double scale, Percent opacity, Angle rotation, FlipMode flipMode,
+            Sprite sprite, Vector position, double scale, Percent opacity, Angle rotation, Flip flip,
             int drawOrder)
             implements Comparable<SpriteBatchEntry> {
 
@@ -25,9 +25,9 @@ public class SpriteBatch {
 
     public void addEntry(final Sprite sprite, final Vector position, final double scale, final Percent opacity,
             final Angle rotation,
-            final FlipMode flipMode,
+            final Flip flip,
             final int drawOrder) {
-        this.entries.add(new SpriteBatchEntry(sprite, position, scale, opacity, rotation, flipMode, drawOrder));
+        this.entries.add(new SpriteBatchEntry(sprite, position, scale, opacity, rotation, flip, drawOrder));
     }
 
     public List<SpriteBatchEntry> entriesInDrawOrder() {

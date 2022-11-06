@@ -36,18 +36,18 @@ public interface Window {
     }
 
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-            FlipMode flipMode, WindowBounds clipArea);
+            Flip flip, WindowBounds clipArea);
 
     default Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Angle.none(), FlipMode.NONE, null);
+        return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
     }
 
     default Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
-        return drawSprite(sprite, origin, scale, opacity, rotation, FlipMode.NONE, null);
+        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Angle.none(), FlipMode.NONE, null);
+        return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
     }
 
     default Window drawSprite(final Sprite sprite, final Offset origin) {

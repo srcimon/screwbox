@@ -3,7 +3,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -38,7 +38,7 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-            final Angle rotation, final FlipMode flipMode, WindowBounds clipArea) {
+            final Angle rotation, final Flip flip, WindowBounds clipArea) {
         // does nothing
     }
 

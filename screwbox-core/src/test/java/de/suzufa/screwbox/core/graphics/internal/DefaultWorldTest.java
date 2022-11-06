@@ -21,7 +21,7 @@ import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
-import de.suzufa.screwbox.core.graphics.FlipMode;
+import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
@@ -100,10 +100,10 @@ class DefaultWorldTest {
         world.updateCameraPosition($(4, 2));
         world.updateCameraZoom(1.5);
 
-        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Angle.degrees(4), FlipMode.NONE, null);
+        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Angle.degrees(4), Flip.NONE, null);
 
         verify(window)
-                .drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Angle.degrees(4), FlipMode.NONE,
+                .drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Angle.degrees(4), Flip.NONE,
                         null);
     }
 }
