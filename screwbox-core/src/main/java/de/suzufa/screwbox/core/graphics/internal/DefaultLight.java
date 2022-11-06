@@ -69,7 +69,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         raiseExceptionOnSealed();
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
             addPotentialGlow(position, options);
-            final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
+            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
             if (isVisible(lightBox)) {
                 final List<Offset> area = new ArrayList<>();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
@@ -78,7 +78,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 }
                 final Offset offset = world.toOffset(position);
                 drawingTasks.add(
-                        () -> lightmap.addPointLight(offset, world.toDistance(options.size()), area, options.color()));
+                        () -> lightmap.addPointLight(offset, world.toDistance(options.radius()), area,
+                                options.color()));
             }
         }
         return this;
@@ -88,23 +89,23 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light addSpotLight(final Vector position, final LightOptions options) {
         raiseExceptionOnSealed();
         addPotentialGlow(position, options);
-        final Bounds lightBox = Bounds.atPosition(position, options.size(), options.size());
+        final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
         if (isVisible(lightBox)) {
             final Offset offset = world.toOffset(position);
-            final int distance = world.toDistance(options.size());
+            final int distance = world.toDistance(options.radius());
             drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
         }
         return this;
     }
 
     private void addPotentialGlow(final Vector position, final LightOptions options) {
-        final double sideLength = options.size() * 3 * options.glow();
+        final double sideLength = options.radius() * 3 * options.glow();
         final Bounds lightBox = Bounds.atPosition(position, sideLength, sideLength);
         if (options.glow() != 0 && isVisible(lightBox)) {
             final Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(position, i * options.size() * options.glow(), color);
+                    world.drawFadingCircle(position, i * options.radius() * options.glow(), color);
                 }
             });
         }

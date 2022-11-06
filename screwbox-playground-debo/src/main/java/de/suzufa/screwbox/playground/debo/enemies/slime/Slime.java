@@ -30,9 +30,9 @@ public class Slime implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new PointLightComponent(LightOptions.glowing(30)
+                new PointLightComponent(LightOptions.glowing(15)
                         .color(Color.BLACK.opacity(0.6))
-                        .glow(1)
+                        .glow(2)
                         .glowColor(Color.YELLOW.opacity(0.4))),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),

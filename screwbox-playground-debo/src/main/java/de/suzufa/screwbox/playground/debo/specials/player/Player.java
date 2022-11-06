@@ -26,10 +26,10 @@ public class Player implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id()).add(
-                new PointLightComponent(LightOptions.glowing(120)
+                new PointLightComponent(LightOptions.glowing(64)
                         .color(Color.BLACK)
                         .glow(0.5)),
-                new SpotLightComponent(LightOptions.glowing(120)
+                new SpotLightComponent(LightOptions.glowing(64)
                         .color(Color.BLACK.opacity(0.4))
                         .glow(0)),
                 new StateComponent(new PlayerStandingState()),

@@ -70,9 +70,9 @@ public class LightPhysics {
         return segments;
     }
 
-    private void segmentsOf(List<Segment> list, final Bounds source, final double range, final Vector destination) {
+    private void segmentsOf(List<Segment> list, final Bounds source, final double radius, final Vector destination) {
         final Segment directTrace = Segment.between(source.position(), destination);
-        final Segment normalTrace = Segment.between(source.position(), source.position().addY(-range));
+        final Segment normalTrace = Segment.between(source.position(), source.position().addY(-radius));
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
         list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace));
         list.add(directTrace);

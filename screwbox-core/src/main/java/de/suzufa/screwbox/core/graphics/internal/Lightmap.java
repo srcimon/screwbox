@@ -31,27 +31,27 @@ public class Lightmap implements AutoCloseable {
         this.graphics = (Graphics2D) image.getGraphics();
     }
 
-    public void addPointLight(final Offset position, final int range, final List<Offset> area, final Color color) {
+    public void addPointLight(final Offset position, final int radius, final List<Offset> area, final Color color) {
         final Polygon polygon = new Polygon();
         for (final var node : area) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
 
-        final RadialGradientPaint paint = radialPaint(position, range, color);
+        final RadialGradientPaint paint = radialPaint(position, radius, color);
         applyOpacityConfig(color);
         graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
     }
 
-    public void addSpotLight(final Offset position, final int range, final Color color) {
-        final RadialGradientPaint paint = radialPaint(position, range, color);
+    public void addSpotLight(final Offset position, final int radius, final Color color) {
+        final RadialGradientPaint paint = radialPaint(position, radius, color);
         graphics.setPaint(paint);
         applyOpacityConfig(color);
         graphics.fillOval(
-                position.x() / resolution - range / resolution / 2,
-                position.y() / resolution - range / resolution / 2,
-                range / resolution,
-                range / resolution);
+                position.x() / resolution - radius / resolution,
+                position.y() / resolution - radius / resolution,
+                radius / resolution * 2,
+                radius / resolution * 2);
     }
 
     public BufferedImage image() {
@@ -75,13 +75,13 @@ public class Lightmap implements AutoCloseable {
         graphics.dispose();
     }
 
-    private RadialGradientPaint radialPaint(final Offset position, final int range, final Color color) {
+    private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
         final var colors = new java.awt.Color[] { toAwtColor(color.opacity(1)), FADE_TO_COLOR };
 
         return new RadialGradientPaint(
                 position.x() / (float) resolution,
                 position.y() / (float) resolution,
-                range / resolution / 2f,
+                radius / resolution,
                 FRACTIONS, colors);
     }
 
