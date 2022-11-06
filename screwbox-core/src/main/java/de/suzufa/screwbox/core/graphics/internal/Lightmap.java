@@ -76,12 +76,13 @@ public class Lightmap implements AutoCloseable {
     }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
+        var usedRadius = radius > resolution ? radius : resolution;
         final var colors = new java.awt.Color[] { toAwtColor(color.opacity(1)), FADE_TO_COLOR };
 
         return new RadialGradientPaint(
                 position.x() / (float) resolution,
                 position.y() / (float) resolution,
-                radius / resolution,
+                usedRadius / resolution,
                 FRACTIONS, colors);
     }
 
