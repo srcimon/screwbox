@@ -8,3 +8,4 @@
 - assets project for sounds / graphics and non default systems
 - system priority via annotation @Order(Simulation)
 - preload resources via reflection and classloader as @Asset
+- light -> full brightness without blur setting
