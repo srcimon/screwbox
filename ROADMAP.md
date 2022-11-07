@@ -7,3 +7,4 @@
 - engine.quick() -> for common used actions
 - assets project for sounds / graphics and non default systems
 - system priority via annotation @Order(Simulation)
+- preload resources via reflection and classloader as @Asset
