@@ -74,17 +74,22 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
             addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
             if (isVisible(lightBox)) {
-                final List<Offset> area = new ArrayList<>();
-                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                for (final var vector : worldArea) {
-                    area.add(world.toOffset(vector));
-                }
+                final var area = executor.submit(() -> calculateArea(lightBox));
                 final Offset offset = world.toOffset(position);
                 int screenRadius = world.toDistance(options.radius());
                 pointLights.add(new PointLight(offset, screenRadius, area, options.color()));
             }
         }
         return this;
+    }
+
+    private List<Offset> calculateArea(final Bounds lightBox) {
+        final List<Offset> area = new ArrayList<>();
+        final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+        for (final var vector : worldArea) {
+            area.add(world.toOffset(vector));
+        }
+        return area;
     }
 
     @Override
