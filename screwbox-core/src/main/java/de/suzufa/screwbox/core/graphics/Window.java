@@ -11,30 +11,32 @@ public interface Window {
 
     Color drawColor();
 
-    Window drawRectangle(WindowBounds bounds, Color color);
+    Window fillRectangle(WindowBounds bounds, Color color);
 
     default Window fill() {
         return fillWith(drawColor());
     }
 
-    default Window drawRectangle(final WindowBounds bounds) {
-        return drawRectangle(bounds, drawColor());
+    default Window fillRectangle(final WindowBounds bounds) {
+        return fillRectangle(bounds, drawColor());
     }
 
-    default Window drawRectangle(final Offset origin, final Dimension size, final Color color) {
-        return drawRectangle(new WindowBounds(origin, size), color);
+    default Window fillRectangle(final Offset origin, final Dimension size, final Color color) {
+        return fillRectangle(new WindowBounds(origin, size), color);
     }
 
-    default Window drawRectangle(final Offset origin, final Dimension size) {
-        return drawRectangle(new WindowBounds(origin, size), drawColor());
+    default Window fillRectangle(final Offset origin, final Dimension size) {
+        return fillRectangle(new WindowBounds(origin, size), drawColor());
     }
 
     Window drawFadingCircle(Offset offset, int diameter, Color color);
 
     Window drawCircle(Offset offset, int diameter, Color color);
 
-    default Window drawCircle(final Offset offset, final int diameter) {
-        return drawCircle(offset, diameter, drawColor());
+    Window fillCircle(Offset offset, int diameter, Color color);
+
+    default Window fillCircle(final Offset offset, final int diameter) {
+        return fillCircle(offset, diameter, drawColor());
     }
 
     Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,

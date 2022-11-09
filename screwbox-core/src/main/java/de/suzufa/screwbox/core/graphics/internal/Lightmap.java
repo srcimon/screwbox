@@ -120,4 +120,8 @@ class Lightmap {
                 FRACTIONS, colors);
     }
 
+    public List<PointLight> pointLights() {
+        return pointLights;
+    }
+
 }

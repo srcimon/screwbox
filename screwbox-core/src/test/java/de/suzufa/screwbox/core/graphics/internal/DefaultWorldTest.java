@@ -50,9 +50,9 @@ class DefaultWorldTest {
         world.updateCameraPosition(zero());
         world.updateCameraZoom(2.5);
 
-        world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
+        world.fillRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
 
-        verify(window).drawRectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED);
+        verify(window).fillRectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED);
     }
 
     @Test

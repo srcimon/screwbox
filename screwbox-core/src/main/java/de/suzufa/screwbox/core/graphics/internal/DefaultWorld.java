@@ -145,17 +145,17 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawCircle(final Vector position, final int diameter, final Color color) {
+    public World fillCircle(final Vector position, final int diameter, final Color color) {
         final Offset offset = toOffset(position);
-        window.drawCircle(offset, (int) (diameter * zoom), color);
+        window.fillCircle(offset, (int) (diameter * zoom), color);
         return this;
     }
 
     @Override
-    public World drawRectangle(final Bounds bounds, final Color color) {
+    public World fillRectangle(final Bounds bounds, final Color color) {
         final Offset offset = toOffset(bounds.origin());
         final Dimension size = toDimension(bounds.size());
-        window.drawRectangle(offset, size, color);
+        window.fillRectangle(offset, size, color);
         return this;
     }
 

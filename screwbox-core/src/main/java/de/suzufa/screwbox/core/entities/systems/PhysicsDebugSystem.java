@@ -37,7 +37,7 @@ public class PhysicsDebugSystem implements EntitySystem {
 
     private void renderEntity(final Engine engine, final Entity entity, final Color color) {
         final var bounds = entity.get(TransformComponent.class).bounds;
-        engine.graphics().world().drawRectangle(bounds, color.opacity(0.7));
+        engine.graphics().world().fillRectangle(bounds, color.opacity(0.7));
 
         if (entity.hasComponent(PhysicsBodyComponent.class)) {
             final Vector momentum = entity.get(PhysicsBodyComponent.class).momentum;

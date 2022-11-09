@@ -29,18 +29,18 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final WindowBounds bounds, final Color color) {
+    public void fillRectangle(final WindowBounds bounds, final Color color) {
         // does nothing
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+    public void fillCircle(final Offset offset, final int diameter, final Color color) {
         // does nothing
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-            final Angle rotation, final Flip flip, WindowBounds clipArea) {
+            final Angle rotation, final Flip flip, final WindowBounds clipArea) {
         // does nothing
     }
 
@@ -60,13 +60,19 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(Offset offset, int diameter, Color color) {
+    public void drawFadingCircle(final Offset offset, final int diameter, final Color color) {
         // does nothing
     }
 
     @Override
-    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-            Flip flip, WindowBounds clipArea) {
+    public void drawSprite(final Future<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
+            final Angle rotation,
+            final Flip flip, final WindowBounds clipArea) {
+        // does nothing
+    }
+
+    @Override
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
         // does nothing
     }
 

@@ -31,7 +31,7 @@ public class AutomovementDebugSystem implements EntitySystem {
                 for (var node : path.nodes()) {
                     nr++;
                     world.drawTextCentered(node.addY(-5), "#" + nr, FONT, Color.WHITE)
-                            .drawCircle(node, 3, Color.YELLOW);
+                            .fillCircle(node, 3, Color.YELLOW);
                 }
             }
         }

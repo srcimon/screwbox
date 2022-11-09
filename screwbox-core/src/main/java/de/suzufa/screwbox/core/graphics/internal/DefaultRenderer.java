@@ -150,7 +150,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final WindowBounds bounds, final Color color) {
+    public void fillRectangle(final WindowBounds bounds, final Color color) {
         applyNewColor(color);
         graphics.fillRect(
                 bounds.offset().x(),
@@ -160,7 +160,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+    public void fillCircle(final Offset offset, final int diameter, final Color color) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
@@ -204,6 +204,14 @@ public class DefaultRenderer implements Renderer {
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    @Override
+    public void drawCircle(Offset offset, int diameter, Color color) {
+        applyNewColor(color);
+        final int x = offset.x() - diameter / 2;
+        final int y = offset.y() - diameter / 2;
+        graphics.drawOval(x, y, diameter, diameter);
     }
 
 }

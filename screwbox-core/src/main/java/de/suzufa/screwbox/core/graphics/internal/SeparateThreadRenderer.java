@@ -72,13 +72,13 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final WindowBounds bounds, final Color color) {
-        renderTasks.active().add(() -> next.drawRectangle(bounds, color));
+    public void fillRectangle(final WindowBounds bounds, final Color color) {
+        renderTasks.active().add(() -> next.fillRectangle(bounds, color));
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color));
+    public void fillCircle(final Offset offset, final int diameter, final Color color) {
+        renderTasks.active().add(() -> next.fillCircle(offset, diameter, color));
     }
 
     @Override
@@ -113,6 +113,11 @@ public class SeparateThreadRenderer implements Renderer {
                 currentThread().interrupt();
             }
         }
+    }
+
+    @Override
+    public void drawCircle(Offset offset, int diameter, Color color) {
+        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color));
     }
 
 }
