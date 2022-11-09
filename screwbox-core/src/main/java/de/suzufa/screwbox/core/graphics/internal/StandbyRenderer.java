@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.util.concurrent.Future;
+
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
@@ -59,6 +61,12 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawFadingCircle(Offset offset, int diameter, Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea) {
         // does nothing
     }
 

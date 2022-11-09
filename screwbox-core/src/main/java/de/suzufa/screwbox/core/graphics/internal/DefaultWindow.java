@@ -15,6 +15,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
@@ -349,6 +350,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     @Override
     public Window drawFadingCircle(Offset offset, int diameter, Color color) {
         renderer.drawFadingCircle(offset, diameter, color);
+        return this;
+    }
+
+    @Override
+    public Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
     }
 

@@ -97,7 +97,12 @@ public class SeparateThreadRenderer implements Renderer {
     @Override
     public void drawLine(final Offset from, final Offset to, final Color color) {
         renderTasks.active().add(() -> next.drawLine(from, to, color));
+    }
 
+    @Override
+    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea) {
+        renderTasks.active().add(() -> drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }
 
     private void waitForCurrentRenderingToEnd() {

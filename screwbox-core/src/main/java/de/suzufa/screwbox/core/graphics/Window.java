@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import java.util.concurrent.Future;
+
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 
@@ -33,6 +35,25 @@ public interface Window {
 
     default Window drawCircle(final Offset offset, final int diameter) {
         return drawCircle(offset, diameter, drawColor());
+    }
+
+    Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea);
+
+    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity) {
+        return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
+    }
+
+    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
+    }
+
+    default Window drawSprite(final Future<Sprite> sprite, final Offset origin, final Percent opacity) {
+        return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
+    }
+
+    default Window drawSprite(final Future<Sprite> sprite, final Offset origin) {
+        return drawSprite(sprite, origin, Percent.max());
     }
 
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
@@ -139,8 +160,8 @@ public interface Window {
     Window moveTo(Offset position);
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in fullscreen and window mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * fullscreen and window mode.
      * 
      * @see #setFullscreenCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
@@ -152,8 +173,8 @@ public interface Window {
     }
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in window mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * window mode.
      * 
      * @see #setCursor(MouseCursor)
      * @see #setFullscreenCursor(MouseCursor)
@@ -161,8 +182,8 @@ public interface Window {
     Window setWindowCursor(MouseCursor cursor);
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in fullscreen mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * fullscreen mode.
      * 
      * @see #setCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)

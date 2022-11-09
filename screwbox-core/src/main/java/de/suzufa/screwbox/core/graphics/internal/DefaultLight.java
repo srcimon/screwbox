@@ -9,7 +9,6 @@ import static java.util.Objects.requireNonNull;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.UnaryOperator;
@@ -140,11 +139,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             throw new IllegalStateException(
                     "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
         }
-        try {
-            window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert());
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-        }
+        window.drawSprite(sprite, origin(), lightmap.resolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }

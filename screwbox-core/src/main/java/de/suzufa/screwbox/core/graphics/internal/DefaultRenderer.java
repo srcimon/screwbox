@@ -15,6 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
@@ -192,6 +194,16 @@ public class DefaultRenderer implements Renderer {
         final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
         graphics.setPaint(oldPaint);
+    }
+
+    @Override
+    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea) {
+        try {
+            drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
 }
