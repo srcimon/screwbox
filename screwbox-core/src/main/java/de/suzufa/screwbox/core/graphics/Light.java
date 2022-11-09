@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 //TODO: javadoc and tests
 public interface Light {
 
+    // TODO: lightmapBuilder().shadowCasters(x).pointLights(y).image();
     Light addPointLight(Vector position, LightOptions options);
 
     Light addSpotLight(Vector position, LightOptions options);
@@ -24,9 +25,5 @@ public interface Light {
     List<Bounds> shadowCasters();
 
     Light render();
-
-    Light seal();
-
-    boolean isSealed();
 
 }
