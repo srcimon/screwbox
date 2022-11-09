@@ -47,7 +47,7 @@ public class RenderLightSystem implements EntitySystem {
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.options);
         }
-        engine.graphics().light().render();
+        light.render();
     }
 
     @Override
