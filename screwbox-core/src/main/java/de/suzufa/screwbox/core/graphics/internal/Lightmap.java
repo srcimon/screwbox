@@ -41,30 +41,36 @@ public class Lightmap implements AutoCloseable {
                 bounds.size().height() / resolution);
     }
 
-    public void addPointLight(final Offset position, final int radius, final List<Offset> area, final Color color) {
+    private void addPointLight(PointLight pointLight) {
         final Polygon polygon = new Polygon();
-        for (final var node : area) {
+        for (final var node : pointLight.area()) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
 
-        final RadialGradientPaint paint = radialPaint(position, radius, color);
-        applyOpacityConfig(color);
+        final RadialGradientPaint paint = radialPaint(pointLight.position(), pointLight.radius(), pointLight.color());
+        applyOpacityConfig(pointLight.color());
         graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
     }
 
-    public void addSpotLight(final Offset position, final int radius, final Color color) {
-        final RadialGradientPaint paint = radialPaint(position, radius, color);
+    private void addSpotLight(SpotLight spotLight) {
+        final RadialGradientPaint paint = radialPaint(spotLight.position(), spotLight.radius(), spotLight.color());
         graphics.setPaint(paint);
-        applyOpacityConfig(color);
+        applyOpacityConfig(spotLight.color());
         graphics.fillOval(
-                position.x() / resolution - radius / resolution,
-                position.y() / resolution - radius / resolution,
-                radius / resolution * 2,
-                radius / resolution * 2);
+                spotLight.position().x() / resolution - spotLight.radius() / resolution,
+                spotLight.position().y() / resolution - spotLight.radius() / resolution,
+                spotLight.radius() / resolution * 2,
+                spotLight.radius() / resolution * 2);
     }
 
-    public BufferedImage image() {
+    public BufferedImage image(List<PointLight> pointLights, List<SpotLight> spotLights) {
+        for (var pointLight : pointLights) {
+            addPointLight(pointLight);
+        }
+        for (var spotLight : spotLights) {
+            addSpotLight(spotLight);
+        }
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }
 

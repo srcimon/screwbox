@@ -30,8 +30,6 @@ import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
-    // TODO: add lights not tasks: can ask for light at position
-    private final List<Runnable> drawingTasks = new ArrayList<>();
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
@@ -43,6 +41,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private Future<Sprite> sprite = null;
+
+    private List<PointLight> pointLights = new ArrayList<>();
+    private List<SpotLight> spotLights = new ArrayList<>();
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -87,9 +88,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                     area.add(world.toOffset(vector));
                 }
                 final Offset offset = world.toOffset(position);
-                drawingTasks.add(
-                        () -> lightmap.addPointLight(offset, world.toDistance(options.radius()), area,
-                                options.color()));
+                int screenRadius = world.toDistance(options.radius());
+                pointLights.add(new PointLight(offset, screenRadius, area, options.color()));
             }
         }
         return this;
@@ -103,7 +103,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (isVisible(lightBox)) {
             final Offset offset = world.toOffset(position);
             final int distance = world.toDistance(options.radius());
-            drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
+            spotLights.add(new SpotLight(offset, distance, options.color()));
         }
         return this;
     }
@@ -155,16 +155,15 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light seal() {
         raiseExceptionOnSealed();
+        ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
+        ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
         sprite = executor.submit(() -> {
-            for (final var drawingTask : drawingTasks) {
-                drawingTask.run();
-            }
-            drawingTasks.clear();
-
-            final var image = lightmap.image();
+            final var image = lightmap.image(pointLights2, spotLights2);
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
+        pointLights.clear();
+        spotLights.clear();
         return this;
     }
 
