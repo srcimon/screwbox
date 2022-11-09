@@ -22,10 +22,10 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
+import de.suzufa.screwbox.core.loop.internal.Updatable;
 
-public class DefaultLight implements Light, GraphicsConfigurationListener {
+public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
-    // TODO: prerenderd glow?
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
@@ -36,8 +36,8 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
 
-    private List<PointLight> pointLights = new ArrayList<>();
-    private List<SpotLight> spotLights = new ArrayList<>();
+    private final List<PointLight> pointLights = new ArrayList<>();
+    private final List<SpotLight> spotLights = new ArrayList<>();
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -49,8 +49,8 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
     }
 
     @Override
-    public Light updateShadowCasters(final List<Bounds> shadowCasters) {
-        lightPhysics.setShadowCasters(shadowCasters);
+    public Light addShadowCasters(final List<Bounds> shadowCasters) {
+        lightPhysics.addShadowCasters(shadowCasters);
         return this;
     }
 
@@ -60,9 +60,9 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
     }
 
     @Override
-    public Light addFullBrightnessArea(Bounds area) {
+    public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
-            WindowBounds bounds = world.toWindowBounds(area);
+            final WindowBounds bounds = world.toWindowBounds(area);
 //            lightmap.addFullBrightnessArea(bounds);//TODO: FIX
         }
         return this;
@@ -80,7 +80,7 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
                     area.add(world.toOffset(vector));
                 }
                 final Offset offset = world.toOffset(position);
-                int screenRadius = world.toDistance(options.radius());
+                final int screenRadius = world.toDistance(options.radius());
                 pointLights.add(new PointLight(offset, screenRadius, area, options.color()));
             }
         }
@@ -114,9 +114,9 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
 
     @Override
     public Light render() {
-        ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
-        ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
-        var sprite = executor.submit(() -> {
+        final ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
+        final ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
+        final var sprite = executor.submit(() -> {
             BufferedImage image;
             try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
                 image = lightmap.image(pointLights2, spotLights2);
@@ -124,13 +124,10 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        pointLights.clear();
-        spotLights.clear();
         window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
-        postDrawingTasks.clear();
         return this;
     }
 
@@ -157,6 +154,14 @@ public class DefaultLight implements Light, GraphicsConfigurationListener {
 
     private boolean isVisible(final Bounds lightBox) {
         return window.isVisible(world.toWindowBounds(lightBox));
+    }
+
+    @Override
+    public void update() {
+        pointLights.clear();
+        spotLights.clear();
+        postDrawingTasks.clear();
+        lightPhysics.shadowCasters().clear();
     }
 
 }

@@ -14,7 +14,7 @@ public interface Light {
 
     Light addSpotLight(Vector position, LightOptions options);
 
-    Light updateShadowCasters(List<Bounds> shadowCasters);
+    Light addShadowCasters(List<Bounds> shadowCasters);
 
     Light addFullBrightnessArea(Bounds area);
 

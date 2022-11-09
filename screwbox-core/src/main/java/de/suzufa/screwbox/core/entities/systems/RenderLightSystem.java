@@ -30,11 +30,11 @@ public class RenderLightSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Light light = engine.graphics().light();
-        final List<Bounds> obstacles = new ArrayList<>();
-        for (final var obstacle : engine.entities().fetchAll(SHADOW_CASTERS)) {
-            obstacles.add(obstacle.get(TransformComponent.class).bounds);
+        final List<Bounds> shadowCasters = new ArrayList<>();
+        for (final var shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
+            shadowCasters.add(shadowCaster.get(TransformComponent.class).bounds);
         }
-        light.updateShadowCasters(obstacles);
+        light.addShadowCasters(shadowCasters);
 
         for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);

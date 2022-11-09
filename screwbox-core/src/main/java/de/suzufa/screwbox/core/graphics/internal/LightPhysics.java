@@ -18,8 +18,9 @@ public class LightPhysics {
 
     private List<Bounds> shadowCasters = new ArrayList<>();
 
-    public void setShadowCasters(final List<Bounds> shadowCasters) {
-        this.shadowCasters = requireNonNull(shadowCasters, "shadowCasters must not be null");
+    public void addShadowCasters(final List<Bounds> shadowCasters) {
+        requireNonNull(shadowCasters, "shadowCasters must not be null");
+        this.shadowCasters.addAll(shadowCasters);
     }
 
     public List<Bounds> shadowCasters() {

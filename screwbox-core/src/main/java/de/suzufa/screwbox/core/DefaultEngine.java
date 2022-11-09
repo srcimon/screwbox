@@ -68,7 +68,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
-        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
+        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());

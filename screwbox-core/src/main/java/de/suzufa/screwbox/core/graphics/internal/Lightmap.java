@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
-public class Lightmap implements AutoCloseable {
+class Lightmap implements AutoCloseable {
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
@@ -41,7 +41,7 @@ public class Lightmap implements AutoCloseable {
                 bounds.size().height() / resolution);
     }
 
-    private void addPointLight(PointLight pointLight) {
+    private void addPointLight(final PointLight pointLight) {
         final Polygon polygon = new Polygon();
         for (final var node : pointLight.area()) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
@@ -53,7 +53,7 @@ public class Lightmap implements AutoCloseable {
         graphics.fillPolygon(polygon);
     }
 
-    private void addSpotLight(SpotLight spotLight) {
+    private void addSpotLight(final SpotLight spotLight) {
         final RadialGradientPaint paint = radialPaint(spotLight.position(), spotLight.radius(), spotLight.color());
         graphics.setPaint(paint);
         applyOpacityConfig(spotLight.color());
@@ -64,11 +64,11 @@ public class Lightmap implements AutoCloseable {
                 spotLight.radius() / resolution * 2);
     }
 
-    public BufferedImage image(List<PointLight> pointLights, List<SpotLight> spotLights) {
-        for (var pointLight : pointLights) {
+    public BufferedImage image(final List<PointLight> pointLights, final List<SpotLight> spotLights) {
+        for (final var pointLight : pointLights) {
             addPointLight(pointLight);
         }
-        for (var spotLight : spotLights) {
+        for (final var spotLight : spotLights) {
             addSpotLight(spotLight);
         }
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
@@ -82,15 +82,6 @@ public class Lightmap implements AutoCloseable {
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
     }
 
-    public int resolution() {
-        return resolution;
-    }
-
-    @Override
-    public void close() {
-        graphics.dispose();
-    }
-
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
         final var usedRadius = radius > resolution ? radius : resolution;
         final var colors = new java.awt.Color[] { toAwtColor(color.opacity(1)), FADE_TO_COLOR };
@@ -102,4 +93,8 @@ public class Lightmap implements AutoCloseable {
                 FRACTIONS, colors);
     }
 
+    @Override
+    public void close() {
+        graphics.dispose();
+    }
 }
