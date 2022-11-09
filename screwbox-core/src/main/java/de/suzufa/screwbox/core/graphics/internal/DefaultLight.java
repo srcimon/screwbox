@@ -36,7 +36,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
 
-    private Lightmap lightmap;
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private Future<Sprite> sprite = null;
@@ -51,7 +50,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         this.world = world;
         this.configuration = configuration;
         configuration.registerListener(this);
-        initializeLightmap();
     }
 
     @Override
@@ -69,7 +67,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light addFullBrightnessArea(Bounds area) {
         if (isVisible(area)) {
             WindowBounds bounds = world.toWindowBounds(area);
-            lightmap.addFullBrightnessArea(bounds);
+//            lightmap.addFullBrightnessArea(bounds);//TODO: FIX
         }
         return this;
     }
@@ -122,15 +120,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public void update() {
-        initializeLightmap();
-        sprite = null;
-    }
-
-    private void initializeLightmap() {
-        if (nonNull(lightmap)) {
-            lightmap.close();
-        }
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
+        sprite = null;// TODO: remove
     }
 
     @Override
@@ -139,7 +129,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             throw new IllegalStateException(
                     "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
         }
-        window.drawSprite(sprite, origin(), lightmap.resolution(), ambientLight.invert());
+        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
@@ -153,7 +143,10 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
         ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
         sprite = executor.submit(() -> {
-            final var image = lightmap.image(pointLights2, spotLights2);
+            BufferedImage image;
+            try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
+                image = lightmap.image(pointLights2, spotLights2);
+            }
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });

@@ -102,7 +102,7 @@ public class SeparateThreadRenderer implements Renderer {
     @Override
     public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea) {
-        renderTasks.active().add(() -> drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }
 
     private void waitForCurrentRenderingToEnd() {
