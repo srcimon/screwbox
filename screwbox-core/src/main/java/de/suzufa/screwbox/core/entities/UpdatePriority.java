@@ -3,7 +3,6 @@ package de.suzufa.screwbox.core.entities;
 public enum UpdatePriority {
     OPTIMITATION,
     PREPARATION,
-    LIGHT_SEAL,
     SIMULATION_BEGIN,
     SIMULATION,
     SIMULATION_LATE,

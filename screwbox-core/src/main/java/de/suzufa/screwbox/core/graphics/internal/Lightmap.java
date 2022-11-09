@@ -64,12 +64,16 @@ class Lightmap implements AutoCloseable {
                 spotLight.radius() / resolution * 2);
     }
 
-    public BufferedImage image(final List<PointLight> pointLights, final List<SpotLight> spotLights) {
+    public BufferedImage createImage(final List<PointLight> pointLights, final List<SpotLight> spotLights,
+            final List<WindowBounds> fullBrigthnessAreas) {
         for (final var pointLight : pointLights) {
             addPointLight(pointLight);
         }
         for (final var spotLight : spotLights) {
             addSpotLight(spotLight);
+        }
+        for (final var fullBrigthnessArea : fullBrigthnessAreas) {
+            addFullBrightnessArea(fullBrigthnessArea);
         }
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }

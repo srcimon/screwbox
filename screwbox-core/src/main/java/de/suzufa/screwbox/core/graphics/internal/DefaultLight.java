@@ -38,6 +38,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
+    private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -63,7 +64,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final WindowBounds bounds = world.toWindowBounds(area);
-//            lightmap.addFullBrightnessArea(bounds);//TODO: FIX
+            fullBrigthnessAreas.add(bounds);
         }
         return this;
     }
@@ -116,9 +117,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light render() {
         final ArrayList<PointLight> pointLightsCloned = new ArrayList<>(pointLights);
         final ArrayList<SpotLight> spotLightsCloned = new ArrayList<>(spotLights);
+        final ArrayList<WindowBounds> fullBrigthnessAreasCloned = new ArrayList<>(fullBrigthnessAreas);
         final var sprite = executor.submit(() -> {
             try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
-                final BufferedImage image = lightmap.image(pointLightsCloned, spotLightsCloned);
+                final BufferedImage image = lightmap.createImage(pointLightsCloned, spotLightsCloned,
+                        fullBrigthnessAreasCloned);
                 final var filtered = postFilter.apply(image);
                 return Sprite.fromImage(filtered);
             }
@@ -160,6 +163,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         pointLights.clear();
         spotLights.clear();
         postDrawingTasks.clear();
+        fullBrigthnessAreas.clear();
         lightPhysics.shadowCasters().clear();
     }
 
