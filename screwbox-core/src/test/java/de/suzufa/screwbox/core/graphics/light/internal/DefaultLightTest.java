@@ -56,6 +56,7 @@ class DefaultLightTest {
 
     @BeforeEach
     void beforeEach() {
+        when(window.size()).thenReturn(Dimension.of(640, 480));
         world = new DefaultWorld(window);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
@@ -80,7 +81,6 @@ class DefaultLightTest {
 
     @Test
     void render_lightAndShadowPresent_createCorrectImage() throws Exception {
-        when(window.size()).thenReturn(Dimension.of(640, 480));
         when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
         light.addShadowCasters(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));

@@ -22,6 +22,8 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
+import de.suzufa.screwbox.core.graphics.internal.Lightmap.PointLight;
+import de.suzufa.screwbox.core.graphics.internal.Lightmap.SpotLight;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
@@ -32,13 +34,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
-
+    private Lightmap lightmap;
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
-
-    private final List<PointLight> pointLights = new ArrayList<>();
-    private final List<SpotLight> spotLights = new ArrayList<>();
-    private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -47,6 +45,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         this.world = world;
         this.configuration = configuration;
         configuration.registerListener(this);
+        initLightmap();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final WindowBounds bounds = world.toWindowBounds(area);
-            fullBrigthnessAreas.add(bounds);
+            lightmap.add(bounds);
         }
         return this;
     }
@@ -82,7 +81,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 }
                 final Offset offset = world.toOffset(position);
                 final int screenRadius = world.toDistance(options.radius());
-                pointLights.add(new PointLight(offset, screenRadius, area, options.color()));
+                lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
             }
         }
         return this;
@@ -95,7 +94,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         if (isVisible(lightBox)) {
             final Offset offset = world.toOffset(position);
             final int distance = world.toDistance(options.radius());
-            spotLights.add(new SpotLight(offset, distance, options.color()));
+            lightmap.add(new SpotLight(offset, distance, options.color()));
         }
         return this;
     }
@@ -115,16 +114,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light render() {
-        final ArrayList<PointLight> pointLightsCloned = new ArrayList<>(pointLights);
-        final ArrayList<SpotLight> spotLightsCloned = new ArrayList<>(spotLights);
-        final ArrayList<WindowBounds> fullBrigthnessAreasCloned = new ArrayList<>(fullBrigthnessAreas);
+        final var copiedLightmap = lightmap;
         final var sprite = executor.submit(() -> {
-            try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
-                final BufferedImage image = lightmap.createImage(pointLightsCloned, spotLightsCloned,
-                        fullBrigthnessAreasCloned);
-                final var filtered = postFilter.apply(image);
-                return Sprite.fromImage(filtered);
-            }
+            final BufferedImage image = copiedLightmap.createImage();
+            final var filtered = postFilter.apply(image);
+            return Sprite.fromImage(filtered);
         });
         window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
@@ -160,11 +154,13 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public void update() {
-        pointLights.clear();
-        spotLights.clear();
+        initLightmap();
         postDrawingTasks.clear();
-        fullBrigthnessAreas.clear();
         lightPhysics.shadowCasters().clear();
+    }
+
+    private void initLightmap() {
+        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
     }
 
 }

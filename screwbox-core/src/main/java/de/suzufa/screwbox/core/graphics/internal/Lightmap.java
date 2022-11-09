@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.Color;
@@ -14,7 +15,13 @@ import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
-class Lightmap implements AutoCloseable {
+class Lightmap {
+
+    record PointLight(Offset position, int radius, List<Offset> area, Color color) {
+    }
+
+    record SpotLight(Offset position, int radius, Color color) {
+    }
 
     private static final java.awt.Color FADE_TO_COLOR = toAwtColor(Color.TRANSPARENT);
     private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
@@ -23,6 +30,10 @@ class Lightmap implements AutoCloseable {
     private final Graphics2D graphics;
     private final int resolution;
 
+    private final List<PointLight> pointLights = new ArrayList<>();
+    private final List<SpotLight> spotLights = new ArrayList<>();
+    private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
+
     public Lightmap(final Dimension size, final int resolution) {
         this.image = new BufferedImage(
                 size.width() / resolution + 1, // to avoid glitches add 1
@@ -30,6 +41,18 @@ class Lightmap implements AutoCloseable {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+    }
+
+    public void add(final WindowBounds fullBrightnessArea) {
+        fullBrigthnessAreas.add(fullBrightnessArea);
+    }
+
+    public void add(final PointLight pointLight) {
+        pointLights.add(pointLight);
+    }
+
+    public void add(final SpotLight spotLight) {
+        spotLights.add(spotLight);
     }
 
     public void addFullBrightnessArea(final WindowBounds bounds) {
@@ -64,8 +87,7 @@ class Lightmap implements AutoCloseable {
                 spotLight.radius() / resolution * 2);
     }
 
-    public BufferedImage createImage(final List<PointLight> pointLights, final List<SpotLight> spotLights,
-            final List<WindowBounds> fullBrigthnessAreas) {
+    public BufferedImage createImage() {
         for (final var pointLight : pointLights) {
             addPointLight(pointLight);
         }
@@ -75,6 +97,7 @@ class Lightmap implements AutoCloseable {
         for (final var fullBrigthnessArea : fullBrigthnessAreas) {
             addFullBrightnessArea(fullBrigthnessArea);
         }
+        graphics.dispose();
         return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
     }
 
@@ -97,8 +120,4 @@ class Lightmap implements AutoCloseable {
                 FRACTIONS, colors);
     }
 
-    @Override
-    public void close() {
-        graphics.dispose();
-    }
 }
