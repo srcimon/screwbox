@@ -114,15 +114,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light render() {
-        final ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
-        final ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
+        final ArrayList<PointLight> pointLightsCloned = new ArrayList<>(pointLights);
+        final ArrayList<SpotLight> spotLightsCloned = new ArrayList<>(spotLights);
         final var sprite = executor.submit(() -> {
-            BufferedImage image;
             try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
-                image = lightmap.image(pointLights2, spotLights2);
+                final BufferedImage image = lightmap.image(pointLightsCloned, spotLightsCloned);
+                final var filtered = postFilter.apply(image);
+                return Sprite.fromImage(filtered);
             }
-            final var filtered = postFilter.apply(image);
-            return Sprite.fromImage(filtered);
         });
         window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
