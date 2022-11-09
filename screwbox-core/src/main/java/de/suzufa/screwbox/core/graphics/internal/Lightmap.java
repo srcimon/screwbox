@@ -8,7 +8,6 @@ import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -44,7 +43,7 @@ public class Lightmap implements AutoCloseable {
 
     private void addPointLight(PointLight pointLight) {
         final Polygon polygon = new Polygon();
-        for (final var node : area(pointLight)) {
+        for (final var node : pointLight.area()) {
             polygon.addPoint(node.x() / resolution, node.y() / resolution);
         }
 
@@ -52,15 +51,6 @@ public class Lightmap implements AutoCloseable {
         applyOpacityConfig(pointLight.color());
         graphics.setPaint(paint);
         graphics.fillPolygon(polygon);
-    }
-
-    private List<Offset> area(PointLight pointLight) {
-        try {
-            return pointLight.area().get();
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Could not extract area");
-        }
     }
 
     private void addSpotLight(SpotLight spotLight) {
