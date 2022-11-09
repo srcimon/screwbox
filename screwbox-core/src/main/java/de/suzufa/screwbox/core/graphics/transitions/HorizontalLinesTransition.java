@@ -24,7 +24,7 @@ public class HorizontalLinesTransition implements ScreenTransition {
             final int height = (int) (maxHeightPerLine
                     - window.size().height() / (double) lineCount * progress.value());
             final Dimension size = Dimension.of(window.size().width(), height);
-            window.drawRectangle(offset, size, BLACK);
+            window.fillRectangle(offset, size, BLACK);
         }
     }
 

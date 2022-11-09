@@ -15,6 +15,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
@@ -98,8 +99,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.drawCircle(offset, diameter, color);
+    public Window fillCircle(final Offset offset, final int diameter, final Color color) {
+        renderer.fillCircle(offset, diameter, color);
         return this;
     }
 
@@ -122,8 +123,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawRectangle(final WindowBounds bounds, final Color color) {
-        renderer.drawRectangle(bounds, color);
+    public Window fillRectangle(final WindowBounds bounds, final Color color) {
+        renderer.fillRectangle(bounds, color);
         return this;
     }
 
@@ -347,8 +348,22 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawFadingCircle(Offset offset, int diameter, Color color) {
+    public Window drawFadingCircle(final Offset offset, final int diameter, final Color color) {
         renderer.drawFadingCircle(offset, diameter, color);
+        return this;
+    }
+
+    @Override
+    public Window drawSprite(final Future<Sprite> sprite, final Offset origin, final double scale,
+            final Percent opacity, final Angle rotation,
+            final Flip flip, final WindowBounds clipArea) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
+        return this;
+    }
+
+    @Override
+    public Window drawCircle(final Offset offset, final int diameter, final Color color) {
+        renderer.drawCircle(offset, diameter, color);
         return this;
     }
 

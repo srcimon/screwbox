@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import java.util.concurrent.Future;
+
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 
@@ -9,30 +11,51 @@ public interface Window {
 
     Color drawColor();
 
-    Window drawRectangle(WindowBounds bounds, Color color);
+    Window fillRectangle(WindowBounds bounds, Color color);
 
     default Window fill() {
         return fillWith(drawColor());
     }
 
-    default Window drawRectangle(final WindowBounds bounds) {
-        return drawRectangle(bounds, drawColor());
+    default Window fillRectangle(final WindowBounds bounds) {
+        return fillRectangle(bounds, drawColor());
     }
 
-    default Window drawRectangle(final Offset origin, final Dimension size, final Color color) {
-        return drawRectangle(new WindowBounds(origin, size), color);
+    default Window fillRectangle(final Offset origin, final Dimension size, final Color color) {
+        return fillRectangle(new WindowBounds(origin, size), color);
     }
 
-    default Window drawRectangle(final Offset origin, final Dimension size) {
-        return drawRectangle(new WindowBounds(origin, size), drawColor());
+    default Window fillRectangle(final Offset origin, final Dimension size) {
+        return fillRectangle(new WindowBounds(origin, size), drawColor());
     }
 
     Window drawFadingCircle(Offset offset, int diameter, Color color);
 
     Window drawCircle(Offset offset, int diameter, Color color);
 
-    default Window drawCircle(final Offset offset, final int diameter) {
-        return drawCircle(offset, diameter, drawColor());
+    Window fillCircle(Offset offset, int diameter, Color color);
+
+    default Window fillCircle(final Offset offset, final int diameter) {
+        return fillCircle(offset, diameter, drawColor());
+    }
+
+    Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea);
+
+    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity) {
+        return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
+    }
+
+    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
+    }
+
+    default Window drawSprite(final Future<Sprite> sprite, final Offset origin, final Percent opacity) {
+        return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
+    }
+
+    default Window drawSprite(final Future<Sprite> sprite, final Offset origin) {
+        return drawSprite(sprite, origin, Percent.max());
     }
 
     Window drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
@@ -139,8 +162,8 @@ public interface Window {
     Window moveTo(Offset position);
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in fullscreen and window mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * fullscreen and window mode.
      * 
      * @see #setFullscreenCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
@@ -152,8 +175,8 @@ public interface Window {
     }
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in window mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * window mode.
      * 
      * @see #setCursor(MouseCursor)
      * @see #setFullscreenCursor(MouseCursor)
@@ -161,8 +184,8 @@ public interface Window {
     Window setWindowCursor(MouseCursor cursor);
 
     /**
-     * Updates the mouse cursor of to the given {@link MouseCursor} when game
-     * is in fullscreen mode.
+     * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
+     * fullscreen mode.
      * 
      * @see #setCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)

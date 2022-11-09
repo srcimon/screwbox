@@ -22,12 +22,12 @@ public class GridRenderSystem implements EntitySystem {
                 final int neighbors = grid.blockedNeighbors(node).size();
                 final var color = colorByCountOf(neighbors);
                 final Bounds worldBounds = grid.worldArea(node);
-                world.drawCircle(worldBounds.position(), (int) worldBounds.width(), color);
+                world.fillCircle(worldBounds.position(), (int) worldBounds.width(), color);
             }
         }
 
         final Vector snappedMousePosition = grid.snap(engine.mouse().worldPosition());
-        world.drawCircle(snappedMousePosition, 2, Color.YELLOW);
+        world.fillCircle(snappedMousePosition, 2, Color.YELLOW);
     }
 
     private Color colorByCountOf(final int neighbors) {

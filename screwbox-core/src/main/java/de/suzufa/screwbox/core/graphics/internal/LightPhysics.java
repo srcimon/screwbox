@@ -16,10 +16,13 @@ import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
-    private List<Bounds> shadowCasters = new ArrayList<>();
+    private static final Comparator<Segment> BY_ANGLE = (first, second) -> Angle.of(first).compareTo(Angle.of(second));
 
-    public void setShadowCasters(final List<Bounds> shadowCasters) {
-        this.shadowCasters = requireNonNull(shadowCasters, "shadowCasters must not be null");
+    private final List<Bounds> shadowCasters = new ArrayList<>();
+
+    public void addShadowCasters(final List<Bounds> shadowCasters) {
+        requireNonNull(shadowCasters, "shadowCasters must not be null");
+        this.shadowCasters.addAll(shadowCasters);
     }
 
     public List<Bounds> shadowCasters() {
@@ -59,18 +62,12 @@ public class LightPhysics {
             segmentsOf(segments, source, range, collider.origin());
             segmentsOf(segments, source, range, collider.topRight());
         }
-        // TODO:his is a performance hotspot
-        segments.sort(new Comparator<Segment>() {
-
-            @Override
-            public int compare(final Segment o1, final Segment o2) {
-                return Angle.of(o1).compareTo(Angle.of(o2));
-            }
-        });
+        segments.sort(BY_ANGLE);
         return segments;
     }
 
-    private void segmentsOf(List<Segment> list, final Bounds source, final double radius, final Vector destination) {
+    private void segmentsOf(final List<Segment> list, final Bounds source, final double radius,
+            final Vector destination) {
         final Segment directTrace = Segment.between(source.position(), destination);
         final Segment normalTrace = Segment.between(source.position(), source.position().addY(-radius));
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
@@ -82,7 +79,7 @@ public class LightPhysics {
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
         final List<Segment> allSegments = new ArrayList<>();
         for (final var bounds : allBounds) {
-            for (var segment : Borders.ALL.extractSegmentsMethod().apply(bounds)) {
+            for (final var segment : Borders.ALL.extractSegmentsMethod().apply(bounds)) {
                 allSegments.add(segment);
             }
         }

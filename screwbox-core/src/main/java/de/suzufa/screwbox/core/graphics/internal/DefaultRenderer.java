@@ -15,6 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
@@ -148,7 +150,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final WindowBounds bounds, final Color color) {
+    public void fillRectangle(final WindowBounds bounds, final Color color) {
         applyNewColor(color);
         graphics.fillRect(
                 bounds.offset().x(),
@@ -158,7 +160,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color) {
+    public void fillCircle(final Offset offset, final int diameter, final Color color) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
@@ -192,6 +194,24 @@ public class DefaultRenderer implements Renderer {
         final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
         graphics.setPaint(oldPaint);
+    }
+
+    @Override
+    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+            Flip flip, WindowBounds clipArea) {
+        try {
+            drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    @Override
+    public void drawCircle(Offset offset, int diameter, Color color) {
+        applyNewColor(color);
+        final int x = offset.x() - diameter / 2;
+        final int y = offset.y() - diameter / 2;
+        graphics.drawOval(x, y, diameter, diameter);
     }
 
 }

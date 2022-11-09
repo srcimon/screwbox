@@ -44,12 +44,12 @@ class SeparateThreadRendererTest {
     @Test
     void applyDrawActions_update_nextRendererInvoked() {
         separateThreadRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
-        separateThreadRenderer.drawCircle(Offset.origin(), 25, Color.BLUE);
+        separateThreadRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
 
         separateThreadRenderer.updateScreen(true);
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
-        verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, Color.BLUE);
+        verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);
         verify(renderer, timeout(1000)).updateScreen(true);
     }
 

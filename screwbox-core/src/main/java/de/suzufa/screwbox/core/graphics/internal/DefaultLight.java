@@ -2,16 +2,12 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
@@ -26,23 +22,21 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
+import de.suzufa.screwbox.core.graphics.internal.Lightmap.PointLight;
+import de.suzufa.screwbox.core.graphics.internal.Lightmap.SpotLight;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
 
 public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
 
-    // TODO: add lights not tasks: can ask for light at position
-    private final List<Runnable> drawingTasks = new ArrayList<>();
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
     private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
-
     private Lightmap lightmap;
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
-    private Future<Sprite> sprite = null;
 
     public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -51,12 +45,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         this.world = world;
         this.configuration = configuration;
         configuration.registerListener(this);
-        initializeLightmap();
+        initLightmap();
     }
 
     @Override
-    public Light updateShadowCasters(final List<Bounds> shadowCasters) {
-        lightPhysics.setShadowCasters(shadowCasters);
+    public Light addShadowCasters(final List<Bounds> shadowCasters) {
+        lightPhysics.addShadowCasters(shadowCasters);
         return this;
     }
 
@@ -66,17 +60,16 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public Light addFullBrightnessArea(Bounds area) {
+    public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
-            WindowBounds bounds = world.toWindowBounds(area);
-            lightmap.addFullBrightnessArea(bounds);
+            final WindowBounds bounds = world.toWindowBounds(area);
+            lightmap.add(bounds);
         }
         return this;
     }
 
     @Override
     public Light addPointLight(final Vector position, final LightOptions options) {
-        raiseExceptionOnSealed();
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
             addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
@@ -87,9 +80,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                     area.add(world.toOffset(vector));
                 }
                 final Offset offset = world.toOffset(position);
-                drawingTasks.add(
-                        () -> lightmap.addPointLight(offset, world.toDistance(options.radius()), area,
-                                options.color()));
+                final int screenRadius = world.toDistance(options.radius());
+                lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
             }
         }
         return this;
@@ -97,13 +89,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addSpotLight(final Vector position, final LightOptions options) {
-        raiseExceptionOnSealed();
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
         if (isVisible(lightBox)) {
             final Offset offset = world.toOffset(position);
             final int distance = world.toDistance(options.radius());
-            drawingTasks.add(() -> lightmap.addSpotLight(offset, distance, options.color()));
+            lightmap.add(new SpotLight(offset, distance, options.color()));
         }
         return this;
     }
@@ -122,56 +113,18 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public void update() {
-        initializeLightmap();
-        sprite = null;
-    }
-
-    private void initializeLightmap() {
-        if (nonNull(lightmap)) {
-            lightmap.close();
-        }
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
-    }
-
-    @Override
     public Light render() {
-        if (isNull(sprite)) {
-            throw new IllegalStateException(
-                    "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
-        }
-        try {
-            window.drawSprite(sprite.get(), origin(), lightmap.resolution(), ambientLight.invert());
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-        }
-        for (final var drawingTask : postDrawingTasks) {
-            drawingTask.run();
-        }
-        postDrawingTasks.clear();
-        return this;
-    }
-
-    @Override
-    public Light seal() {
-        raiseExceptionOnSealed();
-        sprite = executor.submit(() -> {
-            for (final var drawingTask : drawingTasks) {
-                drawingTask.run();
-            }
-            drawingTasks.clear();
-
-            final var image = lightmap.image();
+        final var copiedLightmap = lightmap;
+        final var sprite = executor.submit(() -> {
+            final BufferedImage image = copiedLightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        return this;
-    }
-
-    private void raiseExceptionOnSealed() {
-        if (isSealed()) {
-            throw new IllegalStateException("light has already been sealed");
+        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
+        for (final var drawingTask : postDrawingTasks) {
+            drawingTask.run();
         }
+        return this;
     }
 
     @Override
@@ -200,8 +153,14 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public boolean isSealed() {
-        return nonNull(sprite);
+    public void update() {
+        initLightmap();
+        postDrawingTasks.clear();
+        lightPhysics.shadowCasters().clear();
+    }
+
+    private void initLightmap() {
+        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
     }
 
 }

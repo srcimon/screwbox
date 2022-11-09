@@ -14,6 +14,6 @@ public class SwipeTransition implements ScreenTransition {
     public void draw(final Window window, final Percent progress) {
         final int xMin = (int) (window.size().width() * progress.value());
         final Dimension size = Dimension.of(window.size().width() - xMin, window.size().height());
-        window.drawRectangle(Offset.at(xMin, 0), size, Color.BLACK);
+        window.fillRectangle(Offset.at(xMin, 0), size, Color.BLACK);
     }
 }

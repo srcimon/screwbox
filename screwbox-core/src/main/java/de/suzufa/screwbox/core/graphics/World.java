@@ -62,16 +62,16 @@ public interface World {
         return drawLine(from, to, drawColor());
     }
 
-    World drawCircle(Vector position, int diameter, Color color);
+    World fillCircle(Vector position, int diameter, Color color);
 
-    default World drawCircle(final Vector position, final int diameter) {
-        return drawCircle(position, diameter, drawColor());
+    default World fillCircle(final Vector position, final int diameter) {
+        return fillCircle(position, diameter, drawColor());
     }
 
-    World drawRectangle(Bounds bounds, Color color);
+    World fillRectangle(Bounds bounds, Color color);
 
-    default World drawRectangle(final Bounds bounds) {
-        return drawRectangle(bounds, drawColor());
+    default World fillRectangle(final Bounds bounds) {
+        return fillRectangle(bounds, drawColor());
     }
 
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
