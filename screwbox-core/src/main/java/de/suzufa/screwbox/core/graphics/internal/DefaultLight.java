@@ -2,12 +2,15 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR;
 import static de.suzufa.screwbox.core.graphics.Offset.origin;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
@@ -35,6 +38,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
+    private Future<Sprite> sprite = null;
 
     private List<PointLight> pointLights = new ArrayList<>();
     private List<SpotLight> spotLights = new ArrayList<>();
@@ -70,6 +74,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addPointLight(final Vector position, final LightOptions options) {
+        raiseExceptionOnSealed();
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
             addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
@@ -89,6 +94,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addSpotLight(final Vector position, final LightOptions options) {
+        raiseExceptionOnSealed();
         addPotentialGlow(position, options);
         final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
         if (isVisible(lightBox)) {
@@ -114,14 +120,29 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public void update() {
-        // TODO: remove
+        sprite = null;// TODO: remove
     }
 
     @Override
     public Light render() {
+        if (isNull(sprite)) {
+            throw new IllegalStateException(
+                    "Light has not been sealed yet. Sealing the light AS SOON AS POSSIBLE is essential for light performance.");
+        }
+        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
+        for (final var drawingTask : postDrawingTasks) {
+            drawingTask.run();
+        }
+        postDrawingTasks.clear();
+        return this;
+    }
+
+    @Override
+    public Light seal() {
+        raiseExceptionOnSealed();
         ArrayList<PointLight> pointLights2 = new ArrayList<>(pointLights);
         ArrayList<SpotLight> spotLights2 = new ArrayList<>(spotLights);
-        var sprite = executor.submit(() -> {
+        sprite = executor.submit(() -> {
             BufferedImage image;
             try (Lightmap lightmap = new Lightmap(window.size(), configuration.lightmapResolution())) {
                 image = lightmap.image(pointLights2, spotLights2);
@@ -131,12 +152,13 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         });
         pointLights.clear();
         spotLights.clear();
-        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
-        for (final var drawingTask : postDrawingTasks) {
-            drawingTask.run();
-        }
-        postDrawingTasks.clear();
         return this;
+    }
+
+    private void raiseExceptionOnSealed() {
+        if (isSealed()) {
+            throw new IllegalStateException("light has already been sealed");
+        }
     }
 
     @Override
@@ -162,6 +184,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private boolean isVisible(final Bounds lightBox) {
         return window.isVisible(world.toWindowBounds(lightBox));
+    }
+
+    @Override
+    public boolean isSealed() {
+        return nonNull(sprite);
     }
 
 }
