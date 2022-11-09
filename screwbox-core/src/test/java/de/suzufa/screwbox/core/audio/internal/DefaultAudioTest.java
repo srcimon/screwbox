@@ -180,23 +180,6 @@ class DefaultAudioTest {
     }
 
     @Test
-    void stop_instanceActive_stopsInstance() {
-        Sound sound = Sound.fromFile("kill.wav");
-
-        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
-
-        audio.playEffect(sound);
-        while (audio.activeCount() == 0) {
-            // wait for sound to be started
-        }
-        audio.stop(sound);
-
-        awaitShutdown();
-
-        verify(clip).stop();
-    }
-
-    @Test
     void setMusicVolume_setsMusicVolume() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound, Percent.of(0.7))).thenReturn(clip);
