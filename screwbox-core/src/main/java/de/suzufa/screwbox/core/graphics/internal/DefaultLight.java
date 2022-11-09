@@ -22,10 +22,10 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
-import de.suzufa.screwbox.core.loop.internal.Updatable;
 
-public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
+public class DefaultLight implements Light, GraphicsConfigurationListener {
 
+    // TODO: prerenderd glow?
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Window window;
@@ -110,11 +110,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 }
             });
         }
-    }
-
-    @Override
-    public void update() {
-        // TODO: remove
     }
 
     @Override
