@@ -26,23 +26,23 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
-        for (final Entity reflectionArea : engine.entities().fetchAll(REFLECTING_AREAS)) {
-            final ReflectionComponent reflection = reflectionArea.get(ReflectionComponent.class);
-            final var possibleReflectionAreaBounds = reflectionArea.get(TransformComponent.class).bounds
+        for (final Entity reflectionEntity : engine.entities().fetchAll(REFLECTING_AREAS)) {
+            final ReflectionComponent reflection = reflectionEntity.get(ReflectionComponent.class);
+            final var possibleReflectionAreaBounds = reflectionEntity.get(TransformComponent.class).bounds
                     .intersection(engine.graphics().world().visibleArea());
             if (possibleReflectionAreaBounds.isPresent()) {
-                final Bounds reflectionAreaBounds = possibleReflectionAreaBounds.get();
-                renderReflection(engine, reflection, reflectionAreaBounds, reflectableEntities);
+                final Bounds reflectionArea = possibleReflectionAreaBounds.get();
+                renderReflection(engine, reflection, reflectionArea, reflectableEntities);
             }
         }
     }
 
     private void renderReflection(final Engine engine, final ReflectionComponent reflection,
-            final Bounds reflectionAreaBounds,
+            final Bounds reflectionArea,
             final List<Entity> reflectableEntities) {
         final double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
-        final var reflectedArea = reflectionAreaBounds
-                .moveBy(Vector.yOnly(-reflectionAreaBounds.height()))
+        final var reflectedArea = reflectionArea
+                .moveBy(0, -reflectionArea.height())
                 .inflatedTop(reflection.useWaveEffect ? 2 : 0);
         final SpriteBatch spriteBatch = new SpriteBatch();
         for (final var reflectableEntity : reflectableEntities) {
@@ -57,8 +57,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                         spriteSize.height() * spriteComponent.scale);
 
                 final Vector oldPosition = spriteBounds.position();
-                final double actualY = reflectionAreaBounds.minY() +
-                        (reflectionAreaBounds.minY() - oldPosition.y());
+                final double actualY = reflectionArea.minY() +
+                        (reflectionArea.minY() - oldPosition.y());
                 final var actualPosition = Vector.of(oldPosition.x(), actualY);
 
                 final double waveMovementEffectX = reflection.useWaveEffect
@@ -88,7 +88,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                 }
             }
         }
-        engine.graphics().world().drawSpriteBatch(spriteBatch, reflectionAreaBounds);
+        engine.graphics().world().drawSpriteBatch(spriteBatch, reflectionArea);
     }
 
     @Override
