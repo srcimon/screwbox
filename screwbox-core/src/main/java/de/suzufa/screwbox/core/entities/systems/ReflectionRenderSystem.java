@@ -38,8 +38,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     }
 
     private void renderReflection(final Engine engine, final ReflectionComponent reflection,
-            final Bounds reflectionArea,
-            final List<Entity> reflectableEntities) {
+            final Bounds reflectionArea, final List<Entity> reflectableEntities) {
         final double waveSeed = engine.loop().lastUpdate().milliseconds() / 500.0;
         final var reflectedArea = reflectionArea
                 .moveBy(0, -reflectionArea.height())
