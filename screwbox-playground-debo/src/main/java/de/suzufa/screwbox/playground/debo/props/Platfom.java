@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
+import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlatformComponent;
@@ -24,6 +25,7 @@ public class Platfom implements Converter<GameObject> {
                 new SpriteComponent(SPRITE.findById(0), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
                 new CollisionSensorComponent(),
+                new ShadowCasterComponent(),
                 new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
     }
 
