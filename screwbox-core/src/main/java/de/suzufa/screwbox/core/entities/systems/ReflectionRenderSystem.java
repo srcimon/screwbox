@@ -56,22 +56,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                         spriteSize.width() * spriteComponent.scale,
                         spriteSize.height() * spriteComponent.scale);
 
-                final Vector oldPosition = spriteBounds.position();
-                final double actualY = reflectionArea.minY() +
-                        (reflectionArea.minY() - oldPosition.y());
-                final var actualPosition = Vector.of(oldPosition.x(), actualY);
-
-                final double waveMovementEffectX = reflection.useWaveEffect
-                        ? Math.sin(waveSeed + actualY / 16) * 2
-                        : 0;
-                final double waveMovementEffectY = reflection.useWaveEffect
-                        ? Math.sin(waveSeed) * 2
-                        : 0;
-
-                final Vector waveEffectPosition = actualPosition.addX(waveMovementEffectX)
-                        .addY(waveMovementEffectY);
-
+                final double actualY = reflectionArea.minY() + (reflectionArea.minY() - spriteBounds.position().y());
+                final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
+                final double waveMovementEffectX = reflection.useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2 : 0;
+                final double waveMovementEffectY = reflection.useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+                final Vector waveEffectPosition = actualPosition.addX(waveMovementEffectX).addY(waveMovementEffectY);
                 final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
+
                 if (reflectionBounds.intersects(engine.graphics().world().visibleArea())) {
                     final Percent opacity = spriteComponent.opacity
                             .multiply(reflection.opacityModifier.value())
