@@ -31,12 +31,12 @@ public class LightPhysics {
 
     public List<Vector> calculateArea(final Bounds lightBox) {
         final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
-        final List<Vector> area = new ArrayList<>();
-
         final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);
+        final List<Segment> segments = getSegmentsOf(relevantBlockingBounds);
+        final List<Vector> area = new ArrayList<>();
         for (final var raycast : raycasts) {
             final List<Vector> hits = new ArrayList<>();
-            for (final var segment : getSegmentsOf(relevantBlockingBounds)) {
+            for (final var segment : segments) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
                 if (intersectionPoint != null) {
                     hits.add(intersectionPoint);
