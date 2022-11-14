@@ -32,11 +32,11 @@ public class Tileset {
     Tileset() {
     }
 
-    Tileset(TilesetEntity tilesetEntity) {
+    Tileset(final TilesetEntity tilesetEntity) {
         this(List.of(tilesetEntity));
     }
 
-    Tileset(List<TilesetEntity> tilesetEntities) {
+    Tileset(final List<TilesetEntity> tilesetEntities) {
         for (final TilesetEntity tilesetEntity : tilesetEntities) {
             addTilesToTileset(tilesetEntity);
         }
@@ -50,9 +50,9 @@ public class Tileset {
         // Read static images
         for (int y = 0; y < tilesetEntity.getImageheight(); y += tilesetEntity.getTileheight()) {
             for (int x = 0; x < tilesetEntity.getImagewidth(); x += tilesetEntity.getTilewidth()) {
-                Offset imageOffset = Offset.at(x, y);
-                Dimension imageSize = Dimension.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
-                Frame subFrame = frame.subFrame(imageOffset, imageSize);
+                final Offset imageOffset = Offset.at(x, y);
+                final Dimension imageSize = Dimension.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
+                final Frame subFrame = frame.subFrame(imageOffset, imageSize);
                 final Sprite sprite = new Sprite(subFrame);
                 addSprite(tilesetEntity.getFirstgid() + localId, sprite);
                 localId++;
@@ -110,5 +110,13 @@ public class Tileset {
 
     public List<Sprite> all() {
         return allSprites;
+    }
+
+    public Sprite single() {
+        if (spriteCount() != 1) {
+            throw new IllegalStateException("tileset has not exactly one sprite");
+        }
+        return allSprites.get(0);
+
     }
 }

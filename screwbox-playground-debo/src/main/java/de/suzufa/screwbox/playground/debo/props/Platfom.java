@@ -15,14 +15,12 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class Platfom implements Converter<GameObject> {
 
-    private static final Tileset SPRITE = Tileset.fromJson("tilesets/props/platform.json");
-
     @Override
     public Entity convert(GameObject object) {
         double speed = object.properties().getDouble("speed").orElse(60.0);
         return new Entity().add(
                 new ColliderComponent(500, Percent.min(), true),
-                new SpriteComponent(SPRITE.findById(0), object.layer().order()),
+                new SpriteComponent(Tileset.fromJson("tilesets/props/platform.json").single(), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
                 new CollisionSensorComponent(),
                 new ShadowCasterComponent(),

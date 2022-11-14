@@ -13,12 +13,10 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class Box implements Converter<GameObject> {
 
-    private static final Tileset SPRITES = Tileset.fromJson("tilesets/props/box.json");
-
     @Override
     public Entity convert(GameObject object) {
         return new Entity().add(
-                new SpriteComponent(SPRITES.findById(0), object.layer().order()),
+                new SpriteComponent(Tileset.fromJson("tilesets/props/box.json").single(), object.layer().order()),
                 new PhysicsBodyComponent(),
                 new MovableComponent(),
                 new TransformComponent(object.bounds()),

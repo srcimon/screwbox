@@ -6,15 +6,11 @@ import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Tileset;
 
 public class VanishingBlock implements Converter<GameObject> {
-
-    private static final Sprite SPRITE = Tileset.fromJson("tilesets/props/vanishing-block.json")
-            .findById(0);
 
     @Override
     public Entity convert(GameObject object) {
@@ -23,7 +19,8 @@ public class VanishingBlock implements Converter<GameObject> {
                 new ColliderComponent(500),
                 new VanishingOnCollisionComponent(Duration.ofMillis(timeoutMillis)),
                 new TransformComponent(object.bounds()),
-                new SpriteComponent(SPRITE, object.layer().order()));
+                new SpriteComponent(Tileset.fromJson("tilesets/props/vanishing-block.json")
+                        .single(), object.layer().order()));
     }
 
 }

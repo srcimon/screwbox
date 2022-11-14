@@ -54,4 +54,19 @@ class TilesetTest {
 
         assertThat(tileset.all()).hasSize(2);
     }
+
+    @Test
+    void single_onlyOneSprite_returnsSprite() {
+        Sprite sprite = tileset.single();
+
+        assertThat(sprite).isEqualTo(SPRITE);
+    }
+
+    @Test
+    void single_twoSprites_throwsException() {
+        tileset.addSprite(9, SPRITE);
+
+        assertThatThrownBy(() -> tileset.single())
+                .isInstanceOf(IllegalStateException.class).hasMessage("tileset has not exactly one sprite");
+    }
 }

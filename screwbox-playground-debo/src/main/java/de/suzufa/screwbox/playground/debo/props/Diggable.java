@@ -15,7 +15,7 @@ public class Diggable implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        Sprite sprite = Tileset.fromJson("tilesets/props/diggable.json").findById(0);
+        Sprite sprite = Tileset.fromJson("tilesets/props/diggable.json").single();
         return new Entity().add(
                 new SpriteComponent(sprite, object.layer().order()),
                 new DiggableComponent(),
