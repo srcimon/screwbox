@@ -2,6 +2,10 @@ package de.suzufa.screwbox.core.graphics.internal;
 
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
 import static de.suzufa.screwbox.core.graphics.internal.AwtMapper.toAwtFont;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.util.Objects.nonNull;
 
 import java.awt.AWTException;
@@ -11,7 +15,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -60,8 +63,8 @@ public class DefaultRenderer implements Renderer {
         graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
         lastUsedColor = null;
         if (antialiased) {
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
         }
     }
 

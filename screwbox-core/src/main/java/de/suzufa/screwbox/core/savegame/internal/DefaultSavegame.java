@@ -79,6 +79,7 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public boolean exists(final String name) {
+        // TODO: cache for a second
         verifyName(name);
         final Path path = Path.of(name);
         return Files.exists(path);
