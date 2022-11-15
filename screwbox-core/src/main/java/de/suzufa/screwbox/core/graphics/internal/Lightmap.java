@@ -98,7 +98,7 @@ class Lightmap {
             addFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
-        return (BufferedImage) ImageUtil.applyFilter(image, new InvertAlphaFilter());
+        return ImageUtil.applyFilter(image, new InvertLightmapImageWithMinOpacityFilter());
     }
 
     private void applyOpacityConfig(final Color color) {
@@ -116,7 +116,7 @@ class Lightmap {
         return new RadialGradientPaint(
                 position.x() / (float) resolution,
                 position.y() / (float) resolution,
-                usedRadius / resolution,
+                usedRadius / (float) resolution,
                 FRACTIONS, colors);
     }
 

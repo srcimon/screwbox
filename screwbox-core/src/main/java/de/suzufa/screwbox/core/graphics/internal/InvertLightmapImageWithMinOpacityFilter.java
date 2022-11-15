@@ -3,8 +3,7 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.Color;
 import java.awt.image.RGBImageFilter;
 
-//TODO: test RENAME and hide
-class InvertAlphaFilter extends RGBImageFilter {
+class InvertLightmapImageWithMinOpacityFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {

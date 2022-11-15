@@ -69,7 +69,7 @@ public final class ImageUtil {
         return bufferedImage;
     }
 
-    public static Image applyFilter(final Image image, final ImageFilter filter) {
+    public static BufferedImage applyFilter(final Image image, final ImageFilter filter) {
         final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
         final Image newImage = TOOLKIT.createImage(imageProducer);
         return toBufferedImage(newImage); // convert to BufferedImage to avoid flickering
