@@ -1,13 +1,12 @@
 package de.suzufa.screwbox.playground.debo;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.util.function.Supplier;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public class Asset<T> {
 
-@Retention(RUNTIME)
-@Target(FIELD)
-public @interface Asset {
+    public static <T> Asset<T> asset(Supplier<T> supplier) {
+        // TODO Auto-generated method stub
+        return new Asset<T>();
+    }
 
 }

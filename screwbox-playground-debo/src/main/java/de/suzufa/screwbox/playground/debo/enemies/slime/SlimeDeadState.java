@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
+import static de.suzufa.screwbox.playground.debo.Asset.asset;
+
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -9,6 +11,7 @@ import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.Asset;
+import de.suzufa.screwbox.playground.debo.Preload;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
@@ -24,8 +27,8 @@ public class SlimeDeadState implements EntityState {
         }
     }
 
-    @Asset(source = "props/box.json", loader = TilesetLoader.class)
-    Sprite sprite;
+    @Preload
+    Asset<Sprite> sprite = asset(() -> Sprite.fromFile("bla"));
 
     private static final long serialVersionUID = 1L;
 

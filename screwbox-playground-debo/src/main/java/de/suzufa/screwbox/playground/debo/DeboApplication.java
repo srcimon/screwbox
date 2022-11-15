@@ -21,7 +21,7 @@ public class DeboApplication {
         for (var clazz : new Demo()
                 .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime")) {
             for (var field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(Asset.class)) {
+                if (field.isAnnotationPresent(Preload.class)) {
                     System.out.println("Found asset: " + field.getName());
                 }
             }
