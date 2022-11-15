@@ -13,6 +13,15 @@ import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 
 public class SlimeDeadState implements EntityState {
 
+    static {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Override

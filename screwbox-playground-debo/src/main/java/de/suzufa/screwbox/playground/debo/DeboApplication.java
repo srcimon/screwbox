@@ -13,6 +13,8 @@ public class DeboApplication {
         Engine engine = ScrewBox.createEngine("Debo Game");
 
         engine.ui().setLayouter(new WobblyUiLayouter());
+        engine.async().run(DeboApplication.class,
+                () -> new Demo().findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime"));
 
         engine.scenes()
                 .add(new DeadScene())
