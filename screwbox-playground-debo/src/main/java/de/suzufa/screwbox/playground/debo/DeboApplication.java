@@ -13,8 +13,19 @@ public class DeboApplication {
         Engine engine = ScrewBox.createEngine("Debo Game");
 
         engine.ui().setLayouter(new WobblyUiLayouter());
+
+        // TODO: shite
         engine.async().run(DeboApplication.class,
                 () -> new Demo().findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime"));
+
+        for (var clazz : new Demo()
+                .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime")) {
+            for (var field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(Asset.class)) {
+                    System.out.println("Found asset: " + field.getName());
+                }
+            }
+        }
 
         engine.scenes()
                 .add(new DeadScene())
