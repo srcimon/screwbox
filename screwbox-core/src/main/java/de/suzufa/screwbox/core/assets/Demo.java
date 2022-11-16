@@ -1,34 +1,42 @@
 package de.suzufa.screwbox.core.assets;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Set;
+import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 //TODO: shite
 public class Demo {
-    public Set<Class> findAllClassesUsingClassLoader(String packageName) {
+    public List<Class> findAllClassesUsingClassLoader(String packageName) {
+        List<Class> clazzes = new ArrayList<>();
         for (String string : getResources(Pattern.compile(".*" + packageName + ".*"))) {
-            System.out.println(string);
-
+            if (string.endsWith(".class")) {
+                String className = string.split("/")[string.split("/").length - 1];
+                String packagen = packageName
+                        + string.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(className,
+                                "");
+                packagen = packagen.substring(0, packagen.length() - 1);
+                Class class1 = getClass(className, packagen);
+                if (class1 != null) {
+                    clazzes.add(class1);
+                }
+            }
         }
-        String replaceAll = packageName.replaceAll("[.]", "/");
-        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(replaceAll);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        return reader.lines()
-                .filter(line -> line.endsWith(".class"))
-                .map(line -> getClass(line, packageName))
-                .collect(Collectors.toSet());
+        return clazzes;
+//        String replaceAll = packageName.replaceAll("[.]", "/");
+//        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(replaceAll);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//
+//        return reader.lines()
+//                .filter(line -> line.endsWith(".class"))
+//                .map(line -> getClass(line, packageName))
+//                .collect(Collectors.toSet());
     }
 
     private Class getClass(String className, String packageName) {

@@ -30,8 +30,9 @@ public class DeboApplication {
                             Time time = Time.now();
                             object.load();
                             long milliseconds = Duration.since(time).milliseconds();
-                            System.out.println("loading asset: " + clazz.getName() + "." + field.getName() + " took "
-                                    + milliseconds + " ms");
+                            System.out
+                                    .println("loading asset " + clazz.getSimpleName() + "." + field.getName() + " took "
+                                            + milliseconds + " ms");
                         } catch (IllegalArgumentException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
