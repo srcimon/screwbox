@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.playground.debo;
+package de.suzufa.screwbox.core.assets;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
