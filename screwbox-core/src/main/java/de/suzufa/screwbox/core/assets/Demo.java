@@ -29,14 +29,6 @@ public class Demo {
             }
         }
         return clazzes;
-//        String replaceAll = packageName.replaceAll("[.]", "/");
-//        InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(replaceAll);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//
-//        return reader.lines()
-//                .filter(line -> line.endsWith(".class"))
-//                .map(line -> getClass(line, packageName))
-//                .collect(Collectors.toSet());
     }
 
     private Class getClass(String className, String packageName) {

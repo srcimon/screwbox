@@ -75,8 +75,8 @@ class DefaultEngine implements Engine {
         gameLoop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        assets = new DefaultAssets();
         async = new DefaultAsync(executor, this::exceptionHandler);
+        assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
