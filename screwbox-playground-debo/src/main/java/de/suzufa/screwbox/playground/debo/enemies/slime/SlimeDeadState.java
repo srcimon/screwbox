@@ -1,9 +1,11 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
 import static de.suzufa.screwbox.playground.debo.Asset.asset;
+import static de.suzufa.screwbox.playground.debo.Asset.spriteAsset;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
@@ -28,7 +30,8 @@ public class SlimeDeadState implements EntityState {
     }
 
     @Preload
-    Asset<Sprite> sprite = asset(() -> Sprite.fromFile("bla"));
+    static Asset<Sprite> sprite = spriteAsset("bla");
+    static Asset<Sound> sound = asset(() -> Sound.fromFile("bla"));
 
     private static final long serialVersionUID = 1L;
 
