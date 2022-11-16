@@ -17,10 +17,21 @@ public class SlimeDeadState implements EntityState {
 
     public static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
 
+    public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "bla";
+    });
+
     private static final long serialVersionUID = 1L;
 
     @Override
     public void enter(final Entity entity, Engine engine) {
+
         entity.get(SpriteComponent.class).sprite = SlimeResources.DEAD_SPRITE.newInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);

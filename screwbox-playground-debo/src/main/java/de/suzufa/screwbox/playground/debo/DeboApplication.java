@@ -19,31 +19,30 @@ public class DeboApplication {
         engine.ui().setLayouter(new WobblyUiLayouter());
 
         // TODO: shite
-        engine.async().run(DeboApplication.class,
-                () -> new Demo().findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime"));
-
-        for (var clazz : new Demo()
-                .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime")) {
-            for (var field : clazz.getDeclaredFields()) {
-                if (field.getType().isAssignableFrom(Asset.class)) {
-                    try {
+        engine.async().run(DeboApplication.class, () -> {
+            for (var clazz : new Demo()
+                    .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime")) {
+                for (var field : clazz.getDeclaredFields()) {
+                    if (field.getType().isAssignableFrom(Asset.class)) {
+                        try {
 //                        field.setAccessible(true);
-                        Asset object = (Asset) field.get(Asset.class);
-                        Time time = Time.now();
-                        object.load();
-                        long milliseconds = Duration.since(time).milliseconds();
-                        System.out.println("loading asset: " + clazz.getName() + "." + field.getName() + " took "
-                                + milliseconds + " ms");
-                    } catch (IllegalArgumentException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                            Asset object = (Asset) field.get(Asset.class);
+                            Time time = Time.now();
+                            object.load();
+                            long milliseconds = Duration.since(time).milliseconds();
+                            System.out.println("loading asset: " + clazz.getName() + "." + field.getName() + " took "
+                                    + milliseconds + " ms");
+                        } catch (IllegalArgumentException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-        }
+        });
 
         engine.scenes()
                 .add(new DeadScene())
