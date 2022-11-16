@@ -1,10 +1,8 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
-import static de.suzufa.screwbox.playground.debo.Asset.asset;
-import static de.suzufa.screwbox.playground.debo.Asset.spriteAsset;
-
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
@@ -12,26 +10,14 @@ import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.playground.debo.Asset;
-import de.suzufa.screwbox.playground.debo.Preload;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 
 public class SlimeDeadState implements EntityState {
 
-    static {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    @Preload
-    static Asset<Sprite> sprite = spriteAsset("bla");
-    static Asset<Sound> sound = asset(() -> Sound.fromFile("bla"));
+    static Asset<Sprite> sprite = Sprite.assetFromFile("backgrounds/cave.png");
+    static Asset<Sound> sound = Sound.assetFromFile("sounds/blupp.wav");
 
     private static final long serialVersionUID = 1L;
 

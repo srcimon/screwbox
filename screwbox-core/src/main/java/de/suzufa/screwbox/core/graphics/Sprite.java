@@ -10,6 +10,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 
 public class Sprite implements Serializable {
 
@@ -38,6 +39,11 @@ public class Sprite implements Serializable {
     public static Sprite fromFile(final String fileName) {
         final var image = Frame.imageFromFile(fileName);
         return fromImage(image);
+    }
+
+    // TODO: javadoc and test
+    public static Asset<Sprite> assetFromFile(final String filename) {
+        return Asset.asset(() -> fromFile(filename));
     }
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
