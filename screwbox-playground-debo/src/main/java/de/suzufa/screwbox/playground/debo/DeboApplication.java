@@ -21,7 +21,7 @@ public class DeboApplication {
         // TODO: shite
         engine.async().run(DeboApplication.class, () -> {
             for (var clazz : new Demo()
-                    .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo.enemies.slime")) {
+                    .findAllClassesUsingClassLoader("de.suzufa.screwbox.playground.debo")) {
                 for (var field : clazz.getDeclaredFields()) {
                     if (field.getType().isAssignableFrom(Asset.class)) {
                         try {
