@@ -9,15 +9,13 @@ import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
-import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 
 public class SlimeDeadState implements EntityState {
 
-    static Asset<Sprite> sprite = Sprite.assetFromFile("backgrounds/cave.png");
-    static Asset<Sound> sound = Sound.assetFromFile("sounds/blupp.wav");
+    public static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +28,7 @@ public class SlimeDeadState implements EntityState {
         entity.remove(KilledFromAboveComponent.class);
         entity.get(PhysicsBodyComponent.class).ignoreCollisions = true;
         entity.add(new TimeoutComponent(Time.now().plusSeconds(2)));
-        engine.audio().playEffect(SlimeResources.KILL_SOUND);
+        engine.audio().playEffect(KILL_SOUND.get());
     }
 
     @Override
