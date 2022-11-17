@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
+import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.assets.Asset;
@@ -9,6 +11,7 @@ import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.CastShadowComponent;
 import de.suzufa.screwbox.playground.debo.components.KillZoneComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
@@ -16,6 +19,7 @@ import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 public class SlimeDeadState implements EntityState {
 
     public static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
+    public static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "dead");
 
     // TODO: remove
     public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
@@ -33,7 +37,7 @@ public class SlimeDeadState implements EntityState {
     @Override
     public void enter(final Entity entity, Engine engine) {
 
-        entity.get(SpriteComponent.class).sprite = SlimeResources.DEAD_SPRITE.newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);
         entity.remove(CastShadowComponent.class);

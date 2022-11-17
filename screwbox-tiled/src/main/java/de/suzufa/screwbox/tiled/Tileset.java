@@ -122,6 +122,12 @@ public class Tileset {
     }
 
     // TODO: doc an test
+    // TODO: non asset version
+    public static Asset<Sprite> assetFromJson(String fileName, String name) {
+        return Asset.asset(() -> fromJson(fileName).findByName(name));
+    }
+
+    // TODO: doc an test
     public static Asset<Sprite> assetFromJson(String fileName) {
         return Asset.asset(() -> fromJson(fileName).first());
     }
