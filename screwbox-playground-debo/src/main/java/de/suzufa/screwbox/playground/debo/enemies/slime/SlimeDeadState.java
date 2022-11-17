@@ -17,6 +17,7 @@ public class SlimeDeadState implements EntityState {
 
     public static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
 
+    // TODO: remove
     public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
         try {
             Thread.sleep(4000);

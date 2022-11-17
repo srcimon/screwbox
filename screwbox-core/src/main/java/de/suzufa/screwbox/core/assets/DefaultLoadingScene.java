@@ -7,6 +7,7 @@ import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.scenes.Scene;
 
+//TODO: make this game default?
 public class DefaultLoadingScene implements Scene {
 
     private Class<? extends Scene> nextScene;

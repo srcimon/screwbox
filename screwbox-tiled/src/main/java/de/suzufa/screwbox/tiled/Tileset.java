@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -118,5 +119,18 @@ public class Tileset {
         }
         return allSprites.get(0);
 
+    }
+
+    // TODO: doc an test
+    public static Asset<Sprite> assetFromJson(String fileName) {
+        return Asset.asset(() -> fromJson(fileName).first());
+    }
+
+    // TODO: doc an test
+    private Sprite first() {
+        if (spriteCount() == 0) {
+            throw new IllegalStateException("tileset has no sprite");
+        }
+        return allSprites.get(0);
     }
 }

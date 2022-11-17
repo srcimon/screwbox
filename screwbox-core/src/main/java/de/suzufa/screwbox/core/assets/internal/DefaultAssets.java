@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
@@ -21,9 +22,11 @@ public class DefaultAssets implements Assets {
 
     private Future<?> loadingTask;
     private LoadingProgress loadingProgress;
+    private Consumer<Throwable> exceptionHandler;
 
-    public DefaultAssets(final ExecutorService executor, final Log log) {
+    public DefaultAssets(final ExecutorService executor, final Consumer<Throwable> exceptionHandler, final Log log) {
         this.executor = executor;
+        this.exceptionHandler = exceptionHandler;
         this.log = log;
     }
 
@@ -34,16 +37,21 @@ public class DefaultAssets implements Assets {
         }
         loadingProgress = new LoadingProgress("searching for assets", 0);
         loadingTask = executor.submit(() -> {
-            List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
-            for (var assetLocation : assetLocations) {
-                loadingProgress = new LoadingProgress("loading asset " + assetLocation.humanReadableId(),
-                        assetLocations.size());
-                assetLocation.asset().load();
-                log.debug("loading asset " + assetLocation.id() + " took "
-                        + assetLocation.asset().loadingDuration().milliseconds() + " ms");
+            try {
+                List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
+                for (var assetLocation : assetLocations) {
+                    loadingProgress = new LoadingProgress("loading asset " + assetLocation.humanReadableId(),
+                            assetLocations.size());
+                    assetLocation.asset().load();
+                    log.debug("loading asset " + assetLocation.id() + " took "
+                            + assetLocation.asset().loadingDuration().milliseconds() + " ms");
+                }
+                loadingTask = null;
+                loadingProgress = null;
+            } catch (RuntimeException e) {
+                final var wrappedException = new RuntimeException("Exception loading assets", e);
+                exceptionHandler.accept(wrappedException);
             }
-            loadingTask = null;
-            loadingProgress = null;
         });
 
         return this;
@@ -57,6 +65,7 @@ public class DefaultAssets implements Assets {
             for (var field : clazz.getDeclaredFields()) {
                 if (field.getType().isAssignableFrom(Asset.class)) {
                     try {
+                        // TODO: better warning when not canAccess field
                         Asset<?> asset = (Asset<?>) field.get(Asset.class);
                         assetLocations.add(new AssetLocation<>(asset, clazz, field));
 
