@@ -14,7 +14,7 @@ public class DeboApplication {
 
         engine.ui().setLayouter(new WobblyUiLayouter());
 
-        engine.assets().asyncLoadAssetsIn(DeboApplication.class.getPackageName());
+        engine.assets().startLoadingFromPackage(DeboApplication.class.getPackageName());
         engine.scenes()
                 .add(new DeadScene())
                 .add(new PauseScene())
