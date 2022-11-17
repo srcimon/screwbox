@@ -41,7 +41,7 @@ public final class Resources {
         try {
             return Files.readAllBytes(resourceFile.toPath());
         } catch (final IOException e) {
-            throw new IllegalArgumentException("file could not be read: " + fileName);
+            throw new IllegalArgumentException("file could not be read: " + fileName, e);
         }
     }
 
