@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.Demo;
+import de.suzufa.screwbox.core.assets.LoadingProgress;
 import de.suzufa.screwbox.core.log.Log;
 
 public class DefaultAssets implements Assets {
@@ -19,6 +20,7 @@ public class DefaultAssets implements Assets {
     private final Log log;
 
     private Future<?> loadingTask;
+    private LoadingProgress loadingProgress;
 
     public DefaultAssets(final ExecutorService executor, final Log log) {
         this.executor = executor;
@@ -30,14 +32,18 @@ public class DefaultAssets implements Assets {
         if (nonNull(loadingTask)) {
             throw new IllegalStateException("loading assets is already in progress");
         }
+        loadingProgress = new LoadingProgress("searching for assets", 0);
         loadingTask = executor.submit(() -> {
             List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
             for (var assetLocation : assetLocations) {
+                loadingProgress = new LoadingProgress("loading asset " + assetLocation.humanReadableId(),
+                        assetLocations.size());
                 assetLocation.asset().load();
                 log.debug("loading asset " + assetLocation.id() + " took "
                         + assetLocation.asset().loadingDuration().milliseconds() + " ms");
             }
             loadingTask = null;
+            loadingProgress = null;
         });
 
         return this;
@@ -66,6 +72,11 @@ public class DefaultAssets implements Assets {
     @Override
     public boolean isLoadingInProgress() {
         return nonNull(loadingTask);
+    }
+
+    @Override
+    public LoadingProgress loadingProgress() {
+        return loadingProgress;
     }
 
 }

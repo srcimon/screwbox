@@ -9,4 +9,6 @@ public interface Assets {
     List<AssetLocation<?>> scanPackageForAssetLocations(String packageName);// TODO: accept class
 
     boolean isLoadingInProgress();
+
+    LoadingProgress loadingProgress();
 }

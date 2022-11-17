@@ -2,6 +2,7 @@ package de.suzufa.screwbox.playground.debo;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
+import de.suzufa.screwbox.core.assets.DefaultLoadingScene;
 import de.suzufa.screwbox.core.ui.WobblyUiLayouter;
 import de.suzufa.screwbox.playground.debo.scenes.DeadScene;
 import de.suzufa.screwbox.playground.debo.scenes.PauseScene;
@@ -16,10 +17,11 @@ public class DeboApplication {
 
         engine.assets().startLoadingFromPackage(DeboApplication.class.getPackageName());
         engine.scenes()
+                .add(new DefaultLoadingScene(StartScene.class))
                 .add(new DeadScene())
                 .add(new PauseScene())
                 .add(new StartScene());
 
-        engine.start(StartScene.class);
+        engine.start(DefaultLoadingScene.class);
     }
 }
