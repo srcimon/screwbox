@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.playground.debo.enemies;
 
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
@@ -17,8 +18,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class MovingSpikes implements Converter<GameObject> {
 
-    private static final Sprite SPRITE = Tileset.fromJson("tilesets/enemies/moving-spikes.json")
-            .findById(0);
+    public static final Asset<Sprite> SPRITE = Tileset.assetFromJson("tilesets/enemies/moving-spikes.json");
 
     @Override
     public Entity convert(GameObject object) {
@@ -27,7 +27,7 @@ public class MovingSpikes implements Converter<GameObject> {
                 new SignalComponent(),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new KillZoneComponent(DeathType.SPIKES),
-                new SpriteComponent(SPRITE, object.layer().order()),
+                new SpriteComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
                 new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
     }
