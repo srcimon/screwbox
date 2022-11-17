@@ -4,8 +4,9 @@ import java.util.List;
 
 public interface Assets {
 
-    public Assets startLoadingFromPackage(String packageName); // TODO: accept class
+    Assets startLoadingFromPackage(String packageName); // TODO: accept class
 
-    public List<AssetLocation<?>> scanPackageForAssetLocations(String packageName);// TODO: accept class
+    List<AssetLocation<?>> scanPackageForAssetLocations(String packageName);// TODO: accept class
 
+    boolean isLoadingInProgress();
 }

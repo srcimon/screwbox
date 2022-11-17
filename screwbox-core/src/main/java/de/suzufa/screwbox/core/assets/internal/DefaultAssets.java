@@ -63,4 +63,9 @@ public class DefaultAssets implements Assets {
         return assetLocations;
     }
 
+    @Override
+    public boolean isLoadingInProgress() {
+        return nonNull(loadingTask);
+    }
+
 }
