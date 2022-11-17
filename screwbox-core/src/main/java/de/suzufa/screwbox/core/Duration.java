@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import static java.lang.Math.abs;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
@@ -65,6 +66,18 @@ public class Duration implements Serializable {
 
     public static Duration since(final Time time) {
         return new Duration(Time.now().nanos() - time.nanos());
+    }
+
+    /**
+     * Creates a new instance with the duration of the time it took to execute the
+     * given {@link Runnable}.
+     * 
+     * @param execution the execution that is measured
+     */
+    public static Duration ofExecution(final Runnable execution) {
+        final Time before = Time.now();
+        requireNonNull(execution, "execution must not be null").run();
+        return since(before);
     }
 
     public long milliseconds() {

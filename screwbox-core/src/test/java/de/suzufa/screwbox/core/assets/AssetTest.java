@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Duration;
+
 class AssetTest {
 
     Asset<String> asset;
@@ -28,7 +30,7 @@ class AssetTest {
     void load_supplierReturnsNull_throwsException() {
         Asset<String> nullAfterLoadingAsset = Asset.asset((Supplier<String>) () -> null);
 
-        assertThatThrownBy(() -> nullAfterLoadingAsset.load())
+        assertThatThrownBy(nullAfterLoadingAsset::load)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("asset null after loading");
     }
@@ -47,7 +49,7 @@ class AssetTest {
 
     @Test
     void get_notLoaded_throwsException() {
-        assertThatThrownBy(() -> asset.get())
+        assertThatThrownBy(asset::get)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("asset has not been loaded yet");
     }
@@ -57,5 +59,21 @@ class AssetTest {
         asset.load();
 
         assertThat(asset.get()).isEqualTo("i like fish");
+    }
+
+    @Test
+    void loadingDuration_notLoaded_throwsException() {
+        assertThatThrownBy(asset::loadingDuration)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("asset has not been loaded yet");
+    }
+
+    @Test
+    void loadingDuration_loaded_returnsDuration() {
+        asset.load();
+
+        Duration duration = asset.loadingDuration();
+
+        assertThat(duration.nanos()).isPositive();
     }
 }
