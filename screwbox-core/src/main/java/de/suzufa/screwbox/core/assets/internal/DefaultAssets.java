@@ -19,7 +19,7 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public Assets startAsyncLoadingAssetsIn(String packageName) {
+    public Assets asyncLoadAssetsIn(String packageName) {
         async.run(DefaultAssets.class, () -> {
             for (var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
                 for (var field : clazz.getDeclaredFields()) {

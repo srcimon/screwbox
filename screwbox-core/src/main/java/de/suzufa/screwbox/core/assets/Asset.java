@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.assets;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 //TODO: javadoc and test
@@ -15,21 +16,18 @@ public class Asset<T> {
         }
     }
 
-    public static <T> Asset<T> asset(Supplier<T> supplier) {
-        // TODO Auto-generated method stub
+    public static <T> Asset<T> asset(final Supplier<T> supplier) {
         return new Asset<T>(supplier);
     }
 
     private Asset(final Supplier<T> supplier) {
-        this.supplier = supplier;
+        this.supplier = Objects.requireNonNull(supplier, "supplier must not be null");
     }
 
     public T get() {
-        // TODO: throw exception when not filled?
-        if (value != null) {
-            return value;
+        if (Objects.isNull(value)) {
+            throw new IllegalStateException("asset has not been loaded yet");
         }
-        load();
         return value;
     }
 }
