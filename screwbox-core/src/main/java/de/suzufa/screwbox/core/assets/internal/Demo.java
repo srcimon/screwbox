@@ -1,4 +1,4 @@
-package de.suzufa.screwbox.core.assets;
+package de.suzufa.screwbox.core.assets.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.zip.ZipFile;
 
 //TODO: shite
 public class Demo {
-    public List<Class> findAllClassesUsingClassLoader(String packageName) {
-        List<Class> clazzes = new ArrayList<>();
+    public List<Class<?>> findAllClassesUsingClassLoader(String packageName) {
+        List<Class<?>> clazzes = new ArrayList<>();
         for (String string : getResources(Pattern.compile(".*" + packageName + ".*"))) {
             if (string.endsWith(".class")) {
                 String className = string.split("/")[string.split("/").length - 1];
@@ -22,23 +22,20 @@ public class Demo {
                         + string.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(className,
                                 "");
                 packagen = packagen.substring(0, packagen.length() - 1);
-                Class class1 = getClass(className, packagen);
-                if (class1 != null) {
-                    clazzes.add(class1);
-                }
+                Class<?> class1 = getClass(className, packagen);
+                clazzes.add(class1);
             }
         }
         return clazzes;
     }
 
-    private Class getClass(String className, String packageName) {
+    private Class<?> getClass(String className, String packageName) {
         try {
-            return Class.forName(packageName + "."
-                    + className.substring(0, className.lastIndexOf('.')));
+            String name = packageName + "." + className.substring(0, className.lastIndexOf('.'));
+            return Class.forName(name);
         } catch (ClassNotFoundException e) {
-            // handle the exception
+            throw new IllegalStateException("could not find classes", e);
         }
-        return null;
     }
 
     /**

@@ -8,7 +8,6 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.assets.Assets;
-import de.suzufa.screwbox.core.assets.Demo;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
