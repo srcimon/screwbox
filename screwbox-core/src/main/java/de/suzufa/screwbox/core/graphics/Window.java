@@ -39,6 +39,7 @@ public interface Window {
         return fillCircle(offset, diameter, drawColor());
     }
 
+    // TODO: Asset<Sprite> instead of future / same?
     Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea);
 
