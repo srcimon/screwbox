@@ -13,7 +13,7 @@ public class Asset<T> {
     private T value;
 
     public static <T> Asset<T> asset(final Supplier<T> supplier) {
-        return new Asset<T>(supplier);
+        return new Asset<>(supplier);
     }
 
     public boolean isLoaded() {

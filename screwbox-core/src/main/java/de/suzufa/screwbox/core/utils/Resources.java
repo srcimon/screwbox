@@ -37,7 +37,8 @@ public final class Resources {
             throw new IllegalArgumentException("file not found: " + fileName);
         }
 
-        final File resourceFile = new File(url.getFile());
+        final File resourceFile = new File(url.getFile());// TODO getResourceAsStream() to load resources in github
+                                                          // actions even from other jar
         try {
             return Files.readAllBytes(resourceFile.toPath());
         } catch (final IOException e) {
