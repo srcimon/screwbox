@@ -3,6 +3,7 @@ package de.suzufa.screwbox.examples.pathfinding.scenes;
 import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
 
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
@@ -25,6 +26,7 @@ import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -37,7 +39,10 @@ import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
 import de.suzufa.screwbox.tiled.Tileset;
 
+//TODO: extract all assets
 public class DemoScene implements Scene {
+
+    private static final Asset<Sprite> PLAYER_STANDING = Tileset.assetFromJson("pathfinding/player.json", "standing");
 
     private final Map map;
 
@@ -89,7 +94,7 @@ public class DemoScene implements Scene {
     private Converter<GameObject> player() {
         final var tileset = Tileset.fromJson("pathfinding/player.json");
         return object -> new Entity(object.id())
-                .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
+                .add(new SpriteChangeComponent(PLAYER_STANDING.get(), tileset.findByName("walking")))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())

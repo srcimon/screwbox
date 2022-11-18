@@ -5,6 +5,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
@@ -16,15 +17,15 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class BombExplosionState implements EntityState {
 
-    private static final Sprite SPRITE = Tileset.fromJson("pathfinding/bomb.json").findByName("explosion");
-    private static final Sound EXPLOSION = Sound.fromFile("pathfinding/explosion.wav");
+    private static final Asset<Sprite> SPRITE = Tileset.assetFromJson("pathfinding/bomb.json", "explosion");
+    private static final Asset<Sound> EXPLOSION = Sound.assetFromFile("pathfinding/explosion.wav");
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        Sprite sprite = SPRITE.newInstance();
+        Sprite sprite = SPRITE.get().newInstance();
         entity.get(SpriteComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
         engine.audio().playEffect(EXPLOSION);
