@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -25,7 +26,7 @@ public class DiggableSystem implements EntitySystem {
     private static final Archetype DIGGABLES = Archetype.of(DiggableComponent.class, TransformComponent.class,
             SpriteComponent.class);
 
-    private static final Sound DIG_SOUND = Sound.fromFile("sounds/dig.wav");
+    private static final Asset<Sound> DIG_SOUND = Sound.assetFromFile("sounds/dig.wav");
 
     @Override
     public void update(Engine engine) {

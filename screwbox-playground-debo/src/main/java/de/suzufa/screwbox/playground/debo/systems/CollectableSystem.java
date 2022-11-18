@@ -1,6 +1,9 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
+import static de.suzufa.screwbox.core.audio.Sound.assetFromFile;
+
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -16,7 +19,7 @@ public class CollectableSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class);
 
-    private static final Sound PLING = Sound.fromFile("sounds/pling.wav");
+    private static final Asset<Sound> PLING = assetFromFile("sounds/pling.wav");
 
     @Override
     public void update(final Engine engine) {
@@ -24,7 +27,7 @@ public class CollectableSystem implements EntitySystem {
         for (final Entity entity : engine.entities().fetchAll(COLLECTABLES)) {
             if (entity.get(CollisionSensorComponent.class).collidedEntities.contains(player)) {
                 engine.entities().remove(entity);
-                engine.audio().playEffect(PLING);
+                engine.audio().playEffect(PLING.get());
             }
         }
 
