@@ -28,9 +28,9 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public Assets preparePackage(final String packageName) {
+    public List<AssetLocation<?>> preparePackage(final String packageName) {
+        final List<AssetLocation<?>> updatedLocations = new ArrayList<>();
         try {
-            int loaded = 0;
             Time before = Time.now();
             final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
             for (final var assetLocation : assetLocations) {
@@ -38,18 +38,18 @@ public class DefaultAssets implements Assets {
                 Asset<?> asset = assetLocation.asset();
                 if (!asset.isLoaded()) {
                     asset.load();
-                    loaded++;
+                    updatedLocations.add(assetLocation);
                 }
             }
             var durationMs = Duration.since(before).milliseconds();
             if (logEnabled) {
-                log.debug("loaded " + loaded + " assets in " + durationMs + " ms");
+                log.debug("loaded " + updatedLocations.size() + " assets in " + durationMs + " ms");
             }
         } catch (final RuntimeException e) {
             throw new RuntimeException("Exception loading assets", e);
         }
 
-        return this;
+        return updatedLocations;
     }
 
     @Override

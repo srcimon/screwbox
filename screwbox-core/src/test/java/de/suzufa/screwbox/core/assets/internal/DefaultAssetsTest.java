@@ -30,6 +30,7 @@ class DefaultAssetsTest {
 
     private static final Asset<String> ASSET_A = Asset.asset(() -> "loaded");
     private static final Asset<String> ASSET_B = Asset.asset(() -> "loaded");
+    private static final Asset<String> ASSET_C = Asset.asset(() -> "loaded");
 
     @Test
     void listAssetLocationsInPackage_packageDoesntExist_emptyList() {
@@ -49,21 +50,25 @@ class DefaultAssetsTest {
     void listAssetLocationsInPackage_packageExists_listsLocations() {
         var locations = assets.listAssetLocationsInPackage("de.suzufa.screwbox.core.assets.internal");
 
-        assertThat(locations).hasSize(2)
+        assertThat(locations).hasSize(3)
                 .allMatch(asset -> asset.sourceClass().equals(DefaultAssetsTest.class))
                 .anyMatch(asset -> asset.asset().equals(ASSET_A))
                 .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_A"))
                 .anyMatch(asset -> asset.asset().equals(ASSET_B))
-                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_B"));
+                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_B"))
+                .anyMatch(asset -> asset.asset().equals(ASSET_C))
+                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_C"));
     }
 
     @Test
     void preparePackage_assetsUnloadedEnabledLog_loadsAssetsAndLogs() {
+        ASSET_C.load();
+
         assertThat(ASSET_A.isLoaded()).isFalse();
         assertThat(ASSET_B.isLoaded()).isFalse();
 
         assets.enableLogging();
-        assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
+        var prepared = assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(ASSET_A.isLoaded()).isTrue();
         assertThat(ASSET_B.isLoaded()).isTrue();
@@ -71,6 +76,10 @@ class DefaultAssetsTest {
         var logMessage = ArgumentCaptor.forClass(String.class);
         verify(log).debug(logMessage.capture());
         assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
+
+        assertThat(prepared).hasSize(2)
+                .anyMatch(asset -> asset.asset().equals(ASSET_A))
+                .anyMatch(asset -> asset.asset().equals(ASSET_B));
     }
 
     @Test

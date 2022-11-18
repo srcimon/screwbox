@@ -14,14 +14,14 @@ import de.suzufa.screwbox.core.graphics.Sprite;
 
 public class StartBackgroundSystem implements EntitySystem {
 
-    private static final Asset<List<Sprite>> BACKGROUNDS = Asset.asset(() -> {
-        return List.of(fromJson("tilesets/specials/player.json").findByName("idle"),
-                fromJson("tilesets/enemies/slime.json").findByName("moving"),
-                fromJson("tilesets/enemies/tracer.json").findByName("active"),
-                fromJson("tilesets/specials/cat.json").findByName("walking"),
-                fromJson("tilesets/collectables/cherries.json").first(),
-                fromJson("tilesets/props/box.json").first());
-    });
+    private static final Asset<List<Sprite>> BACKGROUNDS = Asset
+            .asset(() -> List.of(
+                    fromJson("tilesets/specials/player.json").findByName("idle"),
+                    fromJson("tilesets/enemies/slime.json").findByName("moving"),
+                    fromJson("tilesets/enemies/tracer.json").findByName("active"),
+                    fromJson("tilesets/specials/cat.json").findByName("walking"),
+                    fromJson("tilesets/collectables/cherries.json").first(),
+                    fromJson("tilesets/props/box.json").first()));
 
     @Override
     public void update(final Engine engine) {

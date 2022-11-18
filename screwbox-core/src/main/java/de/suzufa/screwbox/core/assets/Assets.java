@@ -2,18 +2,17 @@ package de.suzufa.screwbox.core.assets;
 
 import java.util.List;
 
+//TODO: doc
 public interface Assets {
 
-    // TODO: return progress rather than progress in service?
-    Assets preparePackage(String packageName); // TODO: accept class
+    List<AssetLocation<?>> preparePackage(String packageName);
 
     Assets preparePackageAsync(String packageName);
 
-    List<AssetLocation<?>> listAssetLocationsInPackage(String packageName);// TODO: accept class
+    List<AssetLocation<?>> listAssetLocationsInPackage(String packageName);
 
     Assets enableLogging();
 
     Assets disableLogging();
 
-    // TODO: enableLogging(LogLevel...)
 }
