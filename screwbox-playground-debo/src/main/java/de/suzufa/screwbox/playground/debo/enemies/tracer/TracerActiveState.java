@@ -6,18 +6,21 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.FollowPlayerComponent;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class TracerActiveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    public static final Asset<Sound> SOUND = Sound.assetFromFile("sounds/scream.wav");
+    private static final Asset<Sprite> SPRITE = Tileset.assetFromJson("tilesets/enemies/tracer.json", "active");
+    private static final Asset<Sound> SOUND = Sound.assetFromFile("sounds/scream.wav");
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(SpriteComponent.class).sprite = TracerResources.ACTIVE_SPRITE.newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
         entity.add(new FollowPlayerComponent());
         engine.audio().playEffectLooped(SOUND.get());
     }

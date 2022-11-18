@@ -18,8 +18,10 @@ import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 
 public class SlimeDeadState implements EntityState {
 
-    public static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
-    public static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "dead");
+    private static final long serialVersionUID = 1L;
+
+    private static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
+    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "dead");
 
     // TODO: remove
     public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
@@ -31,8 +33,6 @@ public class SlimeDeadState implements EntityState {
         }
         return "bla";
     });
-
-    private static final long serialVersionUID = 1L;
 
     @Override
     public void enter(final Entity entity, Engine engine) {

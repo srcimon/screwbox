@@ -17,7 +17,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class Cherries implements Converter<GameObject> {
 
-    public static final Asset<Sprite> SPRITE = assetFromJson("tilesets/collectables/cherries.json");
+    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/collectables/cherries.json");
 
     @Override
     public Entity convert(final GameObject object) {

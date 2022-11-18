@@ -14,7 +14,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class DeboO implements Converter<GameObject> {
 
-    public static final Asset<Sprite> SPRITE = assetFromJson("tilesets/collectables/debo-o.json");
+    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/collectables/debo-o.json");
 
     @Override
     public Entity convert(GameObject object) {

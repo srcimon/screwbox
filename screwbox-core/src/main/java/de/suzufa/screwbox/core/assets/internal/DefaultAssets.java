@@ -69,6 +69,11 @@ public class DefaultAssets implements Assets {
                     if (field.getType().isAssignableFrom(Asset.class)) {
                         try {
                             // TODO: better warning when not canAccess field
+                            boolean isAccessible = field.trySetAccessible();
+                            if (!isAccessible) {
+                                throw new IllegalStateException(
+                                        "could not make field accessible for injecting asset");
+                            }
                             final Asset<?> asset = (Asset<?>) field.get(Asset.class);
                             assetLocations.add(new AssetLocation<>(asset, clazz, field));
 

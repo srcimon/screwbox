@@ -18,7 +18,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class MovingSpikes implements Converter<GameObject> {
 
-    public static final Asset<Sprite> SPRITE = Tileset.assetFromJson("tilesets/enemies/moving-spikes.json");
+    private static final Asset<Sprite> SPRITE = Tileset.assetFromJson("tilesets/enemies/moving-spikes.json");
 
     @Override
     public Entity convert(GameObject object) {
