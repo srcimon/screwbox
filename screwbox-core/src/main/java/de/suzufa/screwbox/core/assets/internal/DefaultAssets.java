@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.Demo;
-import de.suzufa.screwbox.core.assets.LoadingProgress;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
 
@@ -25,7 +24,6 @@ public class DefaultAssets implements Assets {
     private final Log log;
 
     private Future<?> loadingTask;
-    private LoadingProgress loadingProgress;
     private final Consumer<Throwable> exceptionHandler;
 
     public DefaultAssets(final ExecutorService executor, final Consumer<Throwable> exceptionHandler, final Log log) {
@@ -39,18 +37,14 @@ public class DefaultAssets implements Assets {
         if (nonNull(loadingTask)) {
             throw new IllegalStateException("loading assets is already in progress");
         }
-        loadingProgress = new LoadingProgress("searching for assets", 0);
         loadingTask = executor.submit(() -> {
             try {
                 Time before = Time.now();
                 final List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
                 for (final var assetLocation : assetLocations) {
-                    loadingProgress = new LoadingProgress("loading asset " + assetLocation.id(),
-                            assetLocations.size());
                     assetLocation.asset().load();
                 }
                 loadingTask = null;
-                loadingProgress = null;
                 var durationMs = Duration.since(before).milliseconds();
                 log.info("loaded " + assetLocations.size() + " assets in " + durationMs + " ms");
             } catch (final RuntimeException e) {
@@ -92,11 +86,6 @@ public class DefaultAssets implements Assets {
     @Override
     public boolean isLoadingInProgress() {
         return nonNull(loadingTask);
-    }
-
-    @Override
-    public LoadingProgress loadingProgress() {
-        return loadingProgress;
     }
 
 }
