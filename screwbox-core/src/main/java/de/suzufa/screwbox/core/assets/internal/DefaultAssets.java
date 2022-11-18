@@ -62,7 +62,7 @@ public class DefaultAssets implements Assets {
             final List<AssetLocation<?>> assetLocations = new ArrayList<>();
             for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
                 for (final var field : clazz.getDeclaredFields()) {
-                    if (field.getType().isAssignableFrom(Asset.class)) {
+                    if (Asset.class.equals(field.getType())) {
                         try {
                             // TODO: better warning when not canAccess field
                             boolean isAccessible = field.trySetAccessible();
