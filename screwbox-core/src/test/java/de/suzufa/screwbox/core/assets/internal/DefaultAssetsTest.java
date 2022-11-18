@@ -1,9 +1,13 @@
 package de.suzufa.screwbox.core.assets.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -54,13 +58,26 @@ class DefaultAssetsTest {
     }
 
     @Test
-    void preparePackage_assetsNotLoaded_assetsLoadedAfterwards() {
+    void preparePackage_assetsUnloadedEnabledLog_loadsAssetsAndLogs() {
         assertThat(ASSET_A.isLoaded()).isFalse();
         assertThat(ASSET_B.isLoaded()).isFalse();
 
+        assets.enableLogging();
         assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(ASSET_A.isLoaded()).isTrue();
         assertThat(ASSET_B.isLoaded()).isTrue();
+
+        var logMessage = ArgumentCaptor.forClass(String.class);
+        verify(log).debug(logMessage.capture());
+        assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
     }
+
+    @Test
+    void preparePackage_loggingDisabled_doesntLog() {
+        assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
+
+        verify(log, never()).debug(anyString());
+    }
+
 }

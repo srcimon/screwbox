@@ -11,5 +11,9 @@ public interface Assets {
 
     List<AssetLocation<?>> listAssetLocationsInPackage(String packageName);// TODO: accept class
 
+    Assets enableLogging();
+
+    Assets disableLogging();
+
     // TODO: enableLogging(LogLevel...)
 }

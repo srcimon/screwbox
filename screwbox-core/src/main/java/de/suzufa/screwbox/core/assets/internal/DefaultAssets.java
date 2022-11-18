@@ -20,6 +20,8 @@ public class DefaultAssets implements Assets {
     private final Log log;
     private Async async;
 
+    private boolean logEnabled = false;
+
     public DefaultAssets(final Async async, final Log log) {
         this.async = async;
         this.log = log;
@@ -28,13 +30,21 @@ public class DefaultAssets implements Assets {
     @Override
     public Assets preparePackage(final String packageName) {
         try {
+            int loaded = 0;
             Time before = Time.now();
             final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
             for (final var assetLocation : assetLocations) {
-                assetLocation.asset().load();
+
+                Asset<?> asset = assetLocation.asset();
+                if (!asset.isLoaded()) {
+                    asset.load();
+                    loaded++;
+                }
             }
             var durationMs = Duration.since(before).milliseconds();
-            log.info("loaded " + assetLocations.size() + " assets in " + durationMs + " ms");
+            if (logEnabled) {
+                log.debug("loaded " + loaded + " assets in " + durationMs + " ms");
+            }
         } catch (final RuntimeException e) {
             throw new RuntimeException("Exception loading assets", e);
         }
@@ -72,6 +82,18 @@ public class DefaultAssets implements Assets {
     @Override
     public Assets preparePackageAsync(String packageName) {
         async.run(Assets.class, () -> preparePackage(packageName));
+        return this;
+    }
+
+    @Override
+    public Assets enableLogging() {
+        logEnabled = true;
+        return this;
+    }
+
+    @Override
+    public Assets disableLogging() {
+        logEnabled = false;
         return this;
     }
 
