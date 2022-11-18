@@ -48,14 +48,12 @@ class AssetTest {
     }
 
     @Test
-    void get_notLoaded_throwsException() {
-        assertThatThrownBy(asset::get)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("asset has not been loaded yet");
+    void get_notLoaded_returnsValue() {
+        assertThat(asset.get()).isEqualTo("i like fish");
     }
 
     @Test
-    void get_loaded_returnsValueFromSupplier() {
+    void get_loaded_returnsValue() {
         asset.load();
 
         assertThat(asset.get()).isEqualTo("i like fish");

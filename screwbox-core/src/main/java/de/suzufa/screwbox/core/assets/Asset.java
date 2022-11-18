@@ -36,18 +36,17 @@ public class Asset<T> {
     }
 
     public T get() {
-        verifyLoaded();
+        if (!isLoaded()) {
+            load();
+        }
         return value;
     }
 
     public Duration loadingDuration() {
-        verifyLoaded();
-        return loadingDuration;
-    }
-
-    private void verifyLoaded() {
         if (!isLoaded()) {
             throw new IllegalStateException("asset has not been loaded yet");
         }
+        return loadingDuration;
     }
+
 }

@@ -91,12 +91,4 @@ public class DefaultAssets implements Assets {
         return loadingProgress;
     }
 
-    @Override
-    public Assets loadFromPackage(final String packageName) {
-        for (final var assetLocation : scanPackageForAssetLocations(packageName)) {
-            assetLocation.asset().load();
-        }
-        return this;
-    }
-
 }
