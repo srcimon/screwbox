@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.assets.Asset;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
@@ -32,6 +33,10 @@ public class PlayerDeathState implements EntityState {
 
     private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "dead");
 
+    private static final Asset<Sound> OUCH_SOUND = Sound.assetFromFile("sounds/ouch.wav");
+    private static final Asset<Sound> BLUPP_SOUND = Sound.assetFromFile("sounds/blupp.wav");
+    private static final Asset<Sound> ZISCH_SOUND = Sound.assetFromFile("sounds/zisch.wav");
+
     private static final List<ScreenTransition> TRANSITIONS = List.of(
             new FadeOutTransition(new HorizontalLinesTransition(20)),
             new FadeOutTransition(new SwipeTransition()),
@@ -44,13 +49,13 @@ public class PlayerDeathState implements EntityState {
         entity.remove(PlayerControlComponent.class);
         switch (entity.get(DeathEventComponent.class).deathType) {
         case WATER:
-            engine.audio().playEffect(PlayerResources.BLUPP_SOUND);
+            engine.audio().playEffect(BLUPP_SOUND);
             break;
         case LAVA:
-            engine.audio().playEffect(PlayerResources.ZISCH_SOUND);
+            engine.audio().playEffect(ZISCH_SOUND);
             break;
         default:
-            engine.audio().playEffect(PlayerResources.OUCH_SOUND);
+            engine.audio().playEffect(OUCH_SOUND);
         }
 
         entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();

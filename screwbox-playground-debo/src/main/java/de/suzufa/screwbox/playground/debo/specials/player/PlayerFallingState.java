@@ -1,11 +1,15 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
+import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
@@ -13,12 +17,13 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerFallingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
+    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "jumping");
 
     private final Time started = Time.now();
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(SpriteComponent.class).sprite = PlayerResources.JUMPING_SPRITE;
+        entity.get(SpriteComponent.class).sprite = SPRITE.get();
     }
 
     @Override
