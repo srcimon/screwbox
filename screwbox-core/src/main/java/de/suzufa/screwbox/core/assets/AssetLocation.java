@@ -5,10 +5,6 @@ import java.lang.reflect.Field;
 public record AssetLocation<T> (Asset<T> asset, Class<?> sourceClass, Field sourceField) {
 
     public String id() {
-        return sourceClass.getName() + "#" + sourceField.getName();
-    }
-
-    public String humanReadableId() {
         return sourceClass.getSimpleName() + "." + sourceField.getName();
     }
 }

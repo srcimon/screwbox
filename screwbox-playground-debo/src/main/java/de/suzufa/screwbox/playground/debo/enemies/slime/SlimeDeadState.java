@@ -24,7 +24,7 @@ public class SlimeDeadState implements EntityState {
     // TODO: remove
     public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
         try {
-            Thread.sleep(4000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
