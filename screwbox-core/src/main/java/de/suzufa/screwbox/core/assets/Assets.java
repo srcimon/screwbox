@@ -9,8 +9,7 @@ public interface Assets {
 
     Assets preparePackageAsync(String packageName);
 
-    List<AssetLocation<?>> scanPackageForAssetLocations(String packageName);// TODO: accept class
-    // TODO: scanPackageForAssetLocations? why
+    List<AssetLocation<?>> listAssetLocationsInPackage(String packageName);// TODO: accept class
 
     // TODO: enableLogging(LogLevel...)
 }

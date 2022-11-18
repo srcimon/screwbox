@@ -29,7 +29,7 @@ public class DefaultAssets implements Assets {
     public Assets preparePackage(final String packageName) {
         try {
             Time before = Time.now();
-            final List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
+            final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
             for (final var assetLocation : assetLocations) {
                 assetLocation.asset().load();
             }
@@ -43,7 +43,7 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public List<AssetLocation<?>> scanPackageForAssetLocations(final String packageName) {
+    public List<AssetLocation<?>> listAssetLocationsInPackage(final String packageName) {
         return LOCATIONS.getOrElse(packageName, () -> {
             final List<AssetLocation<?>> assetLocations = new ArrayList<>();
             for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {

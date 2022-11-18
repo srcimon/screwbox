@@ -23,17 +23,6 @@ public class SlimeDeadState implements EntityState {
     private static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
     private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "dead");
 
-    // TODO: remove
-//    public static final Asset<String> EIN_TEXT = Asset.asset(() -> {
-//        try {
-//            Thread.sleep(1500);
-//        } catch (InterruptedException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        return "bla";
-//    });
-
     @Override
     public void enter(final Entity entity, Engine engine) {
 
