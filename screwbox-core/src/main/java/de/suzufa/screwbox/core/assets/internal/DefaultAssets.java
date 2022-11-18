@@ -43,7 +43,8 @@ public class DefaultAssets implements Assets {
             }
             var durationMs = Duration.since(before).milliseconds();
             if (logEnabled) {
-                log.debug("loaded " + updatedLocations.size() + " assets in " + durationMs + " ms");
+
+                log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
             }
         } catch (final RuntimeException e) {
             throw new RuntimeException("Exception loading assets", e);
