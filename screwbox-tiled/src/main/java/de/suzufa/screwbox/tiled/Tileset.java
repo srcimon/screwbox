@@ -133,7 +133,7 @@ public class Tileset {
     }
 
     // TODO: doc an test
-    private Sprite first() {
+    public Sprite first() {
         if (spriteCount() == 0) {
             throw new IllegalStateException("tileset has no sprite");
         }

@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.assets.Assets;
@@ -41,16 +42,17 @@ public class DefaultAssets implements Assets {
         loadingProgress = new LoadingProgress("searching for assets", 0);
         loadingTask = executor.submit(() -> {
             try {
+                Time before = Time.now();
                 final List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
                 for (final var assetLocation : assetLocations) {
                     loadingProgress = new LoadingProgress("loading asset " + assetLocation.id(),
                             assetLocations.size());
-                    var loadingDuration = Duration.ofExecution(() -> assetLocation.asset().load());
-                    log.debug(
-                            "loading asset " + assetLocation.id() + " took " + loadingDuration.milliseconds() + " ms");
+                    assetLocation.asset().load();
                 }
                 loadingTask = null;
                 loadingProgress = null;
+                var durationMs = Duration.since(before).milliseconds();
+                log.info("loaded " + assetLocations.size() + " assets in " + durationMs + " ms");
             } catch (final RuntimeException e) {
                 final var wrappedException = new RuntimeException("Exception loading assets", e);
                 exceptionHandler.accept(wrappedException);

@@ -1,16 +1,19 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
+import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
 
 import java.util.List;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadeOutTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadingScreenTransition;
@@ -26,6 +29,8 @@ import de.suzufa.screwbox.playground.debo.components.TextComponent;
 public class PlayerDeathState implements EntityState {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "dead");
 
     private static final List<ScreenTransition> TRANSITIONS = List.of(
             new FadeOutTransition(new HorizontalLinesTransition(20)),
@@ -48,7 +53,7 @@ public class PlayerDeathState implements EntityState {
             engine.audio().playEffect(PlayerResources.OUCH_SOUND);
         }
 
-        entity.get(SpriteComponent.class).sprite = PlayerResources.DEAD_SPRITE.newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
         entity.add(new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofSeconds(3)));
         entity.add(new TextComponent("GAME OVER", ""));
         entity.add(new ResetSceneComponent(Time.now().plusSeconds(3)));

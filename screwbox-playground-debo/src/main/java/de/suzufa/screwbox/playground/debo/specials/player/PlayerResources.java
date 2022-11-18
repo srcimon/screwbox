@@ -4,6 +4,7 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.tiled.Tileset;
 
+@Deprecated
 public class PlayerResources {
 
     private PlayerResources() {
@@ -11,8 +12,6 @@ public class PlayerResources {
 
     private static final Tileset TILESET = Tileset.fromJson("tilesets/specials/player.json");
 
-    public static final Sprite STANDING_SPRITE = TILESET.findByName("standing");
-    public static final Sprite DEAD_SPRITE = TILESET.findByName("dead");
     public static final Sprite RUNNING_SPRITE = TILESET.findByName("running");
     public static final Sprite JUMPING_SPRITE = TILESET.findByName("jumping");
     public static final Sprite IDLE_SPRITE = TILESET.findByName("idle");
