@@ -5,9 +5,12 @@ import java.util.List;
 public interface Assets {
 
     // TODO: return progress rather than progress in service?
-    Assets startLoadingFromPackage(String packageName); // TODO: accept class
+    Assets preparePackage(String packageName); // TODO: accept class
+
+    Assets preparePackageAsync(String packageName);
 
     List<AssetLocation<?>> scanPackageForAssetLocations(String packageName);// TODO: accept class
+    // TODO: scanPackageForAssetLocations? why
 
-    boolean isLoadingInProgress();
+    // TODO: enableLogging(LogLevel...)
 }

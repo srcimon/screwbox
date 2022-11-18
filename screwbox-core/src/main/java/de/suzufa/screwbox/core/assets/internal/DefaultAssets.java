@@ -1,12 +1,7 @@
 package de.suzufa.screwbox.core.assets.internal;
 
-import static java.util.Objects.nonNull;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
@@ -14,44 +9,35 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.Demo;
+import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
 
 public class DefaultAssets implements Assets {
 
     private final Cache<String, List<AssetLocation<?>>> LOCATIONS = new Cache<>();
-    private final ExecutorService executor;
+
     private final Log log;
+    private Async async;
 
-    private Future<?> loadingTask;
-    private final Consumer<Throwable> exceptionHandler;
-
-    public DefaultAssets(final ExecutorService executor, final Consumer<Throwable> exceptionHandler, final Log log) {
-        this.executor = executor;
-        this.exceptionHandler = exceptionHandler;
+    public DefaultAssets(final Async async, final Log log) {
+        this.async = async;
         this.log = log;
     }
 
     @Override
-    public Assets startLoadingFromPackage(final String packageName) {
-        if (nonNull(loadingTask)) {
-            throw new IllegalStateException("loading assets is already in progress");
-        }
-        loadingTask = executor.submit(() -> {
-            try {
-                Time before = Time.now();
-                final List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
-                for (final var assetLocation : assetLocations) {
-                    assetLocation.asset().load();
-                }
-                loadingTask = null;
-                var durationMs = Duration.since(before).milliseconds();
-                log.info("loaded " + assetLocations.size() + " assets in " + durationMs + " ms");
-            } catch (final RuntimeException e) {
-                final var wrappedException = new RuntimeException("Exception loading assets", e);
-                exceptionHandler.accept(wrappedException);
+    public Assets preparePackage(final String packageName) {
+        try {
+            Time before = Time.now();
+            final List<AssetLocation<?>> assetLocations = scanPackageForAssetLocations(packageName);
+            for (final var assetLocation : assetLocations) {
+                assetLocation.asset().load();
             }
-        });
+            var durationMs = Duration.since(before).milliseconds();
+            log.info("loaded " + assetLocations.size() + " assets in " + durationMs + " ms");
+        } catch (final RuntimeException e) {
+            throw new RuntimeException("Exception loading assets", e);
+        }
 
         return this;
     }
@@ -84,8 +70,9 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public boolean isLoadingInProgress() {
-        return nonNull(loadingTask);
+    public Assets preparePackageAsync(String packageName) {
+        async.run(Assets.class, () -> preparePackage(packageName));
+        return this;
     }
 
 }
