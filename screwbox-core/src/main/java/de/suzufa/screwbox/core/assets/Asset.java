@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Supplier;
 
-//TODO: javadoc
 /**
  * {@link Asset} is used to wrap your i/o intense game resources like graphics
  * and sounds when loaded for the first time. Assets can be preloaded via
