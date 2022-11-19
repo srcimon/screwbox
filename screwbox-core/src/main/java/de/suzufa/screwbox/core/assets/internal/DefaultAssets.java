@@ -61,21 +61,8 @@ public class DefaultAssets implements Assets {
         var assetLocations = new ArrayList<AssetLocation<?>>();
         for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
             for (final var field : clazz.getDeclaredFields()) {
-                if (Asset.class.equals(field.getType())
-                        && java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
-                    try {
-                        // TODO: better warning when not canAccess field
-                        final boolean isAccessible = field.trySetAccessible();
-                        if (!isAccessible) {
-                            throw new IllegalStateException(
-                                    "could not make field accessible for injecting asset");
-                        }
-                        final Asset<?> asset = (Asset<?>) field.get(Asset.class);
-                        assetLocations.add(new AssetLocation<>(asset, field));
-
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
-                        throw new IllegalStateException("error fetching assets from " + packageName, e);
-                    }
+                if (AssetLocation.isAssetLocation(field)) {
+                    assetLocations.add(AssetLocation.createAt(field));
                 }
             }
         }
