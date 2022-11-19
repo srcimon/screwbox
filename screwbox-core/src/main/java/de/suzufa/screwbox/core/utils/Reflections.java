@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-//TODO: javadoc and test
 public final class Reflections {
 
     private Reflections() {

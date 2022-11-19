@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core;
 
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.audio.Audio;
@@ -28,7 +29,9 @@ import de.suzufa.screwbox.core.ui.UiMenu;
  */
 public interface Engine {
 
-    // TODO: javadoc
+    /**
+     * Loads your game {@link Asset}s.
+     */
     Assets assets();
 
     /**
