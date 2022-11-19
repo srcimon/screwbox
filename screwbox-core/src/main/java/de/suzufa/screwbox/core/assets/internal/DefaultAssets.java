@@ -29,24 +29,20 @@ public class DefaultAssets implements Assets {
     @Override
     public List<AssetLocation<?>> preparePackage(final String packageName) {
         final List<AssetLocation<?>> updatedLocations = new ArrayList<>();
-        try {
-            final Time before = Time.now();
-            final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
-            for (final var assetLocation : assetLocations) {
+        final Time before = Time.now();
+        final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
+        for (final var assetLocation : assetLocations) {
 
-                final Asset<?> asset = assetLocation.asset();
-                if (!asset.isLoaded()) {
-                    asset.load();
-                    updatedLocations.add(assetLocation);
-                }
+            final Asset<?> asset = assetLocation.asset();
+            if (!asset.isLoaded()) {
+                asset.load();
+                updatedLocations.add(assetLocation);
             }
-            final var durationMs = Duration.since(before).milliseconds();
-            if (logEnabled) {
+        }
+        final var durationMs = Duration.since(before).milliseconds();
+        if (logEnabled) {
 
-                log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
-            }
-        } catch (final RuntimeException e) {
-            throw new RuntimeException("Exception loading assets", e);
+            log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
         }
 
         return updatedLocations;

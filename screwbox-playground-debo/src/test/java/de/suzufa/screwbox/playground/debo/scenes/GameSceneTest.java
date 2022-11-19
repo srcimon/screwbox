@@ -2,7 +2,6 @@ package de.suzufa.screwbox.playground.debo.scenes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
@@ -13,7 +12,6 @@ import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
 import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
-import de.suzufa.screwbox.core.utils.Resources;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
 class GameSceneTest {
@@ -32,11 +30,5 @@ class GameSceneTest {
         assertThat(entities.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
                 .anyMatch(e -> e.hasComponent(PlayerMarkerComponent.class));
-    }
-
-    // TODO: remove
-    @Test
-    void bla() {
-        Resources.loadBinary("default_font.png");
     }
 }
