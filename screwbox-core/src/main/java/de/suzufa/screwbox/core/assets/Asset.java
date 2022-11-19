@@ -6,7 +6,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Supplier;
 
 //TODO: javadoc
-public class Asset<T> {
+public class Asset<T> implements Supplier<T> {
 
     private final Supplier<T> supplier;
 
@@ -32,6 +32,7 @@ public class Asset<T> {
         this.supplier = requireNonNull(supplier, "supplier must not be null");
     }
 
+    @Override
     public T get() {
         if (!isLoaded()) {
             load();
