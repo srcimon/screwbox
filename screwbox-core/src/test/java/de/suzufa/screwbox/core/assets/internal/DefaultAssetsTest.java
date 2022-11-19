@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.assets.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -51,7 +52,6 @@ class DefaultAssetsTest {
         var locations = assets.listAssetLocationsInPackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(locations).hasSize(3)
-                .allMatch(asset -> asset.sourceClass().equals(DefaultAssetsTest.class))
                 .anyMatch(asset -> asset.asset().equals(ASSET_A))
                 .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_A"))
                 .anyMatch(asset -> asset.asset().equals(ASSET_B))
@@ -89,4 +89,8 @@ class DefaultAssetsTest {
         verify(log, never()).debug(anyString());
     }
 
+    @Test
+    void preparePackage_preparingPackageWithNonStaticAssets_noException() {
+        assertThatNoException().isThrownBy(() -> assets.preparePackage("de.suzufa.screwbox.core"));
+    }
 }

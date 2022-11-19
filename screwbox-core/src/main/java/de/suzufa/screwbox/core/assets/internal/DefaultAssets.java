@@ -14,10 +14,10 @@ import de.suzufa.screwbox.core.utils.Cache;
 
 public class DefaultAssets implements Assets {
 
-    private final Cache<String, List<AssetLocation<?>>> LOCATIONS = new Cache<>();
+    private final Cache<String, List<AssetLocation<?>>> locationsCache = new Cache<>();
 
     private final Log log;
-    private Async async;
+    private final Async async;
 
     private boolean logEnabled = false;
 
@@ -30,17 +30,17 @@ public class DefaultAssets implements Assets {
     public List<AssetLocation<?>> preparePackage(final String packageName) {
         final List<AssetLocation<?>> updatedLocations = new ArrayList<>();
         try {
-            Time before = Time.now();
+            final Time before = Time.now();
             final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
             for (final var assetLocation : assetLocations) {
 
-                Asset<?> asset = assetLocation.asset();
+                final Asset<?> asset = assetLocation.asset();
                 if (!asset.isLoaded()) {
                     asset.load();
                     updatedLocations.add(assetLocation);
                 }
             }
-            var durationMs = Duration.since(before).milliseconds();
+            final var durationMs = Duration.since(before).milliseconds();
             if (logEnabled) {
 
                 log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
@@ -54,33 +54,36 @@ public class DefaultAssets implements Assets {
 
     @Override
     public List<AssetLocation<?>> listAssetLocationsInPackage(final String packageName) {
-        return LOCATIONS.getOrElse(packageName, () -> {
-            final List<AssetLocation<?>> assetLocations = new ArrayList<>();
-            for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
-                for (final var field : clazz.getDeclaredFields()) {
-                    if (Asset.class.equals(field.getType())) {
-                        try {
-                            // TODO: better warning when not canAccess field
-                            boolean isAccessible = field.trySetAccessible();
-                            if (!isAccessible) {
-                                throw new IllegalStateException(
-                                        "could not make field accessible for injecting asset");
-                            }
-                            final Asset<?> asset = (Asset<?>) field.get(Asset.class);
-                            assetLocations.add(new AssetLocation<>(asset, clazz, field));
+        return locationsCache.getOrElse(packageName, () -> fetchAssetLocationsInPackage(packageName));
+    }
 
-                        } catch (IllegalArgumentException | IllegalAccessException e) {
-                            throw new IllegalStateException("error fetching assets from " + packageName, e);
+    private List<AssetLocation<?>> fetchAssetLocationsInPackage(final String packageName) {
+        var assetLocations = new ArrayList<AssetLocation<?>>();
+        for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
+            for (final var field : clazz.getDeclaredFields()) {
+                if (Asset.class.equals(field.getType())
+                        && java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                    try {
+                        // TODO: better warning when not canAccess field
+                        final boolean isAccessible = field.trySetAccessible();
+                        if (!isAccessible) {
+                            throw new IllegalStateException(
+                                    "could not make field accessible for injecting asset");
                         }
+                        final Asset<?> asset = (Asset<?>) field.get(Asset.class);
+                        assetLocations.add(new AssetLocation<>(asset, field));
+
+                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                        throw new IllegalStateException("error fetching assets from " + packageName, e);
                     }
                 }
             }
-            return assetLocations;
-        });
+        }
+        return assetLocations;
     }
 
     @Override
-    public Assets preparePackageAsync(String packageName) {
+    public Assets preparePackageAsync(final String packageName) {
         async.run(Assets.class, () -> preparePackage(packageName));
         return this;
     }
