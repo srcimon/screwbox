@@ -8,10 +8,10 @@ import java.util.List;
 public interface Assets {
 
     /**
-     * Loads all unloaded {@link Asset}s in the given package. Returns a list of all
-     * loaded {@link Loadable}s.
+     * Loads all unloaded {@link AssetLocation}s in the given package. Returns a
+     * list of all loaded {@link AssetLocation}s.
      */
-    List<Loadable> preparePackage(String packageName);
+    List<AssetLocation> preparePackage(String packageName);
 
     /**
      * Start asynchronous loading of all unloaded {@link Asset}s in the given
@@ -20,9 +20,9 @@ public interface Assets {
     Assets preparePackageAsync(String packageName);
 
     /**
-     * List all {@link Loadable} defined in the given package.
+     * List all {@link AssetLocation} defined in the given package.
      */
-    List<Loadable> listAssetsInPackage(String packageName);
+    List<AssetLocation> listAssetsInPackage(String packageName);
 
     /**
      * Activates logging of loading results. Logging is disabled by default.

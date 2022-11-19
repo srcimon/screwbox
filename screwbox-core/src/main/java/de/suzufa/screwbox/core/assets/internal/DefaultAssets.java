@@ -10,7 +10,7 @@ import java.util.List;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.assets.Assets;
-import de.suzufa.screwbox.core.assets.Loadable;
+import de.suzufa.screwbox.core.assets.AssetLocation;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.utils.Reflections;
 
 public class DefaultAssets implements Assets {
 
-    private final Cache<String, List<Loadable>> cache = new Cache<>();
+    private final Cache<String, List<AssetLocation>> cache = new Cache<>();
 
     private final Log log;
     private final Async async;
@@ -31,9 +31,9 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public List<Loadable> preparePackage(final String packageName) {
+    public List<AssetLocation> preparePackage(final String packageName) {
         final Time before = Time.now();
-        final var loadedAssets = new ArrayList<Loadable>();
+        final var loadedAssets = new ArrayList<AssetLocation>();
         final var assets = listAssetsInPackage(packageName);
         for (final var asset : assets) {
             if (!asset.isLoaded()) {
@@ -50,12 +50,12 @@ public class DefaultAssets implements Assets {
     }
 
     @Override
-    public List<Loadable> listAssetsInPackage(final String packageName) {
+    public List<AssetLocation> listAssetsInPackage(final String packageName) {
         return cache.getOrElse(packageName, () -> fetchAssetInPackage(packageName));
     }
 
-    private List<Loadable> fetchAssetInPackage(final String packageName) {
-        final var assets = new ArrayList<Loadable>();
+    private List<AssetLocation> fetchAssetInPackage(final String packageName) {
+        final var assets = new ArrayList<AssetLocation>();
         for (final var clazz : Reflections.findClassesInPackage(packageName)) {
             for (final var field : clazz.getDeclaredFields()) {
                 if (isAssetLocation(field)) {
@@ -84,14 +84,14 @@ public class DefaultAssets implements Assets {
         return this;
     }
 
-    private Loadable createAt(final Field field) {
+    private AssetLocation createAt(final Field field) {
         try {
             final boolean isAccessible = field.trySetAccessible();
             if (!isAccessible) {
                 final String name = field.getDeclaringClass().getName() + "." + field.getName();
                 throw new IllegalStateException("field is not accessible for creating asset location " + name);
             }
-            return (Loadable) field.get(Loadable.class);
+            return (AssetLocation) field.get(AssetLocation.class);
 
         } catch (IllegalArgumentException | IllegalAccessException e) {
             final String packageName = field.getClass().getPackageName();
@@ -100,6 +100,6 @@ public class DefaultAssets implements Assets {
     }
 
     private boolean isAssetLocation(final Field field) {
-        return Loadable.class.isAssignableFrom(field.getType()) && isStatic(field.getModifiers());
+        return AssetLocation.class.isAssignableFrom(field.getType()) && isStatic(field.getModifiers());
     }
 }
