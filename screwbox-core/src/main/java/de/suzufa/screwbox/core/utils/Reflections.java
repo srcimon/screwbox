@@ -24,7 +24,8 @@ public final class Reflections {
     public static List<Class<?>> findClassesInPackage(String packageName) {
         requireNonNull(packageName, "packageName must not be null");
         List<Class<?>> clazzes = new ArrayList<>();
-        for (String resourceName : getResources(Pattern.compile(".*" + packageName + ".*\\.class"))) {
+        Pattern classNamePattern = Pattern.compile(".*" + packageName + ".*\\.class");
+        for (String resourceName : getResources(classNamePattern)) {
             String className = resourceName.split("/")[resourceName.split("/").length - 1];
             String packagen = packageName
                     + resourceName.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(
@@ -45,14 +46,7 @@ public final class Reflections {
         }
     }
 
-    /**
-     * for all elements of java.class.path get a Collection of resources Pattern
-     * pattern = Pattern.compile(".*"); gets all resources
-     * 
-     * @param pattern the pattern to match
-     * @return the resources in the order they are found
-     */
-    public static Collection<String> getResources(final Pattern pattern) {
+    private static Collection<String> getResources(final Pattern pattern) {
         final ArrayList<String> retval = new ArrayList<>();
         final String classPath = System.getProperty("java.class.path", ".");
         final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
