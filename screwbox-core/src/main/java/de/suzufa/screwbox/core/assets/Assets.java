@@ -5,11 +5,11 @@ import java.util.List;
 //TODO: doc
 public interface Assets {
 
-    List<AssetLocation<?>> preparePackage(String packageName);
+    List<Asset<?>> preparePackage(String packageName);
 
     Assets preparePackageAsync(String packageName);
 
-    List<AssetLocation<?>> listAssetLocationsInPackage(String packageName);
+    List<Asset<?>> listAssetsInPackage(String packageName);
 
     Assets enableLogging();
 

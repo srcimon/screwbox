@@ -34,30 +34,24 @@ class DefaultAssetsTest {
     private static final Asset<String> ASSET_C = Asset.asset(() -> "loaded");
 
     @Test
-    void listAssetLocationsInPackage_packageDoesntExist_emptyList() {
-        var locations = assets.listAssetLocationsInPackage("de.suzufa.unknown");
+    void listAssetsInPackage_packageDoesntExist_emptyList() {
+        var locations = assets.listAssetsInPackage("de.suzufa.unknown");
 
         assertThat(locations).isEmpty();
     }
 
     @Test
-    void listAssetLocationsInPackage_noAssetsInPackage_emptyList() {
-        var locations = assets.listAssetLocationsInPackage("de.suzufa.core.audio");
+    void listAssetsInPackage_noAssetsInPackage_emptyList() {
+        var locations = assets.listAssetsInPackage("de.suzufa.core.audio");
 
         assertThat(locations).isEmpty();
     }
 
     @Test
-    void listAssetLocationsInPackage_packageExists_listsLocations() {
-        var locations = assets.listAssetLocationsInPackage("de.suzufa.screwbox.core.assets.internal");
+    void listAssetsInPackage_packageExists_listsLocations() {
+        var locations = assets.listAssetsInPackage("de.suzufa.screwbox.core.assets.internal");
 
-        assertThat(locations).hasSize(3)
-                .anyMatch(asset -> asset.asset().equals(ASSET_A))
-                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_A"))
-                .anyMatch(asset -> asset.asset().equals(ASSET_B))
-                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_B"))
-                .anyMatch(asset -> asset.asset().equals(ASSET_C))
-                .anyMatch(asset -> asset.sourceField().getName().equals("ASSET_C"));
+        assertThat(locations).containsExactly(ASSET_A, ASSET_B, ASSET_C);
     }
 
     @Test
@@ -77,9 +71,7 @@ class DefaultAssetsTest {
         verify(log).debug(logMessage.capture());
         assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
 
-        assertThat(prepared).hasSize(2)
-                .anyMatch(asset -> asset.asset().equals(ASSET_A))
-                .anyMatch(asset -> asset.asset().equals(ASSET_B));
+        assertThat(prepared).containsExactly(ASSET_A, ASSET_B);
     }
 
     @Test
