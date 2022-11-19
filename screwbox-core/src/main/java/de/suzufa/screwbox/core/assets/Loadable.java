@@ -1,5 +1,8 @@
 package de.suzufa.screwbox.core.assets;
 
+/**
+ * Marks loadable resources.
+ */
 public interface Loadable {
 
     /**
