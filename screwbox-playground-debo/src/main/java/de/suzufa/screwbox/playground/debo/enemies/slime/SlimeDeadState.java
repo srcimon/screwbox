@@ -26,7 +26,7 @@ public class SlimeDeadState implements EntityState {
     @Override
     public void enter(final Entity entity, Engine engine) {
 
-        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);
         entity.remove(CastShadowComponent.class);

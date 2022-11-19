@@ -19,7 +19,7 @@ public class PlayerIdleState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
     }
 
     @Override

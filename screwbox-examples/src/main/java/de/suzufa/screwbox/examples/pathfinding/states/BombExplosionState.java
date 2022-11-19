@@ -25,7 +25,7 @@ public class BombExplosionState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        Sprite sprite = SPRITE.get().newInstance();
+        Sprite sprite = SPRITE.get().freshInstance();
         entity.get(SpriteComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
         engine.audio().playEffect(EXPLOSION);

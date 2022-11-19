@@ -132,7 +132,11 @@ public class Sprite implements Serializable {
         return frames;
     }
 
-    public Sprite newInstance() {
+    /**
+     * Returns a new {@link Sprite} withe the same {@link Frame}s. But the animation
+     * is resetted to {@link Time#now()}.
+     */
+    public Sprite freshInstance() {
         return new Sprite(frames);
     }
 

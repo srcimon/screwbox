@@ -58,7 +58,7 @@ public class PlayerDeathState implements EntityState {
             engine.audio().playEffect(OUCH_SOUND);
         }
 
-        entity.get(SpriteComponent.class).sprite = SPRITE.get().newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofSeconds(3)));
         entity.add(new TextComponent("GAME OVER", ""));
         entity.add(new ResetSceneComponent(Time.now().plusSeconds(3)));
