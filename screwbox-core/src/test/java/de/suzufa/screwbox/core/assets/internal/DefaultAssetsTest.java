@@ -51,7 +51,10 @@ class DefaultAssetsTest {
     void listAssetsInPackage_packageExists_listsLocations() {
         var locations = assets.listAssetsInPackage("de.suzufa.screwbox.core.assets.internal");
 
-        assertThat(locations).containsExactly(ASSET_A, ASSET_B, ASSET_C);
+        assertThat(locations).hasSize(3)
+                .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
+                .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()))
+                .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_C".equals(a.id()));
     }
 
     @Test
@@ -71,7 +74,9 @@ class DefaultAssetsTest {
         verify(log).debug(logMessage.capture());
         assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
 
-        assertThat(prepared).containsExactly(ASSET_A, ASSET_B);
+        assertThat(prepared).hasSize(2)
+                .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
+                .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()));
     }
 
     @Test

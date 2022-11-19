@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * To make this preloading work {@link Asset}s have to be static class fields.
  * It's recommended to make them {@code private static final}.
  */
-public class Asset<T> implements Supplier<T>, AssetLocation {
+public class Asset<T> implements Supplier<T> {
 
     private final Supplier<T> supplier;
     private T value;
@@ -43,7 +43,6 @@ public class Asset<T> implements Supplier<T>, AssetLocation {
      * Loads the actual resource in the {@link Asset} wrapper so it can be received
      * very fast on {@link #get()}.
      */
-    @Override
     public void load() {
         if (!isLoaded()) {
             value = supplier.get();

@@ -1,16 +1,14 @@
 package de.suzufa.screwbox.core.assets.internal;
 
 import static java.lang.String.format;
-import static java.lang.reflect.Modifier.isStatic;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
-import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.AssetLocation;
+import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
@@ -58,8 +56,8 @@ public class DefaultAssets implements Assets {
         final var assets = new ArrayList<AssetLocation>();
         for (final var clazz : Reflections.findClassesInPackage(packageName)) {
             for (final var field : clazz.getDeclaredFields()) {
-                if (isAssetLocation(field)) {
-                    assets.add(createAt(field));
+                if (AssetLocation.isAssetLocation(field)) {
+                    assets.add(AssetLocation.createAt(field));
                 }
             }
         }
@@ -84,22 +82,4 @@ public class DefaultAssets implements Assets {
         return this;
     }
 
-    private AssetLocation createAt(final Field field) {
-        try {
-            final boolean isAccessible = field.trySetAccessible();
-            if (!isAccessible) {
-                final String name = field.getDeclaringClass().getName() + "." + field.getName();
-                throw new IllegalStateException("field is not accessible for creating asset location " + name);
-            }
-            return (AssetLocation) field.get(AssetLocation.class);
-
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            final String packageName = field.getClass().getPackageName();
-            throw new IllegalStateException("error fetching assets from " + packageName, e);
-        }
-    }
-
-    private boolean isAssetLocation(final Field field) {
-        return AssetLocation.class.isAssignableFrom(field.getType()) && isStatic(field.getModifiers());
-    }
 }
