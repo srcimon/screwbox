@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Time;
+
 class AssetTest {
 
     Asset<String> asset;
@@ -31,6 +33,18 @@ class AssetTest {
         assertThatThrownBy(nullAfterLoadingAsset::load)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("asset null after loading");
+    }
+
+    @Test
+    void load_alreadyLoaded_doenstLoadAgain() {
+        Asset<Time> timeAsset = Asset.asset(() -> Time.now());
+        asset.load();
+        Time value = timeAsset.get();
+
+        timeAsset.load();
+        Time secondValue = timeAsset.get();
+
+        assertThat(value).isEqualTo(secondValue);
     }
 
     @Test
