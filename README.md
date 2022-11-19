@@ -14,7 +14,7 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 - **Physics System** Apply movement to objects. Resolve collisions. Detect objects via raycasting.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from the [Tiled Editor](https://www.mapeditor.org)
 - **Basic UI** Create an animated interactive game ui in an instant.
-- **Resource Manageent** Load game assets in background.
+- **Asset Management** Load game assets in background.
 - **Input Support** Receive player interactions via keyboard and mouse.
 - **Game Scene** Use scenes to structure different game situations.
 - **Audio Support** Play wav and midi sounds. Control the volume. Thats it. Only the basics.
