@@ -13,6 +13,9 @@ public class AssetLocation {
     private final Field sourceField;
 
     public static AssetLocation createAt(final Field field) {
+        if (!isAssetLocation(field)) {
+            throw new IllegalStateException("field is no possible asset location: " + id(field));
+        }
         final boolean isAccessible = field.trySetAccessible();
         if (!isAccessible) {
             final String name = field.getDeclaringClass().getName() + "." + field.getName();
@@ -49,7 +52,11 @@ public class AssetLocation {
      * Returns a unique id of the {@link AssetLocation}.
      */
     public String id() {
-        return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
+        return id(sourceField);
+    }
+
+    private static String id(Field field) {
+        return field.getDeclaringClass().getName() + "." + field.getName();
     }
 
     private Asset<?> asAsset() {
