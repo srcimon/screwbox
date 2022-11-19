@@ -126,6 +126,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             try {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
                 throw new IllegalStateException("error receiving lightmap sprite");
             }
         });
