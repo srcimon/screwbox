@@ -1,9 +1,8 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import java.util.concurrent.Future;
-
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -26,7 +25,7 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea);
 
-    void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
+    void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
             WindowBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);

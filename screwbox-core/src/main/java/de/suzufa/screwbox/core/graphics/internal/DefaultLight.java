@@ -7,12 +7,14 @@ import static java.util.Objects.requireNonNull;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
@@ -115,11 +117,19 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light render() {
         final var copiedLightmap = lightmap;
-        final var sprite = executor.submit(() -> {
+        final var spriteFuture = executor.submit(() -> {
             final BufferedImage image = copiedLightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
+        Asset<Sprite> sprite = Asset.asset(() -> {
+            try {
+                return spriteFuture.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new IllegalStateException("error receiving lightmap sprite");
+            }
+        });
+
         window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();

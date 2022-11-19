@@ -15,10 +15,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Flip;
@@ -354,7 +354,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public Window drawSprite(final Future<Sprite> sprite, final Offset origin, final double scale,
+    public Window drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale,
             final Percent opacity, final Angle rotation,
             final Flip flip, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);

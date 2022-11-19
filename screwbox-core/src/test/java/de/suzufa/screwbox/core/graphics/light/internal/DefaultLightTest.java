@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
@@ -48,7 +48,7 @@ class DefaultLightTest {
     Window window;
 
     @Captor
-    ArgumentCaptor<Future<Sprite>> spriteCaptor;
+    ArgumentCaptor<Asset<Sprite>> spriteCaptor;
 
     DefaultWorld world;
     GraphicsConfiguration configuration;

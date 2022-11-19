@@ -12,6 +12,7 @@ import java.util.concurrent.FutureTask;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -100,7 +101,7 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    public void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }
