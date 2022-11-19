@@ -10,7 +10,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 //TODO: javadoc and test
@@ -19,19 +18,20 @@ public final class Reflections {
     private Reflections() {
     }
 
+    /**
+     * Returns a list of all {@link Class}es in the given Package.
+     */
     public static List<Class<?>> findClassesInPackage(String packageName) {
         requireNonNull(packageName, "packageName must not be null");
         List<Class<?>> clazzes = new ArrayList<>();
-        for (String string : getResources(Pattern.compile(".*" + packageName + ".*"))) {
-            if (string.endsWith(".class")) {
-                String className = string.split("/")[string.split("/").length - 1];
-                String packagen = packageName
-                        + string.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(className,
-                                "");
-                packagen = packagen.substring(0, packagen.length() - 1);
-                Class<?> class1 = getClass(className, packagen);
-                clazzes.add(class1);
-            }
+        for (String resourceName : getResources(Pattern.compile(".*" + packageName + ".*\\.class"))) {
+            String className = resourceName.split("/")[resourceName.split("/").length - 1];
+            String packagen = packageName
+                    + resourceName.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(
+                            className, "");
+            packagen = packagen.substring(0, packagen.length() - 1);
+            Class<?> class1 = getClass(className, packagen);
+            clazzes.add(class1);
         }
         return clazzes;
     }
@@ -52,8 +52,7 @@ public final class Reflections {
      * @param pattern the pattern to match
      * @return the resources in the order they are found
      */
-    public static Collection<String> getResources(
-            final Pattern pattern) {
+    public static Collection<String> getResources(final Pattern pattern) {
         final ArrayList<String> retval = new ArrayList<>();
         final String classPath = System.getProperty("java.class.path", ".");
         final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
@@ -78,14 +77,7 @@ public final class Reflections {
 
     private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern) {
         final ArrayList<String> retval = new ArrayList<>();
-        ZipFile zf;
-        try {
-            zf = new ZipFile(file);
-        } catch (final ZipException e) {
-            throw new Error(e);
-        } catch (final IOException e) {
-            throw new Error(e);
-        }
+        ZipFile zf = getZipFile(file);
         final Enumeration e = zf.entries();
         while (e.hasMoreElements()) {
             final ZipEntry ze = (ZipEntry) e.nextElement();
@@ -101,6 +93,14 @@ public final class Reflections {
             throw new Error(e1);
         }
         return retval;
+    }
+
+    private static ZipFile getZipFile(final File file) {
+        try {
+            return new ZipFile(file);
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not open zip file", e);
+        }
     }
 
     private static Collection<String> getResourcesFromDirectory(
