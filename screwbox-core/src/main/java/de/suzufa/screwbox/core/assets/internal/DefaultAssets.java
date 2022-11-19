@@ -29,8 +29,8 @@ public class DefaultAssets implements Assets {
 
     @Override
     public List<AssetLocation<?>> preparePackage(final String packageName) {
-        final List<AssetLocation<?>> updatedLocations = new ArrayList<>();
         final Time before = Time.now();
+        final List<AssetLocation<?>> updatedLocations = new ArrayList<>();
         final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
         for (final var assetLocation : assetLocations) {
             final Asset<?> asset = assetLocation.asset();
@@ -41,7 +41,6 @@ public class DefaultAssets implements Assets {
         }
         final var durationMs = Duration.since(before).milliseconds();
         if (logEnabled) {
-
             log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
         }
 
