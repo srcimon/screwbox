@@ -1,4 +1,6 @@
-package de.suzufa.screwbox.core.assets.internal;
+package de.suzufa.screwbox.core.utils;
+
+import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +13,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-//TODO: shite
-public class Demo {
-    public List<Class<?>> findAllClassesUsingClassLoader(String packageName) {
+//TODO: javadoc and test
+public final class Reflections {
+
+    private Reflections() {
+    }
+
+    public static List<Class<?>> findClassesInPackage(String packageName) {
+        requireNonNull(packageName, "packageName must not be null");
         List<Class<?>> clazzes = new ArrayList<>();
         for (String string : getResources(Pattern.compile(".*" + packageName + ".*"))) {
             if (string.endsWith(".class")) {
@@ -29,7 +36,7 @@ public class Demo {
         return clazzes;
     }
 
-    private Class<?> getClass(String className, String packageName) {
+    private static Class<?> getClass(String className, String packageName) {
         try {
             String name = packageName + "." + className.substring(0, className.lastIndexOf('.'));
             return Class.forName(name);

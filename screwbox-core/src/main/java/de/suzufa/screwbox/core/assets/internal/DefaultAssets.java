@@ -11,6 +11,7 @@ import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.utils.Cache;
+import de.suzufa.screwbox.core.utils.Reflections;
 
 public class DefaultAssets implements Assets {
 
@@ -32,7 +33,6 @@ public class DefaultAssets implements Assets {
         final Time before = Time.now();
         final List<AssetLocation<?>> assetLocations = listAssetLocationsInPackage(packageName);
         for (final var assetLocation : assetLocations) {
-
             final Asset<?> asset = assetLocation.asset();
             if (!asset.isLoaded()) {
                 asset.load();
@@ -55,7 +55,7 @@ public class DefaultAssets implements Assets {
 
     private List<AssetLocation<?>> fetchAssetLocationsInPackage(final String packageName) {
         var assetLocations = new ArrayList<AssetLocation<?>>();
-        for (final var clazz : new Demo().findAllClassesUsingClassLoader(packageName)) {
+        for (final var clazz : Reflections.findClassesInPackage(packageName)) {
             for (final var field : clazz.getDeclaredFields()) {
                 if (AssetLocation.isAssetLocation(field)) {
                     assetLocations.add(AssetLocation.createAt(field));
