@@ -3,6 +3,7 @@ package de.suzufa.screwbox.core.assets;
 import static java.lang.reflect.Modifier.isStatic;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 /**
  * Marks {@link Asset} positions in your game classes.
@@ -12,16 +13,16 @@ public class AssetLocation {
 
     private final Field sourceField;
 
-    public static AssetLocation createAt(final Field field) {
+    public static Optional<AssetLocation> tryToCreateAt(final Field field) {
         if (!isAssetLocation(field)) {
-            throw new IllegalStateException("field is no possible asset location: " + id(field));
+            return Optional.empty();
         }
         final boolean isAccessible = field.trySetAccessible();
         if (!isAccessible) {
             final String name = field.getDeclaringClass().getName() + "." + field.getName();
             throw new IllegalStateException("field is not accessible for creating asset location " + name);
         }
-        return new AssetLocation(field);
+        return Optional.of(new AssetLocation(field));
     }
 
     public static boolean isAssetLocation(final Field field) {
@@ -36,7 +37,7 @@ public class AssetLocation {
      * Loads the {@link Asset}.
      */
     public void load() {
-        asAsset().load();
+        toAsset().load();
     }
 
     /**
@@ -45,21 +46,17 @@ public class AssetLocation {
      * @return
      */
     public boolean isLoaded() {
-        return asAsset().isLoaded();
+        return toAsset().isLoaded();
     }
 
     /**
      * Returns a unique id of the {@link AssetLocation}.
      */
     public String id() {
-        return id(sourceField);
+        return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
     }
 
-    private static String id(Field field) {
-        return field.getDeclaringClass().getName() + "." + field.getName();
-    }
-
-    private Asset<?> asAsset() {
+    private Asset<?> toAsset() {
         try {
             return (Asset<?>) sourceField.get(Asset.class);
         } catch (IllegalArgumentException | IllegalAccessException e) {

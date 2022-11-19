@@ -22,7 +22,7 @@ public interface Assets {
     /**
      * List all {@link AssetLocation} defined in the given package.
      */
-    List<AssetLocation> listAssetsInPackage(String packageName);
+    List<AssetLocation> listAssetLocationsInPackage(String packageName);
 
     /**
      * Activates logging of loading results. Logging is disabled by default.

@@ -34,22 +34,22 @@ class DefaultAssetsTest {
     private static final Asset<String> ASSET_C = Asset.asset(() -> "loaded");
 
     @Test
-    void listAssetsInPackage_packageDoesntExist_emptyList() {
-        var locations = assets.listAssetsInPackage("de.suzufa.unknown");
+    void listAssetLocationsInPackage_packageDoesntExist_emptyList() {
+        var locations = assets.listAssetLocationsInPackage("de.suzufa.unknown");
 
         assertThat(locations).isEmpty();
     }
 
     @Test
-    void listAssetsInPackage_noAssetsInPackage_emptyList() {
-        var locations = assets.listAssetsInPackage("de.suzufa.core.audio");
+    void listAssetLocationsInPackage_noAssetsInPackage_emptyList() {
+        var locations = assets.listAssetLocationsInPackage("de.suzufa.core.audio");
 
         assertThat(locations).isEmpty();
     }
 
     @Test
-    void listAssetsInPackage_packageExists_listsLocations() {
-        var locations = assets.listAssetsInPackage("de.suzufa.screwbox.core.assets.internal");
+    void listAssetLocationsInPackage_packageExists_listsLocations() {
+        var locations = assets.listAssetLocationsInPackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(locations).hasSize(3)
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
