@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.assets.internal;
 
+import static java.lang.String.format;
 import static java.lang.reflect.Modifier.isStatic;
 
 import java.lang.reflect.Field;
@@ -32,38 +33,37 @@ public class DefaultAssets implements Assets {
     @Override
     public List<Asset<?>> preparePackage(final String packageName) {
         final Time before = Time.now();
-        final List<Asset<?>> updatedLocations = new ArrayList<>();
-        final List<Asset<?>> assetLocations = listAssetsInPackage(packageName);
-        for (final var assetLocation : assetLocations) {
-            final Asset<?> asset = assetLocation;
+        final var loadedAssets = new ArrayList<Asset<?>>();
+        final var assets = listAssetsInPackage(packageName);
+        for (final var asset : assets) {
             if (!asset.isLoaded()) {
                 asset.load();
-                updatedLocations.add(assetLocation);
+                loadedAssets.add(asset);
             }
         }
         final var durationMs = Duration.since(before).milliseconds();
         if (logEnabled) {
-            log.debug(String.format("loaded %s assets in %,d ms", updatedLocations.size(), durationMs));
+            log.debug(format("loaded %s assets in %,d ms", loadedAssets.size(), durationMs));
         }
 
-        return updatedLocations;
+        return loadedAssets;
     }
 
     @Override
     public List<Asset<?>> listAssetsInPackage(final String packageName) {
-        return cache.getOrElse(packageName, () -> fetchAssetLocationsInPackage(packageName));
+        return cache.getOrElse(packageName, () -> fetchAssetInPackage(packageName));
     }
 
-    private List<Asset<?>> fetchAssetLocationsInPackage(final String packageName) {
-        var assetLocations = new ArrayList<Asset<?>>();
+    private List<Asset<?>> fetchAssetInPackage(final String packageName) {
+        final var assets = new ArrayList<Asset<?>>();
         for (final var clazz : Reflections.findClassesInPackage(packageName)) {
             for (final var field : clazz.getDeclaredFields()) {
                 if (isAssetLocation(field)) {
-                    assetLocations.add(createAt(field));
+                    assets.add(createAt(field));
                 }
             }
         }
-        return assetLocations;
+        return assets;
     }
 
     @Override
