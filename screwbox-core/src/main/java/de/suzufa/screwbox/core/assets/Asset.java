@@ -22,7 +22,7 @@ public class Asset<T> implements Supplier<T> {
     /**
      * Creates a new {@link Asset}.
      * 
-     * @param supplier the supplier of the acctual game resource.
+     * @param supplier the supplier of the actual game resource.
      */
     public static <T> Asset<T> asset(final Supplier<T> supplier) {
         return new Asset<>(supplier);
