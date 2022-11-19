@@ -91,8 +91,7 @@ public class DefaultAssets implements Assets {
                 final String name = field.getDeclaringClass().getName() + "." + field.getName();
                 throw new IllegalStateException("field is not accessible for creating asset location " + name);
             }
-            final Asset<?> asset = (Asset<?>) field.get(Asset.class);
-            return asset;
+            return (Asset<?>) field.get(Asset.class);
 
         } catch (IllegalArgumentException | IllegalAccessException e) {
             final String packageName = field.getClass().getPackageName();
