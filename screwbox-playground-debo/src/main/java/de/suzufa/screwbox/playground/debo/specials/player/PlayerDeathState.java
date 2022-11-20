@@ -31,7 +31,7 @@ public class PlayerDeathState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "dead");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "dead");
 
     private static final Asset<Sound> OUCH_SOUND = Sound.assetFromFile("sounds/ouch.wav");
     private static final Asset<Sound> BLUPP_SOUND = Sound.assetFromFile("sounds/blupp.wav");

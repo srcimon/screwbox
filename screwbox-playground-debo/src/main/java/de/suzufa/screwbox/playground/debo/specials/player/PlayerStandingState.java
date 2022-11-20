@@ -18,7 +18,7 @@ public class PlayerStandingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "standing");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "standing");
     private final Time started = Time.now();
 
     @Override

@@ -21,7 +21,7 @@ public class SlimeDeadState implements EntityState {
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sound> KILL_SOUND = Sound.assetFromFile("sounds/kill.wav");
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "dead");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/enemies/slime.json", "dead");
 
     @Override
     public void enter(final Entity entity, Engine engine) {

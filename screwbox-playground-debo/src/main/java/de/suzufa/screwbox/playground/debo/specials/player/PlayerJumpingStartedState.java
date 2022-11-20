@@ -20,7 +20,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerJumpingStartedState implements EntityState {
 
     private static final long serialVersionUID = 1L;
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "jumping");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "jumping");
     private static final Asset<Sound> JUMP_SOUND = Sound.assetFromFile("sounds/jump.wav");
 
     private final Time started = Time.now();

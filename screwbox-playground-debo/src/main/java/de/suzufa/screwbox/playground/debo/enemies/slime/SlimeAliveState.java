@@ -14,7 +14,7 @@ public class SlimeAliveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/enemies/slime.json", "moving");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/enemies/slime.json", "moving");
 
     @Override
     public void enter(final Entity entity, Engine engine) {

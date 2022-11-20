@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.collectables;
 
-import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
 
 import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -14,7 +14,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class DeboD implements Converter<GameObject> {
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/collectables/debo-d.json");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/collectables/debo-d.json");
 
     @Override
     public Entity convert(final GameObject object) {

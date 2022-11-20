@@ -30,9 +30,6 @@ public class Tileset {
         return new Tileset(tilesetEntity);
     }
 
-    Tileset() {
-    }
-
     Tileset(final TilesetEntity tilesetEntity) {
         this(List.of(tilesetEntity));
     }
@@ -122,14 +119,23 @@ public class Tileset {
     }
 
     // TODO: doc an test
-    // TODO: non asset version
-    public static Asset<Sprite> assetFromJson(String fileName, String name) {
-        return Asset.asset(() -> fromJson(fileName).findByName(name));
+    public static Sprite loadSprite(final String fileName, final String name) {
+        return fromJson(fileName).findByName(name);
     }
 
     // TODO: doc an test
-    public static Asset<Sprite> assetFromJson(String fileName) {
-        return Asset.asset(() -> fromJson(fileName).first());
+    public static Sprite loadSprite(final String fileName) {
+        return fromJson(fileName).first();
+    }
+
+    // TODO: doc an test
+    public static Asset<Sprite> loadSpriteAsset(final String fileName, final String name) {
+        return Asset.asset(() -> loadSprite(fileName, name));
+    }
+
+    // TODO: doc an test
+    public static Asset<Sprite> loadSpriteAsset(final String fileName) {
+        return Asset.asset(() -> loadSprite(fileName));
     }
 
     // TODO: doc an test
@@ -138,5 +144,12 @@ public class Tileset {
             throw new IllegalStateException("tileset has no sprite");
         }
         return allSprites.get(0);
+    }
+
+    // TODO: doc an test
+    public void clear() {
+        spritesById.clear();
+        spritesByName.clear();
+        allSprites.clear();
     }
 }

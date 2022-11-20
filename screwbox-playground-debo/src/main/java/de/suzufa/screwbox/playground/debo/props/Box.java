@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.props;
 
-import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
 
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.assets.Asset;
@@ -16,7 +16,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class Box implements Converter<GameObject> {
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/props/box.json");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/props/box.json");
 
     @Override
     public Entity convert(GameObject object) {

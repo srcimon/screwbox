@@ -16,7 +16,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerDiggingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "digging");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "digging");
 
     @Override
     public void enter(Entity entity, Engine engine) {

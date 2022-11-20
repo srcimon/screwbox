@@ -18,7 +18,7 @@ public class PlayerRunningState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "running");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "running");
 
     @Override
     public void enter(Entity entity, Engine engine) {

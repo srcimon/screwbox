@@ -17,7 +17,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerFallingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
-    private static final Asset<Sprite> SPRITE = assetFromJson("tilesets/specials/player.json", "jumping");
+    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "jumping");
 
     private final Time started = Time.now();
 
