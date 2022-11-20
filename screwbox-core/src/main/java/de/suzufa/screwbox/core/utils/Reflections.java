@@ -26,11 +26,10 @@ public final class Reflections {
         for (String resourceName : getResources(classNamePattern)) {
             String className = resourceName.split("/")[resourceName.split("/").length - 1];
             String packagen = packageName
-                    + resourceName.split(packageName.replaceAll("[.]", "/"))[1].replaceAll("/", ".").replace(
+                    + resourceName.split(packageName.replace(".", "/"))[1].replace("/", ".").replace(
                             className, "");
             packagen = packagen.substring(0, packagen.length() - 1);
-            Class<?> class1 = getClass(className, packagen);
-            clazzes.add(class1);
+            clazzes.add(getClass(className, packagen));
         }
         return clazzes;
     }
