@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
-import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
-import static de.suzufa.screwbox.tiled.Tileset.assetFromJson;
+import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
