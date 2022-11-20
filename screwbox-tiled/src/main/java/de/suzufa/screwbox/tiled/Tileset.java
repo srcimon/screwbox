@@ -123,7 +123,7 @@ public class Tileset {
      * 
      * @param fileName name of the Tileset file
      * 
-     * @see #spriteAssetFromJson(String, String)
+     * @see #spriteFromJson(String, String)
      */
     public static Sprite spriteFromJson(final String fileName) {
         return fromJson(fileName).first();
@@ -136,20 +136,34 @@ public class Tileset {
      * @param name     name of the {@link Sprite} inside the file. The name is
      *                 defined by a 'name' property.
      * 
-     * @see #spriteAssetFromJson(String)
+     * @see #spriteFromJson(String)
      */
     public static Sprite spriteFromJson(final String fileName, final String name) {
         return fromJson(fileName).findByName(name);
     }
 
-    // TODO: doc an test
-    public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {
-        return Asset.asset(() -> spriteFromJson(fileName, name));
-    }
-
-    // TODO: doc an test
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
+     * wrapped as {@link Asset}.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteAssetFromJson(String, String)
+     */
     public static Asset<Sprite> spriteAssetFromJson(final String fileName) {
         return Asset.asset(() -> spriteFromJson(fileName));
+    }
+
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
+     * wrapped as {@link Asset}.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteAssetFromJson(String)
+     */
+    public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {
+        return Asset.asset(() -> spriteFromJson(fileName, name));
     }
 
     /**
