@@ -13,6 +13,8 @@ import java.util.zip.ZipFile;
 
 public final class Reflections {
 
+    private static final String CLASSPATH = System.getProperty("java.class.path", ".");
+
     private Reflections() {
     }
 
@@ -45,17 +47,14 @@ public final class Reflections {
 
     private static Collection<String> getResources(final Pattern pattern) {
         final ArrayList<String> retval = new ArrayList<>();
-        final String classPath = System.getProperty("java.class.path", ".");
-        final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
+        final String[] classPathElements = CLASSPATH.split(System.getProperty("path.separator"));
         for (final String element : classPathElements) {
             retval.addAll(getResources(element, pattern));
         }
         return retval;
     }
 
-    private static Collection<String> getResources(
-            final String element,
-            final Pattern pattern) {
+    private static Collection<String> getResources(final String element, final Pattern pattern) {
         final File file = new File(element);
         return file.isDirectory()
                 ? getResourcesFromDirectory(file, pattern)
@@ -69,15 +68,14 @@ public final class Reflections {
             while (entries.hasMoreElements()) {
                 final ZipEntry ze = entries.nextElement();
                 final String fileName = ze.getName();
-                final boolean accept = pattern.matcher(fileName).matches();
-                if (accept) {
+                if (pattern.matcher(fileName).matches()) {
                     retval.add(fileName);
                 }
             }
-        } catch (final IOException e1) {
-            throw new Error(e1);
+            return retval;
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not load resrouces from jar file", e);
         }
-        return retval;
     }
 
     private static ZipFile getZipFile(final File file) {
@@ -91,9 +89,8 @@ public final class Reflections {
     private static Collection<String> getResourcesFromDirectory(
             final File directory,
             final Pattern pattern) {
-        final ArrayList<String> retval = new ArrayList<>();
-        final File[] fileList = directory.listFiles();
-        for (final File file : fileList) {
+        final List<String> retval = new ArrayList<>();
+        for (final File file : directory.listFiles()) {
             if (file.isDirectory()) {
                 retval.addAll(getResourcesFromDirectory(file, pattern));
             } else {
@@ -104,11 +101,10 @@ public final class Reflections {
                         retval.add(fileName);
                     }
                 } catch (final IOException e) {
-                    throw new Error(e);
+                    throw new IllegalStateException("could not read resources from directory", e);
                 }
             }
         }
         return retval;
     }
-
 }
