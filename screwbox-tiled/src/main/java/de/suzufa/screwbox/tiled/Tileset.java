@@ -138,7 +138,11 @@ public class Tileset {
         return Asset.asset(() -> loadSprite(fileName));
     }
 
-    // TODO: doc an test
+    /**
+     * Returns the first {@link Sprite} from the {@link Tileset}. Raises an
+     * {@link IllegalStateException} when there is no {@link Sprite} in the
+     * {@link Tileset}.
+     */
     public Sprite first() {
         if (spriteCount() == 0) {
             throw new IllegalStateException("tileset has no sprite");
@@ -146,7 +150,9 @@ public class Tileset {
         return allSprites.get(0);
     }
 
-    // TODO: doc an test
+    /**
+     * Removes all {@link Sprite}s from the {@link Tileset}.
+     */
     public void clear() {
         spritesById.clear();
         spritesByName.clear();
