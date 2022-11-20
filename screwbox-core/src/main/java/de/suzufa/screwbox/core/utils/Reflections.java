@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -58,30 +57,24 @@ public final class Reflections {
     private static Collection<String> getResources(
             final String element,
             final Pattern pattern) {
-        final ArrayList<String> retval = new ArrayList<>();
         final File file = new File(element);
-        if (file.isDirectory()) {
-            retval.addAll(getResourcesFromDirectory(file, pattern));
-        } else {
-            retval.addAll(getResourcesFromJarFile(file, pattern));
-        }
-        return retval;
+        return file.isDirectory()
+                ? getResourcesFromDirectory(file, pattern)
+                : getResourcesFromJarFile(file, pattern);
     }
 
     private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern) {
         final ArrayList<String> retval = new ArrayList<>();
-        ZipFile zf = getZipFile(file);
-        final Enumeration e = zf.entries();
-        while (e.hasMoreElements()) {
-            final ZipEntry ze = (ZipEntry) e.nextElement();
-            final String fileName = ze.getName();
-            final boolean accept = pattern.matcher(fileName).matches();
-            if (accept) {
-                retval.add(fileName);
+        try (ZipFile zf = getZipFile(file)) {
+            final var entries = zf.entries();
+            while (entries.hasMoreElements()) {
+                final ZipEntry ze = entries.nextElement();
+                final String fileName = ze.getName();
+                final boolean accept = pattern.matcher(fileName).matches();
+                if (accept) {
+                    retval.add(fileName);
+                }
             }
-        }
-        try {
-            zf.close();
         } catch (final IOException e1) {
             throw new Error(e1);
         }
