@@ -6,8 +6,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.Objects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,20 +25,27 @@ public final class Resources {
      * Returns true if there is a resource with the given file name.
      */
     public static boolean resourceExists(final String fileName) {
-        final URL url = fileUrl(fileName);
-        return nonNull(url);
-    }
-
-    public static byte[] loadBinary(final String fileName) {
-        requireNonNull(fileName, "fileName must not be null");
-        try (InputStream resourceStream = CLASS_LOADER.getResourceAsStream(fileName)) {
-            if (isNull(resourceStream)) {
-                throw new IllegalArgumentException("file not found: " + fileName);
-            }
-            return resourceStream.readAllBytes();
+        try (var inputStream = getFileInputStream(fileName)) {
+            return nonNull(inputStream);
         } catch (IOException e) {
             throw new IllegalArgumentException("resource could not be read: " + fileName, e);
         }
+    }
+
+    public static byte[] loadBinary(final String fileName) {
+        try (var inputStream = getFileInputStream(fileName)) {
+            if (isNull(inputStream)) {
+                throw new IllegalArgumentException("file not found: " + fileName);
+            }
+            return inputStream.readAllBytes();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("resource could not be read: " + fileName, e);
+        }
+    }
+
+    private static InputStream getFileInputStream(final String fileName) {
+        requireNonNull(fileName, "fileName must not be null");
+        return CLASS_LOADER.getResourceAsStream(fileName);
     }
 
     public static <T> T loadJson(final String fileName, final Class<T> type) {
@@ -51,15 +56,10 @@ public final class Resources {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
         try {
-            final var fileContent = Resources.loadBinary(fileName);
+            final var fileContent = loadBinary(fileName);
             return OBJECT_MAPPER.readValue(fileContent, type);
         } catch (final IOException e) {
             throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
         }
-    }
-
-    private static URL fileUrl(final String fileName) {
-        Objects.requireNonNull(fileName, "fileName must not be null");
-        return CLASS_LOADER.getResource(fileName);
     }
 }
