@@ -6,6 +6,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,8 +18,18 @@ public final class Resources {
 
     private static final ClassLoader CLASS_LOADER = Resources.class.getClassLoader();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String PATH_SEPERATOR = System.getProperty("path.separator");
+    private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
     private Resources() {
+    }
+
+    /**
+     * Returns all element names in the classpath.
+     */
+    public static List<String> classPathElements() {
+        final String[] classPathElements = CLASSPATH.split(PATH_SEPERATOR);
+        return List.of(classPathElements);
     }
 
     /**
@@ -27,7 +38,7 @@ public final class Resources {
     public static boolean resourceExists(final String fileName) {
         try (var inputStream = getFileInputStream(fileName)) {
             return nonNull(inputStream);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalArgumentException("resource could not be read: " + fileName, e);
         }
     }
@@ -38,7 +49,7 @@ public final class Resources {
                 throw new IllegalArgumentException("file not found: " + fileName);
             }
             return inputStream.readAllBytes();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalArgumentException("resource could not be read: " + fileName, e);
         }
     }

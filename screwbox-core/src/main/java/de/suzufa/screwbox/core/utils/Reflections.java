@@ -1,19 +1,17 @@
 package de.suzufa.screwbox.core.utils;
 
+import static de.suzufa.screwbox.core.utils.Resources.classPathElements;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public final class Reflections {
-
-    private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
     private Reflections() {
     }
@@ -45,10 +43,9 @@ public final class Reflections {
         }
     }
 
-    private static Collection<String> getResources(final Pattern pattern) {
-        final ArrayList<String> retval = new ArrayList<>();
-        final String[] classPathElements = CLASSPATH.split(System.getProperty("path.separator"));
-        for (final String element : classPathElements) {
+    private static List<String> getResources(final Pattern pattern) {
+        final List<String> retval = new ArrayList<>();
+        for (final String element : classPathElements()) {
             retval.addAll(getResources(element, pattern));
         }
         return retval;
@@ -56,7 +53,7 @@ public final class Reflections {
 
     private static List<String> getResources(final String element, final Pattern pattern) {
         final File file = new File(element);
-        Collection<String> resources = file.isDirectory()
+        List<String> resources = file.isDirectory()
                 ? getResourcesFromDirectory(file)
                 : getResourcesFromJarFile(file);
 
@@ -69,13 +66,13 @@ public final class Reflections {
         return matchingResources;
     }
 
-    private static Collection<String> getResourcesFromJarFile(final File file) {
+    private static List<String> getResourcesFromJarFile(final File file) {
         final ArrayList<String> retval = new ArrayList<>();
-        try (ZipFile zf = getZipFile(file)) {
-            final var entries = zf.entries();
+        try (ZipFile zipFile = getZipFile(file)) {
+            final var entries = zipFile.entries();
             while (entries.hasMoreElements()) {
-                final ZipEntry ze = entries.nextElement();
-                retval.add(ze.getName());
+                final ZipEntry zipEntry = entries.nextElement();
+                retval.add(zipEntry.getName());
             }
             return retval;
         } catch (final IOException e) {
