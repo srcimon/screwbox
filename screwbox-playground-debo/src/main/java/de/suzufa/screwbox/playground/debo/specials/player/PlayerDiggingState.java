@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
-import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.assets.Asset;
@@ -16,7 +16,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerDiggingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
-    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "digging");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "digging");
 
     @Override
     public void enter(Entity entity, Engine engine) {

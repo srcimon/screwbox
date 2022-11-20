@@ -11,7 +11,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class BombTickingState implements EntityState {
 
-    private static final Asset<Sprite> SPRITE = Tileset.loadSpriteAsset("pathfinding/bomb.json", "ticking");
+    private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("pathfinding/bomb.json", "ticking");
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;

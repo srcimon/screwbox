@@ -17,7 +17,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class BombExplosionState implements EntityState {
 
-    private static final Asset<Sprite> SPRITE = Tileset.loadSpriteAsset("pathfinding/bomb.json", "explosion");
+    private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("pathfinding/bomb.json", "explosion");
     private static final Asset<Sound> EXPLOSION = Sound.assetFromFile("pathfinding/explosion.wav");
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
-import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
@@ -18,7 +18,7 @@ public class PlayerStandingState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "standing");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "standing");
     private final Time started = Time.now();
 
     @Override

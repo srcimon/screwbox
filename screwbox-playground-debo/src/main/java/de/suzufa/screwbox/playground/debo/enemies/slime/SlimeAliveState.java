@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.enemies.slime;
 
-import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.assets.Asset;
@@ -14,7 +14,7 @@ public class SlimeAliveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/enemies/slime.json", "moving");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/enemies/slime.json", "moving");
 
     @Override
     public void enter(final Entity entity, Engine engine) {

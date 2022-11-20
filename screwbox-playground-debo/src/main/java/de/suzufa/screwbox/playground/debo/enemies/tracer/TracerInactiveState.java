@@ -13,7 +13,7 @@ public class TracerInactiveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = Tileset.loadSpriteAsset("tilesets/enemies/tracer.json", "inactive");
+    private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("tilesets/enemies/tracer.json", "inactive");
 
     @Override
     public void enter(Entity entity, Engine engine) {

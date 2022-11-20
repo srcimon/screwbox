@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.props;
 
-import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.assets.Asset;
@@ -15,7 +15,7 @@ import de.suzufa.screwbox.tiled.GameObject;
 
 public class VanishingBlock implements Converter<GameObject> {
 
-    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/props/vanishing-block.json");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/props/vanishing-block.json");
 
     @Override
     public Entity convert(GameObject object) {

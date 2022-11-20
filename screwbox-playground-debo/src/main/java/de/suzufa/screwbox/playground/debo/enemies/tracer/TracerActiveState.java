@@ -15,7 +15,7 @@ public class TracerActiveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Asset<Sprite> SPRITE = Tileset.loadSpriteAsset("tilesets/enemies/tracer.json", "active");
+    private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("tilesets/enemies/tracer.json", "active");
     private static final Asset<Sound> SOUND = Sound.assetFromFile("sounds/scream.wav");
 
     @Override

@@ -119,23 +119,23 @@ public class Tileset {
     }
 
     // TODO: doc an test
-    public static Sprite loadSprite(final String fileName, final String name) {
+    public static Sprite spriteFromJson(final String fileName, final String name) {
         return fromJson(fileName).findByName(name);
     }
 
     // TODO: doc an test
-    public static Sprite loadSprite(final String fileName) {
+    public static Sprite spriteFromJson(final String fileName) {
         return fromJson(fileName).first();
     }
 
     // TODO: doc an test
-    public static Asset<Sprite> loadSpriteAsset(final String fileName, final String name) {
-        return Asset.asset(() -> loadSprite(fileName, name));
+    public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {
+        return Asset.asset(() -> spriteFromJson(fileName, name));
     }
 
     // TODO: doc an test
-    public static Asset<Sprite> loadSpriteAsset(final String fileName) {
-        return Asset.asset(() -> loadSprite(fileName));
+    public static Asset<Sprite> spriteAssetFromJson(final String fileName) {
+        return Asset.asset(() -> spriteFromJson(fileName));
     }
 
     /**

@@ -1,6 +1,6 @@
 package de.suzufa.screwbox.playground.debo.specials.player;
 
-import static de.suzufa.screwbox.tiled.Tileset.loadSpriteAsset;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
@@ -20,7 +20,7 @@ import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 public class PlayerJumpingStartedState implements EntityState {
 
     private static final long serialVersionUID = 1L;
-    private static final Asset<Sprite> SPRITE = loadSpriteAsset("tilesets/specials/player.json", "jumping");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "jumping");
     private static final Asset<Sound> JUMP_SOUND = Sound.assetFromFile("sounds/jump.wav");
 
     private final Time started = Time.now();

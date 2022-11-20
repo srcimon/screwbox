@@ -42,7 +42,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 //TODO: extract all assets
 public class DemoScene implements Scene {
 
-    private static final Asset<Sprite> PLAYER_STANDING = Tileset.loadSpriteAsset("pathfinding/player.json", "standing");
+    private static final Asset<Sprite> PLAYER_STANDING = Tileset.spriteAssetFromJson("pathfinding/player.json", "standing");
 
     private final Map map;
 
