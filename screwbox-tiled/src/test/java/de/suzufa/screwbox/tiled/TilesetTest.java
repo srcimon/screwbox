@@ -94,4 +94,18 @@ class TilesetTest {
         assertThat(tileset.spriteCount()).isZero();
         assertThat(tileset.all()).isEmpty();
     }
+
+    @Test
+    void spriteFromJson_noName_returnsSprite() {
+        Sprite sprite = Tileset.spriteFromJson("underworld.json");
+
+        assertThat(sprite).isNotNull();
+    }
+
+    @Test
+    void spriteFromJson_spriteFound_returnsSprite() {
+        Sprite sprite = Tileset.spriteFromJson("underworld.json", "myNamedSprite");
+
+        assertThat(sprite).isNotNull();
+    }
 }

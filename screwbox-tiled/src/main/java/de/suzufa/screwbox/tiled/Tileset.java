@@ -118,14 +118,28 @@ public class Tileset {
 
     }
 
-    // TODO: doc an test
-    public static Sprite spriteFromJson(final String fileName, final String name) {
-        return fromJson(fileName).findByName(name);
-    }
-
-    // TODO: doc an test
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteAssetFromJson(String, String)
+     */
     public static Sprite spriteFromJson(final String fileName) {
         return fromJson(fileName).first();
+    }
+
+    /**
+     * Returns a named {@link Sprite} directly from a {@link Tileset}.
+     * 
+     * @param fileName name of the Tileset file
+     * @param name     name of the {@link Sprite} inside the file. The name is
+     *                 defined by a 'name' property.
+     * 
+     * @see #spriteAssetFromJson(String)
+     */
+    public static Sprite spriteFromJson(final String fileName, final String name) {
+        return fromJson(fileName).findByName(name);
     }
 
     // TODO: doc an test
