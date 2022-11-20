@@ -86,9 +86,7 @@ public final class Reflections {
         }
     }
 
-    private static Collection<String> getResourcesFromDirectory(
-            final File directory,
-            final Pattern pattern) {
+    private static Collection<String> getResourcesFromDirectory(final File directory, final Pattern pattern) {
         final List<String> retval = new ArrayList<>();
         for (final File file : directory.listFiles()) {
             if (file.isDirectory()) {
@@ -96,8 +94,7 @@ public final class Reflections {
             } else {
                 try {
                     final String fileName = file.getCanonicalPath();
-                    final boolean accept = pattern.matcher(fileName).matches();
-                    if (accept) {
+                    if (pattern.matcher(fileName).matches()) {
                         retval.add(fileName);
                     }
                 } catch (final IOException e) {
