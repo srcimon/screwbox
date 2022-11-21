@@ -15,9 +15,10 @@ import de.suzufa.screwbox.core.Time;
 public class AssetLocation {
 
     private final Field sourceField;
+    private final Asset<?> asset;
 
     public static Optional<AssetLocation> tryToCreateAt(final Field field) {
-        if (!isAssetLocation(field)) {
+        if (!Asset.class.equals(field.getType()) || !isStatic(field.getModifiers())) {
             return Optional.empty();
         }
         final boolean isAccessible = field.trySetAccessible();
@@ -28,19 +29,21 @@ public class AssetLocation {
         return Optional.of(new AssetLocation(field));
     }
 
-    public static boolean isAssetLocation(final Field field) {
-        return Asset.class.equals(field.getType()) && isStatic(field.getModifiers());
-    }
-
-    private AssetLocation(Field sourceField) {
+    private AssetLocation(final Field sourceField) {
         this.sourceField = sourceField;
+        try {
+            this.asset = (Asset<?>) sourceField.get(Asset.class);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            final String packageName = sourceField.getClass().getPackageName();
+            throw new IllegalStateException("error fetching assets from " + packageName, e);
+        }
     }
 
     /**
      * Loads the {@link Asset}.
      */
     public void load() {
-        toAsset().load();
+        asset.load();
     }
 
     /**
@@ -49,10 +52,9 @@ public class AssetLocation {
      * @return
      */
     public boolean isLoaded() {
-        return toAsset().isLoaded();
+        return asset.isLoaded();
     }
 
-    // TODO:Test
     /**
      * Returns the {@link Duration} it took to load the {@link Asset}. Throws
      * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
@@ -61,10 +63,9 @@ public class AssetLocation {
      * @see #loadingTime
      */
     public Duration loadingDuration() {
-        return toAsset().loadingDuration();
+        return asset.loadingDuration();
     }
 
-    // TODO:Test
     /**
      * Returns the {@link Time} the {@link Asset} loading finished. Throws
      * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
@@ -73,7 +74,7 @@ public class AssetLocation {
      * @see #loadingDuration
      */
     public Time loadingTime() {
-        return toAsset().loadingTime();
+        return asset.loadingTime();
     }
 
     /**
@@ -83,12 +84,4 @@ public class AssetLocation {
         return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
     }
 
-    private Asset<?> toAsset() {
-        try {
-            return (Asset<?>) sourceField.get(Asset.class);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            final String packageName = sourceField.getClass().getPackageName();
-            throw new IllegalStateException("error fetching assets from " + packageName, e);
-        }
-    }
 }
