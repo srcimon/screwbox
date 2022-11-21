@@ -4,11 +4,9 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.Objects;
+import java.io.InputStream;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,31 +16,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public final class Resources {
 
+    private static final ClassLoader CLASS_LOADER = Resources.class.getClassLoader();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String PATH_SEPERATOR = System.getProperty("path.separator");
+    private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
     private Resources() {
+    }
+
+    /**
+     * Returns all element names in the classpath.
+     */
+    public static List<String> classPathElements() {
+        final String[] classPathElements = CLASSPATH.split(PATH_SEPERATOR);
+        return List.of(classPathElements);
     }
 
     /**
      * Returns true if there is a resource with the given file name.
      */
     public static boolean resourceExists(final String fileName) {
-        final URL url = fileUrl(fileName);
-        return nonNull(url);
+        try (var inputStream = getFileInputStream(fileName)) {
+            return nonNull(inputStream);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("resource could not be read: " + fileName, e);
+        }
     }
 
     public static byte[] loadBinary(final String fileName) {
-        final URL url = fileUrl(fileName);
-        if (isNull(url)) {
-            throw new IllegalArgumentException("file not found: " + fileName);
-        }
-
-        final File resourceFile = new File(url.getFile());
-        try {
-            return Files.readAllBytes(resourceFile.toPath());
+        try (var inputStream = getFileInputStream(fileName)) {
+            if (isNull(inputStream)) {
+                throw new IllegalArgumentException("file not found: " + fileName);
+            }
+            return inputStream.readAllBytes();
         } catch (final IOException e) {
-            throw new IllegalArgumentException("file could not be read: " + fileName);
+            throw new IllegalArgumentException("resource could not be read: " + fileName, e);
         }
+    }
+
+    private static InputStream getFileInputStream(final String fileName) {
+        requireNonNull(fileName, "fileName must not be null");
+        return CLASS_LOADER.getResourceAsStream(fileName);
     }
 
     public static <T> T loadJson(final String fileName, final Class<T> type) {
@@ -53,15 +67,10 @@ public final class Resources {
             throw new IllegalArgumentException(fileName + " is not a JSON-File");
         }
         try {
-            final var fileContent = Resources.loadBinary(fileName);
+            final var fileContent = loadBinary(fileName);
             return OBJECT_MAPPER.readValue(fileContent, type);
         } catch (final IOException e) {
             throw new IllegalArgumentException("file could not be deserialized: " + fileName, e);
         }
-    }
-
-    private static URL fileUrl(final String fileName) {
-        Objects.requireNonNull(fileName, "fileName must not be null");
-        return Resources.class.getClassLoader().getResource(fileName);
     }
 }

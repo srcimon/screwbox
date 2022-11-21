@@ -6,6 +6,7 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -25,7 +26,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     private static final Archetype VANISHINGS = Archetype.of(VanishingOnCollisionComponent.class,
             TransformComponent.class);
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
-    private static final Sound PFFFFF = Sound.fromFile("sounds/steam.wav");
+    private static final Asset<Sound> STEAM_SOUND = Sound.assetFromFile("sounds/steam.wav");
 
     @Override
     public void update(Engine engine) {
@@ -51,7 +52,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
         for (final Entity entity : activatedEntities) {
             var vanish = entity.get(VanishingOnCollisionComponent.class);
             if (vanish.vanishTime.isUnset()) {
-                engine.audio().playEffect(PFFFFF);
+                engine.audio().playEffect(STEAM_SOUND);
                 vanish.vanishTime = now.plus(vanish.timeout);
             }
         }

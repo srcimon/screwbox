@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.suzufa.screwbox.core.assets.Assets;
+import de.suzufa.screwbox.core.assets.internal.DefaultAssets;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.async.internal.DefaultAsync;
 import de.suzufa.screwbox.core.audio.Audio;
@@ -52,6 +54,7 @@ class DefaultEngine implements Engine {
     private final DefaultLog log;
     private final DefaultAsync async;
     private final DefaultSavegame savegame;
+    private final DefaultAssets assets;
     private final ExecutorService executor;
     private final String name;
 
@@ -73,6 +76,7 @@ class DefaultEngine implements Engine {
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         async = new DefaultAsync(executor, this::exceptionHandler);
+        assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
@@ -177,8 +181,14 @@ class DefaultEngine implements Engine {
         return savegame;
     }
 
+    @Override
+    public Assets assets() {
+        return assets;
+    }
+
     private void exceptionHandler(final Throwable throwable) {
         stop();
         log().error(throwable);
     }
+
 }

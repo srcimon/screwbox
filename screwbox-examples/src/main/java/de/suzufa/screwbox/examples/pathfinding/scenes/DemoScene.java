@@ -2,7 +2,9 @@ package de.suzufa.screwbox.examples.pathfinding.scenes;
 
 import static de.suzufa.screwbox.core.Bounds.atPosition;
 import static de.suzufa.screwbox.core.Duration.ofSeconds;
+import static de.suzufa.screwbox.tiled.Tileset.spriteAssetFromJson;
 
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
@@ -25,6 +27,7 @@ import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -35,9 +38,13 @@ import de.suzufa.screwbox.examples.pathfinding.systems.SpriteChangeSystem;
 import de.suzufa.screwbox.tiled.GameObject;
 import de.suzufa.screwbox.tiled.Map;
 import de.suzufa.screwbox.tiled.Tile;
-import de.suzufa.screwbox.tiled.Tileset;
 
 public class DemoScene implements Scene {
+
+    private static final Asset<Sprite> PLAYER_STANDING = spriteAssetFromJson("pathfinding/player.json", "standing");
+    private static final Asset<Sprite> PLAYER_WALKING = spriteAssetFromJson("pathfinding/player.json", "walking");
+    private static final Asset<Sprite> ENEMY_STANDING = spriteAssetFromJson("pathfinding/enemy.json", "standing");
+    private static final Asset<Sprite> ENEMY_WALKING = spriteAssetFromJson("pathfinding/enemy.json", "walking");
 
     private final Map map;
 
@@ -87,9 +94,8 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> player() {
-        final var tileset = Tileset.fromJson("pathfinding/player.json");
         return object -> new Entity(object.id())
-                .add(new SpriteChangeComponent(tileset.findByName("standing"), tileset.findByName("walking")))
+                .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
@@ -98,9 +104,8 @@ public class DemoScene implements Scene {
     }
 
     private Converter<GameObject> enemy() {
-        final var sprites = Tileset.fromJson("pathfinding/enemy.json");
         return object -> new Entity()
-                .add(new SpriteChangeComponent(sprites.findByName("standing"), sprites.findByName("walking")))
+                .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())

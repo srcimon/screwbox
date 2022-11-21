@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core;
 
+import de.suzufa.screwbox.core.assets.Asset;
+import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.async.Async;
 import de.suzufa.screwbox.core.audio.Audio;
 import de.suzufa.screwbox.core.entities.Entities;
@@ -26,6 +28,11 @@ import de.suzufa.screwbox.core.ui.UiMenu;
  * @see ScrewBox#createEngine()
  */
 public interface Engine {
+
+    /**
+     * Loads your game {@link Asset}s.
+     */
+    Assets assets();
 
     /**
      * Returns the games {@link Entity} management system. This is where all the

@@ -1,10 +1,14 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
+import static de.suzufa.screwbox.core.graphics.Color.WHITE;
+import static de.suzufa.screwbox.core.graphics.Pixelfont.defaultFont;
+
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -12,8 +16,6 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.LetsGoComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
@@ -22,8 +24,7 @@ public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
     private static final Archetype BUBBLES = Archetype.of(LetsGoComponent.class, TransformComponent.class);
-    private static final Pixelfont FONT = Pixelfont.defaultFont(Color.WHITE);
-    private static final Sound LETS_GO_SOUND = Sound.fromFile("sounds/letsgo.wav");
+    private static final Asset<Sound> LETS_GO_SOUND = Sound.assetFromFile("sounds/letsgo.wav");
 
     @Override
     public void update(Engine engine) {
@@ -50,7 +51,8 @@ public class LetsGoSystem implements EntitySystem {
             bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FONT, letsGoComponent.visibility, 0.5);
+            engine.graphics().world().drawTextCentered(postion, "LET'S GO", defaultFont(WHITE),
+                    letsGoComponent.visibility, 0.5);
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);
         }

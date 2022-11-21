@@ -20,6 +20,7 @@ class GameSceneTest {
     @ValueSource(strings = { "maps/0-1_intro.json", "maps/1-1_teufelsinsel.json", "maps/1-2_misty_caves.json" })
     void allMapsCanBeConvertetToEntities(String mapName) {
         var engine = Mockito.mock(Engine.class);
+
         var entityManager = new DefaultEntityManager();
         var systemManager = new DefaultSystemManager(engine, entityManager);
         Entities entities = new DefaultEntities(entityManager, systemManager);

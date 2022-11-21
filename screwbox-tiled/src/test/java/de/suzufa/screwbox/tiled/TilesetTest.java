@@ -1,11 +1,13 @@
 package de.suzufa.screwbox.tiled;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Sprite;
 
 class TilesetTest {
@@ -16,7 +18,7 @@ class TilesetTest {
 
     @BeforeEach
     void beforeEach() {
-        tileset = new Tileset();
+        tileset = new Tileset(emptyList());
         tileset.addSprite(4, SPRITE);
         tileset.addNameToSprite(4, "underworld");
     }
@@ -68,5 +70,57 @@ class TilesetTest {
 
         assertThatThrownBy(() -> tileset.single())
                 .isInstanceOf(IllegalStateException.class).hasMessage("tileset has not exactly one sprite");
+    }
+
+    @Test
+    void first_noSprites_throwsException() {
+        tileset.clear();
+
+        assertThatThrownBy(() -> tileset.first())
+                .isInstanceOf(IllegalStateException.class).hasMessage("tileset has no sprite");
+    }
+
+    @Test
+    void first_hasSprites_returnsFirst() {
+        tileset.addSprite(9, SPRITE);
+        tileset.addSprite(11, SPRITE.freshInstance());
+
+        assertThat(tileset.first()).isEqualTo(SPRITE);
+    }
+
+    @Test
+    void clear_hasSprites_isEmpty() {
+        tileset.clear();
+
+        assertThat(tileset.spriteCount()).isZero();
+        assertThat(tileset.all()).isEmpty();
+    }
+
+    @Test
+    void spriteFromJson_noName_returnsSprite() {
+        Sprite sprite = Tileset.spriteFromJson("underworld.json");
+
+        assertThat(sprite).isNotNull();
+    }
+
+    @Test
+    void spriteFromJson_spriteFound_returnsSprite() {
+        Sprite sprite = Tileset.spriteFromJson("underworld.json", "myNamedSprite");
+
+        assertThat(sprite).isNotNull();
+    }
+
+    @Test
+    void spriteAssetFromJson_noName_returnsSprite() {
+        Asset<Sprite> sprite = Tileset.spriteAssetFromJson("underworld.json");
+
+        assertThat(sprite.get()).isNotNull();
+    }
+
+    @Test
+    void spriteAssetFromJson_spriteFound_returnsSprite() {
+        Asset<Sprite> sprite = Tileset.spriteAssetFromJson("underworld.json", "myNamedSprite");
+
+        assertThat(sprite.get()).isNotNull();
     }
 }

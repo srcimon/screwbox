@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.audio;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 
 /**
  * Controls the audio playback of the {@link Engine}.
@@ -82,5 +83,10 @@ public interface Audio {
      * {@link #setEffectVolume(Percent)}.
      */
     Audio muteEffects();
+
+    // TODO: javadoc and test
+    default Audio playEffect(Asset<Sound> sound) {
+        return playEffect(sound.get());
+    }
 
 }

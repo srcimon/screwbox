@@ -1,9 +1,11 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
+import static de.suzufa.screwbox.core.assets.Asset.asset;
 import static de.suzufa.screwbox.core.utils.ListUtil.randomFrom;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
@@ -19,7 +21,7 @@ public class SmokePuffSystem implements EntitySystem {
     private static final Archetype PLAYER = Archetype.of(SpriteComponent.class, TransformComponent.class,
             SmokeEmitterComponent.class);
 
-    private static final Tileset SPRITES = Tileset.fromJson("tilesets/effects/smokes.json");
+    private static final Asset<Tileset> SPRITES = asset(() -> Tileset.fromJson("tilesets/effects/smokes.json"));
 
     @Override
     public void update(Engine engine) {
@@ -36,7 +38,7 @@ public class SmokePuffSystem implements EntitySystem {
             Entity smokePuff = new Entity().add(
                     new FadeOutComponent(2),
                     new TransformComponent(bounds),
-                    new SpriteComponent(randomFrom(SPRITES.all()), order)
+                    new SpriteComponent(randomFrom(SPRITES.get().all()), order)
 
             );
             engine.entities().add(smokePuff);

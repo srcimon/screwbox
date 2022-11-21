@@ -1,21 +1,28 @@
 package de.suzufa.screwbox.playground.debo.enemies.tracer;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.assets.Asset;
+import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.FollowPlayerComponent;
+import de.suzufa.screwbox.tiled.Tileset;
 
 public class TracerActiveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
 
+    private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("tilesets/enemies/tracer.json", "active");
+    private static final Asset<Sound> SOUND = Sound.assetFromFile("sounds/scream.wav");
+
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(SpriteComponent.class).sprite = TracerResources.ACTIVE_SPRITE.newInstance();
+        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new FollowPlayerComponent());
-        engine.audio().playEffectLooped(TracerResources.POEBELEI_SOUND);
+        engine.audio().playEffectLooped(SOUND.get());
     }
 
     @Override
@@ -28,7 +35,7 @@ public class TracerActiveState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         entity.remove(FollowPlayerComponent.class);
-        engine.audio().stop(TracerResources.POEBELEI_SOUND);
+        engine.audio().stop(SOUND.get());
     }
 
 }

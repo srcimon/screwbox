@@ -13,17 +13,17 @@ import de.suzufa.screwbox.playground.debo.components.TextComponent;
 
 public class PrintSystem implements EntitySystem {
 
-    private static final Pixelfont FONT = Pixelfont.defaultFont(Color.WHITE);
     private static final Archetype TEXTS = Archetype.of(TextComponent.class);
 
     @Override
     public void update(Engine engine) {
+        final Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
         for (var entity : engine.entities().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Window window = engine.graphics().window();
-            window.drawTextCentered(window.center(), textComponent.text, FONT, Percent.max(), 7);
+            window.drawTextCentered(window.center(), textComponent.text, font, Percent.max(), 7);
             Offset subtextOffset = Offset.at(window.center().x(), window.center().y() + 80);
-            window.drawTextCentered(subtextOffset, textComponent.subtext, FONT, Percent.max(), 4);
+            window.drawTextCentered(subtextOffset, textComponent.subtext, font, Percent.max(), 4);
         }
     }
 

@@ -1,9 +1,8 @@
 package de.suzufa.screwbox.core.graphics;
 
-import java.util.concurrent.Future;
-
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 
 public interface Window {
 
@@ -39,22 +38,22 @@ public interface Window {
         return fillCircle(offset, diameter, drawColor());
     }
 
-    Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    Window drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea);
 
-    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity) {
+    default Window drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
     }
 
-    default Window drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+    default Window drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
     }
 
-    default Window drawSprite(final Future<Sprite> sprite, final Offset origin, final Percent opacity) {
+    default Window drawSprite(final Asset<Sprite> sprite, final Offset origin, final Percent opacity) {
         return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
     }
 
-    default Window drawSprite(final Future<Sprite> sprite, final Offset origin) {
+    default Window drawSprite(final Asset<Sprite> sprite, final Offset origin) {
         return drawSprite(sprite, origin, Percent.max());
     }
 

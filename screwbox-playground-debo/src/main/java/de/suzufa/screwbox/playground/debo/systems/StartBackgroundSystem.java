@@ -1,34 +1,33 @@
 package de.suzufa.screwbox.playground.debo.systems;
 
-import java.util.ArrayList;
+import static de.suzufa.screwbox.tiled.Tileset.fromJson;
+
 import java.util.List;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percent;
-import de.suzufa.screwbox.core.Angle;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.tiled.Tileset;
 
 public class StartBackgroundSystem implements EntitySystem {
 
-    private static final List<Sprite> BACKGROUNDS = new ArrayList<>();
-
-    static {
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/specials/player.json").findByName("idle"));
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/enemies/slime.json").findByName("moving"));
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/enemies/tracer.json").findByName("active"));
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/specials/cat.json").findByName("walking"));
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/collectables/cherries.json").findById(0));
-        BACKGROUNDS.add(Tileset.fromJson("tilesets/props/box.json").findById(0));
-    }
+    private static final Asset<List<Sprite>> BACKGROUNDS = Asset
+            .asset(() -> List.of(
+                    fromJson("tilesets/specials/player.json").findByName("idle"),
+                    fromJson("tilesets/enemies/slime.json").findByName("moving"),
+                    fromJson("tilesets/enemies/tracer.json").findByName("active"),
+                    fromJson("tilesets/specials/cat.json").findByName("walking"),
+                    fromJson("tilesets/collectables/cherries.json").first(),
+                    fromJson("tilesets/props/box.json").first()));
 
     @Override
     public void update(final Engine engine) {
         final long milliseconds = engine.loop().runningTime().milliseconds();
-        final int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.size());
-        final Sprite sprite = BACKGROUNDS.get(index);
+        final int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.get().size());
+        final Sprite sprite = BACKGROUNDS.get().get(index);
         final Offset center = engine.graphics().window().center();
 
         final Angle rotation = Angle.degrees(milliseconds / 200.0);

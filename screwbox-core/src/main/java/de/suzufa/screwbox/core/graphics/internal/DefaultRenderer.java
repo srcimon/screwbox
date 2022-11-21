@@ -18,12 +18,11 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Flip;
@@ -200,13 +199,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Future<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    public void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
             Flip flip, WindowBounds clipArea) {
-        try {
-            drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-        }
+        drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
     }
 
     @Override

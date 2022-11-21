@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
@@ -115,4 +116,19 @@ class DurationTest {
         assertThat(Duration.ofMillis(10)).isNotEqualTo(Duration.ofMillis(3));
     }
 
+    @Test
+    void ofExecution_executionNull_throwsException() {
+        assertThatThrownBy(() -> Duration.ofExecution(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("execution must not be null");
+    }
+
+    @Test
+    void ofExecution_executionTakesTime_returnsNewInstance() {
+        Duration duration = Duration.ofExecution(() -> {
+            Time.now(); // burn some cpu
+        });
+
+        assertThat(duration.nanos()).isPositive();
+    }
 }

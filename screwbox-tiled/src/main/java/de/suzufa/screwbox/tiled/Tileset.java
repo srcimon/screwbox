@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.Offset;
@@ -27,9 +28,6 @@ public class Tileset {
     public static Tileset fromJson(final String fileName) {
         final var tilesetEntity = TilesetEntity.load(fileName);
         return new Tileset(tilesetEntity);
-    }
-
-    Tileset() {
     }
 
     Tileset(final TilesetEntity tilesetEntity) {
@@ -118,5 +116,74 @@ public class Tileset {
         }
         return allSprites.get(0);
 
+    }
+
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteFromJson(String, String)
+     */
+    public static Sprite spriteFromJson(final String fileName) {
+        return fromJson(fileName).first();
+    }
+
+    /**
+     * Returns a named {@link Sprite} directly from a {@link Tileset}.
+     * 
+     * @param fileName name of the Tileset file
+     * @param name     name of the {@link Sprite} inside the file. The name is
+     *                 defined by a 'name' property.
+     * 
+     * @see #spriteFromJson(String)
+     */
+    public static Sprite spriteFromJson(final String fileName, final String name) {
+        return fromJson(fileName).findByName(name);
+    }
+
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
+     * wrapped as {@link Asset}.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteAssetFromJson(String, String)
+     */
+    public static Asset<Sprite> spriteAssetFromJson(final String fileName) {
+        return Asset.asset(() -> spriteFromJson(fileName));
+    }
+
+    /**
+     * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
+     * wrapped as {@link Asset}.
+     * 
+     * @param fileName name of the Tileset file
+     * 
+     * @see #spriteAssetFromJson(String)
+     */
+    public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {
+        return Asset.asset(() -> spriteFromJson(fileName, name));
+    }
+
+    /**
+     * Returns the first {@link Sprite} from the {@link Tileset}. Raises an
+     * {@link IllegalStateException} when there is no {@link Sprite} in the
+     * {@link Tileset}.
+     */
+    public Sprite first() {
+        if (spriteCount() == 0) {
+            throw new IllegalStateException("tileset has no sprite");
+        }
+        return allSprites.get(0);
+    }
+
+    /**
+     * Removes all {@link Sprite}s from the {@link Tileset}.
+     */
+    public void clear() {
+        spritesById.clear();
+        spritesByName.clear();
+        allSprites.clear();
     }
 }

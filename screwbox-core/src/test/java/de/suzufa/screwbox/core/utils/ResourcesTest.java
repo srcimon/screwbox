@@ -3,11 +3,20 @@ package de.suzufa.screwbox.core.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class ResourcesTest {
 
     private record JsonDemo(String name) {
+    }
+
+    @Test
+    void classPathElements_returnsElementsFromClassPath() {
+        List<String> elements = Resources.classPathElements();
+        assertThat(elements).isNotEmpty()
+                .anyMatch(element -> element.contains("/jackson-databind/"));
     }
 
     @Test

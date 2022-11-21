@@ -10,6 +10,7 @@ import java.util.Optional;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
@@ -36,29 +37,29 @@ import de.suzufa.screwbox.tiled.Tileset;
 
 public class CatMovementSystem implements EntitySystem {
 
-    private static final String WALKING = "walking";
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
     private static final Archetype CAT = Archetype.of(CatMarkerComponent.class, TransformComponent.class);
     private static final Archetype NAVPOINTS = Archetype.of(NavpointComponent.class, TransformComponent.class);
 
-    private static final Map<Class<?>, Sprite> SPRITES = new HashMap<>();
+    private static final Asset<Map<Class<?>, Sprite>> SPRITES = Asset.asset(() -> {
+        Map<Class<?>, Sprite> sprites = new HashMap<>();
+        Tileset catSprites = Tileset.fromJson("tilesets/specials/cat.json");
+        Sprite walking = catSprites.findByName("walking");
+        sprites.put(PlayerDeathState.class, walking);
+        sprites.put(PlayerDiggingState.class, walking);
+        sprites.put(PlayerFallingState.class, walking);
+        sprites.put(PlayerFallThroughState.class, walking);
+        sprites.put(PlayerRunningState.class, walking);
+        sprites.put(PlayerIdleState.class, catSprites.findByName("idle"));
+        sprites.put(PlayerJumpingStartedState.class, catSprites.findByName("jumping"));
+        sprites.put(PlayerJumpingState.class, catSprites.findByName("jumping"));
+        sprites.put(PlayerStandingState.class, catSprites.findByName("standing"));
+        return sprites;
+    });
 
     @Override
     public UpdatePriority updatePriority() {
         return UpdatePriority.PREPARATION;
-    }
-
-    static {
-        Tileset catSprites = Tileset.fromJson("tilesets/specials/cat.json");
-        SPRITES.put(PlayerDeathState.class, catSprites.findByName(WALKING));
-        SPRITES.put(PlayerDiggingState.class, catSprites.findByName(WALKING));
-        SPRITES.put(PlayerFallingState.class, catSprites.findByName(WALKING));
-        SPRITES.put(PlayerFallThroughState.class, catSprites.findByName(WALKING));
-        SPRITES.put(PlayerIdleState.class, catSprites.findByName("idle"));
-        SPRITES.put(PlayerJumpingStartedState.class, catSprites.findByName("jumping"));
-        SPRITES.put(PlayerJumpingState.class, catSprites.findByName("jumping"));
-        SPRITES.put(PlayerRunningState.class, catSprites.findByName(WALKING));
-        SPRITES.put(PlayerStandingState.class, catSprites.findByName("standing"));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class CatMovementSystem implements EntitySystem {
         Entity nextNavpoint = navpoints.get(0); // rely on implementation: first entity is always the oldest one
         NavpointComponent navpointComponent = nextNavpoint.get(NavpointComponent.class);
         Vector nextPosition = nextNavpoint.get(TransformComponent.class).bounds.position();
-        Sprite nextSprite = SPRITES.get(navpointComponent.state);
+        Sprite nextSprite = SPRITES.get().get(navpointComponent.state);
         if (isNull(nextSprite)) {
             return;
         }

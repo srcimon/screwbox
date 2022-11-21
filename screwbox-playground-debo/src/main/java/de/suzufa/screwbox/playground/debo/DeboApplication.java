@@ -14,6 +14,8 @@ public class DeboApplication {
 
         engine.ui().setLayouter(new WobblyUiLayouter());
 
+        engine.assets().enableLogging().preparePackageAsync("de.suzufa.screwbox.playground.debo");
+
         engine.scenes()
                 .add(new DeadScene())
                 .add(new PauseScene())

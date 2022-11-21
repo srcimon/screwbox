@@ -1,9 +1,8 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import java.util.concurrent.Future;
-
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Percent;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
@@ -65,7 +64,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Future<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
+    public void drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
             final Angle rotation,
             final Flip flip, final WindowBounds clipArea) {
         // does nothing

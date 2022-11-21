@@ -5,6 +5,7 @@ import static java.util.Objects.nonNull;
 import java.io.Serializable;
 
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.utils.Resources;
 
 /**
@@ -24,6 +25,11 @@ public final class Sound implements Serializable {
             throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
         }
         return new Sound(Resources.loadBinary(fileName));
+    }
+
+    // TODO: javadoc and test
+    public static Asset<Sound> assetFromFile(String fileName) {
+        return Asset.asset(() -> fromFile(fileName));
     }
 
     Sound(byte[] content) {
