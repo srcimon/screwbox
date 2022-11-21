@@ -43,26 +43,23 @@ public final class Reflections {
     }
 
     private static List<String> getResources(final Pattern pattern) {
-        final List<String> retval = new ArrayList<>();
+        final List<String> matchingResources = new ArrayList<>();
         for (final String element : classPathElements()) {
-            retval.addAll(getResources(element, pattern));
-        }
-        return retval;
-    }
-
-    private static List<String> getResources(final String element, final Pattern pattern) {
-        final File file = new File(element);
-        final List<String> resources = file.isDirectory()
-                ? getResourcesFromDirectory(file)
-                : getResourcesFromJarFile(file);
-
-        final var matchingResources = new ArrayList<String>();
-        for (final var resource : resources) {
-            if (pattern.matcher(resource).matches()) {
-                matchingResources.add(resource);
+            for (final var resource : getResources(element)) {
+                if (pattern.matcher(resource).matches()) {
+                    matchingResources.add(resource);
+                }
             }
         }
         return matchingResources;
+    }
+
+    private static List<String> getResources(final String element) {
+        final File file = new File(element);
+        return file.isDirectory()
+                ? getResourcesFromDirectory(file)
+                : getResourcesFromJarFile(file);
+
     }
 
     private static List<String> getResourcesFromJarFile(final File file) {
@@ -79,18 +76,18 @@ public final class Reflections {
     }
 
     private static List<String> getResourcesFromDirectory(final File directory) {
-        final List<String> retval = new ArrayList<>();
+        final List<String> resources = new ArrayList<>();
         for (final File file : directory.listFiles()) {
             if (file.isDirectory()) {
-                retval.addAll(getResourcesFromDirectory(file));
+                resources.addAll(getResourcesFromDirectory(file));
             } else {
                 try {
-                    retval.add(file.getCanonicalPath());
+                    resources.add(file.getCanonicalPath());
                 } catch (final IOException e) {
                     throw new IllegalStateException("could not read resources from directory", e);
                 }
             }
         }
-        return retval;
+        return resources;
     }
 }
