@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Time;
 
 class AssetTest {
@@ -71,4 +72,37 @@ class AssetTest {
         assertThat(asset.get()).isEqualTo("i like fish");
     }
 
+    @Test
+    void loadingTime_notLoaded_thowsException() {
+        assertThatThrownBy(() -> asset.loadingTime())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("asset has not been loaded yet");
+    }
+
+    @Test
+    void loadingDuration_notLoaded_thowsException() {
+        assertThatThrownBy(() -> asset.loadingDuration())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("asset has not been loaded yet");
+    }
+
+    @Test
+    void loadingTime_loaded_returnsTimeOfLoading() {
+        Time before = Time.now();
+        asset.load();
+
+        Time time = asset.loadingTime();
+
+        assertThat(time.isAfter(before)).isTrue();
+        assertThat(time.isBefore(Time.now())).isTrue();
+    }
+
+    @Test
+    void loadingDuration_loaded_returnsDurationOfLoading() {
+        asset.load();
+
+        Duration loadingDuration = asset.loadingDuration();
+
+        assertThat(loadingDuration.nanos()).isPositive();
+    }
 }

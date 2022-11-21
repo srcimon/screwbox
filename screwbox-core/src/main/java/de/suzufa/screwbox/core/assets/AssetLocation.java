@@ -5,6 +5,9 @@ import static java.lang.reflect.Modifier.isStatic;
 import java.lang.reflect.Field;
 import java.util.Optional;
 
+import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Time;
+
 /**
  * Marks {@link Asset} positions in your game classes.
  */
@@ -47,6 +50,30 @@ public class AssetLocation {
      */
     public boolean isLoaded() {
         return toAsset().isLoaded();
+    }
+
+    // TODO:Test
+    /**
+     * Returns the {@link Duration} it took to load the {@link Asset}. Throws
+     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
+     * 
+     * @see #isLoaded()
+     * @see #loadingTime
+     */
+    public Duration loadingDuration() {
+        return toAsset().loadingDuration();
+    }
+
+    // TODO:Test
+    /**
+     * Returns the {@link Time} the {@link Asset} loading finished. Throws
+     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
+     * 
+     * @see #isLoaded()
+     * @see #loadingDuration
+     */
+    public Time loadingTime() {
+        return toAsset().loadingTime();
     }
 
     /**
