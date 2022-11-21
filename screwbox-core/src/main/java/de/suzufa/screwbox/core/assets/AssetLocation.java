@@ -6,17 +6,22 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 import de.suzufa.screwbox.core.Duration;
+import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 
 /**
  * Marks {@link Asset} positions in your game classes.
  */
-//TODO: finish javadoc and tests
 public class AssetLocation {
 
     private final Field sourceField;
     private final Asset<?> asset;
 
+    /**
+     * Tries to create an {@link AssetLocation} from a {@link Field}. Is most likely
+     * called internaly in the {@link Engine}. Is empty when {@link Field} is not an
+     * {@link AssetLocation}.
+     */
     public static Optional<AssetLocation> tryToCreateAt(final Field field) {
         if (!Asset.class.equals(field.getType()) || !isStatic(field.getModifiers())) {
             return Optional.empty();
