@@ -22,6 +22,7 @@ public class GameOfLifeExample {
 
         engine.entities()
                 .add(grid)
+
                 .add(new GridUpdateSystem())
                 .add(new GridRenderSystem())
                 .add(new GridInteractionSystem())
