@@ -6,8 +6,6 @@ import de.suzufa.screwbox.core.assets.Asset;
 
 public interface Window {
 
-    Window toggleMenuBar();
-
     Window drawColor(Color color);
 
     Color drawColor();

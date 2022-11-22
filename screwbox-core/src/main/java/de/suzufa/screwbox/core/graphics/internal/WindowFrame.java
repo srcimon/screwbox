@@ -1,16 +1,11 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Canvas;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 import de.suzufa.screwbox.core.Engine;
 
@@ -25,29 +20,12 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
     private final Canvas canvas;
 
     public WindowFrame(final Engine engine) {
-        final JMenuBar menuBar = new JMenuBar();
-        final JMenu game = new JMenu("Game");
-        final JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                engine.stop();
-            }
-        });
-        game.add(exit);
-        menuBar.add(game);
-        setJMenuBar(menuBar);
         addWindowListener(this);
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
 
         this.engine = engine;
-    }
-
-    public void toggleMenuBar() {
-        getJMenuBar().setVisible(!getJMenuBar().isVisible());
     }
 
     public Canvas getCanvas() {
