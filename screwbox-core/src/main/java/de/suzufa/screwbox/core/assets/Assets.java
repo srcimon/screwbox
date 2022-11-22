@@ -9,7 +9,8 @@ public interface Assets {
 
     /**
      * Loads all unloaded {@link AssetLocation}s in the given package. Returns a
-     * list of all loaded {@link AssetLocation}s.
+     * list of all loaded {@link AssetLocation}s. {@link AssetLocation} will have
+     * information on {@link AssetLocation#loadingDuration()}.
      */
     List<AssetLocation> preparePackage(String packageName);
 
@@ -21,6 +22,8 @@ public interface Assets {
 
     /**
      * List all {@link AssetLocation} defined in the given package.
+     * {@link AssetLocation} will have no information on
+     * {@link AssetLocation#loadingDuration()}.
      */
     List<AssetLocation> listAssetLocationsInPackage(String packageName);
 

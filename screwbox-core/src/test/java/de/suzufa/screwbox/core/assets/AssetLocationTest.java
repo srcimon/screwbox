@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.assets;
 
-import static de.suzufa.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Field;
@@ -10,24 +9,21 @@ import org.junit.jupiter.api.Test;
 
 class AssetLocationTest {
 
-    static final Asset<String> TEST_ASSET = Asset.asset(() -> "hello world");
+    private static final Asset<String> ASSET = Asset.asset(() -> "test");
 
-    private AssetLocation assetLocation;
+    AssetLocation assetLocation;
 
     @BeforeEach
     void beforeEach() throws Exception {
-        Field field = AssetLocationTest.class.getDeclaredField("TEST_ASSET");
-        assetLocation = AssetLocation.tryToCreateAt(field).get();
-        assetLocation.load();
+        Field assetField = AssetLocationTest.class.getDeclaredField("ASSET");
+        assetLocation = AssetLocation.tryToCreateAt(assetField).get();
+        ASSET.load();
     }
 
     @Test
-    void loadingTime_assetLoaded_isTimeBeforeNow() {
-        assertThat(assetLocation.loadingTime().isBefore(now())).isTrue();
-    }
-
-    @Test
-    void loadingDuration_assetLoaded_isPositive() {
-        assertThat(assetLocation.loadingDuration().nanos()).isPositive();
+    void toString_returnsAssetLocationId() {
+        assertThat(assetLocation)
+                .hasToString(
+                        "AssetLocation [id=de.suzufa.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
     }
 }

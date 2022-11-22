@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Time;
 
 /**
  * Marks {@link Asset} positions in your game classes.
@@ -16,6 +15,8 @@ public class AssetLocation {
 
     private final Field sourceField;
     private final Asset<?> asset;
+
+    private Duration loadingDuration;
 
     /**
      * Tries to create an {@link AssetLocation} from a {@link Field}. Is most likely
@@ -48,38 +49,25 @@ public class AssetLocation {
      * Loads the {@link Asset}.
      */
     public void load() {
-        asset.load();
+        loadingDuration = Duration.ofExecution(() -> asset.load());
     }
 
     /**
      * Returns {@code true} if {@link Asset} is already loaded.
-     * 
-     * @return
      */
     public boolean isLoaded() {
         return asset.isLoaded();
     }
 
     /**
-     * Returns the {@link Duration} it took to load the {@link Asset}. Throws
-     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
+     * Returns the {@link Duration} it took to load the {@link Asset}. Is empty when
+     * there is no information on the loading {@link Duration} or when {@link Asset}
+     * has not been loaded yet.
      * 
      * @see #isLoaded()
-     * @see #loadingTime
      */
-    public Duration loadingDuration() {
-        return asset.loadingDuration();
-    }
-
-    /**
-     * Returns the {@link Time} the {@link Asset} loading finished. Throws
-     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
-     * 
-     * @see #isLoaded()
-     * @see #loadingDuration
-     */
-    public Time loadingTime() {
-        return asset.loadingTime();
+    public Optional<Duration> loadingDuration() {
+        return Optional.ofNullable(loadingDuration);
     }
 
     /**
@@ -87,6 +75,11 @@ public class AssetLocation {
      */
     public String id() {
         return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
+    }
+
+    @Override
+    public String toString() {
+        return "AssetLocation [id=" + id() + ", isLoaded=" + isLoaded() + "]";
     }
 
 }
