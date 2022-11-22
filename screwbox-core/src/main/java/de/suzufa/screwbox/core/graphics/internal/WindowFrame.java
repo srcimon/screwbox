@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.Canvas;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
@@ -16,10 +17,19 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
 
     private boolean hasFocus;
 
-    public WindowFrame(Engine engine) {
+    private final Canvas canvas;
+
+    public WindowFrame(final Engine engine) {
         addWindowListener(this);
         addWindowFocusListener(this);
+        canvas = new Canvas();
+        add(canvas);
+
         this.engine = engine;
+    }
+
+    public Canvas getCanvas() {
+        return this.canvas;
     }
 
     @Override
@@ -58,13 +68,13 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
     }
 
     @Override
-    public void windowGainedFocus(WindowEvent e) {
+    public void windowGainedFocus(final WindowEvent e) {
         this.hasFocus = true;
 
     }
 
     @Override
-    public void windowLostFocus(WindowEvent e) {
+    public void windowLostFocus(final WindowEvent e) {
         this.hasFocus = false;
     }
 

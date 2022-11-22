@@ -10,7 +10,6 @@ import static java.util.Objects.nonNull;
 
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RadialGradientPaint;
@@ -37,15 +36,16 @@ public class DefaultRenderer implements Renderer {
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private final Robot robot;
-    private final Frame frame;
+    private final WindowFrame frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final Frame frame) {
+    public DefaultRenderer(final WindowFrame frame) {
         this.frame = frame;
         this.frame.setIgnoreRepaint(true);
-        graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
+        frame.getCanvas().createBufferStrategy(2);
+        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
         initializeFontDrawing();
         try {
             robot = new Robot();
@@ -57,9 +57,9 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void updateScreen(final boolean antialiased) {
         lastUpdateTime = Time.now();
-        frame.getBufferStrategy().show();
+        frame.getCanvas().getBufferStrategy().show();
         graphics.dispose();
-        graphics = (Graphics2D) frame.getBufferStrategy().getDrawGraphics();
+        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
         lastUsedColor = null;
         if (antialiased) {
             graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -79,7 +79,9 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public Sprite takeScreenshot() {
-        final Rectangle rectangle = new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+        final Rectangle rectangle = new Rectangle(frame.getX(),
+                frame.getY() + frame.getInsets().top, frame.getWidth(),
+                frame.getHeight());
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
     }

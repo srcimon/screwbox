@@ -82,6 +82,10 @@ class DefaultEngine implements Engine {
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
         frame.addKeyListener(keyboard);
+        frame.getCanvas().addMouseListener(mouse);
+        frame.getCanvas().addMouseMotionListener(mouse);
+        frame.getCanvas().addMouseWheelListener(mouse);
+        frame.getCanvas().addKeyListener(keyboard);
         this.name = name;
     }
 

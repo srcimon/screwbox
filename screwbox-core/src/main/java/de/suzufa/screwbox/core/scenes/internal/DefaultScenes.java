@@ -17,6 +17,10 @@ import de.suzufa.screwbox.core.scenes.Scenes;
 
 public class DefaultScenes implements Scenes, Updatable {
 
+    private record SceneContainer(Scene scene, DefaultEntities entities) {
+
+    }
+
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
     private SceneContainer nextActiveScene;
     private SceneContainer activeScene;
