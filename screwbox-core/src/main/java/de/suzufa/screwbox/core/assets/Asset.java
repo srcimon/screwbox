@@ -5,8 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Supplier;
 
-import de.suzufa.screwbox.core.Duration;
-
 /**
  * {@link Asset} is used to wrap your i/o intense game resources like graphics
  * and sounds when loaded for the first time. Assets can be preloaded via
@@ -20,8 +18,6 @@ public class Asset<T> implements Supplier<T> {
 
     private final Supplier<T> supplier;
     private T value;
-
-    private Duration loadingDuration;
 
     /**
      * Creates a new {@link Asset}.
@@ -49,7 +45,7 @@ public class Asset<T> implements Supplier<T> {
      */
     public void load() {
         if (!isLoaded()) {
-            loadingDuration = Duration.ofExecution(() -> value = supplier.get());
+            value = supplier.get();
             if (!isLoaded()) {
                 throw new IllegalStateException("asset null after loading");
             }
@@ -68,16 +64,4 @@ public class Asset<T> implements Supplier<T> {
         return value;
     }
 
-    /**
-     * Returns the {@link Duration} it took to load the {@link Asset}. Throws
-     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
-     * 
-     * @see #isLoaded()
-     */
-    public Duration loadingDuration() {
-        if (!isLoaded()) {
-            throw new IllegalStateException("asset has not been loaded yet");
-        }
-        return loadingDuration;
-    }
 }

@@ -52,6 +52,7 @@ class DefaultAssetsTest {
         var locations = assets.listAssetLocationsInPackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(locations).hasSize(3)
+                .allMatch(a -> a.loadingDuration().isEmpty())
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()))
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_C".equals(a.id()));
@@ -65,7 +66,7 @@ class DefaultAssetsTest {
         assertThat(ASSET_B.isLoaded()).isFalse();
 
         assets.enableLogging();
-        var prepared = assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
+        var loadedLocations = assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
 
         assertThat(ASSET_A.isLoaded()).isTrue();
         assertThat(ASSET_B.isLoaded()).isTrue();
@@ -74,7 +75,8 @@ class DefaultAssetsTest {
         verify(log).debug(logMessage.capture());
         assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
 
-        assertThat(prepared).hasSize(2)
+        assertThat(loadedLocations).hasSize(2)
+                .allMatch(a -> a.loadingDuration().isPresent())
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_A".equals(a.id()))
                 .anyMatch(a -> "de.suzufa.screwbox.core.assets.internal.DefaultAssetsTest.ASSET_B".equals(a.id()));
     }

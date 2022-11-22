@@ -16,6 +16,8 @@ public class AssetLocation {
     private final Field sourceField;
     private final Asset<?> asset;
 
+    private Duration loadingDuration;
+
     /**
      * Tries to create an {@link AssetLocation} from a {@link Field}. Is most likely
      * called internaly in the {@link Engine}. Is empty when {@link Field} is not an
@@ -47,7 +49,7 @@ public class AssetLocation {
      * Loads the {@link Asset}.
      */
     public void load() {
-        asset.load();
+        loadingDuration = Duration.ofExecution(() -> asset.load());
     }
 
     /**
@@ -60,13 +62,14 @@ public class AssetLocation {
     }
 
     /**
-     * Returns the {@link Duration} it took to load the {@link Asset}. Throws
-     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
+     * Returns the {@link Duration} it took to load the {@link Asset}. Is empty when
+     * there is no information on the loading {@link Duration} or when {@link Asset}
+     * has not been loaded yet.
      * 
      * @see #isLoaded()
      */
-    public Duration loadingDuration() {
-        return asset.loadingDuration();
+    public Optional<Duration> loadingDuration() {
+        return Optional.ofNullable(loadingDuration);
     }
 
     /**
