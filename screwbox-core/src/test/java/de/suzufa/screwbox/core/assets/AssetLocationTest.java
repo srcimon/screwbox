@@ -1,6 +1,5 @@
 package de.suzufa.screwbox.core.assets;
 
-import static de.suzufa.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Field;
@@ -19,11 +18,6 @@ class AssetLocationTest {
         Field field = AssetLocationTest.class.getDeclaredField("TEST_ASSET");
         assetLocation = AssetLocation.tryToCreateAt(field).get();
         assetLocation.load();
-    }
-
-    @Test
-    void loadingTime_assetLoaded_isTimeBeforeNow() {
-        assertThat(assetLocation.loadingTime().isBefore(now())).isTrue();
     }
 
     @Test

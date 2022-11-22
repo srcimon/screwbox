@@ -6,7 +6,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Supplier;
 
 import de.suzufa.screwbox.core.Duration;
-import de.suzufa.screwbox.core.Time;
 
 /**
  * {@link Asset} is used to wrap your i/o intense game resources like graphics
@@ -23,7 +22,6 @@ public class Asset<T> implements Supplier<T> {
     private T value;
 
     private Duration loadingDuration;
-    private Time loadingTime;
 
     /**
      * Creates a new {@link Asset}.
@@ -51,10 +49,7 @@ public class Asset<T> implements Supplier<T> {
      */
     public void load() {
         if (!isLoaded()) {
-            final Time before = Time.now();
-            value = supplier.get();
-            loadingTime = Time.now();
-            loadingDuration = Duration.between(before, loadingTime);
+            loadingDuration = Duration.ofExecution(() -> value = supplier.get());
             if (!isLoaded()) {
                 throw new IllegalStateException("asset null after loading");
             }
@@ -78,28 +73,11 @@ public class Asset<T> implements Supplier<T> {
      * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
      * 
      * @see #isLoaded()
-     * @see #loadingTime
      */
     public Duration loadingDuration() {
-        verifyIsLoaded();
-        return loadingDuration;
-    }
-
-    /**
-     * Returns the {@link Time} the {@link Asset} loading finished. Throws
-     * {@link IllegalStateException} when the {@link Asset} has not been loaded yet.
-     * 
-     * @see #isLoaded()
-     * @see #loadingDuration
-     */
-    public Time loadingTime() {
-        verifyIsLoaded();
-        return loadingTime;
-    }
-
-    private void verifyIsLoaded() {
         if (!isLoaded()) {
             throw new IllegalStateException("asset has not been loaded yet");
         }
+        return loadingDuration;
     }
 }

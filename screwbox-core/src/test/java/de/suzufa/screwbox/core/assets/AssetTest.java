@@ -73,28 +73,10 @@ class AssetTest {
     }
 
     @Test
-    void loadingTime_notLoaded_thowsException() {
-        assertThatThrownBy(() -> asset.loadingTime())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("asset has not been loaded yet");
-    }
-
-    @Test
     void loadingDuration_notLoaded_thowsException() {
         assertThatThrownBy(() -> asset.loadingDuration())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("asset has not been loaded yet");
-    }
-
-    @Test
-    void loadingTime_loaded_returnsTimeOfLoading() {
-        Time before = Time.now();
-        asset.load();
-
-        Time time = asset.loadingTime();
-
-        assertThat(time.isAfter(before)).isTrue();
-        assertThat(time.isBefore(Time.now())).isTrue();
     }
 
     @Test
