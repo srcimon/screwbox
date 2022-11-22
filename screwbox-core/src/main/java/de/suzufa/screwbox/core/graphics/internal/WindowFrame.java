@@ -26,7 +26,7 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
 
     public WindowFrame(final Engine engine) {
         final JMenuBar menuBar = new JMenuBar();
-        final JMenu screwBox = new JMenu("Application");
+        final JMenu game = new JMenu("Game");
         final JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(new ActionListener() {
 
@@ -35,13 +35,14 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
                 engine.stop();
             }
         });
-        screwBox.add(exit);
-        menuBar.add(screwBox);
+        game.add(exit);
+        menuBar.add(game);
         setJMenuBar(menuBar);
         addWindowListener(this);
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
+
         this.engine = engine;
     }
 

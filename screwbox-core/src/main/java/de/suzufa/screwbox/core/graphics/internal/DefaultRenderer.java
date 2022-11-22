@@ -79,7 +79,9 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public Sprite takeScreenshot() {
-        final Rectangle rectangle = new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+
+        final Rectangle rectangle = new Rectangle(frame.getX(),
+                frame.getY() + frame.getInsets().top, frame.getWidth(), frame.getHeight());
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
     }
