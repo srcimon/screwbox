@@ -54,8 +54,6 @@ public class AssetLocation {
 
     /**
      * Returns {@code true} if {@link Asset} is already loaded.
-     * 
-     * @return
      */
     public boolean isLoaded() {
         return asset.isLoaded();

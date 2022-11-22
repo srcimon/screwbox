@@ -17,12 +17,13 @@ class AssetLocationTest {
     void beforeEach() throws Exception {
         Field assetField = AssetLocationTest.class.getDeclaredField("ASSET");
         assetLocation = AssetLocation.tryToCreateAt(assetField).get();
+        ASSET.load();
     }
 
     @Test
     void toString_returnsAssetLocationId() {
         assertThat(assetLocation)
                 .hasToString(
-                        "AssetLocation [id=de.suzufa.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=false]");
+                        "AssetLocation [id=de.suzufa.screwbox.core.assets.AssetLocationTest.ASSET, isLoaded=true]");
     }
 }
