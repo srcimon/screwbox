@@ -79,4 +79,9 @@ public class AssetLocation {
         return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
     }
 
+    @Override
+    public String toString() {
+        return "AssetLocation [id=" + id() + ", isLoaded=" + isLoaded() + "]";
+    }
+
 }
