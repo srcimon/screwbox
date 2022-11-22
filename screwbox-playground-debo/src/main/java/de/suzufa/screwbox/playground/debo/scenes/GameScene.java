@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
 import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
@@ -25,6 +26,7 @@ import de.suzufa.screwbox.core.entities.systems.ScreenTransitionSystem;
 import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
 import de.suzufa.screwbox.core.entities.systems.TimeoutSystem;
+import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.playground.debo.collectables.Cherries;
 import de.suzufa.screwbox.playground.debo.collectables.DeboB;
@@ -116,6 +118,17 @@ public class GameScene implements Scene {
                 new CombineStaticShadowCastersSystem(),
                 new LogFpsSystem(),
                 new RenderLightSystem(),
+                new EntitySystem() {
+
+                    @Override
+                    public void update(Engine engine) {
+                        if (engine.keyboard().justPressed(Key.BACKSPACE)) {
+                            engine.graphics().window().toggleMenuBar();
+                            System.out.println("togg");
+                        }
+
+                    }
+                },
                 new ReflectionRenderSystem(),
                 new CollisionSensorSystem(),
                 new MovingPlatformSystem(),

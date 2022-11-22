@@ -1,6 +1,8 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Canvas;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
@@ -20,20 +22,31 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
 
     private boolean hasFocus;
 
-    private Canvas canvas;
+    private final Canvas canvas;
 
-    public WindowFrame(Engine engine) {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Debug");
-        JMenuItem exit = new JMenuItem("exit");
-        menu.add(exit);
-        menuBar.add(menu);
+    public WindowFrame(final Engine engine) {
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu screwBox = new JMenu("Application");
+        final JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                engine.stop();
+            }
+        });
+        screwBox.add(exit);
+        menuBar.add(screwBox);
         setJMenuBar(menuBar);
         addWindowListener(this);
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
         this.engine = engine;
+    }
+
+    public void toggleMenuBar() {
+        getJMenuBar().setVisible(!getJMenuBar().isVisible());
     }
 
     public Canvas getCanvas() {
@@ -76,13 +89,13 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
     }
 
     @Override
-    public void windowGainedFocus(WindowEvent e) {
+    public void windowGainedFocus(final WindowEvent e) {
         this.hasFocus = true;
 
     }
 
     @Override
-    public void windowLostFocus(WindowEvent e) {
+    public void windowLostFocus(final WindowEvent e) {
         this.hasFocus = false;
     }
 

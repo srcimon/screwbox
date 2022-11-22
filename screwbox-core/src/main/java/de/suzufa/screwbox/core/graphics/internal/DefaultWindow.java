@@ -367,4 +367,10 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return this;
     }
 
+    @Override
+    public Window toggleMenuBar() {
+        frame.toggleMenuBar();
+        return this;
+    }
+
 }
