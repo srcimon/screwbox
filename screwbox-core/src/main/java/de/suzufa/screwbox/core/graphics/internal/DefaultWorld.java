@@ -13,16 +13,16 @@ import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.SpriteBatch.SpriteBatchEntry;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.World;
 
 public class DefaultWorld implements World {
 
-    private final Window window;
+    private final Screen screen;
 
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
@@ -38,8 +38,8 @@ public class DefaultWorld implements World {
 
     private Color drawColor = Color.WHITE;
 
-    public DefaultWorld(final Window window) {
-        this.window = window;
+    public DefaultWorld(final Screen screen) {
+        this.screen = screen;
     }
 
     @Override
@@ -83,8 +83,8 @@ public class DefaultWorld implements World {
 
     public void recalculateVisibleArea() {
         this.visibleArea = Bounds.atPosition(cameraPosition,
-                window.size().width() / zoom,
-                window.size().height() / zoom);
+                screen.size().width() / zoom,
+                screen.size().height() / zoom);
     }
 
     public Vector cameraPosition() {
@@ -98,7 +98,7 @@ public class DefaultWorld implements World {
         final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        window.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
+        screen.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
         return this;
     }
 
@@ -112,14 +112,14 @@ public class DefaultWorld implements World {
     }
 
     public Offset toOffset(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (window.size().width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (window.size().height() / 2.0);
+        final double x = (position.x() - cameraPosition.x()) * zoom + (screen.size().width() / 2.0);
+        final double y = (position.y() - cameraPosition.y()) * zoom + (screen.size().height() / 2.0);
         return Offset.at(x, y);
     }
 
     public Vector toPosition(final Offset offset) {
-        final double x = (offset.x() - (window.size().width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() - (window.size().height() / 2.0)) / zoom + cameraPosition.y();
+        final double x = (offset.x() - (screen.size().width() / 2.0)) / zoom + cameraPosition.x();
+        final double y = (offset.y() - (screen.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
     }
@@ -127,27 +127,27 @@ public class DefaultWorld implements World {
     @Override
     public World drawText(final Vector offset, final String text, final Font font, final Color color) {
         final Offset windowOffset = toOffset(offset);
-        window.drawText(windowOffset, text, font, color);
+        screen.drawText(windowOffset, text, font, color);
         return this;
     }
 
     @Override
     public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
         final Offset offset = toOffset(position);
-        window.drawTextCentered(offset, text, font, color);
+        screen.drawTextCentered(offset, text, font, color);
         return this;
     }
 
     @Override
     public World drawLine(final Vector from, final Vector to, final Color color) {
-        window.drawLine(toOffset(from), toOffset(to), color);
+        screen.drawLine(toOffset(from), toOffset(to), color);
         return this;
     }
 
     @Override
     public World fillCircle(final Vector position, final int diameter, final Color color) {
         final Offset offset = toOffset(position);
-        window.fillCircle(offset, (int) (diameter * zoom), color);
+        screen.fillCircle(offset, (int) (diameter * zoom), color);
         return this;
     }
 
@@ -155,7 +155,7 @@ public class DefaultWorld implements World {
     public World fillRectangle(final Bounds bounds, final Color color) {
         final Offset offset = toOffset(bounds.origin());
         final Dimension size = toDimension(bounds.size());
-        window.fillRectangle(offset, size, color);
+        screen.fillRectangle(offset, size, color);
         return this;
     }
 
@@ -163,7 +163,7 @@ public class DefaultWorld implements World {
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
             final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);
-        window.drawTextCentered(offset, text, font, opacity, scale * zoom);
+        screen.drawTextCentered(offset, text, font, opacity, scale * zoom);
         return this;
     }
 
@@ -199,7 +199,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawFadingCircle(Vector position, double diameter, Color color) {
-        window.drawFadingCircle(toOffset(position), toDistance(diameter), color);
+        screen.drawFadingCircle(toOffset(position), toDistance(diameter), color);
         return this;
     }
 }

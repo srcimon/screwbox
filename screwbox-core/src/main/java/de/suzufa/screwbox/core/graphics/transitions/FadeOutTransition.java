@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.graphics.transitions;
 
 import de.suzufa.screwbox.core.Percent;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 
 public class FadeOutTransition implements ScreenTransition {
 
@@ -14,9 +14,9 @@ public class FadeOutTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window window, final Percent progress) {
+    public void draw(final Screen screen, final Percent progress) {
         final Percent inverted = Percent.of(Percent.max().value() - progress.value());
-        transition.draw(window, inverted);
+        transition.draw(screen, inverted);
     }
 
 }

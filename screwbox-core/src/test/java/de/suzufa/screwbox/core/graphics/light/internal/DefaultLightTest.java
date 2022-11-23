@@ -32,8 +32,8 @@ import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
@@ -45,7 +45,7 @@ class DefaultLightTest {
     ExecutorService executor;
 
     @Mock
-    Window window;
+    Screen screen;
 
     @Captor
     ArgumentCaptor<Asset<Sprite>> spriteCaptor;
@@ -56,11 +56,11 @@ class DefaultLightTest {
 
     @BeforeEach
     void beforeEach() {
-        when(window.size()).thenReturn(Dimension.of(640, 480));
-        world = new DefaultWorld(window);
+        when(screen.size()).thenReturn(Dimension.of(640, 480));
+        world = new DefaultWorld(screen);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(window, world, configuration, executor);
+        light = new DefaultLight(screen, world, configuration, executor);
     }
 
     @Test
@@ -81,7 +81,7 @@ class DefaultLightTest {
 
     @Test
     void render_lightAndShadowPresent_createCorrectImage() throws Exception {
-        when(window.isVisible(any(WindowBounds.class))).thenReturn(true);
+        when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
         light.addShadowCasters(List.of(Bounds.$$(30, 75, 6, 6)));
         light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.render();
@@ -90,7 +90,7 @@ class DefaultLightTest {
         var resolution = ArgumentCaptor.forClass(Integer.class);
         var opacity = ArgumentCaptor.forClass(Percent.class);
 
-        verify(window).drawSprite(
+        verify(screen).drawSprite(
                 spriteCaptor.capture(),
                 offset.capture(),
                 resolution.capture(),

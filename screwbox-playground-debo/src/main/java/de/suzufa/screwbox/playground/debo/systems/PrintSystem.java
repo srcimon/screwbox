@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.playground.debo.components.TextComponent;
 
 public class PrintSystem implements EntitySystem {
@@ -20,10 +20,10 @@ public class PrintSystem implements EntitySystem {
         final Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
         for (var entity : engine.entities().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
-            Window window = engine.graphics().window();
-            window.drawTextCentered(window.center(), textComponent.text, font, Percent.max(), 7);
-            Offset subtextOffset = Offset.at(window.center().x(), window.center().y() + 80);
-            window.drawTextCentered(subtextOffset, textComponent.subtext, font, Percent.max(), 4);
+            Screen screen = engine.graphics().screen();
+            screen.drawTextCentered(screen.center(), textComponent.text, font, Percent.max(), 7);
+            Offset subtextOffset = Offset.at(screen.center().x(), screen.center().y() + 80);
+            screen.drawTextCentered(subtextOffset, textComponent.subtext, font, Percent.max(), 4);
         }
     }
 

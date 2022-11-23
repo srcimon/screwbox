@@ -49,7 +49,7 @@ public class AssetLocation {
      * Loads the {@link Asset}.
      */
     public void load() {
-        loadingDuration = Duration.ofExecution(() -> asset.load());
+        loadingDuration = Duration.ofExecution(asset::load);
     }
 
     /**

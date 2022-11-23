@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
@@ -23,13 +24,18 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultWindow window;
     private final DefaultWorld world;
     private final DefaultLight light;
+    private final DefaultScreen screen;
 
-    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window, DefaultWorld world,
+    public DefaultGraphics(final GraphicsConfiguration configuration,
+            final DefaultScreen screen,
+            final DefaultWindow window,
+            final DefaultWorld world,
             final DefaultLight light) {
         this.configuration = configuration;
         this.window = window;
         this.light = light;
         this.world = world;
+        this.screen = screen;
     }
 
     @Override
@@ -105,7 +111,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public void update() {
-        window.updateScreen(configuration.isUseAntialising());
+        screen.updateScreen(configuration.isUseAntialising());
         world.recalculateVisibleArea();
     }
 
@@ -123,6 +129,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Light light() {
         return light;
+    }
+
+    @Override
+    public Screen screen() {
+        return screen;
     }
 
 }

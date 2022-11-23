@@ -21,8 +21,8 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.internal.Lightmap.PointLight;
 import de.suzufa.screwbox.core.graphics.internal.Lightmap.SpotLight;
@@ -32,7 +32,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final Window window;
+    private final Screen screen;
     private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
@@ -40,10 +40,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
 
-    public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
+    private final List<Runnable> tasks = new ArrayList<>();
+
+    public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
         this.executor = executor;
-        this.window = window;
+        this.screen = screen;
         this.world = world;
         this.configuration = configuration;
         configuration.registerListener(this);
@@ -72,32 +74,37 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addPointLight(final Vector position, final LightOptions options) {
-        if (!lightPhysics.isCoveredByShadowCasters(position)) {
-            addPotentialGlow(position, options);
-            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-            if (isVisible(lightBox)) {
-                final List<Offset> area = new ArrayList<>();
-                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                for (final var vector : worldArea) {
-                    area.add(world.toOffset(vector));
+        tasks.add(() -> {
+            if (!lightPhysics.isCoveredByShadowCasters(position)) {
+                addPotentialGlow(position, options);
+                final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+                if (isVisible(lightBox)) {
+                    final List<Offset> area = new ArrayList<>();
+                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                    for (final var vector : worldArea) {
+                        area.add(world.toOffset(vector));
+                    }
+                    final Offset offset = world.toOffset(position);
+                    final int screenRadius = world.toDistance(options.radius());
+                    lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
                 }
-                final Offset offset = world.toOffset(position);
-                final int screenRadius = world.toDistance(options.radius());
-                lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
             }
-        }
+        });
+
         return this;
     }
 
     @Override
     public Light addSpotLight(final Vector position, final LightOptions options) {
-        addPotentialGlow(position, options);
-        final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-        if (isVisible(lightBox)) {
-            final Offset offset = world.toOffset(position);
-            final int distance = world.toDistance(options.radius());
-            lightmap.add(new SpotLight(offset, distance, options.color()));
-        }
+        tasks.add(() -> {
+            addPotentialGlow(position, options);
+            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+            if (isVisible(lightBox)) {
+                final Offset offset = world.toOffset(position);
+                final int distance = world.toDistance(options.radius());
+                lightmap.add(new SpotLight(offset, distance, options.color()));
+            }
+        });
         return this;
     }
 
@@ -117,12 +124,15 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light render() {
         final var copiedLightmap = lightmap;
+        for (final var task : tasks) {
+            task.run();
+        }
         final var spriteFuture = executor.submit(() -> {
             final BufferedImage image = copiedLightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        Asset<Sprite> sprite = Asset.asset(() -> {
+        final Asset<Sprite> sprite = Asset.asset(() -> {
             try {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
@@ -131,7 +141,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             }
         });
 
-        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
+        screen.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
@@ -160,18 +170,19 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return window.isVisible(world.toWindowBounds(lightBox));
+        return screen.isVisible(world.toWindowBounds(lightBox));
     }
 
     @Override
     public void update() {
         initLightmap();
+        tasks.clear();
         postDrawingTasks.clear();
         lightPhysics.shadowCasters().clear();
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
+        lightmap = new Lightmap(screen.size(), configuration.lightmapResolution());
     }
 
 }

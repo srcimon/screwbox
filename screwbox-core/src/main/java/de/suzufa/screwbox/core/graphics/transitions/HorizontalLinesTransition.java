@@ -5,7 +5,7 @@ import static de.suzufa.screwbox.core.graphics.Color.BLACK;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 
 public class HorizontalLinesTransition implements ScreenTransition {
 
@@ -17,14 +17,14 @@ public class HorizontalLinesTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window window, final Percent progress) {
-        final int maxHeightPerLine = window.size().height() / lineCount;
-        for (int y = 0; y < window.size().height(); y += maxHeightPerLine) {
+    public void draw(final Screen screen, final Percent progress) {
+        final int maxHeightPerLine = screen.size().height() / lineCount;
+        for (int y = 0; y < screen.size().height(); y += maxHeightPerLine) {
             final Offset offset = Offset.at(0, y);
             final int height = (int) (maxHeightPerLine
-                    - window.size().height() / (double) lineCount * progress.value());
-            final Dimension size = Dimension.of(window.size().width(), height);
-            window.fillRectangle(offset, size, BLACK);
+                    - screen.size().height() / (double) lineCount * progress.value());
+            final Dimension size = Dimension.of(screen.size().width(), height);
+            screen.fillRectangle(offset, size, BLACK);
         }
     }
 
