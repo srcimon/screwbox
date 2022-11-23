@@ -17,14 +17,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.mouse.MouseButton;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultMouseTest {
 
     @Mock
-    Window window;
+    Screen screen;
 
     @Mock
     Graphics graphics;
@@ -81,8 +81,8 @@ class DefaultMouseTest {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151);
         when(mouseEvent.getYOnScreen()).thenReturn(242);
-        when(graphics.window()).thenReturn(window);
-        when(window.position()).thenReturn(Offset.at(40, 12));
+        when(graphics.screen()).thenReturn(screen);
+        when(screen.position()).thenReturn(Offset.at(40, 12));
 
         mouse.mouseMoved(mouseEvent);
 
@@ -94,8 +94,8 @@ class DefaultMouseTest {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151, 219);
         when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
-        when(graphics.window()).thenReturn(window);
-        when(window.position()).thenReturn(Offset.at(40, 12));
+        when(graphics.screen()).thenReturn(screen);
+        when(screen.position()).thenReturn(Offset.at(40, 12));
         when(graphics.worldPositionOf(Offset.at(111, 230))).thenReturn($(40, 90));
         when(graphics.worldPositionOf(Offset.at(179, 8))).thenReturn($(10, 30));
         mouse.mouseMoved(mouseEvent);
