@@ -40,7 +40,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
 
-    private List<Runnable> tasks = new ArrayList<>();
+    private final List<Runnable> tasks = new ArrayList<>();
 
     public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
@@ -124,7 +124,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light render() {
         final var copiedLightmap = lightmap;
-        for (var task : tasks) {
+        for (final var task : tasks) {
             task.run();
         }
         final var spriteFuture = executor.submit(() -> {
@@ -132,7 +132,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        Asset<Sprite> sprite = Asset.asset(() -> {
+        final Asset<Sprite> sprite = Asset.asset(() -> {
             try {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
