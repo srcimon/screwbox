@@ -195,6 +195,7 @@ public class DefaultScreen implements Screen {
     @Override
     public Offset position() {
         final var bounds = frame.getBounds();
+        // TODO: cache window position and so on until changed
         return Offset.at(bounds.x, bounds.y - (frame.getCanvas().getBounds().height - bounds.height));
 
     }
