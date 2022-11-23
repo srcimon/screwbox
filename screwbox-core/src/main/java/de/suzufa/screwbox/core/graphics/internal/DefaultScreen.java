@@ -16,12 +16,16 @@ import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class DefaultScreen implements Screen {
 
     private Renderer renderer = new StandbyRenderer();
+    private final WindowFrame frame;
+
+    public DefaultScreen(WindowFrame frame) {
+        this.frame = frame;
+    }
 
     private Color drawColor = Color.WHITE;
 
@@ -97,7 +101,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Window drawTextCentered(final Offset offset, final String text, final Pixelfont font,
+    public Screen drawTextCentered(final Offset offset, final String text, final Pixelfont font,
             final Percent opacity, final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         int totalWith = 0;
@@ -109,7 +113,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Window drawText(final Offset offset, final String text, final Pixelfont font, final Percent opacity,
+    public Screen drawText(final Offset offset, final String text, final Pixelfont font, final Percent opacity,
             final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         drawTextSprites(offset, opacity, scale, allSprites, font);
@@ -150,13 +154,13 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Window drawFadingCircle(final Offset offset, final int diameter, final Color color) {
+    public Screen drawFadingCircle(final Offset offset, final int diameter, final Color color) {
         renderer.drawFadingCircle(offset, diameter, color);
         return this;
     }
 
     @Override
-    public Window drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale,
+    public Screen drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale,
             final Percent opacity, final Angle rotation,
             final Flip flip, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
@@ -164,7 +168,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Window drawCircle(final Offset offset, final int diameter, final Color color) {
+    public Screen drawCircle(final Offset offset, final int diameter, final Color color) {
         renderer.drawCircle(offset, diameter, color);
         return this;
     }
@@ -172,6 +176,10 @@ public class DefaultScreen implements Screen {
     public void updateScreen(final boolean antialiased) {
         renderer.updateScreen(antialiased);
         renderer.fillWith(Color.BLACK);
+    }
+
+    public void setRenderer(Renderer renderer) {
+        this.renderer = renderer;
     }
 
     private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
@@ -183,4 +191,5 @@ public class DefaultScreen implements Screen {
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }
+
 }

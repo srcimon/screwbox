@@ -23,13 +23,18 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultWindow window;
     private final DefaultWorld world;
     private final DefaultLight light;
+    private final DefaultScreen screen;
 
-    public DefaultGraphics(final GraphicsConfiguration configuration, final DefaultWindow window, DefaultWorld world,
+    public DefaultGraphics(final GraphicsConfiguration configuration,
+            final DefaultScreen screen,
+            final DefaultWindow window,
+            final DefaultWorld world,
             final DefaultLight light) {
         this.configuration = configuration;
         this.window = window;
         this.light = light;
         this.world = world;
+        this.screen = screen;
     }
 
     @Override
@@ -105,7 +110,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public void update() {
-        window.updateScreen(configuration.isUseAntialising());
+        screen.updateScreen(configuration.isUseAntialising());
         world.recalculateVisibleArea();
     }
 

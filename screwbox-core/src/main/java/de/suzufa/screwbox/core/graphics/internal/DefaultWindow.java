@@ -27,19 +27,23 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
+    private final DefaultScreen screen;
     private DisplayMode lastDisplayMode;
     private final ExecutorService executor;
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
 
-    public DefaultWindow(final WindowFrame frame, final GraphicsConfiguration configuration,
+    public DefaultWindow(final WindowFrame frame,
+            final GraphicsConfiguration configuration,
             final ExecutorService executor,
-            final String title) {
+            final String title,
+            final DefaultScreen screen) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
+        this.screen = screen;
         setTitle(title);
         configuration.registerListener(this);
     }
@@ -90,14 +94,14 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
                 frame.setLocationRelativeTo(null);
             }
         }
-        renderer = new SeparateThreadRenderer(new DefaultRenderer(frame), executor);
+        screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
         updateCursor();
         return this;
     }
 
     @Override
     public Window close() {
-        renderer = new StandbyRenderer();
+        screen.setRenderer(new StandbyRenderer());
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
 
