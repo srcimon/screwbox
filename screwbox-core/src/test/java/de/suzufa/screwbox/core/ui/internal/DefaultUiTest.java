@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.graphics.Graphics;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.ui.UiInteractor;
 import de.suzufa.screwbox.core.ui.UiLayouter;
@@ -69,16 +69,16 @@ class DefaultUiTest {
         var activated = Latch.of(false, true);
 
         Graphics graphics = mock(Graphics.class);
-        Window window = mock(Window.class);
-        when(graphics.window()).thenReturn(window);
+        Screen screen = mock(Screen.class);
+        when(graphics.screen()).thenReturn(screen);
         when(engine.graphics()).thenReturn(graphics);
         UiMenu menu = new UiMenu();
         UiMenuItem firstItem = menu.addItem("some button").activeCondition(e -> activated.active())
                 .onActivate(engine -> activated.toggle());
         menu.addItem("some button");
         WindowBounds layoutBounds = new WindowBounds(at(20, 40), of(100, 20));
-        when(window.isVisible(layoutBounds)).thenReturn(true);
-        when(layouter.calculateBounds(firstItem, menu, window)).thenReturn(layoutBounds);
+        when(screen.isVisible(layoutBounds)).thenReturn(true);
+        when(layouter.calculateBounds(firstItem, menu, screen)).thenReturn(layoutBounds);
         ui.openMenu(menu);
 
         assertThat(menu.activeItemIndex()).isZero();
@@ -91,19 +91,19 @@ class DefaultUiTest {
     @Test
     void update_menuPresent_interactsAndRendersMenu() {
         Graphics graphics = mock(Graphics.class);
-        Window window = mock(Window.class);
-        when(graphics.window()).thenReturn(window);
+        Screen screen = mock(Screen.class);
+        when(graphics.screen()).thenReturn(screen);
         when(engine.graphics()).thenReturn(graphics);
         UiMenu menu = new UiMenu();
         UiMenuItem item = menu.addItem("some button");
         WindowBounds layoutBounds = new WindowBounds(at(20, 40), of(100, 20));
-        when(window.isVisible(layoutBounds)).thenReturn(true);
-        when(layouter.calculateBounds(item, menu, window)).thenReturn(layoutBounds);
+        when(screen.isVisible(layoutBounds)).thenReturn(true);
+        when(layouter.calculateBounds(item, menu, screen)).thenReturn(layoutBounds);
         ui.openMenu(menu);
 
         ui.update();
 
         verify(interactor).interactWith(menu, layouter, engine);
-        verify(renderer).renderSelectedItem("some button", layoutBounds, window);
+        verify(renderer).renderSelectedItem("some button", layoutBounds, screen);
     }
 }
