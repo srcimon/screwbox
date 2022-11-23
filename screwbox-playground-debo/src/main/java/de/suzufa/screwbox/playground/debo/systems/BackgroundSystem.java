@@ -11,7 +11,6 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.playground.debo.components.BackgroundComponent;
 
 public class BackgroundSystem implements EntitySystem {
@@ -33,8 +32,7 @@ public class BackgroundSystem implements EntitySystem {
             final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * background.parallaxX,
                     cameraPosition.y() * -1 * background.parallaxY);
-            final Window window = engine.graphics().window();
-            window.fillWith(offset, sprite.sprite, background.zoom, sprite.opacity);
+            engine.graphics().screen().fillWith(offset, sprite.sprite, background.zoom, sprite.opacity);
         }
     }
 

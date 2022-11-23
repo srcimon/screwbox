@@ -37,8 +37,8 @@ public class CameraMovementSystem implements EntitySystem {
         final double distX = cameraPosition.x() - trackerPosition.x() - cameraTrackerComponent.shift.x();
         final double distY = cameraPosition.y() - trackerPosition.y() - cameraTrackerComponent.shift.y();
         final Vector centerExtents = Vector.of(
-                engine.graphics().window().size().width() / zoom / 2.0,
-                engine.graphics().window().size().height() / zoom / 2.0);
+                engine.graphics().screen().size().width() / zoom / 2.0,
+                engine.graphics().screen().size().height() / zoom / 2.0);
 
         double delta = engine.loop().delta();
         final double movementX = clamp(

@@ -37,8 +37,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     public DefaultWindow(final WindowFrame frame,
             final GraphicsConfiguration configuration,
             final ExecutorService executor,
-            final String title,
-            final DefaultScreen screen) {
+            final DefaultScreen screen,
+            final String title) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
