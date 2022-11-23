@@ -9,3 +9,4 @@
 - system priority via annotation @Order(Simulation)
 - preload resources via reflection and classloader as @Asset
 - light -> full brightness without blur setting
+- add MenuBar when bug resolved: https://bugs.openjdk.org/browse/JDK-8270888
