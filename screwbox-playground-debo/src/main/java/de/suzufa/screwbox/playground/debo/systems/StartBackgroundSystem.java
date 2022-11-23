@@ -28,7 +28,7 @@ public class StartBackgroundSystem implements EntitySystem {
         final long milliseconds = engine.loop().runningTime().milliseconds();
         final int index = (int) ((milliseconds / 2000.0) % BACKGROUNDS.get().size());
         final Sprite sprite = BACKGROUNDS.get().get(index);
-        final Offset center = engine.graphics().window().center();
+        final Offset center = engine.graphics().screen().center();
 
         final Angle rotation = Angle.degrees(milliseconds / 200.0);
         final double scale = Math.abs(Math.sin(milliseconds / 1000.0)) * 8 + 12;
@@ -36,7 +36,7 @@ public class StartBackgroundSystem implements EntitySystem {
         final double yCorrect = sprite.size().height() / 2.0 * scale;
 
         final Offset position = Offset.at(center.x() - xCorrect, center.y() - yCorrect);
-        engine.graphics().window().drawSprite(sprite, position, scale, Percent.half(), rotation);
+        engine.graphics().screen().drawSprite(sprite, position, scale, Percent.half(), rotation);
     }
 
 }
