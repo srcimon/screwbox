@@ -40,6 +40,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
 
+    private List<Runnable> tasks = new ArrayList<>();
+
     public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
         this.executor = executor;
@@ -72,32 +74,37 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addPointLight(final Vector position, final LightOptions options) {
-        if (!lightPhysics.isCoveredByShadowCasters(position)) {
-            addPotentialGlow(position, options);
-            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-            if (isVisible(lightBox)) {
-                final List<Offset> area = new ArrayList<>();
-                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
-                for (final var vector : worldArea) {
-                    area.add(world.toOffset(vector));
+        tasks.add(() -> {
+            if (!lightPhysics.isCoveredByShadowCasters(position)) {
+                addPotentialGlow(position, options);
+                final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+                if (isVisible(lightBox)) {
+                    final List<Offset> area = new ArrayList<>();
+                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                    for (final var vector : worldArea) {
+                        area.add(world.toOffset(vector));
+                    }
+                    final Offset offset = world.toOffset(position);
+                    final int screenRadius = world.toDistance(options.radius());
+                    lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
                 }
-                final Offset offset = world.toOffset(position);
-                final int screenRadius = world.toDistance(options.radius());
-                lightmap.add(new PointLight(offset, screenRadius, area, options.color()));
             }
-        }
+        });
+
         return this;
     }
 
     @Override
     public Light addSpotLight(final Vector position, final LightOptions options) {
-        addPotentialGlow(position, options);
-        final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-        if (isVisible(lightBox)) {
-            final Offset offset = world.toOffset(position);
-            final int distance = world.toDistance(options.radius());
-            lightmap.add(new SpotLight(offset, distance, options.color()));
-        }
+        tasks.add(() -> {
+            addPotentialGlow(position, options);
+            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+            if (isVisible(lightBox)) {
+                final Offset offset = world.toOffset(position);
+                final int distance = world.toDistance(options.radius());
+                lightmap.add(new SpotLight(offset, distance, options.color()));
+            }
+        });
         return this;
     }
 
@@ -117,6 +124,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public Light render() {
         final var copiedLightmap = lightmap;
+        for (var task : tasks) {
+            task.run();
+        }
         final var spriteFuture = executor.submit(() -> {
             final BufferedImage image = copiedLightmap.createImage();
             final var filtered = postFilter.apply(image);
@@ -166,6 +176,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     @Override
     public void update() {
         initLightmap();
+        tasks.clear();
         postDrawingTasks.clear();
         lightPhysics.shadowCasters().clear();
     }
