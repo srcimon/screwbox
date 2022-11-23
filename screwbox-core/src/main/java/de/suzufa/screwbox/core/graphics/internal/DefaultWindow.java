@@ -14,7 +14,6 @@ import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Frame;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
@@ -28,7 +27,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
-    private Renderer renderer = new StandbyRenderer();
     private DisplayMode lastDisplayMode;
     private final ExecutorService executor;
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
@@ -44,11 +42,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         this.executor = executor;
         setTitle(title);
         configuration.registerListener(this);
-    }
-
-    public void updateScreen(final boolean antialiased) {
-        renderer.updateScreen(antialiased);
-        renderer.fillWith(Color.BLACK);
     }
 
     @Override

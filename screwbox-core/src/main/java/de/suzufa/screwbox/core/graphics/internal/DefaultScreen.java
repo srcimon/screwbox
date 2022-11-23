@@ -21,6 +21,8 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class DefaultScreen implements Screen {
 
+    private Renderer renderer = new StandbyRenderer();
+
     private Color drawColor = Color.WHITE;
 
     @Override
@@ -165,6 +167,11 @@ public class DefaultScreen implements Screen {
     public Window drawCircle(final Offset offset, final int diameter, final Color color) {
         renderer.drawCircle(offset, diameter, color);
         return this;
+    }
+
+    public void updateScreen(final boolean antialiased) {
+        renderer.updateScreen(antialiased);
+        renderer.fillWith(Color.BLACK);
     }
 
     private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
