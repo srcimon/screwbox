@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Percent;
 
 @ExtendWith(MockitoExtension.class)
-public class ScreenTest {
+class ScreenTest {
 
     @Spy
     Screen screen;
