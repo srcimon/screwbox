@@ -2,13 +2,13 @@ package de.suzufa.screwbox.core.ui;
 
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class ScrollingUiLayouter implements UiLayouter {
 
     @Override
-    public WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Window screen) {
+    public WindowBounds calculateBounds(UiMenuItem item, UiMenu menu, Screen screen) {
         int itemIndex = menu.itemIndex(item);
         int heightOfItem = 50;
         int y = screen.center().y() + (itemIndex - menu.activeItemIndex()) * heightOfItem;

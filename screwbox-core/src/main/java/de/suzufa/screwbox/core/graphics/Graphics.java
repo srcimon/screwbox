@@ -82,4 +82,6 @@ public interface Graphics {
 
     List<String> availableFonts();
 
+    Screen screen();
+
 }

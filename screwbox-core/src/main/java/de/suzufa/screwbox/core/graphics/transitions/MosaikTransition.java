@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 
 public final class MosaikTransition implements ScreenTransition {
 
@@ -31,15 +31,15 @@ public final class MosaikTransition implements ScreenTransition {
     }
 
     @Override
-    public void draw(final Window window, final Percent progress) {
+    public void draw(final Screen screen, final Percent progress) {
         final long offsetCountToDraw = mosaikOffsets.size() - Math.round((mosaikOffsets.size() - 1) * progress.value());
-        final int mosaikWidth = window.size().width() / columns + 1;
-        final int mosaikHeight = window.size().height() / rows + 1;
+        final int mosaikWidth = screen.size().width() / columns + 1;
+        final int mosaikHeight = screen.size().height() / rows + 1;
         final Dimension mosaikDimension = Dimension.of(mosaikWidth, mosaikHeight);
         for (int i = 0; i < offsetCountToDraw; i++) {
             final Offset mosaikOffset = mosaikOffsets.get(i);
             final Offset screenOffset = Offset.at(mosaikOffset.x() * mosaikWidth, mosaikOffset.y() * mosaikHeight);
-            window.fillRectangle(screenOffset, mosaikDimension, Color.BLACK);
+            screen.fillRectangle(screenOffset, mosaikDimension, Color.BLACK);
         }
     }
 

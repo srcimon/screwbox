@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.graphics.Graphics;
 import de.suzufa.screwbox.core.graphics.GraphicsConfiguration;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.World;
 import de.suzufa.screwbox.core.loop.internal.Updatable;
@@ -128,6 +129,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Light light() {
         return light;
+    }
+
+    @Override
+    public Screen screen() {
+        return screen;
     }
 
 }
