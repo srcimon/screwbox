@@ -2,8 +2,6 @@ package de.suzufa.screwbox.core.graphics;
 
 public interface Window {
 
-    Offset center();
-
     Offset position();
 
     boolean hasFocus();

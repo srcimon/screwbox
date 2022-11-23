@@ -151,4 +151,6 @@ public interface Screen {
     boolean isVisible(Offset offset);
 
     Dimension size();
+
+    Offset center();
 }
