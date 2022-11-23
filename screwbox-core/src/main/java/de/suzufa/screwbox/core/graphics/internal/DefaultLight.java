@@ -21,8 +21,8 @@ import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.LightOptions;
 import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.Sprite;
-import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.WindowBounds;
 import de.suzufa.screwbox.core.graphics.internal.Lightmap.PointLight;
 import de.suzufa.screwbox.core.graphics.internal.Lightmap.SpotLight;
@@ -32,7 +32,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final Window window;
+    private final Screen screen;
     private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
@@ -40,10 +40,10 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
 
-    public DefaultLight(final Window window, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
             final ExecutorService executor) {
         this.executor = executor;
-        this.window = window;
+        this.screen = screen;
         this.world = world;
         this.configuration = configuration;
         configuration.registerListener(this);
@@ -131,7 +131,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             }
         });
 
-        window.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
+        screen.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
@@ -160,7 +160,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return window.isVisible(world.toWindowBounds(lightBox));
+        return screen.isVisible(world.toWindowBounds(lightBox));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(window.size(), configuration.lightmapResolution());
+        lightmap = new Lightmap(screen.size(), configuration.lightmapResolution());
     }
 
 }
