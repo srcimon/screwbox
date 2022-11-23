@@ -127,7 +127,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Dimension size() {
-        final var bounds = frame.getBounds();
+        final var bounds = frame.getCanvas().getBounds();
         return Dimension.of(bounds.width, bounds.height);
     }
 
@@ -190,6 +190,13 @@ public class DefaultScreen implements Screen {
             drawSprite(sprite, currentOffset, scale, opacity, Angle.none(), Flip.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
+    }
+
+    @Override
+    public Offset position() {
+        final var bounds = frame.getBounds();
+        return Offset.at(bounds.x, bounds.y - (frame.getCanvas().getBounds().height - bounds.height));
+
     }
 
 }

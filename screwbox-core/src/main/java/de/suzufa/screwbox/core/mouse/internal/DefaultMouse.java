@@ -114,7 +114,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        position = windowPosition.substract(graphics.window().position());
+        position = windowPosition.substract(graphics.screen().position());
     }
 
     @Override

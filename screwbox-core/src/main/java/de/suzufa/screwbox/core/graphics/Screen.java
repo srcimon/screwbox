@@ -6,6 +6,8 @@ import de.suzufa.screwbox.core.assets.Asset;
 
 public interface Screen {
 
+    Offset position();
+
     Screen drawColor(Color color);
 
     Color drawColor();
