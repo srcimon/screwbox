@@ -15,8 +15,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    private final TrippleLatch<Set<Integer>> justPressedKeys = TrippleLatch.of(new HashSet<>(), new HashSet<>(),
-            new HashSet<>());
+    private final TrippleLatch<Set<Integer>> justPressedKeys = TrippleLatch.of(
+            new HashSet<>(), new HashSet<>(), new HashSet<>());
 
     @Override
     public void keyTyped(final KeyEvent event) {

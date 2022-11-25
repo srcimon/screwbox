@@ -113,14 +113,14 @@ public class Sprite implements Serializable {
     /**
      * Returns the {@link Image} for the given {@link Time}.
      */
-    public Image getImage(final Time time) {
-        return getFrame(time).image();
+    public Image image(final Time time) {
+        return frame(time).image();
     }
 
     /**
      * Returns the {@link Frame} for the given {@link Time}.
      */
-    public Frame getFrame(final Time time) {
+    public Frame frame(final Time time) {
         final var frameNr = getFrameNr(frames, duration, time);
         return frames.get(frameNr);
     }

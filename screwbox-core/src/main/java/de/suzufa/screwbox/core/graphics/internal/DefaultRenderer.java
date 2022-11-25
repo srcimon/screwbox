@@ -143,7 +143,7 @@ public class DefaultRenderer implements Renderer {
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale,
             final Flip flip) {
-        final Image image = sprite.getImage(lastUpdateTime);
+        final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Dimension size = sprite.size();
         final double xCorrect = flip.isHorizontal() ? scale * size.width() : 0;

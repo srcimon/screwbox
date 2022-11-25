@@ -163,10 +163,10 @@ class SpriteTest {
     }
 
     @Test
-    void getImage_oneImage_returnsImageOfFrame() {
+    void image_oneImage_returnsImageOfFrame() {
         Sprite sprite = Sprite.invisible();
 
-        Image image = sprite.getImage(Time.now());
+        Image image = sprite.image(Time.now());
 
         Image expectedImage = sprite.singleFrame().image();
         assertThat(image).isEqualTo(expectedImage);
@@ -182,14 +182,14 @@ class SpriteTest {
 
     @Test
     @Timeout(5)
-    void getFrame_returnsAllImagesOfAnAnimation() {
+    void frame_returnsAllImagesOfAnAnimation() {
         Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(5), 1, Duration.ofMillis(50));
         List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
 
         var foundImages = new HashSet<Image>();
 
         while (!foundImages.containsAll(allImages)) {
-            foundImages.add(animatedSprite.getImage(Time.now()));
+            foundImages.add(animatedSprite.image(Time.now()));
         }
         assertThat(foundImages).containsAll(allImages);
     }

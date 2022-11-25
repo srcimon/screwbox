@@ -1,8 +1,11 @@
 package de.suzufa.screwbox.core.keyboard;
 
+/**
+ * A key on your {@link Keyboard}.
+ */
 public enum Key {
 
-	BACKSPACE(8),
+    BACKSPACE(8),
     ENTER(10),
     SHIFT_LEFT(16),
     ESCAPE(27),
@@ -30,6 +33,9 @@ public enum Key {
         this.keyCode = keyCode;
     }
 
+    /**
+     * The corresponding key code of the key.
+     */
     public int code() {
         return keyCode;
     }

@@ -15,9 +15,16 @@ class KeyCombinationTest {
     }
 
     @Test
-    void ofKeys_keysIsNull_throwsException() {
+    void ofKeys_noKeys_throwsException() {
         assertThatThrownBy(() -> KeyCombination.ofKeys())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("combination must contain a key");
+    }
+
+    @Test
+    void ofKeys_duplicateKeys_throwsException() {
+        assertThatThrownBy(() -> KeyCombination.ofKeys(Key.SPACE, Key.SPACE))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("combination must not contain duplicate keys");
     }
 }

@@ -10,4 +10,5 @@ public interface EntitySystem {
     default UpdatePriority updatePriority() {
         return UpdatePriority.SIMULATION;
     }
+
 }

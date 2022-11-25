@@ -11,8 +11,6 @@ import java.awt.image.RGBImageFilter;
 
 import de.suzufa.screwbox.core.graphics.Color;
 
-//TODO: inline ImageUtil in Frame
-//TODO: MANY OPTIMIZATIONS IN THIS CLASS => MAKING BUFFER IAMGE TO IMAGE NOT NECESSARY
 public final class ImageUtil {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
@@ -57,8 +55,8 @@ public final class ImageUtil {
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
-        if (image instanceof BufferedImage) {
-            return (BufferedImage) image;
+        if (image instanceof final BufferedImage bufferImage) {
+            return bufferImage;
         }
         final int width = image.getWidth(null);
         final int height = image.getHeight(null);

@@ -43,4 +43,18 @@ public class ListUtil {
         return list.get(index);
     }
 
+    /**
+     * Returns {@code true} if the given {@link List} contains duplicate entries.
+     */
+    public static <T> boolean containsDuplicates(final List<T> list) {
+        final List<T> uniques = new ArrayList<>();
+
+        for (final T value : list) {
+            if (!uniques.contains(value)) {
+                uniques.add(value);
+            }
+        }
+        return uniques.size() != list.size();
+    }
+
 }

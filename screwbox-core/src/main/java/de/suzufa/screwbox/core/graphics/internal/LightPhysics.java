@@ -30,9 +30,9 @@ public class LightPhysics {
     }
 
     public List<Vector> calculateArea(final Bounds lightBox) {
-        final var relevantBlockingBounds = lightBox.allIntersecting(shadowCasters);
-        final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantBlockingBounds);
-        final List<Segment> segments = getSegmentsOf(relevantBlockingBounds);
+        final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
+        final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantShadowCasters);
+        final List<Segment> segments = getSegmentsOf(relevantShadowCasters);
         final List<Vector> area = new ArrayList<>();
         for (final var raycast : raycasts) {
             final List<Vector> hits = new ArrayList<>();

@@ -275,7 +275,7 @@ public final class Bounds implements Serializable {
     }
 
     /**
-     * Returns the intersection between this {@link Bounds} and the other
+     * Returns the intersection area between this {@link Bounds} and the other
      * {@link Bounds}. Returns {@link Optional#empty()} if there is no intersection
      * between both {@link Bounds}.
      * 
@@ -298,15 +298,17 @@ public final class Bounds implements Serializable {
         return Optional.of(Bounds.atOrigin(newMinX, newMinY, newMaxX - newMinX, newMaxY - newMinY));
     }
 
-    // TODO: test and javadoc
+    /**
+     * Returns only the {@link Bounds} that intersect this {@link Bounds}.
+     */
     public final List<Bounds> allIntersecting(final List<Bounds> others) {
-        final List<Bounds> allIntersecting = new ArrayList<>();
+        final List<Bounds> intersecting = new ArrayList<>();
         for (final var other : others) {
             if (intersects(other)) {
-                allIntersecting.add(other);
+                intersecting.add(other);
             }
         }
-        return allIntersecting;
+        return intersecting;
     }
 
 }

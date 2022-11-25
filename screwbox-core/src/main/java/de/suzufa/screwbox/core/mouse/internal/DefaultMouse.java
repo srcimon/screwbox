@@ -30,7 +30,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final Graphics graphics;
     private Offset position = Offset.origin();
-    private boolean isCursorOnWindow;
+    private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
@@ -80,12 +80,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseEntered(final MouseEvent e) {
-        isCursorOnWindow = true;
+        isCursorOnScreen = true;
     }
 
     @Override
     public void mouseExited(final MouseEvent e) {
-        isCursorOnWindow = false;
+        isCursorOnScreen = false;
     }
 
     @Override
@@ -112,14 +112,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         updateMousePosition(e);
     }
 
-    private void updateMousePosition(final MouseEvent e) {
-        final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        position = windowPosition.substract(graphics.screen().position());
-    }
-
     @Override
-    public boolean isCursorOnWindow() {
-        return isCursorOnWindow;
+    public boolean isCursorOnScreen() {
+        return isCursorOnScreen;
     }
 
     @Override
@@ -144,4 +139,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return !pressed.isEmpty();
     }
 
+    private void updateMousePosition(final MouseEvent e) {
+        final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
+        position = windowPosition.substract(graphics.screen().position());
+    }
 }

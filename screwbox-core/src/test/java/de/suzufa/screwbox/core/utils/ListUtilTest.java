@@ -78,4 +78,16 @@ class ListUtilTest {
 
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void containsDuplicates_noDuplicates_isFalse() {
+        boolean containsDuplicates = ListUtil.containsDuplicates(List.of("A", "X", "a"));
+        assertThat(containsDuplicates).isFalse();
+    }
+
+    @Test
+    void containsDuplicates_duplicates_isTrue() {
+        boolean containsDuplicates = ListUtil.containsDuplicates(List.of("A", "X", "a", "X"));
+        assertThat(containsDuplicates).isTrue();
+    }
 }
