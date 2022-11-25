@@ -27,7 +27,4 @@ public record LightOptions(double radius, Color color, double glow, Color glowCo
     public LightOptions glowColor(final Color glowColor) {
         return new LightOptions(radius, color, glow, glowColor);
     }
-
-    // TODO: animation
-
 }
