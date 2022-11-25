@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty;
+import de.suzufa.screwbox.core.loop.Loop;
 
 public class GraphicsConfiguration {
 
@@ -31,17 +32,36 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * Returns the current lightmap resolution modifier.
+     * 
+     * @see #setLightmapResolution(int)
+     */
     public int lightmapResolution() {
         return lightmapResolution;
     }
 
+    /**
+     * Configures the blur of the lightmap. 0 means no blur. Allowes values up to 6.
+     * Higher values cause lower {@link Loop#fps} but may improve visual quality
+     * when using {@link Light}.
+     * 
+     * @param lightmapBlur blur value from 0 (no blur) to 6.
+     */
     public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        // TODO: 0 - 6 validation / NON NULL
+        if (lightmapBlur < 0 || lightmapBlur > 6) {
+            throw new IllegalArgumentException("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
+        }
         this.lightmapBlur = lightmapBlur;
         notifyListeners(ConfigurationProperty.LIGHTMAP_BLUR);
         return this;
     }
 
+    /**
+     * Returns the current blur of the lightmap.
+     * 
+     * @see #setLightmapBlur(int)
+     */
     public int lightmapBlur() {
         return lightmapBlur;
     }

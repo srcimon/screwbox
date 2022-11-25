@@ -30,18 +30,34 @@ class GraphicsConfigurationTest {
     }
 
     @ParameterizedTest
+    @ValueSource(ints = { -1, 7 })
+    void setLightmapBlur_outOfRange_throwsException(int blur) {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(blur))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
+    }
+
+    @Test
+    void setLightmapBlur_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightmapBlur(2);
+
+        assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
+        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_BLUR);
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = { 0, 7 })
-    void setLightmapResolution_outOfRange_throwsException(int resoultion) {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapResolution(resoultion))
+    void setLightmapResolution_outOfRange_throwsException(int resolution) {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapResolution(resolution))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("valid range for lightmap resolution is 1 to 6");
     }
 
     @Test
     void setLightmapResolution_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightmapResolution(4);
+        graphicsConfiguration.setLightmapResolution(3);
 
-        assertThat(graphicsConfiguration.lightmapResolution()).isEqualTo(4);
+        assertThat(graphicsConfiguration.lightmapResolution()).isEqualTo(3);
         verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_RESOLUTION);
     }
 
