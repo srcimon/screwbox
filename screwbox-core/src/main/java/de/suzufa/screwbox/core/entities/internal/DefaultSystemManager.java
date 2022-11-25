@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.entities.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
@@ -9,6 +10,8 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 
 public class DefaultSystemManager implements SystemManager {
 
+    private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = (first, second) -> first.updatePriority()
+            .compareTo(second.updatePriority());
     private final List<EntitySystem> systems = new ArrayList<>();
     private final EntityManager entityManager;
     private final Engine engine;
@@ -28,7 +31,7 @@ public class DefaultSystemManager implements SystemManager {
             pendingSystemsToAdd.add(system);
         } else {
             systems.add(system);
-            Collections.sort(systems, new SystemComparator());
+            Collections.sort(systems, SYSTEM_COMPARATOR);
         }
     }
 
