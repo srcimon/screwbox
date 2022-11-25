@@ -2,7 +2,7 @@ package de.suzufa.screwbox.core.mouse;
 
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Window;
+import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.graphics.World;
 
 /**
@@ -21,9 +21,9 @@ public interface Mouse {
     Vector worldPosition();
 
     /**
-     * Checks if the Cursor is on the {@link Window} or not.
+     * Checks if the Cursor is on the {@link Screen} or not.
      */
-    boolean isCursorOnWindow();
+    boolean isCursorOnScreen();
 
     /**
      * Checks if the given {@link MouseButton} is pressed.

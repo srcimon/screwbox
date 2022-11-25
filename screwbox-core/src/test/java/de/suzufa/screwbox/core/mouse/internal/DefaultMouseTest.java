@@ -62,18 +62,18 @@ class DefaultMouseTest {
     }
 
     @Test
-    void isCursorOnWindow_enteredAndExited_isFalse() {
+    void isCursorOnScreen_enteredAndExited_isFalse() {
         mouse.mouseEntered(null);
         mouse.mouseExited(null);
 
-        assertThat(mouse.isCursorOnWindow()).isFalse();
+        assertThat(mouse.isCursorOnScreen()).isFalse();
     }
 
     @Test
-    void isCursorOnWindow_entered_isTrue() {
+    void isCursorOnScreen_entered_isTrue() {
         mouse.mouseEntered(null);
 
-        assertThat(mouse.isCursorOnWindow()).isTrue();
+        assertThat(mouse.isCursorOnScreen()).isTrue();
     }
 
     @Test
