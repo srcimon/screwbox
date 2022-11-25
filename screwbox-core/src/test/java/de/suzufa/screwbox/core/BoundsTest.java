@@ -4,6 +4,7 @@ import static de.suzufa.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -232,5 +233,28 @@ class BoundsTest {
         Bounds second = $$(0, 0, 20, 100);
 
         assertThat(first.intersection(second)).isEqualTo(Optional.of($$(10, 0, 10, 80)));
+    }
+
+    @Test
+    void allIntersecting_noneIntersects_emptyList() {
+        Bounds first = $$(10, 0, 40, 80);
+        Bounds second = $$(0, 0, 20, 100);
+        Bounds bounds = Bounds.$$(400, 400, 20, 20);
+
+        List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second));
+
+        assertThat(intersecting).isEmpty();
+    }
+
+    @Test
+    void allIntersecting_someIntersects_retrunsOnlyIntersecting() {
+        Bounds first = $$(10, 0, 40, 80);
+        Bounds second = $$(0, 0, 20, 100);
+        Bounds third = $$(0, 410, 20, 100);
+        Bounds bounds = Bounds.$$(5, 5, 20, 20);
+
+        List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second, third));
+
+        assertThat(intersecting).containsExactly(first, second);
     }
 }
