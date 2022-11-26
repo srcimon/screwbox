@@ -28,21 +28,21 @@ class MathUtilTest {
     }
 
     @Test
-    void haveSameSign_negativeAndPositive_returnsFalse() {
-        assertThat(MathUtil.haveSameSign(1, -1)).isFalse();
-        assertThat(MathUtil.haveSameSign(-1, 5)).isFalse();
-        assertThat(MathUtil.haveSameSign(-1, 0)).isFalse();
+    void sameSign_negativeAndPositive_returnsFalse() {
+        assertThat(MathUtil.sameSign(1, -1)).isFalse();
+        assertThat(MathUtil.sameSign(-1, 5)).isFalse();
+        assertThat(MathUtil.sameSign(-1, 0)).isFalse();
     }
 
     @Test
-    void haveSameSign_bothZero_returnsTrue() {
-        assertThat(MathUtil.haveSameSign(0, 0)).isTrue();
+    void sameSign_bothZero_returnsTrue() {
+        assertThat(MathUtil.sameSign(0, 0)).isTrue();
     }
 
     @Test
-    void haveSameSign_bothSameSign_returnsTrue() {
-        assertThat(MathUtil.haveSameSign(220, 9)).isTrue();
-        assertThat(MathUtil.haveSameSign(-4, -20)).isTrue();
+    void sameSign_bothSameSign_returnsTrue() {
+        assertThat(MathUtil.sameSign(220, 9)).isTrue();
+        assertThat(MathUtil.sameSign(-4, -20)).isTrue();
     }
 
     @Test
