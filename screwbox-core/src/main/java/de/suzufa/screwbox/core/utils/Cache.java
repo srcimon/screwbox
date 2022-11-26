@@ -9,6 +9,10 @@ public class Cache<K, V> {
 
     private final Map<K, V> store = new HashMap<>();
 
+    public void clear() {
+        store.clear();
+    }
+
     public void put(final K key, final V value) {
         store.put(key, value);
     }

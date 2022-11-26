@@ -40,4 +40,14 @@ class CacheTest {
         assertThat(result).isEqualTo("cache value");
     }
 
+    @Test
+    void clear_removesAllEntries() {
+        cache.put(1, "one");
+        cache.put(2, "two");
+
+        cache.clear();
+
+        assertThat(cache.get(1)).isEmpty();
+        assertThat(cache.get(2)).isEmpty();
+    }
 }
