@@ -59,6 +59,12 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
+    public Light addShadowCaster(Bounds shadowCaster) {
+        lightPhysics.addShadowCaster(shadowCaster);
+        return this;
+    }
+
+    @Override
     public List<Bounds> shadowCasters() {
         return lightPhysics.shadowCasters();
     }

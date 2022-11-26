@@ -1,9 +1,5 @@
 package de.suzufa.screwbox.core.entities.systems;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
@@ -30,11 +26,9 @@ public class RenderLightSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Light light = engine.graphics().light();
-        final List<Bounds> shadowCasters = new ArrayList<>();
         for (final var shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
-            shadowCasters.add(shadowCaster.get(TransformComponent.class).bounds);
+            light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
         }
-        light.addShadowCasters(shadowCasters);
 
         for (final Entity pointLightEntity : engine.entities().fetchAll(POINTLIGHT_EMITTERS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);

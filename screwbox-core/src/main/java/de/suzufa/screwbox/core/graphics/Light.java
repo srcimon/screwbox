@@ -33,10 +33,20 @@ public interface Light {
     Light addSpotLight(Vector position, LightOptions options);
 
     /**
+     * Adds object that cast shadows.
+     * 
+     * @param shadowCaster the {@link Bounds} of the shadow caster
+     * @see #addPointLight(Vector, LightOptions)
+     * @see #addShadowCasters(List)
+     */
+    Light addShadowCaster(Bounds shadowCaster);
+
+    /**
      * Adds objects that cast shadows.
      * 
      * @param shadowCasters the {@link Bounds} of the shadow casters
      * @see #addPointLight(Vector, LightOptions)
+     * @see #addShadowCaster(Bounds)
      */
     Light addShadowCasters(List<Bounds> shadowCasters);
 

@@ -25,6 +25,11 @@ public class LightPhysics {
         this.shadowCasters.addAll(shadowCasters);
     }
 
+    public void addShadowCaster(Bounds shadowCaster) {
+        requireNonNull(shadowCaster, "shadowCaster must not be null");
+        this.shadowCasters.add(shadowCaster);
+    }
+
     public List<Bounds> shadowCasters() {
         return shadowCasters;
     }
@@ -94,4 +99,5 @@ public class LightPhysics {
         }
         return false;
     }
+
 }
