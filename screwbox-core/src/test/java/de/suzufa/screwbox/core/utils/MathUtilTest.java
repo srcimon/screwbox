@@ -8,44 +8,23 @@ class MathUtilTest {
 
     @Test
     void clamp_valueIsBelowMin_returnsMin() {
-        float clamp = MathUtil.clamp(1, -4, 5);
+        double clamp = MathUtil.clamp(1, -4, 5);
 
         assertThat(clamp).isEqualTo(1);
     }
 
     @Test
     void clamp_valueIsAboveMax_returnsMax() {
-        float clamp = MathUtil.clamp(1, 6, 5);
+        double clamp = MathUtil.clamp(1, 6, 5);
 
         assertThat(clamp).isEqualTo(5);
     }
 
     @Test
     void clamp_valueIsInRange_returnsValue() {
-        float clamp = MathUtil.clamp(1, 2, 5);
+        double clamp = MathUtil.clamp(1, 2, 5);
 
         assertThat(clamp).isEqualTo(2);
-    }
-
-    @Test
-    void clamp_floatVlueIsBelowMin_returnsMin() {
-        float clamp = MathUtil.clamp(1f, -4f, 5f);
-
-        assertThat(clamp).isEqualTo(1f);
-    }
-
-    @Test
-    void clamp_floatValueIsAboveMax_returnsMax() {
-        float clamp = MathUtil.clamp(1f, 6f, 5f);
-
-        assertThat(clamp).isEqualTo(5f);
-    }
-
-    @Test
-    void clamp_floatValueIsInRange_returnsValue() {
-        float clamp = MathUtil.clamp(1f, 2f, 5f);
-
-        assertThat(clamp).isEqualTo(2f);
     }
 
     @Test

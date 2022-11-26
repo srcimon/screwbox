@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core.utils;
 
-import static java.util.Objects.isNull;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,13 +19,13 @@ public class Cache<K, V> {
     }
 
     public V getOrElse(final K key, final Supplier<V> valueSupplier) {
-        final V storeValue = store.get(key);
-        if (isNull(storeValue)) {
+        final var storeValue = get(key);
+        if (storeValue.isEmpty()) {
             final V supplierValue = valueSupplier.get();
             put(key, supplierValue);
             return supplierValue;
         }
-        return storeValue;
+        return storeValue.get();
     }
 
 }
