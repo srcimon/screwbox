@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.physics.internal;
 
 import static de.suzufa.screwbox.core.utils.MathUtil.modifier;
-import static de.suzufa.screwbox.core.utils.MathUtil.haveSameSign;
+import static de.suzufa.screwbox.core.utils.MathUtil.sameSign;
 import static java.lang.Math.abs;
 
 import de.suzufa.screwbox.core.Vector;
@@ -49,7 +49,7 @@ public final class CollisionResolver {
         final var physicsBodyComponent = pair.physicsBodyComponent();
         final var colliderComponent = pair.colliderComponent();
         // prevents getting stuck when going off a cliff
-        if (haveSameSign(correction.x(), physicsBodyComponent.momentum.x())) {
+        if (sameSign(correction.x(), physicsBodyComponent.momentum.x())) {
             return;
         }
         final Vector newMomentum = Vector.of(

@@ -9,11 +9,7 @@ public final class MathUtil {
         return Math.min(Math.max(value, min), max);
     }
 
-    public static float clamp(final float min, final float value, final float max) {
-        return Math.min(Math.max(value, min), max);
-    }
-
-    public static boolean haveSameSign(final double value, final double other) {
+    public static boolean sameSign(final double value, final double other) {
         return value >= 0 == other >= 0;
     }
 
