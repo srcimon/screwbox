@@ -10,7 +10,8 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
@@ -24,6 +25,7 @@ import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.ChangeMapComponent;
 import de.suzufa.screwbox.playground.debo.scenes.GameScene;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);
@@ -51,11 +53,6 @@ public class ChangeMapSystem implements EntitySystem {
             }
 
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 
 }

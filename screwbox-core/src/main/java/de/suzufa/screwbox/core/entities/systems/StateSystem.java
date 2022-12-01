@@ -6,9 +6,11 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public final class StateSystem implements EntitySystem {
 
     private static final Archetype STATEFUL_ENTITIES = Archetype.of(StateComponent.class);
@@ -29,10 +31,5 @@ public final class StateSystem implements EntitySystem {
                 stateComponent.state.enter(entity, engine);
             }
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 }

@@ -9,13 +9,15 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.playground.debo.components.MovableComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class MovableSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
@@ -41,10 +43,5 @@ public class MovableSystem implements EntitySystem {
             var movable = entity.get(MovableComponent.class);
             physicsBody.momentum = Vector.of(movable.maxSpeed * modifier(playerMomentum.x()), physicsBody.momentum.y());
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 }

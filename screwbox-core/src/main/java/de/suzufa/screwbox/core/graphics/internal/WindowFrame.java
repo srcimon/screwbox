@@ -85,4 +85,8 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
     public boolean hasFocus() {
         return hasFocus;
     }
+
+    public int canvasHeight() {
+        return getCanvas().getBounds().height;
+    }
 }

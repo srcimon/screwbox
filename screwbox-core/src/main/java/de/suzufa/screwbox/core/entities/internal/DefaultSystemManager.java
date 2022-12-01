@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.entities.internal;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,11 +9,15 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
+import de.suzufa.screwbox.core.utils.Cache;
 
 public class DefaultSystemManager implements SystemManager {
 
-    private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = (first, second) -> first.updatePriority()
-            .compareTo(second.updatePriority());
+    private static final Cache<Class<? extends EntitySystem>, SystemOrder> CACHE = new Cache<>();
+    private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = (first, second) -> orderOf(first)
+            .compareTo(orderOf(second));
     private final List<EntitySystem> systems = new ArrayList<>();
     private final EntityManager entityManager;
     private final Engine engine;
@@ -33,6 +39,14 @@ public class DefaultSystemManager implements SystemManager {
             systems.add(system);
             Collections.sort(systems, SYSTEM_COMPARATOR);
         }
+    }
+
+    private static SystemOrder orderOf(final EntitySystem entitySystem) {
+        final var clazz = entitySystem.getClass();
+        return CACHE.getOrElse(clazz, () -> {
+            final var order = clazz.getAnnotation(Order.class);
+            return isNull(order) ? SystemOrder.SIMULATION : order.value();
+        });
     }
 
     @Override
@@ -83,9 +97,9 @@ public class DefaultSystemManager implements SystemManager {
         }
     }
 
-    private List<EntitySystem> systemsOfType(Class<? extends EntitySystem> type) {
+    private List<EntitySystem> systemsOfType(final Class<? extends EntitySystem> type) {
         final List<EntitySystem> systemsOfType = new ArrayList<>();
-        for (var system : systems) {
+        for (final var system : systems) {
             if (type == system.getClass()) {
                 systemsOfType.add(system);
             }
@@ -94,7 +108,7 @@ public class DefaultSystemManager implements SystemManager {
     }
 
     @Override
-    public boolean isSystemPresent(Class<? extends EntitySystem> type) {
+    public boolean isSystemPresent(final Class<? extends EntitySystem> type) {
         for (final var system : systems) {
             if (type == system.getClass()) {
                 return true;

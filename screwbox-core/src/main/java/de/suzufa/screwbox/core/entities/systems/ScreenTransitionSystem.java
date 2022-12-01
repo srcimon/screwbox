@@ -7,9 +7,11 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
 
+@Order(SystemOrder.PRESENTATION_TRANSITIONS)
 public class ScreenTransitionSystem implements EntitySystem {
 
     private static final Archetype TRANSITIONS = Archetype.of(ScreenTransitionComponent.class);
@@ -28,11 +30,6 @@ public class ScreenTransitionSystem implements EntitySystem {
                 entity.remove(ScreenTransitionComponent.class);
             }
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_TRANSITIONS;
     }
 
 }

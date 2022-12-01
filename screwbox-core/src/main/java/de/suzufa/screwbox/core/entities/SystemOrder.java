@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.entities;
 
-public enum UpdatePriority {
-    OPTIMITATION,
+public enum SystemOrder {
+    OPTIMIZATION,
     PREPARATION,
     SIMULATION_BEGIN,
     SIMULATION,

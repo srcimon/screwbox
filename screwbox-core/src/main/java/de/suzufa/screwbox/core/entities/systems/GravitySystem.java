@@ -5,10 +5,12 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.GravityComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class GravitySystem implements EntitySystem {
 
     private static final Archetype GRAVITY_AFFECTED = Archetype.of(PhysicsBodyComponent.class);
@@ -24,10 +26,5 @@ public class GravitySystem implements EntitySystem {
             physicsBodyComponent.momentum = physicsBodyComponent.momentum
                     .add(gravityDelta.multiply(physicsBodyComponent.gravityModifier));
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 }

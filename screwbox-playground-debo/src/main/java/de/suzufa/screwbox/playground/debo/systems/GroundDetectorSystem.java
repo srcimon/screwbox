@@ -5,11 +5,13 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.GroundDetectorComponent;
 
+@Order(SystemOrder.PREPARATION)
 public class GroundDetectorSystem implements EntitySystem {
 
     private static final Archetype GROUND_DETECTORS = Archetype.of(GroundDetectorComponent.class,
@@ -38,10 +40,5 @@ public class GroundDetectorSystem implements EntitySystem {
             }
         }
         return false;
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
     }
 }

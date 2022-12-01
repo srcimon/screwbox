@@ -7,8 +7,4 @@ public interface EntitySystem {
 
     void update(Engine engine);
 
-    default UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION;
-    }
-
 }

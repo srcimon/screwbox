@@ -8,12 +8,14 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
 import de.suzufa.screwbox.core.entities.components.StaticShadowCasterMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
+@Order(SystemOrder.OPTIMIZATION)
 public class CombineStaticShadowCastersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
@@ -56,10 +58,4 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
         }
         return false;
     }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.OPTIMITATION;
-    }
-
 }

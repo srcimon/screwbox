@@ -6,6 +6,9 @@ import de.suzufa.screwbox.core.assets.Asset;
 
 public interface Screen {
 
+    /**
+     * Returns the position of the {@link Screen} relative to the monitor.
+     */
     Offset position();
 
     Screen drawColor(Color color);
@@ -146,10 +149,16 @@ public interface Screen {
         return drawLine(from, to, drawColor());
     }
 
-    // TODO: javadoc
+    /**
+     * Returns {@code true} if the given {@link WindowBounds} is within the
+     * {@link Screen} area.
+     */
     boolean isVisible(WindowBounds bounds);
 
-    // TODO: javadoc
+    /**
+     * Returns {@code true} if the given {@link Offset} is within the {@link Screen}
+     * area.
+     */
     boolean isVisible(Offset offset);
 
     Dimension size();

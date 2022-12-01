@@ -7,12 +7,14 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.utils.Timer;
 
+@Order(SystemOrder.PREPARATION)
 public class PathfindingGridCreationSystem implements EntitySystem {
 
     private static final Archetype BLOCKING = Archetype.of(
@@ -44,11 +46,6 @@ public class PathfindingGridCreationSystem implements EntitySystem {
     private boolean needsUpdate(final Engine engine) {
         final Time time = engine.loop().lastUpdate();
         return engine.physics().grid().isEmpty() || updateTimer.isTick(time);
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
     }
 
 }

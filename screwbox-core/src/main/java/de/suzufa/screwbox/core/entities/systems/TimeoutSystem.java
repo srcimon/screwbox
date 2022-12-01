@@ -4,9 +4,11 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.Order;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class TimeoutSystem implements EntitySystem {
 
     private static final Archetype TIMEOUT_ENTITIES = Archetype.of(TimeoutComponent.class);
@@ -20,10 +22,5 @@ public class TimeoutSystem implements EntitySystem {
                 engine.entities().remove(entity);
             }
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 }
