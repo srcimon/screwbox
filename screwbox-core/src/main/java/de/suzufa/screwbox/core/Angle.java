@@ -127,11 +127,12 @@ public final class Angle implements Serializable, Comparable<Angle> {
      */
     public Segment rotate(final Segment segment) {
         requireNonNull(segment, "segment must not be null");
-        final double s = sin(Angle.degrees(degrees).radians());
-        final double c = cos(Angle.degrees(degrees).radians());
+        final double radians = Angle.degrees(degrees).radians();
+        final double sinus = sin(radians);
+        final double cosinus = cos(radians);
         final Vector translated = segment.to().substract(segment.from());
-        final double xnew = translated.x() * c - translated.y() * s;
-        final double ynew = translated.x() * s + translated.y() * c;
+        final double xnew = translated.x() * cosinus - translated.y() * sinus;
+        final double ynew = translated.x() * sinus + translated.y() * cosinus;
 
         return Segment.between(segment.from(), Vector.$(xnew, ynew).add(segment.from()));
     }
