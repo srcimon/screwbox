@@ -20,10 +20,11 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 
 public class DefaultScreen implements Screen {
 
-    private Renderer renderer = new StandbyRenderer();
+    private Renderer renderer;
     private final WindowFrame frame;
 
-    public DefaultScreen(WindowFrame frame) {
+    public DefaultScreen(WindowFrame frame, Renderer renderer) {
+        this.renderer = renderer;
         this.frame = frame;
     }
 
@@ -195,9 +196,7 @@ public class DefaultScreen implements Screen {
     @Override
     public Offset position() {
         final var bounds = frame.getBounds();
-        // TODO: cache window position and so on until changed
-        return Offset.at(bounds.x, bounds.y - (frame.getCanvas().getBounds().height - bounds.height));
-
+        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
 }

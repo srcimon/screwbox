@@ -21,6 +21,7 @@ import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultScreen;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
+import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
 import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
@@ -63,7 +64,7 @@ class DefaultEngine implements Engine {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
-        final DefaultScreen screen = new DefaultScreen(frame);
+        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
