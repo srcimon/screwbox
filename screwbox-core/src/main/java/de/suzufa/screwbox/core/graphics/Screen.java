@@ -6,6 +6,9 @@ import de.suzufa.screwbox.core.assets.Asset;
 
 public interface Screen {
 
+    /**
+     * Returns the position of the {@link Screen} relative to the monitor.
+     */
     Offset position();
 
     Screen drawColor(Color color);
