@@ -7,11 +7,12 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.UpdatePriority;
 
 public class DefaultSystemManager implements SystemManager {
 
-    private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = (first, second) -> first.updatePriority()
-            .compareTo(second.updatePriority());
+    private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = (first, second) -> updatePriorityOf(first)
+            .compareTo(updatePriorityOf(second));
     private final List<EntitySystem> systems = new ArrayList<>();
     private final EntityManager entityManager;
     private final Engine engine;
@@ -33,6 +34,10 @@ public class DefaultSystemManager implements SystemManager {
             systems.add(system);
             Collections.sort(systems, SYSTEM_COMPARATOR);
         }
+    }
+
+    private static UpdatePriority updatePriorityOf(EntitySystem entitySystem) {
+        return entitySystem.updatePriority();
     }
 
     @Override
