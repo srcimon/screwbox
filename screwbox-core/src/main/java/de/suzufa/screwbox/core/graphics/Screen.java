@@ -146,10 +146,16 @@ public interface Screen {
         return drawLine(from, to, drawColor());
     }
 
-    // TODO: javadoc
+    /**
+     * Returns {@code true} if the given {@link WindowBounds} is within the
+     * {@link Screen} area.
+     */
     boolean isVisible(WindowBounds bounds);
 
-    // TODO: javadoc
+    /**
+     * Returns {@code true} if the given {@link Offset} is within the {@link Screen}
+     * area.
+     */
     boolean isVisible(Offset offset);
 
     Dimension size();
