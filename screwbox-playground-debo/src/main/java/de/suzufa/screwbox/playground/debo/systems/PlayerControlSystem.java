@@ -5,13 +5,13 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.core.keyboard.KeyCombination;
 import de.suzufa.screwbox.playground.debo.components.PlayerControlComponent;
 
-@Order(UpdatePriority.SIMULATION_BEGIN)
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class PlayerControlSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerControlComponent.class, PhysicsBodyComponent.class);

@@ -4,14 +4,14 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.Offset;
 
-@Order(UpdatePriority.PRESENTATION_UI_FOREGROUND)
+@Order(SystemOrder.PRESENTATION_UI_FOREGROUND)
 public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);

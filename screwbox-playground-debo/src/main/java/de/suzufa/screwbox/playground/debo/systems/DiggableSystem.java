@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
@@ -20,7 +20,7 @@ import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.playground.debo.components.DiggableComponent;
 import de.suzufa.screwbox.playground.debo.components.DiggingComponent;
 
-@Order(UpdatePriority.SIMULATION_BEGIN)
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class DiggableSystem implements EntitySystem {
 
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsBodyComponent.class);

@@ -5,11 +5,11 @@ import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.playground.debo.components.ResetSceneComponent;
 import de.suzufa.screwbox.playground.debo.scenes.DeadScene;
 
-@Order(UpdatePriority.SIMULATION_BEGIN)
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class ResetSceneSystem implements EntitySystem {
 
     private static final Archetype RESETTERS = Archetype.of(ResetSceneComponent.class);

@@ -5,14 +5,14 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.playground.debo.components.TextComponent;
 
-@Order(UpdatePriority.PRESENTATION_UI)
+@Order(SystemOrder.PRESENTATION_UI)
 public class PrintSystem implements EntitySystem {
 
     private static final Archetype TEXTS = Archetype.of(TextComponent.class);

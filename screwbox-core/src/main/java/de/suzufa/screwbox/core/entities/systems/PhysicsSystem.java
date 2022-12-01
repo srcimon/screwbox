@@ -11,14 +11,14 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 import de.suzufa.screwbox.core.physics.internal.CollisionResolver;
 
-@Order(UpdatePriority.SIMULATION_BEGIN)
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class PhysicsSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.of(PhysicsBodyComponent.class, TransformComponent.class);

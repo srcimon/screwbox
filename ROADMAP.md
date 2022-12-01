@@ -6,8 +6,6 @@
 - engine.options().apply(Optionset optionset)
 - engine.quick() -> for common used actions
 - assets project for sounds / graphics and non default systems
-- system priority via annotation @Order(Simulation)
-- preload resources via reflection and classloader as @Asset
 - light -> full brightness without blur setting
 - add MenuBar when bug resolved: https://bugs.openjdk.org/browse/JDK-8270888
 - hide ui menu and menuitem methods that are not supposed to be used

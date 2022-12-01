@@ -9,14 +9,14 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
-@Order(UpdatePriority.OPTIMITATION)
+@Order(SystemOrder.OPTIMIZATION)
 public class CombineStaticCollidersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(

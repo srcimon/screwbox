@@ -14,14 +14,14 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.LetsGoComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
-@Order(UpdatePriority.PRESENTATION_EFFECTS)
+@Order(SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);

@@ -8,13 +8,13 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.utils.Timer;
 
-@Order(UpdatePriority.PREPARATION)
+@Order(SystemOrder.PREPARATION)
 public class PathfindingGridCreationSystem implements EntitySystem {
 
     private static final Archetype BLOCKING = Archetype.of(

@@ -10,14 +10,14 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.playground.debo.components.DeathEventComponent;
 import de.suzufa.screwbox.playground.debo.components.KilledFromAboveComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
-@Order(UpdatePriority.PREPARATION)
+@Order(SystemOrder.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerMarkerComponent.class);

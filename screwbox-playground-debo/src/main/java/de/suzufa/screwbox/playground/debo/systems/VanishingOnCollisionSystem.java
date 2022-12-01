@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
@@ -22,7 +22,7 @@ import de.suzufa.screwbox.playground.debo.components.MovingPlatformComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 import de.suzufa.screwbox.playground.debo.components.VanishingOnCollisionComponent;
 
-@Order(UpdatePriority.PREPARATION)
+@Order(SystemOrder.PREPARATION)
 public class VanishingOnCollisionSystem implements EntitySystem {
 
     private static final Archetype VANISHINGS = Archetype.of(VanishingOnCollisionComponent.class,

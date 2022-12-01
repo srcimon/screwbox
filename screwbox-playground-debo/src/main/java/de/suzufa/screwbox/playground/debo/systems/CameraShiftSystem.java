@@ -8,13 +8,13 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
-import de.suzufa.screwbox.core.entities.UpdatePriority;
+import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
-@Order(UpdatePriority.SIMULATION_BEGIN)
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class CameraShiftSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, SpriteComponent.class);
