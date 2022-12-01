@@ -4,11 +4,13 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.DetectLineOfSightToPlayerComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
+@Order(UpdatePriority.PREPARATION)
 public class DetectLineOfSightToPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class);
@@ -30,10 +32,4 @@ public class DetectLineOfSightToPlayerSystem implements EntitySystem {
                             .noHit();
         }
     }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
-    }
-
 }

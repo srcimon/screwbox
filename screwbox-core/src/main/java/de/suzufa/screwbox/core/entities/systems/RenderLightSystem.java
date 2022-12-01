@@ -5,6 +5,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
@@ -12,6 +13,7 @@ import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Light;
 
+@Order(UpdatePriority.PRESENTATION_LIGHT)
 public class RenderLightSystem implements EntitySystem {
 
     private static final Archetype POINTLIGHT_EMITTERS = Archetype.of(
@@ -42,10 +44,5 @@ public class RenderLightSystem implements EntitySystem {
             light.addSpotLight(position, spotLight.options);
         }
         light.render();
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_LIGHT;
     }
 }

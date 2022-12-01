@@ -10,11 +10,13 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.LabelComponent;
 
+@Order(UpdatePriority.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
 
     private static final Archetype LABELD = Archetype.of(SignalComponent.class, LabelComponent.class);
@@ -34,10 +36,4 @@ public class ShowLabelSystem implements EntitySystem {
         }
 
     }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_EFFECTS;
-    }
-
 }

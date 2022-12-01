@@ -7,12 +7,14 @@ import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Font;
 import de.suzufa.screwbox.core.graphics.World;
 
+@Order(UpdatePriority.PRESENTATION_OVERLAY)
 public class AutomovementDebugSystem implements EntitySystem {
 
     private static final Font FONT = new Font("Arial", 11);
@@ -36,10 +38,5 @@ public class AutomovementDebugSystem implements EntitySystem {
             }
         }
 
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_OVERLAY;
     }
 }

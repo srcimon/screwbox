@@ -8,6 +8,7 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.StaticMarkerComponent;
@@ -15,6 +16,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.CollisionCheck;
 import de.suzufa.screwbox.core.utils.GeometryUtil;
 
+@Order(UpdatePriority.OPTIMITATION)
 public class CombineStaticCollidersSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
@@ -69,10 +71,4 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         check.physics().remove(StaticMarkerComponent.class);
         return true;
     }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.OPTIMITATION;
-    }
-
 }

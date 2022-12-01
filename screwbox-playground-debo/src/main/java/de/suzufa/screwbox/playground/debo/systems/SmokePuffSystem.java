@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
@@ -16,6 +17,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.SmokeEmitterComponent;
 import de.suzufa.screwbox.tiled.Tileset;
 
+@Order(UpdatePriority.PRESENTATION_EFFECTS)
 public class SmokePuffSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(SpriteComponent.class, TransformComponent.class,
@@ -43,10 +45,5 @@ public class SmokePuffSystem implements EntitySystem {
             );
             engine.entities().add(smokePuff);
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_EFFECTS;
     }
 }

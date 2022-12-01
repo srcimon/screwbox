@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 
 public class DefaultSystemManager implements SystemManager {
@@ -37,7 +40,12 @@ public class DefaultSystemManager implements SystemManager {
     }
 
     private static UpdatePriority updatePriorityOf(EntitySystem entitySystem) {
-        return entitySystem.updatePriority();
+        Time time = Time.now();
+        // TODO: CACHE
+        var order = entitySystem.getClass().getAnnotation(Order.class);
+        UpdatePriority updatePriority = order == null ? UpdatePriority.SIMULATION : order.value();
+        System.out.println(Duration.since(time).nanos());
+        return updatePriority;
     }
 
     @Override

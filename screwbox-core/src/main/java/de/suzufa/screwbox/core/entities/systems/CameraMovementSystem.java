@@ -8,12 +8,14 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 
+@Order(UpdatePriority.PREPARATION)
 public class CameraMovementSystem implements EntitySystem {
 
     private static final Archetype CAMERA = Archetype.of(TransformComponent.class, CameraComponent.class,
@@ -55,10 +57,5 @@ public class CameraMovementSystem implements EntitySystem {
         camBoundsComponent.bounds = updatedBounds;
 
         engine.graphics().updateCameraPosition(updatedBounds.position());
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
     }
 }

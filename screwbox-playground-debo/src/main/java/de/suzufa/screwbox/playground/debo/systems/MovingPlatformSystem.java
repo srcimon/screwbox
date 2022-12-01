@@ -9,6 +9,7 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
@@ -16,6 +17,7 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.playground.debo.components.MovingPlatformComponent;
 import de.suzufa.screwbox.playground.debo.components.WaypointComponent;
 
+@Order(UpdatePriority.SIMULATION_BEGIN)
 public class MovingPlatformSystem implements EntitySystem {
 
     private static final Archetype PLATFORMS = Archetype.of(MovingPlatformComponent.class, TransformComponent.class);
@@ -70,10 +72,5 @@ public class MovingPlatformSystem implements EntitySystem {
             }
         }
         transform.bounds = transform.bounds.moveBy(movement);
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.SIMULATION_BEGIN;
     }
 }

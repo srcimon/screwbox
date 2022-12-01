@@ -13,6 +13,7 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
@@ -20,6 +21,7 @@ import de.suzufa.screwbox.core.keyboard.Key;
 import de.suzufa.screwbox.playground.debo.components.LetsGoComponent;
 import de.suzufa.screwbox.playground.debo.components.PlayerMarkerComponent;
 
+@Order(UpdatePriority.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
@@ -56,10 +58,5 @@ public class LetsGoSystem implements EntitySystem {
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);
         }
-    }
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PRESENTATION_EFFECTS;
     }
 }

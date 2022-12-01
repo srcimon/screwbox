@@ -15,6 +15,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.UpdatePriority;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
@@ -35,6 +36,7 @@ import de.suzufa.screwbox.playground.debo.specials.player.PlayerRunningState;
 import de.suzufa.screwbox.playground.debo.specials.player.PlayerStandingState;
 import de.suzufa.screwbox.tiled.Tileset;
 
+@Order(UpdatePriority.PREPARATION)
 public class CatMovementSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
@@ -56,11 +58,6 @@ public class CatMovementSystem implements EntitySystem {
         sprites.put(PlayerStandingState.class, catSprites.findByName("standing"));
         return sprites;
     });
-
-    @Override
-    public UpdatePriority updatePriority() {
-        return UpdatePriority.PREPARATION;
-    }
 
     @Override
     public void update(Engine engine) {
