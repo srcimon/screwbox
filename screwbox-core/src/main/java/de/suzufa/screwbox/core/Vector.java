@@ -178,7 +178,7 @@ public final class Vector implements Serializable {
     public double distanceTo(final Vector other) {
         final double deltaX = x() - other.x;
         final double deltaY = y() - other.y;
-        return calcLength(deltaX, deltaY);
+        return calculateLength(deltaX, deltaY);
     }
 
     /**
@@ -200,10 +200,10 @@ public final class Vector implements Serializable {
      * Returns the length of the {@link Vector}.
      */
     public double length() {
-        return calcLength(x, y);
+        return calculateLength(x, y);
     }
 
-    private double calcLength(final double x, final double y) {
+    private double calculateLength(final double x, final double y) {
         return Math.sqrt(x * x + y * y);
     }
 
