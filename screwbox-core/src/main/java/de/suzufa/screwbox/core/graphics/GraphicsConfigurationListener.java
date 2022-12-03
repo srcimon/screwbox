@@ -9,7 +9,7 @@ public interface GraphicsConfigurationListener extends EventListener {
         WINDOW_MODE,
         ANTIALIASING,
         LIGHTMAP_BLUR,
-        LIGHTMAP_RESOLUTION
+        LIGHTMAP_SCALE
     }
 
     void configurationChanged(ConfigurationProperty changedProperty);
