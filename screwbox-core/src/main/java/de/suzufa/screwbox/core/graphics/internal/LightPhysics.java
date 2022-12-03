@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.Borders;
 
-public class LightPhysics {
+class LightPhysics {
 
     private final List<Bounds> shadowCasters = new ArrayList<>();
 
