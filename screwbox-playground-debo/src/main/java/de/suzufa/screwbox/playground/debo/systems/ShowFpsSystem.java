@@ -24,7 +24,7 @@ public class ShowFpsSystem implements EntitySystem {
         long entityCount = engine.entities().entityCount();
         int fps = engine.loop().fps();
         long updateTime = engine.loop().updateDuration().milliseconds();
-        String text = String.format("fps: %d / updatetime %02d / %d entities / %d colliders",
+        String text = String.format("fps: %04d / updatetime %02d / %d entities / %d colliders",
                 fps, updateTime, entityCount, colliderCount);
         engine.graphics().screen().drawText(TEXT_POSITION, text, FONT, Color.WHITE);
     }
