@@ -9,7 +9,9 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Segment;
+import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
@@ -60,21 +62,25 @@ public class LightPhysics {
         segments.add(Segment.between(source.position(), source.bottomRight()));
         segments.add(Segment.between(source.position(), source.origin()));
         segments.add(Segment.between(source.position(), source.topRight()));
-        final var range = source.extents().length();
+        final var range = source.height() / 2.0;
+        Time now = Time.now();
         for (final var collider : colliders) {
-            segmentsOf(segments, source, range, collider.bottomLeft());
-            segmentsOf(segments, source, range, collider.bottomRight());
-            segmentsOf(segments, source, range, collider.origin());
-            segmentsOf(segments, source, range, collider.topRight());
+            Vector position = source.position();
+            final Segment normalTrace = Segment.between(position, position.addY(-range));
+
+            segmentsOf(segments, position, normalTrace, collider.bottomLeft());
+            segmentsOf(segments, position, normalTrace, collider.bottomRight());
+            segmentsOf(segments, position, normalTrace, collider.origin());
+            segmentsOf(segments, position, normalTrace, collider.topRight());
         }
         segments.sort(BY_ANGLE);
+        System.out.println(Duration.since(now).nanos());
         return segments;
     }
 
-    private void segmentsOf(final List<Segment> list, final Bounds source, final double radius,
+    private void segmentsOf(final List<Segment> list, final Vector position, Segment normalTrace,
             final Vector destination) {
-        final Segment directTrace = Segment.between(source.position(), destination);
-        final Segment normalTrace = Segment.between(source.position(), source.position().addY(-radius));
+        final Segment directTrace = Segment.between(position, destination);
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
         list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace));
         list.add(directTrace);
