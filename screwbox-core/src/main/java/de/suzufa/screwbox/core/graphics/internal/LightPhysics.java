@@ -25,7 +25,7 @@ public class LightPhysics {
         this.shadowCasters.addAll(shadowCasters);
     }
 
-    public void addShadowCaster(Bounds shadowCaster) {
+    public void addShadowCaster(final Bounds shadowCaster) {
         requireNonNull(shadowCaster, "shadowCaster must not be null");
         this.shadowCasters.add(shadowCaster);
     }
@@ -56,29 +56,27 @@ public class LightPhysics {
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
         final var segments = new ArrayList<Segment>();
-        segments.add(Segment.between(source.position(), source.bottomLeft()));
-        segments.add(Segment.between(source.position(), source.bottomRight()));
-        segments.add(Segment.between(source.position(), source.origin()));
-        segments.add(Segment.between(source.position(), source.topRight()));
-        final var range = source.extents().length();
+        final Vector position = source.position();
+        segments.add(Segment.between(position, source.bottomLeft()));
+        segments.add(Segment.between(position, source.bottomRight()));
+        segments.add(Segment.between(position, source.origin()));
+        segments.add(Segment.between(position, source.topRight()));
+        final Segment normalTrace = Segment.between(position, position.addY(-source.extents().length()));
         for (final var collider : colliders) {
-            segmentsOf(segments, source, range, collider.bottomLeft());
-            segmentsOf(segments, source, range, collider.bottomRight());
-            segmentsOf(segments, source, range, collider.origin());
-            segmentsOf(segments, source, range, collider.topRight());
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomLeft()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomRight()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.origin()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.topRight()));
         }
         segments.sort(BY_ANGLE);
         return segments;
     }
 
-    private void segmentsOf(final List<Segment> list, final Bounds source, final double radius,
-            final Vector destination) {
-        final Segment directTrace = Segment.between(source.position(), destination);
-        final Segment normalTrace = Segment.between(source.position(), source.position().addY(-radius));
+    private void segmentsOf(final List<Segment> list, final Segment normal, final Segment directTrace) {
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
-        list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace));
+        list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normal));
         list.add(directTrace);
-        list.add(Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
+        list.add(Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normal));
     }
 
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
