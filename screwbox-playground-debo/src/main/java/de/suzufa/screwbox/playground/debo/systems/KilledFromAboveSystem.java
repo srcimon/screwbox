@@ -5,7 +5,6 @@ import static de.suzufa.screwbox.core.utils.ListUtil.merge;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
@@ -25,28 +24,25 @@ public class KilledFromAboveSystem implements EntitySystem {
             KilledFromAboveComponent.class);
 
     @Override
-    public void update(Engine engine) {
-        Entity player = engine.entities().forcedFetch(PLAYER);
-        var playerBounds = player.get(TransformComponent.class).bounds;
+    public void update(final Engine engine) {
+        final Entity player = engine.entities().forcedFetch(PLAYER);
+        final var playerBounds = player.get(TransformComponent.class).bounds;
 
-        var left = Vector.of(playerBounds.minX() + 1, playerBounds.maxY());
-        var right = Vector.of(playerBounds.maxX() - 1, playerBounds.maxY());
-
-        List<Entity> enemiesBelow = merge(
+        final List<Entity> enemiesBelow = merge(
                 engine.physics()
-                        .raycastFrom(left)
+                        .raycastFrom(playerBounds.bottomLeft().addX(1))
                         .checkingFor(KILLED_FROM_ABOVE)
                         .checkingBorders(Borders.TOP_ONLY)
                         .castingVertical(4)
                         .selectAllEntities(),
                 engine.physics()
-                        .raycastFrom(right)
+                        .raycastFrom(playerBounds.bottomRight().addX(-1))
                         .checkingFor(KILLED_FROM_ABOVE)
                         .checkingBorders(Borders.TOP_ONLY)
                         .castingVertical(4)
                         .selectAllEntities());
 
-        for (var entity : enemiesBelow) {
+        for (final var entity : enemiesBelow) {
             entity.add(new DeathEventComponent());
         }
     }
