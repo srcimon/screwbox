@@ -25,7 +25,7 @@ public class LightPhysics {
         this.shadowCasters.addAll(shadowCasters);
     }
 
-    public void addShadowCaster(Bounds shadowCaster) {
+    public void addShadowCaster(final Bounds shadowCaster) {
         requireNonNull(shadowCaster, "shadowCaster must not be null");
         this.shadowCasters.add(shadowCaster);
     }
@@ -56,7 +56,7 @@ public class LightPhysics {
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
         final var segments = new ArrayList<Segment>();
-        Vector position = source.position();
+        final Vector position = source.position();
         segments.add(Segment.between(position, source.bottomLeft()));
         segments.add(Segment.between(position, source.bottomRight()));
         segments.add(Segment.between(position, source.origin()));
@@ -72,7 +72,7 @@ public class LightPhysics {
         return segments;
     }
 
-    private void segmentsOf(final List<Segment> list, Segment normal, Segment directTrace) {
+    private void segmentsOf(final List<Segment> list, final Segment normal, final Segment directTrace) {
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
         list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normal));
         list.add(directTrace);
