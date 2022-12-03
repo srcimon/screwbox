@@ -3,6 +3,9 @@ package de.suzufa.screwbox.core.graphics;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import de.suzufa.screwbox.core.Percent;
@@ -47,5 +50,15 @@ class ColorTest {
         var color = Color.rgb(10, 20, 30).opacity(0.5);
 
         assertThat(color).hasToString("Color [r=10, g=20, b=30, opacity=0.5]");
+    }
+
+    @Test
+    void random_calledTenTimes_hasAtLeastFiveDifferentColors() {
+        Set<Color> colors = new HashSet<>();
+        for (int i = 0; i < 10; i++) {
+            colors.add(Color.random());
+        }
+
+        assertThat(colors).hasSizeBetween(5, 10);
     }
 }

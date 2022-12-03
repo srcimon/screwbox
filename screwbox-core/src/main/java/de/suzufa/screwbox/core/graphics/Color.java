@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.graphics;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Random;
 
 import de.suzufa.screwbox.core.Percent;
 
@@ -9,6 +10,8 @@ import de.suzufa.screwbox.core.Percent;
  * Used to store color information used in {@link Graphics}.
  */
 public final class Color implements Serializable {
+
+    private static final Random RANDOM = new Random();
 
     private static final long serialVersionUID = 1L;
 
@@ -61,6 +64,13 @@ public final class Color implements Serializable {
      * A transparent color.
      */
     public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.min());
+
+    /**
+     * Creates a random {@link Color} with full {@link #opacity()}.
+     */
+    public static Color random() {
+        return rgb(RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255), RANDOM.nextInt(0, 255));
+    }
 
     /**
      * Creates a color based on RGB-components with full {@link #opacity()}.
