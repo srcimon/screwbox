@@ -3,7 +3,6 @@ package de.suzufa.screwbox.core.graphics.internal;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.Borders;
-import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
 
 public class LightPhysics {
 
@@ -40,16 +38,16 @@ public class LightPhysics {
         final List<Segment> segments = getSegmentsOf(relevantShadowCasters);
         final List<Vector> area = new ArrayList<>();
         for (final var raycast : raycasts) {
-            final List<Vector> hits = new ArrayList<>();
+            Vector bestIntersectionPoint = raycast.to();
+
             for (final var segment : segments) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
-                if (intersectionPoint != null) {
-                    hits.add(intersectionPoint);
+                if (intersectionPoint != null && intersectionPoint
+                        .distanceTo(lightBox.position()) < bestIntersectionPoint.distanceTo(lightBox.position())) {
+                    bestIntersectionPoint = intersectionPoint;
                 }
             }
-            Collections.sort(hits, new DistanceComparator(lightBox.position()));
-
-            area.add(hits.isEmpty() ? raycast.to() : hits.get(0));
+            area.add(bestIntersectionPoint);
         }
         return area;
     }
