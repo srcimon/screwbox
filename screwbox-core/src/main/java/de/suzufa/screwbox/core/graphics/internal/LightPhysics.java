@@ -9,9 +9,7 @@ import java.util.List;
 
 import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Segment;
-import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
@@ -58,33 +56,27 @@ public class LightPhysics {
 
     private List<Segment> getRelevantRaytraces(final Bounds source, final List<Bounds> colliders) {
         final var segments = new ArrayList<Segment>();
-        segments.add(Segment.between(source.position(), source.bottomLeft()));
-        segments.add(Segment.between(source.position(), source.bottomRight()));
-        segments.add(Segment.between(source.position(), source.origin()));
-        segments.add(Segment.between(source.position(), source.topRight()));
-        final var range = source.height() / 2.0;
-        Time now = Time.now();
+        Vector position = source.position();
+        segments.add(Segment.between(position, source.bottomLeft()));
+        segments.add(Segment.between(position, source.bottomRight()));
+        segments.add(Segment.between(position, source.origin()));
+        segments.add(Segment.between(position, source.topRight()));
+        final Segment normalTrace = Segment.between(position, position.addY(-source.height() / 2.0));
         for (final var collider : colliders) {
-            Vector position = source.position();
-            final Segment normalTrace = Segment.between(position, position.addY(-range));
-
-            segmentsOf(segments, position, normalTrace, collider.bottomLeft());
-            segmentsOf(segments, position, normalTrace, collider.bottomRight());
-            segmentsOf(segments, position, normalTrace, collider.origin());
-            segmentsOf(segments, position, normalTrace, collider.topRight());
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomLeft()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomRight()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.origin()));
+            segmentsOf(segments, normalTrace, Segment.between(position, collider.topRight()));
         }
         segments.sort(BY_ANGLE);
-        System.out.println(Duration.since(now).nanos());
         return segments;
     }
 
-    private void segmentsOf(final List<Segment> list, final Vector position, Segment normalTrace,
-            final Vector destination) {
-        final Segment directTrace = Segment.between(position, destination);
+    private void segmentsOf(final List<Segment> list, Segment normal, Segment directTrace) {
         final var rotationOfDirectTrace = Angle.of(directTrace).degrees();
-        list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normalTrace));
+        list.add(Angle.degrees(rotationOfDirectTrace - 0.01).rotate(normal));
         list.add(directTrace);
-        list.add(Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normalTrace));
+        list.add(Angle.degrees(rotationOfDirectTrace + 0.01).rotate(normal));
     }
 
     private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
