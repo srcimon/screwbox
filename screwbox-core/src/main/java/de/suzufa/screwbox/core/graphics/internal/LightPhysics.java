@@ -61,7 +61,7 @@ public class LightPhysics {
         segments.add(Segment.between(position, source.bottomRight()));
         segments.add(Segment.between(position, source.origin()));
         segments.add(Segment.between(position, source.topRight()));
-        final Segment normalTrace = Segment.between(position, position.addY(-source.height() / 2.0));
+        final Segment normalTrace = Segment.between(position, position.addY(-source.extents().length()));
         for (final var collider : colliders) {
             segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomLeft()));
             segmentsOf(segments, normalTrace, Segment.between(position, collider.bottomRight()));
