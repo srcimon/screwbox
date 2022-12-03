@@ -147,7 +147,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
             }
         });
 
-        screen.drawSprite(sprite, origin(), configuration.lightmapResolution(), ambientLight.invert());
+        screen.drawSprite(sprite, origin(), configuration.lightmapScale(), ambientLight.invert());
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
@@ -188,7 +188,7 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(screen.size(), configuration.lightmapResolution());
+        lightmap = new Lightmap(screen.size(), configuration.lightmapScale());
     }
 
 }

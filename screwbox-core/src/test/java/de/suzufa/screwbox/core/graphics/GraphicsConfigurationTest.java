@@ -47,18 +47,18 @@ class GraphicsConfigurationTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 0, 7 })
-    void setLightmapResolution_outOfRange_throwsException(int resolution) {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapResolution(resolution))
+    void setLightmapScale_outOfRange_throwsException(int resolution) {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(resolution))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("valid range for lightmap resolution is 1 to 6");
+                .hasMessage("valid range for lightmap scale is 1 to 6");
     }
 
     @Test
-    void setLightmapResolution_updatesOptionAndNotifiesListeners() {
-        graphicsConfiguration.setLightmapResolution(3);
+    void setLightmapScale_updatesOptionAndNotifiesListeners() {
+        graphicsConfiguration.setLightmapScale(3);
 
-        assertThat(graphicsConfiguration.lightmapResolution()).isEqualTo(3);
-        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_RESOLUTION);
+        assertThat(graphicsConfiguration.lightmapScale()).isEqualTo(3);
+        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_SCALE);
     }
 
     @Test

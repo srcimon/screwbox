@@ -14,31 +14,31 @@ public class GraphicsConfiguration {
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
     private int lightmapBlur = 4;
-    private int lightmapResolution = 4;
+    private int lightmapScale = 4;
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
      * visual quality but massivly improve performance when using {@link Light}.
      * Default value is 4.
      * 
-     * @param lightmapResolution in range from 1 to 6
+     * @param lightmapScale in range from 1 to 6
      */
-    public GraphicsConfiguration setLightmapResolution(final int lightmapResolution) {
-        if (lightmapResolution < 1 || lightmapResolution > 6) {
-            throw new IllegalArgumentException("valid range for lightmap resolution is 1 to 6");
+    public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
+        if (lightmapScale < 1 || lightmapScale > 6) {
+            throw new IllegalArgumentException("valid range for lightmap scale is 1 to 6");
         }
-        this.lightmapResolution = lightmapResolution;
-        notifyListeners(ConfigurationProperty.LIGHTMAP_RESOLUTION);
+        this.lightmapScale = lightmapScale;
+        notifyListeners(ConfigurationProperty.LIGHTMAP_SCALE);
         return this;
     }
 
     /**
      * Returns the current lightmap resolution modifier.
      * 
-     * @see #setLightmapResolution(int)
+     * @see #setLightmapScale(int)
      */
-    public int lightmapResolution() {
-        return lightmapResolution;
+    public int lightmapScale() {
+        return lightmapScale;
     }
 
     /**
