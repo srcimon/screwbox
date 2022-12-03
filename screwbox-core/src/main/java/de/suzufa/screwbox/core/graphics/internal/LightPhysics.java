@@ -34,8 +34,8 @@ public class LightPhysics {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Segment normal = Segment.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
-        for (double d = 0; d < 360; d += 1.5) {
-            Segment raycast = Angle.degrees(d).rotate(normal);
+        for (int angle = 0; angle < 360; angle += 1) {
+            Segment raycast = Angle.degrees(angle).rotate(normal);
             Vector nearestPoint = raycast.to();
             for (final var segment : getSegmentsOf(relevantShadowCasters)) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
