@@ -7,13 +7,9 @@ class InvertLightmapImageWithMinOpacityFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {
-        final Color currentColor = new Color(rgb, true);
-        final int alpha = currentColor.getAlpha();
-        return new Color(
-                currentColor.getRed(),
-                currentColor.getGreen(),
-                currentColor.getBlue(),
-                Math.max(255 - alpha, 10)).getRGB();
+        final Color current = new Color(rgb, true);
+        final int alpha = Math.max(255 - current.getAlpha(), 10);
+        return new Color(current.getRed(), current.getGreen(), current.getBlue(), alpha).getRGB();
     }
 
 }
