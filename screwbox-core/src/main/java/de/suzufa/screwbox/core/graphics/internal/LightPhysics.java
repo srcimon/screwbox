@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -34,20 +35,18 @@ public class LightPhysics {
 
     public List<Vector> calculateArea(final Bounds lightBox) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
-        final List<Segment> raycasts = getRelevantRaytraces(lightBox, relevantShadowCasters);
-        final List<Segment> segments = getSegmentsOf(relevantShadowCasters);
         final List<Vector> area = new ArrayList<>();
-        for (final var raycast : raycasts) {
-            Vector bestIntersectionPoint = raycast.to();
-
-            for (final var segment : segments) {
+        for (final var raycast : getRelevantRaytraces(lightBox, relevantShadowCasters)) {
+            Vector nearestPoint = raycast.to();
+            for (final var segment : getSegmentsOf(relevantShadowCasters)) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
-                if (intersectionPoint != null && intersectionPoint
-                        .distanceTo(lightBox.position()) < bestIntersectionPoint.distanceTo(lightBox.position())) {
-                    bestIntersectionPoint = intersectionPoint;
+                if (nonNull(intersectionPoint)
+                        && intersectionPoint.distanceTo(lightBox.position()) < nearestPoint
+                                .distanceTo(lightBox.position())) {
+                    nearestPoint = intersectionPoint;
                 }
             }
-            area.add(bestIntersectionPoint);
+            area.add(nearestPoint);
         }
         return area;
     }
