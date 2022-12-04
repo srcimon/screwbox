@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>de.suzufa.screwbox</groupId>
-		<artifactId>screwbox</artifactId>
+		<artifactId>screwbox-examples</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<packaging>pom</packaging>
-	<artifactId>screwbox-examples</artifactId>
-	<modules>
-		<module>hello-world-example</module>
-		<module>game-of-life-example</module>
-		<module>pathfinding-example</module>
-	</modules>
+	<artifactId>hello-world-example</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>screwbox-core</artifactId>
+		</dependency>
+	</dependencies>
 </project>
