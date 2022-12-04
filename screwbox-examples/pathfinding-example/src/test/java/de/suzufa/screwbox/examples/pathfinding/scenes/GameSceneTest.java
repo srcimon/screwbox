@@ -2,6 +2,7 @@ package de.suzufa.screwbox.examples.pathfinding.scenes;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +18,7 @@ import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponen
 @ExtendWith(MockitoExtension.class)
 class DemoSceneTest {
 
+    @Test
     void testMapCanBeLoaded() {
         var engine = Mockito.mock(Engine.class);
         var entityManager = new DefaultEntityManager();
