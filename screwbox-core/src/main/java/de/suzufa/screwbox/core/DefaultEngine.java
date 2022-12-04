@@ -45,7 +45,7 @@ import de.suzufa.screwbox.core.ui.internal.DefaultUi;
 
 class DefaultEngine implements Engine {
 
-    private final DefaultLoop gameLoop;
+    private final DefaultLoop loop;
     private final DefaultGraphics graphics;
     private final DefaultKeyboard keyboard;
     private final DefaultScenes scenes;
@@ -57,6 +57,7 @@ class DefaultEngine implements Engine {
     private final DefaultAsync async;
     private final DefaultSavegame savegame;
     private final DefaultAssets assets;
+
     private final ExecutorService executor;
     private final String name;
 
@@ -75,7 +76,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this);
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
-        gameLoop = new DefaultLoop(updatables);
+        loop = new DefaultLoop(updatables);
         physics = new DefaultPhysics(this, executor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         async = new DefaultAsync(executor, this::exceptionHandler);
@@ -100,13 +101,10 @@ class DefaultEngine implements Engine {
 
     @Override
     public void start() {
-        if (scenes.sceneCount() == 0) {
-            throw new IllegalStateException("no scene present");
-        }
         log.info(format("engine with name '%s' started", name));
         try {
             graphics.window().open();
-            gameLoop.start();
+            loop.start();
         } catch (final RuntimeException e) {
             exceptionHandler(e);
         }
@@ -114,13 +112,24 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        ui.closeMenu();
-        gameLoop.stop();
-        // TODO: await gameloop shutdown
-        executor.shutdown();
-        // TODO: await executor shutdown
-        graphics.window().close();
-        log.info(format("engine stopped (%,d frames total)", loop().frameNumber()));
+        executor.execute(() -> {
+            ui.closeMenu();
+            loop.stop();
+            awaitLoopTermination();
+            graphics.window().close();
+            log.info(format("engine stopped (%,d frames total)", loop().frameNumber()));
+            executor.shutdown();
+        });
+    }
+
+    private void awaitLoopTermination() {
+        while (loop.isLooping()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     @Override
@@ -130,7 +139,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Loop loop() {
-        return gameLoop;
+        return loop;
     }
 
     @Override
