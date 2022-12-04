@@ -17,7 +17,7 @@ public class DefaultLoop implements Loop {
     private int fps = 0;
     private long frameNumber;
     private double delta = 0;
-    private boolean loopActive = false;
+    private boolean isLooping = false;
     private Duration updateDuration = Duration.none();
     private Time lastUpdate = Time.now();
     private Time startTime = Time.unset();
@@ -40,9 +40,10 @@ public class DefaultLoop implements Loop {
 
     public void stop() {
         this.active = false;
-        while (loopActive) {
-            beNiceToCpu();
-        }
+    }
+
+    public boolean isLooping() {
+        return isLooping;
     }
 
     @Override
@@ -91,7 +92,7 @@ public class DefaultLoop implements Loop {
     }
 
     private void runGameLoop() {
-        loopActive = true;
+        isLooping = true;
         while (active) {
             if (needsUpdate()) {
                 final Time beforeUpdate = Time.now();
@@ -103,7 +104,7 @@ public class DefaultLoop implements Loop {
                 beNiceToCpu();
             }
         }
-        loopActive = false;
+        isLooping = false;
     }
 
     private boolean needsUpdate() {
