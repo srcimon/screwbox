@@ -56,12 +56,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>screwbox-playground-debo</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>screwbox-playground-examples</artifactId>
+				<artifactId>screwbox-examples</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -145,6 +140,5 @@
 		<module>screwbox-core</module>
 		<module>screwbox-tiled</module>
 		<module>screwbox-examples</module>
-		<module>screwbox-playground-debo</module>
 	</modules>
 </project>

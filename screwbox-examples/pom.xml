@@ -11,5 +11,6 @@
 		<module>hello-world-example</module>
 		<module>game-of-life-example</module>
 		<module>pathfinding-example</module>
+		<module>platformer-example</module>
 	</modules>
 </project>
