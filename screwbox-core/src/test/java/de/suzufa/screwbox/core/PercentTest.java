@@ -96,4 +96,11 @@ class PercentTest {
     void equals_different_isFalse() {
         assertThat(Percent.of(0.4)).isNotEqualTo(Percent.of(0.6));
     }
+
+    @Test
+    void multiply_valueInRange_returnsMultiplied() {
+        Percent result = Percent.of(0.2).multiply(2);
+
+        assertThat(result).isEqualTo(Percent.of(0.4));
+    }
 }
