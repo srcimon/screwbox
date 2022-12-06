@@ -32,38 +32,37 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-5. Create your first game
+5. Create your first game and run.
 
 ``` java
 package de.suzufa.screwbox.examples.helloworld;
 
+import static de.suzufa.screwbox.core.graphics.Color.WHITE;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
-import de.suzufa.screwbox.core.entities.systems.QuitOnKeyPressSystem;
-import de.suzufa.screwbox.core.graphics.MouseCursor;
-import de.suzufa.screwbox.core.keyboard.Key;
-import de.suzufa.screwbox.examples.helloworld.systems.PrintHelloWorldSystem;
+import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.graphics.Offset;
+import de.suzufa.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldExample {
 
     public static void main(String[] args) {
-        // create the engine
         Engine engine = ScrewBox.createEngine("Hello World Example");
 
-        // hide cursor in window mode
-        engine.graphics().window().setWindowCursor(MouseCursor.HIDDEN);
+        engine.entities().add(new EntitySystem() {
 
-        // add systems to the game loop
-        engine.entities()
-                .add(new PrintHelloWorldSystem()) // print hello world next to mouse position
-                .add(new QuitOnKeyPressSystem(Key.ESCAPE)); // quits the engine on pressing ESC
+            @Override
+            public void update(Engine engine) {
+                Offset mousePosition = engine.mouse().position();
+                Pixelfont font = Pixelfont.defaultFont(WHITE);
+                engine.graphics().screen().drawTextCentered(mousePosition, "HELLO WORLD!", font, 4);
+            }
+        });
 
-        engine.start(); // start the previously configured engine
+        engine.start();
     }
 }
-
 ```
-6. Run!
 7. Check out one of the example applications:
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
