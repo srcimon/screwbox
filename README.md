@@ -53,9 +53,9 @@ public class HelloWorldExample {
 
             @Override
             public void update(Engine engine) {
-                Offset mousePosition = engine.mouse().position();
+                Offset position = engine.mouse().position();
                 Pixelfont font = Pixelfont.defaultFont(WHITE);
-                engine.graphics().screen().drawTextCentered(mousePosition, "HELLO WORLD!", font, 4);
+                engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
             }
         });
 
