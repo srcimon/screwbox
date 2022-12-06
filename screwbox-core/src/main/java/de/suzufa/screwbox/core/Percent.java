@@ -123,7 +123,10 @@ public class Percent implements Serializable {
         return new Percent(this.value - value);
     }
 
-    // TODO: Test and javadoc
+    /**
+     * Returns a new instance with the current value multiplied with the given
+     * value.
+     */
     public Percent multiply(double value) {
         return new Percent(this.value * value);
     }
