@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Angle;
+import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
 
 public class SpriteBatch {
@@ -35,7 +35,4 @@ public class SpriteBatch {
         return entries;
     }
 
-    public boolean isEmpty() {
-        return entries.isEmpty();
-    }
 }
