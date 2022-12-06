@@ -1,5 +1,4 @@
-# ScrewBox
-![Project Logo](logo.jpg) 
+![Project Logo](logo.png) 
 
 Minimalist 2d Java game engine. Result of covid lockdown.
 
