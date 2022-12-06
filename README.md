@@ -5,13 +5,21 @@ Minimalist 2d Java game engine. Result of covid lockdown.
 [![Build](https://github.com/simonbas/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/simonbas/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox)
 
 ## Current status
-ScrewBox is a personal pet project since february 2021. It has no constant commits and has not been released yet. If you want to know what this can do. Download into your workspace and start `DeboApplication`. Enjoy!
+ScrewBox is a personal pet project since february 2021. It has no constant commits and has not been released yet.
+
+## Getting started
+1. Clone this repository.
+2. Start one of example applications:
+  - `HelloWorldExample` an hello world application
+  - `GameOfLifeExample` an interactive game of life implementation
+  - `PathfindingExample` example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
+  - `PlatformerExample` a more complex example showing how to make a platformer
 
 ## Features
 - **Entity Component Engine** Add and remove game objects and behaviour. Save and load the game state.
-- **Render Engine** Fast rendering of basic shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.
-- **Physics System** Apply movement to objects. Resolve collisions. Detect objects via raycasting.
-- **Asset Management** Load game assets in background.
+- **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.
+- **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
+- **Asset Management** Load game assets without interrupting the game.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
 - **Game Scenes** Use scenes to structure different game situations.
