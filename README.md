@@ -7,14 +7,6 @@ Minimalist 2d Java game engine. Result of covid lockdown.
 ## Current status
 ScrewBox is a personal pet project since february 2021. It has no constant commits and has not been released yet.
 
-## Getting started
-1. Clone this repository.
-2. Start one of example applications:
-  - `HelloWorldExample` an hello world application
-  - `GameOfLifeExample` an interactive game of life implementation
-  - `PathfindingExample` example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
-  - `PlatformerExample` a more complex example showing how to make a platformer
-
 ## Features
 - **Entity Component Engine** Add and remove game objects and behaviour. Save and load the game state.
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.
@@ -25,6 +17,58 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 - **Game Scenes** Use scenes to structure different game situations.
 - **Audio Support** Play wav and midi sounds. Control the volume. Thats it. Only the basics.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from the [Tiled Editor](https://www.mapeditor.org)
+
+## Getting started
+1. Clone this repository.
+2. Run `maven install`
+3. Create your own Maven project.
+4. Add dependency:
+
+``` xml
+<!-- Core Engine -->
+<dependency>
+  <groupId>de.suzufa.screwbox</groupId>
+  <artifactId>screwbox-core</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+5. Create your first game
+
+``` java
+package de.suzufa.screwbox.examples.helloworld;
+
+import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.ScrewBox;
+import de.suzufa.screwbox.core.entities.systems.QuitOnKeyPressSystem;
+import de.suzufa.screwbox.core.graphics.MouseCursor;
+import de.suzufa.screwbox.core.keyboard.Key;
+import de.suzufa.screwbox.examples.helloworld.systems.PrintHelloWorldSystem;
+
+public class HelloWorldExample {
+
+    public static void main(String[] args) {
+        // create the engine
+        Engine engine = ScrewBox.createEngine("Hello World Example");
+
+        // hide cursor in window mode
+        engine.graphics().window().setWindowCursor(MouseCursor.HIDDEN);
+
+        // add systems to the game loop
+        engine.entities()
+                .add(new PrintHelloWorldSystem()) // print hello world next to mouse position
+                .add(new QuitOnKeyPressSystem(Key.ESCAPE)); // quits the engine on pressing ESC
+
+        engine.start(); // start the previously configured engine
+    }
+}
+
+```
+6. Run!
+7. Check out one of the example applications:
+    - **HelloWorldExample** an hello world application
+    - **GameOfLifeExample** an interactive game of life implementation
+    - **PathfindingExample** example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
+    - **PlatformerExample** a more complex example showing how to make a platformer
 
 ## Libraries used
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
