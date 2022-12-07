@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.internal.DefaultAssets;
@@ -24,7 +25,6 @@ import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
 import de.suzufa.screwbox.core.graphics.internal.FrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
-import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
 import de.suzufa.screwbox.core.keyboard.internal.DefaultKeyboard;
 import de.suzufa.screwbox.core.log.ConsoleLoggingAdapter;
@@ -63,10 +63,9 @@ class DefaultEngine implements Engine {
     private final ExecutorService executor;
     private final String name;
 
-    DefaultEngine(final String name, EngineFactory factory) {
-        FrameAdapter frameAdapter = factory.frameAdapter();
+    DefaultEngine(final String name, FrameAdapter frameAdapter) {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = factory.executorService();
+        executor = Executors.newCachedThreadPool();
         final DefaultScreen screen = new DefaultScreen(frameAdapter, new StandbyRenderer());
         final DefaultWindow window = new DefaultWindow(frameAdapter, configuration, executor, screen);
         window.setTitle(name);
@@ -85,22 +84,16 @@ class DefaultEngine implements Engine {
         async = new DefaultAsync(executor, this::exceptionHandler);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
-        final WindowFrame frame = factory.windowFrame();
-        frame.addWindowListener(new WindowAdapter() {
+        frameAdapter.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent e) {
                 stop();
             }
         });
-        frame.addWindowFocusListener(frame);
-        frame.addMouseListener(mouse);
-        frame.addMouseMotionListener(mouse);
-        frame.addMouseWheelListener(mouse);
-        frame.addKeyListener(keyboard);
-        frame.getCanvas().addMouseListener(mouse);
-        frame.getCanvas().addMouseMotionListener(mouse);
-        frame.getCanvas().addMouseWheelListener(mouse);
-        frame.getCanvas().addKeyListener(keyboard);
+        frameAdapter.addMouseListener(mouse);
+        frameAdapter.addMouseMotionListener(mouse);
+        frameAdapter.addMouseWheelListener(mouse);
+        frameAdapter.addKeyListener(keyboard);
         this.name = name;
     }
 

@@ -17,6 +17,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     public WindowFrame() {
         canvas = new Canvas();
         add(canvas);
+        addWindowFocusListener(this);
     }
 
     public Canvas getCanvas() {

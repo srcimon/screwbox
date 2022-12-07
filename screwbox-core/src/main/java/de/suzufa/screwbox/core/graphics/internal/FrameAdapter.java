@@ -9,6 +9,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
 public interface FrameAdapter {
@@ -70,4 +75,15 @@ public interface FrameAdapter {
     Insets insets();
 
     BufferedImage createScreenCapture(Rectangle screenRect);
+
+    void addWindowListener(WindowListener windowListener);
+
+    void addMouseListener(MouseListener mouseListener);
+
+    void addMouseMotionListener(MouseMotionListener mouseMotionListener);
+
+    void addMouseWheelListener(MouseWheelListener mouseWheelListener);
+
+    void addKeyListener(KeyListener keyListener);
+
 }

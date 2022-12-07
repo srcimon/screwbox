@@ -9,6 +9,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
 //TODO: allow interaction with fake frame adapter
@@ -172,6 +177,36 @@ public class FakeFrameAdapter implements FrameAdapter {
     @Override
     public BufferedImage createScreenCapture(Rectangle screenRect) {
         return image;// TODO: FIX
+    }
+
+    @Override
+    public void addWindowListener(WindowListener windowListener) {
+        // does nothing
+        // TODO: FIX
+    }
+
+    @Override
+    public void addMouseListener(MouseListener mouseListener) {
+        // does nothing
+        // TODO: FIX
+    }
+
+    @Override
+    public void addMouseMotionListener(MouseMotionListener mouseMotionListener) {
+        // does nothing
+        // TODO: FIX
+    }
+
+    @Override
+    public void addMouseWheelListener(MouseWheelListener mouseWheelListener) {
+        // does nothing
+        // TODO: FIX
+    }
+
+    @Override
+    public void addKeyListener(KeyListener keyListener) {
+        // does nothing
+        // TODO: FIX
     }
 
 }

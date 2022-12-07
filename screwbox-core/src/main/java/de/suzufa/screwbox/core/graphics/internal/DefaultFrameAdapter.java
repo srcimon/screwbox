@@ -14,6 +14,11 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
 public class DefaultFrameAdapter implements FrameAdapter {
@@ -176,6 +181,37 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public BufferedImage createScreenCapture(Rectangle screenRect) {
         return robot.createScreenCapture(screenRect);
+    }
+
+    @Override
+    public void addWindowListener(WindowListener windowListener) {
+        frame.addWindowListener(windowListener);
+    }
+
+    @Override
+    public void addMouseListener(MouseListener mouseListener) {
+        frame.addMouseListener(mouseListener);
+        frame.getCanvas().addMouseListener(mouseListener);
+
+    }
+
+    @Override
+    public void addMouseMotionListener(MouseMotionListener mouseMotionListener) {
+        frame.addMouseMotionListener(mouseMotionListener);
+        frame.getCanvas().addMouseMotionListener(mouseMotionListener);
+
+    }
+
+    @Override
+    public void addMouseWheelListener(MouseWheelListener mouseWheelListener) {
+        frame.addMouseWheelListener(mouseWheelListener);
+        frame.getCanvas().addMouseWheelListener(mouseWheelListener);
+    }
+
+    @Override
+    public void addKeyListener(KeyListener keyListener) {
+        frame.addKeyListener(keyListener);
+        frame.getCanvas().addKeyListener(keyListener);
     }
 
 }
