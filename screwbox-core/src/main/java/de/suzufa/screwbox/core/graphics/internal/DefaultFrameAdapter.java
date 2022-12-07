@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
@@ -8,6 +9,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
 
 public class DefaultFrameAdapter implements FrameAdapter {
 
@@ -88,6 +90,21 @@ public class DefaultFrameAdapter implements FrameAdapter {
     public void setDisplayMode(DisplayMode displayMode) {
         graphicsDevice.setDisplayMode(displayMode);
 
+    }
+
+    @Override
+    public void setFullScreenWindow(Window window) {
+        graphicsDevice.setFullScreenWindow(window);
+    }
+
+    @Override
+    public void setSelfAsFullscreenWindow() {
+        setFullScreenWindow(frame);
+    }
+
+    @Override
+    public void setLocationRelativeTo(Component component) {
+        frame.setLocationRelativeTo(component);
     }
 
 }

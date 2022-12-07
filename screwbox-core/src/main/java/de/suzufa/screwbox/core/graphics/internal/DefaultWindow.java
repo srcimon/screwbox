@@ -89,12 +89,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
             frameAdapter.setDisplayMode(displayMode);
-            graphicsDevice.setFullScreenWindow(frame);
+            frameAdapter.setSelfAsFullscreenWindow();
         } else {
             if (nonNull(lastOffset)) {
                 moveTo(lastOffset);
             } else {
-                frame.setLocationRelativeTo(null);
+                frameAdapter.setLocationRelativeTo(null);
             }
         }
         screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
@@ -109,7 +109,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frameAdapter.dispose();
 
         if (nonNull(lastDisplayMode)) {
-            graphicsDevice.setFullScreenWindow(null);
+            frameAdapter.setFullScreenWindow(null);
             frameAdapter.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
