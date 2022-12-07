@@ -24,7 +24,9 @@ import de.suzufa.screwbox.core.graphics.Window;
 
 public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
+    @Deprecated
     private final WindowFrame frame;
+    private final FrameAdapter frameAdapter;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
@@ -34,10 +36,11 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
 
-    public DefaultWindow(final WindowFrame frame,
+    public DefaultWindow(final FrameAdapter frameAdapter, final WindowFrame frame,
             final GraphicsConfiguration configuration,
             final ExecutorService executor,
             final DefaultScreen screen) {
+        this.frameAdapter = frameAdapter;
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
@@ -108,7 +111,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             graphicsDevice.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
-            lastOffset = Offset.at(frame.getBounds().x, frame.getBounds().y);
+            lastOffset = Offset.at(frameAdapter.bounds().x, frameAdapter.bounds().y);
         }
         return this;
     }
@@ -174,7 +177,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     private void updateCursor() {
-        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
+        this.frameAdapter.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
 
     }
 
@@ -185,7 +188,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public String title() {
-        return frame.getTitle();
+        return frameAdapter.title();
     }
 
     public Dimension currentResolution() {

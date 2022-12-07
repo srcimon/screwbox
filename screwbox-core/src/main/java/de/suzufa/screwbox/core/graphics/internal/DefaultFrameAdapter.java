@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.Cursor;
 import java.awt.Rectangle;
 
 public class DefaultFrameAdapter implements FrameAdapter {
@@ -28,6 +29,16 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public Rectangle bounds() {
         return frame.getBounds();
+    }
+
+    @Override
+    public String title() {
+        return frame.getTitle();
+    }
+
+    @Override
+    public void setCursor(Cursor cursor) {
+        frame.setCursor(cursor);
     }
 
 }

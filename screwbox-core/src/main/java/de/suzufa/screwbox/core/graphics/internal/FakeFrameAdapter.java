@@ -1,12 +1,15 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.Cursor;
 import java.awt.Rectangle;
 
 //TODO: allow interaction with fake frame adapter
 public class FakeFrameAdapter implements FrameAdapter {
 
+    private String title = "";
     private Rectangle bounds = new Rectangle(100, 150, 800, 540);
     private Rectangle canvasBounds = new Rectangle(0, 0, 800, 540);
+    private Cursor cursor;
 
     @Override
     public int width() {
@@ -26,6 +29,16 @@ public class FakeFrameAdapter implements FrameAdapter {
     @Override
     public Rectangle bounds() {
         return bounds;
+    }
+
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Override
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
 }
