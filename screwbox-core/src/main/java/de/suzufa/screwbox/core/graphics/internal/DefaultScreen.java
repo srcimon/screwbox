@@ -176,7 +176,6 @@ public class DefaultScreen implements Screen {
 
     public void updateScreen(final boolean antialiased) {
         renderer.updateScreen(antialiased);
-        renderer.fillWith(Color.BLACK);
     }
 
     public void setRenderer(Renderer renderer) {

@@ -65,6 +65,7 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
         }
+        fillWith(Color.BLACK);
     }
 
     private void initializeFontDrawing() {
