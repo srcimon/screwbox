@@ -42,7 +42,4 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         return hasFocus;
     }
 
-    public int canvasHeight() {
-        return getCanvas().getBounds().height;
-    }
 }

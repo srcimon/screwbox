@@ -11,4 +11,5 @@ public interface FrameAdapter {
     Rectangle canvasBounds();
 
     Rectangle bounds();
+
 }

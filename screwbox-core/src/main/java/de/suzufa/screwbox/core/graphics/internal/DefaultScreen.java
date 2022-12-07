@@ -21,12 +21,10 @@ import de.suzufa.screwbox.core.graphics.WindowBounds;
 public class DefaultScreen implements Screen {
 
     private Renderer renderer;
-    private final WindowFrame frame;
     private final FrameAdapter frameAdapter;
 
-    public DefaultScreen(FrameAdapter frameAdapter, WindowFrame frame, Renderer renderer) {
+    public DefaultScreen(final FrameAdapter frameAdapter, final Renderer renderer) {
         this.renderer = renderer;
-        this.frame = frame;
         this.frameAdapter = frameAdapter;
     }
 
@@ -179,7 +177,7 @@ public class DefaultScreen implements Screen {
         renderer.fillWith(Color.BLACK);
     }
 
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(final Renderer renderer) {
         this.renderer = renderer;
     }
 
@@ -196,7 +194,8 @@ public class DefaultScreen implements Screen {
     @Override
     public Offset position() {
         final var bounds = frameAdapter.bounds();
-        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+        final int canvasHeight = frameAdapter.canvasBounds().height;
+        return Offset.at(bounds.x, bounds.y - canvasHeight + bounds.height);
     }
 
 }

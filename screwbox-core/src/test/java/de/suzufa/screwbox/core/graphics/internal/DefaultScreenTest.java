@@ -23,12 +23,12 @@ class DefaultScreenTest {
     Renderer renderer;
 
     @Mock
-    WindowFrame frame;
+    FrameAdapter frameAdapter;
 
     @Test
     void position_returnsScreenPosition() {
-        when(frame.getBounds()).thenReturn(new Rectangle(40, 30, 1024, 768));
-        when(frame.canvasHeight()).thenReturn(600);
+        when(frameAdapter.bounds()).thenReturn(new Rectangle(40, 30, 1024, 768));
+        when(frameAdapter.canvasBounds()).thenReturn(new Rectangle(0, 0, 1024, 600));
 
         assertThat(screen.position()).isEqualTo(Offset.at(40, 198));
     }

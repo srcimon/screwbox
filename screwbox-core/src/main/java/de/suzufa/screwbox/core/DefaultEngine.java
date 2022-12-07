@@ -65,10 +65,10 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name, EngineFactory factory) {
         FrameAdapter frameAdapter = factory.frameAdapter();
-        final WindowFrame frame = factory.windowFrame();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = factory.executorService();
-        final DefaultScreen screen = new DefaultScreen(frameAdapter, frame, new StandbyRenderer());
+        final WindowFrame frame = factory.windowFrame();
+        final DefaultScreen screen = new DefaultScreen(frameAdapter, new StandbyRenderer());
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen);
         window.setTitle(name);
         audio = new DefaultAudio(executor, new AudioAdapter());
