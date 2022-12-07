@@ -1,12 +1,12 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
-import javax.swing.JFrame;
+import java.awt.Rectangle;
 
 public class DefaultFrameAdapter implements FrameAdapter {
 
-    private JFrame frame;
+    private WindowFrame frame;
 
-    public DefaultFrameAdapter(final JFrame frame) {
+    public DefaultFrameAdapter(final WindowFrame frame) {
         this.frame = frame;
     }
 
@@ -18,6 +18,16 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public int height() {
         return frame.getHeight();
+    }
+
+    @Override
+    public Rectangle canvasBounds() {
+        return frame.getCanvas().getBounds();
+    }
+
+    @Override
+    public Rectangle bounds() {
+        return frame.getBounds();
     }
 
 }

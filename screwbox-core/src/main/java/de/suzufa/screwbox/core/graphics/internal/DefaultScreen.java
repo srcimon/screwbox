@@ -130,7 +130,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Dimension size() {
-        final var bounds = frame.getCanvas().getBounds();
+        final var bounds = frameAdapter.canvasBounds();
         return Dimension.of(bounds.width, bounds.height);
     }
 
@@ -139,12 +139,10 @@ public class DefaultScreen implements Screen {
         return bounds.intersects(windowBounds());
     }
 
-    // TODO: cache
     private WindowBounds windowBounds() {
         return new WindowBounds(origin(), size());
     }
 
-    // TODO: Test
     @Override
     public boolean isVisible(final Offset offset) {
         return windowBounds().contains(offset);
@@ -197,7 +195,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Offset position() {
-        final var bounds = frame.getBounds();
+        final var bounds = frameAdapter.bounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
