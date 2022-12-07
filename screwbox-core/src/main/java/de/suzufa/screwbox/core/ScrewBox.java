@@ -6,7 +6,6 @@ import static java.util.Objects.requireNonNull;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.internal.DefaultFrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.FakeFrameAdapter;
-import de.suzufa.screwbox.core.graphics.internal.FrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 
 /**
@@ -37,22 +36,19 @@ public final class ScrewBox {
     public static Engine createEngine(final String name) {
         requireNonNull(name, "name must not be null");
 
-        return createEngine(name, new DefaultFrameAdapter(new WindowFrame()));
-    }
-
-    /**
-     * Creates an {@link Engine} instance for testing purposes only.
-     */
-    public static Engine createHeadlessEngine() {
-        return createEngine("Headless", new FakeFrameAdapter());
-    }
-
-    private static Engine createEngine(final String name, final FrameAdapter frameAdapter) {
         if (nonNull(engine)) {
             throw new IllegalStateException("only one instance of ScrewBox can be created");
         }
-        engine = new DefaultEngine(name, frameAdapter);
+        engine = new DefaultEngine(name, new DefaultFrameAdapter(new WindowFrame()));
         return engine;
+    }
+
+    /**
+     * Creates an {@link Engine} instance for testing purposes only. It is possible
+     * to create more than one instance.
+     */
+    public static Engine createHeadlessEngine() {
+        return new DefaultEngine("Headless", new FakeFrameAdapter());
     }
 
 }

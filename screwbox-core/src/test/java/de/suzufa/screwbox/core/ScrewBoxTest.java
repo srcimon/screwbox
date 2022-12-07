@@ -21,9 +21,10 @@ class ScrewBoxTest {
     }
 
     @Test
-    void createHeadlessEngine_firstCall_createsEngine() {
+    void createHeadlessEngine_createsEngineNamedHeadless() {
         Engine engine = ScrewBox.createHeadlessEngine();
 
         assertThat(engine.name()).isEqualTo("Headless");
     }
+
 }
