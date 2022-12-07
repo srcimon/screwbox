@@ -52,5 +52,4 @@ public interface FrameAdapter {
 
     void setVisible(boolean visible);
 
-    void createBufferStrategy(int numBuffers);
 }

@@ -76,7 +76,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frameAdapter.setSize(width, height);
         frameAdapter.setResizable(false);
         frameAdapter.setVisible(true);
-        frameAdapter.createBufferStrategy(2);
         frameAdapter.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
             lastDisplayMode = frameAdapter.displayMode();

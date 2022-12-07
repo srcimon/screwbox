@@ -127,9 +127,4 @@ public class DefaultFrameAdapter implements FrameAdapter {
         frame.setVisible(visible);
     }
 
-    @Override
-    public void createBufferStrategy(int numBuffers) {
-        frame.createBufferStrategy(numBuffers);
-    }
-
 }

@@ -129,9 +129,4 @@ public class FakeFrameAdapter implements FrameAdapter {
         isVisible = visible;
     }
 
-    @Override
-    public void createBufferStrategy(int numBuffers) {
-        // does nothing
-    }
-
 }
