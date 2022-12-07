@@ -1,9 +1,11 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.AWTException;
+import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -14,6 +16,8 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -21,15 +25,35 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+
 public class DefaultFrameAdapter implements FrameAdapter {
 
-    private WindowFrame frame;
+    private Frame frame;
     private GraphicsDevice graphicsDevice;
     private Robot robot;
+    private boolean hasFocus;
+    private final Canvas canvas;
 
-    public DefaultFrameAdapter(final WindowFrame frame) {
-        this.frame = frame;
-        this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    public DefaultFrameAdapter() {
+        frame = new Frame();
+        canvas = new Canvas();
+        frame.add(canvas);
+        frame.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                hasFocus = false;
+
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                hasFocus = true;
+            }
+        });
+
+        graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         try {
             robot = new Robot();
         } catch (final AWTException e) {
@@ -49,7 +73,7 @@ public class DefaultFrameAdapter implements FrameAdapter {
 
     @Override
     public Rectangle canvasBounds() {
-        return frame.getCanvas().getBounds();
+        return canvas.getBounds();
     }
 
     @Override
@@ -67,9 +91,12 @@ public class DefaultFrameAdapter implements FrameAdapter {
         frame.setCursor(cursor);
     }
 
+    /**
+     * 10 times faster than {@link JFrame#hasFocus()}
+     */
     @Override
     public boolean hasFocus() {
-        return frame.hasFocus();
+        return hasFocus;
     }
 
     @Override
@@ -150,17 +177,17 @@ public class DefaultFrameAdapter implements FrameAdapter {
 
     @Override
     public void createCanvasBufferStrategy() {
-        frame.getCanvas().createBufferStrategy(2);
+        canvas.createBufferStrategy(2);
     }
 
     @Override
     public Graphics2D canvasDrawGraphics() {
-        return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        return (Graphics2D) canvas.getBufferStrategy().getDrawGraphics();
     }
 
     @Override
     public void showDrawGraphics() {
-        frame.getCanvas().getBufferStrategy().show();
+        canvas.getBufferStrategy().show();
     }
 
     @Override
@@ -191,27 +218,25 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public void addMouseListener(MouseListener mouseListener) {
         frame.addMouseListener(mouseListener);
-        frame.getCanvas().addMouseListener(mouseListener);
-
+        canvas.addMouseListener(mouseListener);
     }
 
     @Override
     public void addMouseMotionListener(MouseMotionListener mouseMotionListener) {
         frame.addMouseMotionListener(mouseMotionListener);
-        frame.getCanvas().addMouseMotionListener(mouseMotionListener);
-
+        canvas.addMouseMotionListener(mouseMotionListener);
     }
 
     @Override
     public void addMouseWheelListener(MouseWheelListener mouseWheelListener) {
         frame.addMouseWheelListener(mouseWheelListener);
-        frame.getCanvas().addMouseWheelListener(mouseWheelListener);
+        canvas.addMouseWheelListener(mouseWheelListener);
     }
 
     @Override
     public void addKeyListener(KeyListener keyListener) {
         frame.addKeyListener(keyListener);
-        frame.getCanvas().addKeyListener(keyListener);
+        canvas.addKeyListener(keyListener);
     }
 
 }

@@ -6,7 +6,6 @@ import static java.util.Objects.requireNonNull;
 import de.suzufa.screwbox.core.graphics.Window;
 import de.suzufa.screwbox.core.graphics.internal.DefaultFrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.FakeFrameAdapter;
-import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 
 /**
  * Best game engine ever made (not). The entry point for starting a game.
@@ -39,7 +38,7 @@ public final class ScrewBox {
         if (nonNull(engine)) {
             throw new IllegalStateException("only one instance of ScrewBox can be created");
         }
-        engine = new DefaultEngine(name, new DefaultFrameAdapter(new WindowFrame()));
+        engine = new DefaultEngine(name, new DefaultFrameAdapter());
         return engine;
     }
 
