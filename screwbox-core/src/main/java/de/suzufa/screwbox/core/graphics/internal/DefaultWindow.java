@@ -37,14 +37,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     public DefaultWindow(final WindowFrame frame,
             final GraphicsConfiguration configuration,
             final ExecutorService executor,
-            final DefaultScreen screen,
-            final String title) {
+            final DefaultScreen screen) {
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
-        setTitle(title);
         configuration.registerListener(this);
     }
 
@@ -93,6 +91,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
                 frame.setLocationRelativeTo(null);
             }
         }
+        executor.submit(new InitializeFontDrawingTask());
+
         screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
         updateCursor();
         return this;

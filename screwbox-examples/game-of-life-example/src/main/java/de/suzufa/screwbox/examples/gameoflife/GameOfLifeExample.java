@@ -18,10 +18,8 @@ public class GameOfLifeExample {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Game Of Life Example");
 
-        Entity grid = new Entity().add(new GridComponent());
-
         engine.entities()
-                .add(grid)
+                .add(new Entity().add(new GridComponent()))
                 .add(new GridUpdateSystem())
                 .add(new GridRenderSystem())
                 .add(new GridInteractionSystem())

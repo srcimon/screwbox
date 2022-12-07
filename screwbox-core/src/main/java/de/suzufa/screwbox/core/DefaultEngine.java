@@ -76,7 +76,7 @@ class DefaultEngine implements Engine {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
-        final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen, name);
+        final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen);
         audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
@@ -101,6 +101,7 @@ class DefaultEngine implements Engine {
         frame.getCanvas().addMouseWheelListener(mouse);
         frame.getCanvas().addKeyListener(keyboard);
         this.name = name;
+        window.setTitle(name);
     }
 
     @Override

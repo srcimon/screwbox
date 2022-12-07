@@ -1,8 +1,8 @@
 package de.suzufa.screwbox.examples.platformer.scenes;
 
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
+import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.scenes.Scene;
 import de.suzufa.screwbox.examples.platformer.components.BackgroundHolderComponent;
 import de.suzufa.screwbox.examples.platformer.menues.PauseMenu;
@@ -18,12 +18,10 @@ public class PauseScene implements Scene {
 
     @Override
     public void initialize(Entities entities) {
-        entities.add(
-                new GetSreenshotOfGameSceneSystem(),
-                new RenderPauseScreenshotSystem());
-
-        entities.add(new Entity().add(
-                new BackgroundHolderComponent()));
+        entities.add(new GetSreenshotOfGameSceneSystem())
+                .add(new RenderPauseScreenshotSystem())
+                .add(new Entity()
+                        .add(new BackgroundHolderComponent()));
     }
 
 }
