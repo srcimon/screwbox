@@ -2,6 +2,8 @@ package de.suzufa.screwbox.core;
 
 import static java.lang.String.format;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,7 +64,15 @@ class DefaultEngine implements Engine {
     private final String name;
 
     DefaultEngine(final String name) {
-        final WindowFrame frame = new WindowFrame(this);
+        final WindowFrame frame = new WindowFrame();
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                stop();
+            }
+        });
+
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
