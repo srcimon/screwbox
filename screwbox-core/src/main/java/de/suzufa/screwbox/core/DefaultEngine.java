@@ -2,6 +2,8 @@ package de.suzufa.screwbox.core;
 
 import static java.lang.String.format;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -61,7 +63,7 @@ class DefaultEngine implements Engine {
     private final String name;
 
     DefaultEngine(final String name, EngineFactory factory) {
-        final WindowFrame frame = new WindowFrame(this);
+        final WindowFrame frame = new WindowFrame();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = factory.executorService();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
@@ -81,7 +83,12 @@ class DefaultEngine implements Engine {
         async = new DefaultAsync(executor, this::exceptionHandler);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
-        frame.addWindowListener(frame);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(final WindowEvent e) {
+                stop();
+            }
+        });
         frame.addWindowFocusListener(frame);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
