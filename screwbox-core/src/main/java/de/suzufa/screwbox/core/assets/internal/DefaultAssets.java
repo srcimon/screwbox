@@ -45,6 +45,10 @@ public class DefaultAssets implements Assets {
             log.debug(format("loaded %s assets in %,d ms", loadedAssets.size(), durationMs));
         }
 
+        if (loadedAssets.isEmpty()) {
+            throw new IllegalStateException("no assets found to prepare");
+        }
+
         return loadedAssets;
     }
 

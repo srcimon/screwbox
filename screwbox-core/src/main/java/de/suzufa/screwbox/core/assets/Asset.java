@@ -64,4 +64,11 @@ public class Asset<T> implements Supplier<T> {
         return value;
     }
 
+    /**
+     * Removes already loaded content. Does nothing when not loaded.
+     */
+    public void unload() {
+        value = null;
+    }
+
 }

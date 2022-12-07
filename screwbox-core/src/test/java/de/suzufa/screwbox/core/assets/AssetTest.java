@@ -70,4 +70,12 @@ class AssetTest {
 
         assertThat(asset.get()).isEqualTo("i like fish");
     }
+
+    @Test
+    void unload_loaded_isNotLoaded() {
+        asset.load();
+        asset.unload();
+
+        assertThat(asset.isLoaded()).isFalse();
+    }
 }

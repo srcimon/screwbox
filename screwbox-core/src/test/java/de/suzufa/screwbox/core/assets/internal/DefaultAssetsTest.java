@@ -2,10 +2,12 @@ package de.suzufa.screwbox.core.assets.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -89,7 +91,24 @@ class DefaultAssetsTest {
     }
 
     @Test
+    void preparePackage_noAssetsLoaded_throwsException() {
+        assets.preparePackage("de.suzufa.screwbox.core.assets.internal");
+
+        assertThatThrownBy(() -> assets.preparePackage("de.suzufa.screwbox.core.assets.internal"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("no assets found to prepare");
+
+    }
+
+    @Test
     void preparePackage_preparingPackageWithNonStaticAssets_noException() {
         assertThatNoException().isThrownBy(() -> assets.preparePackage("de.suzufa.screwbox.core"));
+    }
+
+    @AfterEach
+    void afterEach() {
+        ASSET_A.unload();
+        ASSET_B.unload();
+        ASSET_C.unload();
     }
 }
