@@ -37,10 +37,10 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 ``` java
 package de.suzufa.screwbox.examples.helloworld;
 
-import static de.suzufa.screwbox.core.graphics.Color.WHITE;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.entities.EntitySystem;
+import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Pixelfont;
 
@@ -54,7 +54,7 @@ public class HelloWorldExample {
             @Override
             public void update(Engine engine) {
                 Offset position = engine.mouse().position();
-                Pixelfont font = Pixelfont.defaultFont(WHITE);
+                Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
                 engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
             }
         });
