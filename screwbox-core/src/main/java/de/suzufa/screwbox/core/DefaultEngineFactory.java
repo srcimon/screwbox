@@ -3,9 +3,8 @@ package de.suzufa.screwbox.core;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class DefaultEngineFactory implements EngineFactory {
+class EngineFactory {
 
-    @Override
     public ExecutorService executorService() {
         return Executors.newCachedThreadPool();
     }

@@ -31,7 +31,7 @@ public final class ScrewBox {
      * to initialize the {@link Window#title()}.
      */
     public static Engine createEngine(final String name) {
-        return createEngine(name, new DefaultEngineFactory());
+        return createEngine(name, new EngineFactory());
     }
 
     /**
