@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
-import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
+import de.suzufa.screwbox.core.entities.systems.AutoFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
@@ -151,7 +151,7 @@ public class GameScene implements Scene {
                 new AreaTriggerSystem(),
                 new TimeoutSystem(),
                 new ResetSceneSystem(),
-                new AutFlipSpriteSystem(),
+                new AutoFlipSpriteSystem(),
                 new BackgroundSystem(),
                 new CatMovementSystem(),
                 new SpriteRenderSystem());

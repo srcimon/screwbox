@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.graphics.Flip;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
 
 @ExtendWith(EntitiesExtension.class)
-class AutFlipSpriteSystemTest {
+class AutoFlipSpriteSystemTest {
 
     @Test
     void update_updatesSpritComponentFlipMode(DefaultEntities entities) {
@@ -35,7 +35,7 @@ class AutFlipSpriteSystemTest {
                 .add(new AutoFlipSpriteComponent());
 
         entities.add(movingRight, movingLeftUp, movingDown)
-                .add(new AutFlipSpriteSystem());
+                .add(new AutoFlipSpriteSystem());
 
         entities.update();
 

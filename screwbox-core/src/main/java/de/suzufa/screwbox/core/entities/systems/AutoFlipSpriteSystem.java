@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.graphics.Flip;
 
 @Order(SystemOrder.PRESENTATION_PREPARE)
-public class AutFlipSpriteSystem implements EntitySystem {
+public class AutoFlipSpriteSystem implements EntitySystem {
 
     private static final Archetype SPRITE_BODIES = Archetype.of(
             AutoFlipSpriteComponent.class, SpriteComponent.class, PhysicsBodyComponent.class);
