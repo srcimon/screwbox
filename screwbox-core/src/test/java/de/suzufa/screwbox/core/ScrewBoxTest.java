@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ScrewBoxTest {
 
     @BeforeEach
-    void beforeEach() {
+    void ensureHeadlessModeInDevelopment() {
         System.setProperty("java.awt.headless", "true");
     }
 
@@ -17,5 +18,12 @@ class ScrewBoxTest {
         assertThatThrownBy(() -> ScrewBox.createEngine(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("name must not be null");
+    }
+
+    @Test
+    void createHeadlessEngine_firstCall_createsEngine() {
+        Engine engine = ScrewBox.createHeadlessEngine();
+
+        assertThat(engine.name()).isEqualTo("Headless");
     }
 }
