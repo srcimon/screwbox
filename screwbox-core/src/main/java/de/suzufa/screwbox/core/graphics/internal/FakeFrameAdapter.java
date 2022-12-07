@@ -14,6 +14,7 @@ public class FakeFrameAdapter implements FrameAdapter {
     private Rectangle canvasBounds = new Rectangle(0, 0, 800, 540);
     private boolean hasFocus = true;
     private boolean isVisible = false;
+    private DisplayMode displayMode = new DisplayMode(1024, 768, 32, 60);
 
     @Override
     public int width() {
@@ -62,7 +63,7 @@ public class FakeFrameAdapter implements FrameAdapter {
 
     @Override
     public DisplayMode displayMode() {
-        return new DisplayMode(2052, 1080, 32, 60);
+        return displayMode;
     }
 
     @Override
@@ -78,6 +79,17 @@ public class FakeFrameAdapter implements FrameAdapter {
         modes[2] = new DisplayMode(800, 600, 16, 60);
         modes[3] = new DisplayMode(800, 600, 32, 60);
         return modes;
+    }
+
+    @Override
+    public void dispose() {
+        // does nothing
+    }
+
+    @Override
+    public void setDisplayMode(DisplayMode displayMode) {
+        this.displayMode = displayMode;
+
     }
 
 }

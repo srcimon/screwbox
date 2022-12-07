@@ -32,4 +32,8 @@ public interface FrameAdapter {
 
     DisplayMode[] displayModes();
 
+    void dispose();
+
+    void setDisplayMode(DisplayMode displayMode);
+
 }

@@ -79,4 +79,15 @@ public class DefaultFrameAdapter implements FrameAdapter {
         return graphicsDevice.getDisplayModes();
     }
 
+    @Override
+    public void dispose() {
+        frame.dispose();
+    }
+
+    @Override
+    public void setDisplayMode(DisplayMode displayMode) {
+        graphicsDevice.setDisplayMode(displayMode);
+
+    }
+
 }

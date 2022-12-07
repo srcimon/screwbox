@@ -16,7 +16,7 @@ public class PlatformerExample {
 
         engine.assets()
                 .enableLogging()
-                .preparePackageAsync("de.suzufa.screwbox.playground.debo");
+                .preparePackageAsync("de.suzufa.screwbox.examples.platformer");
 
         engine.scenes()
                 .add(new DeadScene())

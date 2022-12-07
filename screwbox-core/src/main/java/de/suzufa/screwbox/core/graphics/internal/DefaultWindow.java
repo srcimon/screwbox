@@ -32,8 +32,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private final DefaultScreen screen;
     private DisplayMode lastDisplayMode;
     private final ExecutorService executor;
-    private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
-    private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
+    private Cursor windowCursor;
+    private Cursor fullscreenCursor;
     private Offset lastOffset;
 
     public DefaultWindow(final FrameAdapter frameAdapter, final WindowFrame frame,
@@ -46,6 +46,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
+        windowCursor = cursorFrom(MouseCursor.DEFAULT);
+        fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
         configuration.registerListener(this);
     }
 
@@ -75,7 +77,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         final int width = configuration.resolution().width();
         final int height = configuration.resolution().height();
 
-        frame.dispose();
+        frameAdapter.dispose();
         frame.setSize(width, height);
         frame.setResizable(false);
         frame.setVisible(true);
@@ -86,7 +88,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final int bitDepth = lastDisplayMode.getBitDepth();
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
-            graphicsDevice.setDisplayMode(displayMode);
+            frameAdapter.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
         } else {
             if (nonNull(lastOffset)) {
@@ -103,12 +105,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     @Override
     public Window close() {
         screen.setRenderer(new StandbyRenderer());
-        frame.setCursor(Cursor.getDefaultCursor());
-        frame.dispose();
+        frameAdapter.setCursor(Cursor.getDefaultCursor());
+        frameAdapter.dispose();
 
         if (nonNull(lastDisplayMode)) {
             graphicsDevice.setFullScreenWindow(null);
-            graphicsDevice.setDisplayMode(lastDisplayMode);
+            frameAdapter.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
             lastOffset = Offset.at(frameAdapter.bounds().x, frameAdapter.bounds().y);
