@@ -4,7 +4,6 @@ import static java.lang.String.format;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import de.suzufa.screwbox.core.assets.Assets;
 import de.suzufa.screwbox.core.assets.internal.DefaultAssets;
@@ -61,10 +60,10 @@ class DefaultEngine implements Engine {
     private final ExecutorService executor;
     private final String name;
 
-    DefaultEngine(final String name) {
+    DefaultEngine(final String name, EngineFactory factory) {
         final WindowFrame frame = new WindowFrame(this);
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newCachedThreadPool();
+        executor = factory.executorService();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen, name);
         audio = new DefaultAudio(executor, new AudioAdapter());
