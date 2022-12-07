@@ -3,12 +3,18 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
 
 public interface FrameAdapter {
+
+    int x();
+
+    int y();
 
     int width();
 
@@ -52,4 +58,13 @@ public interface FrameAdapter {
 
     void setVisible(boolean visible);
 
+    void setIgnoreRepaint(boolean ignoreRepaint);
+
+    void createCanvasBufferStrategy();
+
+    Graphics2D canvasDrawGraphics();
+
+    void showDrawGraphics();
+
+    Insets insets();
 }

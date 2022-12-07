@@ -3,10 +3,13 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 
 //TODO: allow interaction with fake frame adapter
 public class FakeFrameAdapter implements FrameAdapter {
@@ -17,6 +20,8 @@ public class FakeFrameAdapter implements FrameAdapter {
     private boolean hasFocus = true;
     private boolean isVisible = false;
     private DisplayMode displayMode = new DisplayMode(1024, 768, 32, 60);
+    private BufferedImage image = new BufferedImage(displayMode.getWidth(), displayMode.getHeight(),
+            displayMode.getBitDepth());
 
     @Override
     public int width() {
@@ -127,6 +132,41 @@ public class FakeFrameAdapter implements FrameAdapter {
     @Override
     public void setVisible(boolean visible) {
         isVisible = visible;
+    }
+
+    @Override
+    public void setIgnoreRepaint(boolean ignoreRepaint) {
+        // does nothing
+    }
+
+    @Override
+    public void createCanvasBufferStrategy() {
+        // does nothing
+    }
+
+    @Override
+    public Graphics2D canvasDrawGraphics() {
+        return (Graphics2D) image.getGraphics();
+    }
+
+    @Override
+    public void showDrawGraphics() {
+        // does nothing
+    }
+
+    @Override
+    public Insets insets() {
+        return new Insets(75, 0, 0, 0);
+    }
+
+    @Override
+    public int x() {
+        return bounds.x;
+    }
+
+    @Override
+    public int y() {
+        return bounds.y;
     }
 
 }

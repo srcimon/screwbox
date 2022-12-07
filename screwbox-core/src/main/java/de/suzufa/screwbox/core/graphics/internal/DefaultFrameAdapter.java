@@ -3,9 +3,11 @@ package de.suzufa.screwbox.core.graphics.internal;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -125,6 +127,41 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
+    }
+
+    @Override
+    public void setIgnoreRepaint(boolean ignoreRepaint) {
+        frame.setIgnoreRepaint(ignoreRepaint);
+    }
+
+    @Override
+    public void createCanvasBufferStrategy() {
+        frame.getCanvas().createBufferStrategy(2);
+    }
+
+    @Override
+    public Graphics2D canvasDrawGraphics() {
+        return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+    }
+
+    @Override
+    public void showDrawGraphics() {
+        frame.getCanvas().getBufferStrategy().show();
+    }
+
+    @Override
+    public Insets insets() {
+        return frame.getInsets();
+    }
+
+    @Override
+    public int x() {
+        return frame.getX();
+    }
+
+    @Override
+    public int y() {
+        return frame.getY();
     }
 
 }

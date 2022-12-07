@@ -21,8 +21,6 @@ import de.suzufa.screwbox.core.graphics.Window;
 
 public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
-    @Deprecated
-    private final WindowFrame frame;
     private final FrameAdapter frameAdapter;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
@@ -32,12 +30,11 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Cursor fullscreenCursor;
     private Offset lastOffset;
 
-    public DefaultWindow(final FrameAdapter frameAdapter, final WindowFrame frame,
+    public DefaultWindow(final FrameAdapter frameAdapter,
             final GraphicsConfiguration configuration,
             final ExecutorService executor,
             final DefaultScreen screen) {
         this.frameAdapter = frameAdapter;
-        this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
@@ -91,7 +88,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
                 frameAdapter.setLocationRelativeTo(null);
             }
         }
-        screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
+        screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frameAdapter), executor));
         updateCursor();
         return this;
     }

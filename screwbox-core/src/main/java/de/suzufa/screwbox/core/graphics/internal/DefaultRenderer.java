@@ -36,16 +36,16 @@ public class DefaultRenderer implements Renderer {
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private final Robot robot;
-    private final WindowFrame frame;
+    private final FrameAdapter frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final WindowFrame frame) {
+    public DefaultRenderer(final FrameAdapter frame) {
         this.frame = frame;
         this.frame.setIgnoreRepaint(true);
-        frame.getCanvas().createBufferStrategy(2);
-        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        frame.createCanvasBufferStrategy();
+        graphics = frame.canvasDrawGraphics();
         initializeFontDrawing();
         try {
             robot = new Robot();
@@ -57,9 +57,9 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void updateScreen(final boolean antialiased) {
         lastUpdateTime = Time.now();
-        frame.getCanvas().getBufferStrategy().show();
+        frame.showDrawGraphics();
         graphics.dispose();
-        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        graphics = frame.canvasDrawGraphics();
         lastUsedColor = null;
         if (antialiased) {
             graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
@@ -74,14 +74,16 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void fillWith(final Color color) {
         applyNewColor(color);
-        graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+        graphics.fillRect(0, 0, frame.width(), frame.height());
     }
 
     @Override
     public Sprite takeScreenshot() {
-        final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top, frame.getWidth(),
-                frame.getHeight());
+        final Rectangle rectangle = new Rectangle(
+                frame.x(),
+                frame.y() + frame.insets().top,
+                frame.width(),
+                frame.height());
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
     }
@@ -150,7 +152,7 @@ public class DefaultRenderer implements Renderer {
         final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         transform.scale(scale * (flip.isHorizontal() ? -1 : 1), scale * (flip.isVertical() ? -1 : 1));
-        graphics.drawImage(image, transform, frame);
+        graphics.drawImage(image, transform, null);
     }
 
     @Override
