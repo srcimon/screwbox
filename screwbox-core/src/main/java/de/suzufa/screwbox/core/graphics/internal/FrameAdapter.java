@@ -45,4 +45,12 @@ public interface FrameAdapter {
     void setLocationRelativeTo(Component component);
 
     void setBounds(int x, int y, int width, int height);
+
+    void setSize(int width, int height);
+
+    void setResizable(boolean resizable);
+
+    void setVisible(boolean visible);
+
+    void createBufferStrategy(int numBuffers);
 }

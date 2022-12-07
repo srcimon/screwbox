@@ -6,8 +6,6 @@ import static java.util.Objects.nonNull;
 
 import java.awt.Cursor;
 import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
@@ -26,8 +24,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     @Deprecated
     private final WindowFrame frame;
     private final FrameAdapter frameAdapter;
-    @Deprecated
-    private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
     private DisplayMode lastDisplayMode;
@@ -41,7 +37,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final ExecutorService executor,
             final DefaultScreen screen) {
         this.frameAdapter = frameAdapter;
-        this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
@@ -78,10 +73,10 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         final int height = configuration.resolution().height();
 
         frameAdapter.dispose();
-        frame.setSize(width, height);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        frame.createBufferStrategy(2);
+        frameAdapter.setSize(width, height);
+        frameAdapter.setResizable(false);
+        frameAdapter.setVisible(true);
+        frameAdapter.createBufferStrategy(2);
         frameAdapter.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
             lastDisplayMode = frameAdapter.displayMode();

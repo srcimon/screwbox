@@ -114,4 +114,24 @@ public class FakeFrameAdapter implements FrameAdapter {
         this.bounds = new Rectangle(x, y, width, height);
     }
 
+    @Override
+    public void setSize(int width, int height) {
+        this.bounds = new Rectangle(bounds.x, bounds.y, width, height);
+    }
+
+    @Override
+    public void setResizable(boolean resizable) {
+        // does nothing
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    @Override
+    public void createBufferStrategy(int numBuffers) {
+        // does nothing
+    }
+
 }

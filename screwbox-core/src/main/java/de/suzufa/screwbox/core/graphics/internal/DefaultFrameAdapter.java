@@ -112,4 +112,24 @@ public class DefaultFrameAdapter implements FrameAdapter {
         frame.setBounds(x, y, width, height);
     }
 
+    @Override
+    public void setSize(int width, int height) {
+        frame.setSize(width, height);
+    }
+
+    @Override
+    public void setResizable(boolean resizable) {
+        frame.setResizable(resizable);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
+    }
+
+    @Override
+    public void createBufferStrategy(int numBuffers) {
+        frame.createBufferStrategy(numBuffers);
+    }
+
 }
