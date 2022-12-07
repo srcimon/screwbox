@@ -8,13 +8,11 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.util.Objects.nonNull;
 
-import java.awt.AWTException;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
-import java.awt.Robot;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -35,7 +33,6 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[] { 0.1f, 1f };
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
-    private final Robot robot;
     private final FrameAdapter frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
@@ -47,11 +44,6 @@ public class DefaultRenderer implements Renderer {
         frame.createCanvasBufferStrategy();
         graphics = frame.canvasDrawGraphics();
         initializeFontDrawing();
-        try {
-            robot = new Robot();
-        } catch (final AWTException e) {
-            throw new IllegalStateException("could not create robot for screenshots");
-        }
     }
 
     @Override
@@ -84,7 +76,7 @@ public class DefaultRenderer implements Renderer {
                 frame.y() + frame.insets().top,
                 frame.width(),
                 frame.height());
-        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        final BufferedImage screenCapture = frame.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
     }
 

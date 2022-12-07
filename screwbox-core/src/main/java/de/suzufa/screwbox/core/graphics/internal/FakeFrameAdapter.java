@@ -169,4 +169,9 @@ public class FakeFrameAdapter implements FrameAdapter {
         return bounds.y;
     }
 
+    @Override
+    public BufferedImage createScreenCapture(Rectangle screenRect) {
+        return image;// TODO: FIX
+    }
+
 }

@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
@@ -10,17 +11,25 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 
 public class DefaultFrameAdapter implements FrameAdapter {
 
     private WindowFrame frame;
     private GraphicsDevice graphicsDevice;
+    private Robot robot;
 
     public DefaultFrameAdapter(final WindowFrame frame) {
         this.frame = frame;
         this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        try {
+            robot = new Robot();
+        } catch (final AWTException e) {
+            throw new IllegalStateException("could not create robot for screenshots");
+        }
     }
 
     @Override
@@ -162,6 +171,11 @@ public class DefaultFrameAdapter implements FrameAdapter {
     @Override
     public int y() {
         return frame.getY();
+    }
+
+    @Override
+    public BufferedImage createScreenCapture(Rectangle screenRect) {
+        return robot.createScreenCapture(screenRect);
     }
 
 }

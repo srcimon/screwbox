@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 
 public interface FrameAdapter {
 
@@ -67,4 +68,6 @@ public interface FrameAdapter {
     void showDrawGraphics();
 
     Insets insets();
+
+    BufferedImage createScreenCapture(Rectangle screenRect);
 }
