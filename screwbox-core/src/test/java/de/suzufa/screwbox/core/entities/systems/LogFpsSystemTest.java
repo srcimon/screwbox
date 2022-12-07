@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.Loop;
@@ -17,6 +19,9 @@ class LogFpsSystemTest {
 
     @Test
     void update_logsCurrentFps(DefaultEntities entities, Loop loop, Log log) {
+        Engine engine = ScrewBox.createHeadlessEngine();
+        engine.start();
+
         when(loop.fps()).thenReturn(50, 30, 10);
         when(loop.lastUpdate()).thenReturn(
                 now().plusSeconds(-10), // no logging yet

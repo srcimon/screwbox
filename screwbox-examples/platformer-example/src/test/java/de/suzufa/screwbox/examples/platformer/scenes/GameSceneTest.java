@@ -4,14 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mockito;
 
-import de.suzufa.screwbox.core.Engine;
+import de.suzufa.screwbox.core.ScrewBox;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
+import de.suzufa.screwbox.core.entities.systems.StopEngineOnMaxFramesSystem;
 import de.suzufa.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
 class GameSceneTest {
@@ -19,13 +16,12 @@ class GameSceneTest {
     @ParameterizedTest
     @ValueSource(strings = { "maps/0-1_intro.json", "maps/1-1_teufelsinsel.json", "maps/1-2_misty_caves.json" })
     void allMapsCanBeConvertetToEntities(String mapName) {
-        var engine = Mockito.mock(Engine.class);
+        var engine = ScrewBox.createHeadlessEngine();
 
-        var entityManager = new DefaultEntityManager();
-        var systemManager = new DefaultSystemManager(engine, entityManager);
-        Entities entities = new DefaultEntities(entityManager, systemManager);
-
-        new GameScene(mapName).importEntities(entities);
+        engine.scenes().add(new GameScene(mapName));
+        Entities entities = engine.scenes().entitiesOf(GameScene.class);
+        entities.add(new StopEngineOnMaxFramesSystem(1));
+        engine.start(GameScene.class);
 
         assertThat(entities.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
