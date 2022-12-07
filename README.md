@@ -63,7 +63,7 @@ public class HelloWorldExample {
     }
 }
 ```
-7. Check out one of the example applications:
+7. Check out the example applications:
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
     - **PathfindingExample** example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
