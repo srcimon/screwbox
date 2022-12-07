@@ -1,12 +1,13 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Canvas;
+import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.JFrame;
 
-public class WindowFrame extends JFrame implements WindowFocusListener {
+public class WindowFrame extends Frame implements WindowFocusListener {
 
     private static final long serialVersionUID = 1L;
 
