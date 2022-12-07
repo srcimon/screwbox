@@ -46,7 +46,6 @@ public class DefaultRenderer implements Renderer {
         this.frame.setIgnoreRepaint(true);
         frame.getCanvas().createBufferStrategy(2);
         graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-        initializeFontDrawing();
         try {
             robot = new Robot();
         } catch (final AWTException e) {
@@ -66,10 +65,6 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
         }
         fillWith(Color.BLACK);
-    }
-
-    private void initializeFontDrawing() {
-        drawText(Offset.origin(), "-", new Font("Arial", 1), Color.WHITE);
     }
 
     @Override

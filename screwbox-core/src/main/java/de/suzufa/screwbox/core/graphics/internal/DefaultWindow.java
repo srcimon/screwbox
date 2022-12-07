@@ -91,6 +91,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
                 frame.setLocationRelativeTo(null);
             }
         }
+        executor.submit(new InitializeFontDrawingTask());
+
         screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
         updateCursor();
         return this;
