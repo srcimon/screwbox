@@ -67,7 +67,6 @@ class DefaultEngine implements Engine {
         FrameAdapter frameAdapter = factory.frameAdapter();
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = factory.executorService();
-        final WindowFrame frame = factory.windowFrame();
         final DefaultScreen screen = new DefaultScreen(frameAdapter, new StandbyRenderer());
         final DefaultWindow window = new DefaultWindow(frameAdapter, configuration, executor, screen);
         window.setTitle(name);
@@ -86,6 +85,7 @@ class DefaultEngine implements Engine {
         async = new DefaultAsync(executor, this::exceptionHandler);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
+        final WindowFrame frame = factory.windowFrame();
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent e) {

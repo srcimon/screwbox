@@ -7,18 +7,21 @@ import de.suzufa.screwbox.core.graphics.internal.DefaultFrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.FrameAdapter;
 import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 
-class EngineFactory {
+class DefaultEngineFactory implements EngineFactory {
 
     private final WindowFrame frame = new WindowFrame();// TODO: remove
 
+    @Override
     public ExecutorService executorService() {
         return Executors.newCachedThreadPool();
     }
 
+    @Override
     public FrameAdapter frameAdapter() {
         return new DefaultFrameAdapter(frame);
     }
 
+    @Override
     public WindowFrame windowFrame() {
         return frame;
     }

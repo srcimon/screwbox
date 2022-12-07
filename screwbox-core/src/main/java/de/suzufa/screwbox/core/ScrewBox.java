@@ -31,7 +31,9 @@ public final class ScrewBox {
      * to initialize the {@link Window#title()}.
      */
     public static Engine createEngine(final String name) {
-        return createEngine(name, new EngineFactory());
+        requireNonNull(name, "name must not be null");
+
+        return createEngine(name, new DefaultEngineFactory());
     }
 
     /**
@@ -42,8 +44,6 @@ public final class ScrewBox {
     }
 
     private static Engine createEngine(final String name, final EngineFactory factory) {
-        requireNonNull(name, "name must not be null");
-
         if (nonNull(engine)) {
             throw new IllegalStateException("only one instance of ScrewBox can be created");
         }

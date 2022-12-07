@@ -21,7 +21,7 @@ public class FakeFrameAdapter implements FrameAdapter {
     private boolean isVisible = false;
     private DisplayMode displayMode = new DisplayMode(1024, 768, 32, 60);
     private BufferedImage image = new BufferedImage(displayMode.getWidth(), displayMode.getHeight(),
-            displayMode.getBitDepth());
+            BufferedImage.TYPE_INT_ARGB);
 
     @Override
     public int width() {
