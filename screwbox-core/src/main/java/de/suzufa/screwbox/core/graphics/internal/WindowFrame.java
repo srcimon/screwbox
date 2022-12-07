@@ -20,8 +20,6 @@ public class WindowFrame extends JFrame implements WindowListener, WindowFocusLi
     private final Canvas canvas;
 
     public WindowFrame(final Engine engine) {
-        addWindowListener(this);
-        addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
 

@@ -81,6 +81,8 @@ class DefaultEngine implements Engine {
         async = new DefaultAsync(executor, this::exceptionHandler);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
+        frame.addWindowListener(frame);
+        frame.addWindowFocusListener(frame);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.addMouseWheelListener(mouse);
