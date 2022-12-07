@@ -43,4 +43,6 @@ public interface FrameAdapter {
     void setSelfAsFullscreenWindow();
 
     void setLocationRelativeTo(Component component);
+
+    void setBounds(int x, int y, int width, int height);
 }

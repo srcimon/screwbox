@@ -68,7 +68,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         if (configuration.isFullscreen()) {
             throw new IllegalStateException("Can't move Window in fullscreen.");
         }
-        frame.setBounds(position.x(), position.y(), frameAdapter.width(), frameAdapter.height());
+        frameAdapter.setBounds(position.x(), position.y(), frameAdapter.width(), frameAdapter.height());
         return this;
     }
 
@@ -82,7 +82,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.createBufferStrategy(2);
-        frame.setBounds(0, 0, width, height);
+        frameAdapter.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
             lastDisplayMode = frameAdapter.displayMode();
             final int bitDepth = lastDisplayMode.getBitDepth();

@@ -107,4 +107,9 @@ public class DefaultFrameAdapter implements FrameAdapter {
         frame.setLocationRelativeTo(component);
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        frame.setBounds(x, y, width, height);
+    }
+
 }

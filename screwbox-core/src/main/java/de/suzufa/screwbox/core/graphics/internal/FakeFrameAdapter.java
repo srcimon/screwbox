@@ -109,4 +109,9 @@ public class FakeFrameAdapter implements FrameAdapter {
         // does nothing
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        this.bounds = new Rectangle(x, y, width, height);
+    }
+
 }
