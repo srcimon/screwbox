@@ -22,10 +22,12 @@ public class DefaultScreen implements Screen {
 
     private Renderer renderer;
     private final WindowFrame frame;
+    private final FrameAdapter frameAdapter;
 
-    public DefaultScreen(WindowFrame frame, Renderer renderer) {
+    public DefaultScreen(FrameAdapter frameAdapter, WindowFrame frame, Renderer renderer) {
         this.renderer = renderer;
         this.frame = frame;
+        this.frameAdapter = frameAdapter;
     }
 
     private Color drawColor = Color.WHITE;
@@ -51,8 +53,8 @@ public class DefaultScreen implements Screen {
     public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
-        final long countX = frame.getWidth() / spriteWidth + 1;
-        final long countY = frame.getHeight() / spriteHeight + 1;
+        final long countX = frameAdapter.width() / spriteWidth + 1;
+        final long countY = frameAdapter.height() / spriteHeight + 1;
         final double offsetX = offset.x() % spriteWidth;
         final double offsetY = offset.y() % spriteHeight;
 
