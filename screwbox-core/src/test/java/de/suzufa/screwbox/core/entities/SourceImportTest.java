@@ -5,17 +5,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.test.EntitiesExtension;
+import de.suzufa.screwbox.core.ScrewBox;
 
-@ExtendWith(EntitiesExtension.class)
 class SourceImportTest {
 
+    private Entities entities;
+
+    @BeforeEach
+    void beforeEach() {
+        entities = ScrewBox.createHeadlessEngine().entities();
+    }
+
     @Test
-    void as_converterNull_throwsException(DefaultEntities entities) {
+    void as_converterNull_throwsException() {
         SourceImport<String> sourceImport = entities.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport.as(null))
@@ -24,7 +29,7 @@ class SourceImportTest {
     }
 
     @Test
-    void usingIndex_indexFunctionIsNull_throwsException(DefaultEntities entities) {
+    void usingIndex_indexFunctionIsNull_throwsException() {
         var sourceImport = entities.importSource("Source of Inspiration");
 
         assertThatThrownBy(() -> sourceImport
@@ -34,7 +39,7 @@ class SourceImportTest {
     }
 
     @Test
-    void when_indexIsNull_throwsException(DefaultEntities entities) {
+    void when_indexIsNull_throwsException() {
         var sourceImport = entities.importSource("Source of Inspiration")
                 .usingIndex(String::length);
 
@@ -44,7 +49,7 @@ class SourceImportTest {
     }
 
     @Test
-    void as_inputWithoutCondition_createsEntity(DefaultEntities entities) {
+    void as_inputWithoutCondition_createsEntity() {
         entities.importSource("Source of Inspiration")
                 .as(source -> new Entity());
 
@@ -52,7 +57,7 @@ class SourceImportTest {
     }
 
     @Test
-    void as_conditionNotMet_noEntityCreated(DefaultEntities entities) {
+    void as_conditionNotMet_noEntityCreated() {
         entities.importSource("Source of Inspiration")
                 .when(String::isEmpty).as(source -> new Entity());
 
@@ -60,7 +65,7 @@ class SourceImportTest {
     }
 
     @Test
-    void ias_conditionMet_entityCreated(DefaultEntities entities) {
+    void ias_conditionMet_entityCreated() {
         entities.importSource("")
                 .when(String::isEmpty).as(source -> new Entity());
 
@@ -68,7 +73,7 @@ class SourceImportTest {
     }
 
     @Test
-    void as_multipleConditionsMet_multipleEntitiesCreated(DefaultEntities entities) {
+    void as_multipleConditionsMet_multipleEntitiesCreated() {
         entities.importSource("")
                 .when(String::isEmpty).as(source -> new Entity())
                 .when(String::isEmpty).as(source -> new Entity());
@@ -77,7 +82,7 @@ class SourceImportTest {
     }
 
     @Test
-    void as_multipleSources_multipleEntitiesCreated(DefaultEntities entities) {
+    void as_multipleSources_multipleEntitiesCreated() {
         entities.importSource(List.of("first", "second", "third"))
                 .when(i -> i.contains("ir")).as(source -> new Entity());
 
@@ -85,7 +90,7 @@ class SourceImportTest {
     }
 
     @Test
-    void usingIndex_multipleSources_multipleEntitiesCreated(DefaultEntities entities) {
+    void usingIndex_multipleSources_multipleEntitiesCreated() {
         entities.importSource(List.of("first", "second", "third"))
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity(6));
@@ -95,7 +100,7 @@ class SourceImportTest {
     }
 
     @Test
-    void stopUsingIndex_returnsToDirectConversion(DefaultEntities entities) {
+    void stopUsingIndex_returnsToDirectConversion() {
         entities.importSource(List.of("first", "second", "third"))
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity())

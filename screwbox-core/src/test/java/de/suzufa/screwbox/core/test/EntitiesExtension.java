@@ -25,6 +25,7 @@ import de.suzufa.screwbox.core.log.Log;
 import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.physics.Physics;
 
+@Deprecated
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
     private final Map<Class<?>, Object> parameters = new HashMap<>();
