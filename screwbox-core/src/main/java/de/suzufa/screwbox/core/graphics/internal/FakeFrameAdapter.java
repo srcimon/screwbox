@@ -10,6 +10,8 @@ public class FakeFrameAdapter implements FrameAdapter {
     private Rectangle bounds = new Rectangle(100, 150, 800, 540);
     private Rectangle canvasBounds = new Rectangle(0, 0, 800, 540);
     private Cursor cursor;
+    private boolean hasFocus = true;
+    private boolean isVisible = false;
 
     @Override
     public int width() {
@@ -39,6 +41,21 @@ public class FakeFrameAdapter implements FrameAdapter {
     @Override
     public void setCursor(Cursor cursor) {
         this.cursor = cursor;
+    }
+
+    @Override
+    public boolean hasFocus() {
+        return hasFocus;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

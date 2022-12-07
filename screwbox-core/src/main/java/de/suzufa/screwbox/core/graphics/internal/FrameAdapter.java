@@ -16,4 +16,10 @@ public interface FrameAdapter {
     String title();
 
     void setCursor(Cursor cursor);
+
+    boolean hasFocus();
+
+    boolean isVisible();
+
+    void setTitle(String title);
 }

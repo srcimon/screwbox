@@ -27,6 +27,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     @Deprecated
     private final WindowFrame frame;
     private final FrameAdapter frameAdapter;
+    @Deprecated
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
@@ -51,13 +52,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public Offset position() {
-        final var bounds = frame.getBounds();
+        final var bounds = frameAdapter.bounds();
         return Offset.at(bounds.x, bounds.y);
     }
 
     @Override
     public Window setTitle(final String title) {
-        frame.setTitle(title);
+        frameAdapter.setTitle(title);
         return this;
     }
 
@@ -66,7 +67,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         if (configuration.isFullscreen()) {
             throw new IllegalStateException("Can't move Window in fullscreen.");
         }
-        frame.setBounds(position.x(), position.y(), frame.getWidth(), frame.getHeight());
+        frame.setBounds(position.x(), position.y(), frameAdapter.width(), frameAdapter.height());
         return this;
     }
 
@@ -129,7 +130,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         final boolean mustReopenWindow = List.of(ConfigurationProperty.WINDOW_MODE, ConfigurationProperty.RESOLUTION)
                 .contains(changedProperty);
 
-        if (mustReopenWindow && frame.isVisible()) {
+        if (mustReopenWindow && frameAdapter.isVisible()) {
             close();
             open();
         }
@@ -137,7 +138,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public boolean hasFocus() {
-        return frame.hasFocus();
+        return frameAdapter.hasFocus();
     }
 
     @Override

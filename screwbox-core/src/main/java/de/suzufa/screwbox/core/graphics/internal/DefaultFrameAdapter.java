@@ -41,4 +41,19 @@ public class DefaultFrameAdapter implements FrameAdapter {
         frame.setCursor(cursor);
     }
 
+    @Override
+    public boolean hasFocus() {
+        return frame.hasFocus();
+    }
+
+    @Override
+    public boolean isVisible() {
+        return frame.isVisible();
+    }
+
+    @Override
+    public void setTitle(String title) {
+        frame.setTitle(title);
+    }
+
 }
