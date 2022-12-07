@@ -38,7 +38,7 @@ public final class ScrewBox {
      * Creates an {@link Engine} instance for testing purposes only.
      */
     public static Engine createHeadlessEngine() {
-        return createEngine("Headless", new DefaultEngineFactory());
+        return createEngine("Headless", new HeadlessEngineFactory());
     }
 
     private static Engine createEngine(final String name, final EngineFactory factory) {
