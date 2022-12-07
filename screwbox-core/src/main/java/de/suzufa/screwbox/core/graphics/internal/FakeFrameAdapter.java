@@ -1,6 +1,9 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Cursor;
+import java.awt.DisplayMode;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 //TODO: allow interaction with fake frame adapter
@@ -9,7 +12,6 @@ public class FakeFrameAdapter implements FrameAdapter {
     private String title = "";
     private Rectangle bounds = new Rectangle(100, 150, 800, 540);
     private Rectangle canvasBounds = new Rectangle(0, 0, 800, 540);
-    private Cursor cursor;
     private boolean hasFocus = true;
     private boolean isVisible = false;
 
@@ -40,7 +42,7 @@ public class FakeFrameAdapter implements FrameAdapter {
 
     @Override
     public void setCursor(Cursor cursor) {
-        this.cursor = cursor;
+        // does nothing
     }
 
     @Override
@@ -56,6 +58,26 @@ public class FakeFrameAdapter implements FrameAdapter {
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public DisplayMode displayMode() {
+        return new DisplayMode(2052, 1080, 32, 60);
+    }
+
+    @Override
+    public Cursor createCustomCursor(Image cursor, Point hotSpot, String name) {
+        return new Cursor(Cursor.DEFAULT_CURSOR);
+    }
+
+    @Override
+    public DisplayMode[] displayModes() {
+        DisplayMode[] modes = new DisplayMode[4];
+        modes[0] = new DisplayMode(1024, 768, 16, 60);
+        modes[1] = new DisplayMode(1024, 768, 32, 60);
+        modes[2] = new DisplayMode(800, 600, 16, 60);
+        modes[3] = new DisplayMode(800, 600, 32, 60);
+        return modes;
     }
 
 }

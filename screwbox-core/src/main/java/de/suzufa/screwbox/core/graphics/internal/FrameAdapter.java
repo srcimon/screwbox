@@ -1,6 +1,9 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Cursor;
+import java.awt.DisplayMode;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 public interface FrameAdapter {
@@ -22,4 +25,11 @@ public interface FrameAdapter {
     boolean isVisible();
 
     void setTitle(String title);
+
+    DisplayMode displayMode();
+
+    Cursor createCustomCursor(Image cursor, Point hotSpot, String name);
+
+    DisplayMode[] displayModes();
+
 }

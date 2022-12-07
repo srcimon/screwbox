@@ -10,7 +10,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -83,9 +82,9 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frame.createBufferStrategy(2);
         frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
-            lastDisplayMode = graphicsDevice.getDisplayMode();
-            final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
-            final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
+            lastDisplayMode = frameAdapter.displayMode();
+            final int bitDepth = lastDisplayMode.getBitDepth();
+            final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
@@ -118,7 +117,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     public List<Dimension> supportedResolutions() {
-        return asList(graphicsDevice.getDisplayModes()).stream()
+        return asList(frameAdapter.displayModes()).stream()
                 .map(this::toDimension)
                 .distinct()
                 .sorted(reverseOrder())
@@ -183,8 +182,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     private Cursor createCustomCursor(final Image image) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
-                "custom cursor");
+        return frameAdapter.createCustomCursor(image, new Point(0, 0), "custom cursor");
     }
 
     @Override
@@ -193,7 +191,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     public Dimension currentResolution() {
-        final var screenSize = graphicsDevice.getDisplayMode();
+        final var screenSize = frameAdapter.displayMode();
         return toDimension(screenSize);
     }
 
