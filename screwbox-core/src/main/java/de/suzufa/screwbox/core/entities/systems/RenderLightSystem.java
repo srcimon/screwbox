@@ -26,8 +26,8 @@ public class RenderLightSystem implements EntitySystem {
             ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
-    public void update(Engine engine) {
-        Light light = engine.graphics().light();
+    public void update(final Engine engine) {
+        final Light light = engine.graphics().light();
         for (final var shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
             light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
         }
