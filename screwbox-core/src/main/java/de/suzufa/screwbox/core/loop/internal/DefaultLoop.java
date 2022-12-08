@@ -99,7 +99,7 @@ public class DefaultLoop implements Loop {
                 for (final var updatable : updatables) {
                     updatable.update();
                 }
-                trackUpdateCycle(Duration.since(beforeUpdate));
+                trackUpdateCycle(beforeUpdate);
             } else {
                 beNiceToCpu();
             }
@@ -121,14 +121,14 @@ public class DefaultLoop implements Loop {
         }
     }
 
-    private void trackUpdateCycle(final Duration duration) {
+    private void trackUpdateCycle(Time beforeUpdate) {
         final Time now = Time.now();
         final Duration timeBetweenUpdates = Duration.between(now, lastUpdate);
         lastUpdate = now;
         fps = (int) (NANOS_PER_SECOND / timeBetweenUpdates.nanos());
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
         delta = min(timeBetweenUpdates.nanos() * 1.0 / NANOS_PER_SECOND, maxUpdateFactor);
-        updateDuration = duration;
+        updateDuration = Duration.between(now, beforeUpdate);
         runningTime = Duration.between(startTime, lastUpdate);
         frameNumber++;
     }
