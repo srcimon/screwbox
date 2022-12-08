@@ -38,10 +38,11 @@ public final class Entity implements Serializable {
     }
 
     public Entity add(final Component component) {
-        if (components.containsKey(component.getClass())) {
-            throw new IllegalArgumentException("component already present: " + component.getClass().getSimpleName());
+        final var componentClass = component.getClass();
+        if (components.containsKey(componentClass)) {
+            throw new IllegalArgumentException("component already present: " + componentClass.getSimpleName());
         }
-        components.put(component.getClass(), component);
+        components.put(componentClass, component);
 
         for (final var listener : getListeners()) {
             listener.componentAdded(this);
