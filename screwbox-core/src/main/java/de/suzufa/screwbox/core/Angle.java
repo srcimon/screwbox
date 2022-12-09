@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core;
 
+import static de.suzufa.screwbox.core.Vector.$;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
@@ -131,10 +132,10 @@ public final class Angle implements Serializable, Comparable<Angle> {
         final double sinus = sin(radians);
         final double cosinus = cos(radians);
         final Vector translated = segment.to().substract(segment.from());
-        final double xnew = translated.x() * cosinus - translated.y() * sinus;
-        final double ynew = translated.x() * sinus + translated.y() * cosinus;
+        final double xNew = translated.x() * cosinus - translated.y() * sinus + segment.from().x();
+        final double yNew = translated.x() * sinus + translated.y() * cosinus + segment.from().y();
 
-        return Segment.between(segment.from(), Vector.$(xnew, ynew).add(segment.from()));
+        return Segment.between(segment.from(), $(xNew, yNew));
     }
 
     @Override

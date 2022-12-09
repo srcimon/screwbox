@@ -25,7 +25,6 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 4. Add dependency:
 
 ``` xml
-<!-- Core Engine -->
 <dependency>
   <groupId>de.suzufa.screwbox</groupId>
   <artifactId>screwbox-core</artifactId>
