@@ -3,7 +3,6 @@ package de.suzufa.screwbox.core.entities.systems;
 import java.util.List;
 
 import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
@@ -27,7 +26,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, SpriteComponent.class);
 
-    private class ReflectionArea {
+    private final class ReflectionArea {
 
         private final double opacityModifier;
         private final Bounds area;
@@ -50,39 +49,32 @@ public class ReflectionRenderSystem implements EntitySystem {
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
-                    addSpriteToBatch(spriteBatch, reflectableEntity, reflectableBounds);
+                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
+                    final var spriteSize = spriteComponent.sprite.size();
+                    final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
+                    
+                    final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
+                    final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+                    final var effectOrigin = Vector.of(
+                            spriteOrigin.x() + xDelta,
+                            2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
+                    
+                    spriteBatch.addEntry(
+                            spriteComponent.sprite,
+                            effectOrigin,
+                            spriteComponent.scale,
+                            spriteComponent.opacity.multiply(opacityModifier),
+                            spriteComponent.rotation,
+                            spriteComponent.flip.invertVertical(),
+                            spriteComponent.drawOrder);
                 }
             }
             return spriteBatch;
-        }
-
-        private void addSpriteToBatch(final SpriteBatch batch, final Entity reflected, final Bounds bounds) {
-            final SpriteComponent spriteComponent = reflected.get(SpriteComponent.class);
-            final var spriteSize = spriteComponent.sprite.size();
-            final var spritePos = bounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
-
-            var position = Vector.of(spritePos.x(),
-                    2 * area.minY() - spritePos.y() - spriteSize.height());
-
-            if (useWaveEffect) {
-                position = position.add(
-                        Math.sin(waveSeed + spritePos.y() / 16) * 2,
-                        Math.sin(waveSeed) * 2);
-            }
-            batch.addEntry(
-                    spriteComponent.sprite,
-                    position,
-                    spriteComponent.scale,
-                    spriteComponent.opacity.multiply(opacityModifier),
-                    spriteComponent.rotation,
-                    spriteComponent.flip.invertVertical(),
-                    spriteComponent.drawOrder);
         }
     }
 
     @Override
     public void update(final Engine engine) {
-        final Time time = Time.now();
         final World world = engine.graphics().world();
         final Bounds visibleArea = world.visibleArea();
         final List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
@@ -96,7 +88,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                 world.drawSpriteBatch(batch, reflectionOnScreen.get());
             }
         }
-        System.out.println(Duration.since(time).nanos());
     }
 
 }
