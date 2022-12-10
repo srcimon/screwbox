@@ -62,7 +62,7 @@ public class HelloWorldExample {
     }
 }
 ```
-7. Check out the example applications:
+6. Check out the example applications:
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
     - **PathfindingExample** example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
@@ -76,3 +76,9 @@ public class HelloWorldExample {
 
 ## Acknowledgments
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
+
+## Ideas and plans
+- [ ] add Support for animated light
+- [ ] add A*-Pathfinding Algorithm (because speed)
+- [ ] add particle emitters
+- [ ] add menu bar when this nasty jdk bug is resolved: https://bugs.openjdk.org/browse/JDK-8270888
