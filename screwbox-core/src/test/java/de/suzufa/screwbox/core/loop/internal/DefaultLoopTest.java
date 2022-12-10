@@ -132,17 +132,25 @@ class DefaultLoopTest {
     }
 
     @Test
-    void start_exceptionInLoop_isNotLooping() {
+    void awaitTermination_threadWasStoppedBecauseOfException_doenstBlockEndlessly() {
         updatables.add(() -> {
             throw new IllegalStateException("exception in loop");
 
         });
-        try {
-            loop.start();
-        } catch (Exception ignored) {
-        }
 
-        assertThat(loop.isLooping()).isFalse();
+        assertThatThrownBy(loop::start)
+                .isInstanceOf(IllegalStateException.class);
+
+        assertThatNoException().isThrownBy(loop::awaitTermination);
+    }
+
+    @Test
+    void awaitTermination_threadWasStoppedBecauseOfSystem_doenstBlockEndlessly() {
+        updatables.add(stopAfterOneFrameUpdatable());
+
+        loop.start();
+
+        assertThatNoException().isThrownBy(loop::awaitTermination);
     }
 
     private Updatable stopAfterOneFrameUpdatable() {

@@ -42,10 +42,6 @@ public class DefaultLoop implements Loop {
         this.active = false;
     }
 
-    public boolean isLooping() {
-        return isLooping;
-    }
-
     @Override
     public Loop setTargetFps(final int targetFps) {
         if (targetFps < Loop.MIN_TARGET_FPS) {
@@ -139,6 +135,12 @@ public class DefaultLoop implements Loop {
     @Override
     public Time startTime() {
         return startTime;
+    }
+
+    public void awaitTermination() {
+        while (isLooping) {
+            beNiceToCpu();
+        }
     }
 
 }
