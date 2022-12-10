@@ -29,13 +29,15 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private class ReflectionArea {
 
-        private ReflectionComponent options;
+        private double opacityModifier;
+        private boolean useWaveEffect;
         private Bounds area;
         private Bounds reflectedArea;
 
         public ReflectionArea(Bounds area, ReflectionComponent options) {
-            this.options = options;
             this.area = area;
+            useWaveEffect = options.useWaveEffect;
+            opacityModifier = options.opacityModifier.value();
             reflectedArea = area.moveBy(0, -area.height());
         }
 
@@ -56,15 +58,15 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     final double actualY = area.minY() + (area.minY() - spriteBounds.position().y());
                     final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
-                    final double waveMovementEffectX = options.useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2
+                    final double waveMovementEffectX = useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2
                             : 0;
-                    final double waveMovementEffectY = options.useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+                    final double waveMovementEffectY = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
                     final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
                     final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
 
                     final Percent opacity = spriteComponent.opacity
-                            .multiply(options.opacityModifier.value())
-                            .multiply(options.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
+                            .multiply(opacityModifier)
+                            .multiply(useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
 
                     spriteBatch.addEntry(
                             spriteComponent.sprite,
