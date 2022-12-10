@@ -10,8 +10,8 @@ public class PhysicsBodyComponent implements Component {
     public Vector momentum;
     public boolean ignoreOneWayCollisions;
     public boolean ignoreCollisions;
-    public double gravityModifier = 1;// TODO: dedicated GravityComponent / GravityZoneComponent and Gravity System
-    public double magnetModifier = 1;// TODO: dedicated MagnetBodyComponent
+    public double gravityModifier = 1;
+    public double magnetModifier = 1;
 
     public PhysicsBodyComponent() {
         this(Vector.zero());
