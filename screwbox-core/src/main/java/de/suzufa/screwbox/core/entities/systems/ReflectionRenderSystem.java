@@ -5,7 +5,6 @@ import java.util.List;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Duration;
 import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
@@ -29,13 +28,13 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private class ReflectionArea {
 
-        private double opacityModifier;
-        private Bounds area;
-        private Bounds reflectedArea;
+        private final double opacityModifier;
+        private final Bounds area;
+        private final Bounds reflectedArea;
         final double waveSeed;
         private final boolean useWaveEffect;
 
-        public ReflectionArea(Bounds area, ReflectionComponent options, Time time) {
+        public ReflectionArea(final Bounds area, final ReflectionComponent options, final Time time) {
             this.area = area;
             waveSeed = time.milliseconds() / 500.0;
             useWaveEffect = options.useWaveEffect;
@@ -45,55 +44,56 @@ public class ReflectionRenderSystem implements EntitySystem {
             reflectedArea = area.moveBy(0, -area.height());
         }
 
-        public SpriteBatch createRenderBatchFor(List<Entity> reflectableEntities, Engine engine) {
+        public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities, final Engine engine) {
             final SpriteBatch spriteBatch = new SpriteBatch();
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
-                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                    final var spriteSize = spriteComponent.sprite.size();
-                    final var spriteBounds = Bounds.atOrigin(
-                            reflectableBounds.position().x() - spriteSize.width() / 2.0,
-                            reflectableBounds.position().y() - spriteSize.height() / 2.0,
-                            spriteSize.width() * spriteComponent.scale,
-                            spriteSize.height() * spriteComponent.scale);
-
-                    final double actualY = area.minY() + (area.minY() - spriteBounds.position().y());
-                    final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
-                    final double waveMovementEffectX = useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2
-                            : 0;
-                    final double waveMovementEffectY = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
-                    final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
-                    final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
-
-                    final Percent opacity = spriteComponent.opacity.multiply(opacityModifier);
-
-                    spriteBatch.addEntry(
-                            spriteComponent.sprite,
-                            reflectionBounds.origin(),
-                            spriteComponent.scale,
-                            opacity,
-                            spriteComponent.rotation,
-                            spriteComponent.flip.invertVertical(),
-                            spriteComponent.drawOrder);
+                    addSpriteToBatch(spriteBatch, reflectableEntity, reflectableBounds);
                 }
             }
             return spriteBatch;
+        }
+
+        private void addSpriteToBatch(final SpriteBatch batch, final Entity reflected, final Bounds bounds) {
+            final SpriteComponent spriteComponent = reflected.get(SpriteComponent.class);
+            final var spriteSize = spriteComponent.sprite.size();
+            final var spriteBounds = Bounds.atOrigin(
+                    bounds.position().x() - spriteSize.width() / 2.0,
+                    bounds.position().y() - spriteSize.height() / 2.0,
+                    spriteSize.width() * spriteComponent.scale,
+                    spriteSize.height() * spriteComponent.scale);
+
+            final double actualY = area.minY() + area.minY() - spriteBounds.position().y();
+            final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
+            final double waveMovementEffectX = useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2 : 0;
+            final double waveMovementEffectY = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+            final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
+            final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
+
+            batch.addEntry(
+                    spriteComponent.sprite,
+                    reflectionBounds.origin(),
+                    spriteComponent.scale,
+                    spriteComponent.opacity.multiply(opacityModifier),
+                    spriteComponent.rotation,
+                    spriteComponent.flip.invertVertical(),
+                    spriteComponent.drawOrder);
         }
     }
 
     @Override
     public void update(final Engine engine) {
-        Time time = Time.now();
+        final Time time = Time.now();
         final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.entities().fetchAll(REFLECTING_AREAS)) {
             final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds
                     .intersection(visibleArea);
             if (reflectionOnScreen.isPresent()) {
-                var area = new ReflectionArea(reflectionOnScreen.get(),
+                final var area = new ReflectionArea(reflectionOnScreen.get(),
                         reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
-                SpriteBatch batch = area.createRenderBatchFor(reflectableEntities, engine);
+                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities, engine);
                 engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
             }
         }
