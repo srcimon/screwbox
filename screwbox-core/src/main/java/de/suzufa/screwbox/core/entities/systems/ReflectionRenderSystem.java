@@ -27,13 +27,14 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.entities().fetchAll(REFLECTING_AREAS)) {
-            final ReflectionComponent reflection = reflectionEntity.get(ReflectionComponent.class);
-            final var possibleReflectionAreaBounds = reflectionEntity.get(TransformComponent.class).bounds
-                    .intersection(engine.graphics().world().visibleArea());
-            if (possibleReflectionAreaBounds.isPresent()) {
-                final Bounds reflectionArea = possibleReflectionAreaBounds.get();
+            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds
+                    .intersection(visibleArea);
+            if (reflectionOnScreen.isPresent()) {
+                final ReflectionComponent reflection = reflectionEntity.get(ReflectionComponent.class);
+                final Bounds reflectionArea = reflectionOnScreen.get();
                 renderReflection(engine, reflection, reflectionArea, reflectableEntities);
             }
         }
