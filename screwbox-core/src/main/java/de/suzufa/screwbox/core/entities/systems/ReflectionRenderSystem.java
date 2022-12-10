@@ -59,9 +59,9 @@ public class ReflectionRenderSystem implements EntitySystem {
         private void addSpriteToBatch(final SpriteBatch batch, final Entity reflected, final Bounds bounds) {
             final SpriteComponent spriteComponent = reflected.get(SpriteComponent.class);
             final var spriteSize = spriteComponent.sprite.size();
+            final var spritePos = bounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
             final var spriteBounds = Bounds.atOrigin(
-                    bounds.position().x() - spriteSize.width() / 2.0,
-                    bounds.position().y() - spriteSize.height() / 2.0,
+                    spritePos,
                     spriteSize.width() * spriteComponent.scale,
                     spriteSize.height() * spriteComponent.scale);
 
@@ -69,7 +69,7 @@ public class ReflectionRenderSystem implements EntitySystem {
 
             if (useWaveEffect) {
                 position = position.add(
-                        Math.sin(waveSeed + spriteBounds.position().y() / 16) * 2,
+                        Math.sin(waveSeed + spritePos.y() / 16) * 2,
                         Math.sin(waveSeed) * 2);
             }
             final Bounds reflectionBounds = spriteBounds.moveTo(position);
