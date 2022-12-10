@@ -16,6 +16,7 @@ import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
 import de.suzufa.screwbox.core.entities.components.SpriteComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
+import de.suzufa.screwbox.core.graphics.World;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class ReflectionRenderSystem implements EntitySystem {
@@ -44,7 +45,7 @@ public class ReflectionRenderSystem implements EntitySystem {
             reflectedArea = area.moveBy(0, -area.height()).inflatedTop(useWaveEffect ? 2 : 0);
         }
 
-        public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities, final Engine engine) {
+        public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities) {
             final SpriteBatch spriteBatch = new SpriteBatch();
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
@@ -65,10 +66,9 @@ public class ReflectionRenderSystem implements EntitySystem {
                     spriteSize.height() * spriteComponent.scale);
 
             final double actualY = 2 * area.minY() - spriteBounds.position().y();
-            spriteBounds.position().addY(2 * area.minY() - 2 * spriteBounds.position().y());
-            final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
             final double waveMovementEffectX = useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2 : 0;
             final double waveMovementEffectY = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+            final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
             final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
             final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
 
@@ -86,7 +86,8 @@ public class ReflectionRenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final Time time = Time.now();
-        final Bounds visibleArea = engine.graphics().world().visibleArea();
+        final World world = engine.graphics().world();
+        final Bounds visibleArea = world.visibleArea();
         final List<Entity> reflectableEntities = engine.entities().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.entities().fetchAll(REFLECTING_AREAS)) {
             final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds
@@ -94,8 +95,8 @@ public class ReflectionRenderSystem implements EntitySystem {
             if (reflectionOnScreen.isPresent()) {
                 final var area = new ReflectionArea(reflectionOnScreen.get(),
                         reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
-                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities, engine);
-                engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
+                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
+                world.drawSpriteBatch(batch, reflectionOnScreen.get());
             }
         }
         System.out.println(Duration.since(time).nanos());
