@@ -131,6 +131,28 @@ class DefaultLoopTest {
                 .hasMessage("target fps must be at least 120");
     }
 
+    @Test
+    void awaitTermination_threadWasStoppedBecauseOfException_doenstBlockEndlessly() {
+        updatables.add(() -> {
+            throw new IllegalStateException("exception in loop");
+
+        });
+
+        assertThatThrownBy(loop::start)
+                .isInstanceOf(IllegalStateException.class);
+
+        assertThatNoException().isThrownBy(loop::awaitTermination);
+    }
+
+    @Test
+    void awaitTermination_threadWasStoppedBecauseOfSystem_doenstBlockEndlessly() {
+        updatables.add(stopAfterOneFrameUpdatable());
+
+        loop.start();
+
+        assertThatNoException().isThrownBy(loop::awaitTermination);
+    }
+
     private Updatable stopAfterOneFrameUpdatable() {
         return () -> loop.stop();
     }

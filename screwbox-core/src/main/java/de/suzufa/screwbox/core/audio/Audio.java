@@ -15,6 +15,14 @@ public interface Audio {
     Audio playEffect(Sound sound);
 
     /**
+     * Plays a {@link Sound} from an {@link Asset} a single time with
+     * {@link #effectVolume()}.
+     */
+    default Audio playEffect(Asset<Sound> sound) {
+        return playEffect(sound.get());
+    }
+
+    /**
      * Plays a {@link Sound} looped with {@link #effectVolume()}. Can be stopped
      * with {@link #stop(Sound)}.
      */
@@ -83,10 +91,5 @@ public interface Audio {
      * {@link #setEffectVolume(Percent)}.
      */
     Audio muteEffects();
-
-    // TODO: javadoc and test
-    default Audio playEffect(Asset<Sound> sound) {
-        return playEffect(sound.get());
-    }
 
 }

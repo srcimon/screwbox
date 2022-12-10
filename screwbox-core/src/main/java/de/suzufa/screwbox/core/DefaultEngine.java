@@ -126,21 +126,11 @@ class DefaultEngine implements Engine {
         executor.execute(() -> {
             ui.closeMenu();
             loop.stop();
-            awaitLoopTermination();
+            loop.awaitTermination();
             graphics.window().close();
             log.info(format("engine stopped (%,d frames total)", loop().frameNumber()));
             executor.shutdown();
         });
-    }
-
-    private void awaitLoopTermination() {
-        while (loop.isLooping()) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 
     @Override

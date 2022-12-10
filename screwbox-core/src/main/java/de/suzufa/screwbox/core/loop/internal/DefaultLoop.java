@@ -42,10 +42,6 @@ public class DefaultLoop implements Loop {
         this.active = false;
     }
 
-    public boolean isLooping() {
-        return isLooping;
-    }
-
     @Override
     public Loop setTargetFps(final int targetFps) {
         if (targetFps < Loop.MIN_TARGET_FPS) {
@@ -93,18 +89,21 @@ public class DefaultLoop implements Loop {
 
     private void runGameLoop() {
         isLooping = true;
-        while (active) {
-            if (needsUpdate()) {
-                final Time beforeUpdate = Time.now();
-                for (final var updatable : updatables) {
-                    updatable.update();
+        try {
+            while (active) {
+                if (needsUpdate()) {
+                    final Time beforeUpdate = Time.now();
+                    for (final var updatable : updatables) {
+                        updatable.update();
+                    }
+                    trackUpdateCycle(beforeUpdate);
+                } else {
+                    beNiceToCpu();
                 }
-                trackUpdateCycle(beforeUpdate);
-            } else {
-                beNiceToCpu();
             }
+        } finally {
+            isLooping = false;
         }
-        isLooping = false;
     }
 
     private boolean needsUpdate() {
@@ -121,7 +120,7 @@ public class DefaultLoop implements Loop {
         }
     }
 
-    private void trackUpdateCycle(Time beforeUpdate) {
+    private void trackUpdateCycle(final Time beforeUpdate) {
         final Time now = Time.now();
         final Duration timeBetweenUpdates = Duration.between(now, lastUpdate);
         lastUpdate = now;
@@ -136,6 +135,12 @@ public class DefaultLoop implements Loop {
     @Override
     public Time startTime() {
         return startTime;
+    }
+
+    public void awaitTermination() {
+        while (isLooping) {
+            beNiceToCpu();
+        }
     }
 
 }

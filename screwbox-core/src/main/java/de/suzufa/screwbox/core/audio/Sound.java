@@ -27,12 +27,15 @@ public final class Sound implements Serializable {
         return new Sound(Resources.loadBinary(fileName));
     }
 
-    // TODO: javadoc and test
+    /**
+     * Creates a new {@link Asset} for a {@link Sound}. Only supports WAV-Files at
+     * the moment.
+     */
     public static Asset<Sound> assetFromFile(String fileName) {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-    Sound(byte[] content) {
+    private Sound(byte[] content) {
         this.content = content;
     }
 
