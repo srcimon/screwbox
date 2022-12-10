@@ -31,17 +31,17 @@ public class ReflectionRenderSystem implements EntitySystem {
 
         private ReflectionComponent options;
         private Bounds area;
+        private Bounds reflectedArea;
 
         public ReflectionArea(Bounds area, ReflectionComponent options) {
             this.options = options;
             this.area = area;
+            reflectedArea = area.moveBy(0, -area.height());
         }
 
         public SpriteBatch createRenderBatchFor(List<Entity> reflectableEntities, Time time, Engine engine) {
             final double waveSeed = time.milliseconds() / 500.0;
-            final var reflectedArea = area
-                    .moveBy(0, -area.height())
-                    .inflatedTop(options.useWaveEffect ? 2 : 0);
+
             final SpriteBatch spriteBatch = new SpriteBatch();
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
@@ -76,7 +76,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                                 spriteComponent.flip.invertVertical(),
                                 spriteComponent.drawOrder);
                     } else {
-                        System.out.println("skipping");
+                        System.out.println("bl");
                     }
                 }
             }
