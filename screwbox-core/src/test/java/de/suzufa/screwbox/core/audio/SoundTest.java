@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
+import de.suzufa.screwbox.core.assets.Asset;
+
 class SoundTest {
 
     @Test
@@ -26,5 +28,13 @@ class SoundTest {
         assertThatThrownBy(() -> Sound.fromFile(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("fileName must not be null");
+    }
+
+    @Test
+    void assetFromFile_createsAsset() {
+        Asset<Sound> asset = Sound.assetFromFile("kill.wav");
+
+        Sound sound = asset.get();
+        assertThat(sound.content()).hasSizeGreaterThan(10000);
     }
 }
