@@ -41,7 +41,7 @@ public class ReflectionRenderSystem implements EntitySystem {
             opacityModifier = useWaveEffect
                     ? (Math.sin(waveSeed) * 0.25 + 0.75) * options.opacityModifier.value()
                     : options.opacityModifier.value();
-            reflectedArea = area.moveBy(0, -area.height());
+            reflectedArea = area.moveBy(0, -area.height()).inflatedTop(useWaveEffect ? 2 : 0);
         }
 
         public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities, final Engine engine) {
@@ -64,7 +64,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                     spriteSize.width() * spriteComponent.scale,
                     spriteSize.height() * spriteComponent.scale);
 
-            final double actualY = area.minY() + area.minY() - spriteBounds.position().y();
+            final double actualY = 2 * area.minY() - spriteBounds.position().y();
+            spriteBounds.position().addY(2 * area.minY() - 2 * spriteBounds.position().y());
             final var actualPosition = Vector.of(spriteBounds.position().x(), actualY);
             final double waveMovementEffectX = useWaveEffect ? Math.sin(waveSeed + actualY / 16) * 2 : 0;
             final double waveMovementEffectY = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
