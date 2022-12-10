@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
+import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultEntitiesTest {
@@ -56,6 +59,49 @@ class DefaultEntitiesTest {
 
         assertThat(entities.allEntities()).contains(freshEntity);
         assertThat(entities.entityCount()).isEqualTo(1);
+    }
+
+    @Test
+    void toggleSystem_systemPresent_removesSystem() {
+        entities.add(new RenderLightSystem());
+
+        entities.toggleSystem(new RenderLightSystem());
+
+        assertThat(entities.isSystemPresent(RenderLightSystem.class)).isFalse();
+    }
+
+    @Test
+    void toggleSystem_systemNotPresent_addsSystem() {
+        entities.toggleSystem(new RenderLightSystem());
+
+        assertThat(entities.isSystemPresent(RenderLightSystem.class)).isTrue();
+    }
+
+    @Test
+    void allSystems_returnsAllSystemsInOrder() {
+        RenderLightSystem renderLightSystem = new RenderLightSystem();
+        SpriteRenderSystem spriteRenderSystem = new SpriteRenderSystem();
+
+        entities.add(renderLightSystem).add(spriteRenderSystem);
+
+        assertThat(entities.allSystems()).containsExactly(spriteRenderSystem, renderLightSystem);
+    }
+
+    @Test
+    void fetchById_idNotPresent_isEmpty() {
+        Optional<Entity> entity = entities.fetchById(149);
+
+        assertThat(entity).isEmpty();
+    }
+
+    @Test
+    void fetchById_idPresent_returnsEntityWithMatchingId() {
+        Entity entityWithMatchingId = new Entity(149);
+        entities.add(new Entity(20)).add(entityWithMatchingId);
+
+        Optional<Entity> entity = entities.fetchById(149);
+
+        assertThat(entity).isEqualTo(Optional.of(entityWithMatchingId));
     }
 
 }
