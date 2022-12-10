@@ -131,6 +131,20 @@ class DefaultLoopTest {
                 .hasMessage("target fps must be at least 120");
     }
 
+    @Test
+    void start_exceptionInLoop_isNotLooping() {
+        updatables.add(() -> {
+            throw new IllegalStateException("exception in loop");
+
+        });
+        try {
+            loop.start();
+        } catch (Exception ignored) {
+        }
+
+        assertThat(loop.isLooping()).isFalse();
+    }
+
     private Updatable stopAfterOneFrameUpdatable() {
         return () -> loop.stop();
     }
