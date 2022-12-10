@@ -60,23 +60,18 @@ public class ReflectionRenderSystem implements EntitySystem {
             final SpriteComponent spriteComponent = reflected.get(SpriteComponent.class);
             final var spriteSize = spriteComponent.sprite.size();
             final var spritePos = bounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
-            final var spriteBounds = Bounds.atOrigin(
-                    spritePos,
-                    spriteSize.width() * spriteComponent.scale,
-                    spriteSize.height() * spriteComponent.scale);
 
-            var position = Vector.of(spriteBounds.position().x(), 2 * area.minY() - spriteBounds.position().y());
+            var position = Vector.of(spritePos.x(),
+                    2 * area.minY() - spritePos.y() - spriteSize.height());
 
             if (useWaveEffect) {
                 position = position.add(
                         Math.sin(waveSeed + spritePos.y() / 16) * 2,
                         Math.sin(waveSeed) * 2);
             }
-            final Bounds reflectionBounds = spriteBounds.moveTo(position);
-
             batch.addEntry(
                     spriteComponent.sprite,
-                    reflectionBounds.origin(),
+                    position,
                     spriteComponent.scale,
                     spriteComponent.opacity.multiply(opacityModifier),
                     spriteComponent.rotation,
