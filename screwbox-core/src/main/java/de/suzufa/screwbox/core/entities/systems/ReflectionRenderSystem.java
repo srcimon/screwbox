@@ -62,22 +62,18 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
                     final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
 
-                    if (reflectionBounds.intersects(engine.graphics().world().visibleArea())) {
-                        final Percent opacity = spriteComponent.opacity
-                                .multiply(options.opacityModifier.value())
-                                .multiply(options.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
+                    final Percent opacity = spriteComponent.opacity
+                            .multiply(options.opacityModifier.value())
+                            .multiply(options.useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
 
-                        spriteBatch.addEntry(
-                                spriteComponent.sprite,
-                                reflectionBounds.origin(),
-                                spriteComponent.scale,
-                                opacity,
-                                spriteComponent.rotation,
-                                spriteComponent.flip.invertVertical(),
-                                spriteComponent.drawOrder);
-                    } else {
-                        System.out.println("bl");
-                    }
+                    spriteBatch.addEntry(
+                            spriteComponent.sprite,
+                            reflectionBounds.origin(),
+                            spriteComponent.scale,
+                            opacity,
+                            spriteComponent.rotation,
+                            spriteComponent.flip.invertVertical(),
+                            spriteComponent.drawOrder);
                 }
             }
             return spriteBatch;
