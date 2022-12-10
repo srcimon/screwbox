@@ -30,20 +30,22 @@ public class ReflectionRenderSystem implements EntitySystem {
     private class ReflectionArea {
 
         private double opacityModifier;
-        private boolean useWaveEffect;
         private Bounds area;
         private Bounds reflectedArea;
+        final double waveSeed;
+        private final boolean useWaveEffect;
 
-        public ReflectionArea(Bounds area, ReflectionComponent options) {
+        public ReflectionArea(Bounds area, ReflectionComponent options, Time time) {
             this.area = area;
+            waveSeed = time.milliseconds() / 500.0;
             useWaveEffect = options.useWaveEffect;
-            opacityModifier = options.opacityModifier.value();
+            opacityModifier = useWaveEffect
+                    ? (Math.sin(waveSeed) * 0.25 + 0.75) * options.opacityModifier.value()
+                    : options.opacityModifier.value();
             reflectedArea = area.moveBy(0, -area.height());
         }
 
-        public SpriteBatch createRenderBatchFor(List<Entity> reflectableEntities, Time time, Engine engine) {
-            final double waveSeed = time.milliseconds() / 500.0;
-
+        public SpriteBatch createRenderBatchFor(List<Entity> reflectableEntities, Engine engine) {
             final SpriteBatch spriteBatch = new SpriteBatch();
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
@@ -64,9 +66,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final Vector waveEffectPosition = actualPosition.add(waveMovementEffectX, waveMovementEffectY);
                     final Bounds reflectionBounds = spriteBounds.moveTo(waveEffectPosition);
 
-                    final Percent opacity = spriteComponent.opacity
-                            .multiply(opacityModifier)
-                            .multiply(useWaveEffect ? Math.sin(waveSeed) * 0.25 + 0.75 : 1);
+                    final Percent opacity = spriteComponent.opacity.multiply(opacityModifier);
 
                     spriteBatch.addEntry(
                             spriteComponent.sprite,
@@ -92,8 +92,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                     .intersection(visibleArea);
             if (reflectionOnScreen.isPresent()) {
                 var area = new ReflectionArea(reflectionOnScreen.get(),
-                        reflectionEntity.get(ReflectionComponent.class));
-                SpriteBatch batch = area.createRenderBatchFor(reflectableEntities, engine.loop().lastUpdate(), engine);
+                        reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
+                SpriteBatch batch = area.createRenderBatchFor(reflectableEntities, engine);
                 engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
             }
         }
