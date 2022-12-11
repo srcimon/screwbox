@@ -1,14 +1,16 @@
 package de.suzufa.screwbox.core.graphics.light.internal;
 
 import static de.suzufa.screwbox.core.Bounds.$$;
+import static de.suzufa.screwbox.core.Vector.$;
 import static de.suzufa.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +26,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percent;
-import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.Dimension;
@@ -72,18 +73,36 @@ class DefaultLightTest {
 
     @Test
     void updateShadowCasters_castersPresent_updatesObstacles() {
-        Bounds obstacle = $$(0, 10, 20, 20);
+        Bounds shadowCaster = $$(0, 10, 20, 20);
 
-        light.addShadowCasters(List.of(obstacle));
+        light.addShadowCaster(shadowCaster);
 
-        assertThat(light.shadowCasters()).containsExactly(obstacle);
+        assertThat(light.shadowCasters()).containsExactly(shadowCaster);
     }
 
     @Test
-    void render_lightAndShadowPresent_createCorrectImage() throws Exception {
+    void render_fullBrigthnessAreaPresent_rendersImage() throws IOException {
         when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
-        light.addShadowCasters(List.of(Bounds.$$(30, 75, 6, 6)));
-        light.addPointLight(Vector.$(40, 80), LightOptions.glowing(140).color(Color.RED));
+        light.addFullBrightnessArea($$(20, 20, 50, 50));
+
+        light.render();
+
+        verify(screen).drawSprite(spriteCaptor.capture(), any(Offset.class), anyDouble(), any(Percent.class));
+
+        Frame resultImage = spriteCaptor.getValue().get().singleFrame();
+
+        Color colorInShadow = resultImage.colorAt(25, 25);
+        assertThat(colorInShadow).isEqualTo(Color.BLACK);
+
+        Color colorInArea = resultImage.colorAt(92, 72);
+        assertThat(colorInArea.opacity().value()).isLessThan(0.1);
+    }
+
+    @Test
+    void render_pointLightAndShadowPresent_rendersImage() throws Exception {
+        when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
+        light.addShadowCaster($$(30, 75, 6, 6));
+        light.addPointLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
         light.render();
 
         var offset = ArgumentCaptor.forClass(Offset.class);
