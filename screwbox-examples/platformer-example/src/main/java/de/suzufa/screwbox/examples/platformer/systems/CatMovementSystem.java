@@ -92,9 +92,9 @@ public class CatMovementSystem implements EntitySystem {
         TransformComponent catBounds = cat.get(TransformComponent.class);
         Bounds updatedBounds = Bounds.atPosition(nextPosition, catBounds.bounds.width(), catBounds.bounds.height());
         catBounds.bounds = updatedBounds;
-        RenderComponent spriteComponent = cat.get(RenderComponent.class);
-        spriteComponent.sprite = nextSprite;
-        spriteComponent.flip = navpointComponent.flipMode;
+        RenderComponent renderComponent = cat.get(RenderComponent.class);
+        renderComponent.sprite = nextSprite;
+        renderComponent.flip = navpointComponent.flipMode;
 
     }
 

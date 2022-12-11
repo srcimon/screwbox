@@ -17,8 +17,8 @@ public class Background implements Converter<Layer> {
                 layer.parallaxX(), layer.parallaxY(),
                 layer.properties().forceDouble("zoom"));
 
-        var spriteComponent = new RenderComponent(image, layer.order(), layer.opacity());
-        return new Entity().add(backgroundComponent, spriteComponent);
+        var renderComponent = new RenderComponent(image, layer.order(), layer.opacity());
+        return new Entity().add(backgroundComponent, renderComponent);
     }
 
 }
