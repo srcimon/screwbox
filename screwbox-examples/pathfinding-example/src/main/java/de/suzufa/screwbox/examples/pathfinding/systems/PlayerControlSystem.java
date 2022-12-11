@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.keyboard.Key;
@@ -17,7 +17,7 @@ import de.suzufa.screwbox.examples.pathfinding.states.BombTickingState;
 public class PlayerControlSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(
-            PlayerMovementComponent.class, PhysicsBodyComponent.class, SpriteComponent.class, TransformComponent.class);
+            PlayerMovementComponent.class, PhysicsBodyComponent.class, RenderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -28,7 +28,7 @@ public class PlayerControlSystem implements EntitySystem {
         if (engine.keyboard().justPressed(Key.SPACE)) {
 
             var bomb = new Entity()
-                    .add(new SpriteComponent(player.get(SpriteComponent.class).drawOrder - 1))
+                    .add(new RenderComponent(player.get(RenderComponent.class).drawOrder - 1))
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 

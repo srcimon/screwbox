@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.CastShadowComponent;
@@ -26,7 +26,7 @@ public class SlimeDeadState implements EntityState {
     @Override
     public void enter(final Entity entity, Engine engine) {
 
-        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
+        entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);
         entity.remove(CastShadowComponent.class);

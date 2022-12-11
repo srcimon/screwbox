@@ -7,7 +7,7 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.VanishingOnCollisionComponent;
@@ -24,7 +24,7 @@ public class VanishingBlock implements Converter<GameObject> {
                 new ColliderComponent(500),
                 new VanishingOnCollisionComponent(Duration.ofMillis(timeoutMillis)),
                 new TransformComponent(object.bounds()),
-                new SpriteComponent(SPRITE.get(), object.layer().order()));
+                new RenderComponent(SPRITE.get(), object.layer().order()));
     }
 
 }

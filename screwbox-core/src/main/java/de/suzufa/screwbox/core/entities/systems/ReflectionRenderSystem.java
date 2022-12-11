@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
 import de.suzufa.screwbox.core.graphics.World;
@@ -24,7 +24,7 @@ public class ReflectionRenderSystem implements EntitySystem {
             ReflectionComponent.class, TransformComponent.class);
 
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
-            TransformComponent.class, SpriteComponent.class);
+            TransformComponent.class, RenderComponent.class);
 
     private final class ReflectionArea {
 
@@ -49,8 +49,8 @@ public class ReflectionRenderSystem implements EntitySystem {
             for (final var reflectableEntity : reflectableEntities) {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
-                    final SpriteComponent spriteComponent = reflectableEntity.get(SpriteComponent.class);
-                    final var spriteSize = spriteComponent.sprite.size();
+                    final RenderComponent render = reflectableEntity.get(RenderComponent.class);
+                    final var spriteSize = render.sprite.size();
                     final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
                     
                     final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
@@ -60,13 +60,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                             2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
                     
                     spriteBatch.addEntry(
-                            spriteComponent.sprite,
+                            render.sprite,
                             effectOrigin,
-                            spriteComponent.scale,
-                            spriteComponent.opacity.multiply(opacityModifier),
-                            spriteComponent.rotation,
-                            spriteComponent.flip.invertVertical(),
-                            spriteComponent.drawOrder);
+                            render.scale,
+                            render.opacity.multiply(opacityModifier),
+                            render.rotation,
+                            render.flip.invertVertical(),
+                            render.drawOrder);
                 }
             }
             return spriteBatch;

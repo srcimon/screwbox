@@ -13,7 +13,7 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.ScreenTransitionComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.graphics.transitions.CircleTransition;
 import de.suzufa.screwbox.core.graphics.transitions.FadeOutTransition;
@@ -58,7 +58,7 @@ public class PlayerDeathState implements EntityState {
             engine.audio().playEffect(OUCH_SOUND);
         }
 
-        entity.get(SpriteComponent.class).sprite = SPRITE.get().freshInstance();
+        entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofSeconds(3)));
         entity.add(new TextComponent("GAME OVER", ""));
         entity.add(new ResetSceneComponent(Time.now().plusSeconds(3)));

@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
@@ -45,7 +45,7 @@ public class Slime implements Converter<GameObject> {
                 new AutoFlipSpriteComponent(),
                 new PatrollingMovementComponent(),
                 new PhysicsBodyComponent(Vector.of(10, 0)),
-                new SpriteComponent(object.layer().order()));
+                new RenderComponent(object.layer().order()));
     }
 
 }

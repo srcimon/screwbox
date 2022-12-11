@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.components.AutomovementComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.Timer;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -21,7 +21,7 @@ public class EnemyMovementSystem implements EntitySystem {
             PlayerMovementComponent.class, TransformComponent.class);
 
     private static final Archetype ENEMIES = Archetype.of(
-            PhysicsBodyComponent.class, SpriteComponent.class, AutomovementComponent.class);
+            PhysicsBodyComponent.class, RenderComponent.class, AutomovementComponent.class);
 
     private final Timer timer = Timer.everySecond();
 

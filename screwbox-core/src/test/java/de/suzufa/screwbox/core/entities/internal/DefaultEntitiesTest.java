@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
-import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderSystem;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultEntitiesTest {
@@ -27,8 +27,7 @@ class DefaultEntitiesTest {
 
     @BeforeEach
     void beforeEach() {
-        DefaultEntityManager entityManager = new DefaultEntityManager();
-        entities = new DefaultEntities(entityManager, new DefaultSystemManager(engine, entityManager));
+        entities = new DefaultEntities(engine);
     }
 
     @Test
@@ -80,11 +79,11 @@ class DefaultEntitiesTest {
     @Test
     void allSystems_returnsAllSystemsInOrder() {
         RenderLightSystem renderLightSystem = new RenderLightSystem();
-        SpriteRenderSystem spriteRenderSystem = new SpriteRenderSystem();
+        RenderSystem renderSystem = new RenderSystem();
 
-        entities.add(renderLightSystem).add(spriteRenderSystem);
+        entities.add(renderLightSystem).add(renderSystem);
 
-        assertThat(entities.allSystems()).containsExactly(spriteRenderSystem, renderLightSystem);
+        assertThat(entities.allSystems()).containsExactly(renderSystem, renderLightSystem);
     }
 
     @Test

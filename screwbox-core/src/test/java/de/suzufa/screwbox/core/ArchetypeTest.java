@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ForwardSignalComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
 class ArchetypeTest {
@@ -54,7 +54,7 @@ class ArchetypeTest {
     void contains_doesntContainClass_isFalse() {
         var archetype = Archetype.of(PhysicsBodyComponent.class, TransformComponent.class);
 
-        assertThat(archetype.contains(SpriteComponent.class)).isFalse();
+        assertThat(archetype.contains(RenderComponent.class)).isFalse();
     }
 
     @Test

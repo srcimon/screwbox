@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PathfindingBlockingComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entities.systems.AutoRotationSystem;
@@ -25,7 +25,7 @@ import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.LogFpsSystem;
 import de.suzufa.screwbox.core.entities.systems.PathfindingGridCreationSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
-import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -54,9 +54,21 @@ public class DemoScene implements Scene {
 
     @Override
     public void initialize(final Entities entities) {
-        importEntities(entities);
+        entities.importSource(map.tiles())
+                .usingIndex(t -> t.layer().name())
+                .when("walls").as(wall())
+                .when("floor").as(floor());
+        
+        entities.importSource(map)
+                .as(worldBounds());
+        
+        entities.importSource(map.objects())
+                .usingIndex(GameObject::name)
+                .when("player").as(player())
+                .when("enemy").as(enemy())
+                .when("camera").as(camera());
 
-        entities.add(new SpriteRenderSystem())
+        entities.add(new RenderSystem())
                 .add(new CameraMovementSystem())
                 .add(new StateSystem())
                 .add(new PlayerControlSystem())
@@ -68,22 +80,6 @@ public class DemoScene implements Scene {
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
-    }
-
-    void importEntities(final Entities entities) {
-        entities.importSource(map.tiles())
-                .usingIndex(t -> t.layer().name())
-                .when("walls").as(wall())
-                .when("floor").as(floor());
-
-        entities.importSource(map)
-                .as(worldBounds());
-
-        entities.importSource(map.objects())
-                .usingIndex(GameObject::name)
-                .when("player").as(player())
-                .when("enemy").as(enemy())
-                .when("camera").as(camera());
     }
 
     private Converter<GameObject> camera() {
@@ -99,7 +95,7 @@ public class DemoScene implements Scene {
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsBodyComponent())
                 .add(new AutoRotationComponent())
-                .add(new SpriteComponent(object.layer().order()))
+                .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
@@ -109,13 +105,13 @@ public class DemoScene implements Scene {
                 .add(new PhysicsBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())
-                .add(new SpriteComponent(object.layer().order()))
+                .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
 
     private Converter<Tile> floor() {
         return tile -> new Entity()
-                .add(new SpriteComponent(tile.sprite(), tile.layer().order()))
+                .add(new RenderComponent(tile.sprite(), tile.layer().order()))
                 .add(new TransformComponent(tile.renderBounds()));
     }
 

@@ -8,7 +8,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.MovableComponent;
@@ -21,7 +21,7 @@ public class Box implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         return new Entity().add(
-                new SpriteComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get(), object.layer().order()),
                 new PhysicsBodyComponent(),
                 new MovableComponent(),
                 new TransformComponent(object.bounds()),

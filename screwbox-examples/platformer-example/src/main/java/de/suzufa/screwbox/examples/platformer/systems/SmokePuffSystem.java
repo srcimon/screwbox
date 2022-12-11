@@ -12,7 +12,7 @@ import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.examples.platformer.components.SmokeEmitterComponent;
 import de.suzufa.screwbox.tiled.Tileset;
@@ -20,7 +20,7 @@ import de.suzufa.screwbox.tiled.Tileset;
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class SmokePuffSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(SpriteComponent.class, TransformComponent.class,
+    private static final Archetype PLAYER = Archetype.of(RenderComponent.class, TransformComponent.class,
             SmokeEmitterComponent.class);
 
     private static final Asset<Tileset> SPRITES = asset(() -> Tileset.fromJson("tilesets/effects/smokes.json"));
@@ -35,12 +35,12 @@ public class SmokePuffSystem implements EntitySystem {
         var smokeEmitter = player.get(SmokeEmitterComponent.class);
         if (smokeEmitter.ticker.isTick(engine.loop().lastUpdate())) {
             var playerCenter = player.get(TransformComponent.class).bounds.position();
-            var order = player.get(SpriteComponent.class).drawOrder;
+            var order = player.get(RenderComponent.class).drawOrder;
             Bounds bounds = Bounds.atPosition(playerCenter, 16, 16);
             Entity smokePuff = new Entity().add(
                     new FadeOutComponent(2),
                     new TransformComponent(bounds),
-                    new SpriteComponent(randomFrom(SPRITES.get().all()), order)
+                    new RenderComponent(randomFrom(SPRITES.get().all()), order)
 
             );
             engine.entities().add(smokePuff);

@@ -7,14 +7,14 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.SpriteBatch;
 
 @Order(SystemOrder.PRESENTATION_WORLD)
-public class SpriteRenderSystem implements EntitySystem {
+public class RenderSystem implements EntitySystem {
 
-    private final Archetype sprites = Archetype.of(SpriteComponent.class, TransformComponent.class);
+    private final Archetype sprites = Archetype.of(RenderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -23,24 +23,24 @@ public class SpriteRenderSystem implements EntitySystem {
 
         for (final Entity entity : engine.entities().fetchAll(sprites)) {
             final var entityPosition = entity.get(TransformComponent.class).bounds.position();
-            final SpriteComponent spriteComponent = entity.get(SpriteComponent.class);
-            final var sprite = spriteComponent.sprite;
+            final RenderComponent render = entity.get(RenderComponent.class);
+            final var sprite = render.sprite;
             final var spriteDimension = sprite.size();
             final var spriteBounds = Bounds.atOrigin(
                     entityPosition.x() - spriteDimension.width() / 2.0,
                     entityPosition.y() - spriteDimension.height() / 2.0,
-                    spriteDimension.width() * spriteComponent.scale,
-                    spriteDimension.height() * spriteComponent.scale);
+                    spriteDimension.width() * render.scale,
+                    spriteDimension.height() * render.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.addEntry(
-                        spriteComponent.sprite,
+                        render.sprite,
                         spriteBounds.origin(),
-                        spriteComponent.scale,
-                        spriteComponent.opacity,
-                        spriteComponent.rotation,
-                        spriteComponent.flip,
-                        spriteComponent.drawOrder);
+                        render.scale,
+                        render.opacity,
+                        render.rotation,
+                        render.flip,
+                        render.drawOrder);
             }
         }
         engine.graphics().world().drawSpriteBatch(spriteBatch);

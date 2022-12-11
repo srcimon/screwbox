@@ -6,7 +6,7 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.CollectableComponent;
@@ -19,7 +19,7 @@ public class DeboB implements Converter<GameObject> {
     @Override
     public Entity convert(final GameObject object) {
         return new Entity().add(
-                new SpriteComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
                 new CollisionSensorComponent(),
                 new CollectableComponent());

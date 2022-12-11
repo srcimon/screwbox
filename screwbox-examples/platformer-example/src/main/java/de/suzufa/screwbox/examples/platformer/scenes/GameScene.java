@@ -2,7 +2,6 @@ package de.suzufa.screwbox.examples.platformer.scenes;
 
 import static java.util.Objects.nonNull;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Engine;
@@ -10,7 +9,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
-import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
+import de.suzufa.screwbox.core.entities.systems.AutoFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
@@ -22,7 +21,7 @@ import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.ReflectionRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
 import de.suzufa.screwbox.core.entities.systems.ScreenTransitionSystem;
-import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
 import de.suzufa.screwbox.core.entities.systems.TimeoutSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -102,67 +101,66 @@ public class GameScene implements Scene {
     }
 
     @Override
-    public void onEnter(Engine engine) {
+    public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
     }
 
     @Override
-    public void initialize(Entities entities) {
+    public void initialize(final Entities entities) {
         if (nonNull(mapName)) {
             importEntities(entities);
         }
 
-        entities.add(
-                new CombineStaticShadowCastersSystem(),
-                new LogFpsSystem(),
-                new RenderLightSystem(),
-                new ReflectionRenderSystem(),
-                new CollisionSensorSystem(),
-                new MovingPlatformSystem(),
-                new CollectableSystem(),
-                new CameraMovementSystem(),
-                new StateSystem(),
-                new VanishingOnCollisionSystem(),
-                new ToggleLightSystemsSystem(),
-                new KilledFromAboveSystem(),
-                new GroundDetectorSystem(),
-                new KillZoneSystem(),
-                new DebugConfigSystem(),
-                new PauseSystem(),
-                new ZoomSystem(),
-                new FadeOutSystem(),
-                new MovableSystem(),
-                new DiggableSystem(),
-                new FollowPlayerSystem(),
-                new PlayerControlSystem(),
-                new SmokePuffSystem(),
-                new ShowLabelSystem(),
-                new LetsGoSystem(),
-                new ScreenTransitionSystem(),
-                new PrintSystem(),
-                new ChangeMapSystem(),
-                new ShadowSystem(),
-                new PhysicsSystem(),
-                new GravitySystem(),
-                new CameraShiftSystem(),
-                new CombineStaticCollidersSystem(),
-                new DetectLineOfSightToPlayerSystem(),
-                new PatrollingMovementSystem(),
-                new AreaTriggerSystem(),
-                new TimeoutSystem(),
-                new ResetSceneSystem(),
-                new AutFlipSpriteSystem(),
-                new BackgroundSystem(),
-                new CatMovementSystem(),
-                new SpriteRenderSystem());
+        entities.add(new CombineStaticShadowCastersSystem())
+                .add(new LogFpsSystem())
+                .add(new RenderLightSystem())
+                .add(new ReflectionRenderSystem())
+                .add(new CollisionSensorSystem())
+                .add(new MovingPlatformSystem())
+                .add(new CollectableSystem())
+                .add(new CameraMovementSystem())
+                .add(new StateSystem())
+                .add(new VanishingOnCollisionSystem())
+                .add(new ToggleLightSystemsSystem())
+                .add(new KilledFromAboveSystem())
+                .add(new GroundDetectorSystem())
+                .add(new KillZoneSystem())
+                .add(new DebugConfigSystem())
+                .add(new PauseSystem())
+                .add(new ZoomSystem())
+                .add(new FadeOutSystem())
+                .add(new MovableSystem())
+                .add(new DiggableSystem())
+                .add(new FollowPlayerSystem())
+                .add(new PlayerControlSystem())
+                .add(new SmokePuffSystem())
+                .add(new ShowLabelSystem())
+                .add(new LetsGoSystem())
+                .add(new ScreenTransitionSystem())
+                .add(new PrintSystem())
+                .add(new ChangeMapSystem())
+                .add(new ShadowSystem())
+                .add(new PhysicsSystem())
+                .add(new GravitySystem())
+                .add(new CameraShiftSystem())
+                .add(new CombineStaticCollidersSystem())
+                .add(new DetectLineOfSightToPlayerSystem())
+                .add(new PatrollingMovementSystem())
+                .add(new AreaTriggerSystem())
+                .add(new TimeoutSystem())
+                .add(new ResetSceneSystem())
+                .add(new AutoFlipSpriteSystem())
+                .add(new BackgroundSystem())
+                .add(new CatMovementSystem())
+                .add(new RenderSystem());
     }
 
-    void importEntities(Entities entities) {
+    void importEntities(final Entities entities) {
         entities.add(new Entity()
                 .add(new ScreenshotComponent())
                 .add(new CurrentLevelComponent(mapName)));
 
-        Map map = Map.fromJson(mapName);
+        final Map map = Map.fromJson(mapName);
 
         entities.importSource(map)
                 .as(new MapGravity())
@@ -206,16 +204,16 @@ public class GameScene implements Scene {
                 .when("tracer").as(new Tracer());
     }
 
-    private Predicate<Map> propertyIsActive(String property) {
+    private Predicate<Map> propertyIsActive(final String property) {
         return map -> map.properties().getBoolean(property).orElse(false);
     }
 
-    private String tileType(Tile tile) {
-        final Optional<String> layerType = tile.layer().properties().get("type");
+    private String tileType(final Tile tile) {
+        final var layerType = tile.layer().properties().get("type");
         if (layerType.isPresent()) {
             return layerType.get();
         }
-        final Optional<String> tileType = tile.properties().get("type");
+        final var tileType = tile.properties().get("type");
         return tileType.isPresent() ? tileType.get() : "none";
     }
 

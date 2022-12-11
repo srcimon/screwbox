@@ -17,7 +17,7 @@ import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TimeoutComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
@@ -69,7 +69,7 @@ public class CatMovementSystem implements EntitySystem {
         Entity player = engine.entities().forcedFetch(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
-        var flipMode = player.get(SpriteComponent.class).flip;
+        var flipMode = player.get(RenderComponent.class).flip;
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
                 new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
@@ -92,9 +92,9 @@ public class CatMovementSystem implements EntitySystem {
         TransformComponent catBounds = cat.get(TransformComponent.class);
         Bounds updatedBounds = Bounds.atPosition(nextPosition, catBounds.bounds.width(), catBounds.bounds.height());
         catBounds.bounds = updatedBounds;
-        SpriteComponent spriteComponent = cat.get(SpriteComponent.class);
-        spriteComponent.sprite = nextSprite;
-        spriteComponent.flip = navpointComponent.flipMode;
+        RenderComponent renderComponent = cat.get(RenderComponent.class);
+        renderComponent.sprite = nextSprite;
+        renderComponent.flip = navpointComponent.flipMode;
 
     }
 

@@ -7,7 +7,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
 import de.suzufa.screwbox.core.graphics.LightOptions;
@@ -27,7 +27,7 @@ public class Cherries implements Converter<GameObject> {
                         .glow(1.6)
                         .glowColor(Color.RED.opacity(0.4))),
                 new TransformComponent(object.bounds()),
-                new SpriteComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get(), object.layer().order()),
                 new CollisionSensorComponent(),
                 new CollectableComponent());
     }
