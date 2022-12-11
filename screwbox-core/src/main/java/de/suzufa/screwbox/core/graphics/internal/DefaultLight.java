@@ -98,9 +98,9 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     private void addPointLight(final Vector position, final LightOptions options, double minAngle, double maxAngle) {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
-                addPotentialGlow(position, options);
                 final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
                 if (isVisible(lightBox)) {
+                    addPotentialGlow(position, options);
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {

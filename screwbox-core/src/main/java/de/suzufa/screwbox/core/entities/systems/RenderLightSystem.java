@@ -14,7 +14,6 @@ import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Light;
 import de.suzufa.screwbox.core.graphics.LightOptions;
-import de.suzufa.screwbox.core.keyboard.Key;
 
 @Order(SystemOrder.PRESENTATION_LIGHT)
 public class RenderLightSystem implements EntitySystem {
@@ -41,7 +40,7 @@ public class RenderLightSystem implements EntitySystem {
         }
 
         light.addConeLight(engine.mouse().worldPosition(), Angle.degrees(angle),
-                Angle.degrees(cone), LightOptions.glowing(150));
+                Angle.degrees(cone), LightOptions.glowing(150).glowColor(Color.RED.opacity(0.2)));
         for (final var shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
             light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
         }
