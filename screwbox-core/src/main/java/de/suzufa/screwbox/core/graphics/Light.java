@@ -16,6 +16,15 @@ import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
  */
 public interface Light {
 
+    /**
+     * Adds a directed light to the {@link World}. Cone lights cast shadows when
+     * colliding with {@link #shadowCasters()}.
+     * 
+     * @param position  position of the lightsource in the map
+     * @param direction the direction of the light
+     * @param cone      the cone size of the light
+     * @param options   {@link LightOptions} of the lightsource
+     */
     Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options);
 
     /**
