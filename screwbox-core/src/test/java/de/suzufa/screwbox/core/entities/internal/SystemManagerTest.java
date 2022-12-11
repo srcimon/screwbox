@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
 import de.suzufa.screwbox.core.entities.systems.PhysicsDebugSystem;
 
-class DefaultSystemManagerTest {
+class SystemManagerTest {
 
-    private DefaultSystemManager systemManager;
+    private SystemManager systemManager;
 
     @BeforeEach
     void beforeEach() {
-        systemManager = new DefaultSystemManager(null, null);
+        systemManager = new SystemManager(null, null);
     }
 
     @Test

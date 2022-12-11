@@ -12,8 +12,6 @@ import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.entities.internal.DefaultEntityManager;
-import de.suzufa.screwbox.core.entities.internal.DefaultSystemManager;
 import de.suzufa.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,9 +23,7 @@ class GameSceneTest {
     @ParameterizedTest
     @ValueSource(strings = { "maps/0-1_intro.json", "maps/1-1_teufelsinsel.json", "maps/1-2_misty_caves.json" })
     void allMapsCanBeConvertetToEntities(String mapName) {
-        var entityManager = new DefaultEntityManager();
-        var systemManager = new DefaultSystemManager(engine, entityManager);
-        Entities entities = new DefaultEntities(entityManager, systemManager);
+        Entities entities = new DefaultEntities(engine);
 
         new GameScene(mapName).importEntities(entities);
 

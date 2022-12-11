@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
@@ -18,9 +19,9 @@ public class DefaultEntities implements Entities {
     private final EntityManager entityManager;
     private final SystemManager systemManager;
 
-    public DefaultEntities(final EntityManager entityManager, final SystemManager systemManager) {
-        this.entityManager = entityManager;
-        this.systemManager = systemManager;
+    public DefaultEntities(final Engine engine) {
+        this.entityManager = new EntityManager();
+        this.systemManager = new SystemManager(engine, entityManager);
     }
 
     @Override
@@ -179,8 +180,8 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public Entities toggleSystem(EntitySystem entitySystem) {
-        Class<? extends EntitySystem> systemClass = entitySystem.getClass();
+    public Entities toggleSystem(final EntitySystem entitySystem) {
+        final Class<? extends EntitySystem> systemClass = entitySystem.getClass();
         if (isSystemPresent(systemClass)) {
             remove(systemClass);
         } else {
