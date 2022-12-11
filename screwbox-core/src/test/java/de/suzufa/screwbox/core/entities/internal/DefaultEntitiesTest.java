@@ -77,13 +77,13 @@ class DefaultEntitiesTest {
     }
 
     @Test
-    void allSystems_returnsAllSystemsInOrder() {
+    void systems_returnsAllSystemsInOrder() {
         RenderLightSystem renderLightSystem = new RenderLightSystem();
         RenderSystem renderSystem = new RenderSystem();
 
         entities.add(renderLightSystem).add(renderSystem);
 
-        assertThat(entities.allSystems()).containsExactly(renderSystem, renderLightSystem);
+        assertThat(entities.systems()).containsExactly(renderSystem, renderLightSystem);
     }
 
     @Test

@@ -175,11 +175,6 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public List<EntitySystem> allSystems() {
-        return systemManager.allSystems();
-    }
-
-    @Override
     public Entities toggleSystem(final EntitySystem entitySystem) {
         final Class<? extends EntitySystem> systemClass = entitySystem.getClass();
         if (isSystemPresent(systemClass)) {

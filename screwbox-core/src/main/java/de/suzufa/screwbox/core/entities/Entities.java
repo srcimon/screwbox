@@ -76,11 +76,6 @@ public interface Entities {
     List<Entity> allEntities();
 
     /**
-     * Returns all {@link EntitySystem}s currently attached.
-     */
-    List<EntitySystem> allSystems();
-
-    /**
      * Provides a compact syntax for importing {@link Entity}s from a custom source
      * using conditions and {@link Converter}.
      * 
@@ -96,6 +91,9 @@ public interface Entities {
      */
     <T> SourceImport<T> importSource(List<T> source);
 
+    /**
+     * Returns all {@link EntitySystem}s currently attached.
+     */
     List<EntitySystem> systems();
 
 }
