@@ -54,7 +54,19 @@ public class DemoScene implements Scene {
 
     @Override
     public void initialize(final Entities entities) {
-        importEntities(entities);
+        entities.importSource(map.tiles())
+                .usingIndex(t -> t.layer().name())
+                .when("walls").as(wall())
+                .when("floor").as(floor());
+        
+        entities.importSource(map)
+                .as(worldBounds());
+        
+        entities.importSource(map.objects())
+                .usingIndex(GameObject::name)
+                .when("player").as(player())
+                .when("enemy").as(enemy())
+                .when("camera").as(camera());
 
         entities.add(new SpriteRenderSystem())
                 .add(new CameraMovementSystem())
@@ -68,22 +80,6 @@ public class DemoScene implements Scene {
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
-    }
-
-    void importEntities(final Entities entities) {
-        entities.importSource(map.tiles())
-                .usingIndex(t -> t.layer().name())
-                .when("walls").as(wall())
-                .when("floor").as(floor());
-
-        entities.importSource(map)
-                .as(worldBounds());
-
-        entities.importSource(map.objects())
-                .usingIndex(GameObject::name)
-                .when("player").as(player())
-                .when("enemy").as(enemy())
-                .when("camera").as(camera());
     }
 
     private Converter<GameObject> camera() {
