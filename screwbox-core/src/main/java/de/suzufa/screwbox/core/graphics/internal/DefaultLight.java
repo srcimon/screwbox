@@ -81,8 +81,8 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
 
     @Override
     public Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options) {
-        double minAngle = direction.degrees() - cone.degrees();
-        double maxAngle = direction.degrees() + cone.degrees();
+        double minAngle = direction.degrees() - cone.degrees() / 2.0;
+        double maxAngle = direction.degrees() + cone.degrees() / 2.0;
         addPointLight(position, options, minAngle, maxAngle);
 
         return this;
