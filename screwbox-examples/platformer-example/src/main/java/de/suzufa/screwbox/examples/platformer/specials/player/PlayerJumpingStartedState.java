@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.DeathEventComponent;
 import de.suzufa.screwbox.examples.platformer.components.GroundDetectorComponent;
@@ -28,7 +28,7 @@ public class PlayerJumpingStartedState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         engine.audio().playEffect(JUMP_SOUND.get());
-        entity.get(SpriteComponent.class).sprite = SPRITE.get();
+        entity.get(RenderComponent.class).sprite = SPRITE.get();
         final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
         physicsBodyComponent.momentum = Vector.of(physicsBodyComponent.momentum.x(), -180);
         entity.get(PlayerControlComponent.class).allowJumpPush = true;

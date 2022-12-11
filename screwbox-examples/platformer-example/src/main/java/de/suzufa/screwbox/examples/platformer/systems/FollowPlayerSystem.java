@@ -11,7 +11,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.utils.MathUtil;
 import de.suzufa.screwbox.examples.platformer.components.FollowPlayerComponent;
@@ -21,7 +21,7 @@ import de.suzufa.screwbox.examples.platformer.components.PlayerMarkerComponent;
 public class FollowPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class,
-            SpriteComponent.class);
+            RenderComponent.class);
     private static final Archetype FOLLOWING = Archetype.of(FollowPlayerComponent.class, TransformComponent.class);
 
     @Override

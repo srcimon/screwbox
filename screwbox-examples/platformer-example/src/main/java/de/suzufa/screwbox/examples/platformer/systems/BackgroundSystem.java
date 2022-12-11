@@ -10,17 +10,17 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntitySystem;
 import de.suzufa.screwbox.core.entities.Order;
 import de.suzufa.screwbox.core.entities.SystemOrder;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.examples.platformer.components.BackgroundComponent;
 
 @Order(SystemOrder.PRESENTATION_BACKGROUND)
 public class BackgroundSystem implements EntitySystem {
 
-    private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, SpriteComponent.class);
+    private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);
 
     private static final Comparator<Entity> BACKGROUND_COMPARATOR = (o1, o2) -> Double
-            .compare(o1.get(SpriteComponent.class).drawOrder, o2.get(SpriteComponent.class).drawOrder);
+            .compare(o1.get(RenderComponent.class).drawOrder, o2.get(RenderComponent.class).drawOrder);
 
     @Override
     public void update(final Engine engine) {
@@ -29,7 +29,7 @@ public class BackgroundSystem implements EntitySystem {
         Collections.sort(backgroundEntities, BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {
             final var background = entity.get(BackgroundComponent.class);
-            final var sprite = entity.get(SpriteComponent.class);
+            final var sprite = entity.get(RenderComponent.class);
 
             final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * background.parallaxX,

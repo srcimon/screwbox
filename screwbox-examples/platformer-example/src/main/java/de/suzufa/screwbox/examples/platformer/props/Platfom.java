@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.CollisionSensorComponent;
 import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.platformer.components.MovingPlatformComponent;
@@ -25,7 +25,7 @@ public class Platfom implements Converter<GameObject> {
         double speed = object.properties().getDouble("speed").orElse(60.0);
         return new Entity().add(
                 new ColliderComponent(500, Percent.min(), true),
-                new SpriteComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
                 new CollisionSensorComponent(),
                 new ShadowCasterComponent(),

@@ -20,7 +20,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,12 +64,12 @@ class SelectEntityBuilderTest {
         when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(
                         boxAt(55, 45),
-                        boxAt(25, 45).add(new SpriteComponent(0)),
+                        boxAt(25, 45).add(new RenderComponent(0)),
                         boxAt(25, 15)));
 
         var result = selectEntityBuilder
                 .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
-                .ignoringEntitiesHaving(SpriteComponent.class)
+                .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
         assertThat(result).isEmpty();
@@ -82,7 +82,7 @@ class SelectEntityBuilderTest {
 
         var result = selectEntityBuilder
                 .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
-                .ignoringEntitiesHaving(SpriteComponent.class)
+                .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
         assertThat(result).isPresent();
@@ -98,7 +98,7 @@ class SelectEntityBuilderTest {
 
         var result = selectEntityBuilder
                 .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
-                .ignoringEntitiesHaving(SpriteComponent.class)
+                .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAll();
 
         assertThat(result).contains(first, second).doesNotContain(notAtPosition);

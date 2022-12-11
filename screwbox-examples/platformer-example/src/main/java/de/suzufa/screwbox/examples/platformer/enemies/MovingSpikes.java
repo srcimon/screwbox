@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
@@ -27,7 +27,7 @@ public class MovingSpikes implements Converter<GameObject> {
                 new SignalComponent(),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new KillZoneComponent(DeathType.SPIKES),
-                new SpriteComponent(SPRITE.get(), object.layer().order()),
+                new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
                 new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
     }

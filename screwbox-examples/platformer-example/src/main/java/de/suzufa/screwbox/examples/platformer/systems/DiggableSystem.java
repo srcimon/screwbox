@@ -14,7 +14,7 @@ import de.suzufa.screwbox.core.entities.SystemOrder;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.FadeOutComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.Borders;
 import de.suzufa.screwbox.examples.platformer.components.DiggableComponent;
@@ -26,7 +26,7 @@ public class DiggableSystem implements EntitySystem {
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsBodyComponent.class);
 
     private static final Archetype DIGGABLES = Archetype.of(DiggableComponent.class, TransformComponent.class,
-            SpriteComponent.class);
+            RenderComponent.class);
 
     private static final Asset<Sound> DIG_SOUND = Sound.assetFromFile("sounds/dig.wav");
 

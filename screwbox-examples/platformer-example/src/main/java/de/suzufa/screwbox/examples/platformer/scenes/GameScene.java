@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.systems.AreaTriggerSystem;
-import de.suzufa.screwbox.core.entities.systems.AutFlipSpriteSystem;
+import de.suzufa.screwbox.core.entities.systems.AutoFlipSpriteSystem;
 import de.suzufa.screwbox.core.entities.systems.CameraMovementSystem;
 import de.suzufa.screwbox.core.entities.systems.CollisionSensorSystem;
 import de.suzufa.screwbox.core.entities.systems.CombineStaticCollidersSystem;
@@ -21,7 +21,7 @@ import de.suzufa.screwbox.core.entities.systems.PhysicsSystem;
 import de.suzufa.screwbox.core.entities.systems.ReflectionRenderSystem;
 import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
 import de.suzufa.screwbox.core.entities.systems.ScreenTransitionSystem;
-import de.suzufa.screwbox.core.entities.systems.SpriteRenderSystem;
+import de.suzufa.screwbox.core.entities.systems.RenderSystem;
 import de.suzufa.screwbox.core.entities.systems.StateSystem;
 import de.suzufa.screwbox.core.entities.systems.TimeoutSystem;
 import de.suzufa.screwbox.core.scenes.Scene;
@@ -149,10 +149,10 @@ public class GameScene implements Scene {
                 .add(new AreaTriggerSystem())
                 .add(new TimeoutSystem())
                 .add(new ResetSceneSystem())
-                .add(new AutFlipSpriteSystem())
+                .add(new AutoFlipSpriteSystem())
                 .add(new BackgroundSystem())
                 .add(new CatMovementSystem())
-                .add(new SpriteRenderSystem());
+                .add(new RenderSystem());
     }
 
     void importEntities(final Entities entities) {

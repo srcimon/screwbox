@@ -1,7 +1,8 @@
 package de.suzufa.screwbox.core.entities;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -37,7 +38,7 @@ public final class SourceImport<T> {
         private final SourceImport<T> caller;
 
         private IndexSourceImport(final Function<T, M> indexFunction, final SourceImport<T> caller) {
-            this.indexFunction = Objects.requireNonNull(indexFunction, "Index function must not be null");
+            this.indexFunction = requireNonNull(indexFunction, "Index function must not be null");
             this.caller = caller;
         }
 
@@ -61,7 +62,7 @@ public final class SourceImport<T> {
                 final M index) {
             this.matcher = matcher;
             this.caller = caller;
-            this.index = Objects.requireNonNull(index, "Index must not be null");
+            this.index = requireNonNull(index, "Index must not be null");
         }
 
         public IndexSourceImport<M> as(final Converter<T> converter) {
@@ -79,11 +80,11 @@ public final class SourceImport<T> {
 
     public SourceImport(final List<T> inputs, final Entities engine) {
         this.inputs = inputs;
-        this.engine = Objects.requireNonNull(engine, "Engine must not be null");
+        this.engine = requireNonNull(engine, "Engine must not be null");
     }
 
     public SourceImport<T> as(final Converter<T> converter) {
-        Objects.requireNonNull(converter, "Converter must not be null");
+        requireNonNull(converter, "Converter must not be null");
         for (final var input : inputs) {
             engine.add(converter.convert(input));
         }

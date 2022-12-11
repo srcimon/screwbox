@@ -5,7 +5,7 @@ import de.suzufa.screwbox.core.entities.Archetype;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.SourceImport.Converter;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.TriggerAreaComponent;
@@ -21,7 +21,7 @@ public class Tracer implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         return new Entity(object.id()).add(
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
-                new SpriteComponent(object.layer().order()),
+                new RenderComponent(object.layer().order()),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new SignalComponent(),
                 new DetectLineOfSightToPlayerComponent(140),

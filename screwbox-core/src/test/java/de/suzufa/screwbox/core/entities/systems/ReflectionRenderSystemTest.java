@@ -21,7 +21,7 @@ import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Time;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.ReflectionComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
 import de.suzufa.screwbox.core.graphics.Flip;
@@ -49,7 +49,7 @@ class ReflectionRenderSystemTest {
 
         Entity body = new Entity()
                 .add(new TransformComponent($$(0, 0, 10, 10)))
-                .add(new SpriteComponent(SPRITE));
+                .add(new RenderComponent(SPRITE));
 
         Entity mirror = new Entity()
                 .add(new TransformComponent($$(0, 10, 10, 10)))
@@ -82,7 +82,7 @@ class ReflectionRenderSystemTest {
 
         Entity body = new Entity()
                 .add(new TransformComponent($$(2000, 0, 10, 10)))
-                .add(new SpriteComponent(SPRITE));
+                .add(new RenderComponent(SPRITE));
 
         Entity mirror = new Entity()
                 .add(new TransformComponent($$(2000, 10, 10, 10)))
@@ -105,7 +105,7 @@ class ReflectionRenderSystemTest {
 
         Entity body = new Entity()
                 .add(new TransformComponent($$(0, 0, 10, 10)))
-                .add(new SpriteComponent(SPRITE));
+                .add(new RenderComponent(SPRITE));
 
         Entity mirror = new Entity()
                 .add(new TransformComponent($$(0, 10, 10, 10)))

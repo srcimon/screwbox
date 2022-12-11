@@ -9,7 +9,7 @@ import de.suzufa.screwbox.core.assets.Asset;
 import de.suzufa.screwbox.core.audio.Sound;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.EntityState;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Sprite;
 import de.suzufa.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -26,7 +26,7 @@ public class BombExplosionState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         Sprite sprite = SPRITE.get().freshInstance();
-        entity.get(SpriteComponent.class).sprite = sprite;
+        entity.get(RenderComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
         engine.audio().playEffect(EXPLOSION);
         Bounds bounds = entity.get(TransformComponent.class).bounds.inflated(8);

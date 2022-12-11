@@ -18,7 +18,7 @@ import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.Entities;
 import de.suzufa.screwbox.core.entities.components.ColliderComponent;
 import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,7 +66,7 @@ class RaycastTest {
         Entity foundA = boxAt(0, 100);
         Entity foundB = boxAt(0, 300);
         Entity ignoredEntity = boxAt(0, 100);
-        Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new SpriteComponent(0));
+        Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new RenderComponent(0));
         Entity ignoredBecauseNotInBounds = boxAt(0, 600);
 
         when(entities.fetchAll(physicsEntites)).thenReturn(List.of(
@@ -78,7 +78,7 @@ class RaycastTest {
 
         var result = raycastBuilder
                 .checkingFor(physicsEntites)
-                .ignoringEntitiesHaving(SpriteComponent.class)
+                .ignoringEntitiesHaving(RenderComponent.class)
                 .ignoringEntitesNotIn(Bounds.atOrigin(0, 0, 200, 500))
                 .ignoringEntities(ignoredEntity)
                 .castingVertical(1000)

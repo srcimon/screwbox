@@ -10,7 +10,7 @@ import de.suzufa.screwbox.core.entities.components.PhysicsBodyComponent;
 import de.suzufa.screwbox.core.entities.components.PointLightComponent;
 import de.suzufa.screwbox.core.entities.components.SignalComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
-import de.suzufa.screwbox.core.entities.components.SpriteComponent;
+import de.suzufa.screwbox.core.entities.components.RenderComponent;
 import de.suzufa.screwbox.core.entities.components.StateComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Color;
@@ -37,7 +37,7 @@ public class Player implements Converter<GameObject> {
                 new GroundDetectorComponent(),
                 new ColliderComponent(),
                 new PlayerMarkerComponent(),
-                new SpriteComponent(object.layer().order()),
+                new RenderComponent(object.layer().order()),
                 new CastShadowComponent(),
                 new PlayerControlComponent(),
                 new SignalComponent(),
