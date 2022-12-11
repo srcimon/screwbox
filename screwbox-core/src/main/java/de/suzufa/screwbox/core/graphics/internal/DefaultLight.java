@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
@@ -79,14 +80,29 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
+    public Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options) {
+        double minAngle = direction.degrees() - cone.degrees();
+        double maxAngle = direction.degrees() + cone.degrees();
+        addPointLight(position, options, minAngle, maxAngle);
+
+        return this;
+    }
+
+    @Override
     public Light addPointLight(final Vector position, final LightOptions options) {
+        addPointLight(position, options, 0, 360);
+
+        return this;
+    }
+
+    private void addPointLight(final Vector position, final LightOptions options, double minAngle, double maxAngle) {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
                 addPotentialGlow(position, options);
                 final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
                 if (isVisible(lightBox)) {
                     final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox);
+                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {
                         area.add(world.toOffset(vector));
                     }
@@ -96,8 +112,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
                 }
             }
         });
-
-        return this;
     }
 
     @Override

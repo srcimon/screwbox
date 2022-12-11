@@ -1,5 +1,6 @@
 package de.suzufa.screwbox.core.entities.systems;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Engine;
 import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Archetype;
@@ -12,6 +13,8 @@ import de.suzufa.screwbox.core.entities.components.ShadowCasterComponent;
 import de.suzufa.screwbox.core.entities.components.SpotLightComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.graphics.Light;
+import de.suzufa.screwbox.core.graphics.LightOptions;
+import de.suzufa.screwbox.core.keyboard.Key;
 
 @Order(SystemOrder.PRESENTATION_LIGHT)
 public class RenderLightSystem implements EntitySystem {
@@ -25,9 +28,20 @@ public class RenderLightSystem implements EntitySystem {
     private static final Archetype SHADOW_CASTERS = Archetype.of(
             ShadowCasterComponent.class, TransformComponent.class);
 
+    double angle = 90;
+    double cone = 90;
+
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
+        if (engine.keyboard().isDown(Key.SHIFT_LEFT)) {
+            cone += engine.mouse().unitsScrolled();
+        } else {
+            angle += engine.mouse().unitsScrolled();
+        }
+
+        light.addConeLight(engine.mouse().worldPosition(), Angle.degrees(angle),
+                Angle.degrees(cone), LightOptions.glowing(150));
         for (final var shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
             light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
         }

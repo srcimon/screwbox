@@ -30,12 +30,15 @@ class LightPhysics {
         return shadowCasters;
     }
 
-    public List<Vector> calculateArea(final Bounds lightBox) {
+    public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Segment normal = Segment.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
         final List<Segment> shadowCasterSegments = getSegmentsOf(relevantShadowCasters);
-        for (int angle = 0; angle < 360; angle += 1) {
+        if (minAngle != 0 || maxAngle != 360) {
+            area.add(lightBox.position());
+        }
+        for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
             final Segment raycast = Angle.degrees(angle).rotate(normal);
             Vector nearestPoint = raycast.to();
             for (final var segment : shadowCasterSegments) {

@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.graphics;
 
 import java.util.List;
 
+import de.suzufa.screwbox.core.Angle;
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Percent;
 import de.suzufa.screwbox.core.Vector;
@@ -14,6 +15,8 @@ import de.suzufa.screwbox.core.entities.systems.RenderLightSystem;
  * the {@link RenderLightSystem}.
  */
 public interface Light {
+
+    Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options);
 
     /**
      * Adds a pointlight to the {@link World}. Pointlights cast shadows when
