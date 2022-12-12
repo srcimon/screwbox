@@ -11,7 +11,7 @@ public class PlatformerExample {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer Example");
-        engine.graphics().configuration().toggleFullscreen();
+
         engine.ui().setLayouter(new WobblyUiLayouter());
 
         engine.assets()
