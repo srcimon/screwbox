@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
+import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.RESOLUTION;
+import static de.suzufa.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.reverseOrder;
 import static java.util.Objects.nonNull;
@@ -76,14 +78,13 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frame.setSize(width, height);
         frame.setResizable(false);
         frame.setVisible(true);
-        frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
             if (nonNull(graphicsDevice.getFullScreenWindow())) {
                 throw new IllegalStateException("can not replace current fullscreen window");
             }
             lastDisplayMode = graphicsDevice.getDisplayMode();
-            final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
-            final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
+            final int bitDepth = lastDisplayMode.getBitDepth();
+            final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
             graphicsDevice.setDisplayMode(displayMode);
             graphicsDevice.setFullScreenWindow(frame);
@@ -127,10 +128,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
 
     @Override
     public void configurationChanged(final ConfigurationProperty changedProperty) {
-        final boolean mustReopenWindow = List.of(ConfigurationProperty.WINDOW_MODE, ConfigurationProperty.RESOLUTION)
-                .contains(changedProperty);
-
-        if (mustReopenWindow && frame.isVisible()) {
+        if (List.of(WINDOW_MODE, RESOLUTION).contains(changedProperty) && frame.isVisible()) {
             close();
             open();
         }
@@ -193,8 +191,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     public Dimension currentResolution() {
-        final var screenSize = graphicsDevice.getDisplayMode();
-        return toDimension(screenSize);
+        return toDimension(graphicsDevice.getDisplayMode());
     }
 
     private Dimension toDimension(final DisplayMode screenSize) {
