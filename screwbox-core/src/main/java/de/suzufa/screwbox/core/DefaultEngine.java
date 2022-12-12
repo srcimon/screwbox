@@ -112,6 +112,9 @@ class DefaultEngine implements Engine {
 
     @Override
     public void start() {
+        if (loop.isRunning()) {
+            throw new IllegalStateException("can not start engine that is already running");
+        }
         log.info(format("engine with name '%s' started", name));
         try {
             graphics.window().open();
