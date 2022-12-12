@@ -30,7 +30,7 @@ public class DefaultLoop implements Loop {
     }
 
     public void start() {
-        if (active) {
+        if (active || isRunning) {
             throw new IllegalStateException("game loop already started");
         }
         active = true;
@@ -141,10 +141,6 @@ public class DefaultLoop implements Loop {
         while (isRunning) {
             beNiceToCpu();
         }
-    }
-
-    public boolean isRunning() {
-        return isRunning;
     }
 
 }
