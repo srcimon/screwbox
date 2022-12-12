@@ -1,7 +1,5 @@
 package de.suzufa.screwbox.core;
 
-import static java.util.Objects.nonNull;
-
 import de.suzufa.screwbox.core.graphics.Window;
 
 /**
@@ -11,30 +9,24 @@ import de.suzufa.screwbox.core.graphics.Window;
  */
 public final class ScrewBox {
 
-    private static Engine engine;
-
     private ScrewBox() {
     }
 
     /**
-     * Creates an {@link Engine} instance. Can only be called once. Uses "ScrewBox"
-     * as the {@link Engine#name()}.
+     * Creates an {@link Engine} instance. Uses "ScrewBox" as the
+     * {@link Engine#name()}.
      */
     public static Engine createEngine() {
         return createEngine("ScrewBox");
     }
 
     /**
-     * Creates an {@link Engine} instance. Can only be called once. Sets the
-     * {@link Engine#name()} to the given value. The {@link Engine#name()} is used
-     * to initialize the {@link Window#title()}.
+     * Creates an {@link Engine} instance. Sets the {@link Engine#name()} to the
+     * given value. The {@link Engine#name()} is used to initialize the
+     * {@link Window#title()}.
      */
-    public static Engine createEngine(String name) {
-        if (nonNull(engine)) {
-            throw new IllegalStateException("only one instance of ScrewBox can be created");
-        }
-        engine = new DefaultEngine(name);
-        return engine;
+    public static Engine createEngine(final String name) {
+        return new DefaultEngine(name);
     }
 
 }

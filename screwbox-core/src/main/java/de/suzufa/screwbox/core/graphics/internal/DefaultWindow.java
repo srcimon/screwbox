@@ -78,6 +78,9 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         frame.setVisible(true);
         frame.setBounds(0, 0, width, height);
         if (configuration.isFullscreen()) {
+            if (nonNull(graphicsDevice.getFullScreenWindow())) {
+                throw new IllegalStateException("can not replace current fullscreen window");
+            }
             lastDisplayMode = graphicsDevice.getDisplayMode();
             final int bitDepth = graphicsDevice.getDisplayMode().getBitDepth();
             final int refreshRate = graphicsDevice.getDisplayMode().getRefreshRate();
