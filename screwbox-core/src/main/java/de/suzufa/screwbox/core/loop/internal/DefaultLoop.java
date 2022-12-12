@@ -30,7 +30,7 @@ public class DefaultLoop implements Loop {
     }
 
     public void start() {
-        if (active || isRunning) {
+        if (active) {
             throw new IllegalStateException("game loop already started");
         }
         active = true;
