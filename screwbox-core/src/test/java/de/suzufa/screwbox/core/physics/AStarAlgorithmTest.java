@@ -45,11 +45,11 @@ class AStarAlgorithmTest {
 
         assertThat(path).containsExactly(
                 grid.nodeAt(1, 1),
-                grid.nodeAt(2, 1),
-                grid.nodeAt(3, 1),
-                grid.nodeAt(4, 1),
-                grid.nodeAt(4, 2),
-                grid.nodeAt(4, 3),
+                grid.nodeAt(1, 2),
+                grid.nodeAt(1, 3),
+                grid.nodeAt(1, 4),
+                grid.nodeAt(2, 4),
+                grid.nodeAt(3, 4),
                 grid.nodeAt(4, 4));
     }
 }

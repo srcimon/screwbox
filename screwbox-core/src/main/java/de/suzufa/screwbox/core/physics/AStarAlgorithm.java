@@ -28,6 +28,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
         final Set<Node> closed = new HashSet<Node>();
         final Map<Node, Double> costs = new HashMap<>();
+        final Map<Node, Double> costToStart = new HashMap<>();
         final Queue<NodeWithCosts> open = new PriorityQueue<>();
 
         costs.put(start, 0.0);
@@ -42,12 +43,15 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
                 }
                 for (final Node neighbor : grid.reachableNeighbors(current.node)) {
                     if (!closed.contains(neighbor)) {
-                        final double cost = current.node.distance(start)
-                                + neighbor.distance(current.node)
-                                + neighbor.distance(end);
+                        var cts = costToStart.get(current.node);
+                        final double cost = cts == null ? current.node.distance(start)
+                                : cts
+                                        + neighbor.distance(current.node)
+                                        + neighbor.distance(end);
 
                         final Double costNeighbour = costs.get(neighbor);
                         if (isNull(costNeighbour) || cost < costNeighbour) {
+                            costToStart.put(neighbor, cost);
                             costs.put(neighbor, cost);
                             open.add(new NodeWithCosts(neighbor, cost));
                         }
