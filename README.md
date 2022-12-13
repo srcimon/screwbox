@@ -82,3 +82,4 @@ The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurk
 - [ ] add A*-Pathfinding Algorithm (because speed)
 - [ ] add particle emitters
 - [ ] add menu bar when this nasty jdk bug is resolved: https://bugs.openjdk.org/browse/JDK-8270888
+- [ ] add headless mode with scripted events for automating the engine
