@@ -29,4 +29,12 @@ public interface Physics {
 
     Vector snapToGrid(Vector position);
 
+    /**
+     * Returns the currently used {@link PathfindingAlgorithm}.
+     * {@link AStarAlgorithm} is the default value.
+     * 
+     * @see #setPathfindingAlgorithm(PathfindingAlgorithm)
+     */
+    PathfindingAlgorithm pathfindingAlgorithm();
+
 }

@@ -17,6 +17,8 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.physics.AStarAlgorithm;
+import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
 
 class DefaultPhysicsTest {
 
@@ -112,6 +114,22 @@ class DefaultPhysicsTest {
         var result = physics.snapToGrid($$(3, 10, 8, 8));
 
         assertThat(result).isEqualTo($$(4, 4, 8, 8));
+    }
+
+    @Test
+    void pathfindingAlgorithm_algorithmNotChanged_isAStar() {
+        var pathfindingAlgorithm = physics.pathfindingAlgorithm();
+
+        assertThat(pathfindingAlgorithm).isInstanceOf(AStarAlgorithm.class);
+    }
+
+    @Test
+    void pathfindingAlgorithm_changedToDijkstra_isdijkstra() {
+        physics.setPathfindingAlgorithm(new DijkstraAlgorithm());
+
+        var pathfindingAlgorithm = physics.pathfindingAlgorithm();
+
+        assertThat(pathfindingAlgorithm).isInstanceOf(DijkstraAlgorithm.class);
     }
 
     @AfterEach
