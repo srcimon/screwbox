@@ -1,6 +1,7 @@
 package de.suzufa.screwbox.core.physics;
 
 import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,33 +26,30 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
-        final Set<Node> visited = new HashSet<Node>();
-        final Map<Node, Double> distances = new HashMap<>();
-        final Queue<NodeWithCosts> nodesWithCosts = new PriorityQueue<>();
+        final Set<Node> closed = new HashSet<Node>();
+        final Map<Node, Double> costs = new HashMap<>();
+        final Queue<NodeWithCosts> open = new PriorityQueue<>();
 
-        distances.put(start, 0.0);
-        nodesWithCosts.add(new NodeWithCosts(start, 0.0));
-        NodeWithCosts current = null;
+        costs.put(start, 0.0);
+        open.add(new NodeWithCosts(start, 0.0));
+        while (!open.isEmpty()) {
+            NodeWithCosts current = open.remove();
 
-        while (!nodesWithCosts.isEmpty()) {
-            current = nodesWithCosts.remove();
-
-            if (!visited.contains(current.node)) {
-                visited.add(current.node);
+            if (!closed.contains(current.node)) {
+                closed.add(current.node);
                 if (current.node.equals(end)) {
                     return grid.backtrack(current.node);
                 }
                 for (final Node neighbor : grid.reachableNeighbors(current.node)) {
-                    if (!visited.contains(neighbor)) {
-                        final double predictedDistance = distance(neighbor, end);
-                        final double neighborDistance = distance(current.node, neighbor);
-                        final double totalDistance = distance(current.node, start) + neighborDistance
-                                + predictedDistance;
+                    if (!closed.contains(neighbor)) {
+                        final double cost = current.node.distance(start)
+                                + neighbor.distance(current.node)
+                                + neighbor.distance(end);
 
-                        final Double distanceNeighbour = distances.get(neighbor);
-                        if (distanceNeighbour == null || totalDistance < distanceNeighbour) {
-                            distances.put(neighbor, totalDistance);
-                            nodesWithCosts.add(new NodeWithCosts(neighbor, totalDistance));
+                        final Double costNeighbour = costs.get(neighbor);
+                        if (isNull(costNeighbour) || cost < costNeighbour) {
+                            costs.put(neighbor, cost);
+                            open.add(new NodeWithCosts(neighbor, cost));
                         }
                     }
                 }
@@ -60,9 +58,4 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         return emptyList();
     }
 
-    private double distance(final Node neighbor, final Node endNode) {
-        final int deltaX = neighbor.x() - endNode.x();
-        final int deltaY = neighbor.y() - endNode.y();
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    }
 }

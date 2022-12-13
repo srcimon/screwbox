@@ -56,6 +56,12 @@ public class Grid implements Serializable {
         public String toString() {
             return "Node [x=" + x + ", y=" + y + "]";
         }
+
+        public double distance(final Node other) {
+            final int deltaX = other.x - x;
+            final int deltaY = other.y - y;
+            return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        }
     }
 
     private final boolean[][] isBlocked;
