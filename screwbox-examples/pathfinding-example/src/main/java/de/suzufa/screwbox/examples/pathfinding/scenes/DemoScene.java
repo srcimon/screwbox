@@ -58,10 +58,10 @@ public class DemoScene implements Scene {
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
-        
+
         entities.importSource(map)
                 .as(worldBounds());
-        
+
         entities.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
