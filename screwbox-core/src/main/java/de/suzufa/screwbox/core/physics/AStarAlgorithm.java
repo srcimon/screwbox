@@ -18,48 +18,40 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     private record NodeWithCosts(Node node, Double cost) implements Comparable<NodeWithCosts> {
 
         @Override
-        public int compareTo(NodeWithCosts other) {
+        public int compareTo(final NodeWithCosts other) {
             return Double.compare(cost, other.cost);
         }
     }
 
     @Override
-    public List<Node> findPath(Grid grid, Node start, Node end) {
-        Set<Node> visited = new HashSet<Node>();
-        Map<Node, Double> distances = new HashMap<>();
-        for (Node node : grid.nodes()) {
-            distances.put(node, Double.MAX_VALUE);
-        }
-        Queue<NodeWithCosts> priorityQueue = new PriorityQueue<>();
+    public List<Node> findPath(final Grid grid, final Node start, final Node end) {
+        final Set<Node> visited = new HashSet<Node>();
+        final Map<Node, Double> distances = new HashMap<>();
+        final Queue<NodeWithCosts> nodesWithCosts = new PriorityQueue<>();
 
         distances.put(start, 0.0);
-        priorityQueue.add(new NodeWithCosts(start, 0.0));
+        nodesWithCosts.add(new NodeWithCosts(start, 0.0));
         NodeWithCosts current = null;
 
-        while (!priorityQueue.isEmpty()) {
-            current = priorityQueue.remove();
+        while (!nodesWithCosts.isEmpty()) {
+            current = nodesWithCosts.remove();
 
             if (!visited.contains(current.node)) {
                 visited.add(current.node);
-                // if last element in PQ reached
                 if (current.node.equals(end)) {
                     return grid.backtrack(current.node);
                 }
-                for (Node neighbor : grid.reachableNeighbors(current.node)) {
+                for (final Node neighbor : grid.reachableNeighbors(current.node)) {
                     if (!visited.contains(neighbor)) {
+                        final double predictedDistance = distance(neighbor, end);
+                        final double neighborDistance = distance(current.node, neighbor);
+                        final double totalDistance = distance(current.node, start) + neighborDistance
+                                + predictedDistance;
 
-                        // calculate predicted distance to the end node
-                        double predictedDistance = distance(neighbor, end);
-
-                        // 1. calculate distance to neighbor. 2. calculate dist from start node
-                        double neighborDistance = distance(current.node, neighbor);
-                        double totalDistance = distance(current.node, start) + neighborDistance + predictedDistance;
-
-                        // check if distance smaller
-                        if (totalDistance < distances.get(neighbor)) {
-                            // update n's distance
+                        final Double distanceNeighbour = distances.get(neighbor);
+                        if (distanceNeighbour == null || totalDistance < distanceNeighbour) {
                             distances.put(neighbor, totalDistance);
-                            priorityQueue.add(new NodeWithCosts(neighbor, totalDistance));
+                            nodesWithCosts.add(new NodeWithCosts(neighbor, totalDistance));
                         }
                     }
                 }
@@ -68,9 +60,9 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         return emptyList();
     }
 
-    private double distance(Node neighbor, Node endNode) {
-        int xD = neighbor.x() - endNode.x();
-        int yD = neighbor.y() - endNode.y();
-        return Math.sqrt(xD * xD + yD * yD);
+    private double distance(final Node neighbor, final Node endNode) {
+        final int deltaX = neighbor.x() - endNode.x();
+        final int deltaY = neighbor.y() - endNode.y();
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
