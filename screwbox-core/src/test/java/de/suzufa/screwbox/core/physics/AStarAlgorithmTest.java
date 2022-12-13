@@ -44,12 +44,12 @@ class AStarAlgorithmTest {
         List<Node> path = algorithm.findPath(grid, start, end);
 
         assertThat(path).containsExactly(
-                grid.nodeAt(0, 1),
-                grid.nodeAt(0, 2),
-                grid.nodeAt(0, 3),
-                grid.nodeAt(1, 4),
-                grid.nodeAt(2, 4),
-                grid.nodeAt(3, 4),
+                grid.nodeAt(1, 1),
+                grid.nodeAt(2, 1),
+                grid.nodeAt(3, 1),
+                grid.nodeAt(4, 1),
+                grid.nodeAt(4, 2),
+                grid.nodeAt(4, 3),
                 grid.nodeAt(4, 4));
     }
 }
