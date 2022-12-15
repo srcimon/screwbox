@@ -31,7 +31,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
 
     @Override
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
-        final Set<Node> closed = new HashSet<Node>();
+        final Set<Node> closed = new HashSet<>();
         final Map<Node, Double> costs = new HashMap<>();
         final Map<Node, Double> costsToStart = new HashMap<>();
         final Queue<WeightedNode> open = new PriorityQueue<>();
