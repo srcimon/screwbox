@@ -4,10 +4,13 @@ import static de.suzufa.screwbox.core.Bounds.$$;
 import static de.suzufa.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.data.Offset.offset;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import de.suzufa.screwbox.core.Grid.Node;
 
@@ -313,5 +316,21 @@ class GridTest {
         grid.block(node);
 
         assertThat(grid.isBlocked(node)).isTrue();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "4, 2, 3.0",
+            "1, 2, 0.0",
+            "2, 3, 1.41" })
+    void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        Node node = grid.nodeAt(1, 2);
+
+        Node other = grid.nodeAt(x, y);
+
+        assertThat(node.distance(other)).isEqualTo(distance, offset(0.01));
     }
 }
