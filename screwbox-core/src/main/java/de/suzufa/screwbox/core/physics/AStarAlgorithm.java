@@ -32,12 +32,10 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     @Override
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
         final Set<Node> closed = new HashSet<>();
-        final Map<Node, Double> costs = new HashMap<>();
+        final Map<Node, Double> costs = new HashMap<>(Map.of(start, 0.0));
         final Map<Node, Double> costsToStart = new HashMap<>();
-        final Queue<WeightedNode> open = new PriorityQueue<>();
+        final Queue<WeightedNode> open = new PriorityQueue<>(List.of(new WeightedNode(start, 0.0)));
 
-        costs.put(start, 0.0);
-        open.add(new WeightedNode(start, 0.0));
         while (!open.isEmpty()) {
             final WeightedNode current = open.remove();
             if (!closed.contains(current.node)) {
