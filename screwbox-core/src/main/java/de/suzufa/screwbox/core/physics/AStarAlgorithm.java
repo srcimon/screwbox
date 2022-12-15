@@ -14,12 +14,17 @@ import java.util.Set;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Grid.Node;
 
+/**
+ * An implementation of the A* algorithm.
+ * 
+ * @see https://en.wikipedia.org/wiki/A*_search_algorithm
+ */
 public class AStarAlgorithm implements PathfindingAlgorithm {
 
-    private record NodeWithCosts(Node node, Double cost) implements Comparable<NodeWithCosts> {
+    private record WeightedNode(Node node, Double cost) implements Comparable<WeightedNode> {
 
         @Override
-        public int compareTo(final NodeWithCosts other) {
+        public int compareTo(final WeightedNode other) {
             return Double.compare(cost, other.cost);
         }
     }
@@ -28,32 +33,28 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
     public List<Node> findPath(final Grid grid, final Node start, final Node end) {
         final Set<Node> closed = new HashSet<Node>();
         final Map<Node, Double> costs = new HashMap<>();
-        final Map<Node, Double> costToStart = new HashMap<>();
-        final Queue<NodeWithCosts> open = new PriorityQueue<>();
+        final Map<Node, Double> costsToStart = new HashMap<>();
+        final Queue<WeightedNode> open = new PriorityQueue<>();
 
         costs.put(start, 0.0);
-        open.add(new NodeWithCosts(start, 0.0));
+        open.add(new WeightedNode(start, 0.0));
         while (!open.isEmpty()) {
-            NodeWithCosts current = open.remove();
-
+            final WeightedNode current = open.remove();
             if (!closed.contains(current.node)) {
                 closed.add(current.node);
                 if (current.node.equals(end)) {
                     return grid.backtrack(current.node);
                 }
+                final var costToStart = costsToStart.get(current.node);
                 for (final Node neighbor : grid.reachableNeighbors(current.node)) {
                     if (!closed.contains(neighbor)) {
-                        var cts = costToStart.get(current.node);
-                        final double cost = cts == null ? current.node.distance(start)
-                                : cts
-                                        + neighbor.distance(current.node)
-                                        + neighbor.distance(end);
-
+                        final double startCost = isNull(costToStart) ? current.node.distance(start) : costToStart;
+                        final double totalCost = startCost + neighbor.distance(current.node) + neighbor.distance(end);
                         final Double costNeighbour = costs.get(neighbor);
-                        if (isNull(costNeighbour) || cost < costNeighbour) {
-                            costToStart.put(neighbor, cost);
-                            costs.put(neighbor, cost);
-                            open.add(new NodeWithCosts(neighbor, cost));
+                        if (isNull(costNeighbour) || totalCost < costNeighbour) {
+                            costsToStart.put(neighbor, totalCost);
+                            costs.put(neighbor, totalCost);
+                            open.add(new WeightedNode(neighbor, totalCost));
                         }
                     }
                 }
