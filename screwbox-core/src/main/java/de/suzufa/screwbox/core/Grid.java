@@ -57,6 +57,10 @@ public class Grid implements Serializable {
             return "Node [x=" + x + ", y=" + y + "]";
         }
 
+        /**
+         * Returns the distance between this {@link Node} and another {@link Node}.
+         * Distance doesn't consider {@link Grid#gridSize}.
+         */
         public double distance(final Node other) {
             final int deltaX = other.x - x;
             final int deltaY = other.y - y;
