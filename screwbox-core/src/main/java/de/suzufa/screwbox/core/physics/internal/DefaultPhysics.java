@@ -15,7 +15,7 @@ import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Grid.Node;
 import de.suzufa.screwbox.core.Path;
 import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.physics.DijkstraAlgorithm;
+import de.suzufa.screwbox.core.physics.AStarAlgorithm;
 import de.suzufa.screwbox.core.physics.PathfindingAlgorithm;
 import de.suzufa.screwbox.core.physics.Physics;
 import de.suzufa.screwbox.core.physics.RaycastBuilder;
@@ -26,7 +26,7 @@ public class DefaultPhysics implements Physics {
     private final ExecutorService executor;
     private final Engine engine;
 
-    private PathfindingAlgorithm algorithm = new DijkstraAlgorithm();
+    private PathfindingAlgorithm algorithm = new AStarAlgorithm();
 
     private Grid grid;
 
@@ -126,6 +126,11 @@ public class DefaultPhysics implements Physics {
 
     public void shutdown() {
         executor.shutdown();
+    }
+
+    @Override
+    public PathfindingAlgorithm pathfindingAlgorithm() {
+        return algorithm;
     }
 
 }

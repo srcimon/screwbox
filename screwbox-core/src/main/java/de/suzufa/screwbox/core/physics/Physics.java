@@ -21,12 +21,28 @@ public interface Physics {
 
     Physics setGrid(Grid grid);
 
-    Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
-
     Optional<Grid> grid();
 
     Bounds snapToGrid(Bounds bounds);
 
     Vector snapToGrid(Vector position);
+
+    /**
+     * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
+     * is the default value.
+     * 
+     * @see #pathfindingAlgorithm()
+     * @see DijkstraAlgorithm
+     * @see AStarAlgorithm
+     */
+    Physics setPathfindingAlgorithm(PathfindingAlgorithm algorithm);
+
+    /**
+     * Returns the currently used {@link PathfindingAlgorithm}.
+     * {@link AStarAlgorithm} is the default value.
+     * 
+     * @see #setPathfindingAlgorithm(PathfindingAlgorithm)
+     */
+    PathfindingAlgorithm pathfindingAlgorithm();
 
 }

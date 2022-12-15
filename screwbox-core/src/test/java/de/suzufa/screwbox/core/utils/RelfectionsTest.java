@@ -28,6 +28,6 @@ class RelfectionsTest {
     void findClassesInPackage_packageExists_findsClasses() {
         var classes = Reflections.findClassesInPackage("de.suzufa.screwbox.core.test");
 
-        assertThat(classes).containsExactly(EntitiesExtension.class, TestUtil.class);
+        assertThat(classes).containsExactlyInAnyOrder(EntitiesExtension.class, TestUtil.class);
     }
 }

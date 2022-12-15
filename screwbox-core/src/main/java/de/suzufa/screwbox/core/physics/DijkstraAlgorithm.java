@@ -8,6 +8,11 @@ import java.util.List;
 import de.suzufa.screwbox.core.Grid;
 import de.suzufa.screwbox.core.Grid.Node;
 
+/**
+ * An implementation of the Dijkstra algorithm.
+ * 
+ * @see https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ */
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 
     @Override
