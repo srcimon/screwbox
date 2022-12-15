@@ -37,17 +37,17 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         final Queue<WeightedNode> open = new PriorityQueue<>(List.of(new WeightedNode(start, 0.0)));
 
         while (!open.isEmpty()) {
-            final WeightedNode current = open.remove();
-            if (!closed.contains(current.node)) {
-                closed.add(current.node);
-                if (current.node.equals(end)) {
-                    return grid.backtrack(current.node);
+            final Node currentNode = open.remove().node;
+            if (!closed.contains(currentNode)) {
+                closed.add(currentNode);
+                if (currentNode.equals(end)) {
+                    return grid.backtrack(currentNode);
                 }
-                final var costToStart = costsToStart.get(current.node);
-                for (final Node neighbor : grid.reachableNeighbors(current.node)) {
+                final var costToStart = costsToStart.get(currentNode);
+                for (final Node neighbor : grid.reachableNeighbors(currentNode)) {
                     if (!closed.contains(neighbor)) {
-                        final double startCost = isNull(costToStart) ? current.node.distance(start) : costToStart;
-                        final double totalCost = startCost + neighbor.distance(current.node) + neighbor.distance(end);
+                        final double startCost = isNull(costToStart) ? currentNode.distance(start) : costToStart;
+                        final double totalCost = startCost + neighbor.distance(currentNode) + neighbor.distance(end);
                         final Double costNeighbour = costs.get(neighbor);
                         if (isNull(costNeighbour) || totalCost < costNeighbour) {
                             costsToStart.put(neighbor, totalCost);
