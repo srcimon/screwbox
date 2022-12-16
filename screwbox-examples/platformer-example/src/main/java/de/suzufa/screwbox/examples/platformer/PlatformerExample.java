@@ -8,7 +8,7 @@ import de.suzufa.screwbox.examples.platformer.scenes.PauseScene;
 import de.suzufa.screwbox.examples.platformer.scenes.StartScene;
 
 public class PlatformerExample {
-
+// --add-opens java.desktop/com.apple.eawt=ALL-UNNAMED
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer Example");
 
