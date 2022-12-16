@@ -16,8 +16,7 @@ public class FullscreenTest {
             Object applicationObject = application.getConstructor().newInstance();
             fullScreenMethod.invoke(applicationObject, window);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+            throw new IllegalStateException("did not function", e);
         }
     }
 

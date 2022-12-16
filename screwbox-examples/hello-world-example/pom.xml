@@ -11,5 +11,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>screwbox-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.suzufa.screwbox</groupId>
+			<artifactId>game-of-life-example</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -15,7 +15,7 @@ public class HelloWorldExample {
 
         // hide cursor in window mode
         engine.graphics().window().setWindowCursor(MouseCursor.HIDDEN);
-
+        engine.graphics().configuration().toggleFullscreen();
         // add systems to the game loop
         engine.entities()
                 .add(new PrintHelloWorldSystem()) // print hello world next to mouse position
