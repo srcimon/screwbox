@@ -5,6 +5,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
 
@@ -15,6 +18,11 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private final Canvas canvas;
 
     public WindowFrame() {
+        JMenuBar menubar = new JMenuBar();
+        JMenu c = new JMenu("df");
+        c.add(new JMenuItem("asd"));
+        menubar.add(c);
+        setJMenuBar(menubar);
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
