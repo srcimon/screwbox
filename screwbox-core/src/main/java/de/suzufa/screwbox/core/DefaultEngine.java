@@ -23,6 +23,7 @@ import de.suzufa.screwbox.core.graphics.internal.DefaultLight;
 import de.suzufa.screwbox.core.graphics.internal.DefaultScreen;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWindow;
 import de.suzufa.screwbox.core.graphics.internal.DefaultWorld;
+import de.suzufa.screwbox.core.graphics.internal.MacOsWindowFrame;
 import de.suzufa.screwbox.core.graphics.internal.StandbyRenderer;
 import de.suzufa.screwbox.core.graphics.internal.WindowFrame;
 import de.suzufa.screwbox.core.keyboard.Keyboard;
@@ -64,7 +65,7 @@ class DefaultEngine implements Engine {
     private final String name;
 
     DefaultEngine(final String name) {
-        final WindowFrame frame = new WindowFrame();
+        final WindowFrame frame = isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
         frame.addWindowListener(new WindowAdapter() {
 
             @Override
@@ -102,6 +103,10 @@ class DefaultEngine implements Engine {
         frame.getCanvas().addKeyListener(keyboard);
         this.name = name;
         window.setTitle(name);
+    }
+
+    private boolean isMacOs() {
+        return "Mac OS X".equalsIgnoreCase(System.getProperty("os.name", "UNKNOWN-OS"));
     }
 
     @Override
