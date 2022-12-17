@@ -66,6 +66,7 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name) {
         final WindowFrame frame = isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
+
         frame.addWindowListener(new WindowAdapter() {
 
             @Override
