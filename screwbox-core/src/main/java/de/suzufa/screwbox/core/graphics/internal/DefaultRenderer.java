@@ -75,9 +75,11 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public Sprite takeScreenshot() {
+        int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
         final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top, frame.getWidth(),
-                frame.getHeight());
+                frame.getY() + frame.getInsets().top + menuBarHeight,
+                frame.getCanvas().getWidth(),
+                frame.canvasHeight());
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
     }

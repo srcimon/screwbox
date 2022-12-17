@@ -1,13 +1,13 @@
 package de.suzufa.screwbox.core.graphics.internal;
 
 import java.awt.Canvas;
-import java.awt.Frame;
+import java.awt.GraphicsDevice;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.JFrame;
 
-public class WindowFrame extends Frame implements WindowFocusListener {
+public class WindowFrame extends JFrame implements WindowFocusListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,5 +46,9 @@ public class WindowFrame extends Frame implements WindowFocusListener {
 
     public int canvasHeight() {
         return getCanvas().getBounds().height;
+    }
+
+    public void makeFullscreen(GraphicsDevice graphicsDevice) {
+        graphicsDevice.setFullScreenWindow(this);
     }
 }

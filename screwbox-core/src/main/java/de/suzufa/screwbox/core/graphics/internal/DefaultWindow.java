@@ -87,7 +87,7 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             final int refreshRate = lastDisplayMode.getRefreshRate();
             final DisplayMode displayMode = new DisplayMode(width, height, bitDepth, refreshRate);
             graphicsDevice.setDisplayMode(displayMode);
-            graphicsDevice.setFullScreenWindow(frame);
+            frame.makeFullscreen(graphicsDevice);
         } else {
             if (nonNull(lastOffset)) {
                 moveTo(lastOffset);

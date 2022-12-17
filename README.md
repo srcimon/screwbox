@@ -81,5 +81,6 @@ The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurk
 - [x] add A*-Pathfinding Algorithm (because speed)
 - [ ] add Support for animated light
 - [ ] add particle emitters
-- [ ] add menu bar when this nasty jdk bug is resolved: https://bugs.openjdk.org/browse/JDK-8270888
+- [ ] add menu bar with native fullscreen on osx (Bug: https://bugs.openjdk.org/browse/JDK-8270888)
 - [ ] add headless mode with scripted events for automating the engine
+- [ ] bug: no more stderror output (maybe osx bug in 13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
