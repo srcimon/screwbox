@@ -5,12 +5,15 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 
 public final class Reflections {
+
+    private static final String SEPARATOR = FileSystems.getDefault().getSeparator();
 
     private Reflections() {
     }
@@ -23,10 +26,12 @@ public final class Reflections {
         final List<Class<?>> clazzes = new ArrayList<>();
         final Pattern classNamePattern = Pattern.compile(".*" + packageName + ".*\\.class");
         for (final String resourceName : getResources(classNamePattern)) {
-            final String className = resourceName.split("/")[resourceName.split("/").length - 1];
-            String packagen = packageName
-                    + resourceName.split(packageName.replace(".", "/"))[1].replace("/", ".").replace(
-                            className, "");
+            final String[] splittedResource = resourceName.split(SEPARATOR);
+            final String className = splittedResource[splittedResource.length - 1];
+            String packagen = packageName + resourceName
+                    .split(packageName.replace(".", SEPARATOR))[1]
+                    .replace(SEPARATOR, ".")
+                    .replace(className, "");
             packagen = packagen.substring(0, packagen.length() - 1);
             clazzes.add(getClass(className, packagen));
         }
