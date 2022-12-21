@@ -70,11 +70,18 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setResolution_updatesOptionAndNotifiesListeners() {
+    void setResolution_resolutionSet_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Dimension.of(640, 480));
         verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.RESOLUTION);
+    }
+
+    @Test
+    void setResolution_resolutionNull_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setResolution(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("resolution must not be null");
     }
 
     @Test

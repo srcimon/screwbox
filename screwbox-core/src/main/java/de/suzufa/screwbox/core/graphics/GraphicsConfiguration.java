@@ -1,5 +1,7 @@
 package de.suzufa.screwbox.core.graphics;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +74,6 @@ public class GraphicsConfiguration {
      * some precious fps.
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
-        // TODO:non null
         this.useAntialiasing = useAntialiasing;
         notifyListeners(ConfigurationProperty.ANTIALIASING);
         return this;
@@ -84,8 +85,7 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setResolution(final Dimension resolution) {
-        // TODO:non null
-        this.resolution = resolution;
+        this.resolution = requireNonNull(resolution, "resolution must not be null");
         notifyListeners(ConfigurationProperty.RESOLUTION);
         return this;
     }
