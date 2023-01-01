@@ -20,12 +20,7 @@ public class Archetype implements Serializable {
 
     private Archetype(final Collection<Class<? extends Component>> componentClasses) {
         this.componentClasses = componentClasses;
-        final List<String> names = new ArrayList<>();
-        for (final var componentClass : componentClasses) {
-            names.add(componentClass.getName());
-        }
-        Collections.sort(names);
-        this.hash = names.hashCode();
+        this.hash = calculateHash(componentClasses);
     }
 
     @Override
@@ -43,6 +38,15 @@ public class Archetype implements Serializable {
             return false;
         final Archetype other = (Archetype) obj;
         return other.hash == this.hash;
+    }
+
+    private int calculateHash(final Collection<Class<? extends Component>> componentClasses) {
+        final List<String> names = new ArrayList<>();
+        for (final var componentClass : componentClasses) {
+            names.add(componentClass.getName());
+        }
+        Collections.sort(names);
+        return names.hashCode();
     }
 
     public boolean matches(final Entity entity) {
