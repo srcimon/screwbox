@@ -133,4 +133,16 @@ class EntityTest {
                 .contains(PhysicsBodyComponent.class, ColliderComponent.class)
                 .hasSize(2);
     }
+
+    @Test
+    void isEmpty_noComponents_true() {
+        assertThat(entity.isEmpty()).isTrue();
+    }
+
+    @Test
+    void isEmpty_hasComponents_false() {
+        entity.add(new PhysicsBodyComponent());
+
+        assertThat(entity.isEmpty()).isFalse();
+    }
 }

@@ -119,7 +119,7 @@ public class EntityManager implements EntityListener {
 
     @Override
     public void componentRemoved(final Entity entity) {
-        if (entity.componentCount() == 0) {
+        if (entity.isEmpty()) {
             pendingEntityDeletions.add(entity);
         } else {
             pendingEntityCachesToRefresh.add(entity);

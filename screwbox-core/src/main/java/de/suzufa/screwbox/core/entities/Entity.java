@@ -97,6 +97,13 @@ public final class Entity implements Serializable {
         }
     }
 
+    /**
+     * Returns {@code true} if the {@link Entity} has no {@link Component}.
+     */
+    public boolean isEmpty() {
+        return componentCount() == 0;
+    }
+
     private List<EntityListener> getListeners() {
         if (isNull(listeners)) {
             listeners = new ArrayList<>();
