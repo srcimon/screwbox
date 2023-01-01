@@ -20,7 +20,7 @@ public final class MathUtil {
      * Returns {@code true} if both values have the same sign.
      */
     public static boolean sameSign(final double value, final double other) {
-        return value >= 0 == other >= 0;
+        return modifier(value) == modifier(other);
     }
 
     /**
