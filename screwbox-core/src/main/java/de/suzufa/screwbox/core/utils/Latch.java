@@ -1,7 +1,7 @@
 package de.suzufa.screwbox.core.utils;
 
 /**
- * Utitlity class that holds two instances of a class to be easily swapped
+ * Utility class that holds two instances of a class to be easily swapped
  * between an active and inactive state.
  */
 public class Latch<T> {
