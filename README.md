@@ -68,6 +68,10 @@ public class HelloWorldExample {
     - **PathfindingExample** example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
     - **PlatformerExample** a more complex example showing how to make a platformer
 
+## Known issues
+- [ ] massive performance drop on JDK > 18 (10 times less fps)
+- [ ] asset preloading on Windows crashes the program (invalid pattern)
+
 ## Libraries used
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
 - FasterXML Jackson Core [Apache License 2.0](https://github.com/FasterXML/jackson-core/blob/2.14/LICENSE)
