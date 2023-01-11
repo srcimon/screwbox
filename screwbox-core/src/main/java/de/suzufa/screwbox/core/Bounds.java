@@ -311,4 +311,7 @@ public final class Bounds implements Serializable {
         return intersecting;
     }
 
+    // TODO: Vector moveWithin(Vector origin, Vector delta) -> moves inside this box
+    // (CameraMovementSystem)
+
 }
