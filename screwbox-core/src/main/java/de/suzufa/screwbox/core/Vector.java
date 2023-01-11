@@ -203,6 +203,9 @@ public final class Vector implements Serializable {
         return calculateLength(x, y);
     }
 
+    // TODO: public Vector moveTowards(Vector destination, Vector speed)
+    // TODO: public Vector moveTowards(Vector destination, double speed)
+
     private double calculateLength(final double x, final double y) {
         return Math.sqrt(x * x + y * y);
     }
