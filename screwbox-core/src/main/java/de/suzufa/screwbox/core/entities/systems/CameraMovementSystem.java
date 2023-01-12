@@ -14,6 +14,7 @@ import de.suzufa.screwbox.core.entities.components.CameraComponent;
 import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
+import de.suzufa.screwbox.core.graphics.Offset;
 
 @Order(SystemOrder.PREPARATION)
 public class CameraMovementSystem implements EntitySystem {
@@ -24,23 +25,22 @@ public class CameraMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Entity camera = engine.entities().forcedFetch(CAMERA);
-        double wantedZoom = camera.get(CameraComponent.class).zoom;
+        final Entity cameraEntity = engine.entities().forcedFetch(CAMERA);
+        double wantedZoom = cameraEntity.get(CameraComponent.class).zoom;
         double zoom = engine.graphics().updateCameraZoom(wantedZoom);
 
         final Bounds worldBounds = engine.entities().forcedFetch(WORLD_BOUNDS)
                 .get(TransformComponent.class).bounds;
-        final var camBoundsComponent = camera.get(TransformComponent.class);
+        final var camBoundsComponent = cameraEntity.get(TransformComponent.class);
         final Vector cameraPosition = camBoundsComponent.bounds.position();
-        final var cameraTrackerComponent = camera.get(CameraMovementComponent.class);
+        final var cameraTrackerComponent = cameraEntity.get(CameraMovementComponent.class);
         final Vector trackerPosition = engine.entities().forcedFetchById(cameraTrackerComponent.trackedEntityId)
                 .get(TransformComponent.class).bounds.position();
         final double cameraTrackerSpeed = cameraTrackerComponent.speed;
         final double distX = cameraPosition.x() - trackerPosition.x() - cameraTrackerComponent.shift.x();
         final double distY = cameraPosition.y() - trackerPosition.y() - cameraTrackerComponent.shift.y();
-        final Vector centerExtents = Vector.of(
-                engine.graphics().screen().size().width() / zoom / 2.0,
-                engine.graphics().screen().size().height() / zoom / 2.0);
+        final Offset screenCenter = engine.graphics().screen().center();
+        final Vector centerExtents = Vector.of(screenCenter.x() / zoom, screenCenter.y() / zoom);
 
         double delta = engine.loop().delta();
         final double movementX = clamp(
