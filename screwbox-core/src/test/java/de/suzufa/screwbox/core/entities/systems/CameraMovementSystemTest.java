@@ -15,8 +15,8 @@ import de.suzufa.screwbox.core.entities.components.CameraMovementComponent;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.entities.components.WorldBoundsComponent;
 import de.suzufa.screwbox.core.entities.internal.DefaultEntities;
-import de.suzufa.screwbox.core.graphics.Dimension;
 import de.suzufa.screwbox.core.graphics.Graphics;
+import de.suzufa.screwbox.core.graphics.Offset;
 import de.suzufa.screwbox.core.graphics.Screen;
 import de.suzufa.screwbox.core.loop.Loop;
 import de.suzufa.screwbox.core.test.EntitiesExtension;
@@ -28,7 +28,7 @@ class CameraMovementSystemTest {
     void update_movesCameraTowardsTracker(DefaultEntities entities, Loop loop, Screen screen,
             Graphics graphics) {
         when(loop.delta()).thenReturn(0.4);
-        when(screen.size()).thenReturn(Dimension.of(640, 480));
+        when(screen.center()).thenReturn(Offset.at(320, 240));
         when(graphics.updateCameraZoom(anyDouble())).thenReturn(1.0);
 
         CameraMovementComponent cameraMovement = new CameraMovementComponent(1.5, 1239);
