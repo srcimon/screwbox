@@ -103,10 +103,10 @@ class DefaultLightTest {
         when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addPointLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
+      
         light.render();
-
         var offset = ArgumentCaptor.forClass(Offset.class);
-        var resolution = ArgumentCaptor.forClass(Integer.class);
+        var resolution = ArgumentCaptor.forClass(Double.class);
         var opacity = ArgumentCaptor.forClass(Percent.class);
 
         verify(screen).drawSprite(
