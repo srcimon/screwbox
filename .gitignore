@@ -4,6 +4,9 @@
 **/target
 **/.settings/
 
+# idea
+**/.idea
+
 # osx
 **/.DS_Store
 
