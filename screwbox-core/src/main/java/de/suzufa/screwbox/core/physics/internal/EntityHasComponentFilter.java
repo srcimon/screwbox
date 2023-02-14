@@ -3,7 +3,9 @@ package de.suzufa.screwbox.core.physics.internal;
 import de.suzufa.screwbox.core.entities.Component;
 import de.suzufa.screwbox.core.entities.Entity;
 
-public class EntityHasComponentFilter implements EntitySearchFilter {
+import java.util.function.Predicate;
+
+public class EntityHasComponentFilter implements Predicate<Entity> {
 
     private final Class<? extends Component> componentClass;
 
@@ -12,7 +14,7 @@ public class EntityHasComponentFilter implements EntitySearchFilter {
     }
 
     @Override
-    public boolean matches(Entity entity) {
+    public boolean test(Entity entity) {
         return entity.hasComponent(componentClass);
     }
 

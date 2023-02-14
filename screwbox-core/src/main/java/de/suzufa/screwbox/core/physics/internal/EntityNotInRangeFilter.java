@@ -4,7 +4,9 @@ import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
-public class EntityNotInRangeFilter implements EntitySearchFilter {
+import java.util.function.Predicate;
+
+public class EntityNotInRangeFilter implements Predicate<Entity> {
 
     private final Bounds range;
 
@@ -13,7 +15,7 @@ public class EntityNotInRangeFilter implements EntitySearchFilter {
     }
 
     @Override
-    public boolean matches(final Entity entity) {
+    public boolean test(final Entity entity) {
         return !range.intersects(entity.get(TransformComponent.class).bounds);
     }
 

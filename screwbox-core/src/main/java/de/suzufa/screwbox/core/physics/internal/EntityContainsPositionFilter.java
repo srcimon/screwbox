@@ -4,7 +4,9 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 
-public class EntityContainsPositionFilter implements EntitySearchFilter {
+import java.util.function.Predicate;
+
+public class EntityContainsPositionFilter implements Predicate<Entity> {
 
     private final Vector position;
 
@@ -13,8 +15,7 @@ public class EntityContainsPositionFilter implements EntitySearchFilter {
     }
 
     @Override
-    public boolean matches(final Entity entity) {
+    public boolean test(Entity entity) {
         return !entity.get(TransformComponent.class).bounds.contains(position);
     }
-
 }

@@ -1,10 +1,11 @@
 package de.suzufa.screwbox.core.physics.internal;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.entities.Entity;
 
-public final class EntityIsInRaycastFilter implements EntitySearchFilter {
+public final class EntityIsInRaycastFilter implements Predicate<Entity> {
 
     private final List<Entity> filteredEntities;
 
@@ -13,7 +14,7 @@ public final class EntityIsInRaycastFilter implements EntitySearchFilter {
     }
 
     @Override
-    public boolean matches(final Entity entity) {
+    public boolean test(final Entity entity) {
         return filteredEntities.contains(entity);
     }
 

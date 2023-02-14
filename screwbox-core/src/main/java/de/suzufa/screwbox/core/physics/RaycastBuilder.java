@@ -2,6 +2,7 @@ package de.suzufa.screwbox.core.physics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
@@ -15,13 +16,12 @@ import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.EntityHasComponentFilter;
 import de.suzufa.screwbox.core.physics.internal.EntityIsInRaycastFilter;
 import de.suzufa.screwbox.core.physics.internal.EntityNotInRangeFilter;
-import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public final class RaycastBuilder {
 
     private final Entities entities;
     private final Vector from;
-    private final List<EntitySearchFilter> filters = new ArrayList<>();
+    private final List<Predicate<Entity>> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
@@ -48,7 +48,7 @@ public final class RaycastBuilder {
         return this;
     }
 
-    public RaycastBuilder ignoringEntitiesMatching(final EntitySearchFilter filter) {
+    public RaycastBuilder ignoringEntitiesMatching(final Predicate<Entity> filter) {
         filters.add(filter);
         return this;
     }

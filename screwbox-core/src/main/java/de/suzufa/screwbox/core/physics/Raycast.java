@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import de.suzufa.screwbox.core.Bounds;
 import de.suzufa.screwbox.core.Segment;
@@ -14,16 +15,15 @@ import de.suzufa.screwbox.core.Vector;
 import de.suzufa.screwbox.core.entities.Entity;
 import de.suzufa.screwbox.core.entities.components.TransformComponent;
 import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
-import de.suzufa.screwbox.core.physics.internal.EntitySearchFilter;
 
 public class Raycast {
 
     private final Segment ray;
     private final List<Entity> entities;
-    private final List<EntitySearchFilter> filters;
+    private final List<Predicate<Entity>> filters;
     private final Function<Bounds, List<Segment>> method;
 
-    Raycast(final Segment ray, final List<Entity> entities, final List<EntitySearchFilter> filters,
+    Raycast(final Segment ray, final List<Entity> entities, final List<Predicate<Entity>> filters,
             final Function<Bounds, List<Segment>> method) {
         this.ray = ray;
         this.entities = entities;
@@ -36,7 +36,7 @@ public class Raycast {
         if (hits.isEmpty()) {
             return Optional.empty();
         }
-        sort(hits, new DistanceComparator(ray.from()));
+        hits.sort(new DistanceComparator(ray.from()));
         return Optional.of(hits.get(0));
     }
 
@@ -101,8 +101,8 @@ public class Raycast {
     }
 
     private boolean isNotFiltered(final Entity entity) {
-        for (final EntitySearchFilter filter : filters) {
-            if (filter.matches(entity)) {
+        for (final Predicate<Entity> filter : filters) {
+            if (filter.test(entity)) {
                 return false;
             }
         }
