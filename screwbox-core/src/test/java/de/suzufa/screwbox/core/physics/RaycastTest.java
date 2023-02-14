@@ -66,6 +66,7 @@ class RaycastTest {
         Entity foundA = boxAt(0, 100);
         Entity foundB = boxAt(0, 300);
         Entity ignoredEntity = boxAt(0, 100);
+        Entity ignoredBecauseOfPosition = boxAt(12, 200);
         Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new RenderComponent(0));
         Entity ignoredBecauseNotInBounds = boxAt(0, 600);
 
@@ -74,10 +75,12 @@ class RaycastTest {
                 foundA,
                 ignoredEntity,
                 foundB,
-                ignoredBecauseNotInBounds));
+                ignoredBecauseNotInBounds,
+                ignoredBecauseOfPosition));
 
         var result = raycastBuilder
                 .checkingFor(physicsEntites)
+                .ignoringEntitiesMatching(e -> e.get(TransformComponent.class).bounds.position().x() == 12)
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .ignoringEntitesNotIn(Bounds.atOrigin(0, 0, 200, 500))
                 .ignoringEntities(ignoredEntity)

@@ -87,7 +87,7 @@ class SelectEntityBuilderTest {
 
         assertThat(result).isPresent();
     }
-
+    
     @Test
     void selectAll_entitiesAtPosition_returnsAllEntitiesAtPosition() {
         Entity first = boxAt(39, 59);

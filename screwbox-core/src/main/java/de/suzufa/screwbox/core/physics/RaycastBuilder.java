@@ -48,6 +48,10 @@ public final class RaycastBuilder {
         return this;
     }
 
+    public RaycastBuilder ignoringEntitiesMatching(final EntitySearchFilter filter) {
+        filters.add(filter);
+        return this;
+    }
     public RaycastBuilder ignoringEntitiesHaving(final Class<? extends Component> componentClass) {
         filters.add(new EntityHasComponentFilter(componentClass));
         return this;
