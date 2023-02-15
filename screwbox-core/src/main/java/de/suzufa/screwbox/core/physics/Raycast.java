@@ -1,7 +1,12 @@
 package de.suzufa.screwbox.core.physics;
 
-import static java.util.Collections.sort;
-import static java.util.Objects.nonNull;
+import de.suzufa.screwbox.core.Bounds;
+import de.suzufa.screwbox.core.Segment;
+import de.suzufa.screwbox.core.Vector;
+import de.suzufa.screwbox.core.entities.Entity;
+import de.suzufa.screwbox.core.entities.components.TransformComponent;
+import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
+import de.suzufa.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import de.suzufa.screwbox.core.Bounds;
-import de.suzufa.screwbox.core.Segment;
-import de.suzufa.screwbox.core.Vector;
-import de.suzufa.screwbox.core.entities.Entity;
-import de.suzufa.screwbox.core.entities.components.TransformComponent;
-import de.suzufa.screwbox.core.physics.internal.DistanceComparator;
+import static java.util.Objects.nonNull;
 
 public class Raycast {
 
@@ -63,9 +63,7 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : getIntersections(entity)) {
-                    intersections.add(intersection);
-                }
+                ListUtil.addAll(intersections, getIntersections(entity));
             }
         }
         return intersections;

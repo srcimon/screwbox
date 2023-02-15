@@ -11,6 +11,15 @@ import org.junit.jupiter.api.Test;
 class ListUtilTest {
 
     @Test
+    void addAll_twoLists_addsNewElementsToDestination() {
+        var male = new ArrayList<>(List.of("Andreas", "Andrea"));
+        var female = List.of("Kathrin", "Andrea");
+
+        ListUtil.addAll(male, female);
+
+        assertThat(male).containsExactly("Andreas", "Andrea", "Kathrin", "Andrea");
+    }
+    @Test
     void merge_listContainsDuplicates_removesDuplicates() {
         var male = List.of("Andreas", "Andrea");
         var female = List.of("Kathrin", "Andrea");

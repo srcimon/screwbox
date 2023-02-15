@@ -1,11 +1,8 @@
 package de.suzufa.screwbox.core.utils;
 
-import static java.util.Objects.isNull;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import static java.util.Objects.isNull;
 
 public class ListUtil {
 
@@ -14,6 +11,16 @@ public class ListUtil {
     private ListUtil() {
     }
 
+    /**
+     * Adds Elements to a list much faster as {@link ArrayList#addAll(Collection)}.
+     * @param destination the {@link List} of elements that is extended by newElements
+     * @param newElements the {@link List} of elements that are added to destination
+     */
+    public static <T> void addAll(final List<T> destination, final List<T> newElements) {
+        for(final T element : newElements) {
+            destination.add(element);
+        }
+    }
     public static <T> List<T> emptyWhenNull(final List<T> list) {
         return isNull(list) ? new ArrayList<>() : list;
     }
