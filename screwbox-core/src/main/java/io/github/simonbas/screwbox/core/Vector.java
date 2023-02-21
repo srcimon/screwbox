@@ -9,6 +9,7 @@ import java.util.Locale;
  */
 public final class Vector implements Serializable {
 
+    //TODO: interface for add, substract, multiply (also offset...)
     private static final Vector ZERO = new Vector(0, 0);
 
     private static final long serialVersionUID = 1L;
