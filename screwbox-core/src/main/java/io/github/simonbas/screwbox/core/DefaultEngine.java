@@ -83,7 +83,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         loop = new DefaultLoop(updatables);
-        physics = new DefaultPhysics(this, executor);
+        physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         async = new DefaultAsync(executor, this::exceptionHandler);
         assets = new DefaultAssets(async, log);

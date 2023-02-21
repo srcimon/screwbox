@@ -7,28 +7,21 @@ import io.github.simonbas.screwbox.core.Vector;
 import io.github.simonbas.screwbox.core.physics.AStarAlgorithm;
 import io.github.simonbas.screwbox.core.physics.DijkstraAlgorithm;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static io.github.simonbas.screwbox.core.Bounds.$$;
 import static io.github.simonbas.screwbox.core.Vector.$;
-import static io.github.simonbas.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DefaultPhysicsTest {
 
     DefaultPhysics physics;
-    ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
-        executor = Executors.newSingleThreadExecutor();
-        physics = new DefaultPhysics(null, executor);
+        physics = new DefaultPhysics(null);
     }
 
     @Test
@@ -132,8 +125,4 @@ class DefaultPhysicsTest {
         Assertions.assertThat(pathfindingAlgorithm).isInstanceOf(DijkstraAlgorithm.class);
     }
 
-    @AfterEach
-    void afterEach() {
-        shutdown(executor);
-    }
 }

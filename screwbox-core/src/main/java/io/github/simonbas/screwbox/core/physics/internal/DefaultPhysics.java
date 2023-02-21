@@ -7,7 +7,6 @@ import io.github.simonbas.screwbox.core.physics.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -15,16 +14,14 @@ import static java.util.Optional.ofNullable;
 
 public class DefaultPhysics implements Physics {
 
-    private final ExecutorService executor;
     private final Engine engine;
 
     private PathfindingAlgorithm algorithm = new AStarAlgorithm();
 
     private Grid grid;
 
-    public DefaultPhysics(final Engine engine, final ExecutorService executor) {
+    public DefaultPhysics(final Engine engine) {
         this.engine = engine;
-        this.executor = executor;
     }
 
     @Override

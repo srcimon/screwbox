@@ -45,8 +45,8 @@ public class DefaultScreen implements Screen {
         final long spriteHeight = round(sprite.size().height() * scale);
         final long countX = frame.getWidth() / spriteWidth + 1;
         final long countY = frame.getHeight() / spriteHeight + 1;
-        final double offsetX = offset.x() % spriteWidth -spriteWidth;
-        final double offsetY = offset.y() % spriteHeight - spriteHeight;
+        final long offsetX = offset.x() % spriteWidth - spriteWidth;
+        final long offsetY = offset.y() % spriteHeight - spriteHeight;
 
         for (long x = 0; x <= countX; x++) {
             for (long y = 0; y <= countY; y++) {
