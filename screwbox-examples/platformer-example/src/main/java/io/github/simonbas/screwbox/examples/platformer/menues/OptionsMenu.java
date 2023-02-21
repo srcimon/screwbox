@@ -1,0 +1,45 @@
+package io.github.simonbas.screwbox.examples.platformer.menues;
+
+import io.github.simonbas.screwbox.core.Engine;
+import io.github.simonbas.screwbox.core.graphics.Dimension;
+import io.github.simonbas.screwbox.core.ui.ScrollingUiLayouter;
+import io.github.simonbas.screwbox.core.ui.UiMenu;
+import io.github.simonbas.screwbox.core.ui.UiSubMenu;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class OptionsMenu extends UiSubMenu {
+
+    public OptionsMenu(UiMenu caller) {
+        super(caller);
+
+        Function<Engine, String> toogleFullscreenLabel = engine -> engine.graphics().configuration().isFullscreen()
+                ? "switch to window"
+                : "switch to fullscreen";
+
+        Function<Engine, String> toggleAntialisingLabel = engine -> engine.graphics().configuration().isUseAntialising()
+                ? "turn off antialising"
+                : "turn on antialising";
+
+        addItem(toogleFullscreenLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
+
+        addItem(toggleAntialisingLabel)
+                .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
+
+        addItem("change resolution").onActivate(engine -> {
+            List<Dimension> resolutions = engine.graphics().supportedResolutions();
+            Dimension resolution = engine.graphics().configuration().resolution();
+            engine.ui().setLayouter(new ScrollingUiLayouter());
+            engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
+        });
+
+        addItem("delete savegame")
+                .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
+                .onActivate(engine -> engine.savegame().delete("savegame.sav"));
+
+        addItem("back").onActivate(this::onExit);
+    }
+
+}
