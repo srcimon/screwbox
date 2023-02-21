@@ -26,7 +26,7 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 
 ``` xml
 <dependency>
-  <groupId>de.suzufa.screwbox</groupId>
+  <groupId>io.github.simonbas</groupId>
   <artifactId>screwbox-core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
@@ -34,14 +34,14 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 5. Create your first game and run.
 
 ``` java
-package de.suzufa.screwbox.examples.helloworld;
+package io.github.simonbas.examples.helloworld;
 
-import de.suzufa.screwbox.core.Engine;
-import de.suzufa.screwbox.core.ScrewBox;
-import de.suzufa.screwbox.core.entities.EntitySystem;
-import de.suzufa.screwbox.core.graphics.Color;
-import de.suzufa.screwbox.core.graphics.Offset;
-import de.suzufa.screwbox.core.graphics.Pixelfont;
+import io.github.simonbas.screwbox.core.Engine;
+import io.github.simonbas.screwbox.core.ScrewBox;
+import io.github.simonbas.screwbox.core.entities.EntitySystem;
+import io.github.simonbas.screwbox.core.graphics.Color;
+import io.github.simonbas.screwbox.core.graphics.Offset;
+import io.github.simonbas.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldExample {
 
