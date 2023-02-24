@@ -34,7 +34,7 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 5. Create your first game and run.
 
 ``` java
-package io.github.simonbas.examples.helloworld;
+package io.github.simonbas.screwbox.examples.helloworld;
 
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.ScrewBox;
