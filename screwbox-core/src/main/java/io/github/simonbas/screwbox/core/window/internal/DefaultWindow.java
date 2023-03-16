@@ -1,10 +1,11 @@
-package io.github.simonbas.screwbox.core.graphics.internal;
+package io.github.simonbas.screwbox.core.window.internal;
 
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.graphics.Frame;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.simonbas.screwbox.core.graphics.Window;
 import io.github.simonbas.screwbox.core.graphics.*;
+import io.github.simonbas.screwbox.core.graphics.internal.*;
+import io.github.simonbas.screwbox.core.window.Window;
 
 import java.awt.*;
 import java.util.List;

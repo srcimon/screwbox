@@ -4,12 +4,12 @@ import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.entities.internal.DefaultEntities;
 import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.Screen;
-import io.github.simonbas.screwbox.core.graphics.Window;
 import io.github.simonbas.screwbox.core.graphics.World;
 import io.github.simonbas.screwbox.core.keyboard.Keyboard;
 import io.github.simonbas.screwbox.core.log.Log;
 import io.github.simonbas.screwbox.core.loop.Loop;
 import io.github.simonbas.screwbox.core.physics.Physics;
+import io.github.simonbas.screwbox.core.window.Window;
 import org.junit.jupiter.api.extension.*;
 import org.mockito.Mockito;
 

@@ -1,6 +1,7 @@
 package io.github.simonbas.screwbox.core.graphics;
 
 import io.github.simonbas.screwbox.core.Vector;
+import io.github.simonbas.screwbox.core.window.Window;
 
 import java.util.List;
 

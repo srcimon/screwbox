@@ -9,7 +9,6 @@ import io.github.simonbas.screwbox.core.entities.Entity;
 import io.github.simonbas.screwbox.core.entities.EntitySystem;
 import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.simonbas.screwbox.core.graphics.Window;
 import io.github.simonbas.screwbox.core.keyboard.Keyboard;
 import io.github.simonbas.screwbox.core.log.Log;
 import io.github.simonbas.screwbox.core.log.LoggingAdapter;
@@ -21,6 +20,7 @@ import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
 import io.github.simonbas.screwbox.core.ui.Ui;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
+import io.github.simonbas.screwbox.core.window.Window;
 
 /**
  * This is the central point of controlling the ScrewBox-Engine. Grants access

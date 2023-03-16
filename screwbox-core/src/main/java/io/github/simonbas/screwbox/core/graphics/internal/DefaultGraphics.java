@@ -4,9 +4,10 @@ import io.github.simonbas.screwbox.core.Vector;
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.simonbas.screwbox.core.graphics.Window;
 import io.github.simonbas.screwbox.core.graphics.*;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
+import io.github.simonbas.screwbox.core.window.Window;
+import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
 import java.awt.Font;
 import java.awt.*;

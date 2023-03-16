@@ -5,6 +5,7 @@ import io.github.simonbas.screwbox.core.Bounds;
 import io.github.simonbas.screwbox.core.Percent;
 import io.github.simonbas.screwbox.core.Vector;
 import io.github.simonbas.screwbox.core.entities.systems.RenderLightSystem;
+import io.github.simonbas.screwbox.core.window.Window;
 
 import java.util.List;
 

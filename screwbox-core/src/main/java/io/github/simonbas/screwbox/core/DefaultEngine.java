@@ -30,6 +30,7 @@ import io.github.simonbas.screwbox.core.scenes.Scenes;
 import io.github.simonbas.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.simonbas.screwbox.core.ui.Ui;
 import io.github.simonbas.screwbox.core.ui.internal.DefaultUi;
+import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
