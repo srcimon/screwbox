@@ -9,8 +9,6 @@ public interface Graphics {
 
     GraphicsConfiguration configuration();
 
-    Window window();
-
     World world();
 
     /**
@@ -58,7 +56,7 @@ public interface Graphics {
     double cameraZoom();
 
     /**
-     * Returns the position the given Window {@link Offset} in the game
+     * Returns the position the given {@link Offset} in the game
      * {@link World}.
      */
     Vector worldPositionOf(Offset offset);

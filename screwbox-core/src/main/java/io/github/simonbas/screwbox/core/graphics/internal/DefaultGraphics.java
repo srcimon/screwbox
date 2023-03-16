@@ -6,14 +6,12 @@ import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
-import io.github.simonbas.screwbox.core.window.Window;
 import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
 import java.awt.Font;
 import java.awt.*;
 import java.util.List;
-
-import static java.util.Arrays.asList;
+import java.util.stream.Stream;
 
 public class DefaultGraphics implements Graphics, Updatable {
 
@@ -38,11 +36,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public GraphicsConfiguration configuration() {
         return configuration;
-    }
-
-    @Override
-    public Window window() {
-        return window;
     }
 
     @Override
@@ -101,7 +94,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public List<String> availableFonts() {
         final var allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-        return asList(allFonts).stream()
+        return Stream.of(allFonts)
                 .map(Font::getFontName)
                 .toList();
     }

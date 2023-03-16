@@ -46,8 +46,8 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         when(engine.physics()).thenReturn(physics);
         when(engine.loop()).thenReturn(gameLoop);
         when(engine.keyboard()).thenReturn(keyboard);
+        when(engine.window()).thenReturn(window);
         when(graphics.world()).thenReturn(world);
-        when(graphics.window()).thenReturn(window);
         when(graphics.screen()).thenReturn(screen);
 
         // resolve test method parameters

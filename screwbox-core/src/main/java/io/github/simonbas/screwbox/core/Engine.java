@@ -87,12 +87,15 @@ public interface Engine {
      */
     Savegame savegame();
 
+    //TODO comment
+    Window window();
+
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
      * {@link Loop}. The {@link Engine} can be stopped by calling {@link #stop()}
      * from within an {@link EntitySystem} or a {@link UiMenu}.
-     * 
-     * @see {@link #start(Class)}
+     *
+     * @see #start(Class)
      */
     void start();
 
@@ -101,8 +104,8 @@ public interface Engine {
      * {@link Window} and starts the {@link Loop}. The {@link Engine} can be stopped
      * by calling {@link #stop()} from within an {@link EntitySystem} or a
      * {@link UiMenu}.
-     * 
-     * @see {@link #start()}
+     *
+     * @see #start()
      */
     void start(Class<? extends Scene> sceneClass);
 

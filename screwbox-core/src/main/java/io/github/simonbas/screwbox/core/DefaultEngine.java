@@ -30,6 +30,7 @@ import io.github.simonbas.screwbox.core.scenes.Scenes;
 import io.github.simonbas.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.simonbas.screwbox.core.ui.Ui;
 import io.github.simonbas.screwbox.core.ui.internal.DefaultUi;
+import io.github.simonbas.screwbox.core.window.Window;
 import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
 import java.awt.event.WindowAdapter;
@@ -54,6 +55,7 @@ class DefaultEngine implements Engine {
     private final DefaultAsync async;
     private final DefaultSavegame savegame;
     private final DefaultAssets assets;
+    private final DefaultWindow window;
 
     private final ExecutorService executor;
     private final String name;
@@ -73,7 +75,7 @@ class DefaultEngine implements Engine {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
-        final DefaultWindow window = new DefaultWindow(frame, configuration, executor, screen);
+        window = new DefaultWindow(frame, configuration, executor, screen);
         audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
@@ -118,7 +120,7 @@ class DefaultEngine implements Engine {
         }
         log.info(format("engine with name '%s' started", name));
         try {
-            graphics.window().open();
+            window.open();
             loop.start();
         } catch (final RuntimeException e) {
             exceptionHandler(e);
@@ -131,7 +133,7 @@ class DefaultEngine implements Engine {
             ui.closeMenu();
             loop.stop();
             loop.awaitTermination();
-            graphics.window().close();
+            window.close();
             log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
             executor.shutdown();
         });
@@ -200,6 +202,11 @@ class DefaultEngine implements Engine {
     @Override
     public Savegame savegame() {
         return savegame;
+    }
+
+    @Override
+    public Window window() {
+        return window;
     }
 
     @Override
