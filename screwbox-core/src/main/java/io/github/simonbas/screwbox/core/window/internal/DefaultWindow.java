@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.core.window.internal;
 
-import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.graphics.Frame;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
@@ -13,8 +12,6 @@ import java.util.concurrent.ExecutorService;
 
 import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.RESOLUTION;
 import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.WINDOW_MODE;
-import static java.util.Arrays.stream;
-import static java.util.Comparator.reverseOrder;
 import static java.util.Objects.nonNull;
 
 public class DefaultWindow implements Window, GraphicsConfigurationListener {
@@ -30,10 +27,11 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     private Offset lastOffset;
 
     public DefaultWindow(final WindowFrame frame,
-            final GraphicsConfiguration configuration,
-            final ExecutorService executor,
-            final DefaultScreen screen) {
-        this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                         final GraphicsConfiguration configuration,
+                         final ExecutorService executor,
+                         final DefaultScreen screen,
+                         final GraphicsDevice graphicsDevice) {
+        this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
         this.executor = executor;
@@ -111,14 +109,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return this;
     }
 
-    public List<Dimension> supportedResolutions() {
-        return stream(graphicsDevice.getDisplayModes())
-                .map(this::toDimension)
-                .distinct()
-                .sorted(reverseOrder())
-                .toList();
-    }
-
     @Override
     public void configurationChanged(final ConfigurationProperty changedProperty) {
         if (List.of(WINDOW_MODE, RESOLUTION).contains(changedProperty) && frame.isVisible()) {
@@ -183,12 +173,5 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return frame.getTitle();
     }
 
-    public Dimension currentResolution() {
-        return toDimension(graphicsDevice.getDisplayMode());
-    }
-
-    private Dimension toDimension(final DisplayMode screenSize) {
-        return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
-    }
 
 }

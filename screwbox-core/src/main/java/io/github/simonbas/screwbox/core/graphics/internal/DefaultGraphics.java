@@ -6,31 +6,33 @@ import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
-import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
 import java.awt.Font;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static java.util.Arrays.stream;
 
 public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;
-    private final DefaultWindow window;
     private final DefaultWorld world;
     private final DefaultLight light;
     private final DefaultScreen screen;
+    private final GraphicsDevice graphicsDevice;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
-            final DefaultScreen screen,
-            final DefaultWindow window,
-            final DefaultWorld world,
-            final DefaultLight light) {
+                           final DefaultScreen screen,
+                           final DefaultWorld world,
+                           final DefaultLight light,
+                           final GraphicsDevice graphicsDevice) {
         this.configuration = configuration;
-        this.window = window;
         this.light = light;
         this.world = world;
         this.screen = screen;
+        this.graphicsDevice = graphicsDevice;
     }
 
     @Override
@@ -81,7 +83,15 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public List<Dimension> supportedResolutions() {
-        return window.supportedResolutions();
+        return stream(graphicsDevice.getDisplayModes())
+                .map(this::toDimension)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+    }
+
+    private Dimension toDimension(final DisplayMode screenSize) {
+        return Dimension.of(screenSize.getWidth(), screenSize.getHeight());
     }
 
     @Override
@@ -113,7 +123,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Dimension currentResolution() {
-        return window.currentResolution();
+        return toDimension(graphicsDevice.getDisplayMode());
     }
 
     @Override

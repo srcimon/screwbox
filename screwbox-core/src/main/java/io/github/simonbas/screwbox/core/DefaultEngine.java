@@ -33,6 +33,7 @@ import io.github.simonbas.screwbox.core.ui.internal.DefaultUi;
 import io.github.simonbas.screwbox.core.window.Window;
 import io.github.simonbas.screwbox.core.window.internal.DefaultWindow;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -75,11 +76,12 @@ class DefaultEngine implements Engine {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool();
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
-        window = new DefaultWindow(frame, configuration, executor, screen);
+        final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
         audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
-        graphics = new DefaultGraphics(configuration, screen, window, world, light);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice);
         scenes = new DefaultScenes(this);
         keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
