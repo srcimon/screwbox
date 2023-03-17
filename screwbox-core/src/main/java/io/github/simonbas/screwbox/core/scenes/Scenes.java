@@ -4,8 +4,6 @@ import io.github.simonbas.screwbox.core.entities.Entities;
 
 public interface Scenes {
 
-    Scenes add(Scene scene);
-
     Scenes add(Scene... scenes);
 
     Scenes switchTo(Class<? extends Scene> sceneClass);

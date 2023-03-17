@@ -57,20 +57,7 @@ public class DefaultScenes implements Scenes, Updatable {
         return scenes.size();
     }
 
-    @Override
-    public Scenes add(final Scene scene) {
-        final var entities = new DefaultEntities(engine);
 
-        final SceneContainer sceneContainer = new SceneContainer(scene, entities);
-        scene.initialize(sceneContainer.entities());
-        scenes.put(scene.getClass(), sceneContainer);
-
-        if (isNull(nextActiveScene)) {
-            nextActiveScene = sceneContainer;
-            activeScene = sceneContainer;
-        }
-        return this;
-    }
 
     @Override
     public Scenes add(final Scene... scenes) {
@@ -96,12 +83,6 @@ public class DefaultScenes implements Scenes, Updatable {
         return scenes.get(sceneClass).entities();
     }
 
-    private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!scenes.containsKey(sceneClass)) {
-            throw new IllegalArgumentException("missing scene: " + sceneClass);
-        }
-    }
-
     @Override
     public void update() {
         applySceneChanges();
@@ -115,6 +96,26 @@ public class DefaultScenes implements Scenes, Updatable {
             nextActiveScene.scene().onEnter(engine);
         }
         activeScene = nextActiveScene;
+    }
+
+    private Scenes add(final Scene scene) {
+        final var entities = new DefaultEntities(engine);
+
+        final SceneContainer sceneContainer = new SceneContainer(scene, entities);
+        scene.initialize(sceneContainer.entities());
+        scenes.put(scene.getClass(), sceneContainer);
+
+        if (isNull(nextActiveScene)) {
+            nextActiveScene = sceneContainer;
+            activeScene = sceneContainer;
+        }
+        return this;
+    }
+
+    private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
+        if (!scenes.containsKey(sceneClass)) {
+            throw new IllegalArgumentException("missing scene: " + sceneClass);
+        }
     }
 
 }
