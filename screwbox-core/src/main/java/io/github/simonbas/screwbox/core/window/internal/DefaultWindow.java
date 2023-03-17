@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core.window.internal;
 
+import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.graphics.Frame;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
@@ -104,7 +105,8 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
             graphicsDevice.setDisplayMode(lastDisplayMode);
             lastDisplayMode = null;
         } else {
-            lastOffset = Offset.at(frame.getBounds().x, frame.getBounds().y);
+            final Rectangle bounds = frame.getBounds();
+            lastOffset = Offset.at(bounds.x, bounds.y);
         }
         return this;
     }
@@ -173,5 +175,9 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return frame.getTitle();
     }
 
+    @Override
+    public Dimension size() {
+        return Dimension.of(frame.getWidth(), frame.getHeight());
+    }
 
 }
