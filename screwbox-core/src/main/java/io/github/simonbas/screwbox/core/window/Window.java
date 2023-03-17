@@ -1,9 +1,6 @@
 package io.github.simonbas.screwbox.core.window;
 
-import io.github.simonbas.screwbox.core.graphics.Frame;
-import io.github.simonbas.screwbox.core.graphics.MouseCursor;
-import io.github.simonbas.screwbox.core.graphics.Offset;
-import io.github.simonbas.screwbox.core.graphics.Sprite;
+import io.github.simonbas.screwbox.core.graphics.*;
 
 public interface Window {
 
@@ -117,9 +114,13 @@ public interface Window {
 
     /**
      * Returns the title of the {@link Window}.
-     * 
+     *
      * @see #title()
      */
     String title();
 
+    /**
+     * Returns the current size of the {@link Window}.
+     */
+    Dimension size();
 }
