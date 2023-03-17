@@ -1,5 +1,7 @@
 package io.github.simonbas.screwbox.core.graphics;
 
+import io.github.simonbas.screwbox.core.window.Window;
+
 /**
  * Defines the area on the {@link Window}.
  */

@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core.graphics;
 
+import io.github.simonbas.screwbox.core.window.Window;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;

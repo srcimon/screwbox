@@ -1,4 +1,9 @@
-package io.github.simonbas.screwbox.core.graphics;
+package io.github.simonbas.screwbox.core.window;
+
+import io.github.simonbas.screwbox.core.graphics.Frame;
+import io.github.simonbas.screwbox.core.graphics.MouseCursor;
+import io.github.simonbas.screwbox.core.graphics.Offset;
+import io.github.simonbas.screwbox.core.graphics.Sprite;
 
 public interface Window {
 

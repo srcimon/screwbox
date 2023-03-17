@@ -1,6 +1,6 @@
 package io.github.simonbas.screwbox.core;
 
-import io.github.simonbas.screwbox.core.graphics.Window;
+import io.github.simonbas.screwbox.core.window.Window;
 
 /**
  * Best game engine ever made (not). The entry point for starting a game.

@@ -1,5 +1,7 @@
 package io.github.simonbas.screwbox.core.graphics;
 
+import io.github.simonbas.screwbox.core.window.Window;
+
 import java.io.Serial;
 import java.io.Serializable;
 

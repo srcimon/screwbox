@@ -9,7 +9,6 @@ import io.github.simonbas.screwbox.core.entities.Entity;
 import io.github.simonbas.screwbox.core.entities.EntitySystem;
 import io.github.simonbas.screwbox.core.graphics.Graphics;
 import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.simonbas.screwbox.core.graphics.Window;
 import io.github.simonbas.screwbox.core.keyboard.Keyboard;
 import io.github.simonbas.screwbox.core.log.Log;
 import io.github.simonbas.screwbox.core.log.LoggingAdapter;
@@ -21,6 +20,7 @@ import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
 import io.github.simonbas.screwbox.core.ui.Ui;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
+import io.github.simonbas.screwbox.core.window.Window;
 
 /**
  * This is the central point of controlling the ScrewBox-Engine. Grants access
@@ -87,12 +87,15 @@ public interface Engine {
      */
     Savegame savegame();
 
+    //TODO comment
+    Window window();
+
     /**
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
      * {@link Loop}. The {@link Engine} can be stopped by calling {@link #stop()}
      * from within an {@link EntitySystem} or a {@link UiMenu}.
-     * 
-     * @see {@link #start(Class)}
+     *
+     * @see #start(Class)
      */
     void start();
 
@@ -101,8 +104,8 @@ public interface Engine {
      * {@link Window} and starts the {@link Loop}. The {@link Engine} can be stopped
      * by calling {@link #stop()} from within an {@link EntitySystem} or a
      * {@link UiMenu}.
-     * 
-     * @see {@link #start()}
+     *
+     * @see #start()
      */
     void start(Class<? extends Scene> sceneClass);
 

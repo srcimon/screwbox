@@ -1,4 +1,4 @@
-package io.github.simonbas.screwbox.core.graphics.internal;
+package io.github.simonbas.screwbox.core.window.internal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
