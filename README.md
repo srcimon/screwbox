@@ -22,10 +22,6 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
 
-<p align="center">
-  <img src="docs/getting_started.gif">
-</p>
-
 ## Getting started
 
 1. Clone this repository.
@@ -71,17 +67,23 @@ public class HelloWorldExample {
     }
 }
 ```
+
 6. Check out the example applications:
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
-    - **PathfindingExample** example showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org)
+    - **PathfindingExample** example showing how to use pathfinding and importing maps
+      from [Tiled Editor](https://www.mapeditor.org)
     - **PlatformerExample** a more complex example showing how to make a platformer
 
+<p align="center"><img src="docs/getting_started.gif"></p>
+
 ## Known issues
+
 - [ ] massive performance drop on JDK > 18 when not using `-Dsun.java2d.opengl=true`
 - [ ] asset preloading on Windows crashes the program (invalid pattern)
 
 ## Libraries used
+
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
 - FasterXML Jackson Core [Apache License 2.0](https://github.com/FasterXML/jackson-core/blob/2.14/LICENSE)
 - AssertJ [Apache License 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
