@@ -23,7 +23,7 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
   the [Tiled Editor](https://www.mapeditor.org)
 
 <p align="center">
-  <img src="docs/animation.gif">
+  <img src="docs/getting_started.gif">
 </p>
 
 ## Getting started
