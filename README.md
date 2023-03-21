@@ -75,8 +75,6 @@ public class HelloWorldExample {
       from [Tiled Editor](https://www.mapeditor.org)
     - **PlatformerExample** a more complex example showing how to make a platformer
 
-<p align="center"><img src="docs/getting_started.gif"></p>
-
 ## Known issues
 
 - [ ] massive performance drop on JDK > 18 when not using `-Dsun.java2d.opengl=true`
@@ -90,12 +88,17 @@ public class HelloWorldExample {
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 
 ## Acknowledgments
+
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
 
 ## Ideas and plans
+
 - [x] add A*-Pathfinding Algorithm (because speed)
 - [ ] add Support for animated light
 - [ ] add particle emitters
 - [ ] add menu bar with native fullscreen on osx (Bug: https://bugs.openjdk.org/browse/JDK-8270888)
 - [ ] add headless mode with scripted events for automating the engine
-- [ ] bug: no more stderror output (maybe osx bug in 13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
+- [ ] bug: no more stderror output (maybe osx bug in
+  13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
+
+<p align="center"><img src="docs/outro.gif"></p>
