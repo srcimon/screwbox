@@ -25,7 +25,7 @@ public class PDFToSprite {
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 800, ImageType.RGB);
                 double scale = 400.0 / bim.getHeight();
-                sprites.add(Sprite.fromImage(ImageUtil.scaleSmooth(bim, scale)));
+                sprites.add(Sprite.fromImage(ImageUtil.scale(bim, scale)));
             }
             document.close();
         } catch (IOException e) {

@@ -38,23 +38,13 @@ public final class ImageUtil {
     }
 
     // TODO: simplyfiy and test
-
     public static Image scale(final Image image, final double scale) {
-        return scaleInternal(image, scale, false);
-    }
-
-    // TODO: simplyfiy and test
-    public static Image scaleSmooth(final Image image, final double scale) {
-        return scaleInternal(image, scale, true);
-    }
-
-    private static Image scaleInternal(final Image image, final double scale, boolean smooth) {
         final int width = (int) (image.getWidth(null) * scale);
         final int height = (int) (image.getHeight(null) * scale);
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Scaled image is size is invalid");
         }
-        return image.getScaledInstance(width, height, smooth ? Image.SCALE_SMOOTH : Image.SCALE_DEFAULT);
+        return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
     public static BufferedImage toBufferedImage(final Image image) {
