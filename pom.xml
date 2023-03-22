@@ -134,6 +134,6 @@
 		<module>screwbox-core</module>
 		<module>screwbox-tiled</module>
 		<module>screwbox-examples</module>
-		<module>screwbox-examples/slideshow-example</module>
+		<module>screwbox-examples/presentation-example</module>
 	</modules>
 </project>

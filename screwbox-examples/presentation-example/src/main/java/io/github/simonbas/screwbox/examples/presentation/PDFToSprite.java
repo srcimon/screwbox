@@ -1,4 +1,4 @@
-package io.github.simonbas.screwbox.examples.slideshow;
+package io.github.simonbas.screwbox.examples.presentation;
 
 import io.github.simonbas.screwbox.core.graphics.Sprite;
 import io.github.simonbas.screwbox.core.graphics.internal.ImageUtil;
@@ -24,7 +24,7 @@ public class PDFToSprite {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                double scale = 800.0 / bim.getHeight();
+                double scale = 1600.0 / bim.getHeight();
                 sprites.add(Sprite.fromImage(ImageUtil.scale(bim, scale)));
             }
             document.close();

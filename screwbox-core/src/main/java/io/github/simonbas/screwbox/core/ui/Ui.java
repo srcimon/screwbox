@@ -15,4 +15,5 @@ public interface Ui {
     Ui closeMenu();
 
     Optional<UiMenu> currentMenu();
+
 }

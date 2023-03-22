@@ -1,4 +1,4 @@
-package io.github.simonbas.screwbox.examples.slideshow.scenes;
+package io.github.simonbas.screwbox.examples.presentation.scenes;
 
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.scenes.Scene;
