@@ -3,6 +3,7 @@ package io.github.simonbas.screwbox.examples.slideshow.scenes;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
+import io.github.simonbas.screwbox.examples.slideshow.PDFToSprite;
 
 import java.io.File;
 import java.util.List;
@@ -22,15 +23,18 @@ public class InputReceivedScene implements Scene {
         engine.ui().openMenu(menu);
 
         engine.async().run(this, () -> {
-            for (var file : inputFiles) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                engine.ui().currentMenu().get().addItem("loaded... " + file.getName());
-            }
+            var sprites = inputFiles.stream()
+                    .filter(File::isFile)
+                    .filter(File::exists)
+                    .filter(file -> file.getName().endsWith(".pdf"))
+                    .map(pdfFile -> PDFToSprite.fromPdf(pdfFile))
+                    .toList();
+            engine.scenes().add(new SlideshowScene(sprites)).switchTo(SlideshowScene.class);
         });
+    }
 
+    @Override
+    public void onExit(Engine engine) {
+        engine.ui().closeMenu();
     }
 }

@@ -18,7 +18,7 @@ public class WaitingForInputScene implements Scene {
         engine.ui().openMenu(menu);
 
         dropListener = dropEvent -> engine.scenes()
-                .addOrReplace(new InputReceivedScene(dropEvent.position(), dropEvent.files()))
+                .addOrReplace(new InputReceivedScene(dropEvent.files()))
                 .switchTo(InputReceivedScene.class);
 
         engine.window().addDropListener(dropListener);
