@@ -5,7 +5,7 @@ import java.util.EventListener;
 //TODO add EntityEvent
 public interface EntityListener extends EventListener {
 
-    void componentAdded(Entity entity);
+    void componentAdded(EntityEvent event);
 
-    void componentRemoved(Entity entity);
+    void componentRemoved(EntityEvent event);
 }

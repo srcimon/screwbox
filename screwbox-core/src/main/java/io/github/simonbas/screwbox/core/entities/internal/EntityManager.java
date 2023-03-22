@@ -2,6 +2,7 @@ package io.github.simonbas.screwbox.core.entities.internal;
 
 import io.github.simonbas.screwbox.core.entities.Archetype;
 import io.github.simonbas.screwbox.core.entities.Entity;
+import io.github.simonbas.screwbox.core.entities.EntityEvent;
 import io.github.simonbas.screwbox.core.entities.EntityListener;
 
 import java.util.*;
@@ -92,8 +93,8 @@ public class EntityManager implements EntityListener {
     }
 
     @Override
-    public void componentAdded(final Entity entity) {
-        pendingEntityCachesToRefresh.add(entity);
+    public void componentAdded(final EntityEvent event) {
+        pendingEntityCachesToRefresh.add(event.entity());
     }
 
     public void removeEntity(final Entity entity) {
@@ -112,11 +113,11 @@ public class EntityManager implements EntityListener {
     }
 
     @Override
-    public void componentRemoved(final Entity entity) {
-        if (entity.isEmpty()) {
-            pendingEntityDeletions.add(entity);
+    public void componentRemoved(final EntityEvent event) {
+        if (event.entity().isEmpty()) {
+            pendingEntityDeletions.add(event.entity());
         } else {
-            pendingEntityCachesToRefresh.add(entity);
+            pendingEntityCachesToRefresh.add(event.entity());
         }
     }
 

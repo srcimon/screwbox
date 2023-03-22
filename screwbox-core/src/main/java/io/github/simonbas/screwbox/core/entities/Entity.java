@@ -41,8 +41,9 @@ public final class Entity implements Serializable {
         }
         components.put(componentClass, component);
 
+        final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
-            listener.componentAdded(this);
+            listener.componentAdded(event);
         }
         return this;
     }
@@ -67,9 +68,7 @@ public final class Entity implements Serializable {
     /**
      * Registers the specified {@link EntityListener} to receive Events for this
      * {@link Entity}. The {@link EntityListener} is notified on adding or removing
-     * {@link Component}.
-     * 
-     * {@link EntityListener}s don't survive serialization of the {@link Entity},
+     * {@link Component}. {@link EntityListener}s don't survive serialization of the {@link Entity},
      * because it's very unlikely that a listener-class can be serialized itself.
      */
     public void registerListener(final EntityListener listener) {
@@ -79,7 +78,7 @@ public final class Entity implements Serializable {
     /**
      * Checks if the given {@link Component}-class is present in this
      * {@link Entity}.
-     * 
+     *
      * @param componentClass the {@link Component}-class to check
      * @return {@code true} if the {@link Component}-class is present
      */
@@ -89,8 +88,9 @@ public final class Entity implements Serializable {
 
     public void remove(final Class<? extends Component> componentClass) {
         components.remove(componentClass);
+        final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
-            listener.componentRemoved(this);
+            listener.componentRemoved(event);
         }
     }
 

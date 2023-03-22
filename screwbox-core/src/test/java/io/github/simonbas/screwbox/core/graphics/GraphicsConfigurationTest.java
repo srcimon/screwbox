@@ -5,14 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -23,9 +22,6 @@ class GraphicsConfigurationTest {
 
     @Mock
     GraphicsConfigurationListener graphicsConfigListener;
-
-    @Captor
-    ArgumentCaptor<GraphicsConfigurationEvent> event;
 
     @BeforeEach
     void beforeEach() {
@@ -53,11 +49,13 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightmapBlur(2);
 
         assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
-        verifyEventForProperty(LIGHTMAP_BLUR);
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LIGHTMAP_BLUR)));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 0, 7 })
+    @ValueSource(ints = {0, 7})
     void setLightmapScale_outOfRange_throwsException(int resolution) {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(resolution))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -69,7 +67,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightmapScale(3);
 
         assertThat(graphicsConfiguration.lightmapScale()).isEqualTo(3);
-        verifyEventForProperty(LIGHTMAP_SCALE);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
     }
 
     @Test
@@ -77,7 +76,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setUseAntialiasing(true);
 
         assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
-        verifyEventForProperty(ANTIALIASING);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(ANTIALIASING)));
     }
 
     @Test
@@ -85,7 +85,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Dimension.of(640, 480));
-        verifyEventForProperty(RESOLUTION);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(RESOLUTION)));
     }
 
     @Test
@@ -104,7 +105,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verifyEventForProperty(WINDOW_MODE, 2);
+        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
+                event -> event.changedProperty().equals(WINDOW_MODE)));
     }
 
     @Test
@@ -116,15 +118,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialising();
 
         assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
-        verifyEventForProperty(ANTIALIASING, 2);
+        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
+                event -> event.changedProperty().equals(ANTIALIASING)));
     }
 
-    private void verifyEventForProperty(GraphicsConfigurationEvent.ConfigurationProperty property) {
-        verifyEventForProperty(property, 1);
-    }
-
-    private void verifyEventForProperty(GraphicsConfigurationEvent.ConfigurationProperty property, int count) {
-        verify(graphicsConfigListener, times(count)).configurationChanged(event.capture());
-        assertThat(event.getValue().changedProperty()).isEqualTo(property);
-    }
 }
