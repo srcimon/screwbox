@@ -27,7 +27,7 @@ public class InputReceivedScene implements Scene {
                     .filter(File::isFile)
                     .filter(File::exists)
                     .filter(file -> file.getName().endsWith(".pdf"))
-                    .map(pdfFile -> PDFToSprite.fromPdf(pdfFile))
+                    .flatMap(pdfFile -> PDFToSprite.fromPdf(pdfFile).stream())
                     .toList();
             engine.scenes().add(new SlideshowScene(sprites)).switchTo(SlideshowScene.class);
         });

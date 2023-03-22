@@ -9,12 +9,14 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated
 public class PDFToSprite {
 
-    public static Sprite fromPdf(File file) {
-
+    public static List<Sprite> fromPdf(File file) {
+        List<Sprite> sprites = new ArrayList<>();
         try {
             PDDocument document = null;
             document = PDDocument.load(file);
@@ -23,12 +25,12 @@ public class PDFToSprite {
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 double scale = 800.0 / bim.getHeight();
-                return Sprite.fromImage(ImageUtil.scale(bim, scale));
+                sprites.add(Sprite.fromImage(ImageUtil.scale(bim, scale)));
             }
             document.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return sprites;
     }
 }

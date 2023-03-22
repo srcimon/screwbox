@@ -11,7 +11,8 @@ public class SlideshowExample {
         Engine engine = ScrewBox.createEngine("Slideshow Example");
 
         engine.scenes().add(new WaitingForInputScene());
-
+        engine.graphics().restrictZoomRangeTo(0.1, 8);
+        engine.loop().setTargetFps(9999);
         engine.ui().setLayouter(new WobblyUiLayouter());
 
         engine.start(WaitingForInputScene.class);

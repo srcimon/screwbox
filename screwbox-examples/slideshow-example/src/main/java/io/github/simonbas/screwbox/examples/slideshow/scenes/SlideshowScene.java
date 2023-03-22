@@ -24,17 +24,24 @@ public class SlideshowScene implements Scene {
     public void initialize(Entities entities) {
         entities.add(new RenderSystem())
                 .add(engine -> {
+                    if (engine.loop().frameNumber() % 100 == 0) {
+                        engine.window().setTitle("currently running on " + engine.loop().fps() + " fps");
+                    }
+                })
+                .add(engine -> {
                     engine.graphics().updateCameraZoomBy(engine.mouse().unitsScrolled() / 10.0);
                     if (engine.mouse().isDown(MouseButton.LEFT)) {
                         engine.graphics().moveCameraBy(engine.mouse().drag());
                     }
                 });
 
-        entities.importSource(slides)
-                .as(sprite -> {
-                    return new Entity()
-                            .add(new TransformComponent(Bounds.atOrigin(0, 0, sprite.size().width(), sprite.size().height())))
-                            .add(new RenderComponent(sprite));
-                });
+        int currentX = 0;
+        for (var slide : slides) {
+            entities.add(new Entity()
+                    .add(new TransformComponent(Bounds.atOrigin(currentX, 0, slide.size().width(), slide.size().height())))
+                    .add(new RenderComponent(slide)));
+            currentX += slide.size().width() + 10;
+        }
+
     }
 }
