@@ -6,6 +6,7 @@ import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
 import io.github.simonbas.screwbox.core.graphics.internal.*;
 import io.github.simonbas.screwbox.core.window.Window;
+import io.github.simonbas.screwbox.core.window.WindowDropListener;
 
 import java.awt.*;
 import java.util.List;
@@ -38,11 +39,17 @@ public class DefaultWindow implements Window {
         this.executor = executor;
         this.screen = screen;
         configuration.addListener(event -> {
-            if (List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty()) && frame.isVisible()) {
+            final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
+            if (mustReopen && frame.isVisible()) {
                 close();
                 open();
             }
         });
+    }
+
+    @Override
+    public Window addDropListener(WindowDropListener listener) {
+        return null;
     }
 
     @Override
