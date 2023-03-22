@@ -27,6 +27,7 @@ public class DefaultWindow implements Window {
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
+    private final DragAndDropSupport dragAndDropSupport;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -38,6 +39,7 @@ public class DefaultWindow implements Window {
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
+        dragAndDropSupport = new DragAndDropSupport(frame);
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -49,7 +51,8 @@ public class DefaultWindow implements Window {
 
     @Override
     public Window addDropListener(WindowDropListener listener) {
-        return null;
+        dragAndDropSupport.addDropListener(listener);
+        return this;
     }
 
     @Override

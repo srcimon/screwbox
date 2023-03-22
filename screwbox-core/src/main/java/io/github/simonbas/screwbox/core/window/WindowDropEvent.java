@@ -2,7 +2,7 @@ package io.github.simonbas.screwbox.core.window;
 
 import io.github.simonbas.screwbox.core.graphics.Offset;
 
-import java.nio.file.Path;
+import java.io.File;
 import java.util.EventObject;
 import java.util.List;
 
@@ -12,12 +12,12 @@ import java.util.List;
 public class WindowDropEvent extends EventObject {
 
     private final Offset position;
-    private final List<Path> filePaths;
+    private final List<File> files;
 
-    public WindowDropEvent(final Object source, final Offset position, final List<Path> filePaths) {
+    public WindowDropEvent(final Object source, final Offset position, final List<File> files) {
         super(source);
         this.position = position;
-        this.filePaths = filePaths;
+        this.files = files;
     }
 
     /**
@@ -28,9 +28,9 @@ public class WindowDropEvent extends EventObject {
     }
 
     /**
-     * List of {@link Path}s of the files dropped on the {@link Window}. Is never empty.
+     * List of {@link File}s dropped on the {@link Window}. Is never empty.
      */
-    public List<Path> filePaths() {
-        return filePaths;
+    public List<File> files() {
+        return files;
     }
 }

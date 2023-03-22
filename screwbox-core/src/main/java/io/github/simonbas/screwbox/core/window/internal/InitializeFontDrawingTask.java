@@ -5,9 +5,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * Creates an image and draws text upon it. The first time this is done costs
- * around 0.4 sec. To speed up the engines start this should be called in
+ * around half a second. To speed up the engines start this should be called in
  * another thread.
- *
  */
 class InitializeFontDrawingTask implements Runnable {
 
