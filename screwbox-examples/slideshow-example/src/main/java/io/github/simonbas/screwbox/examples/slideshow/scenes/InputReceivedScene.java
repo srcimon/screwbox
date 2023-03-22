@@ -21,17 +21,14 @@ public class InputReceivedScene implements Scene {
         menu.addItem("preparing slideshow").activeCondition(e -> false);
         engine.ui().openMenu(menu);
 
-        engine.async().run(this, new Runnable() {
-            @Override
-            public void run() {
-                for (var file : inputFiles) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    engine.ui().currentMenu().get().addItem("loaded... " + file.getName());
+        engine.async().run(this, () -> {
+            for (var file : inputFiles) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+                engine.ui().currentMenu().get().addItem("loaded... " + file.getName());
             }
         });
 

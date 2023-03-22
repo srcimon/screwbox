@@ -53,4 +53,22 @@ class DefaultScenesTest {
         assertThat(scenes.isActive(GameScene.class)).isFalse();
     }
 
+    @Test
+    void addOrReplace_notPresent_onlyAdded() {
+        GameScene newScene = new GameScene();
+
+        scenes.addOrReplace(newScene);
+
+        assertThat(scenes.contains(GameScene.class)).isTrue();
+    }
+
+    @Test
+    void addOrReplace_present_replaced() {
+        GameScene newScene = new GameScene();
+        scenes.add(new GameScene());
+
+        scenes.addOrReplace(newScene);
+
+        assertThat(scenes.contains(GameScene.class)).isTrue();
+    }
 }

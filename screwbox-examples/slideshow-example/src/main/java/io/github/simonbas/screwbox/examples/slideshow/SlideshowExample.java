@@ -4,7 +4,6 @@ import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.ScrewBox;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
 import io.github.simonbas.screwbox.core.ui.WobblyUiLayouter;
-import io.github.simonbas.screwbox.core.window.WindowDropEvent;
 import io.github.simonbas.screwbox.examples.slideshow.scenes.InputReceivedScene;
 import io.github.simonbas.screwbox.examples.slideshow.scenes.WaitingForInputScene;
 
@@ -18,16 +17,12 @@ public class SlideshowExample {
         scenes.add(new WaitingForInputScene());
 
         engine.ui().setLayouter(new WobblyUiLayouter());
-        engine.window().addDropListener(dropEvent -> switchToInputReceived(scenes, dropEvent));
+
+        engine.window().addDropListener(dropEvent -> scenes
+                .addOrReplace(new InputReceivedScene(dropEvent.files()))
+                .switchTo(InputReceivedScene.class));
+
         engine.start(WaitingForInputScene.class);
     }
 
-    private static void switchToInputReceived(Scenes scenes, WindowDropEvent dropEvent) {
-        if (scenes.isActive(InputReceivedScene.class)) {
-            scenes.switchTo(WaitingForInputScene.class);
-            scenes.remove(InputReceivedScene.class);
-        }
-        scenes.add(new InputReceivedScene(dropEvent.files()));
-        scenes.switchTo(InputReceivedScene.class);
-    }
 }

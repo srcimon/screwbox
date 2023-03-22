@@ -58,6 +58,20 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
 
+    @Override
+    public Scenes addOrReplace(final Scene scene) {
+        final var sceneClass = scene.getClass();
+        if (contains(sceneClass)) {
+            remove(sceneClass);
+        }
+        add(scene);
+        return this;
+    }
+
+    @Override
+    public boolean contains(Class<? extends Scene> sceneClass) {
+        return scenes.containsKey(sceneClass);
+    }
 
     @Override
     public Scenes add(final Scene... scenes) {
