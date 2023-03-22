@@ -56,6 +56,12 @@ public class DefaultWindow implements Window {
     }
 
     @Override
+    public Window removeDropListener(WindowDropListener listener) {
+        dragAndDropSupport.removeDropListener(listener);
+        return this;
+    }
+
+    @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y);

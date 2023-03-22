@@ -35,6 +35,10 @@ public class DragAndDropSupport extends DropTargetAdapter {
         listeners.add(listener);
     }
 
+    public void removeDropListener(final WindowDropListener listener) {
+        listeners.remove(listener);
+    }
+
     @Override
     public void drop(final DropTargetDropEvent event) {
         event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
