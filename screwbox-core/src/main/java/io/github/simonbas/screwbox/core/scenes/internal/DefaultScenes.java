@@ -107,9 +107,9 @@ public class DefaultScenes implements Scenes, Updatable {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
             activeScene.scene().onExit(engine);
+            activeScene = nextActiveScene;
             nextActiveScene.scene().onEnter(engine);
         }
-        activeScene = nextActiveScene;
     }
 
     private Scenes add(final Scene scene) {
