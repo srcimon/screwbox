@@ -24,6 +24,7 @@ public class SlideshowScene implements Scene {
     public void initialize(Entities entities) {
         entities.add(new RenderSystem())
                 .add(engine -> {
+                    engine.graphics().updateCameraZoomBy(engine.mouse().unitsScrolled() / 10.0);
                     if (engine.mouse().isDown(MouseButton.LEFT)) {
                         engine.graphics().moveCameraBy(engine.mouse().drag());
                     }
