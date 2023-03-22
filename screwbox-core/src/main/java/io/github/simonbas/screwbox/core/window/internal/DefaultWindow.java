@@ -11,11 +11,11 @@ import java.awt.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.RESOLUTION;
-import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.WINDOW_MODE;
+import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
+import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
 
-public class DefaultWindow implements Window, GraphicsConfigurationListener {
+public class DefaultWindow implements Window {
 
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
@@ -37,7 +37,12 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
-        configuration.registerListener(this);
+        configuration.addListener(event -> {
+            if (List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty()) && frame.isVisible()) {
+                close();
+                open();
+            }
+        });
     }
 
     @Override
@@ -112,14 +117,6 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
     }
 
     @Override
-    public void configurationChanged(final ConfigurationProperty changedProperty) {
-        if (List.of(WINDOW_MODE, RESOLUTION).contains(changedProperty) && frame.isVisible()) {
-            close();
-            open();
-        }
-    }
-
-    @Override
     public boolean hasFocus() {
         return frame.hasFocus();
     }
@@ -150,6 +147,16 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return this;
     }
 
+    @Override
+    public String title() {
+        return frame.getTitle();
+    }
+
+    @Override
+    public Dimension size() {
+        return Dimension.of(frame.getWidth(), frame.getHeight());
+    }
+
     private Cursor cursorFrom(final MouseCursor cursor) {
         if (MouseCursor.DEFAULT == cursor) {
             return Cursor.getDefaultCursor();
@@ -169,15 +176,4 @@ public class DefaultWindow implements Window, GraphicsConfigurationListener {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
     }
-
-    @Override
-    public String title() {
-        return frame.getTitle();
-    }
-
-    @Override
-    public Dimension size() {
-        return Dimension.of(frame.getWidth(), frame.getHeight());
-    }
-
 }

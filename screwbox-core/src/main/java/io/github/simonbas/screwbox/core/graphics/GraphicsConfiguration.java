@@ -1,10 +1,12 @@
 package io.github.simonbas.screwbox.core.graphics;
 
+import io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty;
 import io.github.simonbas.screwbox.core.loop.Loop;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.*;
 import static java.util.Objects.requireNonNull;
 
 public class GraphicsConfiguration {
@@ -29,7 +31,7 @@ public class GraphicsConfiguration {
             throw new IllegalArgumentException("valid range for lightmap scale is 1 to 6");
         }
         this.lightmapScale = lightmapScale;
-        notifyListeners(GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_SCALE);
+        notifyListeners(LIGHTMAP_SCALE);
         return this;
     }
 
@@ -54,7 +56,7 @@ public class GraphicsConfiguration {
             throw new IllegalArgumentException("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
         }
         this.lightmapBlur = lightmapBlur;
-        notifyListeners(GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR);
+        notifyListeners(LIGHTMAP_BLUR);
         return this;
     }
 
@@ -74,7 +76,7 @@ public class GraphicsConfiguration {
      */
     public GraphicsConfiguration setUseAntialiasing(final boolean useAntialiasing) {
         this.useAntialiasing = useAntialiasing;
-        notifyListeners(GraphicsConfigurationListener.ConfigurationProperty.ANTIALIASING);
+        notifyListeners(ANTIALIASING);
         return this;
     }
 
@@ -85,7 +87,7 @@ public class GraphicsConfiguration {
 
     public GraphicsConfiguration setResolution(final Dimension resolution) {
         this.resolution = requireNonNull(resolution, "resolution must not be null");
-        notifyListeners(GraphicsConfigurationListener.ConfigurationProperty.RESOLUTION);
+        notifyListeners(RESOLUTION);
         return this;
     }
 
@@ -107,18 +109,12 @@ public class GraphicsConfiguration {
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         // TODO:non null
         this.fullscreen = fullscreen;
-        notifyListeners(GraphicsConfigurationListener.ConfigurationProperty.WINDOW_MODE);
+        notifyListeners(WINDOW_MODE);
         return this;
     }
 
-    public void registerListener(final GraphicsConfigurationListener listener) {
-        // TODO:non null
-        listeners.add(listener);
-    }
-
-    public void removeListener(final GraphicsConfigurationListener listener) {
-        // TODO:non null
-        listeners.remove(listener);
+    public void addListener(final GraphicsConfigurationListener listener) {
+        listeners.add(requireNonNull(listener, "listener must not be null"));
     }
 
     public Dimension resolution() {
@@ -138,9 +134,10 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
-    private void notifyListeners(final GraphicsConfigurationListener.ConfigurationProperty changedProperty) {
+    private void notifyListeners(final ConfigurationProperty changedProperty) {
+        GraphicsConfigurationEvent event = new GraphicsConfigurationEvent(this, changedProperty);
         for (final var listener : listeners) {
-            listener.configurationChanged(changedProperty);
+            listener.configurationChanged(event);
         }
     }
 

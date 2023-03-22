@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -47,7 +48,7 @@ class EntityTest {
 
         entity.add(new PhysicsBodyComponent());
 
-        verify(listener).componentAdded(entity);
+        verify(listener).componentAdded(argThat(event -> event.entity().equals(entity)));
     }
 
     @Test
@@ -113,7 +114,7 @@ class EntityTest {
 
         entity.remove(PhysicsBodyComponent.class);
 
-        verify(listener).componentRemoved(entity);
+        verify(listener).componentRemoved(argThat(event -> event.entity().equals(entity)));
     }
 
     @Test

@@ -2,15 +2,13 @@ package io.github.simonbas.screwbox.core.graphics;
 
 import java.util.EventListener;
 
+/**
+ * Listener interface for receiving {@link GraphicsConfigurationEvent}s.
+ */
 public interface GraphicsConfigurationListener extends EventListener {
 
-    enum ConfigurationProperty {
-        RESOLUTION,
-        WINDOW_MODE,
-        ANTIALIASING,
-        LIGHTMAP_BLUR,
-        LIGHTMAP_SCALE
-    }
-
-    void configurationChanged(ConfigurationProperty changedProperty);
+    /**
+     * invoked when a property of the {@link GraphicsConfiguration} is changed.
+     */
+    void configurationChanged(GraphicsConfigurationEvent event);
 }

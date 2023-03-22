@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.core.graphics;
 
-import io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +8,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -25,11 +26,11 @@ class GraphicsConfigurationTest {
     @BeforeEach
     void beforeEach() {
         graphicsConfiguration = new GraphicsConfiguration();
-        graphicsConfiguration.registerListener(graphicsConfigListener);
+        graphicsConfiguration.addListener(graphicsConfigListener);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { -1, 7 })
+    @ValueSource(ints = {-1, 7})
     void setLightmapBlur_outOfRange_throwsException(int blur) {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(blur))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -37,15 +38,24 @@ class GraphicsConfigurationTest {
     }
 
     @Test
+    void addListener_listenerNull_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.addListener(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("listener must not be null");
+    }
+
+    @Test
     void setLightmapBlur_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setLightmapBlur(2);
 
         assertThat(graphicsConfiguration.lightmapBlur()).isEqualTo(2);
-        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_BLUR);
+
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LIGHTMAP_BLUR)));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 0, 7 })
+    @ValueSource(ints = {0, 7})
     void setLightmapScale_outOfRange_throwsException(int resolution) {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(resolution))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -57,7 +67,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setLightmapScale(3);
 
         assertThat(graphicsConfiguration.lightmapScale()).isEqualTo(3);
-        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.LIGHTMAP_SCALE);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(LIGHTMAP_SCALE)));
     }
 
     @Test
@@ -65,7 +76,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setUseAntialiasing(true);
 
         assertThat(graphicsConfiguration.isUseAntialising()).isTrue();
-        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.ANTIALIASING);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(ANTIALIASING)));
     }
 
     @Test
@@ -73,7 +85,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.setResolution(640, 480);
 
         assertThat(graphicsConfiguration.resolution()).isEqualTo(Dimension.of(640, 480));
-        verify(graphicsConfigListener).configurationChanged(ConfigurationProperty.RESOLUTION);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(RESOLUTION)));
     }
 
     @Test
@@ -92,7 +105,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleFullscreen();
 
         assertThat(graphicsConfiguration.isFullscreen()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.WINDOW_MODE);
+        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
+                event -> event.changedProperty().equals(WINDOW_MODE)));
     }
 
     @Test
@@ -104,6 +118,8 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.toggleAntialising();
 
         assertThat(graphicsConfiguration.isUseAntialising()).isFalse();
-        verify(graphicsConfigListener, times(2)).configurationChanged(ConfigurationProperty.ANTIALIASING);
+        verify(graphicsConfigListener, times(2)).configurationChanged(argThat(
+                event -> event.changedProperty().equals(ANTIALIASING)));
     }
+
 }

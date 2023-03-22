@@ -66,7 +66,6 @@ class DefaultEngine implements Engine {
         final WindowFrame frame = isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
         frame.addWindowListener(new WindowAdapter() {
-
             @Override
             public void windowClosing(WindowEvent e) {
                 stop();

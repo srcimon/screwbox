@@ -15,11 +15,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
-import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationListener.ConfigurationProperty.LIGHTMAP_BLUR;
+import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
 import static io.github.simonbas.screwbox.core.graphics.Offset.origin;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultLight implements Light, Updatable, GraphicsConfigurationListener {
+public class DefaultLight implements Light, Updatable {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
@@ -39,7 +39,13 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
-        configuration.registerListener(this);
+        configuration.addListener(event -> {
+            if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
+                postFilter = configuration.lightmapBlur() == 0
+                        ? doNothing -> doNothing
+                        : new BlurImageFilter(configuration.lightmapBlur());
+            }
+        });
         initLightmap();
     }
 
@@ -171,19 +177,6 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
     }
 
     @Override
-    public void configurationChanged(final ConfigurationProperty changedProperty) {
-        if (LIGHTMAP_BLUR.equals(changedProperty)) {
-            postFilter = configuration.lightmapBlur() == 0
-                    ? doNothing -> doNothing
-                    : new BlurImageFilter(configuration.lightmapBlur());
-        }
-    }
-
-    private boolean isVisible(final Bounds lightBox) {
-        return screen.isVisible(world.toWindowBounds(lightBox));
-    }
-
-    @Override
     public void update() {
         initLightmap();
         tasks.clear();
@@ -191,8 +184,11 @@ public class DefaultLight implements Light, Updatable, GraphicsConfigurationList
         lightPhysics.shadowCasters().clear();
     }
 
+    private boolean isVisible(final Bounds lightBox) {
+        return screen.isVisible(world.toWindowBounds(lightBox));
+    }
+
     private void initLightmap() {
         lightmap = new Lightmap(screen.size(), configuration.lightmapScale());
     }
-
 }
