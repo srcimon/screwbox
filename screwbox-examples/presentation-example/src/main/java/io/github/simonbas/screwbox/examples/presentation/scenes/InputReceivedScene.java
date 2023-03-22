@@ -31,6 +31,7 @@ public class InputReceivedScene implements Scene {
                     .flatMap(pdfFile -> PDFToSprite.fromPdf(pdfFile).stream())
                     .toList();
             engine.scenes().add(new PresentationScene(sprites)).switchTo(PresentationScene.class);
+            engine.graphics().configuration().toggleFullscreen();
         });
     }
 
