@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultScenesTest {
@@ -24,7 +26,7 @@ class DefaultScenesTest {
 
     @Test
     void sceneCount_isCountOfScenes() {
-        scenes.add(Mockito.mock(Scene.class));
+        scenes.add(mock(Scene.class));
 
         assertThat(scenes.sceneCount()).isEqualTo(2);
     }
@@ -53,4 +55,35 @@ class DefaultScenesTest {
         assertThat(scenes.isActive(GameScene.class)).isFalse();
     }
 
+    @Test
+    void addOrReplace_notPresent_onlyAdded() {
+        GameScene newScene = new GameScene();
+
+        scenes.addOrReplace(newScene);
+
+        assertThat(scenes.contains(GameScene.class)).isTrue();
+    }
+
+    @Test
+    void addOrReplace_present_replaced() {
+        GameScene newScene = new GameScene();
+        scenes.add(new GameScene());
+
+        scenes.addOrReplace(newScene);
+
+        assertThat(scenes.contains(GameScene.class)).isTrue();
+    }
+
+    @Test
+    void update_withSceneChange_initializesAndEntersScene() {
+        var firstScene = mock(Scene.class);
+        scenes.add(firstScene);
+
+        scenes.switchTo(firstScene.getClass());
+
+        scenes.update();
+
+        verify(firstScene).initialize(any());
+        verify(firstScene).onEnter(engine);
+    }
 }

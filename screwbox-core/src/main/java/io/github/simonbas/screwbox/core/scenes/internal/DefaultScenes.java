@@ -58,6 +58,20 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
 
+    @Override
+    public Scenes addOrReplace(final Scene scene) {
+        final var sceneClass = scene.getClass();
+        if (contains(sceneClass)) {
+            remove(sceneClass);
+        }
+        add(scene);
+        return this;
+    }
+
+    @Override
+    public boolean contains(Class<? extends Scene> sceneClass) {
+        return scenes.containsKey(sceneClass);
+    }
 
     @Override
     public Scenes add(final Scene... scenes) {
@@ -93,9 +107,9 @@ public class DefaultScenes implements Scenes, Updatable {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
             activeScene.scene().onExit(engine);
+            activeScene = nextActiveScene;
             nextActiveScene.scene().onEnter(engine);
         }
-        activeScene = nextActiveScene;
     }
 
     private Scenes add(final Scene scene) {

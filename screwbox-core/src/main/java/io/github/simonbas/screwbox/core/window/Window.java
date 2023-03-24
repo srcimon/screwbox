@@ -17,9 +17,19 @@ public interface Window {
     Window moveTo(Offset position);
 
     /**
+     * Adds a {@link WindowDropListener} to receive {@link WindowDropEvent}s from {@link Window}.
+     */
+    Window addDropListener(WindowDropListener listener);
+
+    /**
+     * Removes an {@link WindowDropListener} from the current listeners.
+     */
+    Window removeDropListener(WindowDropListener listener);
+
+    /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * fullscreen and window mode.
-     * 
+     *
      * @see #setFullscreenCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
      */

@@ -1,5 +1,7 @@
 package io.github.simonbas.screwbox.core.ui;
 
+import java.util.Optional;
+
 public interface Ui {
 
     Ui openMenu(UiMenu menu);
@@ -11,4 +13,7 @@ public interface Ui {
     Ui setLayouter(UiLayouter layouter);
 
     Ui closeMenu();
+
+    Optional<UiMenu> currentMenu();
+
 }

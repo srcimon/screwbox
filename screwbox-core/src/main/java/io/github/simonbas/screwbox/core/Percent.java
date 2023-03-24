@@ -45,7 +45,7 @@ public class Percent implements Serializable {
     /**
      * Returns 75 percent.
      */
-    public static Percent threeQuarters() {
+    public static Percent threeQuarter() {
         return THREE_QUARTER_PERCENT;
     }
 

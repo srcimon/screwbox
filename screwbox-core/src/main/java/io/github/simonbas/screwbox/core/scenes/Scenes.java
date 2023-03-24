@@ -4,6 +4,10 @@ import io.github.simonbas.screwbox.core.entities.Entities;
 
 public interface Scenes {
 
+    Scenes addOrReplace(Scene scene);
+
+    boolean contains(Class<? extends Scene> sceneClass);
+
     Scenes add(Scene... scenes);
 
     Scenes switchTo(Class<? extends Scene> sceneClass);

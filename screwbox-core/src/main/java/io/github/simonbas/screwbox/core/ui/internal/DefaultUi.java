@@ -74,6 +74,11 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
+    public Optional<UiMenu> currentMenu() {
+        return currentMenu;
+    }
+
+    @Override
     public Ui setLayouter(final UiLayouter layouter) {
         this.layouter = layouter;
         return this;

@@ -6,6 +6,7 @@ import io.github.simonbas.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.simonbas.screwbox.core.graphics.*;
 import io.github.simonbas.screwbox.core.graphics.internal.*;
 import io.github.simonbas.screwbox.core.window.Window;
+import io.github.simonbas.screwbox.core.window.WindowDropListener;
 
 import java.awt.*;
 import java.util.List;
@@ -26,6 +27,7 @@ public class DefaultWindow implements Window {
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
+    private final DragAndDropSupport dragAndDropSupport;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -37,12 +39,26 @@ public class DefaultWindow implements Window {
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
+        dragAndDropSupport = new DragAndDropSupport(frame);
         configuration.addListener(event -> {
-            if (List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty()) && frame.isVisible()) {
+            final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
+            if (mustReopen && frame.isVisible()) {
                 close();
                 open();
             }
         });
+    }
+
+    @Override
+    public Window addDropListener(WindowDropListener listener) {
+        dragAndDropSupport.addDropListener(listener);
+        return this;
+    }
+
+    @Override
+    public Window removeDropListener(WindowDropListener listener) {
+        dragAndDropSupport.removeDropListener(listener);
+        return this;
     }
 
     @Override
