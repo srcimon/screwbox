@@ -3,7 +3,7 @@ package io.github.simonbas.screwbox.examples.presentation.scenes;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
-import io.github.simonbas.screwbox.examples.presentation.PDFToSprite;
+import io.github.simonbas.screwbox.examples.presentation.PdfToImageConverter;
 
 import java.io.File;
 import java.util.List;
@@ -24,14 +24,13 @@ public class InputReceivedScene implements Scene {
 
         engine.async().run(this, () -> {
 
-            var sprites = inputFiles.stream()
+            var images = inputFiles.stream()
                     .filter(File::isFile)
                     .filter(File::exists)
                     .filter(file -> file.getName().endsWith(".pdf"))
-                    .flatMap(pdfFile -> PDFToSprite.fromPdf(pdfFile).stream())
+                    .flatMap(pdfFile -> PdfToImageConverter.convertPdfToImage(pdfFile, 400).stream())
                     .toList();
-            engine.scenes().add(new PresentationScene(sprites)).switchTo(PresentationScene.class);
-            engine.graphics().configuration().toggleFullscreen();
+            engine.scenes().add(new PresentationScene(images)).switchTo(PresentationScene.class);
         });
     }
 
