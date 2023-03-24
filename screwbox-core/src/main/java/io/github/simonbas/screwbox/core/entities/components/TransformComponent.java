@@ -21,4 +21,8 @@ public final class TransformComponent implements Component {
     public TransformComponent(final Vector position, double width, double height) {
         this(Bounds.atPosition(position, width, height));
     }
+
+    public TransformComponent(final double x, final double y, double width, double height) {
+        this(Bounds.atPosition(x, y, width, height));
+    }
 }

@@ -1,11 +1,14 @@
 package io.github.simonbas.screwbox.examples.presentation.scenes;
 
 import io.github.simonbas.screwbox.core.Bounds;
+import io.github.simonbas.screwbox.core.Percent;
 import io.github.simonbas.screwbox.core.entities.Entities;
 import io.github.simonbas.screwbox.core.entities.Entity;
+import io.github.simonbas.screwbox.core.entities.components.ReflectionComponent;
 import io.github.simonbas.screwbox.core.entities.components.RenderComponent;
 import io.github.simonbas.screwbox.core.entities.components.TransformComponent;
 import io.github.simonbas.screwbox.core.entities.systems.LogFpsSystem;
+import io.github.simonbas.screwbox.core.entities.systems.ReflectionRenderSystem;
 import io.github.simonbas.screwbox.core.entities.systems.RenderSystem;
 import io.github.simonbas.screwbox.core.graphics.Sprite;
 import io.github.simonbas.screwbox.core.graphics.internal.ImageUtil;
@@ -28,6 +31,7 @@ public class PresentationScene implements Scene {
     public void initialize(Entities entities) {
         entities.add(new RenderSystem())
                 .add(new LogFpsSystem())
+                .add(new ReflectionRenderSystem())
                 .add(engine -> {
                     engine.graphics().updateCameraZoomBy(engine.mouse().unitsScrolled() / 10.0);
                     if (engine.mouse().isDown(MouseButton.LEFT)) {
@@ -36,6 +40,7 @@ public class PresentationScene implements Scene {
                 });
         var size = 16;
         var xOffset = 0;
+        var maxY = 0;
         for (var slide : slides) {
             BufferedImage image = ImageUtil.toBufferedImage(slide);
             for (int x = 0; x <= slide.getWidth(null) - size; x += 16) {
@@ -44,10 +49,11 @@ public class PresentationScene implements Scene {
                     entities.add(new Entity()
                             .add(new TransformComponent(Bounds.atOrigin(xOffset, y, 16, 16)))
                             .add(new RenderComponent(sprite)));
+                    maxY = Math.max(maxY, y);
                 }
                 xOffset += size;
             }
         }
-
+        entities.add(new Entity().add(new ReflectionComponent(Percent.threeQuarter(), true)).add(new TransformComponent(0, maxY, xOffset, 10000)));
     }
 }
