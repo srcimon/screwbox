@@ -57,6 +57,16 @@ class DefaultScenesTest {
     }
 
     @Test
+    void remove_isNextActiveScene_throwsException() {
+        scenes.add(new GameScene());
+        scenes.switchTo(GameScene.class);
+
+        assertThatThrownBy(() -> scenes.remove(GameScene.class))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cannot remove active scene");
+    }
+
+    @Test
     void activeScene_noSceneAdded_isDefaultScene() {
         assertThat(scenes.activeScene()).isEqualTo(DefaultScene.class);
     }
