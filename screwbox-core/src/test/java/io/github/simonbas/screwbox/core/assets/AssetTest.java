@@ -27,7 +27,7 @@ class AssetTest {
 
     @Test
     void load_supplierReturnsNull_throwsException() {
-        Asset<String> nullAfterLoadingAsset = Asset.asset((Supplier<String>) () -> null);
+        Asset<String> nullAfterLoadingAsset = Asset.asset(() -> null);
 
         assertThatThrownBy(nullAfterLoadingAsset::load)
                 .isInstanceOf(IllegalStateException.class)

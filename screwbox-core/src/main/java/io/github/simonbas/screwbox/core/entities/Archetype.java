@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class Archetype implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Collection<Class<? extends Component>> componentClasses;

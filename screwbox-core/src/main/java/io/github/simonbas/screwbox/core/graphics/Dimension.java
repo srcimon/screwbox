@@ -32,8 +32,8 @@ public class Dimension implements Serializable, Comparable<Dimension> {
      * Returns a new instance of {@link Dimension} with the given {@link #width()}
      * as {@link #width()} and {@link #height()}.
      */
-    public static Dimension square(int width) {
-        return of(width, width);
+    public static Dimension square(int sideLength) {
+        return of(sideLength, sideLength);
     }
 
     private Dimension(final int width, final int height) {

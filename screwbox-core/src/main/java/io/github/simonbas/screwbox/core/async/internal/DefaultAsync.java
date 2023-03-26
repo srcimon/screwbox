@@ -24,7 +24,7 @@ public class DefaultAsync implements Async {
     @Override
     public boolean hasActiveTasks(final Object context) {
         requireNonNull(context, "context must not be null");
-        return runningTasks.values().contains(context);
+        return runningTasks.containsValue(context);
     }
 
     @Override
