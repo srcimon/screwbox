@@ -22,7 +22,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype RELECTED_ENTITIES = Archetype.of(
             TransformComponent.class, RenderComponent.class);
 
-    private final class ReflectionArea {
+    private static final class ReflectionArea {
 
         private final double opacityModifier;
         private final Bounds area;

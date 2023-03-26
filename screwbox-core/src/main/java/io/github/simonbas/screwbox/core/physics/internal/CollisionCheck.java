@@ -37,11 +37,11 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     }
 
     public boolean isNoOneWayFalsePositive() {
-        return !colliderComponent.isOneWay || (colliderComponent.isOneWay
-                && colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().bounds.maxY()
-                && physicsBodyComponent != null
-                && physicsBodyComponent.momentum.y() >= 0
-                && !physicsBodyComponent.ignoreOneWayCollisions);
+        return !colliderComponent.isOneWay || (
+                colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().bounds.maxY()
+                        && physicsBodyComponent != null
+                        && physicsBodyComponent.momentum.y() >= 0
+                        && !physicsBodyComponent.ignoreOneWayCollisions);
     }
 
     public boolean isNoSelfCollision() {

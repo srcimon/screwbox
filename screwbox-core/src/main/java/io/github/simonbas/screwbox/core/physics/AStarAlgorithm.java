@@ -10,8 +10,8 @@ import static java.util.Objects.isNull;
 
 /**
  * An implementation of the A* algorithm.
- *
- * @see https://en.wikipedia.org/wiki/A*_search_algorithm
+ * <p>
+ * See <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>
  */
 public class AStarAlgorithm implements PathfindingAlgorithm {
 
@@ -28,7 +28,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
         }
     }
 
-    private class AStarSearch {
+    private static class AStarSearch {
 
         private Grid grid;
         private Node start;

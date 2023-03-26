@@ -50,7 +50,6 @@ public final class Angle implements Serializable, Comparable<Angle> {
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      * 
-     * 
      * @see #ofMomentum(double, double)
      */
     public static Angle ofMomentum(final Vector momentum) {

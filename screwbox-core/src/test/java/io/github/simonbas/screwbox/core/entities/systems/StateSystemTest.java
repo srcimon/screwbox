@@ -16,12 +16,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ExtendWith(EntitiesExtension.class)
 class StateSystemTest {
 
-    private class CounterComponent implements Component {
+    private static class CounterComponent implements Component {
         private static final long serialVersionUID = 1L;
         public int count = 0;
     }
 
-    private class NextStateIsNull implements EntityState {
+    private static class NextStateIsNull implements EntityState {
 
         private static final long serialVersionUID = 1L;
 
