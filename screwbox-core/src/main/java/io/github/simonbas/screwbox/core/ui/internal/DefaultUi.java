@@ -15,7 +15,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
 
-    private Optional<UiMenu> currentMenu = Optional.empty();
+    private UiMenu currentMenu = null;
 
     public DefaultUi(final Engine engine) {
         this.engine = engine;
@@ -23,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui openMenu(final UiMenu menu) {
-        currentMenu = Optional.of(menu);
+        currentMenu = menu;
         return this;
     }
 
@@ -69,13 +69,13 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui closeMenu() {
-        currentMenu = Optional.empty();
+        currentMenu = null;
         return this;
     }
 
     @Override
     public Optional<UiMenu> currentMenu() {
-        return currentMenu;
+        return Optional.ofNullable(currentMenu);
     }
 
     @Override

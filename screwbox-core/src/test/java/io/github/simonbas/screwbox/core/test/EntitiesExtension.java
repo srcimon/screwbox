@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
     private final Map<Class<?>, Object> parameters = new HashMap<>();
-    private DefaultEntities entities;
 
     @Override
     public void beforeEach(final ExtensionContext context) throws Exception {
@@ -35,7 +34,7 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         final var keyboard = Mockito.mock(Keyboard.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
-        entities = new DefaultEntities(engine);
+        final var entities = new DefaultEntities(engine);
 
         // resolve a real entity engine with many mocked subsystems
         when(engine.entities()).thenReturn(entities);
