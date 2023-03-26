@@ -32,7 +32,7 @@ class StateSystemTest {
 
     }
 
-    private class BoringState implements EntityState {
+    private static class BoringState implements EntityState {
 
         private static final long serialVersionUID = 1L;
 
