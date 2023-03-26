@@ -20,7 +20,7 @@ public enum Borders {
 
     private final Function<Bounds, List<Segment>> extractSegmentsMethod;
 
-    private Borders(final Function<Bounds, List<Segment>> extractSegmentsMethod) {
+    Borders(final Function<Bounds, List<Segment>> extractSegmentsMethod) {
         this.extractSegmentsMethod = extractSegmentsMethod;
     }
 

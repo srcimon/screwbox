@@ -11,9 +11,8 @@ import java.util.Optional;
 /**
  * {@link Bounds} represents a space in the 2d world. It's defined by its
  * {@link Bounds#position()} (center of the area) and its {@link #extents()}
- * (the {@link Vector} from the center to it's lower right corner.
- * 
- * The {@link #origin()} defines the upper left corner.
+ * (the {@link Vector} from the center to it's lower right corner. The {@link #origin()}
+ * defines the upper left corner.
  */
 public final class Bounds implements Serializable {
 
@@ -26,7 +25,7 @@ public final class Bounds implements Serializable {
 
     /**
      * Creates a new {@link Bounds} at the given {@link #position()}.
-     * 
+     *
      * @see #atOrigin
      */
     public static Bounds atPosition(final double x, final double y, final double width, final double height) {
@@ -35,7 +34,7 @@ public final class Bounds implements Serializable {
 
     /**
      * Creates a new {@link Bounds} at the given {@link #position()}.
-     * 
+     *
      * @see #atOrigin
      */
     public static Bounds atPosition(final Vector position, final double width, final double height) {
@@ -44,7 +43,7 @@ public final class Bounds implements Serializable {
 
     /**
      * Creates a new {@link Bounds} at the given {@link #origin()}.
-     * 
+     *
      * @see #atPosition
      */
     public static Bounds atOrigin(final Vector origin, final double width, final double height) {
@@ -54,7 +53,7 @@ public final class Bounds implements Serializable {
     /**
      * Creates a new {@link Bounds} at the given {@link #origin()}. Short form of
      * {@link #atOrigin(double, double, double, double)}
-     * 
+     *
      * @see #atPosition
      */
     public static Bounds $$(final double x, final double y, final double width, final double height) {
@@ -63,7 +62,7 @@ public final class Bounds implements Serializable {
 
     /**
      * Creates a new {@link Bounds} at the given {@link #origin()}.
-     * 
+     *
      * @see #atPosition
      * @see #$$(double, double, double, double)
      */
@@ -107,7 +106,7 @@ public final class Bounds implements Serializable {
      * Returns a instance of this {@link Bounds} that was moved by the given
      * {@link Vector} to a new position. {@link #width()} and {@link #height()} stay
      * the same.
-     * 
+     *
      * @see #moveBy(double, double)
      * @see #moveTo(Vector)
      */
@@ -119,7 +118,7 @@ public final class Bounds implements Serializable {
      * Returns a instance of this {@link Bounds} that was moved by the given X and Y
      * values to a new position. {@link #width()} and {@link #height()} stay the
      * same.
-     * 
+     *
      * @see #moveBy(Vector)
      * @see #moveTo(Vector)
      */
@@ -130,7 +129,7 @@ public final class Bounds implements Serializable {
     /**
      * Returns a instance of this {@link Bounds} that was moved to the given
      * {@link #position}. {@link #width()} and {@link #height()} stay the same.
-     * 
+     *
      * @see #moveBy(Vector)
      * @see #moveBy(double, double)
      */
@@ -169,7 +168,7 @@ public final class Bounds implements Serializable {
     /**
      * Checks if this {@link Bounds} touches another {@link Bounds}. Is also
      * {@code true} if it {@link #intersects(Bounds)} the other {@link Bounds}.
-     * 
+     *
      * @see #intersects(Bounds)
      */
     public boolean touches(final Bounds other) {
@@ -178,7 +177,7 @@ public final class Bounds implements Serializable {
 
     /**
      * Checks if this {@link Bounds} intersects another {@link Bounds}.
-     * 
+     *
      * @see #touches(Bounds)
      * @see #intersection(Bounds)
      */
@@ -278,7 +277,7 @@ public final class Bounds implements Serializable {
      * Returns the intersection area between this {@link Bounds} and the other
      * {@link Bounds}. Returns {@link Optional#empty()} if there is no intersection
      * between both {@link Bounds}.
-     * 
+     *
      * @see #intersects(Bounds)
      */
     public Optional<Bounds> intersection(final Bounds other) {
@@ -301,7 +300,7 @@ public final class Bounds implements Serializable {
     /**
      * Returns only the {@link Bounds} that intersect this {@link Bounds}.
      */
-    public final List<Bounds> allIntersecting(final List<Bounds> others) {
+    public List<Bounds> allIntersecting(final List<Bounds> others) {
         final List<Bounds> intersecting = new ArrayList<>();
         for (final var other : others) {
             if (intersects(other)) {

@@ -13,7 +13,7 @@ public interface Loop {
     /**
      * The minimum target frames per second.
      */
-    public static final int MIN_TARGET_FPS = 120;
+    int MIN_TARGET_FPS = 120;
 
     /**
      * Sets the games target frames per second. Default value is

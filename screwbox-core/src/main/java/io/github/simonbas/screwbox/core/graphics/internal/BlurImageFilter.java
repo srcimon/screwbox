@@ -3,6 +3,7 @@ package io.github.simonbas.screwbox.core.graphics.internal;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.Arrays;
 import java.util.function.UnaryOperator;
 
 public class BlurImageFilter implements UnaryOperator<BufferedImage> {
@@ -13,9 +14,7 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         final float weight = 1f / (radius * radius);
         final float[] data = new float[radius * radius];
 
-        for (int i = 0; i < data.length; i++) {
-            data[i] = weight;
-        }
+        Arrays.fill(data, weight);
 
         final Kernel kernel = new Kernel(radius, radius, data);
         convolveOperation = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);

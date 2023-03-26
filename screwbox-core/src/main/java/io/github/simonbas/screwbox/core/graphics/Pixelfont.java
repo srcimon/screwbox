@@ -41,7 +41,7 @@ public class Pixelfont implements Serializable {
      */
     public static Pixelfont defaultFont(final Color color) {
         final Color newColor = requireNonNull(color, "Color must not be null.");
-        return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceColor(Color.BLACK, newColor));
+        return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceBlack(newColor));
     }
 
     private static Pixelfont defaultFontBlack() {
@@ -156,11 +156,11 @@ public class Pixelfont implements Serializable {
         return height;
     }
 
-    private Pixelfont replaceColor(final Color oldColor, final Color newColor) {
+    private Pixelfont replaceBlack(final Color newColor) {
         final Pixelfont newFont = new Pixelfont();
 
         for (final var character : characters.entrySet()) {
-            final Sprite recoloredSprite = character.getValue().replaceColor(oldColor, newColor);
+            final Sprite recoloredSprite = character.getValue().replaceColor(Color.BLACK, newColor);
             newFont.addCharacter(character.getKey(), recoloredSprite);
         }
         newFont.setPadding(padding);

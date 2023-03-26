@@ -10,8 +10,8 @@ import static java.util.Collections.emptyList;
 
 /**
  * An implementation of the Dijkstra algorithm.
- * 
- * @see https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ * <p>
+ * See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Wikipedia</a>
  */
 public class DijkstraAlgorithm implements PathfindingAlgorithm {
 

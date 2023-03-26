@@ -7,7 +7,6 @@ import io.github.simonbas.screwbox.core.entities.SystemOrder;
 import io.github.simonbas.screwbox.core.utils.Cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class SystemManager {
             pendingSystemsToAdd.add(system);
         } else {
             systems.add(system);
-            Collections.sort(systems, SYSTEM_COMPARATOR);
+            systems.sort(SYSTEM_COMPARATOR);
         }
     }
 

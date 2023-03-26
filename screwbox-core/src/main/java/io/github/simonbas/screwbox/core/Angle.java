@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import static java.util.Objects.requireNonNull;
  */
 public final class Angle implements Serializable, Comparable<Angle> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final double MIN_VALUE = 0;
@@ -49,8 +51,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
      * Returns the {@link Angle}-value of an objects momentum. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
-     * 
-     * 
+     *
      * @see #ofMomentum(double, double)
      */
     public static Angle ofMomentum(final Vector momentum) {

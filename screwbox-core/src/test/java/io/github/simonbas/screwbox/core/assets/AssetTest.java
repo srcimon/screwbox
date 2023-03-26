@@ -27,7 +27,7 @@ class AssetTest {
 
     @Test
     void load_supplierReturnsNull_throwsException() {
-        Asset<String> nullAfterLoadingAsset = Asset.asset((Supplier<String>) () -> null);
+        Asset<String> nullAfterLoadingAsset = Asset.asset(() -> null);
 
         assertThatThrownBy(nullAfterLoadingAsset::load)
                 .isInstanceOf(IllegalStateException.class)
@@ -36,7 +36,7 @@ class AssetTest {
 
     @Test
     void load_alreadyLoaded_doenstLoadAgain() {
-        Asset<Time> timeAsset = Asset.asset(() -> Time.now());
+        Asset<Time> timeAsset = Asset.asset(Time::now);
         asset.load();
         Time value = timeAsset.get();
 

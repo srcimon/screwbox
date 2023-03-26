@@ -19,10 +19,10 @@ public final class ImageUtil {
 
             // the color we are looking for... Alpha bits are set to opaque
 
-            int markerRGB = AwtMapper.toAwtColor(transparencyColor).getRGB() | 0xFF000000;
+            final int markerRGB = AwtMapper.toAwtColor(transparencyColor).getRGB() | 0xFF000000;
 
             @Override
-            public final int filterRGB(final int x, final int y, final int rgb) {
+            public int filterRGB(final int x, final int y, final int rgb) {
                 if ((rgb | 0xFF000000) == markerRGB) {
                     // Mark the alpha bits as zero - transparent
                     return 0x00FFFFFF & rgb;

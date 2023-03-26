@@ -22,5 +22,5 @@ public enum MouseButton {
     /**
      * The right mouse button.
      */
-    RIGHT;
+    RIGHT
 }

@@ -40,9 +40,8 @@ public class LetsGoSystem implements EntitySystem {
         for (Entity bubble : engine.entities().fetchAll(BUBBLES)) {
             final var bubbleTranform = bubble.get(TransformComponent.class);
             var letsGoComponent = bubble.get(LetsGoComponent.class);
-            Bounds updatedBounds = bubbleTranform.bounds
+            bubbleTranform.bounds = bubbleTranform.bounds
                     .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
-            bubbleTranform.bounds = updatedBounds;
 
             Vector postion = bubbleTranform.bounds.position();
             engine.graphics().world().drawTextCentered(postion, "LET'S GO", defaultFont(WHITE),

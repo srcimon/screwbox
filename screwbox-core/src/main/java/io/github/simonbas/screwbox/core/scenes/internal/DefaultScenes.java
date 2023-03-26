@@ -45,7 +45,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
-        if (activeScene.getClass().equals(sceneClass) || nextActiveScene.getClass().equals(sceneClass)) {
+        if (activeScene.scene.getClass().equals(sceneClass) || nextActiveScene.scene.getClass().equals(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
         scenes.remove(sceneClass);

@@ -7,6 +7,8 @@ import io.github.simonbas.screwbox.core.ui.*;
 
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+
 public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
@@ -15,7 +17,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
 
-    private Optional<UiMenu> currentMenu = Optional.empty();
+    private UiMenu currentMenu = null;
 
     public DefaultUi(final Engine engine) {
         this.engine = engine;
@@ -23,14 +25,14 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui openMenu(final UiMenu menu) {
-        currentMenu = Optional.of(menu);
+        currentMenu = menu;
         return this;
     }
 
     @Override
     public void update() {
-        if (currentMenu.isPresent()) {
-            final var menu = currentMenu.get();
+        if (nonNull(currentMenu)) {
+            var menu = currentMenu;
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
@@ -69,13 +71,13 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui closeMenu() {
-        currentMenu = Optional.empty();
+        currentMenu = null;
         return this;
     }
 
     @Override
     public Optional<UiMenu> currentMenu() {
-        return currentMenu;
+        return Optional.ofNullable(currentMenu);
     }
 
     @Override
