@@ -22,8 +22,7 @@ public class PlayerControlSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var player = engine.entities().forcedFetch(PLAYER);
-        final Vector momentum = determinMomemntum(engine.keyboard());
-        player.get(PhysicsBodyComponent.class).momentum = momentum;
+        player.get(PhysicsBodyComponent.class).momentum = determinMomemntum(engine.keyboard());
 
         if (engine.keyboard().justPressed(Key.SPACE)) {
 

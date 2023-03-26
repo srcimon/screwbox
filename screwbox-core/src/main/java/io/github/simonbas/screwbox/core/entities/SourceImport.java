@@ -24,7 +24,7 @@ public final class SourceImport<T> {
 
         public SourceImport<T> as(final Converter<T> converter) {
             inputs.stream()
-                    .filter(condition::test)
+                    .filter(condition)
                     .map(converter::convert)
                     .forEach(engine::add);
 

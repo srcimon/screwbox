@@ -300,7 +300,7 @@ public final class Bounds implements Serializable {
     /**
      * Returns only the {@link Bounds} that intersect this {@link Bounds}.
      */
-    public final List<Bounds> allIntersecting(final List<Bounds> others) {
+    public List<Bounds> allIntersecting(final List<Bounds> others) {
         final List<Bounds> intersecting = new ArrayList<>();
         for (final var other : others) {
             if (intersects(other)) {
