@@ -7,6 +7,8 @@ import io.github.simonbas.screwbox.core.ui.*;
 
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+
 public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
@@ -29,8 +31,8 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public void update() {
-        if (currentMenu.isPresent()) {
-            final var menu = currentMenu.get();
+        if (nonNull(currentMenu)) {
+            var menu = currentMenu;
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);

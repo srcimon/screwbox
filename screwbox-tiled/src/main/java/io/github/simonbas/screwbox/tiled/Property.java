@@ -20,7 +20,7 @@ public class Property {
 
     public int getInt() {
         try {
-            return Integer.valueOf(get());
+            return Integer.parseInt(get());
         } catch (NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }
@@ -28,7 +28,7 @@ public class Property {
 
     public double getDouble() {
         try {
-            return Double.valueOf(get());
+            return Double.parseDouble(get());
         } catch (NumberFormatException e) {
             throw new IllegalStateException("property " + name() + " is not a number: " + get());
         }

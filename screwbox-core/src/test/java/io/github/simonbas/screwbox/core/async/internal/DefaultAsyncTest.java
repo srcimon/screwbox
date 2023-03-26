@@ -50,7 +50,7 @@ class DefaultAsyncTest {
 
     @Test
     void run_contextNull_exception() {
-        assertThatThrownBy(() -> async.run(null, () -> someLongRunningTask()))
+        assertThatThrownBy(() -> async.run(null, this::someLongRunningTask))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("context must not be null");
     }
