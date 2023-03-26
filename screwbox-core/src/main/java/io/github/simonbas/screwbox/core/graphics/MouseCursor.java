@@ -19,5 +19,5 @@ public enum MouseCursor {
     /**
      * Not visible cursor.
      */
-    HIDDEN;
+    HIDDEN
 }

@@ -64,18 +64,18 @@ public interface Mouse {
     /**
      * Returns the drag movement of the mouse since the last frame.
      */
-    public Vector drag();
+    Vector drag();
 
     /**
      * Returns the count of units scolled since the last frame. Negative values for
      * scrolling down.
      */
-    public int unitsScrolled();
+    int unitsScrolled();
 
     /**
      * Returns true if there was any scrolling since the last frame.
      */
-    public boolean hasScrolled();
+    boolean hasScrolled();
 
     /**
      * Returns true if there was {@link MouseButton} down.

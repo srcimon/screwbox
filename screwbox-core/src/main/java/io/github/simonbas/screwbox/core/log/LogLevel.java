@@ -23,6 +23,6 @@ public enum LogLevel {
     /**
      * Used when an error occured that didn't kill the engine.
      */
-    ERROR;
+    ERROR
 
 }

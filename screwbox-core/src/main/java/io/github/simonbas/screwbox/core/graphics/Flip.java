@@ -29,7 +29,7 @@ public enum Flip {
     private final boolean horizontal;
     private final boolean vertical;
 
-    private Flip(final boolean horizontal, final boolean vertical) {
+    Flip(final boolean horizontal, final boolean vertical) {
         this.horizontal = horizontal;
         this.vertical = vertical;
     }

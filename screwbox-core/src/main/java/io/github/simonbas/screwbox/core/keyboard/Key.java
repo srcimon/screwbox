@@ -29,7 +29,7 @@ public enum Key {
 
     private final int keyCode;
 
-    private Key(final int keyCode) {
+    Key(final int keyCode) {
         this.keyCode = keyCode;
     }
 

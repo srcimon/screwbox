@@ -28,7 +28,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private Offset position = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
-    private Latch<Integer> unitsScrolled = Latch.of(0, 0);
+    private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
     public DefaultMouse(final Graphics graphics) {
         this.graphics = graphics;

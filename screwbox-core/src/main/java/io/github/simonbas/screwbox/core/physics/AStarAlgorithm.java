@@ -30,13 +30,13 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
 
     private static class AStarSearch {
 
-        private Grid grid;
-        private Node start;
-        private Node end;
-        private Set<Node> closed;
-        private Map<Node, Double> costs;
-        private Map<Node, Double> costsToStart;
-        private Queue<WeightedNode> open;
+        private final Grid grid;
+        private final Node start;
+        private final Node end;
+        private final Set<Node> closed;
+        private final Map<Node, Double> costs;
+        private final Map<Node, Double> costsToStart;
+        private final Queue<WeightedNode> open;
 
         public AStarSearch(Grid grid, Node start, Node end) {
             this.grid = grid;
