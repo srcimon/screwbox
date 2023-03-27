@@ -60,7 +60,7 @@ public class DemoScene implements Scene {
                 .add(new AutomovementDebugSystem())
                 .add(new LogFpsSystem())
                 .add(new PathfindingGridCreationSystem(16, Timer.withInterval(ofSeconds(1))))
-                .add(new EnemyMovementSystem())
+                .add(new EnemyMovementSystem())//TODO: FIX BLACK SCREEN FOR 1 SEC ON START WHEN ADDING THIS SYSTEM
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());
     }
