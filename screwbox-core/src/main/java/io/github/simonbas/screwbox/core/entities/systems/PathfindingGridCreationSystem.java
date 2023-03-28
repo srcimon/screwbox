@@ -3,7 +3,6 @@ package io.github.simonbas.screwbox.core.entities.systems;
 import io.github.simonbas.screwbox.core.Bounds;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.Grid;
-import io.github.simonbas.screwbox.core.Time;
 import io.github.simonbas.screwbox.core.entities.*;
 import io.github.simonbas.screwbox.core.entities.components.PathfindingBlockingComponent;
 import io.github.simonbas.screwbox.core.entities.components.TransformComponent;
@@ -28,7 +27,7 @@ public class PathfindingGridCreationSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (needsUpdate(engine)) {
+        if (updateTimer.isTick(engine.loop().lastUpdate())) {
             final Bounds bounds = engine.entities().forcedFetch(WORLD).get(TransformComponent.class).bounds;
 
             final Grid grid = new Grid(bounds, gridSize);
@@ -38,10 +37,4 @@ public class PathfindingGridCreationSystem implements EntitySystem {
             engine.physics().setGrid(grid);
         }
     }
-
-    private boolean needsUpdate(final Engine engine) {
-        final Time time = engine.loop().lastUpdate();
-        return engine.physics().grid().isEmpty() || updateTimer.isTick(time);
-    }
-
 }
