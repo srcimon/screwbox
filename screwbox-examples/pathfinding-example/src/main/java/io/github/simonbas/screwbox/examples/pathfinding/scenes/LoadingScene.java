@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.examples.pathfinding.scenes;
 
-import io.github.simonbas.screwbox.core.Duration;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.entities.Entities;
 import io.github.simonbas.screwbox.core.scenes.Scene;
@@ -11,7 +10,7 @@ public class LoadingScene implements Scene {
     @Override
     public void initialize(Entities entities) {
         entities.add(engine -> {
-            if (engine.loop().updateDuration().isLessThan(Duration.ofMicros(1))) {
+            if (engine.loop().isWarmedUp()) {
                 engine.scenes().switchTo(DemoScene.class);
             }
         });
