@@ -6,6 +6,7 @@ import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.ui.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 
@@ -19,6 +20,9 @@ public class DefaultUi implements Ui, Updatable {
 
     private UiMenu currentMenu = null;
 
+    private boolean loadingAnimationVisible = false;
+    private Consumer<Screen> loadingAnimation = new DefaultLoadingAnimation();
+
     public DefaultUi(final Engine engine) {
         this.engine = engine;
     }
@@ -31,7 +35,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public void update() {
-        if (nonNull(currentMenu)) {
+        if (nonNull(currentMenu) && engine.isWarmedUp()) {
             var menu = currentMenu;
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
@@ -39,6 +43,10 @@ public class DefaultUi implements Ui, Updatable {
             }
             renderMenu(menu, engine.graphics().screen());
         }
+        if (loadingAnimationVisible) {
+            loadingAnimation.accept(engine.graphics().screen());
+        }
+        loadingAnimationVisible = false;
     }
 
     private void renderMenu(final UiMenu menu, final Screen screen) {
@@ -78,6 +86,17 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Optional<UiMenu> currentMenu() {
         return Optional.ofNullable(currentMenu);
+    }
+
+    @Override
+    public Ui customizeLoadingAnimation(final Consumer<Screen> loadingAnimation) {
+        this.loadingAnimation = loadingAnimation;
+        return this;
+    }
+
+    @Override
+    public void showLoadingAnimationForCurrentFrame() {
+        loadingAnimationVisible = true;
     }
 
     @Override

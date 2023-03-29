@@ -148,6 +148,8 @@ class DefaultLoopTest {
         assertThatNoException().isThrownBy(loop::awaitTermination);
     }
 
+
+
     private Updatable stopAfterOneFrameUpdatable() {
         return () -> loop.stop();
     }

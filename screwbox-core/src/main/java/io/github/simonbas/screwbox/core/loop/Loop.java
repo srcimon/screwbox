@@ -79,4 +79,5 @@ public interface Loop {
      * called frame).
      */
     long frameNumber();
+
 }

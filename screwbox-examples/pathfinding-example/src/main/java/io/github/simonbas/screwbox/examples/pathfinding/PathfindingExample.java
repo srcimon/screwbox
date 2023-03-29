@@ -9,7 +9,7 @@ public class PathfindingExample {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Pathfinding Example");
 
-        engine.assets().preparePackage("io.github.simonbas.screwbox.examples.pathfinding");
+        engine.assets().enableLogging().preparePackage("io.github.simonbas.screwbox.examples.pathfinding");
 
         engine.scenes().add(new DemoScene("map.json"));
 

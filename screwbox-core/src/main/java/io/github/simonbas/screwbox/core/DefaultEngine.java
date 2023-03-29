@@ -57,7 +57,7 @@ class DefaultEngine implements Engine {
     private final DefaultSavegame savegame;
     private final DefaultAssets assets;
     private final DefaultWindow window;
-
+    private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
 
@@ -73,7 +73,11 @@ class DefaultEngine implements Engine {
         });
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newCachedThreadPool(runnable -> {
+            Thread newThread = new Thread(runnable);
+            newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
+            return newThread;
+        });
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
@@ -81,15 +85,16 @@ class DefaultEngine implements Engine {
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice);
-        scenes = new DefaultScenes(this);
-        keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
+        scenes = new DefaultScenes(this, executor, ui);
+        keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         loop = new DefaultLoop(updatables);
+        warmUpIndicator = new WarmUpIndicator(loop);
         physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        async = new DefaultAsync(executor, this::exceptionHandler);
+        async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);
@@ -193,6 +198,11 @@ class DefaultEngine implements Engine {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public boolean isWarmedUp() {
+        return warmUpIndicator.isWarmedUp();
     }
 
     @Override

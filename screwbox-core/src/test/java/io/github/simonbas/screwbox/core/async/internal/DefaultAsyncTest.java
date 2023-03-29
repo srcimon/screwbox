@@ -5,25 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
+import static io.github.simonbas.screwbox.core.test.TestUtil.shutdown;
+import static org.assertj.core.api.Assertions.*;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
 class DefaultAsyncTest {
-
-    @Mock
-    Consumer<Throwable> exceptionHandler;
 
     DefaultAsync async;
 
@@ -32,7 +24,7 @@ class DefaultAsyncTest {
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        async = new DefaultAsync(executor, exceptionHandler);
+        async = new DefaultAsync(executor);
     }
 
     @Test
@@ -86,22 +78,22 @@ class DefaultAsyncTest {
     }
 
     @Test
-    void run_taskThrowsException_exeptionHandlerIsInformed() {
-        async.run("myContext", () -> {
-            throw new IllegalArgumentException("Other thread Exception");
+    void runSingle_taskAlreadyRunning_noSecondExecution() {
+        async.run("myContext", () -> someLongRunningTask());
+
+        assertThatNoException().isThrownBy(() -> {
+            async.runSingle("myContext", () -> {
+                throw new IllegalStateException("I would crash if i would start");
+            });
         });
+    }
 
-        while (async.hasActiveTasks("myContext")) {
-            // wait
-        }
+    @Test
+    void runSingle_isOnlyTaskInContext_startsTask() {
+        async.runSingle("myContext", () -> someLongRunningTask());
 
-        assertThat(async.hasActiveTasks("myContext")).isFalse();
-        var exceptionCaptor = ArgumentCaptor.forClass(RuntimeException.class);
-        verify(exceptionHandler).accept(exceptionCaptor.capture());
-
-        assertThat(exceptionCaptor.getValue())
-                .hasMessage("Exception in asynchronous context: myContext")
-                .hasCauseInstanceOf(IllegalArgumentException.class);
+        boolean hasActiveTasks = async.hasActiveTasks("myContext");
+        assertThat(hasActiveTasks).isTrue();
     }
 
     private void someLongRunningTask() {
@@ -110,12 +102,7 @@ class DefaultAsyncTest {
 
     @AfterEach
     void afterEach() {
-        executor.shutdown();
-        try {
-            executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        shutdown(executor);
     }
 
 }

@@ -37,4 +37,5 @@ public interface Assets {
      */
     Assets disableLogging();
 
+    boolean isPreparing();
 }

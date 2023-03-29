@@ -39,14 +39,6 @@ public class DefaultPhysics implements Physics {
         return new SelectEntityBuilder(engine.entities(), range);
     }
 
-    public PathfindingAlgorithm algorithm() {
-        return algorithm;
-    }
-
-    public void setAlgorithm(final PathfindingAlgorithm algorithm) {
-        this.algorithm = algorithm;
-    }
-
     @Override
     public Optional<Path> findPath(final Grid grid, final Vector start, final Vector end) {
         final Node startPoint = grid.toGrid(start);

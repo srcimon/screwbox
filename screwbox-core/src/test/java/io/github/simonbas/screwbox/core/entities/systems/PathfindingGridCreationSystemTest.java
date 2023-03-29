@@ -7,6 +7,7 @@ import io.github.simonbas.screwbox.core.entities.components.PathfindingBlockingC
 import io.github.simonbas.screwbox.core.entities.components.TransformComponent;
 import io.github.simonbas.screwbox.core.entities.components.WorldBoundsComponent;
 import io.github.simonbas.screwbox.core.entities.internal.DefaultEntities;
+import io.github.simonbas.screwbox.core.loop.Loop;
 import io.github.simonbas.screwbox.core.physics.Physics;
 import io.github.simonbas.screwbox.core.test.EntitiesExtension;
 import io.github.simonbas.screwbox.core.utils.Timer;
@@ -15,15 +16,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
 import static io.github.simonbas.screwbox.core.Bounds.$$;
+import static io.github.simonbas.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(EntitiesExtension.class)
 class PathfindingGridCreationSystemTest {
 
     @Test
-    void update_noWorldBounds_throwsException(DefaultEntities entities) {
+    void update_noWorldBounds_throwsException(DefaultEntities entities, Loop loop) {
+        when(loop.lastUpdate()).thenReturn(now());
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         entities.add(new PathfindingGridCreationSystem(16, timer));
 
@@ -33,7 +37,8 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entities, Physics physics) {
+    void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entities, Physics physics, Loop loop) {
+        when(loop.lastUpdate()).thenReturn(now());
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
@@ -46,8 +51,7 @@ class PathfindingGridCreationSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        entities
-                .add(new PathfindingGridCreationSystem(100, timer))
+        entities.add(new PathfindingGridCreationSystem(100, timer))
                 .add(wall)
                 .add(air)
                 .add(worldBounds);
@@ -65,7 +69,8 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_invalidGridSize_throwsException(DefaultEntities entities) {
+    void update_invalidGridSize_throwsException(DefaultEntities entities, Loop loop) {
+        when(loop.lastUpdate()).thenReturn(now());
         Timer timer = Timer.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())

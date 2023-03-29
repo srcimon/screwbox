@@ -36,7 +36,8 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-5. Create your first game and run.
+5. Create your first game and run. Recommended JVM Options `-Dsun.java2d.opengl=true` and only on
+   osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
 ``` java
 package io.github.simonbas.screwbox.examples.helloworld;
@@ -91,14 +92,13 @@ public class HelloWorldExample {
 
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
 
-## Ideas and plans
+## Future ideas and plans
 
-- [x] add A*-Pathfinding Algorithm (because speed)
-- [ ] add Support for animated light
-- [ ] add particle emitters
-- [ ] add menu bar with native fullscreen on osx (Bug: https://bugs.openjdk.org/browse/JDK-8270888)
-- [ ] add headless mode with scripted events for automating the engine
-- [ ] bug: no more stderror output (maybe osx bug in
+- [ ] Support for animated light
+- [ ] particle emitters
+- [ ] add menu bar
+- [ ] headless mode with scripted events for automating the engine
+- [ ] fix bug: no more stderror output (maybe osx bug in
   13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
 
 <p align="center"><img src="docs/outro.gif"></p>

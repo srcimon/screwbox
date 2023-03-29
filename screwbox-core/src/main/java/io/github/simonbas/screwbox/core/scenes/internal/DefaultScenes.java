@@ -7,16 +7,33 @@ import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.scenes.DefaultScene;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
+import io.github.simonbas.screwbox.core.ui.Ui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private record SceneContainer(Scene scene, DefaultEntities entities) {
+    private final Executor executor;
+    private final Ui ui;
 
+    private class SceneContainer {
+        private final Scene scene;
+        private final DefaultEntities entities;
+        boolean isInitialized;
+
+        SceneContainer(Scene scene) {
+            this.scene = scene;
+            this.entities = new DefaultEntities(engine);
+        }
+
+        void initialize() {
+            scene.initialize(entities);
+            isInitialized = true;
+        }
     }
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
@@ -24,9 +41,15 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private final Engine engine;
 
-    public DefaultScenes(final Engine engine) {
+    public DefaultScenes(final Engine engine, final Executor executor, Ui ui) {
         this.engine = engine;
-        add(new DefaultScene());
+        this.executor = executor;
+        this.ui = ui;
+        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
+        defaultSceneContainer.isInitialized = true;
+        scenes.put(DefaultScene.class, defaultSceneContainer);
+        this.activeScene = defaultSceneContainer;
+        this.nextActiveScene = defaultSceneContainer;
     }
 
     @Override
@@ -37,7 +60,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public DefaultEntities activeEntities() {
-        return activeScene.entities();
+        return activeScene.entities;
     }
 
     @Override
@@ -83,7 +106,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Class<? extends Scene> activeScene() {
-        return activeScene.scene().getClass();
+        return activeScene.scene.getClass();
     }
 
     @Override
@@ -94,29 +117,31 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Entities entitiesOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).entities();
+        return scenes.get(sceneClass).entities;
     }
 
     @Override
     public void update() {
         applySceneChanges();
-        activeEntities().update();
+        if (engine.isWarmedUp() && activeScene.isInitialized) {
+            activeScene.entities.update();
+        } else {
+            ui.showLoadingAnimationForCurrentFrame();
+        }
     }
 
     private void applySceneChanges() {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
-            activeScene.scene().onExit(engine);
+            activeScene.scene.onExit(engine);
             activeScene = nextActiveScene;
-            nextActiveScene.scene().onEnter(engine);
+            nextActiveScene.scene.onEnter(engine);
         }
     }
 
     private Scenes add(final Scene scene) {
-        final var entities = new DefaultEntities(engine);
-
-        final SceneContainer sceneContainer = new SceneContainer(scene, entities);
-        scene.initialize(sceneContainer.entities());
+        final SceneContainer sceneContainer = new SceneContainer(scene);
+        executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
         if (isNull(nextActiveScene)) {
