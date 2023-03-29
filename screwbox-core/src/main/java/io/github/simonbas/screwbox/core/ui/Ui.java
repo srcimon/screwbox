@@ -25,7 +25,7 @@ public interface Ui {
     /**
      * Customizes the visual style of the loading animation.
      *
-     * @see #activateLoadingAnimationForCurrentFrame()
+     * @see #showLoadingAnimationForCurrentFrame()
      */
     Ui customizeLoadingAnimation(Consumer<Screen> loadingAnimation);
 
@@ -34,5 +34,5 @@ public interface Ui {
      *
      * @see #customizeLoadingAnimation(Consumer)
      */
-    void activateLoadingAnimationForCurrentFrame();
+    void showLoadingAnimationForCurrentFrame();
 }
