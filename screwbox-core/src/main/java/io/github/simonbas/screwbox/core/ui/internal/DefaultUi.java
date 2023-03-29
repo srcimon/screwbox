@@ -23,11 +23,8 @@ public class DefaultUi implements Ui, Updatable {
     private UiMenu currentMenu = null;
 
     private boolean loadingAnimationVisible = false;
-    private Consumer<Screen> loadingAnimation = new Consumer<Screen>() {
-        @Override
-        public void accept(Screen screen) {
-            screen.drawTextCentered(screen.center(), "loading...", Pixelfont.defaultFont(Color.WHITE), 2);
-        }
+    private Consumer<Screen> loadingAnimation = screen -> {
+        screen.drawTextCentered(screen.center(), "loading...", Pixelfont.defaultFont(Color.WHITE), 2);
     };
 
     public DefaultUi(final Engine engine) {

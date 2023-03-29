@@ -24,7 +24,7 @@ public class DefaultLoop implements Loop {
     private Duration runningTime = Duration.none();
     private boolean active = false;
     private int targetFps = Loop.MIN_TARGET_FPS;
-    private boolean warmedUp = false;
+    private int warmedUpCount = 0;
 
     public DefaultLoop(final List<Updatable> updatables) {
         this.updatables = updatables;
@@ -45,13 +45,16 @@ public class DefaultLoop implements Loop {
 
     @Override
     public boolean isWarmedUp() {
-        if (warmedUp) {
+        if (warmedUpCount > 20) {
             return true;
         }
+        warmedUpCount++;
 
-        boolean isFastEnough = updateDuration().isLessThan(Duration.ofMicros(1));
-        warmedUp = isFastEnough;
-        return isFastEnough;
+        boolean isFastEnough = updateDuration().isLessThan(Duration.ofMillis(1));
+        if (!isFastEnough) {
+            warmedUpCount = 0;
+        }
+        return false;
     }
 
     @Override

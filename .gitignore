@@ -1,5 +1,6 @@
 # idea
-**/.idea
+.run
+.idea
 
 # eclipse
 **/.classpath

@@ -100,7 +100,11 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public void update() {
         applySceneChanges();
-        activeEntities().update();
+        if (engine.loop().isWarmedUp()) {
+            activeEntities().update();
+        } else {
+            engine.ui().loadingAnimation().accept(engine.graphics().screen());
+        }
     }
 
     private void applySceneChanges() {
