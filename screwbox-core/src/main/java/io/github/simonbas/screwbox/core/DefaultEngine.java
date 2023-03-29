@@ -85,9 +85,9 @@ class DefaultEngine implements Engine {
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice);
-        scenes = new DefaultScenes(this, executor);
-        keyboard = new DefaultKeyboard();
         ui = new DefaultUi(this);
+        scenes = new DefaultScenes(this, executor, ui);
+        keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         loop = new DefaultLoop(updatables);

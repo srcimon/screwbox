@@ -46,6 +46,7 @@ public class DefaultUi implements Ui, Updatable {
         if (loadingAnimationVisible) {
             loadingAnimation.accept(engine.graphics().screen());
         }
+        loadingAnimationVisible = false;
     }
 
     private void renderMenu(final UiMenu menu, final Screen screen) {
@@ -88,26 +89,14 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public Ui showLoadingAnimation() {
-        this.loadingAnimationVisible = true;
-        return this;
-    }
-
-    @Override
-    public Ui hideLoadingAnimation() {
-        this.loadingAnimationVisible = false;
-        return this;
-    }
-
-    @Override
     public Ui customizeLoadingAnimation(final Consumer<Screen> loadingAnimation) {
         this.loadingAnimation = loadingAnimation;
         return this;
     }
 
     @Override
-    public Consumer<Screen> loadingAnimation() {
-        return loadingAnimation;
+    public void renderLoadingAnimation() {
+        loadingAnimationVisible = true;
     }
 
     @Override

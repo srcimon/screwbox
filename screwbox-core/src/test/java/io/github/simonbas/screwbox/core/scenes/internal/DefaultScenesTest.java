@@ -3,25 +3,43 @@ package io.github.simonbas.screwbox.core.scenes.internal;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.scenes.DefaultScene;
 import io.github.simonbas.screwbox.core.scenes.Scene;
+import io.github.simonbas.screwbox.core.ui.Ui;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static io.github.simonbas.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Timeout(1)
 @ExtendWith(MockitoExtension.class)
 class DefaultScenesTest {
 
     @Mock
     Engine engine;
 
-    @InjectMocks
+    @Mock
+    Ui ui;
+
+    ExecutorService executor;
+
     DefaultScenes scenes;
+
+    @BeforeEach
+    void beforeEach() {
+        executor = Executors.newSingleThreadExecutor();
+        scenes = new DefaultScenes(engine, executor, ui);
+    }
 
     @Test
     void sceneCount_isCountOfScenes() {
@@ -107,5 +125,10 @@ class DefaultScenesTest {
 
         verify(firstScene).initialize(any());
         verify(firstScene).onEnter(engine);
+    }
+
+    @AfterEach
+    void afterEach() {
+        shutdown(executor);
     }
 }

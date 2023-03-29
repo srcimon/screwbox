@@ -23,28 +23,16 @@ public interface Ui {
     Optional<UiMenu> currentMenu();
 
     /**
-     * Starts showing the {@link #loadingAnimation()} until  {@link #hideLoadingAnimation()} is called.
-     * The {@link #loadingAnimation()} can be customized via {@link #customizeLoadingAnimation(Consumer)}.
-     */
-    Ui showLoadingAnimation();
-
-    /**
-     * Stops showing the {@link #loadingAnimation()}.
+     * Customizes the visual style of the loading animation.
      *
-     * @see #showLoadingAnimation()
-     */
-    Ui hideLoadingAnimation();
-
-    /**
-     * Customizes the visual style of the {@link #loadingAnimation()}.
-     *
-     * @see #showLoadingAnimation()
-     * @see #loadingAnimation()
+     * @see #renderLoadingAnimation()
      */
     Ui customizeLoadingAnimation(Consumer<Screen> loadingAnimation);
 
     /**
-     * Returns the current loading animation.
+     * Renders the loading animation on the current frame.
+     *
+     * @see #customizeLoadingAnimation(Consumer)
      */
-    Consumer<Screen> loadingAnimation();
+    void renderLoadingAnimation();
 }

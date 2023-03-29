@@ -7,6 +7,7 @@ import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.scenes.DefaultScene;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
+import io.github.simonbas.screwbox.core.ui.Ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import static java.util.Objects.isNull;
 public class DefaultScenes implements Scenes, Updatable {
 
     private final Executor executor;
+    private final Ui ui;
 
     private class SceneContainer {
         private final Scene scene;
@@ -39,10 +41,15 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private final Engine engine;
 
-    public DefaultScenes(final Engine engine, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Executor executor, Ui ui) {
         this.engine = engine;
         this.executor = executor;
-        scenes.put(DefaultScene.class, new SceneContainer(new DefaultScene()));
+        this.ui = ui;
+        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
+        defaultSceneContainer.isInitialized = true;
+        scenes.put(DefaultScene.class, defaultSceneContainer);
+        this.activeScene = defaultSceneContainer;
+        this.nextActiveScene = defaultSceneContainer;
     }
 
     @Override
@@ -119,7 +126,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (engine.isWarmedUp() && activeScene.isInitialized) {
             activeScene.entities.update();
         } else {
-            engine.ui().loadingAnimation().accept(engine.graphics().screen());
+            ui.renderLoadingAnimation();
         }
     }
 

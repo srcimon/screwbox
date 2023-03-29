@@ -9,8 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
+import static io.github.simonbas.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.*;
 
 @Timeout(1)
@@ -102,12 +102,7 @@ class DefaultAsyncTest {
 
     @AfterEach
     void afterEach() {
-        executor.shutdown();
-        try {
-            executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        shutdown(executor);
     }
 
 }
