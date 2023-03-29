@@ -73,7 +73,11 @@ class DefaultEngine implements Engine {
         });
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newCachedThreadPool(runnable -> {
+            Thread newThread = new Thread(runnable);
+            newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
+            return newThread;
+        });
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
@@ -90,7 +94,7 @@ class DefaultEngine implements Engine {
         warmUpIndicator = new WarmUpIndicator(loop);
         physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        async = new DefaultAsync(executor, this::exceptionHandler);
+        async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
         frame.addMouseListener(mouse);

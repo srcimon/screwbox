@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -14,11 +13,9 @@ public class DefaultAsync implements Async {
 
     private final ExecutorService executor;
     private final Map<UUID, Object> runningTasks = new ConcurrentHashMap<>();
-    private final Consumer<Throwable> exceptionHandler;
 
-    public DefaultAsync(final ExecutorService executor, final Consumer<Throwable> exceptionHandler) {
+    public DefaultAsync(final ExecutorService executor) {
         this.executor = executor;
-        this.exceptionHandler = exceptionHandler;
     }
 
     @Override
@@ -34,13 +31,11 @@ public class DefaultAsync implements Async {
 
         final UUID id = UUID.randomUUID();
         runningTasks.put(id, context);
-        executor.submit(() -> {
+        executor.execute(() -> {
             try {
                 task.run();
             } catch (final Exception exception) {
-                final var wrappedException = new RuntimeException("Exception in asynchronous context: " + context,
-                        exception);
-                exceptionHandler.accept(wrappedException);
+                throw new RuntimeException("Exception in asynchronous context: " + context, exception);
             }
             runningTasks.remove(id);
         });
