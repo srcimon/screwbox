@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.core.async.internal;
 
-import io.github.simonbas.screwbox.core.Duration;
 import io.github.simonbas.screwbox.core.async.Async;
 
 import java.util.Map;
@@ -49,16 +48,11 @@ public class DefaultAsync implements Async {
     }
 
     @Override
-    public boolean isWarmedUp() {
-        Runnable doNothing = () -> {
-        };
-
-        for (int iteration = 1; iteration <= 50; iteration++) {
-            if (Duration.ofExecution(doNothing).isAtLeast(Duration.ofMillis(1))) {
-                return false;
-            }
+    public Async runSingle(final Object context, final Runnable task) {
+        if (!hasActiveTasks(context)) {
+            run(context, task);
         }
-        return true;
+        return this;
     }
 
 }

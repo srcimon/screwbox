@@ -14,8 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @Timeout(1)
@@ -102,6 +101,25 @@ class DefaultAsyncTest {
         assertThat(exceptionCaptor.getValue())
                 .hasMessage("Exception in asynchronous context: myContext")
                 .hasCauseInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void runSingle_taskAlreadyRunning_noSecondExecution() {
+        async.run("myContext", () -> someLongRunningTask());
+
+        assertThatNoException().isThrownBy(() -> {
+            async.runSingle("myContext", () -> {
+                throw new IllegalStateException("I would crash if i would start");
+            });
+        });
+    }
+
+    @Test
+    void runSingle_isOnlyTaskInContext_startsTask() {
+        async.runSingle("myContext", () -> someLongRunningTask());
+
+        boolean hasActiveTasks = async.hasActiveTasks("myContext");
+        assertThat(hasActiveTasks).isTrue();
     }
 
     private void someLongRunningTask() {

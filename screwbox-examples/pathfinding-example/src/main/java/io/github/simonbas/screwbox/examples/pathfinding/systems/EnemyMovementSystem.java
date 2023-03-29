@@ -34,14 +34,12 @@ public class EnemyMovementSystem implements EntitySystem {
                 final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
                 final var automovement = enemy.get(AutomovementComponent.class);
 
-                if (!engine.async().hasActiveTasks(automovement)) {
-                    engine.async().run(automovement, () -> {
-                        final Optional<Path> path = engine.physics().findPath(enemyPosition, playerPosition);
-                        if (path.isPresent()) {
-                            automovement.path = path.get();
-                        }
-                    });
-                }
+                engine.async().runSingle(automovement, () -> {
+                    final Optional<Path> path = engine.physics().findPath(enemyPosition, playerPosition);
+                    if (path.isPresent()) {
+                        automovement.path = path.get();
+                    }
+                });
             }
         }
     }
