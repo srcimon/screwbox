@@ -36,7 +36,8 @@ ScrewBox is a personal pet project since february 2021. It has no constant commi
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-5. Create your first game and run.
+5. Create your first game and run. Recommended JVM Options `-Dsun.java2d.opengl=true` and only on
+   osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
 ``` java
 package io.github.simonbas.screwbox.examples.helloworld;

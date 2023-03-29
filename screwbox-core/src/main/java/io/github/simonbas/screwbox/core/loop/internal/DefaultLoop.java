@@ -50,8 +50,9 @@ public class DefaultLoop implements Loop {
         }
         warmedUpCount++;
 
-        boolean isFastEnough = updateDuration().isLessThan(Duration.ofMillis(1));
-        if (!isFastEnough) {
+        final boolean isFastEnough = updateDuration().isLessThan(Duration.ofMillis(1));
+        final boolean wontGetAnyFasterAnymore = runningTime.isAtLeast(Duration.ofSeconds(10));
+        if (!isFastEnough && !wontGetAnyFasterAnymore) {
             warmedUpCount = 0;
         }
         return false;
