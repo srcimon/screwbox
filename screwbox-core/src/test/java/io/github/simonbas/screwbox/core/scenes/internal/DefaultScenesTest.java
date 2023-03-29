@@ -123,6 +123,7 @@ class DefaultScenesTest {
 
         scenes.update();
 
+        shutdown(executor);
         verify(firstScene).initialize(any());
         verify(firstScene).onEnter(engine);
     }
