@@ -38,7 +38,9 @@ class DefaultScenesTest {
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        scenes = new DefaultScenes(engine, executor, ui);
+        scenes = new DefaultScenes(engine, executor);
+        scenes.setLoadingScene(new Scene() {
+        });
     }
 
     @Test

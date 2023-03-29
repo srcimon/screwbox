@@ -2,6 +2,7 @@ package io.github.simonbas.screwbox.core.ui.internal;
 
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.graphics.*;
+import io.github.simonbas.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.simonbas.screwbox.core.ui.*;
 import io.github.simonbas.screwbox.core.utils.Latch;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,9 @@ class DefaultUiTest {
 
     @Mock
     Engine engine;
+
+    @Mock
+    DefaultScenes scenes;
 
     @Mock
     UiInteractor interactor;
@@ -54,7 +58,7 @@ class DefaultUiTest {
 
     @Test
     void update_interactorDisablesCurrentSelection_switchesToNextMenuItem() {
-        when(engine.isWarmedUp()).thenReturn(true);
+        when(scenes.isShowingLoading()).thenReturn(false);
         var activated = Latch.of(false, true);
 
         Graphics graphics = mock(Graphics.class);
@@ -79,7 +83,7 @@ class DefaultUiTest {
 
     @Test
     void update_menuPresent_interactsAndRendersMenu() {
-        when(engine.isWarmedUp()).thenReturn(true);
+        when(scenes.isShowingLoading()).thenReturn(false);
         Graphics graphics = mock(Graphics.class);
         Screen screen = mock(Screen.class);
         when(graphics.screen()).thenReturn(screen);

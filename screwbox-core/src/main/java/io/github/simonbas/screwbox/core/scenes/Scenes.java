@@ -22,4 +22,5 @@ public interface Scenes {
 
     Entities entitiesOf(Class<? extends Scene> sceneClass);
 
+    Scenes setLoadingScene(Scene loadingScene);
 }
