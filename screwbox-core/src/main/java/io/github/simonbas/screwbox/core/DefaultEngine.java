@@ -89,7 +89,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
+        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
         loop = new DefaultLoop(updatables);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         warmUpIndicator = new WarmUpIndicator(loop, log);

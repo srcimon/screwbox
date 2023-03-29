@@ -6,7 +6,6 @@ import io.github.simonbas.screwbox.core.Percent;
 import io.github.simonbas.screwbox.core.Vector;
 import io.github.simonbas.screwbox.core.assets.Asset;
 import io.github.simonbas.screwbox.core.graphics.*;
-import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import static io.github.simonbas.screwbox.core.graphics.GraphicsConfigurationEve
 import static io.github.simonbas.screwbox.core.graphics.Offset.origin;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultLight implements Light, Updatable {
+public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
@@ -176,7 +175,6 @@ public class DefaultLight implements Light, Updatable {
         return ambientLight;
     }
 
-    @Override
     public void update() {
         initLightmap();
         tasks.clear();
