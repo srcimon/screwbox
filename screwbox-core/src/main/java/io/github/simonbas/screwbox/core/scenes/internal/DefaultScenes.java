@@ -18,14 +18,14 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private final Executor executor;
 
-    private static class SceneContainer {
+    private class SceneContainer {
         private final Scene scene;
         private final DefaultEntities entities;
         boolean isInitialized;
 
-        SceneContainer(Scene scene, DefaultEntities entities) {
+        SceneContainer(Scene scene) {
             this.scene = scene;
-            this.entities = entities;
+            this.entities = new DefaultEntities(engine);
         }
 
         void initialize() {
@@ -42,9 +42,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public DefaultScenes(final Engine engine, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
-
-        //TODO: refactor
-        scenes.put(DefaultScene.class, new SceneContainer(new DefaultScene(), new DefaultEntities(engine)));
+        scenes.put(DefaultScene.class, new SceneContainer(new DefaultScene()));
     }
 
     @Override
@@ -135,9 +133,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private Scenes add(final Scene scene) {
-        final var entities = new DefaultEntities(engine);
-
-        final SceneContainer sceneContainer = new SceneContainer(scene, entities);
+        final SceneContainer sceneContainer = new SceneContainer(scene);
         executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
