@@ -1,11 +1,15 @@
 package io.github.simonbas.screwbox.core.ui;
 
 import io.github.simonbas.screwbox.core.Duration;
+import io.github.simonbas.screwbox.core.Time;
+import io.github.simonbas.screwbox.core.graphics.Color;
+import io.github.simonbas.screwbox.core.graphics.Offset;
 import io.github.simonbas.screwbox.core.graphics.Screen;
 import io.github.simonbas.screwbox.core.utils.Timer;
 
 import java.util.function.Consumer;
 
+import static io.github.simonbas.screwbox.core.graphics.Color.RED;
 import static io.github.simonbas.screwbox.core.graphics.Color.WHITE;
 import static io.github.simonbas.screwbox.core.graphics.Dimension.square;
 
@@ -22,24 +26,14 @@ public class DefaultLoadingAnimation implements Consumer<Screen> {
 
     @Override
     public void accept(Screen screen) {
-        if (visibleBoxes == 9) {
-            countingUp = false;
-        }
-        if (visibleBoxes == 0) {
-            countingUp = true;
-        }
-        if (timer.isTick()) {
-            visibleBoxes += countingUp ? 1 : -1;
-        }
-        int x = -20;
-        int y = -20;
-        for (int i = 0; i < visibleBoxes; i++) {
-            x += 10;
-            if (i == 3 || i == 6) {
-                y += 10;
-                x = -10;
-            }
-            screen.fillRectangle(screen.center().add(x, y), square(5), WHITE);
+        final int distance = 25;
+        final double timeSeed = Time.now().milliseconds() / 400.0;
+
+        for (int x = -distance; x <= distance; x += distance) {
+            int size = (int) (Math.abs(Math.sin(x * 4 + timeSeed)) * 14);
+            Color color = x == 0 ? RED : WHITE;
+            Offset position = screen.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0));
+            screen.fillRectangle(position, square(size), color);
         }
     }
 }

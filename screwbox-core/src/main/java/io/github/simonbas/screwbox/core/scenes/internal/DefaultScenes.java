@@ -10,10 +10,13 @@ import io.github.simonbas.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
+
+    private final Executor executor;
 
     private static class SceneContainer {
         private final Scene scene;
@@ -36,8 +39,9 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private final Engine engine;
 
-    public DefaultScenes(final Engine engine) {
+    public DefaultScenes(final Engine engine, final Executor executor) {
         this.engine = engine;
+        this.executor = executor;
 
         //TODO: refactor
         scenes.put(DefaultScene.class, new SceneContainer(new DefaultScene(), new DefaultEntities(engine)));
@@ -134,7 +138,7 @@ public class DefaultScenes implements Scenes, Updatable {
         final var entities = new DefaultEntities(engine);
 
         final SceneContainer sceneContainer = new SceneContainer(scene, entities);
-        engine.async().run(DefaultScenes.class, sceneContainer::initialize);
+        executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
         if (isNull(nextActiveScene)) {
