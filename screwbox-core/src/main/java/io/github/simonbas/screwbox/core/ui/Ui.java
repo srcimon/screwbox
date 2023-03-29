@@ -5,6 +5,9 @@ import io.github.simonbas.screwbox.core.graphics.Screen;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Create ingame menues and show loading animation.
+ */
 public interface Ui {
 
     Ui openMenu(UiMenu menu);
