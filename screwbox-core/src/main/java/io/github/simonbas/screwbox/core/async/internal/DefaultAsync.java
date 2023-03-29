@@ -35,7 +35,7 @@ public class DefaultAsync implements Async {
             try {
                 task.run();
             } catch (final Exception exception) {
-                throw new RuntimeException("Exception in asynchronous context: " + context, exception);
+                throw new IllegalStateException("Exception in asynchronous context: " + context, exception);
             }
             runningTasks.remove(id);
         });

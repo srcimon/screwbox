@@ -126,7 +126,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (engine.isWarmedUp() && activeScene.isInitialized) {
             activeScene.entities.update();
         } else {
-            ui.renderLoadingAnimation();
+            ui.activateLoadingAnimationForCurrentFrame();
         }
     }
 

@@ -95,7 +95,7 @@ public class DefaultUi implements Ui, Updatable {
     }
 
     @Override
-    public void renderLoadingAnimation() {
+    public void activateLoadingAnimationForCurrentFrame() {
         loadingAnimationVisible = true;
     }
 

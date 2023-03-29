@@ -25,14 +25,14 @@ public interface Ui {
     /**
      * Customizes the visual style of the loading animation.
      *
-     * @see #renderLoadingAnimation()
+     * @see #activateLoadingAnimationForCurrentFrame()
      */
     Ui customizeLoadingAnimation(Consumer<Screen> loadingAnimation);
 
     /**
-     * Renders the loading animation on the current frame.
+     * Activates the rendering of the loading animation on the current frame.
      *
      * @see #customizeLoadingAnimation(Consumer)
      */
-    void renderLoadingAnimation();
+    void activateLoadingAnimationForCurrentFrame();
 }
