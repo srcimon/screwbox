@@ -158,6 +158,7 @@ class DefaultLoopTest {
             }
         });
 
+        loop.start();
         loop.awaitTermination();
 
         assertThat(loop.frameNumber()).isGreaterThan(1);
