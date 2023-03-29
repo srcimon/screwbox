@@ -7,6 +7,7 @@ import io.github.simonbas.screwbox.core.entities.SourceImport.Converter;
 import io.github.simonbas.screwbox.core.entities.components.*;
 import io.github.simonbas.screwbox.core.entities.systems.*;
 import io.github.simonbas.screwbox.core.graphics.Sprite;
+import io.github.simonbas.screwbox.core.keyboard.Key;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.utils.Timer;
 import io.github.simonbas.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -58,6 +59,7 @@ public class DemoScene implements Scene {
                 .add(new AutoRotationSystem())
                 .add(new AutomovementSystem())
                 .add(new AutomovementDebugSystem())
+                .add(new QuitOnKeyPressSystem(Key.ESCAPE))
                 .add(new LogFpsSystem())
                 .add(new PathfindingGridCreationSystem(16, Timer.withInterval(ofSeconds(1))))
                 .add(new EnemyMovementSystem())

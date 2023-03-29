@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.examples.pathfinding.scenes;
 
-import io.github.simonbas.screwbox.core.Duration;
 import io.github.simonbas.screwbox.core.entities.Entities;
 import io.github.simonbas.screwbox.core.graphics.Color;
 import io.github.simonbas.screwbox.core.graphics.Pixelfont;
@@ -13,7 +12,8 @@ public class LoadingScene implements Scene {
     public void initialize(Entities entities) {
         entities.add(engine -> {
             engine.graphics().screen().drawTextCentered(engine.graphics().screen().center(), "loading...", Pixelfont.defaultFont(Color.WHITE));
-            if (engine.loop().updateDuration().isLessThan(Duration.ofMicros(5))) {
+//            if (engine.loop().updateDuration().isLessThan(Duration.ofMicros(5))) {
+            if (engine.async().isWarmedUp()) {
                 engine.scenes().switchTo(DemoScene.class);
             }
         });

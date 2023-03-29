@@ -18,4 +18,5 @@ public interface Async {
      */
     Async run(Object context, Runnable task);
 
+    boolean isWarmedUp();
 }
