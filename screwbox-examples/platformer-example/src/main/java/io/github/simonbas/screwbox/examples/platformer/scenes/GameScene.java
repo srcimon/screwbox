@@ -59,6 +59,11 @@ public class GameScene implements Scene {
 
     @Override
     public void initialize(final Entities entities) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if (nonNull(mapName)) {
             importEntities(entities);
         }

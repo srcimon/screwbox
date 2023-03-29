@@ -1,8 +1,6 @@
 package io.github.simonbas.screwbox.core.ui.internal;
 
 import io.github.simonbas.screwbox.core.Engine;
-import io.github.simonbas.screwbox.core.graphics.Color;
-import io.github.simonbas.screwbox.core.graphics.Pixelfont;
 import io.github.simonbas.screwbox.core.graphics.Screen;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.ui.*;
@@ -23,9 +21,7 @@ public class DefaultUi implements Ui, Updatable {
     private UiMenu currentMenu = null;
 
     private boolean loadingAnimationVisible = false;
-    private Consumer<Screen> loadingAnimation = screen -> {
-        screen.drawTextCentered(screen.center(), "loading...", Pixelfont.defaultFont(Color.WHITE), 2);
-    };
+    private Consumer<Screen> loadingAnimation = new DefaultLoadingAnimation();
 
     public DefaultUi(final Engine engine) {
         this.engine = engine;

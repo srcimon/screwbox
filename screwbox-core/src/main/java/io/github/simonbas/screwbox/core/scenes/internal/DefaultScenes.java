@@ -15,8 +15,20 @@ import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private record SceneContainer(Scene scene, DefaultEntities entities) {
+    private static class SceneContainer {
+        private final Scene scene;
+        private final DefaultEntities entities;
+        boolean isInitialized;
 
+        SceneContainer(Scene scene, DefaultEntities entities) {
+            this.scene = scene;
+            this.entities = entities;
+        }
+
+        void initialize() {
+            scene.initialize(entities);
+            isInitialized = true;
+        }
     }
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
@@ -26,7 +38,9 @@ public class DefaultScenes implements Scenes, Updatable {
 
     public DefaultScenes(final Engine engine) {
         this.engine = engine;
-        add(new DefaultScene());
+
+        //TODO: refactor
+        scenes.put(DefaultScene.class, new SceneContainer(new DefaultScene(), new DefaultEntities(engine)));
     }
 
     @Override
@@ -37,7 +51,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public DefaultEntities activeEntities() {
-        return activeScene.entities();
+        return activeScene.entities;
     }
 
     @Override
@@ -83,7 +97,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Class<? extends Scene> activeScene() {
-        return activeScene.scene().getClass();
+        return activeScene.scene.getClass();
     }
 
     @Override
@@ -94,14 +108,14 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Entities entitiesOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).entities();
+        return scenes.get(sceneClass).entities;
     }
 
     @Override
     public void update() {
         applySceneChanges();
-        if (engine.isWarmedUp()) {
-            activeEntities().update();
+        if (engine.isWarmedUp() && activeScene.isInitialized) {
+            activeScene.entities.update();
         } else {
             engine.ui().loadingAnimation().accept(engine.graphics().screen());
         }
@@ -110,9 +124,9 @@ public class DefaultScenes implements Scenes, Updatable {
     private void applySceneChanges() {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
-            activeScene.scene().onExit(engine);
+            activeScene.scene.onExit(engine);
             activeScene = nextActiveScene;
-            nextActiveScene.scene().onEnter(engine);
+            nextActiveScene.scene.onEnter(engine);
         }
     }
 
@@ -120,7 +134,7 @@ public class DefaultScenes implements Scenes, Updatable {
         final var entities = new DefaultEntities(engine);
 
         final SceneContainer sceneContainer = new SceneContainer(scene, entities);
-        scene.initialize(sceneContainer.entities());
+        engine.async().run(DefaultScenes.class, sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
         if (isNull(nextActiveScene)) {
