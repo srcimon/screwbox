@@ -4,10 +4,10 @@ import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.entities.Entities;
 import io.github.simonbas.screwbox.core.entities.internal.DefaultEntities;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
+import io.github.simonbas.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.simonbas.screwbox.core.scenes.DefaultScene;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
-import io.github.simonbas.screwbox.core.ui.Ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +16,6 @@ import java.util.concurrent.Executor;
 import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
-
-    private final Executor executor;
-    private final Ui ui;
 
     private class SceneContainer {
         private final Scene scene;
@@ -37,19 +34,23 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
-    private SceneContainer nextActiveScene;
-    private SceneContainer activeScene;
+
+    private final Executor executor;
     private final Engine engine;
 
-    public DefaultScenes(final Engine engine, final Executor executor, Ui ui) {
+    private SceneContainer nextActiveScene;
+    private SceneContainer activeScene;
+    private SceneContainer loadingScene;
+
+    public DefaultScenes(final Engine engine, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
-        this.ui = ui;
         SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
         defaultSceneContainer.isInitialized = true;
         scenes.put(DefaultScene.class, defaultSceneContainer);
         this.activeScene = defaultSceneContainer;
         this.nextActiveScene = defaultSceneContainer;
+        setLoadingScene(new DefaultLoadingScene());
     }
 
     @Override
@@ -121,13 +122,22 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
+    public Scenes setLoadingScene(Scene loadingScene) {
+        this.loadingScene = new SceneContainer(loadingScene);
+        this.loadingScene.initialize();
+        return this;
+    }
+
+    public boolean isShowingLoading() {
+        return !engine.isWarmedUp() || !activeScene.isInitialized;
+    }
+
+    @Override
     public void update() {
         applySceneChanges();
-        if (engine.isWarmedUp() && activeScene.isInitialized) {
-            activeScene.entities.update();
-        } else {
-            ui.showLoadingAnimationForCurrentFrame();
-        }
+
+        final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
+        sceneToUpdate.entities.update();
     }
 
     private void applySceneChanges() {

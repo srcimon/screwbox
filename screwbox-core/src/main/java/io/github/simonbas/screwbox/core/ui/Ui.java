@@ -1,12 +1,9 @@
 package io.github.simonbas.screwbox.core.ui;
 
-import io.github.simonbas.screwbox.core.graphics.Screen;
-
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
- * Create ingame menues and show loading animation.
+ * Create ingame menues.
  */
 public interface Ui {
 
@@ -22,17 +19,4 @@ public interface Ui {
 
     Optional<UiMenu> currentMenu();
 
-    /**
-     * Customizes the visual style of the loading animation.
-     *
-     * @see #showLoadingAnimationForCurrentFrame()
-     */
-    Ui customizeLoadingAnimation(Consumer<Screen> loadingAnimation);
-
-    /**
-     * Activates the rendering of the loading animation on the current frame.
-     *
-     * @see #customizeLoadingAnimation(Consumer)
-     */
-    void showLoadingAnimationForCurrentFrame();
 }
