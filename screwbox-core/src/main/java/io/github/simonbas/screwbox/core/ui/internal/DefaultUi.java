@@ -1,11 +1,14 @@
 package io.github.simonbas.screwbox.core.ui.internal;
 
 import io.github.simonbas.screwbox.core.Engine;
+import io.github.simonbas.screwbox.core.graphics.Color;
+import io.github.simonbas.screwbox.core.graphics.Pixelfont;
 import io.github.simonbas.screwbox.core.graphics.Screen;
 import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.ui.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 
@@ -18,6 +21,14 @@ public class DefaultUi implements Ui, Updatable {
     private UiLayouter layouter = new SimpleUiLayouter();
 
     private UiMenu currentMenu = null;
+
+    private boolean loadingAnimationVisible = false;
+    private Consumer<Screen> loadingAnimation = new Consumer<Screen>() {
+        @Override
+        public void accept(Screen screen) {
+            screen.drawTextCentered(screen.center(), "loading...", Pixelfont.defaultFont(Color.WHITE), 2);
+        }
+    };
 
     public DefaultUi(final Engine engine) {
         this.engine = engine;
@@ -38,6 +49,9 @@ public class DefaultUi implements Ui, Updatable {
                 menu.nextItem(engine);
             }
             renderMenu(menu, engine.graphics().screen());
+        }
+        if (loadingAnimationVisible) {
+            loadingAnimation.accept(engine.graphics().screen());
         }
     }
 
@@ -78,6 +92,29 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Optional<UiMenu> currentMenu() {
         return Optional.ofNullable(currentMenu);
+    }
+
+    @Override
+    public Ui showLoadingAnimation() {
+        this.loadingAnimationVisible = true;
+        return this;
+    }
+
+    @Override
+    public Ui hideLoadingAnimation() {
+        this.loadingAnimationVisible = false;
+        return this;
+    }
+
+    @Override
+    public Ui customizeLoadingAnimation(final Consumer<Screen> loadingAnimation) {
+        this.loadingAnimation = loadingAnimation;
+        return this;
+    }
+
+    @Override
+    public Consumer<Screen> loadingAnimation() {
+        return loadingAnimation;
     }
 
     @Override
