@@ -5,7 +5,6 @@ import io.github.simonbas.screwbox.core.Time;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,20 +148,7 @@ class DefaultLoopTest {
         assertThatNoException().isThrownBy(loop::awaitTermination);
     }
 
-    @Test
-    @Timeout(1)
-    void isWarmedUp_afterAFewInvocations_willBeTrue() {
-        updatables.add(() -> {
-            if (loop.isWarmedUp() && loop.frameNumber() > 1) {
-                loop.stop();
-            }
-        });
 
-        loop.start();
-        loop.awaitTermination();
-
-        assertThat(loop.frameNumber()).isGreaterThan(1);
-    }
 
     private Updatable stopAfterOneFrameUpdatable() {
         return () -> loop.stop();

@@ -1,7 +1,6 @@
 package io.github.simonbas.screwbox.core.scenes.internal;
 
 import io.github.simonbas.screwbox.core.Engine;
-import io.github.simonbas.screwbox.core.loop.Loop;
 import io.github.simonbas.screwbox.core.scenes.DefaultScene;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultScenesTest {
@@ -47,7 +47,6 @@ class DefaultScenesTest {
 
     @Test
     void remove_isActiveScene_throwsException() {
-        engineLoopIsWarmedUp();
         scenes.add(new GameScene());
         scenes.switchTo(GameScene.class);
         scenes.update();
@@ -98,7 +97,6 @@ class DefaultScenesTest {
 
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
-        engineLoopIsWarmedUp();
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
 
@@ -108,11 +106,5 @@ class DefaultScenesTest {
 
         verify(firstScene).initialize(any());
         verify(firstScene).onEnter(engine);
-    }
-
-    private void engineLoopIsWarmedUp() {
-        Loop loop = mock(Loop.class);
-        when(loop.isWarmedUp()).thenReturn(true);
-        when(engine.loop()).thenReturn(loop);
     }
 }

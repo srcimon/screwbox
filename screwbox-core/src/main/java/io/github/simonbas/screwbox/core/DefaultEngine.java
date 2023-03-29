@@ -57,7 +57,7 @@ class DefaultEngine implements Engine {
     private final DefaultSavegame savegame;
     private final DefaultAssets assets;
     private final DefaultWindow window;
-
+    private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
 
@@ -87,6 +87,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         loop = new DefaultLoop(updatables);
+        warmUpIndicator = new WarmUpIndicator(loop);
         physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         async = new DefaultAsync(executor, this::exceptionHandler);
@@ -193,6 +194,11 @@ class DefaultEngine implements Engine {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public boolean isWarmedUp() {
+        return warmUpIndicator.isWarmedUp();
     }
 
     @Override
