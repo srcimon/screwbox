@@ -91,9 +91,9 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse, light);
         loop = new DefaultLoop(updatables);
-        warmUpIndicator = new WarmUpIndicator(loop);
-        physics = new DefaultPhysics(this);
         log = new DefaultLog(new ConsoleLoggingAdapter());
+        warmUpIndicator = new WarmUpIndicator(loop, log);
+        physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);

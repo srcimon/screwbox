@@ -24,7 +24,7 @@ class ConsoleLoggingAdapterTest {
         consoleLoggingAdapter.log(LogLevel.ERROR, "some text");
 
         verify(consoleLoggingAdapter).logError(message.capture());
-        assertThat(message.getValue()).endsWith("[ERROR ] some text");
+        assertThat(message.getValue()).endsWith("[ERROR  ] some text");
     }
 
     @Test
@@ -32,6 +32,6 @@ class ConsoleLoggingAdapterTest {
         consoleLoggingAdapter.log(LogLevel.INFO, "some text");
 
         verify(consoleLoggingAdapter).logNormal(message.capture());
-        assertThat(message.getValue()).endsWith("[INFO  ] some text");
+        assertThat(message.getValue()).endsWith("[INFO   ] some text");
     }
 }

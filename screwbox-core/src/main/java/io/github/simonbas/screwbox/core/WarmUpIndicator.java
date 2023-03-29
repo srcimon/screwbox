@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core;
 
+import io.github.simonbas.screwbox.core.log.Log;
 import io.github.simonbas.screwbox.core.loop.Loop;
 
 class WarmUpIndicator {
@@ -9,12 +10,14 @@ class WarmUpIndicator {
     public static final int TEST_COUNT = 20;
 
     private final Loop loop;
+    private final Log log;
 
     private int warmedUpCount = 0;
     private boolean isWarmedUp = false;
 
-    WarmUpIndicator(final Loop loop) {
+    WarmUpIndicator(final Loop loop, Log log) {
         this.loop = loop;
+        this.log = log;
     }
 
     boolean isWarmedUp() {
@@ -27,6 +30,7 @@ class WarmUpIndicator {
             return true;
         }
         if (loop.runningTime().isAtLeast(TIMEOUT)) {
+            log.warn("warmup timed out, starting anyway");
             isWarmedUp = true;
             return true;
         }

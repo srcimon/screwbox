@@ -6,7 +6,7 @@ public class ConsoleLoggingAdapter implements LoggingAdapter {
 
     @Override
     public void log(final LogLevel level, final String message) {
-        final String formattedMessage = String.format("%tT [%-6s] %s", new Date(), level.name(), message);
+        final String formattedMessage = String.format("%tT [%-7s] %s", new Date(), level.name(), message);
         if (LogLevel.ERROR.equals(level)) {
             logError(formattedMessage);
         } else {
