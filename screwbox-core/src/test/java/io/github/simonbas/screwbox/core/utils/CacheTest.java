@@ -41,6 +41,15 @@ class CacheTest {
     }
 
     @Test
+    void clear_keyPresent_removesEntry() {
+        cache.put(19, "value");
+
+        cache.clear(19);
+
+        assertThat(cache.get(19)).isEmpty();
+    }
+
+    @Test
     void clear_removesAllEntries() {
         cache.put(1, "one");
         cache.put(2, "two");

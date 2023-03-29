@@ -5,6 +5,7 @@ import io.github.simonbas.screwbox.core.entities.Entity;
 import io.github.simonbas.screwbox.core.savegame.Savegame;
 import io.github.simonbas.screwbox.core.scenes.Scene;
 import io.github.simonbas.screwbox.core.scenes.Scenes;
+import io.github.simonbas.screwbox.core.utils.TimeoutCache;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,11 +14,13 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import static io.github.simonbas.screwbox.core.Duration.ofSeconds;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultSavegame implements Savegame {
 
     private final Scenes scenes;
+    private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache(ofSeconds(1));
 
     public DefaultSavegame(final Scenes scenes) {
         this.scenes = scenes;
@@ -73,10 +76,11 @@ public class DefaultSavegame implements Savegame {
 
     @Override
     public boolean exists(final String name) {
-        // TODO: cache for a second
         verifyName(name);
-        final Path path = Path.of(name);
-        return Files.exists(path);
+        return savegameCache.getOrElse(name, () -> {
+            System.out.println("CHECKING FOR FILE");
+            return Files.exists(Path.of(name));
+        });
     }
 
     @Override

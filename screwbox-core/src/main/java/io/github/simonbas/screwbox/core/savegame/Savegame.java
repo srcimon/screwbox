@@ -13,7 +13,7 @@ public interface Savegame {
     /**
      * Creates a savegame file with the given name. The savegame contains all
      * {@link Entities} attached to the {@link Engine#entities()}.
-     * 
+     *
      * @see #create(String, Class)
      */
     Savegame create(String name);
@@ -45,7 +45,8 @@ public interface Savegame {
     Savegame delete(String name);
 
     /**
-     * Returns true if there is a savegame with the given name.
+     * Returns true if there is a savegame with the given name. Value is cached for a second to prevent
+     * exessive disc usage.
      */
     boolean exists(String name);
 

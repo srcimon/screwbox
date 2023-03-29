@@ -9,6 +9,10 @@ public class Cache<K, V> {
 
     private final Map<K, V> store = new HashMap<>();
 
+    public void clear(final K key) {
+        store.remove(key);
+    }
+
     public void clear() {
         store.clear();
     }
