@@ -39,7 +39,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public void update() {
-        if (nonNull(currentMenu)) {
+        if (nonNull(currentMenu) && engine.loop().isWarmedUp()) {
             var menu = currentMenu;
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
