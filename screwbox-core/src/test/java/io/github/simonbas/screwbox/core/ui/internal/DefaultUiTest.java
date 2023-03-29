@@ -54,6 +54,7 @@ class DefaultUiTest {
 
     @Test
     void update_interactorDisablesCurrentSelection_switchesToNextMenuItem() {
+        when(engine.isWarmedUp()).thenReturn(true);
         var activated = Latch.of(false, true);
 
         Graphics graphics = mock(Graphics.class);
@@ -78,6 +79,7 @@ class DefaultUiTest {
 
     @Test
     void update_menuPresent_interactsAndRendersMenu() {
+        when(engine.isWarmedUp()).thenReturn(true);
         Graphics graphics = mock(Graphics.class);
         Screen screen = mock(Screen.class);
         when(graphics.screen()).thenReturn(screen);

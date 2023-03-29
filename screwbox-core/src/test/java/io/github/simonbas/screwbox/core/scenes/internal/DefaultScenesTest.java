@@ -12,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultScenesTest {
@@ -47,6 +46,7 @@ class DefaultScenesTest {
 
     @Test
     void remove_isActiveScene_throwsException() {
+        when(engine.isWarmedUp()).thenReturn(true);
         scenes.add(new GameScene());
         scenes.switchTo(GameScene.class);
         scenes.update();
@@ -97,6 +97,7 @@ class DefaultScenesTest {
 
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
+        when(engine.isWarmedUp()).thenReturn(true);
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
 
