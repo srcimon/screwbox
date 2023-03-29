@@ -20,7 +20,7 @@ import static java.util.Objects.requireNonNull;
 public class DefaultSavegame implements Savegame {
 
     private final Scenes scenes;
-    private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache(ofSeconds(1));
+    private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache<>(ofSeconds(1));
 
     public DefaultSavegame(final Scenes scenes) {
         this.scenes = scenes;
@@ -77,10 +77,7 @@ public class DefaultSavegame implements Savegame {
     @Override
     public boolean exists(final String name) {
         verifyName(name);
-        return savegameCache.getOrElse(name, () -> {
-            System.out.println("CHECKING FOR FILE");
-            return Files.exists(Path.of(name));
-        });
+        return savegameCache.getOrElse(name, () -> Files.exists(Path.of(name)));
     }
 
     @Override
