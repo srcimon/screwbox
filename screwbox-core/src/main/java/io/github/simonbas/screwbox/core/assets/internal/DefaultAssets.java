@@ -85,4 +85,9 @@ public class DefaultAssets implements Assets {
         return this;
     }
 
+    @Override
+    public boolean isPreparing() {
+        return async.hasActiveTasks(Assets.class);
+    }
+
 }

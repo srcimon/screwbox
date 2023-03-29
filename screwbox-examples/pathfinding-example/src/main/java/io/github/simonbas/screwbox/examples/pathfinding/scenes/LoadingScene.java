@@ -13,7 +13,7 @@ public class LoadingScene implements Scene {
     public void initialize(Entities entities) {
         entities.add(engine -> {
             engine.graphics().screen().drawTextCentered(engine.graphics().screen().center(), "loading...", Pixelfont.defaultFont(Color.WHITE));
-            if (engine.loop().runningTime().isAtLeast(Duration.ofMillis(250))) {
+            if (engine.loop().updateDuration().isLessThan(Duration.ofMicros(5))) {
                 engine.scenes().switchTo(DemoScene.class);
             }
         });
