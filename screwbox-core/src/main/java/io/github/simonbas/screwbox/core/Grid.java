@@ -67,6 +67,9 @@ public class Grid implements Serializable {
         }
     }
 
+    //TODO: own cache type for this use case
+    private List<Node> cachedNodes = null;
+
     private final boolean[][] isBlocked;
     private final int width;
     private final int height;
@@ -332,13 +335,20 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Returns all {@link Node}s in the {@link Grid}.
+     */
     public List<Node> nodes() {
+        if (nonNull(cachedNodes)) {
+            return cachedNodes;
+        }
         final var nodes = new ArrayList<Node>();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 nodes.add(new Node(x, y));
             }
         }
+        this.cachedNodes = nodes;
         return nodes;
     }
 
