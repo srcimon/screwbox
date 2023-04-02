@@ -227,28 +227,11 @@ public class Grid implements Serializable {
 
     public List<Node> blockedNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
-        final Node down = node.offset(0, 1);
-        final Node up = node.offset(0, -1);
-        final Node left = node.offset(-1, 0);
-        final Node right = node.offset(1, 0);
-
-        addIfInGridAndBlocked(neighbors, down);
-        addIfInGridAndBlocked(neighbors, up);
-        addIfInGridAndBlocked(neighbors, left);
-        addIfInGridAndBlocked(neighbors, right);
-
-        if (!useDiagonalSearch) {
-            return neighbors;
+        for (final var neighbor : neighbors(node)) {
+            if (isBlocked(neighbor)) {
+                neighbors.add(neighbor);
+            }
         }
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
-
-        addIfInGridAndBlocked(neighbors, downLeft);
-        addIfInGridAndBlocked(neighbors, downRight);
-        addIfInGridAndBlocked(neighbors, upLeft);
-        addIfInGridAndBlocked(neighbors, upRight);
         return neighbors;
     }
 
@@ -282,9 +265,10 @@ public class Grid implements Serializable {
         addIfInGrid(neighbors, upRight);
         return neighbors;
     }
+//TODO: add freeNeighbors()
 
     // TODO freeNeighbors != 8 - blockedNeighbors -> fix that naming inconsistency
-    public List<Node> freeNeighbors(final Node node) {
+    public List<Node> reachableNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);
