@@ -283,6 +283,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    // TODO freeNeighbors != 8 - blockedNeighbors -> fix that naming inconsistency
     public List<Node> freeNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
