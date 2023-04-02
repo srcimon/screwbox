@@ -325,6 +325,32 @@ class GridTest {
         assertThat(grid.nodeCount()).isEqualTo(9);
     }
 
+    @Test
+    void neighbors_positionOutsideOfGrid_isEmpty() {
+        var grid = new Grid($$(0, 0, 12, 12), 4);
+
+        var neightbors = grid.neighbors(grid.nodeAt(-4, -4));
+
+        assertThat(neightbors).isEmpty();
+    }
+
+    @Test
+    void neighbors_positionInsideOfGrid_returnsNeighbors() {
+        var grid = new Grid($$(0, 0, 12, 12), 2);
+
+        var neightbors = grid.neighbors(grid.nodeAt(2, 2));
+
+        assertThat(neightbors).containsExactly(
+                grid.nodeAt(2, 3),
+                grid.nodeAt(2, 1),
+                grid.nodeAt(1, 2),
+                grid.nodeAt(3, 2),
+                grid.nodeAt(1, 3),
+                grid.nodeAt(3, 3),
+                grid.nodeAt(1, 1),
+                grid.nodeAt(3, 1));
+    }
+
     @ParameterizedTest
     @CsvSource({
             "4, 2, 3.0",

@@ -98,7 +98,7 @@ public class Grid implements Serializable {
         this.offset = area.origin();
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
-        isBlocked = new boolean[this.width][this.height];
+        this.isBlocked = new boolean[this.width][this.height];
         this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
     }
@@ -125,6 +125,9 @@ public class Grid implements Serializable {
         return new Node(x, y);
     }
 
+    /**
+     * Retruns true if the given position is not blocked and inside the {@link Grid}.
+     */
     public boolean isFree(final int x, final int y) {
         return isInGrid(x, y) && !isBlocked[x][y];
     }
