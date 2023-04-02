@@ -255,7 +255,7 @@ public class Grid implements Serializable {
     private boolean isInGrid(final Node node) {
         return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
     }
-
+// TODO all these methods may be better of as node.method()
     public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
