@@ -64,7 +64,7 @@ public class AStarAlgorithm implements PathfindingAlgorithm {
 
         private void processNode(final Node currentNode) {
             final var costToStart = costsToStart.get(currentNode);
-            for (final Node neighbor : grid.reachableNeighbors(currentNode)) {
+            for (final Node neighbor : grid.freeNeighbors(currentNode)) {
                 if (!closed.contains(neighbor)) {
                     final double startCost = isNull(costToStart) ? currentNode.distance(start) : costToStart;
                     final double totalCost = startCost + neighbor.distance(currentNode)

@@ -73,12 +73,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_noDiagonalMovement_returnsNeighbours() {
+    void freeNeighbors_noDiagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16, false);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.freeNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(4)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -87,12 +87,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_diagonalMovement_returnsNeighbours() {
+    void freeNeighbors_diagonalMovement_returnsNeighbours() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(1, 1)))
+        assertThat(grid.freeNeighbors(grid.nodeAt(1, 1)))
                 .hasSize(8)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(2, 1))
@@ -105,12 +105,12 @@ class GridTest {
     }
 
     @Test
-    void reachableNeighbors_onEdge_returnsNeighboursInGrid() {
+    void freeNeighbors_onEdge_returnsNeighboursInGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
 
         var grid = new Grid(area, 16);
 
-        assertThat(grid.reachableNeighbors(grid.nodeAt(0, 0)))
+        assertThat(grid.freeNeighbors(grid.nodeAt(0, 0)))
                 .hasSize(3)
                 .contains(grid.nodeAt(0, 1))
                 .contains(grid.nodeAt(1, 1))
@@ -132,10 +132,10 @@ class GridTest {
         var grid = new Grid(area, 16);
         Node first = grid.nodeAt(0, 0);
 
-        List<Node> secondGeneration = grid.reachableNeighbors(first);
+        List<Node> secondGeneration = grid.freeNeighbors(first);
         Node second = secondGeneration.get(0);
 
-        List<Node> thirdGeneration = grid.reachableNeighbors(second);
+        List<Node> thirdGeneration = grid.freeNeighbors(second);
         Node third = thirdGeneration.get(0);
 
         List<Node> path = grid.backtrack(third);
