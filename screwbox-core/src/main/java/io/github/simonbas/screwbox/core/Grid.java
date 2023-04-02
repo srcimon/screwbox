@@ -352,8 +352,15 @@ public class Grid implements Serializable {
         return nodes;
     }
 
+    /**
+     * Returns the count of {@link Node}s in the {@link Grid}.
+     */
+    public int nodeCount() {
+        return width * height;
+    }
+
     public int blockedCount() {
-        return width * height - freeCount();
+        return nodeCount() - freeCount();
     }
 
     public int freeCount() {

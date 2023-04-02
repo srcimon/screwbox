@@ -317,11 +317,19 @@ class GridTest {
         assertThat(grid.isBlocked(node)).isTrue();
     }
 
+    @Test
+    void nodeCount_3x3area_returns9() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        assertThat(grid.nodeCount()).isEqualTo(9);
+    }
+
     @ParameterizedTest
     @CsvSource({
             "4, 2, 3.0",
             "1, 2, 0.0",
-            "2, 3, 1.41" })
+            "2, 3, 1.41"})
     void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
