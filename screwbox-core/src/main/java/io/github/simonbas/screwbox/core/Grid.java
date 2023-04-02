@@ -379,11 +379,14 @@ public class Grid implements Serializable {
         return Math.floorDiv((int) value, gridSize);
     }
 
-    public List<Node> backtrack(Node node) {
-        final List<Node> path = new ArrayList<>();
-        while (nonNull(node.parent)) {
+    public List<Node> backtrack(final Node node) {
+        return backtrack(node, new ArrayList<>());
+    }
+
+    private List<Node> backtrack(final Node node, final List<Node> path) {
+        if (nonNull(node.parent)) {
             path.add(0, node);
-            node = node.parent;
+            backtrack(node.parent, path);
         }
         return path;
     }
