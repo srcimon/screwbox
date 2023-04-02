@@ -11,6 +11,7 @@ public class PathfindingExample {
 
         engine.assets().enableLogging().preparePackage("io.github.simonbas.screwbox.examples.pathfinding");
 
+        //TODO engine.loop().setUnlimitedFps();
         engine.scenes().add(new DemoScene("map.json"));
 
         engine.start(DemoScene.class);
