@@ -181,11 +181,23 @@ public class Grid implements Serializable {
         statusChangeAt(position, true);
     }
 
+    public void block(final Node node) {
+        block(node.x, node.y);
+    }
+
+    public void block(final int x, final int y) {
+        statusChange(x, y, true);
+    }
+
+    private void statusChange(final int x, final int y, final boolean status) {
+        if (isInGrid(x, y)) {
+            isBlocked[x][y] = status;
+        }
+    }
+
     private void statusChangeAt(final Vector position, boolean status) {
         final Node node = toGrid(position);
-        if (isInGrid(node)) {
-            isBlocked[node.x][node.y] = status;
-        }
+        statusChange(node.x, node.y, status);
     }
 
     public void blockArea(final Bounds area) {
@@ -202,16 +214,6 @@ public class Grid implements Serializable {
             for (int y = minY; y <= maxY; y++) {
                 isBlocked[x][y] = status;
             }
-        }
-    }
-
-    public void block(final Node node) {
-        block(node.x, node.y);
-    }
-
-    public void block(final int x, final int y) {
-        if (isInGrid(x, y)) {
-            isBlocked[x][y] = true;
         }
     }
 
