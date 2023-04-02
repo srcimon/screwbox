@@ -241,28 +241,16 @@ public class Grid implements Serializable {
 // TODO all these methods may be better of as node.method()
     public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
-        final Node down = node.offset(0, 1);
-        final Node up = node.offset(0, -1);
-        final Node left = node.offset(-1, 0);
-        final Node right = node.offset(1, 0);
 
-        addIfInGrid(neighbors, down);
-        addIfInGrid(neighbors, up);
-        addIfInGrid(neighbors, left);
-        addIfInGrid(neighbors, right);
-
-        if (!useDiagonalSearch) {
-            return neighbors;
+        var nodes = useDiagonalSearch
+                ? List.of(node.offset(0, 1), node.offset(0, -1), node.offset(-1, 0), node.offset(1, 0), node.offset(-1, 1)
+                , node.offset(1, 1), node.offset(-1, -1), node.offset(1, -1))
+                : List.of(node.offset(0, 1), node.offset(0, -1), node.offset(-1, 0), node.offset(1, 0));
+        for (var n : nodes) {
+            if (isInGrid(n)) {
+                neighbors.add(n);
+            }
         }
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
-
-        addIfInGrid(neighbors, downLeft);
-        addIfInGrid(neighbors, downRight);
-        addIfInGrid(neighbors, upLeft);
-        addIfInGrid(neighbors, upRight);
         return neighbors;
     }
 //TODO: add freeNeighbors()
@@ -305,12 +293,6 @@ public class Grid implements Serializable {
             }
         }
         return neighbors;
-    }
-
-    private void addIfInGridAndBlocked(final List<Node> neighbors, final Node node) {
-        if (isInGrid(node) && !isFree(node)) {
-            neighbors.add(node);
-        }
     }
 
     private void addIfInGrid(final List<Node> neighbors, final Node node) {

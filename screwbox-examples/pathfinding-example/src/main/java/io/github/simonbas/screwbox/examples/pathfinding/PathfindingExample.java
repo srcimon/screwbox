@@ -10,7 +10,7 @@ public class PathfindingExample {
         Engine engine = ScrewBox.createEngine("Pathfinding Example");
 
         engine.assets().enableLogging().preparePackage("io.github.simonbas.screwbox.examples.pathfinding");
-
+        engine.loop().setTargetFps(9999);
         //TODO engine.loop().setUnlimitedFps();
         engine.scenes().add(new DemoScene("map.json"));
 
