@@ -101,4 +101,17 @@ class DefaultUiTest {
         verify(renderer).renderSelectedItem("some button", layoutBounds, screen);
     }
 
+    @Test
+    void currentMenu_menuOpen_returnsMenu() {
+        UiMenu menu = new UiMenu();
+
+        ui.openMenu(menu);
+
+        assertThat(ui.currentMenu()).hasValue(menu);
+    }
+
+    @Test
+    void currentMenu_noOpenMenu_isEmpty() {
+        assertThat(ui.currentMenu()).isEmpty();
+    }
 }
