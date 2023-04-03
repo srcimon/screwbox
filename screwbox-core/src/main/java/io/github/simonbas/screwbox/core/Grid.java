@@ -246,9 +246,21 @@ public class Grid implements Serializable {
         final List<Node> neighbors = new ArrayList<>();
 
         var nodes = useDiagonalSearch
-                ? List.of(node.offset(0, 1), node.offset(0, -1), node.offset(-1, 0), node.offset(1, 0), node.offset(-1, 1)
-                , node.offset(1, 1), node.offset(-1, -1), node.offset(1, -1))
-                : List.of(node.offset(0, 1), node.offset(0, -1), node.offset(-1, 0), node.offset(1, 0));
+                ? List.of(
+                node.offset(0, 1),
+                node.offset(0, -1),
+                node.offset(-1, 0),
+                node.offset(1, 0),
+                node.offset(-1, 1),
+                node.offset(1, 1),
+                node.offset(-1, -1),
+                node.offset(1, -1))
+                : List.of(
+                node.offset(0, 1),
+                node.offset(0, -1),
+                node.offset(-1, 0),
+                node.offset(1, 0));
+
         for (var n : nodes) {
             if (isInGrid(n)) {
                 neighbors.add(n);
@@ -256,9 +268,7 @@ public class Grid implements Serializable {
         }
         return neighbors;
     }
-//TODO: add freeNeighbors()
 
-    // TODO freeNeighbors != 8 - blockedNeighbors -> fix that naming inconsistency
     public List<Node> reachableNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
         final Node down = node.offset(0, 1);
@@ -344,20 +354,8 @@ public class Grid implements Serializable {
         return freeCount;
     }
 
-    private int gridValue(final double value) {
-        return Math.floorDiv((int) value, gridSize);
-    }
-
     public List<Node> backtrack(final Node node) {
         return backtrack(node, new ArrayList<>());
-    }
-
-    private List<Node> backtrack(final Node node, final List<Node> path) {
-        if (nonNull(node.parent)) {
-            path.add(0, node);
-            backtrack(node.parent, path);
-        }
-        return path;
     }
 
     public Vector snap(final Vector position) {
@@ -373,4 +371,15 @@ public class Grid implements Serializable {
         return isBlocked(node.x, node.y);
     }
 
+    private List<Node> backtrack(final Node node, final List<Node> path) {
+        if (nonNull(node.parent)) {
+            path.add(0, node);
+            backtrack(node.parent, path);
+        }
+        return path;
+    }
+
+    private int gridValue(final double value) {
+        return Math.floorDiv((int) value, gridSize);
+    }
 }
