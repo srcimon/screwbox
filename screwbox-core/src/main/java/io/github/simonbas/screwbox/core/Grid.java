@@ -1,6 +1,5 @@
 package io.github.simonbas.screwbox.core;
 
-import io.github.simonbas.screwbox.core.assets.Asset;
 import io.github.simonbas.screwbox.core.graphics.World;
 
 import java.io.Serial;
@@ -12,7 +11,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static io.github.simonbas.screwbox.core.Bounds.atPosition;
-import static io.github.simonbas.screwbox.core.assets.Asset.asset;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -73,7 +71,6 @@ public class Grid implements Serializable {
         }
     }
 
-    private final Asset<List<Node>> nodesCache;
     private final BitSet isBlocked;
     private final int width;
     private final int height;
@@ -106,15 +103,6 @@ public class Grid implements Serializable {
         this.isBlocked = new BitSet(this.width * this.height);
         this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
-        this.nodesCache = asset(() -> {
-            final var nodes = new ArrayList<Node>();
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    nodes.add(new Node(x, y));
-                }
-            }
-            return nodes;
-        });
     }
 
     /**
@@ -326,7 +314,13 @@ public class Grid implements Serializable {
      * Returns all {@link Node}s in the {@link Grid}.
      */
     public List<Node> nodes() {
-        return nodesCache.get();
+        final var nodes = new ArrayList<Node>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                nodes.add(new Node(x, y));
+            }
+        }
+        return nodes;
     }
 
     /**
