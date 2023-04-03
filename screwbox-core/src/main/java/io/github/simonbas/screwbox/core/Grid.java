@@ -4,6 +4,7 @@ import io.github.simonbas.screwbox.core.graphics.World;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,7 +71,7 @@ public class Grid implements Serializable {
     //TODO: own cache type for this use case
     private List<Node> cachedNodes = null;
 
-    private final boolean[][] isBlocked;
+    private final BitSet isBlocked;
     private final int width;
     private final int height;
     private final int gridSize;
@@ -95,12 +96,11 @@ public class Grid implements Serializable {
             throw new IllegalArgumentException("area origin y should be dividable by grid size.");
         }
 
-        //TODO make grid a BitSet
         this.gridSize = gridSize;
         this.offset = area.origin();
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
-        this.isBlocked = new boolean[this.width][this.height];
+        this.isBlocked = new BitSet(this.width * this.height);
         this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
     }
@@ -131,7 +131,7 @@ public class Grid implements Serializable {
      * Retruns true if the given position is not blocked and inside the {@link Grid}.
      */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked[x][y];
+        return isInGrid(x, y) && !isBlocked.get(x * width + y);
     }
 
     private boolean isInGrid(final int x, final int y) {
@@ -193,7 +193,7 @@ public class Grid implements Serializable {
 
     private void statusChange(final int x, final int y, final boolean status) {
         if (isInGrid(x, y)) {
-            isBlocked[x][y] = status;
+            isBlocked.set(x * width + y, status);
         }
     }
 
@@ -214,7 +214,7 @@ public class Grid implements Serializable {
         final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked[x][y] = status;
+                isBlocked.set(x * width + y, status);
             }
         }
     }
@@ -240,7 +240,8 @@ public class Grid implements Serializable {
     private boolean isInGrid(final Node node) {
         return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
     }
-// TODO all these methods may be better of as node.method()
+
+    // TODO all these methods may be better of as node.method()
     public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
 
@@ -295,12 +296,6 @@ public class Grid implements Serializable {
             }
         }
         return neighbors;
-    }
-
-    private void addIfInGrid(final List<Node> neighbors, final Node node) {
-        if (isInGrid(node)) {
-            neighbors.add(node);
-        }
     }
 
     private void addIfFree(final List<Node> neighbors, final Node node) {
@@ -371,7 +366,7 @@ public class Grid implements Serializable {
     }
 
     public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked[x][y];
+        return isInGrid(x, y) && isBlocked.get(x * width + y);
     }
 
     public boolean isBlocked(final Node node) {
