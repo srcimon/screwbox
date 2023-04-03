@@ -22,6 +22,12 @@ public interface Loop {
     Loop setTargetFps(int targetFps);
 
     /**
+     * Sets the games target frames per second to {@link Integer#MAX_VALUE} which is
+     * as good as unlimited.
+     */
+    Loop setUnlimitedFps();
+
+    /**
      * Returns the current target frames per second.
      */
     int targetFps();

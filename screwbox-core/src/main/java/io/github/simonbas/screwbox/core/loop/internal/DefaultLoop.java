@@ -53,6 +53,11 @@ public class DefaultLoop implements Loop {
     }
 
     @Override
+    public Loop setUnlimitedFps() {
+        return setTargetFps(Integer.MAX_VALUE);
+    }
+
+    @Override
     public int targetFps() {
         return targetFps;
     }

@@ -1,9 +1,12 @@
 package io.github.simonbas.screwbox.core;
 
 import io.github.simonbas.screwbox.core.graphics.World;
+import io.github.simonbas.screwbox.core.utils.SingleCache;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +21,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class Grid implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -67,7 +71,8 @@ public class Grid implements Serializable {
         }
     }
 
-    private final boolean[][] isBlocked;
+    private final SingleCache<List<Node>> nodesCache = new SingleCache<>();
+    private final BitSet isBlocked;
     private final int width;
     private final int height;
     private final int gridSize;
@@ -80,22 +85,23 @@ public class Grid implements Serializable {
     }
 
     public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
-        requireNonNull(area, "Grid area must not be null");
+        requireNonNull(area, "grid area must not be null");
 
         if (gridSize <= 0) {
-            throw new IllegalArgumentException("GridSize must have value above zero");
+            throw new IllegalArgumentException("grid size must have value above zero");
         }
         if (area.origin().x() % gridSize != 0) {
-            throw new IllegalArgumentException("Area origin x should be dividable by grid size.");
+            throw new IllegalArgumentException("area origin x should be dividable by grid size.");
         }
         if (area.origin().y() % gridSize != 0) {
-            throw new IllegalArgumentException("Area origin y should be dividable by grid size.");
+            throw new IllegalArgumentException("area origin y should be dividable by grid size.");
         }
+
         this.gridSize = gridSize;
         this.offset = area.origin();
         this.width = gridValue(area.width());
         this.height = gridValue(area.height());
-        isBlocked = new boolean[this.width][this.height];
+        this.isBlocked = new BitSet(this.width * this.height);
         this.useDiagonalSearch = useDiagonalSearch;
         this.area = area;
     }
@@ -103,7 +109,7 @@ public class Grid implements Serializable {
     /**
      * Returns a new instance without any blocked {@link Node}s.
      */
-    public Grid cleared() {
+    public Grid clearedInstance() {
         return new Grid(area, gridSize, useDiagonalSearch);
     }
 
@@ -122,8 +128,11 @@ public class Grid implements Serializable {
         return new Node(x, y);
     }
 
+    /**
+     * Retruns true if the given position is not blocked and inside the {@link Grid}.
+     */
     public boolean isFree(final int x, final int y) {
-        return isInGrid(x, y) && !isBlocked[x][y];
+        return isInGrid(x, y) && !isBlocked.get(x * width + y);
     }
 
     private boolean isInGrid(final int x, final int y) {
@@ -151,12 +160,8 @@ public class Grid implements Serializable {
     }
 
     public Node toGrid(final Vector position) {
-        final var translated = tanslate(position);
+        final var translated = position.substract(offset);
         return new Node(gridValue(translated.x()), gridValue(translated.y()));
-    }
-
-    private Vector tanslate(final Vector position) {
-        return position.substract(offset);
     }
 
     private Bounds tanslate(final Bounds area) {
@@ -175,11 +180,23 @@ public class Grid implements Serializable {
         statusChangeAt(position, true);
     }
 
+    public void block(final Node node) {
+        block(node.x, node.y);
+    }
+
+    public void block(final int x, final int y) {
+        statusChange(x, y, true);
+    }
+
+    private void statusChange(final int x, final int y, final boolean status) {
+        if (isInGrid(x, y)) {
+            isBlocked.set(x * width + y, status);
+        }
+    }
+
     private void statusChangeAt(final Vector position, boolean status) {
         final Node node = toGrid(position);
-        if (isInGrid(node)) {
-            isBlocked[node.x][node.y] = status;
-        }
+        statusChange(node.x, node.y, status);
     }
 
     public void blockArea(final Bounds area) {
@@ -194,18 +211,8 @@ public class Grid implements Serializable {
         final int maxY = Math.min(gridValue(areaTranslated.bottomRight().y()), height - 1);
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-                isBlocked[x][y] = status;
+                isBlocked.set(x * width + y, status);
             }
-        }
-    }
-
-    public void block(final Node node) {
-        block(node.x, node.y);
-    }
-
-    public void block(final int x, final int y) {
-        if (isInGrid(x, y)) {
-            isBlocked[x][y] = true;
         }
     }
 
@@ -219,28 +226,11 @@ public class Grid implements Serializable {
 
     public List<Node> blockedNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
-        final Node down = node.offset(0, 1);
-        final Node up = node.offset(0, -1);
-        final Node left = node.offset(-1, 0);
-        final Node right = node.offset(1, 0);
-
-        addIfInGridAndBlocked(neighbors, down);
-        addIfInGridAndBlocked(neighbors, up);
-        addIfInGridAndBlocked(neighbors, left);
-        addIfInGridAndBlocked(neighbors, right);
-
-        if (!useDiagonalSearch) {
-            return neighbors;
+        for (final var neighbor : neighbors(node)) {
+            if (isBlocked(neighbor)) {
+                neighbors.add(neighbor);
+            }
         }
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
-
-        addIfInGridAndBlocked(neighbors, downLeft);
-        addIfInGridAndBlocked(neighbors, downRight);
-        addIfInGridAndBlocked(neighbors, upLeft);
-        addIfInGridAndBlocked(neighbors, upRight);
         return neighbors;
     }
 
@@ -248,30 +238,31 @@ public class Grid implements Serializable {
         return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
     }
 
+    // TODO all these methods may be better of as node.method()
     public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
-        final Node down = node.offset(0, 1);
-        final Node up = node.offset(0, -1);
-        final Node left = node.offset(-1, 0);
-        final Node right = node.offset(1, 0);
 
-        addIfInGrid(neighbors, down);
-        addIfInGrid(neighbors, up);
-        addIfInGrid(neighbors, left);
-        addIfInGrid(neighbors, right);
+        var nodes = useDiagonalSearch
+                ? List.of(
+                node.offset(0, 1),
+                node.offset(0, -1),
+                node.offset(-1, 0),
+                node.offset(1, 0),
+                node.offset(-1, 1),
+                node.offset(1, 1),
+                node.offset(-1, -1),
+                node.offset(1, -1))
+                : List.of(
+                node.offset(0, 1),
+                node.offset(0, -1),
+                node.offset(-1, 0),
+                node.offset(1, 0));
 
-        if (!useDiagonalSearch) {
-            return neighbors;
+        for (var n : nodes) {
+            if (isInGrid(n)) {
+                neighbors.add(n);
+            }
         }
-        final Node downLeft = node.offset(-1, 1);
-        final Node downRight = node.offset(1, 1);
-        final Node upLeft = node.offset(-1, -1);
-        final Node upRight = node.offset(1, -1);
-
-        addIfInGrid(neighbors, downLeft);
-        addIfInGrid(neighbors, downRight);
-        addIfInGrid(neighbors, upLeft);
-        addIfInGrid(neighbors, upRight);
         return neighbors;
     }
 
@@ -314,36 +305,38 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
-    private void addIfInGridAndBlocked(final List<Node> neighbors, final Node node) {
-        if (isInGrid(node) && !isFree(node)) {
-            neighbors.add(node);
-        }
-    }
-
-    private void addIfInGrid(final List<Node> neighbors, final Node node) {
-        if (isInGrid(node)) {
-            neighbors.add(node);
-        }
-    }
-
+    @Deprecated
     private void addIfFree(final List<Node> neighbors, final Node node) {
         if (isFree(node)) {
             neighbors.add(node);
         }
     }
 
+    /**
+     * Returns all {@link Node}s in the {@link Grid}.
+     */
     public List<Node> nodes() {
-        final var nodes = new ArrayList<Node>();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                nodes.add(new Node(x, y));
+        return nodesCache.getOrElse(() -> {
+            final var nodes = new ArrayList<Node>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    nodes.add(new Node(x, y));
+                }
             }
-        }
-        return nodes;
+            return nodes;
+        });
+    }
+
+
+    /**
+     * Returns the count of {@link Node}s in the {@link Grid}.
+     */
+    public int nodeCount() {
+        return width * height;
     }
 
     public int blockedCount() {
-        return width * height - freeCount();
+        return nodeCount() - freeCount();
     }
 
     public int freeCount() {
@@ -358,17 +351,8 @@ public class Grid implements Serializable {
         return freeCount;
     }
 
-    private int gridValue(final double value) {
-        return Math.floorDiv((int) value, gridSize);
-    }
-
-    public List<Node> backtrack(Node node) {
-        final List<Node> path = new ArrayList<>();
-        while (nonNull(node.parent)) {
-            path.add(0, node);
-            node = node.parent;
-        }
-        return path;
+    public List<Node> backtrack(final Node node) {
+        return backtrack(node, new ArrayList<>());
     }
 
     public Vector snap(final Vector position) {
@@ -377,11 +361,22 @@ public class Grid implements Serializable {
     }
 
     public boolean isBlocked(final int x, final int y) {
-        return isInGrid(x, y) && isBlocked[x][y];
+        return isInGrid(x, y) && isBlocked.get(x * width + y);
     }
 
     public boolean isBlocked(final Node node) {
         return isBlocked(node.x, node.y);
     }
 
+    private List<Node> backtrack(final Node node, final List<Node> path) {
+        if (nonNull(node.parent)) {
+            path.add(0, node);
+            backtrack(node.parent, path);
+        }
+        return path;
+    }
+
+    private int gridValue(final double value) {
+        return Math.floorDiv((int) value, gridSize);
+    }
 }

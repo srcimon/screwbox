@@ -80,6 +80,6 @@ class PathfindingGridCreationSystemTest {
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Area origin x should be dividable by grid size.");
+                .hasMessageContaining("area origin x should be dividable by grid size.");
     }
 }

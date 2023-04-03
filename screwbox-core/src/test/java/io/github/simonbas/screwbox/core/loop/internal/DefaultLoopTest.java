@@ -148,7 +148,12 @@ class DefaultLoopTest {
         assertThatNoException().isThrownBy(loop::awaitTermination);
     }
 
+    @Test
+    void setUnlimitedFps_setsTargetFps_toIntegerMax() {
+        loop.setUnlimitedFps();
 
+        assertThat(loop.targetFps()).isEqualTo(Integer.MAX_VALUE);
+    }
 
     private Updatable stopAfterOneFrameUpdatable() {
         return () -> loop.stop();

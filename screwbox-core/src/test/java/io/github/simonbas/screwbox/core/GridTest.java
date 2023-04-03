@@ -16,22 +16,22 @@ import static org.assertj.core.data.Offset.offset;
 class GridTest {
 
     @Test
-    void cleared_someFieldsBlocked_returnsEmptyGrid() {
+    void clearedInstance_someFieldsBlocked_returnsEmptyGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
         Grid grid = new Grid(area, 2);
         grid.block(1, 2);
 
-        Grid result = grid.cleared();
+        Grid result = grid.clearedInstance();
 
         assertThat(result.isBlocked(1, 2)).isFalse();
         assertThat(result.area()).isEqualTo(area);
     }
 
     @Test
-    void newInstance_widthNegative_throwsException() {
+    void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Grid area must not be null");
+                .hasMessage("grid area must not be null");
     }
 
     @Test
@@ -39,7 +39,7 @@ class GridTest {
         Bounds area = Bounds.max();
         assertThatThrownBy(() -> new Grid(area, 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GridSize must have value above zero");
+                .hasMessage("grid size must have value above zero");
     }
 
     @Test
@@ -47,7 +47,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Area origin x should be dividable by grid size.");
+                .hasMessage("area origin x should be dividable by grid size.");
     }
 
     @Test
@@ -55,7 +55,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Area origin y should be dividable by grid size.");
+                .hasMessage("area origin y should be dividable by grid size.");
     }
 
     @Test
@@ -317,11 +317,45 @@ class GridTest {
         assertThat(grid.isBlocked(node)).isTrue();
     }
 
+    @Test
+    void nodeCount_3x3area_returns9() {
+        Bounds area = $$(0, 0, 12, 12);
+        var grid = new Grid(area, 4);
+
+        assertThat(grid.nodeCount()).isEqualTo(9);
+    }
+
+    @Test
+    void neighbors_positionOutsideOfGrid_isEmpty() {
+        var grid = new Grid($$(0, 0, 12, 12), 4);
+
+        var neightbors = grid.neighbors(grid.nodeAt(-4, -4));
+
+        assertThat(neightbors).isEmpty();
+    }
+
+    @Test
+    void neighbors_positionInsideOfGrid_returnsNeighbors() {
+        var grid = new Grid($$(0, 0, 12, 12), 2);
+
+        var neightbors = grid.neighbors(grid.nodeAt(2, 2));
+
+        assertThat(neightbors).containsExactly(
+                grid.nodeAt(2, 3),
+                grid.nodeAt(2, 1),
+                grid.nodeAt(1, 2),
+                grid.nodeAt(3, 2),
+                grid.nodeAt(1, 3),
+                grid.nodeAt(3, 3),
+                grid.nodeAt(1, 1),
+                grid.nodeAt(3, 1));
+    }
+
     @ParameterizedTest
     @CsvSource({
             "4, 2, 3.0",
             "1, 2, 0.0",
-            "2, 3, 1.41" })
+            "2, 3, 1.41"})
     void distance_returnsDistanceBetweenNodes(int x, int y, double distance) {
         Bounds area = $$(0, 0, 12, 12);
         var grid = new Grid(area, 4);
