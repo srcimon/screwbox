@@ -1,7 +1,6 @@
 package io.github.simonbas.screwbox.core;
 
 import io.github.simonbas.screwbox.core.graphics.World;
-import io.github.simonbas.screwbox.core.utils.SingleCache;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import static io.github.simonbas.screwbox.core.Bounds.atPosition;
 import static java.util.Objects.nonNull;
@@ -71,7 +71,6 @@ public class Grid implements Serializable {
         }
     }
 
-    private final SingleCache<List<Node>> nodesCache = new SingleCache<>();
     private final BitSet isBlocked;
     private final int width;
     private final int height;
@@ -238,7 +237,6 @@ public class Grid implements Serializable {
         return node.x > 0 && node.x < width && node.y > 0 && node.y < height;
     }
 
-    // TODO all these methods may be better of as node.method()
     public List<Node> neighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
 
@@ -268,14 +266,20 @@ public class Grid implements Serializable {
 
     public List<Node> reachableNeighbors(final Node node) {
         final List<Node> neighbors = new ArrayList<>();
+        final Consumer<Node> addIfFree = nde -> {
+            if (isFree(nde)) {
+                neighbors.add(nde);
+            }
+        };
+
         final Node down = node.offset(0, 1);
         final Node up = node.offset(0, -1);
         final Node left = node.offset(-1, 0);
         final Node right = node.offset(1, 0);
-        addIfFree(neighbors, down);
-        addIfFree(neighbors, up);
-        addIfFree(neighbors, left);
-        addIfFree(neighbors, right);
+        addIfFree.accept(down);
+        addIfFree.accept(up);
+        addIfFree.accept(left);
+        addIfFree.accept(right);
 
         if (!useDiagonalSearch) {
             return neighbors;
@@ -285,10 +289,10 @@ public class Grid implements Serializable {
 
         if (isFree(down)) {
             if (isFree(right)) {
-                addIfFree(neighbors, downRight);
+                addIfFree.accept(downRight);
             }
             if (isFree(left)) {
-                addIfFree(neighbors, downLeft);
+                addIfFree.accept(downLeft);
             }
         }
 
@@ -296,37 +300,27 @@ public class Grid implements Serializable {
         final Node upRight = node.offset(1, -1);
         if (isFree(up)) {
             if (isFree(upLeft) && isFree(left)) {
-                addIfFree(neighbors, upLeft);
+                addIfFree.accept(upLeft);
             }
             if (isFree(upRight) && isFree(right)) {
-                addIfFree(neighbors, upRight);
+                addIfFree.accept(upRight);
             }
         }
         return neighbors;
-    }
-
-    @Deprecated
-    private void addIfFree(final List<Node> neighbors, final Node node) {
-        if (isFree(node)) {
-            neighbors.add(node);
-        }
     }
 
     /**
      * Returns all {@link Node}s in the {@link Grid}.
      */
     public List<Node> nodes() {
-        return nodesCache.getOrElse(() -> {
-            final var nodes = new ArrayList<Node>();
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    nodes.add(new Node(x, y));
-                }
+        final var nodes = new ArrayList<Node>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                nodes.add(new Node(x, y));
             }
-            return nodes;
-        });
+        }
+        return nodes;
     }
-
 
     /**
      * Returns the count of {@link Node}s in the {@link Grid}.
