@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core.utils;
 
+import java.io.Serializable;
 import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
@@ -8,9 +9,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * Can be used to access a single value that is only once initialized.
  */
-public class SingleCache<V> {
+public class SingleCache<V> implements Serializable {
 
-    private V value;
+    private transient V value;
 
     /**
      * Gets the value or else the value of the {@link Supplier}. The {@link Supplier}s value is then stored for any further access.
