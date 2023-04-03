@@ -94,6 +94,8 @@ public class Grid implements Serializable {
         if (area.origin().y() % gridSize != 0) {
             throw new IllegalArgumentException("area origin y should be dividable by grid size.");
         }
+
+        //TODO make grid a BitSet
         this.gridSize = gridSize;
         this.offset = area.origin();
         this.width = gridValue(area.width());
