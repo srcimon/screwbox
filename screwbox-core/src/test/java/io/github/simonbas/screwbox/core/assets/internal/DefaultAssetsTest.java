@@ -135,6 +135,16 @@ class DefaultAssetsTest {
         assertThat(assets.isPreparing()).isFalse();
     }
 
+    @Test
+    void disableLogging_loggingEnabled_disablesLogging() {
+        assets.enableLogging();
+        assets.disableLogging();
+
+        assets.preparePackage("io.github.simonbas.screwbox.core.assets.internal");
+
+        verify(log, never()).debug(anyString());
+    }
+
     @AfterEach
     void tearDown() {
         shutdown(executor);
