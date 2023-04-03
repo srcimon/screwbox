@@ -160,12 +160,8 @@ public class Grid implements Serializable {
     }
 
     public Node toGrid(final Vector position) {
-        final var translated = tanslate(position);
+        final var translated = position.substract(offset);
         return new Node(gridValue(translated.x()), gridValue(translated.y()));
-    }
-
-    private Vector tanslate(final Vector position) {
-        return position.substract(offset);
     }
 
     private Bounds tanslate(final Bounds area) {
