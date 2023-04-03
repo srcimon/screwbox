@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import static io.github.simonbas.screwbox.core.Time.now;
 
-//TODO: Test
 public class TimeoutCache<K, V> extends Cache<K, V> {
 
     private final Duration lifetime;

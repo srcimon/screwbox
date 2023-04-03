@@ -21,6 +21,7 @@ import io.github.simonbas.screwbox.tiled.Tile;
 
 import static io.github.simonbas.screwbox.core.Bounds.atPosition;
 import static io.github.simonbas.screwbox.core.Duration.ofSeconds;
+import static io.github.simonbas.screwbox.core.assets.Asset.asset;
 import static io.github.simonbas.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DemoScene implements Scene {
@@ -30,23 +31,19 @@ public class DemoScene implements Scene {
     private static final Asset<Sprite> ENEMY_STANDING = spriteAssetFromJson("enemy.json", "standing");
     private static final Asset<Sprite> ENEMY_WALKING = spriteAssetFromJson("enemy.json", "walking");
 
-    private final Map map;
-
-    public DemoScene(final String name) {
-        map = Map.fromJson(name);
-    }
+    private final Asset<Map> map = asset(() -> Map.fromJson("map.json"));
 
     @Override
     public void initialize(final Entities entities) {
-        entities.importSource(map.tiles())
+        entities.importSource(map.get().tiles())
                 .usingIndex(t -> t.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entities.importSource(map)
+        entities.importSource(map.get())
                 .as(worldBounds());
 
-        entities.importSource(map.objects())
+        entities.importSource(map.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())

@@ -22,7 +22,7 @@ class DemoSceneTest {
     void testMapCanBeLoaded() {
         Entities entities = new DefaultEntities(engine);
 
-        new DemoScene("map.json").initialize(entities);
+        new DemoScene().initialize(entities);
 
         assertThat(entities.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
