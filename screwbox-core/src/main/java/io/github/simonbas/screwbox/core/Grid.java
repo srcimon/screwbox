@@ -71,8 +71,7 @@ public class Grid implements Serializable {
         }
     }
 
-    private SingleCache<List<Node>> nodesCache = new SingleCache<>();
-
+    private final SingleCache<List<Node>> nodesCache = new SingleCache<>();
     private final BitSet isBlocked;
     private final int width;
     private final int height;
