@@ -16,22 +16,22 @@ import static org.assertj.core.data.Offset.offset;
 class GridTest {
 
     @Test
-    void cleared_someFieldsBlocked_returnsEmptyGrid() {
+    void clearedInstance_someFieldsBlocked_returnsEmptyGrid() {
         Bounds area = Bounds.atOrigin(0, 0, 64, 64);
         Grid grid = new Grid(area, 2);
         grid.block(1, 2);
 
-        Grid result = grid.cleared();
+        Grid result = grid.clearedInstance();
 
         assertThat(result.isBlocked(1, 2)).isFalse();
         assertThat(result.area()).isEqualTo(area);
     }
 
     @Test
-    void newInstance_widthNegative_throwsException() {
+    void newInstance_areaNull_throwsException() {
         assertThatThrownBy(() -> new Grid(null, 4))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Grid area must not be null");
+                .hasMessage("grid area must not be null");
     }
 
     @Test
@@ -39,7 +39,7 @@ class GridTest {
         Bounds area = Bounds.max();
         assertThatThrownBy(() -> new Grid(area, 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("GridSize must have value above zero");
+                .hasMessage("grid size must have value above zero");
     }
 
     @Test
@@ -47,7 +47,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(1, 0, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Area origin x should be dividable by grid size.");
+                .hasMessage("area origin x should be dividable by grid size.");
     }
 
     @Test
@@ -55,7 +55,7 @@ class GridTest {
         Bounds area = Bounds.atOrigin(-32, 4, 10, 10);
         assertThatThrownBy(() -> new Grid(area, 16))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Area origin y should be dividable by grid size.");
+                .hasMessage("area origin y should be dividable by grid size.");
     }
 
     @Test

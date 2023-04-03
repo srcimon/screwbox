@@ -83,16 +83,16 @@ public class Grid implements Serializable {
     }
 
     public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
-        requireNonNull(area, "Grid area must not be null");
+        requireNonNull(area, "grid area must not be null");
 
         if (gridSize <= 0) {
-            throw new IllegalArgumentException("GridSize must have value above zero");
+            throw new IllegalArgumentException("grid size must have value above zero");
         }
         if (area.origin().x() % gridSize != 0) {
-            throw new IllegalArgumentException("Area origin x should be dividable by grid size.");
+            throw new IllegalArgumentException("area origin x should be dividable by grid size.");
         }
         if (area.origin().y() % gridSize != 0) {
-            throw new IllegalArgumentException("Area origin y should be dividable by grid size.");
+            throw new IllegalArgumentException("area origin y should be dividable by grid size.");
         }
         this.gridSize = gridSize;
         this.offset = area.origin();
@@ -106,7 +106,7 @@ public class Grid implements Serializable {
     /**
      * Returns a new instance without any blocked {@link Node}s.
      */
-    public Grid cleared() {
+    public Grid clearedInstance() {
         return new Grid(area, gridSize, useDiagonalSearch);
     }
 
