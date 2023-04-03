@@ -1,16 +1,23 @@
 package io.github.simonbas.screwbox.core.assets.internal;
 
+import io.github.simonbas.screwbox.core.Duration;
 import io.github.simonbas.screwbox.core.assets.Asset;
 import io.github.simonbas.screwbox.core.async.Async;
+import io.github.simonbas.screwbox.core.async.internal.DefaultAsync;
 import io.github.simonbas.screwbox.core.log.Log;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static io.github.simonbas.screwbox.core.test.TestUtil.await;
+import static io.github.simonbas.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -20,17 +27,22 @@ import static org.mockito.Mockito.verify;
 class DefaultAssetsTest {
 
     @Mock
-    Async async;
-
-    @Mock
     Log log;
 
-    @InjectMocks
+    ExecutorService executor;
+
     DefaultAssets assets;
 
     private static final Asset<String> ASSET_A = Asset.asset(() -> "loaded");
     private static final Asset<String> ASSET_B = Asset.asset(() -> "loaded");
     private static final Asset<String> ASSET_C = Asset.asset(() -> "loaded");
+
+    @BeforeEach
+    void setUp() {
+        executor = Executors.newSingleThreadExecutor();
+        Async async = new DefaultAsync(executor);
+        assets = new DefaultAssets(async, log);
+    }
 
     @Test
     void listAssetLocationsInPackage_packageDoesntExist_emptyList() {
@@ -89,8 +101,6 @@ class DefaultAssetsTest {
 
     @Test
     void preparePackage_noAssetsLoaded_throwsException() {
-        assets.preparePackage("io.github.simonbas.screwbox.core.assets.internal");
-
         assertThatThrownBy(() -> assets.preparePackage("de.suzufa.screwbox.core.assets.internal"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("no assets found to prepare");
@@ -102,8 +112,32 @@ class DefaultAssetsTest {
         assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.simonbas.screwbox.core"));
     }
 
+    @Test
+    void preparePackageAsync_afterAwaitingFinish_allAssetsArePrepared() {
+        assets.preparePackageAsync("io.github.simonbas.screwbox.core.assets.internal");
+
+        await(() -> !assets.isPreparing(), Duration.ofSeconds(2));
+
+        assertThat(ASSET_A.isLoaded()).isTrue();
+        assertThat(ASSET_B.isLoaded()).isTrue();
+        assertThat(ASSET_C.isLoaded()).isTrue();
+    }
+
+    @Test
+    void isPreparing_afterStartingPreperation_isTrue() {
+        assets.preparePackageAsync("io.github.simonbas.screwbox.core.assets.internal");
+
+        assertThat(assets.isPreparing()).isTrue();
+    }
+
+    @Test
+    void isPreparing_noPreperationInProgress_isFalse() {
+        assertThat(assets.isPreparing()).isFalse();
+    }
+
     @AfterEach
-    void afterEach() {
+    void tearDown() {
+        shutdown(executor);
         ASSET_A.unload();
         ASSET_B.unload();
         ASSET_C.unload();
