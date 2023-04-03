@@ -1,7 +1,9 @@
 package io.github.simonbas.screwbox.core;
 
 import io.github.simonbas.screwbox.core.graphics.World;
+import io.github.simonbas.screwbox.core.utils.SingleCache;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -19,6 +21,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class Grid implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -68,8 +71,7 @@ public class Grid implements Serializable {
         }
     }
 
-    //TODO: own cache type for this use case
-    private List<Node> cachedNodes = null;
+    private SingleCache<List<Node>> nodesCache = new SingleCache<>();
 
     private final BitSet isBlocked;
     private final int width;
@@ -308,6 +310,7 @@ public class Grid implements Serializable {
         return neighbors;
     }
 
+    @Deprecated
     private void addIfFree(final List<Node> neighbors, final Node node) {
         if (isFree(node)) {
             neighbors.add(node);
@@ -318,18 +321,17 @@ public class Grid implements Serializable {
      * Returns all {@link Node}s in the {@link Grid}.
      */
     public List<Node> nodes() {
-        if (nonNull(cachedNodes)) {
-            return cachedNodes;
-        }
-        final var nodes = new ArrayList<Node>();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                nodes.add(new Node(x, y));
+        return nodesCache.getOrElse(() -> {
+            final var nodes = new ArrayList<Node>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    nodes.add(new Node(x, y));
+                }
             }
-        }
-        this.cachedNodes = nodes;
-        return nodes;
+            return nodes;
+        });
     }
+
 
     /**
      * Returns the count of {@link Node}s in the {@link Grid}.
