@@ -86,6 +86,7 @@ public class DefaultSavegame implements Savegame {
             verifyName(name);
             final Path path = Path.of(name);
             Files.delete(path);
+            savegameCache.clear(name);
         } catch (IOException e) {
             throw new IllegalStateException("could not delete savegame: " + name, e);
         }
