@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core.graphics.internal;
 
+import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.graphics.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +20,6 @@ class DefaultScreenTest {
     DefaultScreen screen;
 
     @Mock
-    Renderer renderer;
-
-    @Mock
     WindowFrame frame;
 
     @Test
@@ -30,5 +28,19 @@ class DefaultScreenTest {
         when(frame.canvasHeight()).thenReturn(600);
 
         assertThat(screen.position()).isEqualTo(Offset.at(40, 198));
+    }
+
+    @Test
+    void isVisible_insideCanvas_isTrue() {
+        when(frame.getCanvasSize()).thenReturn(Dimension.of(300, 400));
+
+        assertThat(screen.isVisible(Offset.at(20, 40))).isTrue();
+    }
+
+    @Test
+    void isVisible_outsideCanvas_isFalse() {
+        when(frame.getCanvasSize()).thenReturn(Dimension.of(300, 400));
+
+        assertThat(screen.isVisible(Offset.at(-20, 40))).isFalse();
     }
 }
