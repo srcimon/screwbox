@@ -67,10 +67,6 @@ public class Percent implements Serializable {
         return value;
     }
 
-    public float valueFloat() {
-        return (float) value;
-    }
-
     public boolean isMinValue() {
         return MIN_VALUE == value;
     }

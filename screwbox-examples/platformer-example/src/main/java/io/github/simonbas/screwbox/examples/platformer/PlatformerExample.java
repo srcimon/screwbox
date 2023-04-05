@@ -16,7 +16,7 @@ public class PlatformerExample {
 
         engine.assets()
                 .enableLogging()
-                .preparePackageAsync("io.github.simonbas.screwbox.examples.platformer");
+                .prepareClassPackageAsync(PlatformerExample.class);
 
         engine.scenes()
                 .add(new DeadScene())

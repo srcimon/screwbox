@@ -7,6 +7,9 @@ import io.github.simonbas.screwbox.core.Vector;
 
 import java.util.Optional;
 
+/**
+ * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
+ */
 public interface Physics {
 
     RaycastBuilder raycastFrom(Vector position);
@@ -30,7 +33,7 @@ public interface Physics {
     /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}
      * is the default value.
-     * 
+     *
      * @see #pathfindingAlgorithm()
      * @see DijkstraAlgorithm
      * @see AStarAlgorithm
@@ -40,7 +43,7 @@ public interface Physics {
     /**
      * Returns the currently used {@link PathfindingAlgorithm}.
      * {@link AStarAlgorithm} is the default value.
-     * 
+     *
      * @see #setPathfindingAlgorithm(PathfindingAlgorithm)
      */
     PathfindingAlgorithm pathfindingAlgorithm();

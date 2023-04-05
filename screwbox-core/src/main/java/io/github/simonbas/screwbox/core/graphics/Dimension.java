@@ -92,4 +92,8 @@ public class Dimension implements Serializable, Comparable<Dimension> {
         return width * height;
     }
 
+    public Offset center() {
+        return Offset.at(width / 2.0, height / 2.0);
+    }
+
 }

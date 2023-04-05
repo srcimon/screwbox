@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 
 import static java.lang.String.format;
@@ -18,6 +19,7 @@ import static java.util.Objects.isNull;
 
 public final class Frame implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));

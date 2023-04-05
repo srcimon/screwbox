@@ -115,7 +115,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Offset center() {
-        return Offset.at(size().width() / 2.0, size().height() / 2.0);
+        return size().center();
     }
 
     @Override

@@ -4,9 +4,11 @@ Minimalist 2d Java game engine. Result of covid lockdown.
 
 [![Build](https://github.com/simonbas/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/simonbas/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox)
 
+## About
 
-## Current status
-ScrewBox is a personal pet project since february 2021. It has no constant commits and has not been released yet.
+ScrewBox is a personal pet project since february 2021. I use it to learn about Java and designing larger libaries.
+The result is designed for my enjoyment, not necessarily for yours.
+So please be understanding of any inconsistencies in the API or if you find any errors.
 
 ## Features
 
@@ -44,7 +46,6 @@ package io.github.simonbas.screwbox.examples.helloworld;
 
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.ScrewBox;
-import io.github.simonbas.screwbox.core.entities.EntitySystem;
 import io.github.simonbas.screwbox.core.graphics.Color;
 import io.github.simonbas.screwbox.core.graphics.Offset;
 import io.github.simonbas.screwbox.core.graphics.Pixelfont;
@@ -52,19 +53,15 @@ import io.github.simonbas.screwbox.core.graphics.Pixelfont;
 public class HelloWorldExample {
 
     public static void main(String[] args) {
-        Engine engine = ScrewBox.createEngine("Hello World Example");
+        Engine screwBox = ScrewBox.createEngine("Hello World Example");
 
-        engine.entities().add(new EntitySystem() {
-
-            @Override
-            public void update(Engine engine) {
-                Offset position = engine.mouse().position();
-                Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
-                engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
-            }
+        screwBox.entities().add(engine -> {
+            Offset position = engine.mouse().position();
+            Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+            engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
         });
 
-        engine.start();
+        screwBox.start();
     }
 }
 ```
@@ -88,17 +85,19 @@ public class HelloWorldExample {
 - AssertJ [Apache License 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 
-## Acknowledgments
-
-The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
-
 ## Future ideas and plans
 
+- [ ] build to Maven-Central
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
 - [ ] headless mode with scripted events for automating the engine
 - [ ] fix bug: no more stderror output (maybe osx bug in
   13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
+
+## Acknowledgments
+
+The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
+
 
 <p align="center"><img src="docs/outro.gif"></p>

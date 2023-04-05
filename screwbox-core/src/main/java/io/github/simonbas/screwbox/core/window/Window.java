@@ -2,18 +2,39 @@ package io.github.simonbas.screwbox.core.window;
 
 import io.github.simonbas.screwbox.core.graphics.*;
 
+/**
+ * Used to control the game window and retrieve information about the game window.
+ */
 public interface Window {
 
+    /**
+     * Returns the current position of the {@link Window}.
+     *
+     * @see #moveTo(Offset)
+     */
     Offset position();
 
+    /**
+     * Returns true if the {@link Window} currently has focus.
+     */
     boolean hasFocus();
 
     Window open();
 
     Window close();
 
+    /**
+     * Sets the title of the {@link Window}.
+     *
+     * @see #title()
+     */
     Window setTitle(String title);
 
+    /**
+     * Moves the {@link Window} to a new position.
+     *
+     * @see #position()
+     */
     Window moveTo(Offset position);
 
     /**
@@ -42,7 +63,7 @@ public interface Window {
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * window mode.
-     * 
+     *
      * @see #setCursor(MouseCursor)
      * @see #setFullscreenCursor(MouseCursor)
      */
@@ -51,7 +72,7 @@ public interface Window {
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * fullscreen mode.
-     * 
+     *
      * @see #setCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
      */
@@ -61,7 +82,7 @@ public interface Window {
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen and window mode. Supports only {@link Sprite}s with one
      * {@link Frame}.
-     * 
+     *
      * @see #setFullscreenCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -72,7 +93,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
-     * 
+     *
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -83,7 +104,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
-     * 
+     *
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -94,7 +115,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen and window mode.
-     * 
+     *
      * @see #setWindowCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */
@@ -107,7 +128,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen mode.
-     * 
+     *
      * @see #setCursor(Frame)
      * @see #setWindowCursor(Frame)
      */
@@ -116,7 +137,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in window
      * mode.
-     * 
+     *
      * @see #setCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */
@@ -125,7 +146,7 @@ public interface Window {
     /**
      * Returns the title of the {@link Window}.
      *
-     * @see #title()
+     * @see #setTitle(String) ()
      */
     String title();
 

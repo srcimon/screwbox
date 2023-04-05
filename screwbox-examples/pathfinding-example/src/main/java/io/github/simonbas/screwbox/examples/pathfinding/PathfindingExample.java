@@ -11,7 +11,7 @@ public class PathfindingExample {
 
         engine.scenes().add(new DemoScene());
 
-        engine.assets().enableLogging().preparePackageAsync("io.github.simonbas.screwbox.examples.pathfinding");
+        engine.assets().enableLogging().prepareClassPackageAsync(PathfindingExample.class);
 
         engine.start(DemoScene.class);
     }

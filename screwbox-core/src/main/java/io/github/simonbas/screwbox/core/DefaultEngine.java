@@ -18,7 +18,6 @@ import io.github.simonbas.screwbox.core.log.Log;
 import io.github.simonbas.screwbox.core.log.internal.DefaultLog;
 import io.github.simonbas.screwbox.core.loop.Loop;
 import io.github.simonbas.screwbox.core.loop.internal.DefaultLoop;
-import io.github.simonbas.screwbox.core.loop.internal.Updatable;
 import io.github.simonbas.screwbox.core.mouse.Mouse;
 import io.github.simonbas.screwbox.core.mouse.internal.DefaultMouse;
 import io.github.simonbas.screwbox.core.physics.Physics;
@@ -74,7 +73,7 @@ class DefaultEngine implements Engine {
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool(runnable -> {
-            Thread newThread = new Thread(runnable);
+            final Thread newThread = new Thread(runnable);
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
             return newThread;
         });
@@ -89,8 +88,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        final List<Updatable> updatables = List.of(ui, graphics, scenes, keyboard, mouse);
-        loop = new DefaultLoop(updatables);
+        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse));
         log = new DefaultLog(new ConsoleLoggingAdapter());
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

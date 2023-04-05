@@ -47,7 +47,7 @@ public class Asset<T> implements Supplier<T> {
         if (!isLoaded()) {
             value = supplier.get();
             if (!isLoaded()) {
-                throw new IllegalStateException("asset null after loading");
+                throw new IllegalStateException("asset is null after loading");
             }
         }
     }
@@ -70,5 +70,4 @@ public class Asset<T> implements Supplier<T> {
     public void unload() {
         value = null;
     }
-
 }
