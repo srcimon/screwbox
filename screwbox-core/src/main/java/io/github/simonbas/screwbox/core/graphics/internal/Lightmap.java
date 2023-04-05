@@ -99,12 +99,9 @@ class Lightmap {
     }
 
     private void applyOpacityConfig(final Color color) {
-        applyOpacityConfig(color.opacity().valueFloat());
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) color.opacity().value()));
     }
 
-    private void applyOpacityConfig(final float value) {
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, value));
-    }
 
     private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
         final var usedRadius = Math.max(radius, resolution);
