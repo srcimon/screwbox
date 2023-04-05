@@ -54,8 +54,18 @@ public interface Engine {
      */
     Graphics graphics();
 
+    /**
+     * Retrieve information about the current {@link Keyboard} state.
+     *
+     * @see Keyboard
+     */
     Keyboard keyboard();
 
+    /**
+     * Use {@link Scenes} to structure different game situations.
+     *
+     * @see Scenes
+     */
     Scenes scenes();
 
     /**
@@ -63,8 +73,18 @@ public interface Engine {
      */
     Audio audio();
 
+    /**
+     * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
+     *
+     * @see Physics
+     */
     Physics physics();
 
+    /**
+     * Subsystem for getting Information on the Mouse.
+     *
+     * @see Mouse
+     */
     Mouse mouse();
 
     /**
