@@ -23,6 +23,11 @@ public interface Window {
 
     Window close();
 
+    /**
+     * Sets the title of the {@link Window}.
+     *
+     * @see #title()
+     */
     Window setTitle(String title);
 
     /**
@@ -141,7 +146,7 @@ public interface Window {
     /**
      * Returns the title of the {@link Window}.
      *
-     * @see #title()
+     * @see #setTitle(String) ()
      */
     String title();
 
