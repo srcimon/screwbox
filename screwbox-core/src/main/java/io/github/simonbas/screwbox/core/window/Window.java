@@ -2,6 +2,9 @@ package io.github.simonbas.screwbox.core.window;
 
 import io.github.simonbas.screwbox.core.graphics.*;
 
+/**
+ * Used to control the game window and retrieve information about the game window.
+ */
 public interface Window {
 
     Offset position();
@@ -42,7 +45,7 @@ public interface Window {
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * window mode.
-     * 
+     *
      * @see #setCursor(MouseCursor)
      * @see #setFullscreenCursor(MouseCursor)
      */
@@ -51,7 +54,7 @@ public interface Window {
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * fullscreen mode.
-     * 
+     *
      * @see #setCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
      */
@@ -61,7 +64,7 @@ public interface Window {
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen and window mode. Supports only {@link Sprite}s with one
      * {@link Frame}.
-     * 
+     *
      * @see #setFullscreenCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -72,7 +75,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
-     * 
+     *
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -83,7 +86,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
      * fullscreen mode. Supports only {@link Sprite}s with one {@link Frame}.
-     * 
+     *
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
@@ -94,7 +97,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen and window mode.
-     * 
+     *
      * @see #setWindowCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */
@@ -107,7 +110,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
      * fullscreen mode.
-     * 
+     *
      * @see #setCursor(Frame)
      * @see #setWindowCursor(Frame)
      */
@@ -116,7 +119,7 @@ public interface Window {
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in window
      * mode.
-     * 
+     *
      * @see #setCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */

@@ -74,7 +74,7 @@ class DefaultEngine implements Engine {
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool(runnable -> {
-            Thread newThread = new Thread(runnable);
+            final Thread newThread = new Thread(runnable);
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
             return newThread;
         });

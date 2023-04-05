@@ -87,10 +87,14 @@ public interface Engine {
 
     /**
      * Provides methods to save and load the game state.
+     *
+     * @see Savegame
      */
     Savegame savegame();
 
-    //TODO comment
+    /**
+     * Used to control the game window and retrieve information about the game window.
+     */
     Window window();
 
     /**
