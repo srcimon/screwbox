@@ -20,7 +20,7 @@ class FrameTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "-1,1", "100,1", "4,-2", "4,44" })
+    @CsvSource({"-1,1", "100,1", "4,-2", "4,44"})
     void colorAt_outOfBounds_throwsException(int x, int y) throws Exception {
         assertThatThrownBy(() -> frame.colorAt(x, y))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -62,10 +62,17 @@ class FrameTest {
     }
 
     @Test
-    void scaled_returnsScaledFrame() {
+    void scaled_validScale_returnsScaledFrame() {
         Frame scaled = frame.scaled(3);
 
         assertThat(scaled.size()).isEqualTo(square(48));
+    }
+
+    @Test
+    void scaled_invalidScale_throwsException() {
+        assertThatThrownBy(() -> frame.scaled(-0.1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Scaled image is size is invalid");
     }
 
     @Test
@@ -75,7 +82,7 @@ class FrameTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "-1,1,4,4", "100,1,4,4", "4,-2,5,20", "4,4,13,1", "4,0,14,30" })
+    @CsvSource({"-1,1,4,4", "100,1,4,4", "4,-2,5,20", "4,4,13,1", "4,0,14,30"})
     void subFrame_outOfBounds_throwsException(int x, int y, int width, int height) {
         Offset offset = Offset.at(x, y);
         Dimension size = Dimension.of(width, height);
