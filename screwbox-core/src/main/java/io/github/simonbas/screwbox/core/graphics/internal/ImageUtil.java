@@ -1,40 +1,16 @@
 package io.github.simonbas.screwbox.core.graphics.internal;
 
-import io.github.simonbas.screwbox.core.graphics.Color;
-
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
 
 public final class ImageUtil {
 
     private static final Toolkit TOOLKIT = Toolkit.getDefaultToolkit();
 
     private ImageUtil() {
-    }
-
-    // TODO: is specialized version of replaceColor
-    public static Image makeColorTransparent(final Image image, final Color transparencyColor) {
-        // TODO: fix transparency color not used
-        final ImageFilter filter = new RGBImageFilter() {
-
-            // the color we are looking for... Alpha bits are set to opaque
-
-            final int markerRGB = AwtMapper.toAwtColor(transparencyColor).getRGB() | 0xFF000000;
-
-            @Override
-            public int filterRGB(final int x, final int y, final int rgb) {
-                if ((rgb | 0xFF000000) == markerRGB) {
-                    // Mark the alpha bits as zero - transparent
-                    return 0x00FFFFFF & rgb;
-                } else {
-                    // nothing to do
-                    return rgb;
-                }
-            }
-        };
-
-        final ImageProducer imageProducer = new FilteredImageSource(image.getSource(), filter);
-        return TOOLKIT.createImage(imageProducer);
     }
 
     // TODO: simplyfiy and test
