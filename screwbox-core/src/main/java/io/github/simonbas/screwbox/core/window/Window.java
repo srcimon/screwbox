@@ -7,8 +7,16 @@ import io.github.simonbas.screwbox.core.graphics.*;
  */
 public interface Window {
 
+    /**
+     * Returns the current position of the {@link Window}.
+     *
+     * @see #moveTo(Offset)
+     */
     Offset position();
 
+    /**
+     * Returns true if the {@link Window} currently has focus.
+     */
     boolean hasFocus();
 
     Window open();
@@ -17,6 +25,11 @@ public interface Window {
 
     Window setTitle(String title);
 
+    /**
+     * Moves the {@link Window} to a new position.
+     *
+     * @see #position()
+     */
     Window moveTo(Offset position);
 
     /**
