@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.io.Serial;
 
 public class WindowFrame extends JFrame implements WindowFocusListener {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private boolean hasFocus;
