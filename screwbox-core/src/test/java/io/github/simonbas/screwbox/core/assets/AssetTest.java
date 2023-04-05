@@ -31,7 +31,7 @@ class AssetTest {
 
         assertThatThrownBy(nullAfterLoadingAsset::load)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("asset null after loading");
+                .hasMessage("asset is null after loading");
     }
 
     @Test
