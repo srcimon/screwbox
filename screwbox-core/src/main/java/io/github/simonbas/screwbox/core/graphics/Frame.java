@@ -92,9 +92,9 @@ public final class Frame implements Serializable {
 
     /**
      * Returns the {@link Color} of the pixel at the given position.
-     * 
+     *
      * @throws IllegalArgumentException when position is out of bounds.
-     * @see #colorAt(Dimension)
+     * @see #colorAt(Offset)
      */
     public Color colorAt(final int x, final int y) {
         final Image image = image();
@@ -121,7 +121,13 @@ public final class Frame implements Serializable {
      * Returns a scaled version of the current {@link Frame}.
      */
     public Frame scaled(final double scale) {
-        return new Frame(ImageUtil.scale(image(), scale));
+        final int width = (int) (size().width() * scale);
+        final int height = (int) (size().height() * scale);
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Scaled image is size is invalid");
+        }
+        final var newImage = image().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new Frame(newImage);
     }
 
     static BufferedImage imageFromFile(final String fileName) {

@@ -13,16 +13,6 @@ public final class ImageUtil {
     private ImageUtil() {
     }
 
-    // TODO: simplyfiy and test
-    public static Image scale(final Image image, final double scale) {
-        final int width = (int) (image.getWidth(null) * scale);
-        final int height = (int) (image.getHeight(null) * scale);
-        if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Scaled image is size is invalid");
-        }
-        return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-    }
-
     public static BufferedImage toBufferedImage(final Image image) {
         if (image instanceof final BufferedImage bufferImage) {
             return bufferImage;
