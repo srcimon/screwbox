@@ -61,11 +61,7 @@ class DefaultEngine implements Engine {
     private final String name;
 
     DefaultEngine(final String name) {
-        if (!SystemInfo.isJvmOptionSet("-Dsun.java2d.opengl=true")) {
-            throw new IllegalStateException("Please run game with following JVM Option: -Dsun.java2d.opengl=true");
-        }
-
-        final WindowFrame frame = SystemInfo.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
+        final WindowFrame frame = isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -227,4 +223,7 @@ class DefaultEngine implements Engine {
         log().error(throwable);
     }
 
+    private boolean isMacOs() {
+        return "Mac OS X".equalsIgnoreCase(System.getProperty("os.name", "UNKNOWN-OS"));
+    }
 }
