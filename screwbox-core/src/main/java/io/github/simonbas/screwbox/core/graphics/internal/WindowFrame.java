@@ -1,5 +1,7 @@
 package io.github.simonbas.screwbox.core.graphics.internal;
 
+import io.github.simonbas.screwbox.core.graphics.Dimension;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -50,5 +52,10 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public void makeFullscreen(GraphicsDevice graphicsDevice) {
         graphicsDevice.setFullScreenWindow(this);
+    }
+
+    public Dimension getCanvasSize() {
+        final var bounds = getCanvas().getBounds();
+        return Dimension.of(bounds.width, bounds.height);
     }
 }

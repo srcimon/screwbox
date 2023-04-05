@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.core;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -9,9 +10,9 @@ import java.util.Locale;
  */
 public final class Vector implements Serializable {
 
-    //TODO: interface for add, substract, multiply (also offset...)
     private static final Vector ZERO = new Vector(0, 0);
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final double x;
@@ -203,9 +204,6 @@ public final class Vector implements Serializable {
     public double length() {
         return calculateLength(x, y);
     }
-
-    // TODO: public Vector moveTowards(Vector destination, Vector speed)
-    // TODO: public Vector moveTowards(Vector destination, double speed)
 
     private double calculateLength(final double x, final double y) {
         return Math.sqrt(x * x + y * y);

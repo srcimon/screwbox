@@ -74,8 +74,6 @@ public class HelloWorldExample {
     - **PlatformerExample** a more complex example showing how to make a platformer
 
 ## Known issues
-
-- [ ] massive performance drop on JDK > 18 when not using `-Dsun.java2d.opengl=true`
 - [ ] asset preloading on Windows crashes the program (invalid pattern)
 
 ## Libraries used

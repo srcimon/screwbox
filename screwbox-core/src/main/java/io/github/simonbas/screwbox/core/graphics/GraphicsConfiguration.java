@@ -107,7 +107,6 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
-        // TODO:non null
         this.fullscreen = fullscreen;
         notifyListeners(WINDOW_MODE);
         return this;

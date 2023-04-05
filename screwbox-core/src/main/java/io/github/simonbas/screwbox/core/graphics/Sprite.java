@@ -36,12 +36,17 @@ public class Sprite implements Serializable {
         this(List.of(frame));
     }
 
+    /**
+     * Creates a {@link Sprite} with a single {@link Frame} from the given image file in the class path.
+     */
     public static Sprite fromFile(final String fileName) {
         final var image = Frame.imageFromFile(fileName);
         return fromImage(image);
     }
 
-    // TODO: javadoc and test
+    /**
+     * Creates an {@link Asset} for a {@link Sprite} with a single {@link Frame} from the given image file in the class path.
+     */
     public static Asset<Sprite> assetFromFile(final String filename) {
         return Asset.asset(() -> fromFile(filename));
     }
@@ -59,7 +64,7 @@ public class Sprite implements Serializable {
     }
 
     public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
-            final Duration duration) {
+                                          final Duration duration) {
         final var frames = new ArrayList<Frame>();
         for (final var image : extractSubImages(fileName, dimension, padding)) {
             frames.add(new Frame(image, duration));
@@ -68,7 +73,7 @@ public class Sprite implements Serializable {
     }
 
     private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
-            final int padding) {
+                                                final int padding) {
         final var image = Frame.imageFromFile(fileName);
         final var subImages = new ArrayList<Image>();
         for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
@@ -157,7 +162,7 @@ public class Sprite implements Serializable {
 
     /**
      * Returns the frame with the given number, starting with 0.
-     * 
+     *
      * @throws IllegalArgumentException if the number is invalid
      */
     public Frame getFrame(final int nr) {
@@ -174,7 +179,7 @@ public class Sprite implements Serializable {
     /**
      * Returns a new {@link Sprite}. The old {@link Color} in alle {@link Frame}s is
      * replaced with a new one. This method is quite slow.
-     * 
+     *
      * @see Frame#replaceColor(Color, Color)
      */
     public Sprite replaceColor(final Color oldColor, final Color newColor) {

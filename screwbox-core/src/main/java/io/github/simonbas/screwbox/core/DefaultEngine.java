@@ -60,7 +60,6 @@ class DefaultEngine implements Engine {
     private final ExecutorService executor;
     private final String name;
 
-    //TODO add warning when jdk is not using -Dsun.java2d.opengl=true because of frame rate issues
     DefaultEngine(final String name) {
         final WindowFrame frame = isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
@@ -105,10 +104,6 @@ class DefaultEngine implements Engine {
         frame.getCanvas().addKeyListener(keyboard);
         this.name = name;
         window.setTitle(name);
-    }
-
-    private boolean isMacOs() {
-        return "Mac OS X".equalsIgnoreCase(System.getProperty("os.name", "UNKNOWN-OS"));
     }
 
     @Override
@@ -228,4 +223,7 @@ class DefaultEngine implements Engine {
         log().error(throwable);
     }
 
+    private boolean isMacOs() {
+        return "Mac OS X".equalsIgnoreCase(System.getProperty("os.name", "UNKNOWN-OS"));
+    }
 }
