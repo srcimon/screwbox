@@ -2,6 +2,7 @@ package io.github.simonbas.screwbox.core.graphics;
 
 import io.github.simonbas.screwbox.core.Duration;
 import io.github.simonbas.screwbox.core.Time;
+import io.github.simonbas.screwbox.core.assets.Asset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -40,6 +41,13 @@ class SpriteTest {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
         assertThat(sprite.size()).isEqualTo(Dimension.of(16, 16));
+    }
+
+    @Test
+    void assetFromFile_imageFound_returnsSpriteAssetFromFile() {
+        Asset<Sprite> sprite = Sprite.assetFromFile("tile.bmp");
+
+        assertThat(sprite.get().size()).isEqualTo(Dimension.of(16, 16));
     }
 
     @Test
