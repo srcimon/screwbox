@@ -3,11 +3,10 @@ package io.github.simonbas.screwbox.examples.platformer.menues;
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
-import io.github.simonbas.screwbox.core.ui.UiSubMenu;
 
 import java.util.List;
 
-public class OptionsMenu extends UiSubMenu {
+public class OptionsMenu extends UiMenu {
 
     public OptionsMenu(UiMenu caller) {
         super(caller);
@@ -33,7 +32,7 @@ public class OptionsMenu extends UiSubMenu {
                 .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
                 .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-        addItem("back").onActivate(this::onExit);
+        addItem("back").onActivate(engine -> engine.ui().openMenu(caller));
     }
 
 }

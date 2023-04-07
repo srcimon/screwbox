@@ -11,6 +11,16 @@ public class UiMenu {
     private final List<UiMenuItem> items = new ArrayList<>();
     private int selectedItemIndex = 0;
 
+    protected final UiMenu caller;
+
+    protected UiMenu() {
+        this(null);
+    }
+
+    protected UiMenu(final UiMenu caller) {
+        this.caller = caller;
+    }
+
     public final UiMenuItem addItem(final String label) {
         final UiMenuItem item = new UiMenuItem(label);
         items.add(item);

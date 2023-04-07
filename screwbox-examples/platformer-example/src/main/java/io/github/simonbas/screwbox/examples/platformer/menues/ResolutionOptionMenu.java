@@ -3,12 +3,11 @@ package io.github.simonbas.screwbox.examples.platformer.menues;
 import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
-import io.github.simonbas.screwbox.core.ui.UiSubMenu;
 import io.github.simonbas.screwbox.core.ui.WobblyUiLayouter;
 
 import java.util.List;
 
-public class ResolutionOptionMenu extends UiSubMenu {
+public class ResolutionOptionMenu extends UiMenu {
 
     protected ResolutionOptionMenu(UiMenu caller, List<Dimension> resolutions, Dimension currentResolution) {
         super(caller);
@@ -22,10 +21,8 @@ public class ResolutionOptionMenu extends UiSubMenu {
         addItem("back to options").onActivate(this::onExit);
     }
 
-    @Override
     public void onExit(Engine engine) {
-        engine.ui().setLayouter(new WobblyUiLayouter());
-        super.onExit(engine);
+        engine.ui().setLayouter(new WobblyUiLayouter()).openMenu(caller);
     }
 
 }
