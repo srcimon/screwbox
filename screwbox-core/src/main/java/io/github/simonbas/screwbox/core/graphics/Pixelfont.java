@@ -2,6 +2,7 @@ package io.github.simonbas.screwbox.core.graphics;
 
 import io.github.simonbas.screwbox.core.utils.Cache;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +18,7 @@ import static java.util.Objects.requireNonNull;
  * A font made of {@link Sprite}s (even animated ones) for system independent
  * rendering.
  * 
- * @see #defaultFont()
- * @see #defaultWhite()
+ * @see #defaultFont(Color)
  */
 public class Pixelfont implements Serializable {
 
@@ -28,6 +28,7 @@ public class Pixelfont implements Serializable {
             ',', ':', '!', '?', '-');
     private static final Pixelfont DEFAULT_FONT = defaultFontBlack();
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
