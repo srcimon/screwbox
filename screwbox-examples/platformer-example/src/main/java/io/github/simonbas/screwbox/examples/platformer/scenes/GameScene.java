@@ -162,10 +162,7 @@ public class GameScene implements Scene {
 
     private String tileType(final Tile tile) {
         final var layerType = tile.layer().properties().get("type");
-        if (layerType.isPresent()) {
-            return layerType.get();
-        }
-        return tile.properties().get("type").orElse("none");
+        return layerType.orElseGet(() -> tile.properties().get("type").orElse("none"));
     }
 
 }
