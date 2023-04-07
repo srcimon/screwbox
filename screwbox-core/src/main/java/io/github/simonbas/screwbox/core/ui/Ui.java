@@ -16,7 +16,6 @@ public interface Ui {
 
     /**
      * Opens the previous {@link UiMenu}. Used to navigate back from sub menus.
-     * Must not be called once the {@link #currentMenu()} is closed.
      */
     Ui openPreviousMenu();
 

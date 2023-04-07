@@ -87,7 +87,7 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui closeMenu() {
-        openMenu = new OpenMenu(null, null);
+        openMenu = new OpenMenu(null, openMenu);
         return this;
     }
 
