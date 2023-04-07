@@ -8,9 +8,7 @@ import java.util.List;
 
 public class OptionsMenu extends UiMenu {
 
-    public OptionsMenu(UiMenu caller) {
-        super(caller);
-
+    public OptionsMenu() {
         addItem(engine -> engine.graphics().configuration().isFullscreen()
                 ? "switch to window"
                 : "switch to fullscreen")
@@ -32,7 +30,7 @@ public class OptionsMenu extends UiMenu {
                 .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
                 .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-        addItem("back").onActivate(engine -> engine.ui().openMenu(caller));
+        addItem("back").onActivate(engine -> engine.ui().openPreviousMenu());
     }
 
 }

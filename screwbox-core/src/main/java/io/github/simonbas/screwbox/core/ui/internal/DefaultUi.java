@@ -8,6 +8,7 @@ import io.github.simonbas.screwbox.core.ui.*;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DefaultUi implements Ui, Updatable {
@@ -19,7 +20,10 @@ public class DefaultUi implements Ui, Updatable {
     private UiInteractor interactor = new KeyboardInteractor();
     private UiLayouter layouter = new SimpleUiLayouter();
 
-    private UiMenu currentMenu = null;
+    private OpenMenu openMenu = new OpenMenu(null, null);
+
+    private record OpenMenu(UiMenu menu, OpenMenu previous) {
+    }
 
     public DefaultUi(final Engine engine, DefaultScenes scenes) {
         this.engine = engine;
@@ -28,14 +32,23 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui openMenu(final UiMenu menu) {
-        currentMenu = menu;
+        openMenu = new OpenMenu(menu, openMenu);
+        return this;
+    }
+
+    @Override
+    public Ui openPreviousMenu() {
+        if (isNull(openMenu.previous)) {
+            throw new IllegalStateException("there is no previous menu to navigate back to");
+        }
+        openMenu = openMenu.previous;
         return this;
     }
 
     @Override
     public void update() {
-        if (nonNull(currentMenu) && !scenes.isShowingLoading()) {
-            var menu = currentMenu;
+        final var menu = openMenu.menu;
+        if (nonNull(menu) && !scenes.isShowingLoading()) {
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
@@ -74,13 +87,13 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui closeMenu() {
-        currentMenu = null;
+        openMenu = new OpenMenu(null, null);
         return this;
     }
 
     @Override
     public Optional<UiMenu> currentMenu() {
-        return Optional.ofNullable(currentMenu);
+        return Optional.ofNullable(openMenu.menu);
     }
 
     @Override

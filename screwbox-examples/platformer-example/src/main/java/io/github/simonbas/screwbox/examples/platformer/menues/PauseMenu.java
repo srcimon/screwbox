@@ -22,7 +22,7 @@ public class PauseMenu extends UiMenu {
             resumeGame(engine);
         }).activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME));
 
-        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu(this)));
+        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class));
         addItem("Quit Game").onActivate(Engine::stop);
     }

@@ -11,18 +11,6 @@ public class UiMenu {
     private final List<UiMenuItem> items = new ArrayList<>();
     private int selectedItemIndex = 0;
 
-    @Deprecated
-    protected final UiMenu caller;
-
-    public UiMenu() {
-        this(null);
-    }
-
-    @Deprecated
-    public UiMenu(final UiMenu caller) {
-        this.caller = caller;
-    }
-
     public final UiMenuItem addItem(final String label) {
         final UiMenuItem item = new UiMenuItem(label);
         items.add(item);

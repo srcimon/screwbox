@@ -17,7 +17,7 @@ public class StartGameMenu extends UiMenu {
             engine.ui().closeMenu();
         }).activeCondition(engine -> engine.savegame().exists("savegame.sav"));
 
-        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu(this)));
+        addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Quit").onActivate(Engine::stop);
     }
 
