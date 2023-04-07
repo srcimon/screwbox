@@ -55,21 +55,8 @@ public class UiMenu {
         return selectedItemIndex;
     }
 
-    private int fetchPreviousSelectableItem(final Engine engine) {
-        for (int index = selectedItemIndex - 1; index >= 0; index--) {
-            if (isActive(index, engine)) {
-                return index;
-            }
-        }
-        return selectedItemIndex;
-    }
-
     public boolean isActive(final UiMenuItem item, final Engine engine) {
         return isActive(itemIndex(item), engine);
-    }
-
-    boolean isActive(final int index, final Engine engine) {
-        return items.get(index).isActive(engine);
     }
 
     public void onExit(final Engine engine) {
@@ -97,6 +84,19 @@ public class UiMenu {
 
     public final void selectItem(final UiMenuItem menuItem) {
         selectedItemIndex = itemIndex(menuItem);
+    }
+
+    private int fetchPreviousSelectableItem(final Engine engine) {
+        for (int index = selectedItemIndex - 1; index >= 0; index--) {
+            if (isActive(index, engine)) {
+                return index;
+            }
+        }
+        return selectedItemIndex;
+    }
+
+    private boolean isActive(final int index, final Engine engine) {
+        return items.get(index).isActive(engine);
     }
 
 }
