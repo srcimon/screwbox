@@ -27,8 +27,8 @@ public class StartGameMenu extends UiMenu {
     }
 
     private void startMap(String map, Engine engine) {
-        engine.ui().closeMenu();
-        engine.scenes().add(new GameScene(map));
-        engine.scenes().switchTo(GameScene.class);
+        engine.scenes()
+                .add(new GameScene(map))
+                .switchTo(GameScene.class);
     }
 }

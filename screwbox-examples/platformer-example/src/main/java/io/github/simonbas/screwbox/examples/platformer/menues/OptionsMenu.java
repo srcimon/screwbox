@@ -32,7 +32,7 @@ public class OptionsMenu extends UiSubMenu {
             List<Dimension> resolutions = engine.graphics().supportedResolutions();
             Dimension resolution = engine.graphics().configuration().resolution();
             engine.ui().setLayouter(new ScrollingUiLayouter());
-            engine.ui().openMenu(new ResolutionOptionMenu(new OptionsMenu(caller), resolutions, resolution));
+            engine.ui().openMenu(new ResolutionOptionMenu(this, resolutions, resolution));
         });
 
         addItem("delete savegame")

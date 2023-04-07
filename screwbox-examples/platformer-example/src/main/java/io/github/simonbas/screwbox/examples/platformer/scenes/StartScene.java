@@ -18,4 +18,8 @@ public class StartScene implements Scene {
         engine.ui().openMenu(new StartGameMenu());
     }
 
+    @Override
+    public void onExit(Engine engine) {
+        engine.ui().closeMenu();
+    }
 }
