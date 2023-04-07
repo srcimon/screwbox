@@ -13,11 +13,11 @@ public class UiMenu {
 
     protected final UiMenu caller;
 
-    protected UiMenu() {
+    public UiMenu() {
         this(null);
     }
 
-    protected UiMenu(final UiMenu caller) {
+    public UiMenu(final UiMenu caller) {
         this.caller = caller;
     }
 
