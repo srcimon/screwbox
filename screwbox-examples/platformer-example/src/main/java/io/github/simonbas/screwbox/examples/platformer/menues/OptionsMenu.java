@@ -1,31 +1,25 @@
 package io.github.simonbas.screwbox.examples.platformer.menues;
 
-import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
 import io.github.simonbas.screwbox.core.ui.UiSubMenu;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class OptionsMenu extends UiSubMenu {
 
     public OptionsMenu(UiMenu caller) {
         super(caller);
 
-        Function<Engine, String> toogleFullscreenLabel = engine -> engine.graphics().configuration().isFullscreen()
+        addItem(engine -> engine.graphics().configuration().isFullscreen()
                 ? "switch to window"
-                : "switch to fullscreen";
-
-        Function<Engine, String> toggleAntialisingLabel = engine -> engine.graphics().configuration().isUseAntialising()
-                ? "turn off antialising"
-                : "turn on antialising";
-
-        addItem(toogleFullscreenLabel)
+                : "switch to fullscreen")
                 .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
 
-        addItem(toggleAntialisingLabel)
+        addItem(engine -> engine.graphics().configuration().isUseAntialising()
+                ? "turn off antialising"
+                : "turn on antialising")
                 .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
 
         addItem("change resolution").onActivate(engine -> {
