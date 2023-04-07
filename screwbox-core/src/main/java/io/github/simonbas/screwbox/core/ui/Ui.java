@@ -3,19 +3,21 @@ package io.github.simonbas.screwbox.core.ui;
 import java.util.Optional;
 
 /**
- * Create ingame menues.
+ * Create simple ingame menus.
  */
 public interface Ui {
 
     Ui openMenu(UiMenu menu);
+
+    Ui openPreviousMenu();
+
+    Ui closeMenu();
 
     Ui setRenderer(UiRenderer renderer);
 
     Ui setInteractor(UiInteractor interactor);
 
     Ui setLayouter(UiLayouter layouter);
-
-    Ui closeMenu();
 
     Optional<UiMenu> currentMenu();
 

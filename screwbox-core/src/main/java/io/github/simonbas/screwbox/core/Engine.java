@@ -88,7 +88,7 @@ public interface Engine {
     Mouse mouse();
 
     /**
-     * Create ingame menues and show loading animation.
+     * Create simple ingame menus.
      */
     Ui ui();
 
