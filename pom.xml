@@ -6,8 +6,8 @@
 	<packaging>pom</packaging>
 
 	<scm>
-		<connection>git:https://github.com/simonbas/screwbox.git</connection>
-		<url>https://github.com/simonbas/screwbox</url>
+		<connection>git:https://github.com/simonbas/screwbox-engine.git</connection>
+		<url>https://github.com/simonbas/screwbox-engine</url>
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
