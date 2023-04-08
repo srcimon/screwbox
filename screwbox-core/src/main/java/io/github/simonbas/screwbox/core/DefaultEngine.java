@@ -76,6 +76,17 @@ class DefaultEngine implements Engine {
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
             return newThread;
         });
+        final var ct = Thread.currentThread();
+        executor.submit(() -> {
+            try {
+                while(ct.isAlive()) {
+                    Thread.sleep(250);
+                }
+                executor.shutdown();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();;
+            }
+        });
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
@@ -134,7 +145,6 @@ class DefaultEngine implements Engine {
             loop.awaitTermination();
             window.close();
             log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
-            executor.shutdown();
         });
     }
 

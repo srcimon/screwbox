@@ -18,8 +18,6 @@ public class PlatformerExample {
                 .enableLogging()
                 .prepareClassPackageAsync(PlatformerExample.class);
 
-        //TODO throwing exception here leads to running thread
-        //fix that by starting the async execution on engine.start()
         engine.scenes()
                 .add(new DeadScene())
                 .add(new PauseScene())
