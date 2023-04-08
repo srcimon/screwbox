@@ -38,6 +38,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.prefs.PreferenceChangeListener;
 
 import static java.lang.String.format;
 
@@ -76,17 +77,12 @@ class DefaultEngine implements Engine {
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
             return newThread;
         });
-        final var ct = Thread.currentThread();
-        executor.submit(() -> {
-            try {
-                while(ct.isAlive()) {
-                    Thread.sleep(250);
-                }
-                executor.shutdown();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();;
-            }
+
+        Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
+            executor.shutdown();
+            thread.getThreadGroup().uncaughtException(thread, throwable);
         });
+
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
@@ -145,6 +141,7 @@ class DefaultEngine implements Engine {
             loop.awaitTermination();
             window.close();
             log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
+            executor.shutdown();
         });
     }
 
