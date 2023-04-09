@@ -1,9 +1,3 @@
-
-**9.4.23 8:20** Sauerteigbrot, Emmentaler, Tunfischcreme, Milch, kleine Müsliportion, Erdbeeren, halbe Banane, Tee, Espresso
-
-
-
-
 ![Project Logo](docs/logo.png)
 
 Minimalist 2d Java game engine. Result of covid lockdown.
