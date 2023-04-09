@@ -1,5 +1,5 @@
 
-**09.04.23 08:20** 09.04.2023 08:20 Sauerteigbrot, Emmentaler, Tunfischcreme, Milch, kleine Müsliportion, Erdbeeren, halbe Banane, Tee, Espresso
+**09.04.23 08:20** Sauerteigbrot, Emmentaler, Tunfischcreme, Milch, kleine Müsliportion, Erdbeeren, halbe Banane, Tee, Espresso
 
 
 
