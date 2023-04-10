@@ -38,7 +38,6 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.prefs.PreferenceChangeListener;
 
 import static java.lang.String.format;
 
