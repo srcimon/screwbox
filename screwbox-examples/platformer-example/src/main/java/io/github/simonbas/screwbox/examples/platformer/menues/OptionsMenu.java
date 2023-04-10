@@ -1,5 +1,6 @@
 package io.github.simonbas.screwbox.examples.platformer.menues;
 
+import io.github.simonbas.screwbox.core.Engine;
 import io.github.simonbas.screwbox.core.graphics.Dimension;
 import io.github.simonbas.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.simonbas.screwbox.core.ui.UiMenu;
@@ -8,9 +9,7 @@ import java.util.List;
 
 public class OptionsMenu extends UiMenu {
 
-    public OptionsMenu(UiMenu caller) {
-        super(caller);
-
+    public OptionsMenu() {
         addItem(engine -> engine.graphics().configuration().isFullscreen()
                 ? "switch to window"
                 : "switch to fullscreen")
@@ -25,14 +24,18 @@ public class OptionsMenu extends UiMenu {
             List<Dimension> resolutions = engine.graphics().supportedResolutions();
             Dimension resolution = engine.graphics().configuration().resolution();
             engine.ui().setLayouter(new ScrollingUiLayouter());
-            engine.ui().openMenu(new ResolutionOptionMenu(this, resolutions, resolution));
+            engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });
 
         addItem("delete savegame")
                 .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
                 .onActivate(engine -> engine.savegame().delete("savegame.sav"));
 
-        addItem("back").onActivate(engine -> engine.ui().openMenu(caller));
+        addItem("back").onActivate(this::onExit);
     }
 
+    @Override
+    public void onExit(Engine engine) {
+        engine.ui().openPreviousMenu();
+    }
 }

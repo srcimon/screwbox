@@ -76,6 +76,12 @@ class DefaultEngine implements Engine {
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
             return newThread;
         });
+
+        Thread.currentThread().setUncaughtExceptionHandler((thread, throwable) -> {
+            executor.shutdown();
+            thread.getThreadGroup().uncaughtException(thread, throwable);
+        });
+
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);

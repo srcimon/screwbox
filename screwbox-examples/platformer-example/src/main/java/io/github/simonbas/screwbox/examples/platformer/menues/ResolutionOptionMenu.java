@@ -9,8 +9,7 @@ import java.util.List;
 
 public class ResolutionOptionMenu extends UiMenu {
 
-    protected ResolutionOptionMenu(UiMenu caller, List<Dimension> resolutions, Dimension currentResolution) {
-        super(caller);
+    protected ResolutionOptionMenu(List<Dimension> resolutions, Dimension currentResolution) {
         for (var resolution : resolutions) {
             var item = addItem(resolution.width() + " : " + resolution.height())
                     .onActivate(engine -> engine.graphics().configuration().setResolution(resolution));
@@ -21,8 +20,9 @@ public class ResolutionOptionMenu extends UiMenu {
         addItem("back to options").onActivate(this::onExit);
     }
 
+    @Override
     public void onExit(Engine engine) {
-        engine.ui().setLayouter(new WobblyUiLayouter()).openMenu(caller);
+        engine.ui().setLayouter(new WobblyUiLayouter()).openPreviousMenu();
     }
 
 }
