@@ -124,7 +124,7 @@ class DefaultAssetsTest {
 
     @Test
     void isPreparing_afterStartingPreperation_isTrue() {
-        assets.preparePackageAsync("io.github.simonbas.screwbox.core.assets.internal");
+        assets.preparePackageAsync("io.github.srcimon.screwbox.core.assets.internal");
 
         assertThat(assets.isPreparing()).isTrue();
     }

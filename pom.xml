@@ -7,14 +7,14 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>git:https://github.com/simonbas/screwbox-engine.git</connection>
-        <url>https://github.com/simonbas/screwbox-engine</url>
+        <connection>git:https://github.com/srcimon/screwbox.git</connection>
+        <url>https://github.com/srcimon/screwbox</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>19</maven.compiler.target>
         <maven.compiler.source>19</maven.compiler.source>
-        <sonar.organization>simonbas</sonar.organization>
+        <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6</sonar.issue.ignore.multicriteria>
