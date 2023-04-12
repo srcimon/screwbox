@@ -33,7 +33,7 @@ So please be understanding of any inconsistencies in the API or if you find any 
 
 ``` xml
 <dependency>
-  <groupId>io.github.simonbas</groupId>
+  <groupId>io.github.srcimon</groupId>
   <artifactId>screwbox-core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
@@ -42,13 +42,13 @@ So please be understanding of any inconsistencies in the API or if you find any 
    osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
 ``` java
-package io.github.simonbas.screwbox.examples.helloworld;
+package io.github.srcimon.screwbox.examples.helloworld;
 
-import io.github.simonbas.screwbox.core.Engine;
-import io.github.simonbas.screwbox.core.ScrewBox;
-import io.github.simonbas.screwbox.core.graphics.Color;
-import io.github.simonbas.screwbox.core.graphics.Offset;
-import io.github.simonbas.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldExample {
 
