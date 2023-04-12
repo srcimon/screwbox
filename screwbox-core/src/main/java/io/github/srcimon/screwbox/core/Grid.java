@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static io.github.srcimon.screwbox.core.Bounds.atPosition;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
