@@ -16,12 +16,7 @@ public class PauseSystem implements EntitySystem {
     public void update(final Engine engine) {
         var entities = engine.entities();
         if (engine.keyboard().justPressed(pauseKey)) {
-            if (entities.isSystemPresent(GridUpdateSystem.class)) {
-                entities.remove(GridUpdateSystem.class);
-            } else {
-                entities.add(new GridUpdateSystem());
-            }
+            entities.toggleSystem(new GridUpdateSystem());
         }
     }
-
 }
