@@ -1,0 +1,137 @@
+package io.github.srcimon.screwbox.core.graphics.internal;
+
+import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.graphics.*;
+
+import java.awt.Font;
+import java.awt.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.stream;
+
+public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics.Graphics, Updatable {
+
+    private final io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration;
+    private final DefaultWorld world;
+    private final DefaultLight light;
+    private final DefaultScreen screen;
+    private final GraphicsDevice graphicsDevice;
+
+    public DefaultGraphics(final io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration,
+                           final DefaultScreen screen,
+                           final DefaultWorld world,
+                           final DefaultLight light,
+                           final GraphicsDevice graphicsDevice) {
+        this.configuration = configuration;
+        this.light = light;
+        this.world = world;
+        this.screen = screen;
+        this.graphicsDevice = graphicsDevice;
+    }
+
+    @Override
+    public io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration() {
+        return configuration;
+    }
+
+    @Override
+    public World world() {
+        return world;
+    }
+
+    @Override
+    public double updateCameraZoomBy(final double delta) {
+        return world.updateCameraZoom(world.wantedZoom() + delta);
+    }
+
+    @Override
+    public double updateCameraZoom(final double zoom) {
+        return world.updateCameraZoom(zoom);
+    }
+
+    @Override
+    public io.github.srcimon.screwbox.core.graphics.Graphics updateCameraPosition(final Vector position) {
+        world.updateCameraPosition(position);
+        return this;
+    }
+
+    @Override
+    public Vector cameraPosition() {
+        return world.cameraPosition();
+    }
+
+    @Override
+    public double cameraZoom() {
+        return world.cameraZoom();
+    }
+
+    @Override
+    public Vector worldPositionOf(final Offset offset) {
+        return world.toPosition(offset);
+    }
+
+    @Override
+    public Offset windowPositionOf(final Vector position) {
+        return world.toOffset(position);
+    }
+
+    @Override
+    public List<io.github.srcimon.screwbox.core.graphics.Dimension> supportedResolutions() {
+        return stream(graphicsDevice.getDisplayModes())
+                .map(this::toDimension)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+    }
+
+    private io.github.srcimon.screwbox.core.graphics.Dimension toDimension(final DisplayMode screenSize) {
+        return io.github.srcimon.screwbox.core.graphics.Dimension.of(screenSize.getWidth(), screenSize.getHeight());
+    }
+
+    @Override
+    public List<io.github.srcimon.screwbox.core.graphics.Dimension> supportedResolutions(final AspectRatio ratio) {
+        return supportedResolutions().stream()
+                .filter(ratio::matches)
+                .toList();
+    }
+
+    @Override
+    public List<String> availableFonts() {
+        final var allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+        return Stream.of(allFonts)
+                .map(Font::getFontName)
+                .toList();
+    }
+
+    @Override
+    public void update() {
+        screen.updateScreen(configuration.isUseAntialising());
+        light.update();
+        world.recalculateVisibleArea();
+    }
+
+    @Override
+    public io.github.srcimon.screwbox.core.graphics.Graphics restrictZoomRangeTo(final double min, final double max) {
+        world.restrictZoomRangeTo(min, max);
+        return this;
+    }
+
+    @Override
+    public io.github.srcimon.screwbox.core.graphics.Dimension currentResolution() {
+        return toDimension(graphicsDevice.getDisplayMode());
+    }
+
+    @Override
+    public Light light() {
+        return light;
+    }
+
+    @Override
+    public Screen screen() {
+        return screen;
+    }
+
+}
