@@ -2,7 +2,7 @@
 
 Minimalist 2d Java game engine. Result of covid lockdown.
 
-[![Build](https://github.com/simonbas/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/simonbas/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox-engine&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox-engine) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=simonbas_screwbox-engine&metric=coverage)](https://sonarcloud.io/summary/new_code?id=simonbas_screwbox-engine)
+[![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
 ## About
 
