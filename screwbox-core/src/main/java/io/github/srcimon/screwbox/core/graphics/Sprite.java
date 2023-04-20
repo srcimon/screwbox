@@ -5,20 +5,22 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 public class Sprite implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private static final Sprite INVISIBLE = new Sprite(List.of(Frame.invisible()));
 
     private final List<Frame> frames = new ArrayList<>();
-    private Dimension dimension;
+    private final Dimension size;
     private final Time started = Time.now();
     private Duration duration = Duration.none();
 
@@ -27,6 +29,10 @@ public class Sprite implements Serializable {
     }
 
     public Sprite(final List<Frame> frames) {
+        if(frames.isEmpty()) {
+            throw new IllegalArgumentException("can not create Sprite without frames");
+        }
+        this.size = frames.get(0).size();
         for (final var frame : frames) {
             addFrame(frame);
         }
@@ -112,7 +118,7 @@ public class Sprite implements Serializable {
      * animation has the same size.
      */
     public Dimension size() {
-        return dimension;
+        return size;
     }
 
     /**
@@ -202,9 +208,7 @@ public class Sprite implements Serializable {
     }
 
     private void addFrame(final Frame frame) {
-        if (isNull(dimension)) {
-            dimension = frame.size();
-        } else if (!dimension.equals(frame.size())) {
+        if (!size.equals(frame.size())) {
             throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
         }
         duration = duration.plus(frame.duration());

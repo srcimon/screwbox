@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,14 +23,23 @@ class SpriteTest {
     void invisible_returnsInvisibleSprite() {
         Sprite sprite = Sprite.invisible();
 
-        assertThat(sprite.size()).isEqualTo(io.github.srcimon.screwbox.core.graphics.Dimension.of(1, 1));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
         assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
         assertThat(sprite.duration()).isEqualTo(Duration.none());
     }
 
     @Test
+    void newInstance_noFrames_throwsException() {
+        List<Frame> noFrames = Collections.emptyList();
+
+        assertThatThrownBy(() -> new Sprite(noFrames))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("can not create Sprite without frames");
+    }
+
+    @Test
     void frameCount_returnsCountOfFrames() {
-        io.github.srcimon.screwbox.core.graphics.Frame frame = Sprite.invisible().singleFrame();
+        Frame frame = Sprite.invisible().singleFrame();
 
         Sprite sprite = new Sprite(List.of(frame, frame));
 
@@ -40,14 +50,14 @@ class SpriteTest {
     void fromFile_imageFound_returnsSpriteFromFile() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThat(sprite.size()).isEqualTo(io.github.srcimon.screwbox.core.graphics.Dimension.of(16, 16));
+        assertThat(sprite.size()).isEqualTo(Dimension.of(16, 16));
     }
 
     @Test
     void assetFromFile_imageFound_returnsSpriteAssetFromFile() {
         Asset<Sprite> sprite = Sprite.assetFromFile("tile.bmp");
 
-        assertThat(sprite.get().size()).isEqualTo(io.github.srcimon.screwbox.core.graphics.Dimension.of(16, 16));
+        assertThat(sprite.get().size()).isEqualTo(Dimension.of(16, 16));
     }
 
     @Test
@@ -66,14 +76,14 @@ class SpriteTest {
 
     @Test
     void multipleFromFile_dimensionLargerThanSource_emptyResult() {
-        io.github.srcimon.screwbox.core.graphics.Dimension tooLarge = io.github.srcimon.screwbox.core.graphics.Dimension.of(20, 20);
+        Dimension tooLarge = Dimension.of(20, 20);
 
         assertThat(Sprite.multipleFromFile("tile.bmp", tooLarge)).isEmpty();
     }
 
     @Test
     void multipleFromFile_dimensionFitsSource_returnsSubImages() {
-        io.github.srcimon.screwbox.core.graphics.Dimension dimension = io.github.srcimon.screwbox.core.graphics.Dimension.of(4, 2);
+        Dimension dimension = Dimension.of(4, 2);
 
         assertThat(Sprite.multipleFromFile("tile.bmp", dimension))
                 .hasSize(32)
@@ -82,7 +92,7 @@ class SpriteTest {
 
     @Test
     void multipleFromFile_withPadding_returnsSubImages() {
-        io.github.srcimon.screwbox.core.graphics.Dimension dimension = io.github.srcimon.screwbox.core.graphics.Dimension.of(4, 2);
+        Dimension dimension = Dimension.of(4, 2);
 
         assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
                 .hasSize(6)
@@ -95,7 +105,7 @@ class SpriteTest {
         var frames = List.of(first.singleFrame(), first.singleFrame());
         var spriteWithMultipleFrames = new Sprite(frames);
 
-        assertThatThrownBy(() -> spriteWithMultipleFrames.singleFrame())
+        assertThatThrownBy(spriteWithMultipleFrames::singleFrame)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("The sprite has more than one frame.");
     }
@@ -181,7 +191,7 @@ class SpriteTest {
 
     @Test
     void animatedFromFile_validFileFound_returnsAnimatedSprite() {
-        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", io.github.srcimon.screwbox.core.graphics.Dimension.square(2), 1, Duration.ofMillis(100));
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(2), 1, Duration.ofMillis(100));
 
         assertThat(animatedSprite.frameCount()).isEqualTo(25);
         assertThat(animatedSprite.duration()).isEqualTo(Duration.ofMillis(2500));
@@ -190,7 +200,7 @@ class SpriteTest {
     @Test
     @Timeout(5)
     void frame_returnsAllImagesOfAnAnimation() {
-        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", Dimension.square(5), 1, Duration.ofMillis(50));
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(5), 1, Duration.ofMillis(50));
         List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
 
         var foundImages = new HashSet<Image>();
