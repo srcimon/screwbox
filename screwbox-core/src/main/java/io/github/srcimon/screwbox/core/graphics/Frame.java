@@ -35,13 +35,20 @@ public final class Frame implements Serializable {
     }
 
     /**
+     * Returns a {@link Frame} from the given {@link Image}.
+     */
+    public static Frame fromImage(final Image image) {
+        return new Frame(image);
+    }
+
+    /**
      * Returns a {@link Frame} created from a file.
      */
     public static Frame fromFile(final String fileName) {
         return new Frame(imageFromFile(fileName));
     }
 
-    public Frame(final Image image) {
+    private Frame(final Image image) {
         this(image, Duration.none());
     }
 

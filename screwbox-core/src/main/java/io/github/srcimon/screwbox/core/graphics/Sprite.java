@@ -25,7 +25,7 @@ public class Sprite implements Serializable {
     private final Duration duration;
 
     private Sprite(final Image image) {
-        this(new Frame(image));
+        this(Frame.fromImage(image));
     }
 
     public Sprite(Frame frame) {
