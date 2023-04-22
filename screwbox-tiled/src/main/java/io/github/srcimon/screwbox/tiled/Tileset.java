@@ -63,15 +63,14 @@ public class Tileset {
                         .image();
                 frames.add(new Frame(currentImage, Duration.ofMillis(frameEntity.duration())));
             }
-            final Sprite animatedSprite = new Sprite(frames);
-            final io.github.srcimon.screwbox.tiled.Properties properties = new Properties(tileEntity.properties());
-            final Optional<String> name = properties.get("name");
             if (!frames.isEmpty()) {
+                final Sprite animatedSprite = new Sprite(frames);
+
                 addSprite(tilesetEntity.getFirstgid() + tileEntity.id(), animatedSprite);
             }
-            if (name.isPresent()) {
-                addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), name.get());
-            }
+            final Properties properties = new Properties(tileEntity.properties());
+            final Optional<String> name = properties.get("name");
+            name.ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
         }
     }
 
@@ -118,9 +117,8 @@ public class Tileset {
 
     /**
      * Returns the first {@link Sprite} of a {@link Tileset} directly from a file.
-     * 
+     *
      * @param fileName name of the Tileset file
-     * 
      * @see #spriteFromJson(String, String)
      */
     public static Sprite spriteFromJson(final String fileName) {
@@ -129,11 +127,10 @@ public class Tileset {
 
     /**
      * Returns a named {@link Sprite} directly from a {@link Tileset}.
-     * 
+     *
      * @param fileName name of the Tileset file
      * @param name     name of the {@link Sprite} inside the file. The name is
      *                 defined by a 'name' property.
-     * 
      * @see #spriteFromJson(String)
      */
     public static Sprite spriteFromJson(final String fileName, final String name) {
@@ -143,9 +140,8 @@ public class Tileset {
     /**
      * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
      * wrapped as {@link Asset}.
-     * 
+     *
      * @param fileName name of the Tileset file
-     * 
      * @see #spriteAssetFromJson(String, String)
      */
     public static Asset<Sprite> spriteAssetFromJson(final String fileName) {
@@ -155,9 +151,8 @@ public class Tileset {
     /**
      * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
      * wrapped as {@link Asset}.
-     * 
+     *
      * @param fileName name of the Tileset file
-     * 
      * @see #spriteAssetFromJson(String)
      */
     public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {

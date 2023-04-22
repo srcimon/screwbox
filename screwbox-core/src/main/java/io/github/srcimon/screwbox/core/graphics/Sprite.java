@@ -22,24 +22,31 @@ public class Sprite implements Serializable {
     private final List<Frame> frames = new ArrayList<>();
     private final Dimension size;
     private final Time started = Time.now();
-    private Duration duration = Duration.none();
+    private final Duration duration;
 
     private Sprite(final Image image) {
         this(new Frame(image));
     }
 
-    public Sprite(final List<Frame> frames) {
-        if(frames.isEmpty()) {
-            throw new IllegalArgumentException("can not create Sprite without frames");
-        }
-        this.size = frames.get(0).size();
-        for (final var frame : frames) {
-            addFrame(frame);
-        }
-    }
-
     public Sprite(Frame frame) {
         this(List.of(frame));
+    }
+
+    public Sprite(final List<Frame> frames) {
+        if (frames.isEmpty()) {
+            throw new IllegalArgumentException("can not create Sprite without frames");
+        }
+
+        Duration animationDuration = Duration.none();
+        this.size = frames.get(0).size();
+        for (final var frame : frames) {
+            if (!size.equals(frame.size())) {
+                throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
+            }
+            animationDuration = animationDuration.plus(frame.duration());
+            this.frames.add(frame);
+        }
+        this.duration = animationDuration;
     }
 
     /**
@@ -205,14 +212,6 @@ public class Sprite implements Serializable {
             scaledFrames.add(frame.scaled(scale));
         }
         return new Sprite(scaledFrames);
-    }
-
-    private void addFrame(final Frame frame) {
-        if (!size.equals(frame.size())) {
-            throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
-        }
-        duration = duration.plus(frame.duration());
-        frames.add(frame);
     }
 
     private int getFrameNr(final List<Frame> frames, final Duration durationSum, final Time time) {
