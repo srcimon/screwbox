@@ -11,10 +11,11 @@ import io.github.srcimon.screwbox.tiled.internal.TileEntity;
 import io.github.srcimon.screwbox.tiled.internal.TilesetEntity;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
 
 public class Tileset {
@@ -69,8 +70,7 @@ public class Tileset {
                 addSprite(tilesetEntity.getFirstgid() + tileEntity.id(), animatedSprite);
             }
             final Properties properties = new Properties(tileEntity.properties());
-            final Optional<String> name = properties.get("name");
-            name.ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
+            properties.get("name").ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
         }
     }
 
@@ -103,10 +103,20 @@ public class Tileset {
         spritesByName.put(name, findById(id));
     }
 
+    /**
+     * Returns all {@link Sprite}s of this {@link Tileset}.
+     * @return all {@link Sprite}s
+     */
     public List<Sprite> all() {
-        return allSprites;
+        return unmodifiableList(allSprites);
     }
 
+    /**
+     * Returns a single {@link Sprite} from the {@link Tileset}.
+     * This only works with {@link Tileset}s containing exactly one {@link Sprite}.
+     *
+     * @return the only {@link Sprite} in this {@link Tileset}
+     */
     public Sprite single() {
         if (spriteCount() != 1) {
             throw new IllegalStateException("tileset has not exactly one sprite");
@@ -152,7 +162,8 @@ public class Tileset {
      * Returns the first {@link Sprite} of a {@link Tileset} directly from a file
      * wrapped as {@link Asset}.
      *
-     * @param fileName name of the Tileset file
+     * @param fileName name of the {@link Tileset} file
+     * @param name name of the sprite within the {@link Tileset}
      * @see #spriteAssetFromJson(String)
      */
     public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {
