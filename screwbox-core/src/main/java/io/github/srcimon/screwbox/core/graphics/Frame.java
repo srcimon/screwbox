@@ -17,7 +17,6 @@ import java.io.Serializable;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
-//TODO Doenst make sense outside of frame. move inside frame
 public final class Frame implements Serializable {
 
     @Serial

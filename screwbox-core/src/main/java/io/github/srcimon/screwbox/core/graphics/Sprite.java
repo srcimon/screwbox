@@ -9,7 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -25,10 +24,6 @@ public class Sprite implements Serializable {
     private final Time started = Time.now();
     private Dimension size;
     private Duration duration = Duration.none();
-
-    private Sprite(final Image image) {
-        this(Frame.fromImage(image));
-    }
 
     public Sprite(Frame frame) {
         this(List.of(frame));
@@ -90,6 +85,10 @@ public class Sprite implements Serializable {
         return new Sprite(frames);
     }
 
+    private Sprite(final Image image) {
+        this(Frame.fromImage(image));
+    }
+
     private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
                                                 final int padding) {
         final var image = Frame.imageFromFile(fileName);
@@ -144,7 +143,7 @@ public class Sprite implements Serializable {
      * Returns the {@link Frame} for the given {@link Time}.
      */
     public Frame frame(final Time time) {
-        final var frameNr = getFrameNr(frames, duration, time);
+        final var frameNr = calculateCurrentFrame(time);
         return frames.get(frameNr);
     }
 
@@ -219,11 +218,11 @@ public class Sprite implements Serializable {
         return new Sprite(scaledFrames);
     }
 
-    private int getFrameNr(final List<Frame> frames, final Duration durationSum, final Time time) {
+    private int calculateCurrentFrame(final Time time) {
         if (frames.size() == 1) {
             return 0;
         }
-        final long timerIndex = Duration.between(time, started).nanos() % durationSum.nanos();
+        final long timerIndex = Duration.between(time, started).nanos() % duration.nanos();
         long sumAtCurrentIndex = 0;
         long sumAtNextIndex = 0;
         for (int i = 0; i < frames.size(); i++) {
