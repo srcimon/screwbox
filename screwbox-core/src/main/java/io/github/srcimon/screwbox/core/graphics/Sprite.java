@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 public class Sprite implements Serializable {
 
@@ -22,8 +21,8 @@ public class Sprite implements Serializable {
 
     private final List<Frame> frames = new ArrayList<>();
     private final Time started = Time.now();
-    private Dimension size;
-    private Duration duration = Duration.none();
+    private final Dimension size;
+    private final Duration duration;
 
     public Sprite(Frame frame) {
         this(List.of(frame));
@@ -33,20 +32,17 @@ public class Sprite implements Serializable {
         if (frames.isEmpty()) {
             throw new IllegalArgumentException("can not create Sprite without frames");
         }
-        frames.forEach(this::addFrame);
-    }
+        this.size = frames.get(0).size();
 
-    /**
-     * Adds a new {@link Frame} to the {@link Sprite}.
-     */
-    public void addFrame(final Frame frame) {
-        if (isNull(size)) {
-            this.size = frame.size();
-        } else if (!size.equals(frame.size())) {
-            throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
+        Duration animationDuration = Duration.none();
+        for (final var frame : frames) {
+            if (!size.equals(frame.size())) {
+                throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
+            }
+            animationDuration = animationDuration.plus(frame.duration());
+            this.frames.add(frame);
         }
-        duration = duration.plus(frame.duration());
-        this.frames.add(frame);
+        this.duration = animationDuration;
     }
 
     /**
