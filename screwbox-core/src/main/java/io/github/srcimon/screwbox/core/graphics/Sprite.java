@@ -9,8 +9,10 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 public class Sprite implements Serializable {
 
@@ -20,9 +22,9 @@ public class Sprite implements Serializable {
     private static final Sprite INVISIBLE = new Sprite(List.of(Frame.invisible()));
 
     private final List<Frame> frames = new ArrayList<>();
-    private final Dimension size;
     private final Time started = Time.now();
-    private final Duration duration;
+    private Dimension size;
+    private Duration duration = Duration.none();
 
     private Sprite(final Image image) {
         this(Frame.fromImage(image));
@@ -36,17 +38,20 @@ public class Sprite implements Serializable {
         if (frames.isEmpty()) {
             throw new IllegalArgumentException("can not create Sprite without frames");
         }
+        frames.forEach(this::addFrame);
+    }
 
-        Duration animationDuration = Duration.none();
-        this.size = frames.get(0).size();
-        for (final var frame : frames) {
-            if (!size.equals(frame.size())) {
-                throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
-            }
-            animationDuration = animationDuration.plus(frame.duration());
-            this.frames.add(frame);
+    /**
+     * Adds a new {@link Frame} to the {@link Sprite}.
+     */
+    public void addFrame(final Frame frame) {
+        if (isNull(size)) {
+            this.size = frame.size();
+        } else if (!size.equals(frame.size())) {
+            throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
         }
-        this.duration = animationDuration;
+        duration = duration.plus(frame.duration());
+        this.frames.add(frame);
     }
 
     /**
