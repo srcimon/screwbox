@@ -45,7 +45,16 @@ public final class Frame implements Serializable {
      * Returns a {@link Frame} created from a file.
      */
     public static Frame fromFile(final String fileName) {
-        return new Frame(imageFromFile(fileName));
+        final byte[] imageData = Resources.loadBinary(fileName);
+        try (var inputStream = new ByteArrayInputStream(imageData)) {
+            final BufferedImage image = ImageIO.read(inputStream);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return new Frame(image);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
     }
 
     private Frame(final Image image) {
@@ -89,7 +98,7 @@ public final class Frame implements Serializable {
 
     /**
      * Returns the {@link io.github.srcimon.screwbox.core.graphics.Color} of the pixel at the given position.
-     * 
+     *
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(int, int)
      */
@@ -137,17 +146,4 @@ public final class Frame implements Serializable {
         return new Frame(newImage);
     }
 
-    private static BufferedImage imageFromFile(final String fileName) {
-        final byte[] imageData = Resources.loadBinary(fileName);
-        try (var inputStream = new ByteArrayInputStream(imageData)) {
-            final BufferedImage image = ImageIO.read(inputStream);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return image;
-
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
-    }
 }
