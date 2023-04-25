@@ -49,7 +49,7 @@ public class Tileset {
             for (int x = 0; x < tilesetEntity.getImagewidth(); x += tilesetEntity.getTilewidth()) {
                 final Offset imageOffset = Offset.at(x, y);
                 final Dimension imageSize = Dimension.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
-                final Frame subFrame = frame.subFrame(imageOffset, imageSize);
+                final Frame subFrame = frame.extractArea(imageOffset, imageSize);
                 final Sprite sprite = new Sprite(subFrame);
                 addSprite(tilesetEntity.getFirstgid() + localId, sprite);
                 localId++;

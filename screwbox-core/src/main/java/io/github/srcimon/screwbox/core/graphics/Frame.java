@@ -60,7 +60,7 @@ public final class Frame implements Serializable {
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
-    public Frame subFrame(final Offset offset, final Dimension size) {
+    public Frame extractArea(final Offset offset, final Dimension size) {
         if (offset.x() < 0
                 || offset.y() < 0
                 || offset.x() + size.width() > size().width()
