@@ -74,7 +74,7 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window moveTo(final Offset position) {
+    public Window moveTo(final Offset position) {
         if (configuration.isFullscreen()) {
             throw new IllegalStateException("Can't move Window in fullscreen.");
         }
@@ -83,7 +83,7 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window open() {
+    public Window open() {
         final int width = configuration.resolution().width();
         final int height = configuration.resolution().height();
 
@@ -116,7 +116,7 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window close() {
+    public Window close() {
         screen.setRenderer(new StandbyRenderer());
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
@@ -138,21 +138,21 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window setFullscreenCursor(final Frame cursor) {
+    public Window setFullscreenCursor(final Frame cursor) {
         fullscreenCursor = createCustomCursor(cursor.image());
         updateCursor();
         return this;
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window setWindowCursor(final Frame cursor) {
+    public Window setWindowCursor(final Frame cursor) {
         windowCursor = createCustomCursor(cursor.image());
         updateCursor();
         return this;
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window setWindowCursor(final MouseCursor cursor) {
+    public Window setWindowCursor(final MouseCursor cursor) {
         windowCursor = cursorFrom(cursor);
         return this;
     }

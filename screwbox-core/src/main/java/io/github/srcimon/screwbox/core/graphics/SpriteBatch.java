@@ -10,9 +10,9 @@ import java.util.List;
 
 public class SpriteBatch {
 
-    private List<SpriteBatchEntry> entries = new ArrayList<>();
+    private final List<SpriteBatchEntry> entries = new ArrayList<>();
 
-    public final record SpriteBatchEntry(
+    public record SpriteBatchEntry(
             Sprite sprite, Vector position, double scale, Percent opacity, Angle rotation, Flip flip,
             int drawOrder)
             implements Comparable<SpriteBatchEntry> {

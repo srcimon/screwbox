@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 public final class Font {
 
     public enum Style {
@@ -23,8 +25,8 @@ public final class Font {
         if (size <= 0) {
             throw new IllegalArgumentException("font must have size greater 0");
         }
-        this.name = Objects.requireNonNull(name, "font name must not be null");
-        this.style = Objects.requireNonNull(style, "font style must not be null");
+        this.name = requireNonNull(name, "font name must not be null");
+        this.style = requireNonNull(style, "font style must not be null");
         this.size = size;
     }
 

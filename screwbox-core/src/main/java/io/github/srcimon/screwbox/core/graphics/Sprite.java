@@ -5,43 +5,52 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 public class Sprite implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private static final Sprite INVISIBLE = new Sprite(List.of(Frame.invisible()));
 
     private final List<Frame> frames = new ArrayList<>();
-    private Dimension dimension;
     private final Time started = Time.now();
-    private Duration duration = Duration.none();
-
-    private Sprite(final Image image) {
-        this(new Frame(image));
-    }
-
-    public Sprite(final List<Frame> frames) {
-        for (final var frame : frames) {
-            addFrame(frame);
-        }
-    }
+    private final Dimension size;
+    private final Duration duration;
 
     public Sprite(Frame frame) {
         this(List.of(frame));
+    }
+
+    public Sprite(final List<Frame> frames) {
+        if (frames.isEmpty()) {
+            throw new IllegalArgumentException("can not create Sprite without frames");
+        }
+        this.size = frames.get(0).size();
+
+        Duration animationDuration = Duration.none();
+        for (final var frame : frames) {
+            if (!size.equals(frame.size())) {
+                throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
+            }
+            animationDuration = animationDuration.plus(frame.duration());
+            this.frames.add(frame);
+        }
+        this.duration = animationDuration;
     }
 
     /**
      * Creates a {@link Sprite} with a single {@link Frame} from the given image file in the class path.
      */
     public static Sprite fromFile(final String fileName) {
-        final var image = Frame.imageFromFile(fileName);
-        return fromImage(image);
+        final var frame = Frame.fromFile(fileName);
+        return new Sprite(frame);
     }
 
     /**
@@ -52,37 +61,36 @@ public class Sprite implements Serializable {
     }
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
-        return multipleFromFile(fileName, dimension, 0);
-    }
-
-    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var sprites = new ArrayList<Sprite>();
-        for (final var image : extractSubImages(fileName, dimension, padding)) {
-            sprites.add(fromImage(image));
+        for (final var frame : extractFrames(fileName, dimension)) {
+            sprites.add(new Sprite(frame));
         }
         return sprites;
     }
 
-    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
-                                          final Duration duration) {
+
+    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final Duration duration) {
         final var frames = new ArrayList<Frame>();
-        for (final var image : extractSubImages(fileName, dimension, padding)) {
-            frames.add(new Frame(image, duration));
+        for (final var frame : extractFrames(fileName, dimension)) {
+            frames.add(new Frame(frame.image(), duration));
         }
         return new Sprite(frames);
     }
 
-    private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
-                                                final int padding) {
-        final var image = Frame.imageFromFile(fileName);
-        final var subImages = new ArrayList<Image>();
-        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
-            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
-                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
-                subImages.add(subimage);
+    private Sprite(final Image image) {
+        this(Frame.fromImage(image));
+    }
+
+    private static List<Frame> extractFrames(final String fileName, final Dimension dimension) {
+        final var frame = Frame.fromFile(fileName);
+        final var extracted = new ArrayList<Frame>();
+        for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height()) {
+            for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width()) {
+                final var area = frame.extractArea(Offset.at(x,y), dimension);
+                extracted.add(area);
             }
         }
-        return subImages;
+        return extracted;
     }
 
     /**
@@ -112,7 +120,7 @@ public class Sprite implements Serializable {
      * animation has the same size.
      */
     public Dimension size() {
-        return dimension;
+        return size;
     }
 
     /**
@@ -126,7 +134,7 @@ public class Sprite implements Serializable {
      * Returns the {@link Frame} for the given {@link Time}.
      */
     public Frame frame(final Time time) {
-        final var frameNr = getFrameNr(frames, duration, time);
+        final var frameNr = calculateCurrentFrame(time);
         return frames.get(frameNr);
     }
 
@@ -157,7 +165,7 @@ public class Sprite implements Serializable {
         if (frameCount() > 1) {
             throw new IllegalStateException("The sprite has more than one frame.");
         }
-        return getFrame(0);
+        return frame(0);
     }
 
     /**
@@ -165,7 +173,7 @@ public class Sprite implements Serializable {
      *
      * @throws IllegalArgumentException if the number is invalid
      */
-    public Frame getFrame(final int nr) {
+    public Frame frame(final int nr) {
         if (nr < 0) {
             throw new IllegalArgumentException(nr + " is an invalid frame number");
         }
@@ -201,21 +209,11 @@ public class Sprite implements Serializable {
         return new Sprite(scaledFrames);
     }
 
-    private void addFrame(final Frame frame) {
-        if (isNull(dimension)) {
-            dimension = frame.size();
-        } else if (!dimension.equals(frame.size())) {
-            throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
-        }
-        duration = duration.plus(frame.duration());
-        frames.add(frame);
-    }
-
-    private int getFrameNr(final List<Frame> frames, final Duration durationSum, final Time time) {
+    private int calculateCurrentFrame(final Time time) {
         if (frames.size() == 1) {
             return 0;
         }
-        final long timerIndex = Duration.between(time, started).nanos() % durationSum.nanos();
+        final long timerIndex = Duration.between(time, started).nanos() % duration.nanos();
         long sumAtCurrentIndex = 0;
         long sumAtNextIndex = 0;
         for (int i = 0; i < frames.size(); i++) {

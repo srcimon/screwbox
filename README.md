@@ -85,11 +85,11 @@ public class HelloWorldExample {
 
 ## Future ideas and plans
 
-- [ ] build to Maven-Central
+- [ ] add small `Pixelfont` (crop transparent image area)
+- [ ] publish via Maven-Central (see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
-- [ ] headless mode with scripted events for automating the engine
 - [ ] fix bug: no more stderror output (maybe osx bug in
   13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
 

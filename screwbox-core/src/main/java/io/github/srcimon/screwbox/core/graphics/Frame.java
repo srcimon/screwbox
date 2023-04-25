@@ -35,13 +35,29 @@ public final class Frame implements Serializable {
     }
 
     /**
+     * Returns a {@link Frame} from the given {@link Image}.
+     */
+    public static Frame fromImage(final Image image) {
+        return new Frame(image);
+    }
+
+    /**
      * Returns a {@link Frame} created from a file.
      */
     public static Frame fromFile(final String fileName) {
-        return new Frame(imageFromFile(fileName));
+        final byte[] imageData = Resources.loadBinary(fileName);
+        try (var inputStream = new ByteArrayInputStream(imageData)) {
+            final BufferedImage image = ImageIO.read(inputStream);
+            if (isNull(image)) {
+                throw new IllegalArgumentException("image cannot be read: " + fileName);
+            }
+            return new Frame(image);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException("error while reading image: " + fileName, e);
+        }
     }
 
-    public Frame(final Image image) {
+    private Frame(final Image image) {
         this(image, Duration.none());
     }
 
@@ -53,7 +69,7 @@ public final class Frame implements Serializable {
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
-    public Frame subFrame(final Offset offset, final Dimension size) {
+    public Frame extractArea(final Offset offset, final Dimension size) {
         if (offset.x() < 0
                 || offset.y() < 0
                 || offset.x() + size.width() > size().width()
@@ -81,22 +97,22 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Returns the {@link io.github.srcimon.screwbox.core.graphics.Color} of the pixel at the given position.
-     * 
+     * Returns the {@link Color} of the pixel at the given position.
+     *
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(int, int)
      */
-    public io.github.srcimon.screwbox.core.graphics.Color colorAt(final Offset offset) {
+    public Color colorAt(final Offset offset) {
         return colorAt(offset.x(), offset.y());
     }
 
     /**
-     * Returns the {@link io.github.srcimon.screwbox.core.graphics.Color} of the pixel at the given position.
+     * Returns the {@link Color} of the pixel at the given position.
      *
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(Offset)
      */
-    public io.github.srcimon.screwbox.core.graphics.Color colorAt(final int x, final int y) {
+    public Color colorAt(final int x, final int y) {
         final Image image = image();
         if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
             throw new IllegalArgumentException(format("Position is out of bounds: %d:%d", x, y));
@@ -108,10 +124,10 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Returns a new instance. The new {@link Frame}s old {@link io.github.srcimon.screwbox.core.graphics.Color} is replaced
+     * Returns a new instance. The new {@link Frame}s old {@link Color} is replaced
      * with a new one. This method is quite slow.
      */
-    public Frame replaceColor(final io.github.srcimon.screwbox.core.graphics.Color oldColor, final io.github.srcimon.screwbox.core.graphics.Color newColor) {
+    public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageCont.getImage();
         final Image newImage = ImageUtil.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage);
@@ -130,17 +146,4 @@ public final class Frame implements Serializable {
         return new Frame(newImage);
     }
 
-    static BufferedImage imageFromFile(final String fileName) {
-        final byte[] imageData = Resources.loadBinary(fileName);
-        try (var inputStream = new ByteArrayInputStream(imageData)) {
-            final BufferedImage image = ImageIO.read(inputStream);
-            if (isNull(image)) {
-                throw new IllegalArgumentException("image cannot be read: " + fileName);
-            }
-            return image;
-
-        } catch (final IOException e) {
-            throw new IllegalArgumentException("error while reading image: " + fileName, e);
-        }
-    }
 }

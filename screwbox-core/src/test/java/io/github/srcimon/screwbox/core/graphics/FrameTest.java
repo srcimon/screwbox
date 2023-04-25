@@ -83,21 +83,21 @@ class FrameTest {
 
     @ParameterizedTest
     @CsvSource({"-1,1,4,4", "100,1,4,4", "4,-2,5,20", "4,4,13,1", "4,0,14,30"})
-    void subFrame_outOfBounds_throwsException(int x, int y, int width, int height) {
+    void extractArea_outOfBounds_throwsException(int x, int y, int width, int height) {
         Offset offset = Offset.at(x, y);
         Dimension size = Dimension.of(width, height);
 
-        assertThatThrownBy(() -> frame.subFrame(offset, size))
+        assertThatThrownBy(() -> frame.extractArea(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("given offset and size are out offrame bounds");
     }
 
     @Test
-    void subFrame_inBounds_returnsSubFrame() {
+    void extractArea_inBounds_returnsextractArea() {
         Offset offset = Offset.at(4, 8);
         Dimension size = Dimension.of(2, 7);
 
-        Frame result = frame.subFrame(offset, size);
+        Frame result = frame.extractArea(offset, size);
 
         assertThat(result.size()).isEqualTo(size);
         assertThat(result.colorAt(origin())).isEqualTo(frame.colorAt(offset));
