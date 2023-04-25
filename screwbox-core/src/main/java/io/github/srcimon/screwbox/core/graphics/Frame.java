@@ -97,22 +97,22 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Returns the {@link io.github.srcimon.screwbox.core.graphics.Color} of the pixel at the given position.
+     * Returns the {@link Color} of the pixel at the given position.
      *
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(int, int)
      */
-    public io.github.srcimon.screwbox.core.graphics.Color colorAt(final Offset offset) {
+    public Color colorAt(final Offset offset) {
         return colorAt(offset.x(), offset.y());
     }
 
     /**
-     * Returns the {@link io.github.srcimon.screwbox.core.graphics.Color} of the pixel at the given position.
+     * Returns the {@link Color} of the pixel at the given position.
      *
      * @throws IllegalArgumentException when position is out of bounds.
      * @see #colorAt(Offset)
      */
-    public io.github.srcimon.screwbox.core.graphics.Color colorAt(final int x, final int y) {
+    public Color colorAt(final int x, final int y) {
         final Image image = image();
         if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
             throw new IllegalArgumentException(format("Position is out of bounds: %d:%d", x, y));
@@ -124,10 +124,10 @@ public final class Frame implements Serializable {
     }
 
     /**
-     * Returns a new instance. The new {@link Frame}s old {@link io.github.srcimon.screwbox.core.graphics.Color} is replaced
+     * Returns a new instance. The new {@link Frame}s old {@link Color} is replaced
      * with a new one. This method is quite slow.
      */
-    public Frame replaceColor(final io.github.srcimon.screwbox.core.graphics.Color oldColor, final io.github.srcimon.screwbox.core.graphics.Color newColor) {
+    public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageCont.getImage();
         final Image newImage = ImageUtil.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage);
