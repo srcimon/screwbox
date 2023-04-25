@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 public final class Font {
