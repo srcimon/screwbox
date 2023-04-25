@@ -61,21 +61,17 @@ public class Sprite implements Serializable {
     }
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
-        return multipleFromFile(fileName, dimension, 0);
-    }
-
-    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var sprites = new ArrayList<Sprite>();
-        for (final var frame : extractFrames(fileName, dimension, padding)) {
+        for (final var frame : extractFrames(fileName, dimension)) {
             sprites.add(new Sprite(frame));
         }
         return sprites;
     }
 
-    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
-                                          final Duration duration) {
+
+    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final Duration duration) {
         final var frames = new ArrayList<Frame>();
-        for (final var frame : extractFrames(fileName, dimension, padding)) {
+        for (final var frame : extractFrames(fileName, dimension)) {
             frames.add(new Frame(frame.image(), duration));
         }
         return new Sprite(frames);
@@ -85,12 +81,11 @@ public class Sprite implements Serializable {
         this(Frame.fromImage(image));
     }
 
-    private static List<Frame> extractFrames(final String fileName, final Dimension dimension,
-                                                final int padding) {
+    private static List<Frame> extractFrames(final String fileName, final Dimension dimension) {
         final var frame = Frame.fromFile(fileName);
         final var extracted = new ArrayList<Frame>();
-        for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height() + padding) {
-            for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width() + padding) {
+        for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height()) {
+            for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width()) {
                 final var area = frame.extractArea(Offset.at(x,y), dimension);
                 extracted.add(area);
             }

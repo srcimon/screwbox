@@ -91,15 +91,6 @@ class SpriteTest {
     }
 
     @Test
-    void multipleFromFile_withPadding_returnsSubImages() {
-        Dimension dimension = Dimension.of(4, 2);
-
-        assertThat(Sprite.multipleFromFile("tile.bmp", dimension, 4))
-                .hasSize(6)
-                .allMatch(s -> s.size().equals(dimension));
-    }
-
-    @Test
     void singleFrame_moreThanOneFrame_exception() {
         Sprite first = Sprite.fromFile("tile.bmp");
         var frames = List.of(first.singleFrame(), first.singleFrame());
@@ -191,7 +182,7 @@ class SpriteTest {
 
     @Test
     void animatedFromFile_validFileFound_returnsAnimatedSprite() {
-        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(2), 1, Duration.ofMillis(100));
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(3), Duration.ofMillis(100));
 
         assertThat(animatedSprite.frameCount()).isEqualTo(25);
         assertThat(animatedSprite.duration()).isEqualTo(Duration.ofMillis(2500));
@@ -200,7 +191,7 @@ class SpriteTest {
     @Test
     @Timeout(5)
     void frame_returnsAllImagesOfAnAnimation() {
-        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(5), 1, Duration.ofMillis(50));
+        Sprite animatedSprite = Sprite.animatedFromFile("tile.bmp", square(5), Duration.ofMillis(50));
         List<Image> allImages = animatedSprite.allFrames().stream().map(Frame::image).toList();
 
         var foundImages = new HashSet<Image>();
