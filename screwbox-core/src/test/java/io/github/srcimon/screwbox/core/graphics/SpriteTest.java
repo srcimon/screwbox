@@ -24,7 +24,7 @@ class SpriteTest {
         Sprite sprite = Sprite.invisible();
 
         assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
-        assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
+        assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(Color.TRANSPARENT);
         assertThat(sprite.duration()).isEqualTo(Duration.none());
     }
 
@@ -114,25 +114,25 @@ class SpriteTest {
     void singleFrame_oneFrame_returnsFrame() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        io.github.srcimon.screwbox.core.graphics.Frame frame = sprite.singleFrame();
+        Frame frame = sprite.singleFrame();
 
         assertThat(frame.size()).isEqualTo(square(16));
     }
 
     @Test
-    void getFrame_frameDoesntExist_exception() {
+    void frame_frameDoesntExist_exception() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThatThrownBy(() -> sprite.getFrame(4))
+        assertThatThrownBy(() -> sprite.frame(4))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot return frame nr 4, because sprite has only 1 frame(s).");
     }
 
     @Test
-    void getFrame_invalidNumber_exception() {
+    void frame_invalidNumber_exception() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThatThrownBy(() -> sprite.getFrame(-4))
+        assertThatThrownBy(() -> sprite.frame(-4))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("-4 is an invalid frame number");
     }
@@ -141,7 +141,7 @@ class SpriteTest {
     void replaceColor_doenstReplacesColorOfOldFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        io.github.srcimon.screwbox.core.graphics.Color oldColor = sprite.singleFrame().colorAt(origin());
+        Color oldColor = sprite.singleFrame().colorAt(origin());
 
         sprite.replaceColor(oldColor, BLACK);
 
@@ -152,7 +152,7 @@ class SpriteTest {
     void replaceColor_replacesColorOfNewFrames() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        io.github.srcimon.screwbox.core.graphics.Color oldColor = sprite.singleFrame().colorAt(origin());
+        Color oldColor = sprite.singleFrame().colorAt(origin());
 
         Sprite newSprite = sprite.replaceColor(oldColor, BLACK);
         Color newColor = newSprite.singleFrame().colorAt(origin());

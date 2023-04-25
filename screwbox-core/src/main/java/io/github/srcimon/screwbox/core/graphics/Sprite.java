@@ -170,7 +170,7 @@ public class Sprite implements Serializable {
         if (frameCount() > 1) {
             throw new IllegalStateException("The sprite has more than one frame.");
         }
-        return getFrame(0);
+        return frame(0);
     }
 
     /**
@@ -178,7 +178,7 @@ public class Sprite implements Serializable {
      *
      * @throws IllegalArgumentException if the number is invalid
      */
-    public Frame getFrame(final int nr) {
+    public Frame frame(final int nr) {
         if (nr < 0) {
             throw new IllegalArgumentException(nr + " is an invalid frame number");
         }
