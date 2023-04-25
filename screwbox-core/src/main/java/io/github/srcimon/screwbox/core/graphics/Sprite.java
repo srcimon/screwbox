@@ -49,8 +49,8 @@ public class Sprite implements Serializable {
      * Creates a {@link Sprite} with a single {@link Frame} from the given image file in the class path.
      */
     public static Sprite fromFile(final String fileName) {
-        final var image = Frame.imageFromFile(fileName);
-        return fromImage(image);
+        final var frame = Frame.fromFile(fileName);
+        return new Sprite(frame);
     }
 
     /**
@@ -66,8 +66,8 @@ public class Sprite implements Serializable {
 
     public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension, final int padding) {
         final var sprites = new ArrayList<Sprite>();
-        for (final var image : extractSubImages(fileName, dimension, padding)) {
-            sprites.add(fromImage(image));
+        for (final var frame : extractFrames(fileName, dimension, padding)) {
+            sprites.add(new Sprite(frame));
         }
         return sprites;
     }
@@ -75,8 +75,8 @@ public class Sprite implements Serializable {
     public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final int padding,
                                           final Duration duration) {
         final var frames = new ArrayList<Frame>();
-        for (final var image : extractSubImages(fileName, dimension, padding)) {
-            frames.add(new Frame(image, duration));
+        for (final var frame : extractFrames(fileName, dimension, padding)) {
+            frames.add(new Frame(frame.image(), duration));
         }
         return new Sprite(frames);
     }
@@ -85,17 +85,17 @@ public class Sprite implements Serializable {
         this(Frame.fromImage(image));
     }
 
-    private static List<Image> extractSubImages(final String fileName, final Dimension dimension,
+    private static List<Frame> extractFrames(final String fileName, final Dimension dimension,
                                                 final int padding) {
-        final var image = Frame.imageFromFile(fileName);
-        final var subImages = new ArrayList<Image>();
-        for (int y = 0; y + dimension.height() <= image.getHeight(); y += dimension.height() + padding) {
-            for (int x = 0; x + dimension.width() <= image.getWidth(); x += dimension.width() + padding) {
-                final var subimage = image.getSubimage(x, y, dimension.width(), dimension.height());
-                subImages.add(subimage);
+        final var frame = Frame.fromFile(fileName);
+        final var extracted = new ArrayList<Frame>();
+        for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height() + padding) {
+            for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width() + padding) {
+                final var area = frame.extractArea(Offset.at(x,y), dimension);
+                extracted.add(area);
             }
         }
-        return subImages;
+        return extracted;
     }
 
     /**

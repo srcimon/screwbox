@@ -137,7 +137,7 @@ public final class Frame implements Serializable {
         return new Frame(newImage);
     }
 
-    static BufferedImage imageFromFile(final String fileName) {
+    private static BufferedImage imageFromFile(final String fileName) {
         final byte[] imageData = Resources.loadBinary(fileName);
         try (var inputStream = new ByteArrayInputStream(imageData)) {
             final BufferedImage image = ImageIO.read(inputStream);
