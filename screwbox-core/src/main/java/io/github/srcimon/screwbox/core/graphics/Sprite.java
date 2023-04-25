@@ -39,7 +39,7 @@ public class Sprite implements Serializable {
             if (!size.equals(frame.size())) {
                 throw new IllegalArgumentException("Cannot add frame with different dimension to sprite");
             }
-            animationDuration = animationDuration.plus(frame.duration());
+            animationDuration = animationDuration.add(frame.duration());
             this.frames.add(frame);
         }
         this.duration = animationDuration;

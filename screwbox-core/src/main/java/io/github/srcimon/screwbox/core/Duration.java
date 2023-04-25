@@ -24,7 +24,7 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with the duration of the given value of nanoseconds.
-     * 
+     *
      * @see #ofMillis(long)
      * @see #ofSeconds(long)
      * @see #ofMicros(long)
@@ -35,7 +35,7 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with the duration of the given value of microseconds.
-     * 
+     *
      * @see #ofMillis(long)
      * @see #ofSeconds(long)
      * @see #ofNanos(long)
@@ -46,7 +46,7 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with the duration of the given value of milliseconds.
-     * 
+     *
      * @see #ofNanos(long)
      * @see #ofSeconds(long)
      * @see #ofMicros(long)
@@ -57,7 +57,7 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with the duration of the given value of seconds.
-     * 
+     *
      * @see #ofMillis(long)
      * @see #ofNanos(long)
      * @see #ofMicros(long)
@@ -73,7 +73,7 @@ public class Duration implements Serializable {
     /**
      * Creates a new instance with the duration of the time it took to execute the
      * given {@link Runnable}.
-     * 
+     *
      * @param execution the execution that is measured
      */
     public static Duration ofExecution(final Runnable execution) {
@@ -94,7 +94,14 @@ public class Duration implements Serializable {
         return new Duration(0);
     }
 
-    public Duration plus(final Duration other) {
+    /**
+     * Adds another {@link Duration} to this {@link Duration}.
+     *
+     * @param other the {@link Duration} to add
+     * @return the resulting {@link Duration}
+     */
+    public Duration add(final Duration other) {
+        requireNonNull(other, "duration must not be null");
         return Duration.ofNanos(nanos + other.nanos);
     }
 

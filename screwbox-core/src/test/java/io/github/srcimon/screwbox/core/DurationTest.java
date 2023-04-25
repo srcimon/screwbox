@@ -130,4 +130,21 @@ class DurationTest {
 
         assertThat(duration.nanos()).isPositive();
     }
+
+    @Test
+    void add_valueSet_addsDuration() {
+        Duration duration = Duration.ofSeconds(2);
+
+        Duration result = duration.add(Duration.ofMillis(500));
+
+        assertThat(result.milliseconds()).isEqualTo(2500);
+    }
+
+    @Test
+    void add_valueNull_throwsException() {
+        Duration duration = Duration.ofSeconds(2);
+        assertThatThrownBy(() -> duration.add(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("duration must not be null");
+    }
 }
