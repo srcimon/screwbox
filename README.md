@@ -84,7 +84,7 @@ public class HelloWorldExample {
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 
 ## Future ideas and plans
-
+- [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
 - [ ] publish via Maven-Central (see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
 - [ ] Support for animated light
