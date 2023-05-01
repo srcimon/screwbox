@@ -24,10 +24,6 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         this.physicsBodyComponent = physics.get(PhysicsBodyComponent.class);
     }
 
-    public boolean checkWanted() {
-        return !physicsBodyComponent.ignoreCollisions;
-    }
-
     public boolean bodiesIntersect() {
         return physicsBounds().bounds.intersects(colliderBounds);
     }

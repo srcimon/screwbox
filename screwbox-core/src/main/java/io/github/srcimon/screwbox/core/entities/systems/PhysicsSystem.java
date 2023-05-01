@@ -2,12 +2,12 @@ package io.github.srcimon.screwbox.core.entities.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.entities.*;
 import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
 import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionResolver;
-import io.github.srcimon.screwbox.core.entities.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,27 +24,26 @@ public class PhysicsSystem implements EntitySystem {
         final double factor = engine.loop().delta();
         final var colliders = engine.entities().fetchAll(COLLIDERS);
         for (final Entity entity : engine.entities().fetchAll(PHYSICS)) {
-            final var currentMomentum = entity.get(PhysicsBodyComponent.class).momentum;
+            final PhysicsBodyComponent physicsBody = entity.get(PhysicsBodyComponent.class);
             final var transform = entity.get(TransformComponent.class);
 
-            final Vector momentum = currentMomentum.multiply(factor);
+            final Vector momentum = physicsBody.momentum.multiply(factor);
             transform.bounds = transform.bounds.moveBy(momentum);
-
-            final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
-            for (final var collider : colliders) {
-                final CollisionCheck check = new CollisionCheck(entity, collider);
-                if (check.bodiesIntersect() &&
-                        check.checkWanted()
-                        && check.isNoSelfCollision()
-                        && check.isNoOneWayFalsePositive()) {
-                    collisionPairs.add(check);
+            if (!physicsBody.ignoreCollisions) {
+                final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
+                for (final var collider : colliders) {
+                    final CollisionCheck check = new CollisionCheck(entity, collider);
+                    if (check.bodiesIntersect()
+                            && check.isNoSelfCollision()
+                            && check.isNoOneWayFalsePositive()) {
+                        collisionPairs.add(check);
+                    }
                 }
-
-            }
-            Collections.sort(collisionPairs);
-            for (final var collisionPair : collisionPairs) {
-                if (collisionPair.bodiesIntersect()) {
-                    CollisionResolver.resolveCollision(collisionPair, factor);
+                Collections.sort(collisionPairs);
+                for (final var collisionPair : collisionPairs) {
+                    if (collisionPair.bodiesIntersect()) {
+                        CollisionResolver.resolveCollision(collisionPair, factor);
+                    }
                 }
             }
         }
