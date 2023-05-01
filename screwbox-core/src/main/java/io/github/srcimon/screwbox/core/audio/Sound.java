@@ -31,11 +31,11 @@ public final class Sound implements Serializable {
      * Creates a new {@link Asset} for a {@link Sound}. Only supports WAV-Files at
      * the moment.
      */
-    public static Asset<Sound> assetFromFile(String fileName) {
+    public static Asset<Sound> assetFromFile(final String fileName) {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-    private Sound(byte[] content) {
+    private Sound(final byte[] content) {
         this.content = content;
     }
 
