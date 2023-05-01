@@ -38,6 +38,7 @@ So please be understanding of any inconsistencies in the API or if you find any 
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
+
 5. Create your first game and run. Recommended JVM Options `-Dsun.java2d.opengl=true` and only on
    osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
@@ -74,6 +75,7 @@ public class HelloWorldExample {
     - **PlatformerExample** a more complex example showing how to make a platformer
 
 ## Known issues
+
 - [ ] asset preloading on Windows crashes the program (invalid pattern)
 
 ## Libraries used
@@ -84,9 +86,11 @@ public class HelloWorldExample {
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 
 ## Future ideas and plans
+
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] publish via Maven-Central (see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
+- [ ] publish via Maven-Central (
+  see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
