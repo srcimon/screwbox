@@ -21,11 +21,12 @@ public class CollisionSensorSystem implements EntitySystem {
             collidedEntities.clear();
 
             for (final var collider : colliders) {
-                final CollisionCheck check = new CollisionCheck(sensorEntity, collider);
-                if (check.bodiesTouch() && check.isNoSelfCollision() && check.isNoOneWayFalsePositive()) {
-                    collidedEntities.add(collider);
+                if (sensorEntity != collider) {
+                    final CollisionCheck check = new CollisionCheck(sensorEntity, collider);
+                    if (check.bodiesTouch() && check.isNoOneWayFalsePositive()) {
+                        collidedEntities.add(collider);
+                    }
                 }
-
             }
         }
     }

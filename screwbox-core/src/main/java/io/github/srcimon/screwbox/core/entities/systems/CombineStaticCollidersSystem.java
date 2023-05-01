@@ -2,12 +2,12 @@ package io.github.srcimon.screwbox.core.entities.systems;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.entities.*;
 import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
 import io.github.srcimon.screwbox.core.entities.components.StaticMarkerComponent;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
 import io.github.srcimon.screwbox.core.utils.GeometryUtil;
-import io.github.srcimon.screwbox.core.entities.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +23,11 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         final List<Entity> combinables = engine.entities().fetchAll(COMBINABLES);
         for (final var entity : combinables) {
             for (final var combinable : combinables) {
-                var pair = new CollisionCheck(entity, combinable);
-                if (pair.bodiesTouch() && pair.isNoSelfCollision() && tryToCombine(pair, engine)) {
-                    return; // only one combination per frame
+                if (entity != combinable) {
+                    var pair = new CollisionCheck(entity, combinable);
+                    if (pair.bodiesTouch() && tryToCombine(pair, engine)) {
+                        return; // only one combination per frame
+                    }
                 }
             }
         }

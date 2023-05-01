@@ -24,19 +24,20 @@ public class PhysicsSystem implements EntitySystem {
         final double factor = engine.loop().delta();
         final var colliders = engine.entities().fetchAll(COLLIDERS);
         for (final Entity entity : engine.entities().fetchAll(PHYSICS)) {
-            final PhysicsBodyComponent physicsBody = entity.get(PhysicsBodyComponent.class);
+            final var physicsBody = entity.get(PhysicsBodyComponent.class);
             final var transform = entity.get(TransformComponent.class);
 
             final Vector momentum = physicsBody.momentum.multiply(factor);
             transform.bounds = transform.bounds.moveBy(momentum);
+
             if (!physicsBody.ignoreCollisions) {
                 final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
                 for (final var collider : colliders) {
-                    final CollisionCheck check = new CollisionCheck(entity, collider);
-                    if (check.bodiesIntersect()
-                            && check.isNoSelfCollision()
-                            && check.isNoOneWayFalsePositive()) {
-                        collisionPairs.add(check);
+                    if (entity != collider) {
+                        final CollisionCheck check = new CollisionCheck(entity, collider);
+                        if (check.bodiesIntersect() && check.isNoOneWayFalsePositive()) {
+                            collisionPairs.add(check);
+                        }
                     }
                 }
                 Collections.sort(collisionPairs);

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import static java.util.Objects.nonNull;
@@ -13,6 +14,7 @@ import static java.util.Objects.nonNull;
  */
 public final class Sound implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final byte[] content;

@@ -40,10 +40,6 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
                         && !physicsBodyComponent.ignoreOneWayCollisions);
     }
 
-    public boolean isNoSelfCollision() {
-        return physics != collider;
-    }
-
     public Entity collider() {
         return collider;
     }
