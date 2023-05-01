@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.WindowBounds;
+import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -197,5 +198,4 @@ public class DefaultRenderer implements Renderer {
         final int y = offset.y() - diameter / 2;
         graphics.drawOval(x, y, diameter, diameter);
     }
-
 }

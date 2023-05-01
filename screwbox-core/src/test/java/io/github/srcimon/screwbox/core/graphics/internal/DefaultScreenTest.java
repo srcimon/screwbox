@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Dimension;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

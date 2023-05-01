@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.window.internal;
 
 import java.awt.*;
 import java.io.Serial;

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.util.List;
 

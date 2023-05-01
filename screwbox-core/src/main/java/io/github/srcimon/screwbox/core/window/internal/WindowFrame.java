@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Dimension;
 
@@ -54,7 +54,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
         graphicsDevice.setFullScreenWindow(this);
     }
 
-    public io.github.srcimon.screwbox.core.graphics.Dimension getCanvasSize() {
+    public Dimension getCanvasSize() {
         final var bounds = getCanvas().getBounds();
         return Dimension.of(bounds.width, bounds.height);
     }

@@ -31,6 +31,8 @@ import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
 import io.github.srcimon.screwbox.core.window.Window;
 import io.github.srcimon.screwbox.core.window.internal.DefaultWindow;
+import io.github.srcimon.screwbox.core.window.internal.MacOsWindowFrame;
+import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
