@@ -16,7 +16,7 @@ import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEven
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
 
-public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Window {
+public class DefaultWindow implements Window {
 
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
@@ -50,13 +50,13 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window addDropListener(WindowDropListener listener) {
+    public Window addDropListener(WindowDropListener listener) {
         dragAndDropSupport.addDropListener(listener);
         return this;
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window removeDropListener(WindowDropListener listener) {
+    public Window removeDropListener(WindowDropListener listener) {
         dragAndDropSupport.removeDropListener(listener);
         return this;
     }
@@ -68,7 +68,7 @@ public class DefaultWindow implements io.github.srcimon.screwbox.core.window.Win
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.window.Window setTitle(final String title) {
+    public Window setTitle(final String title) {
         frame.setTitle(title);
         return this;
     }

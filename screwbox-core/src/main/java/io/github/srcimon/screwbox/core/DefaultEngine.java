@@ -102,14 +102,12 @@ class DefaultEngine implements Engine {
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
         savegame = new DefaultSavegame(scenes);
-        frame.addMouseListener(mouse);
-        frame.addMouseMotionListener(mouse);
-        frame.addMouseWheelListener(mouse);
-        frame.addKeyListener(keyboard);
-        frame.getCanvas().addMouseListener(mouse);
-        frame.getCanvas().addMouseMotionListener(mouse);
-        frame.getCanvas().addMouseWheelListener(mouse);
-        frame.getCanvas().addKeyListener(keyboard);
+        for(var component :  List.of(frame, frame.getCanvas())) {
+            component.addMouseListener(mouse);
+            component.addMouseMotionListener(mouse);
+            component.addMouseWheelListener(mouse);
+            component.addKeyListener(keyboard);
+        }
         this.name = name;
         window.setTitle(name);
     }
