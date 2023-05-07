@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.internal.*;
@@ -169,8 +169,8 @@ public class DefaultWindow implements Window {
     }
 
     @Override
-    public Dimension size() {
-        return Dimension.of(frame.getWidth(), frame.getHeight());
+    public Size size() {
+        return Size.of(frame.getWidth(), frame.getHeight());
     }
 
     private Cursor cursorFrom(final MouseCursor cursor) {

@@ -27,7 +27,7 @@ class DefaultWorldTest {
 
     @Test
     void updateCameraPosition_updatesVisibleArea() {
-        when(screen.size()).thenReturn(Dimension.of(1024, 768));
+        when(screen.size()).thenReturn(Size.of(1024, 768));
         world.updateCameraPosition(Vector.of(100, 20));
 
         assertThat(world.visibleArea())
@@ -36,18 +36,18 @@ class DefaultWorldTest {
 
     @Test
     void drawRectangle_inBounds_callsWindow() {
-        when(screen.size()).thenReturn(Dimension.of(1024, 768));
+        when(screen.size()).thenReturn(Size.of(1024, 768));
         world.updateCameraPosition(zero());
         world.updateCameraZoom(2.5);
 
         world.fillRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
 
-        verify(screen).fillRectangle(Offset.at(387, 259), Dimension.of(250, 250), Color.RED);
+        verify(screen).fillRectangle(Offset.at(387, 259), Size.of(250, 250), Color.RED);
     }
 
     @Test
     void drawColor_setsColorForDrawing() {
-        when(screen.size()).thenReturn(Dimension.of(1024, 768));
+        when(screen.size()).thenReturn(Size.of(1024, 768));
         world.drawColor(Color.BLUE);
         world.drawLine(Segment.between(zero(), zero()));
 
@@ -71,7 +71,7 @@ class DefaultWorldTest {
 
     @Test
     void restrictZoomRangeTo_validMinAndMax_restrictsZoomRange() {
-        when(screen.size()).thenReturn(Dimension.of(1024, 768));
+        when(screen.size()).thenReturn(Size.of(1024, 768));
 
         world.restrictZoomRangeTo(1, 5);
 
@@ -84,7 +84,7 @@ class DefaultWorldTest {
 
     @Test
     void drawSprite_callsWindow() {
-        when(screen.size()).thenReturn(Dimension.of(1024, 768));
+        when(screen.size()).thenReturn(Size.of(1024, 768));
         Sprite sprite = invisible();
 
         world.updateCameraPosition($(4, 2));

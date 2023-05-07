@@ -79,7 +79,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public List<io.github.srcimon.screwbox.core.graphics.Dimension> supportedResolutions() {
+    public List<Size> supportedResolutions() {
         return stream(graphicsDevice.getDisplayModes())
                 .map(this::toDimension)
                 .distinct()
@@ -87,12 +87,12 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
                 .toList();
     }
 
-    private io.github.srcimon.screwbox.core.graphics.Dimension toDimension(final DisplayMode screenSize) {
-        return io.github.srcimon.screwbox.core.graphics.Dimension.of(screenSize.getWidth(), screenSize.getHeight());
+    private Size toDimension(final DisplayMode screenSize) {
+        return Size.of(screenSize.getWidth(), screenSize.getHeight());
     }
 
     @Override
-    public List<io.github.srcimon.screwbox.core.graphics.Dimension> supportedResolutions(final AspectRatio ratio) {
+    public List<Size> supportedResolutions(final AspectRatio ratio) {
         return supportedResolutions().stream()
                 .filter(ratio::matches)
                 .toList();
@@ -120,7 +120,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.graphics.Dimension currentResolution() {
+    public Size currentResolution() {
         return toDimension(graphicsDevice.getDisplayMode());
     }
 

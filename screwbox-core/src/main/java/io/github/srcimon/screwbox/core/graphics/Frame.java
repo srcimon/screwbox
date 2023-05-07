@@ -69,7 +69,7 @@ public final class Frame implements Serializable {
     /**
      * Returns a new {@link Frame} created from a sub image of this {@link Frame}.
      */
-    public Frame extractArea(final Offset offset, final Dimension size) {
+    public Frame extractArea(final Offset offset, final Size size) {
         if (offset.x() < 0
                 || offset.y() < 0
                 || offset.x() + size.width() > size().width()
@@ -92,8 +92,8 @@ public final class Frame implements Serializable {
     /**
      * Returns the size of the frames {@link #image()}.
      */
-    public Dimension size() {
-        return Dimension.of(imageCont.getIconWidth(), imageCont.getIconHeight());
+    public Size size() {
+        return Size.of(imageCont.getIconWidth(), imageCont.getIconHeight());
     }
 
     /**
@@ -163,7 +163,7 @@ public final class Frame implements Serializable {
 
         final var offset = Offset.at(minX, 0);
         final var target = Offset.at(maxX + 1, size().height());
-        final var size = Dimension.definedBy(offset, target);
+        final var size = Size.definedBy(offset, target);
         return extractArea(offset, size);
     }
 

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.menues;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 
@@ -21,8 +21,8 @@ public class OptionsMenu extends UiMenu {
                 .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
 
         addItem("change resolution").onActivate(engine -> {
-            List<Dimension> resolutions = engine.graphics().supportedResolutions();
-            Dimension resolution = engine.graphics().configuration().resolution();
+            List<Size> resolutions = engine.graphics().supportedResolutions();
+            Size resolution = engine.graphics().configuration().resolution();
             engine.ui().setLayouter(new ScrollingUiLayouter());
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });

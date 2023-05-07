@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -48,7 +48,7 @@ public class Tileset {
         for (int y = 0; y < tilesetEntity.getImageheight(); y += tilesetEntity.getTileheight()) {
             for (int x = 0; x < tilesetEntity.getImagewidth(); x += tilesetEntity.getTilewidth()) {
                 final Offset imageOffset = Offset.at(x, y);
-                final Dimension imageSize = Dimension.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
+                final Size imageSize = Size.of(tilesetEntity.getTilewidth(), tilesetEntity.getTileheight());
                 final Frame subFrame = frame.extractArea(imageOffset, imageSize);
                 final Sprite sprite = new Sprite(subFrame);
                 addSprite(tilesetEntity.getFirstgid() + localId, sprite);

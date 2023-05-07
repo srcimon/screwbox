@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.WindowBounds;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ class Lightmap {
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
 
-    public Lightmap(final io.github.srcimon.screwbox.core.graphics.Dimension size, final int resolution) {
+    public Lightmap(final Size size, final int resolution) {
         this.image = new BufferedImage(
                 size.width() / resolution + 1, // to avoid glitches add 1
                 size.height() / resolution + 1, // to avoid glitches add 1

@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.transitions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 
@@ -35,11 +35,11 @@ public final class MosaikTransition implements ScreenTransition {
         final long offsetCountToDraw = mosaikOffsets.size() - Math.round((mosaikOffsets.size() - 1) * progress.value());
         final int mosaikWidth = screen.size().width() / columns + 1;
         final int mosaikHeight = screen.size().height() / rows + 1;
-        final Dimension mosaikDimension = Dimension.of(mosaikWidth, mosaikHeight);
+        final Size mosaikSize = Size.of(mosaikWidth, mosaikHeight);
         for (int i = 0; i < offsetCountToDraw; i++) {
             final Offset mosaikOffset = mosaikOffsets.get(i);
             final Offset screenOffset = Offset.at(mosaikOffset.x() * mosaikWidth, mosaikOffset.y() * mosaikHeight);
-            screen.fillRectangle(screenOffset, mosaikDimension, Color.BLACK);
+            screen.fillRectangle(screenOffset, mosaikSize, Color.BLACK);
         }
     }
 

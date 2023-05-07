@@ -6,70 +6,70 @@ import java.io.Serializable;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class Dimension implements Serializable, Comparable<Dimension> {
+public class Size implements Serializable, Comparable<Size> {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final Dimension NONE = Dimension.of(0, 0);
+    private static final Size NONE = Size.of(0, 0);
     private final int width;
     private final int height;
 
     /**
-     * Returns a {@link Dimension} without any extends.
+     * Returns a {@link Size} without any extends.
      */
-    public static Dimension none() {
+    public static Size none() {
         return NONE;
     }
 
     /**
-     * Returns a new instance of {@link Dimension} with the given {@link #width()}
+     * Returns a new instance of {@link Size} with the given {@link #width()}
      * and {@link #height()}.
      */
-    public static Dimension of(final int width, final int height) {
-        return new Dimension(width, height);
+    public static Size of(final int width, final int height) {
+        return new Size(width, height);
     }
 
     /**
-     * Returns a new instance of {@link Dimension} with the given {@link #width()}
+     * Returns a new instance of {@link Size} with the given {@link #width()}
      * and {@link #height()}. Values of {@link #width()} and {@link #height()} are
      * rounded.
      */
-    public static Dimension of(final double width, final double height) {
+    public static Size of(final double width, final double height) {
         return of((int) width, (int) height);
     }
 
     /**
-     * Returns a new instance of {@link Dimension} with the given {@link #width()}
+     * Returns a new instance of {@link Size} with the given {@link #width()}
      * as {@link #width()} and {@link #height()}.
      */
-    public static Dimension square(int sideLength) {
+    public static Size square(int sideLength) {
         return of(sideLength, sideLength);
     }
 
     /**
-     * Returns a new instance of {@link Dimension} defined by two edges.
+     * Returns a new instance of {@link Size} defined by two edges.
      */
-    public static Dimension definedBy(Offset from, Offset to) {
+    public static Size definedBy(Offset from, Offset to) {
         final int width = max(from.x(), to.x()) - min(from.x(), to.x());
         final int height = max(from.y(), to.y()) - min(from.y(), to.y());
-        return Dimension.of(width, height);
+        return Size.of(width, height);
     }
 
-    private Dimension(final int width, final int height) {
+    private Size(final int width, final int height) {
         this.width = width;
         this.height = height;
     }
 
     /**
-     * The width of this {@link Dimension}.
+     * The width of this {@link Size}.
      */
     public int width() {
         return width;
     }
 
     /**
-     * The height of this {@link Dimension}.
+     * The height of this {@link Size}.
      */
     public int height() {
         return height;
@@ -97,14 +97,14 @@ public class Dimension implements Serializable, Comparable<Dimension> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Dimension other = (Dimension) obj;
+        Size other = (Size) obj;
         if (height != other.height)
             return false;
         return width == other.width;
     }
 
     @Override
-    public int compareTo(final Dimension other) {
+    public int compareTo(final Size other) {
         return Integer.compare(pixelCount(), other.pixelCount());
     }
 

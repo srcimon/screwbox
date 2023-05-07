@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static io.github.srcimon.screwbox.core.graphics.Dimension.square;
+import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -78,14 +78,14 @@ class FrameTest {
     @Test
     void fromFile_fileIsImage_returnsFrame() {
         Frame frame = Frame.fromFile("tile.bmp");
-        assertThat(frame.size()).isEqualTo(Dimension.square(16));
+        assertThat(frame.size()).isEqualTo(Size.square(16));
     }
 
     @ParameterizedTest
     @CsvSource({"-1,1,4,4", "100,1,4,4", "4,-2,5,20", "4,4,13,1", "4,0,14,30"})
     void extractArea_outOfBounds_throwsException(int x, int y, int width, int height) {
         Offset offset = Offset.at(x, y);
-        Dimension size = Dimension.of(width, height);
+        Size size = Size.of(width, height);
 
         assertThatThrownBy(() -> frame.extractArea(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -95,7 +95,7 @@ class FrameTest {
     @Test
     void extractArea_inBounds_returnsextractArea() {
         Offset offset = Offset.at(4, 8);
-        Dimension size = Dimension.of(2, 7);
+        Size size = Size.of(2, 7);
 
         Frame result = frame.extractArea(offset, size);
 
@@ -118,7 +118,7 @@ class FrameTest {
 
         var result = input.cropHorizontal();
 
-        assertThat(result.size()).isEqualTo(Dimension.of(12, 16));
+        assertThat(result.size()).isEqualTo(Size.of(12, 16));
         assertThat(result.duration()).isEqualTo(frame.duration());
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
         assertThat(result.colorAt(0, 3)).isEqualTo(Color.rgb(102, 57, 49));

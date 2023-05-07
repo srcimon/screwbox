@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
@@ -33,14 +33,14 @@ class DefaultScreenTest {
 
     @Test
     void isVisible_insideCanvas_isTrue() {
-        when(frame.getCanvasSize()).thenReturn(Dimension.of(300, 400));
+        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
 
         assertThat(screen.isVisible(Offset.at(20, 40))).isTrue();
     }
 
     @Test
     void isVisible_outsideCanvas_isFalse() {
-        when(frame.getCanvasSize()).thenReturn(Dimension.of(300, 400));
+        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
 
         assertThat(screen.isVisible(Offset.at(-20, 40))).isFalse();
     }

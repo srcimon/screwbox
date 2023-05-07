@@ -11,7 +11,7 @@ public enum AspectRatio {
         this.ratio = ratio;
     }
 
-    public boolean matches(final Dimension dimension) {
-        return ratio == 1.0 * dimension.width() / dimension.height();
+    public boolean matches(final Size size) {
+        return ratio == 1.0 * size.width() / size.height();
     }
 }

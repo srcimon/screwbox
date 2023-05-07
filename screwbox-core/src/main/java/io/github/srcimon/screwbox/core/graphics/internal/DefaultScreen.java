@@ -119,7 +119,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Dimension size() {
+    public Size size() {
         return frame.getCanvasSize();
     }
 

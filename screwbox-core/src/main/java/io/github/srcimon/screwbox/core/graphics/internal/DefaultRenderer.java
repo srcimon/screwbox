@@ -4,10 +4,7 @@ import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Flip;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.WindowBounds;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -130,7 +127,7 @@ public class DefaultRenderer implements Renderer {
             final Flip flip) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
-        final io.github.srcimon.screwbox.core.graphics.Dimension size = sprite.size();
+        final Size size = sprite.size();
         final double xCorrect = flip.isHorizontal() ? scale * size.width() : 0;
         final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);

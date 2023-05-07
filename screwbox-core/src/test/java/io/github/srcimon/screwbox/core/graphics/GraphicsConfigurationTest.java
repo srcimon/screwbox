@@ -84,7 +84,7 @@ class GraphicsConfigurationTest {
     void setResolution_resolutionSet_updatesOptionAndNotifiesListeners() {
         graphicsConfiguration.setResolution(640, 480);
 
-        assertThat(graphicsConfiguration.resolution()).isEqualTo(Dimension.of(640, 480));
+        assertThat(graphicsConfiguration.resolution()).isEqualTo(Size.of(640, 480));
         verify(graphicsConfigListener).configurationChanged(argThat(
                 event -> event.changedProperty().equals(RESOLUTION)));
     }

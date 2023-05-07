@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.Dimension.square;
+import static io.github.srcimon.screwbox.core.graphics.Size.square;
 
 public class DefaultLoadingScene implements Scene {
 

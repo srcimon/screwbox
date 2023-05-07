@@ -11,7 +11,7 @@ public class GraphicsConfiguration {
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
-    private Dimension resolution = Dimension.of(960, 540);
+    private Size resolution = Size.of(960, 540);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
     private int lightmapBlur = 4;
@@ -79,11 +79,11 @@ public class GraphicsConfiguration {
     }
 
     public GraphicsConfiguration setResolution(final int width, final int height) {
-        setResolution(Dimension.of(width, height));
+        setResolution(Size.of(width, height));
         return this;
     }
 
-    public GraphicsConfiguration setResolution(final Dimension resolution) {
+    public GraphicsConfiguration setResolution(final Size resolution) {
         this.resolution = requireNonNull(resolution, "resolution must not be null");
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION);
         return this;
@@ -114,7 +114,7 @@ public class GraphicsConfiguration {
         listeners.add(requireNonNull(listener, "listener must not be null"));
     }
 
-    public Dimension resolution() {
+    public Size resolution() {
         return resolution;
     }
 

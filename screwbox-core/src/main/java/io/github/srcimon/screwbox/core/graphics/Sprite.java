@@ -21,7 +21,7 @@ public class Sprite implements Serializable {
 
     private final List<Frame> frames = new ArrayList<>();
     private final Time started = Time.now();
-    private final Dimension size;
+    private final Size size;
     private final Duration duration;
 
     public Sprite(Frame frame) {
@@ -60,18 +60,18 @@ public class Sprite implements Serializable {
         return Asset.asset(() -> fromFile(filename));
     }
 
-    public static List<Sprite> multipleFromFile(final String fileName, final Dimension dimension) {
+    public static List<Sprite> multipleFromFile(final String fileName, final Size size) {
         final var sprites = new ArrayList<Sprite>();
-        for (final var frame : extractFrames(fileName, dimension)) {
+        for (final var frame : extractFrames(fileName, size)) {
             sprites.add(new Sprite(frame));
         }
         return sprites;
     }
 
 
-    public static Sprite animatedFromFile(final String fileName, final Dimension dimension, final Duration duration) {
+    public static Sprite animatedFromFile(final String fileName, final Size size, final Duration duration) {
         final var frames = new ArrayList<Frame>();
-        for (final var frame : extractFrames(fileName, dimension)) {
+        for (final var frame : extractFrames(fileName, size)) {
             frames.add(new Frame(frame.image(), duration));
         }
         return new Sprite(frames);
@@ -81,12 +81,12 @@ public class Sprite implements Serializable {
         this(Frame.fromImage(image));
     }
 
-    private static List<Frame> extractFrames(final String fileName, final Dimension dimension) {
+    private static List<Frame> extractFrames(final String fileName, final Size size) {
         final var frame = Frame.fromFile(fileName);
         final var extracted = new ArrayList<Frame>();
-        for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height()) {
-            for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width()) {
-                final var area = frame.extractArea(Offset.at(x, y), dimension);
+        for (int y = 0; y + size.height() <= frame.size().height(); y += size.height()) {
+            for (int x = 0; x + size.width() <= frame.size().width(); x += size.width()) {
+                final var area = frame.extractArea(Offset.at(x, y), size);
                 extracted.add(area);
             }
         }
@@ -119,7 +119,7 @@ public class Sprite implements Serializable {
      * Returns the size of the {@link Sprite}. Every {@link Frame} in the sprites
      * animation has the same size.
      */
-    public Dimension size() {
+    public Size size() {
         return size;
     }
 

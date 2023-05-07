@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.window.Window;
 /**
  * Defines the area on the {@link Window}.
  */
-public record WindowBounds(Offset offset, Dimension size) {
+public record WindowBounds(Offset offset, Size size) {
 
     public WindowBounds(final int x, final int y, final int width, final int height) {
-        this(Offset.at(x, y), Dimension.of(width, height));
+        this(Offset.at(x, y), Size.of(width, height));
     }
 
     public Offset center() {

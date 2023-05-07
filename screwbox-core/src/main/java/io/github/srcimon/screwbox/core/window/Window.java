@@ -153,5 +153,5 @@ public interface Window {
     /**
      * Returns the current size of the {@link Window}.
      */
-    Dimension size();
+    Size size();
 }

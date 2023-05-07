@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.ui;
 
-import io.github.srcimon.screwbox.core.graphics.Dimension;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.WindowBounds;
@@ -14,7 +14,7 @@ public class ScrollingUiLayouter implements UiLayouter {
         int y = screen.center().y() + (itemIndex - menu.activeItemIndex()) * heightOfItem;
 
         var offset = Offset.at(0, y);
-        var dimension = Dimension.of(screen.size().width(), heightOfItem);
+        var dimension = Size.of(screen.size().width(), heightOfItem);
         return new WindowBounds(offset, dimension);
     }
 

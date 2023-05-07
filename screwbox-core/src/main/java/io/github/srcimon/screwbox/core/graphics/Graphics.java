@@ -70,14 +70,14 @@ public interface Graphics {
      */
     Offset windowPositionOf(Vector position);
 
-    List<Dimension> supportedResolutions();
+    List<Size> supportedResolutions();
 
-    List<Dimension> supportedResolutions(AspectRatio ratio);
+    List<Size> supportedResolutions(AspectRatio ratio);
 
     /**
      * Returns the current screen resolution.
      */
-    Dimension currentResolution();
+    Size currentResolution();
 
     List<String> availableFonts();
 

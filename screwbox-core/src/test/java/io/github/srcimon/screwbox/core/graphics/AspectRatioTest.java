@@ -8,7 +8,7 @@ class AspectRatioTest {
 
     @Test
     void matches_dimensionMatchesAspectRatio_true() {
-        Dimension resolution = Dimension.of(2048, 1536);
+        Size resolution = Size.of(2048, 1536);
 
         boolean matches = AspectRatio.STANDARD.matches(resolution);
 
@@ -17,7 +17,7 @@ class AspectRatioTest {
 
     @Test
     void matches_dimensionDoesntMatcheAspectRatio_flase() {
-        Dimension resolution = Dimension.of(640, 480);
+        Size resolution = Size.of(640, 480);
 
         boolean matches = AspectRatio.WIDESCREEN.matches(resolution);
 

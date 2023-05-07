@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
-import static io.github.srcimon.screwbox.core.graphics.Dimension.square;
+import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,7 +23,7 @@ class SpriteTest {
     void invisible_returnsInvisibleSprite() {
         Sprite sprite = Sprite.invisible();
 
-        assertThat(sprite.size()).isEqualTo(Dimension.of(1, 1));
+        assertThat(sprite.size()).isEqualTo(Size.of(1, 1));
         assertThat(sprite.singleFrame().colorAt(Offset.at(0, 0))).isEqualTo(Color.TRANSPARENT);
         assertThat(sprite.duration()).isEqualTo(Duration.none());
     }
@@ -50,14 +50,14 @@ class SpriteTest {
     void fromFile_imageFound_returnsSpriteFromFile() {
         Sprite sprite = Sprite.fromFile("tile.bmp");
 
-        assertThat(sprite.size()).isEqualTo(Dimension.of(16, 16));
+        assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
     }
 
     @Test
     void assetFromFile_imageFound_returnsSpriteAssetFromFile() {
         Asset<Sprite> sprite = Sprite.assetFromFile("tile.bmp");
 
-        assertThat(sprite.get().size()).isEqualTo(Dimension.of(16, 16));
+        assertThat(sprite.get().size()).isEqualTo(Size.of(16, 16));
     }
 
     @Test
@@ -76,18 +76,18 @@ class SpriteTest {
 
     @Test
     void multipleFromFile_dimensionLargerThanSource_emptyResult() {
-        Dimension tooLarge = Dimension.of(20, 20);
+        Size tooLarge = Size.of(20, 20);
 
         assertThat(Sprite.multipleFromFile("tile.bmp", tooLarge)).isEmpty();
     }
 
     @Test
     void multipleFromFile_dimensionFitsSource_returnsSubImages() {
-        Dimension dimension = Dimension.of(4, 2);
+        Size size = Size.of(4, 2);
 
-        assertThat(Sprite.multipleFromFile("tile.bmp", dimension))
+        assertThat(Sprite.multipleFromFile("tile.bmp", size))
                 .hasSize(32)
-                .allMatch(s -> s.size().equals(dimension));
+                .allMatch(s -> s.size().equals(size));
     }
 
     @Test
@@ -208,7 +208,7 @@ class SpriteTest {
 
         Sprite result = transparentSprite.cropHorizontal();
 
-        assertThat(result.size()).isEqualTo(Dimension.of(12, 16));
+        assertThat(result.size()).isEqualTo(Size.of(12, 16));
     }
 
     @Test

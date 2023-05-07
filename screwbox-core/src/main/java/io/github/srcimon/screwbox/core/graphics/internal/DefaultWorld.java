@@ -143,7 +143,7 @@ public class DefaultWorld implements World {
     @Override
     public World fillRectangle(final Bounds bounds, final Color color) {
         final Offset offset = toOffset(bounds.origin());
-        final Dimension size = toDimension(bounds.size());
+        final Size size = toDimension(bounds.size());
         screen.fillRectangle(offset, size, color);
         return this;
     }
@@ -170,10 +170,10 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    private Dimension toDimension(final Vector size) {
+    private Size toDimension(final Vector size) {
         final long x = Math.round(size.x() * zoom);
         final long y = Math.round(size.y() * zoom);
-        return Dimension.of(x, y);
+        return Size.of(x, y);
     }
 
     public WindowBounds toWindowBounds(final Bounds bounds) {

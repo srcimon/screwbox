@@ -29,11 +29,11 @@ public interface Screen {
         return fillRectangle(bounds, drawColor());
     }
 
-    default Screen fillRectangle(final Offset origin, final Dimension size, final Color color) {
+    default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
         return fillRectangle(new WindowBounds(origin, size), color);
     }
 
-    default Screen fillRectangle(final Offset origin, final Dimension size) {
+    default Screen fillRectangle(final Offset origin, final Size size) {
         return fillRectangle(new WindowBounds(origin, size), drawColor());
     }
 
@@ -161,7 +161,7 @@ public interface Screen {
      */
     boolean isVisible(Offset offset);
 
-    Dimension size();
+    Size size();
 
     Offset center();
 }
