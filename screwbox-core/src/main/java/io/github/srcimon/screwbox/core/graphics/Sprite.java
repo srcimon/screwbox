@@ -86,7 +86,7 @@ public class Sprite implements Serializable {
         final var extracted = new ArrayList<Frame>();
         for (int y = 0; y + dimension.height() <= frame.size().height(); y += dimension.height()) {
             for (int x = 0; x + dimension.width() <= frame.size().width(); x += dimension.width()) {
-                final var area = frame.extractArea(Offset.at(x,y), dimension);
+                final var area = frame.extractArea(Offset.at(x, y), dimension);
                 extracted.add(area);
             }
         }
@@ -207,6 +207,18 @@ public class Sprite implements Serializable {
             scaledFrames.add(frame.scaled(scale));
         }
         return new Sprite(scaledFrames);
+    }
+
+    /**
+     * Returns a version of this {@link Sprite} where the transparent space on the left and the right side were reduced to a minimum.
+     * @throws IllegalArgumentException on resulting {@link Frame}s have different sizes
+     */
+    public Sprite cropHorizontal() {
+        final List<Frame> croppedFrames = new ArrayList<>();
+        for (final var frame : this.frames) {
+            croppedFrames.add(frame.cropHorizontal());
+        }
+        return new Sprite(croppedFrames);
     }
 
     private int calculateCurrentFrame(final Time time) {

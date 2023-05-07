@@ -3,13 +3,24 @@ package io.github.srcimon.screwbox.core.graphics;
 import java.io.Serial;
 import java.io.Serializable;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Dimension implements Serializable, Comparable<Dimension> {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private static final Dimension NONE = Dimension.of(0, 0);
     private final int width;
     private final int height;
+
+    /**
+     * Returns a {@link Dimension} without any extends.
+     */
+    public static Dimension none() {
+        return NONE;
+    }
 
     /**
      * Returns a new instance of {@link Dimension} with the given {@link #width()}
@@ -34,6 +45,15 @@ public class Dimension implements Serializable, Comparable<Dimension> {
      */
     public static Dimension square(int sideLength) {
         return of(sideLength, sideLength);
+    }
+
+    /**
+     * Returns a new instance of {@link Dimension} defined by two edges.
+     */
+    public static Dimension definedBy(Offset from, Offset to) {
+        final int width = max(from.x(), to.x()) - min(from.x(), to.x());
+        final int height = max(from.y(), to.y()) - min(from.y(), to.y());
+        return Dimension.of(width, height);
     }
 
     private Dimension(final int width, final int height) {

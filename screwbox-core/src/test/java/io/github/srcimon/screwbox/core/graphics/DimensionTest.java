@@ -18,6 +18,20 @@ class DimensionTest {
     }
 
     @Test
+    void definedBy_twoValidOffsets_returnsNewInstance() {
+        Dimension result = Dimension.definedBy(Offset.at(1, 4), Offset.at(8, 3));
+
+        assertThat(result).isEqualTo(Dimension.of(7, 1));
+    }
+
+    @Test
+    void definedBy_sameOffsets_returnsDimensionNone() {
+        Dimension result = Dimension.definedBy(Offset.at(1, 4), Offset.at(1, 4));
+
+        assertThat(result).isEqualTo(Dimension.none());
+    }
+
+    @Test
     void pixelCount_returnsCountOfPixels() {
         Dimension dimension = Dimension.of(640, 480);
 
