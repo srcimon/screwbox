@@ -102,4 +102,25 @@ class FrameTest {
         assertThat(result.size()).isEqualTo(size);
         assertThat(result.colorAt(origin())).isEqualTo(frame.colorAt(offset));
     }
+
+    @Test
+    void cropHorizontal_noTransparentPixels_doesntCrop() {
+        var result = frame.cropHorizontal();
+
+        assertThat(result).isNotEqualTo(frame);
+        assertThat(result.size()).isEqualTo(frame.size());
+        assertThat(result.duration()).isEqualTo(frame.duration());
+    }
+
+    @Test
+    void cropHorizontal_hasTransparentPixels_cropsImage() {
+        var input = Frame.fromFile("transparent.png");
+
+        var result = input.cropHorizontal();
+
+        assertThat(result.size()).isEqualTo(Dimension.of(12, 16));
+        assertThat(result.duration()).isEqualTo(frame.duration());
+        assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(0, 3)).isEqualTo(Color.rgb(102, 57, 49));
+    }
 }

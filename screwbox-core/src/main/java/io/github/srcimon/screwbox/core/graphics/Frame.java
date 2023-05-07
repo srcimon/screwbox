@@ -78,7 +78,7 @@ public final class Frame implements Serializable {
         }
         final var image = ImageUtil.toBufferedImage(image());
         final var subImage = image.getSubimage(offset.x(), offset.y(), size.width(), size.height());
-        return new Frame(subImage);
+        return new Frame(subImage, duration);
     }
 
     public Image image() {
@@ -146,4 +146,33 @@ public final class Frame implements Serializable {
         return new Frame(newImage);
     }
 
+    /**
+     * Returns a new instance of a {@link Frame} without transparent pixels on the left and the right side.
+     */
+    public Frame cropHorizontal() {
+        int minX = 0;
+        int maxX = size().width() - 1;
+
+        while (minX < maxX && hasOnlyTransparentPixelInColumn(minX)) {
+            minX++;
+        }
+
+        while (maxX > minX && hasOnlyTransparentPixelInColumn(maxX)) {
+            maxX--;
+        }
+
+        final var offset = Offset.at(minX, 0);
+        final var target = Offset.at(maxX + 1, size().height());
+        final var size = Dimension.definedBy(offset, target);
+        return extractArea(offset, size);
+    }
+
+    private boolean hasOnlyTransparentPixelInColumn(final int x) {
+        for (int y = 0; y < size().height(); y++) {
+            if (!colorAt(x, y).equals(Color.TRANSPARENT)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
