@@ -201,4 +201,23 @@ class SpriteTest {
         }
         assertThat(foundImages).containsAll(allImages);
     }
+
+    @Test
+    void cropHorizontal_oneFrameWithTransparentPixels_returnsSpriteWithCroppedFrame() {
+        Sprite transparentSprite = Sprite.fromFile("transparent.png");
+
+        Sprite result = transparentSprite.cropHorizontal();
+
+        assertThat(result.size()).isEqualTo(Dimension.of(12, 16));
+    }
+
+    @Test
+    void cropHorizontal_resultingFramesDifferInSize_throwsException() {
+        var frames = List.of(Frame.fromFile("tile.bmp"), Frame.fromFile("transparent.png"));
+        Sprite animatedSprite = new Sprite(frames);
+
+        assertThatThrownBy(() -> animatedSprite.cropHorizontal())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot add frame with different dimension to sprite");
+    }
 }

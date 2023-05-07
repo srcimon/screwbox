@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * A font made of {@link Sprite}s (even animated ones) for system independent
  * rendering.
- * 
+ *
  * @see #defaultFont(Color)
  */
 public class Pixelfont implements Serializable {
@@ -72,7 +72,7 @@ public class Pixelfont implements Serializable {
     /**
      * Adds new characters with corresponding {@link Sprite}s to the
      * {@link Pixelfont}. Both lists must have the same size.
-     * 
+     *
      * @see #addCharacter(char, Sprite)
      */
     public void addCharacters(final List<Character> characters, final List<Sprite> sprites) {
@@ -89,7 +89,7 @@ public class Pixelfont implements Serializable {
     /**
      * Adds a new character and the corresponding {@link Sprite} to the
      * {@link Pixelfont}.
-     * 
+     *
      * @see #addCharacters(List, List)
      */
     public void addCharacter(final char character, final Sprite sprite) {
@@ -106,7 +106,8 @@ public class Pixelfont implements Serializable {
                 throw new IllegalArgumentException("New character has different height than pixelfont.");
             }
         }
-        characters.put(character, sprite);
+
+        characters.put(character, isSpaceChar(character) ? sprite : sprite.cropHorizontal());
     }
 
     /**
