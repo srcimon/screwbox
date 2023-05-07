@@ -87,6 +87,8 @@ public class HelloWorldExample {
 
 ## Future ideas and plans
 
+- [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
+- [ ] add `LightDebugSystem`
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
 - [ ] publish via Maven-Central (

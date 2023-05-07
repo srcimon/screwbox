@@ -33,7 +33,7 @@ public class Pixelfont implements Serializable {
 
     private final Map<Character, Sprite> characters = new HashMap<>();
     private static final Cache<Color, Pixelfont> FONT_CACHE = new Cache<>();
-    private int padding = 1;
+    private int padding = 2;
     private int height = 0;
 
     /**
