@@ -25,12 +25,13 @@ public class PhysicsSystem implements EntitySystem {
         final var colliders = engine.entities().fetchAll(COLLIDERS);
         for (final Entity entity : engine.entities().fetchAll(PHYSICS)) {
             final var physicsBody = entity.get(PhysicsBodyComponent.class);
-            if (!physicsBody.ignoreCollisions) {
-                final var transform = entity.get(TransformComponent.class);
-                final Vector momentum = physicsBody.momentum.multiply(factor);
-                transform.bounds = transform.bounds.moveBy(momentum);
+            final var transform = entity.get(TransformComponent.class);
 
-                final List<CollisionCheck> collisionPairs = new ArrayList<>();
+            final Vector momentum = physicsBody.momentum.multiply(factor);
+            transform.bounds = transform.bounds.moveBy(momentum);
+
+            if (!physicsBody.ignoreCollisions) {
+                final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
                 for (final var collider : colliders) {
                     if (entity != collider) {
                         final CollisionCheck check = new CollisionCheck(entity, collider);
