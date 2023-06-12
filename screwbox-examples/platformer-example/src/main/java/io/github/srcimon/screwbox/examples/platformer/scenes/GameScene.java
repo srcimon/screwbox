@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.entities.Entities;
 import io.github.srcimon.screwbox.core.entities.Entity;
 import io.github.srcimon.screwbox.core.entities.systems.*;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
@@ -13,6 +14,7 @@ import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
 import io.github.srcimon.screwbox.examples.platformer.enemies.MovingSpikes;
 import io.github.srcimon.screwbox.examples.platformer.enemies.slime.Slime;
 import io.github.srcimon.screwbox.examples.platformer.enemies.tracer.Tracer;
+import io.github.srcimon.screwbox.examples.platformer.map.*;
 import io.github.srcimon.screwbox.examples.platformer.props.Box;
 import io.github.srcimon.screwbox.examples.platformer.props.Diggable;
 import io.github.srcimon.screwbox.examples.platformer.props.Platfom;
@@ -33,8 +35,6 @@ import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Layer;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.tiled.Tile;
-import io.github.srcimon.screwbox.examples.platformer.collectables.*;
-import io.github.srcimon.screwbox.examples.platformer.map.*;
 
 import java.util.function.Predicate;
 
@@ -102,13 +102,6 @@ public class GameScene implements Scene {
                 .add(new AreaTriggerSystem())
                 .add(new TimeoutSystem())
                 .add(new ResetSceneSystem())
-                .add(e -> {
-                    if(e.mouse().justClickedLeft()) {
-                        e.graphics().configuration().setLightmapScale(2);
-                    }
-                    e.window().setTitle(e.graphics().configuration().lightFalloff() + "");
-                        e.graphics().configuration().lightFalloff(Percent.of(e.graphics().configuration().lightFalloff().value() + 0.02 * e.mouse().unitsScrolled()));
-                })
                 .add(new AutoFlipSpriteSystem())
                 .add(new BackgroundSystem())
                 .add(new CatMovementSystem())
