@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.examples.platformer.scenes;
 
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.entities.Entities;
 import io.github.srcimon.screwbox.core.entities.Entity;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -16,5 +17,10 @@ public class DeadScene implements Scene {
                 .add(new RestartGameSystem())
                 .add(new PrintSystem())
                 .add(new BackToMenuSystem());
+    }
+
+    @Override
+    public void onEnter(Engine engine) {
+        engine.window().setTitle("Platformer Example (Game Over)");
     }
 }

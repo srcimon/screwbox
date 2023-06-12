@@ -55,6 +55,7 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
+        engine.window().setTitle("Platformer Example (Game)");
     }
 
     @Override
