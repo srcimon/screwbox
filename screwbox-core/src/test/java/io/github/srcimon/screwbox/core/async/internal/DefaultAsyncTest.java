@@ -97,7 +97,11 @@ class DefaultAsyncTest {
     }
 
     private void someLongRunningTask() {
-        // do nothing
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     @AfterEach
