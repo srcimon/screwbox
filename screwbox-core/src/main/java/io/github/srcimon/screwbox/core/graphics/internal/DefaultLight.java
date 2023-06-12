@@ -185,6 +185,6 @@ public class DefaultLight implements Light {
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(screen.size(), configuration.lightmapScale());
+        lightmap = new Lightmap(screen.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }

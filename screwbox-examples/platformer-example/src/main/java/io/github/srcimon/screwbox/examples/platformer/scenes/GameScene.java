@@ -102,6 +102,13 @@ public class GameScene implements Scene {
                 .add(new AreaTriggerSystem())
                 .add(new TimeoutSystem())
                 .add(new ResetSceneSystem())
+                .add(e -> {
+                    if(e.mouse().justClickedLeft()) {
+                        e.graphics().configuration().setLightmapScale(2);
+                    }
+                    e.window().setTitle(e.graphics().configuration().lightFalloff() + "");
+                        e.graphics().configuration().lightFalloff(Percent.of(e.graphics().configuration().lightFalloff().value() + 0.02 * e.mouse().unitsScrolled()));
+                })
                 .add(new AutoFlipSpriteSystem())
                 .add(new BackgroundSystem())
                 .add(new CatMovementSystem())

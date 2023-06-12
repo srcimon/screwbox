@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class GraphicsConfiguration {
     private boolean useAntialiasing = false;
     private int lightmapBlur = 4;
     private int lightmapScale = 4;
+    private Percent lightFalloff = Percent.max();
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
@@ -138,4 +140,13 @@ public class GraphicsConfiguration {
         }
     }
 
+    public GraphicsConfiguration lightFalloff(final Percent lightFalloff) {
+        this.lightFalloff = lightFalloff;
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_FALLOFF);
+        return this;
+    }
+
+    public Percent lightFalloff() {
+        return lightFalloff;
+    }
 }

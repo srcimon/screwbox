@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.WindowBounds;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,30 +13,32 @@ import java.util.List;
 
 class Lightmap {
 
-    record PointLight(Offset position, int radius, List<Offset> area, io.github.srcimon.screwbox.core.graphics.Color color) {
+    record PointLight(Offset position, int radius, List<Offset> area,
+                      io.github.srcimon.screwbox.core.graphics.Color color) {
     }
 
     record SpotLight(Offset position, int radius, io.github.srcimon.screwbox.core.graphics.Color color) {
     }
 
     private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
-    private static final float[] FRACTIONS = new float[] { 0.1f, 1f };
-
     private final BufferedImage image;
     private final Graphics2D graphics;
     private final int resolution;
+    private final float[] fractions;
 
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
 
-    public Lightmap(final Size size, final int resolution) {
+    public Lightmap(final Size size, final int resolution, Percent lightFade) {
         this.image = new BufferedImage(
                 size.width() / resolution + 1, // to avoid glitches add 1
                 size.height() / resolution + 1, // to avoid glitches add 1
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
+        final float falloffValue = (float) MathUtil.clamp(0.1f, lightFade.invert().value(), 0.99f);
+        this.fractions = new float[]{falloffValue, 1f};
     }
 
     public void add(final WindowBounds fullBrightnessArea) {
@@ -108,7 +112,7 @@ class Lightmap {
                 position.x() / (float) resolution,
                 position.y() / (float) resolution,
                 usedRadius / (float) resolution,
-                FRACTIONS, colors);
+                fractions, colors);
     }
 
     public List<PointLight> pointLights() {
