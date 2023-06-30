@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -48,11 +49,11 @@ public class DefaultRenderer implements Renderer {
             graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
         }
-        fillWith(io.github.srcimon.screwbox.core.graphics.Color.BLACK);
+        fillWith(Color.BLACK);
     }
 
     @Override
-    public void fillWith(final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void fillWith(final Color color) {
         applyNewColor(color);
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
     }

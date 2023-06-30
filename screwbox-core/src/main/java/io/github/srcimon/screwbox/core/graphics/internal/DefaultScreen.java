@@ -48,8 +48,8 @@ public class DefaultScreen implements Screen {
         final long offsetX = offset.x() % spriteWidth - spriteWidth;
         final long offsetY = offset.y() % spriteHeight - spriteHeight;
 
-        for (long x = 0; x <= countX; x++) {
-            for (long y = 0; y <= countY; y++) {
+        for (long x = 0; x <= countX + 1; x++) {
+            for (long y = 0; y <= countY + 1; y++) {
                 final Offset thisOffset = Offset.at((double) x * spriteWidth + offsetX, (double) y * spriteHeight + offsetY);
                 drawSprite(sprite, thisOffset, scale, opacity, Angle.none(), Flip.NONE, null);
             }
