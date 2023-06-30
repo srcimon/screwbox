@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.graphics.*;
 
@@ -14,13 +16,13 @@ import static java.util.Arrays.stream;
 
 public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics.Graphics, Updatable {
 
-    private final io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration;
+    private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
     private final DefaultLight light;
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
 
-    public DefaultGraphics(final io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration,
+    public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
                            final DefaultLight light,
@@ -33,7 +35,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration configuration() {
+    public GraphicsConfiguration configuration() {
         return configuration;
     }
 
@@ -53,7 +55,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.graphics.Graphics updateCameraPosition(final Vector position) {
+    public Graphics updateCameraPosition(final Vector position) {
         world.updateCameraPosition(position);
         return this;
     }
