@@ -12,7 +12,7 @@ public class GraphicsConfiguration {
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
 
-    private Size resolution = Size.of(960, 540);
+    private Size resolution = Size.of(1280, 720);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
     private int lightmapBlur = 4;
