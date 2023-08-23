@@ -24,17 +24,7 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void findPath_noGrid_throwsException() {
-        Vector start = $(0, 0);
-        Vector end = $(2, 5);
-
-        assertThatThrownBy(() -> physics.findPath(start, end))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid for pathfinding present");
-    }
-
-    @Test
-    void findPath_gridPresent_addsStartEndEndPositions() {
+    void findPath_pathFound_addsStartEndEndPositions() {
         Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
         physics.setGrid(grid);
 
@@ -82,25 +72,23 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void snapToGrid_noGrid_exception() {
-        Vector position = $(3, 10);
-
-        assertThatThrownBy(() -> physics.snapToGrid(position))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid present");
-    }
-
-    @Test
-    void snapToGrid_gridPresent_snapsVectorToGrid() {
-        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
-
+    void snapToGrid_defaultGrod_snapsVectorToGrid() {
         var result = physics.snapToGrid($(3, 10));
 
         assertThat(result).isEqualTo($(8, 8));
     }
 
     @Test
-    void snapToGrid_gridPresent_snapsBoundsToGrid() {
+    void snapToGrid_customGrid_snapsVectorToGrid() {
+        physics.setGrid(new Grid($$(0, 0, 32, 32), 4));
+
+        var result = physics.snapToGrid($(3, 10));
+
+        assertThat(result).isEqualTo($(2, 10));
+    }
+
+    @Test
+    void snapToGrid_customGrid_snapsBoundsToGrid() {
         physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
 
         var result = physics.snapToGrid($$(3, 10, 8, 8));

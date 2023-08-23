@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.physics.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.isNull;
@@ -17,7 +18,7 @@ public class DefaultPhysics implements Physics {
 
     private PathfindingAlgorithm algorithm = new AStarAlgorithm();
 
-    private Grid grid;
+    private Grid grid = new Grid(Bounds.atOrigin(Vector.zero(), 32, 32), 16);
 
     public DefaultPhysics(final Engine engine) {
         this.engine = engine;
@@ -63,21 +64,18 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid for pathfinding present");
-        }
         return findPath(grid, start, end);
     }
 
     @Override
     public Physics setGrid(final Grid grid) {
-        this.grid = grid;
+        this.grid = requireNonNull(grid, "grid must not be null");
         return this;
     }
 
     @Override
-    public Optional<Grid> grid() {
-        return ofNullable(grid);
+    public Grid grid() {
+        return grid;
     }
 
     @Override
@@ -89,9 +87,6 @@ public class DefaultPhysics implements Physics {
     @Override
     public Bounds snapToGrid(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
         return bounds.moveTo(grid.snap(bounds.position()));
     }
 
