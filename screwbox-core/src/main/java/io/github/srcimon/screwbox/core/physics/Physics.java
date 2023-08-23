@@ -24,7 +24,7 @@ public interface Physics {
 
     Physics setGrid(Grid grid);
 
-    Grid grid();
+    Optional<Grid> grid();
 
     Bounds snapToGrid(Bounds bounds);
 
