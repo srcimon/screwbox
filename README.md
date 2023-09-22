@@ -87,6 +87,7 @@ public class HelloWorldExample {
 
 ## Future ideas and plans
 
+- [ ] animated water (blocks move up and down)
 - [ ] add game example like [in this video](https://www.youtube.com/watch?v=GDoBw1ogFZY)
 - [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
 - [ ] add `LightDebugSystem`
