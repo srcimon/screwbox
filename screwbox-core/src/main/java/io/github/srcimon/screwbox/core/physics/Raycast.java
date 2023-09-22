@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.physics;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Segment;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.Entity;
@@ -11,7 +10,6 @@ import io.github.srcimon.screwbox.core.utils.ListUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -21,14 +19,14 @@ public class Raycast {
     private final Segment ray;
     private final List<Entity> entities;
     private final List<Predicate<Entity>> filters;
-    private final Function<Bounds, List<Segment>> method;
+    private final Borders borders;
 
     Raycast(final Segment ray, final List<Entity> entities, final List<Predicate<Entity>> filters,
-            final Function<Bounds, List<Segment>> method) {
+            final Borders borders) {
         this.ray = ray;
         this.entities = entities;
         this.filters = filters;
-        this.method = method;
+        this.borders = borders;
     }
 
     public Optional<Vector> nearestHit() {
@@ -80,7 +78,7 @@ public class Raycast {
 
     private List<Vector> getIntersections(final Entity entity) {
         List<Vector> intersections = new ArrayList<>();
-        for (final Segment border : method.apply(entity.get(TransformComponent.class).bounds)) {
+        for (final Segment border : borders.extractSegments(entity.get(TransformComponent.class).bounds)) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
             if (nonNull(intersectionPoint)) {
                 intersections.add(intersectionPoint);
@@ -90,7 +88,7 @@ public class Raycast {
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Segment border : method.apply(entity.get(TransformComponent.class).bounds)) {
+        for (final Segment border : borders.extractSegments(entity.get(TransformComponent.class).bounds)) {
             if (ray.intersects(border)) {
                 return true;
             }

@@ -69,7 +69,7 @@ public final class RaycastBuilder {
     public Raycast castingTo(final Vector to) {
         final var ray = Segment.between(from, to);
         final List<Entity> matchingEntities = entities.fetchAll(archetype);
-        return new Raycast(ray, matchingEntities, filters, borders.extractSegmentsMethod());
+        return new Raycast(ray, matchingEntities, filters, borders);
     }
 
     public Raycast castingVertical(final double length) {
