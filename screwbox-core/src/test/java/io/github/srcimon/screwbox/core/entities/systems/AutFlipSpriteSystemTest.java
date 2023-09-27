@@ -20,7 +20,7 @@ class AutFlipSpriteSystemTest {
     void update_updatesSpritComponentFlipMode(DefaultEntities entities) {
         Entity movingRight = new Entity()
                 .add(new RenderComponent())
-                .add(new PhysicsBodyComponent(Vector.xOnly(4)))
+                .add(new PhysicsBodyComponent(Vector.x(4)))
                 .add(new AutoFlipSpriteComponent());
 
         Entity movingLeftUp = new Entity()
@@ -30,7 +30,7 @@ class AutFlipSpriteSystemTest {
 
         Entity movingDown = new Entity()
                 .add(new RenderComponent())
-                .add(new PhysicsBodyComponent(Vector.yOnly(1)))
+                .add(new PhysicsBodyComponent(Vector.y(1)))
                 .add(new AutoFlipSpriteComponent());
 
         entities.add(movingRight, movingLeftUp, movingDown)

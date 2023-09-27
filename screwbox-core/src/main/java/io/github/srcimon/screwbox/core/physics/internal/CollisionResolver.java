@@ -39,9 +39,9 @@ public final class CollisionResolver {
                 : colliderBounds.minX() - entityBounds.maxX();
 
         if (abs(deltaY) < abs(deltaX)) {
-            return Vector.yOnly(deltaY);
+            return Vector.y(deltaY);
         }
-        return Vector.xOnly(deltaX);
+        return Vector.x(deltaX);
     }
 
     private static void reactOnHorizontalCollision(final CollisionCheck pair, final Vector correction) {

@@ -31,7 +31,7 @@ class CameraMovementSystemTest {
         when(graphics.updateCameraZoom(anyDouble())).thenReturn(1.0);
 
         CameraMovementComponent cameraMovement = new CameraMovementComponent(1.5, 1239);
-        cameraMovement.shift = Vector.yOnly(200);
+        cameraMovement.shift = Vector.y(200);
 
         Entity camera = new Entity().add(
                 new CameraComponent(2),

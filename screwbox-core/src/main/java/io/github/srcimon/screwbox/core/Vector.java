@@ -54,14 +54,14 @@ public final class Vector implements Serializable {
     /**
      * Returns a new {@link Vector} with only an {@link Vector#x}-component.
      */
-    public static Vector xOnly(final double x) {
+    public static Vector x(final double x) {
         return new Vector(x, 0);
     }
 
     /**
      * Returns a new {@link Vector} with only an {@link Vector#y}-component.
      */
-    public static Vector yOnly(final double y) {
+    public static Vector y(final double y) {
         return new Vector(0, y);
     }
 

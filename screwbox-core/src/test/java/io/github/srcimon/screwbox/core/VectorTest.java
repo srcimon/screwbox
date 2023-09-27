@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,13 +9,13 @@ class VectorTest {
 
     @Test
     void isZero_noLength_isTrue() {
-        Assertions.assertThat(Vector.$(0, 0).isZero()).isTrue();
+        assertThat(Vector.$(0, 0).isZero()).isTrue();
         assertThat(Vector.zero().isZero()).isTrue();
     }
 
     @Test
     void isZero_hasLength_isFalse() {
-        Assertions.assertThat(Vector.$(0.1, 0).isZero()).isFalse();
+        assertThat(Vector.$(0.1, 0).isZero()).isFalse();
         assertThat(Vector.zero().addY(2).isZero()).isFalse();
     }
 
@@ -86,15 +85,15 @@ class VectorTest {
     }
 
     @Test
-    void xOnly_returnsVectorWithXComponentOnly() {
-        Vector vector = Vector.xOnly(20);
+    void x_returnsVectorWithXComponentOnly() {
+        Vector vector = Vector.x(20);
 
         assertThat(vector).isEqualTo(Vector.$(20, 0));
     }
 
     @Test
-    void yOnly_returnsVectorWithYComponentOnly() {
-        Vector vector = Vector.yOnly(20);
+    void y_returnsVectorWithYComponentOnly() {
+        Vector vector = Vector.y(20);
 
         assertThat(vector).isEqualTo(Vector.$(0, 20));
     }
@@ -162,12 +161,12 @@ class VectorTest {
 
     @Test
     void equals_same_isTrue() {
-        Assertions.assertThat(Vector.$(20, 12)).isEqualTo(Vector.$(20, 12));
+        assertThat(Vector.$(20, 12)).isEqualTo(Vector.$(20, 12));
     }
 
     @Test
     void equals_different_isFalse() {
-        Assertions.assertThat(Vector.$(20, 12)).isNotEqualTo(Vector.$(12, 20));
+        assertThat(Vector.$(20, 12)).isNotEqualTo(Vector.$(12, 20));
     }
 
     @Test
