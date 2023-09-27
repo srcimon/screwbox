@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.entities.components;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.Component;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -16,6 +17,7 @@ public class RenderComponent implements Component {
     public double scale = 1;
     public Angle rotation = Angle.none();
     public Flip flip = Flip.NONE;
+    public Vector displacement = Vector.zero();
 
     public RenderComponent() {
         this(0);

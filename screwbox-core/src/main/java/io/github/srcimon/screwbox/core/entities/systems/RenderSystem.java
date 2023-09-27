@@ -23,15 +23,15 @@ public class RenderSystem implements EntitySystem {
             final var sprite = render.sprite;
             final var spriteDimension = sprite.size();
             final var spriteBounds = Bounds.atOrigin(
-                    entityPosition.x() - spriteDimension.width() / 2.0,
-                    entityPosition.y() - spriteDimension.height() / 2.0,
+                    entityPosition.x() - spriteDimension.width() / 2.0 + render.displacement.x(),
+                    entityPosition.y() - spriteDimension.height() / 2.0 + render.displacement.y(),
                     spriteDimension.width() * render.scale,
                     spriteDimension.height() * render.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.addEntry(
                         render.sprite,
-                        spriteBounds.origin(),
+                        spriteBounds.origin().add(render.displacement),
                         render.scale,
                         render.opacity,
                         render.rotation,
