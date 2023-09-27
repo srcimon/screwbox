@@ -87,7 +87,6 @@ public class HelloWorldExample {
 
 ## Future ideas and plans
 
-- [ ] move collectables via `RenderComponent.displacement` instead of custom animation (Platformer Example)
 - [ ] add game example like [in this video](https://www.youtube.com/watch?v=GDoBw1ogFZY)
 - [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
 - [ ] add `LightDebugSystem`
