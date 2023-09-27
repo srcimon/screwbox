@@ -6,7 +6,7 @@
  "name":"debo-e",
  "spacing":0,
  "tilecount":3,
- "tiledversion":"1.5.0",
+ "tiledversion":"1.10.1",
  "tileheight":16,
  "tiles":[
         {
@@ -27,9 +27,15 @@
                  "duration":200,
                  "tileid":1
                 }],
-         "id":0
+         "id":0,
+         "properties":[
+                {
+                 "name":"name",
+                 "type":"string",
+                 "value":"animation"
+                }]
         }],
  "tilewidth":16,
  "type":"tileset",
- "version":1.5
+ "version":"1.10"
 }

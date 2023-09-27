@@ -14,7 +14,7 @@ import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class DeboD implements Converter<GameObject> {
 
-    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/collectables/debo-d.json");
+    private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/collectables/debo-d.json", "animation");
 
     @Override
     public Entity convert(final GameObject object) {
