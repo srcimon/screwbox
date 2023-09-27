@@ -31,7 +31,7 @@ public class RenderSystem implements EntitySystem {
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.addEntry(
                         render.sprite,
-                        spriteBounds.origin(),
+                        spriteBounds.origin().add(render.displacement),
                         render.scale,
                         render.opacity,
                         render.rotation,
