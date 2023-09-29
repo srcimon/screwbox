@@ -23,7 +23,9 @@ public class Properties {
 
     public Optional<String> get(final String name) {
         final Optional<Property> property = findProperty(name);
-        return property.map(Property::get);
+        return property.isPresent()
+                ? Optional.of(property.get().get())
+                : Optional.empty();
     }
 
     private Optional<Property> findProperty(final String name) {

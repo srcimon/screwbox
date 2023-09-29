@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.internal.*;

@@ -25,6 +25,7 @@ import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith({ EntitiesExtension.class, MockitoExtension.class })

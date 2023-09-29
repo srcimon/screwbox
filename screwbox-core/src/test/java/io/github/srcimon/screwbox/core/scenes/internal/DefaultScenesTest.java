@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @Timeout(1)

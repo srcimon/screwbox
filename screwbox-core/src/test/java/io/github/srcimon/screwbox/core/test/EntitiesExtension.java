@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
