@@ -56,7 +56,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public boolean anyKeyIsDown() {
+    public boolean isAnyKeyDown() {
         return !pressedKeys.isEmpty();
     }
 

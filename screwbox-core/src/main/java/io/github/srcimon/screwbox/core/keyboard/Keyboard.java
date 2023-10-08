@@ -8,5 +8,8 @@ public interface Keyboard {
 
     boolean justPressed(Key key);
 
-    boolean anyKeyIsDown();
+    /**
+     * Returns true if any key is down at the moment.
+     */
+    boolean isAnyKeyDown();
 }
