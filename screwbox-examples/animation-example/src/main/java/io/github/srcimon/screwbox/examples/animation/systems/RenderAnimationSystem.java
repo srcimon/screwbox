@@ -6,14 +6,16 @@ import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.World;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RenderAnimationSystem implements EntitySystem {
 
     private static final Archetype DOTS = Archetype.of(TransformComponent.class);
 
+    private record Triangle(List<Vector> dots) {
+    }
     @Override
     public void update(final Engine engine) {
         List<Vector> dotPositions = new ArrayList<>(engine.entities().fetchAll(DOTS).stream()
@@ -21,27 +23,34 @@ public class RenderAnimationSystem implements EntitySystem {
                 .toList());
 
 
+        // every dot creates triangle with nearest two dots
+        // but not if there is already a triangle with these dots
+
+        World graphicsWorld = engine.graphics().world();
+        for(final var position : dotPositions) {
+            graphicsWorld.fillCircle(position, 8, Color.WHITE);
+        }
+List<Triangle> allTriangles = new ArrayList<>();
 
         for(final var position : dotPositions) {
-            engine.graphics().world().fillCircle(position, 8, Color.WHITE);
-        }
-
-        while (!dotPositions.isEmpty()) {
-            var start = dotPositions.get(0);
-            var allThree =  findNearestTwo(start, dotPositions);
-            if(allThree.isEmpty()) {
-                dotPositions.clear();
-            } else {
-                engine.graphics().world().drawLine(start, allThree.get(1), Color.RED);
-                engine.graphics().world().drawLine(start, allThree.get(2), Color.RED);
-                dotPositions.removeAll(allThree);
+            var triangle = findTriangle(position, dotPositions);
+            if(triangle.isPresent() && !allTriangles.contains(triangle.get())) {
+                allTriangles.add(triangle.get());
             }
         }
+
+        for(final var triangle : allTriangles) {
+            graphicsWorld
+                    .drawLine(triangle.dots.get(0), triangle.dots.get(1), Color.WHITE)
+            .drawLine(triangle.dots.get(1), triangle.dots.get(2), Color.WHITE)
+            .drawLine(triangle.dots.get(2), triangle.dots.get(0), Color.WHITE);
+        }
+
     }
 
-    private List<Vector> findNearestTwo(Vector start, List<Vector> positions) {
+    private Optional<Triangle> findTriangle(Vector start, List<Vector> positions) {
         if(positions.size() < 3) {
-            return Collections.emptyList();
+            return Optional.empty();
         }
         List<Vector> byDistance = new ArrayList<>();
         byDistance.addAll(positions);
@@ -53,7 +62,7 @@ public class RenderAnimationSystem implements EntitySystem {
             }
         });
 
-        return List.of(byDistance.get(0), byDistance.get(1), byDistance.get(2));
+        return Optional.of(new Triangle(List.of(byDistance.get(0), byDistance.get(1), byDistance.get(2))));
     }
 
 }
