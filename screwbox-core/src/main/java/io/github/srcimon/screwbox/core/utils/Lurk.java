@@ -16,6 +16,7 @@ public class Lurk {
     private final Duration maxInterval;
     private Time intervalStart;
     private Time intervalEnd;
+    private double lastValue = 0;
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Lurk fixedInterval(final Duration interval) {
@@ -36,11 +37,12 @@ public class Lurk {
         if (isNull(intervalStart) || time.isAfter(intervalEnd)) {
             intervalStart = time;
             intervalEnd = time.plus(calcNextInterval());
+            lastValue = targetValue;
             targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }
 
         var percentOfWay = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
-        return Math.sin(Math.PI / 2 * percentOfWay.value()) * targetValue;
+        return Math.sin(Math.PI / 2 * percentOfWay.value()) * (lastValue - targetValue) -lastValue;
     }
 
     private Duration calcNextInterval() {
