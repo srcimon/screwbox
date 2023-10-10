@@ -140,4 +140,7 @@ public class Duration implements Serializable {
         return !isAtLeast(other);
     }
 
+    public Duration addNanos(final long nanos) {
+        return new Duration(this.nanos + nanos);
+    }
 }
