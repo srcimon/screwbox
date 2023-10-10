@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -87,7 +88,11 @@ public class RenderAnimationSystem implements EntitySystem {
 
     private Optional<Vector> findNearestUnblocked(Vector me, List<Vector> byDistance, List<Segment> blockedSegments) {
         for(var nearest : byDistance) {
-            Segment seg = Segment.between(me, nearest);
+            Segment seg = Segment.between(me, nearest
+                    .addX(MathUtil.modifier(nearest.x() +me.x()) * 0.00001)
+                    .addY(MathUtil.modifier(nearest.y() +me.y()) * 0.00001)
+
+            );
             boolean isFree = blockedSegments.stream().noneMatch(s -> s.intersects(seg));
             if(isFree) {
                 return Optional.of(nearest);
