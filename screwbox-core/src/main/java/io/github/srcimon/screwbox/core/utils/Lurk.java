@@ -18,7 +18,7 @@ public class Lurk implements Serializable {
     private Time intervalStart;
     private Time intervalEnd;
     private double lastValue = 0;
-    private double targetValue = RANDOM.nextDouble(-1, 1);
+    private double targetValue = -1; // RANDOM.nextDouble(-1, 1);
 
     public static Lurk fixedInterval(final Duration interval) {
         return intervalWithDeviation(interval, Percent.min());
@@ -42,10 +42,10 @@ public class Lurk implements Serializable {
             targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }
 
-        final var percentOfWay = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
+        final var percent = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
         final var dist = lastValue - targetValue;
-        final var speedAtDist = Math.sin(percentOfWay.value()  * Math.PI ) + 1;
-        return (dist * percentOfWay.value() * speedAtDist) - lastValue;
+        final var speedAtDist = MathUtil.clamp(0, Math.sin(percent.value()  * Math.PI ) + 1, 1);
+        return (dist * percent.value() * speedAtDist) - lastValue;
     }
 
     private Duration calcNextInterval() {
