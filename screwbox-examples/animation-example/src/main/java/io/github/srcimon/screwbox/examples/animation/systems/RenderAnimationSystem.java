@@ -54,13 +54,6 @@ public class RenderAnimationSystem implements EntitySystem {
                 allSegments.addAll(triangle.get().segments());
             }
         }
-        for (final var position : dotPositions) {
-            var triangle = findNextTriangle(position, dotPositions, allSegments);
-            if (triangle.isPresent() && !allTriangles.contains(triangle.get())) {
-                allTriangles.add(triangle.get());
-                allSegments.addAll(triangle.get().segments());
-            }
-        }
 
         for (final var triangle : allTriangles) {
             for (final var segment : triangle.segments()) {
