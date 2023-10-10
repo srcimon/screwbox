@@ -4,11 +4,12 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import static java.util.Objects.isNull;
 
-public class Lurk {
+public class Lurk implements Serializable {
 
     private static final Random RANDOM = new Random();
 
