@@ -41,8 +41,10 @@ public class Lurk {
             targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }
 
-        var percentOfWay = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
-        return Math.sin(Math.PI / 2 * percentOfWay.value()) * (lastValue - targetValue) -lastValue;
+        final var percentOfWay = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
+        final var dist = lastValue - targetValue;
+        final var speedAtDist = Math.sin(percentOfWay.value()  * Math.PI ) + 1;
+        return (dist * percentOfWay.value() * speedAtDist) - lastValue;
     }
 
     private Duration calcNextInterval() {
