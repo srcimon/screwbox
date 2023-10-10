@@ -13,8 +13,8 @@ public class MeanderAroundPositionComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Lurk x = Lurk.intervalWithDeviation(Duration.ofSeconds(3), Percent.half());
-    public Lurk y = Lurk.intervalWithDeviation(Duration.ofSeconds(3), Percent.half());
+    public Lurk x = Lurk.intervalWithDeviation(Duration.ofSeconds(8), Percent.half());
+    public Lurk y = Lurk.intervalWithDeviation(Duration.ofSeconds(8), Percent.half());
 
     public final Vector origin;
     public final double maxDistance;
