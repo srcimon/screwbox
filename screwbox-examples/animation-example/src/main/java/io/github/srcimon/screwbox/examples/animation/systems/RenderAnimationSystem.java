@@ -48,7 +48,7 @@ public class RenderAnimationSystem implements EntitySystem {
         List<Segment> allSegments = new ArrayList<>();
 
         for (final var position : dotPositions) {
-            var triangle = findNextTriangle(position, dotPositions, allSegments);
+            var triangle = findNextTriangle(position, dotPositions, allSegments, allTriangles);
             if (triangle.isPresent() && !allTriangles.contains(triangle.get())) {
                 allTriangles.add(triangle.get());
                 allSegments.addAll(triangle.get().segments());
@@ -63,13 +63,14 @@ public class RenderAnimationSystem implements EntitySystem {
 
     }
 
-    private Optional<Triangle> findNextTriangle(Vector start, List<Vector> positions, List<Segment> blockedSegments) {
+    private Optional<Triangle> findNextTriangle(Vector start, List<Vector> positions, List<Segment> blockedSegments,  List<Triangle> allTriangles ) {
         if (positions.size() < 3) {
             return Optional.empty();
         }
         List<Vector> byDistance = new ArrayList<>();
         byDistance.addAll(positions);
         byDistance.remove(start);
+        allTriangles.stream().filter(t -> t.dots.contains(start)).forEach(t -> byDistance.removeAll(t.dots));
 
         byDistance.sort(Comparator.comparingDouble(vector -> vector.distanceTo(start)));
 
