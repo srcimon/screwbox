@@ -16,10 +16,10 @@ public class Lurk {
     private final Duration maxInterval;
     private Time intervalStart;
     private Time intervalEnd;
-
+    private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Lurk fixedInterval(final Duration interval) {
-       return intervalWithDeviation(interval, Percent.min());
+        return intervalWithDeviation(interval, Percent.min());
     }
 
     public static Lurk intervalWithDeviation(final Duration interval, final Percent intervalDeviation) {
@@ -33,12 +33,20 @@ public class Lurk {
     }
 
     public double value(final Time time) {
-        if (isNull(intervalStart)) {
+        if (isNull(intervalStart) || time.isAfter(intervalEnd)) {
             intervalStart = time;
-            Duration actualInterval = Duration.ofNanos(RANDOM.nextLong(minInterval.nanos(), maxInterval.nanos()));
-            intervalEnd = time.plus(actualInterval);
+            intervalEnd = time.plus(calcNextInterval());
+            targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }
-        return 0;
+
+        var percentOfWay = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
+        return Math.sin(Math.PI / 2 * percentOfWay.value()) * targetValue;
+    }
+
+    private Duration calcNextInterval() {
+        return minInterval.equals(maxInterval)
+                ? minInterval
+                : Duration.ofNanos(RANDOM.nextLong(minInterval.nanos(), maxInterval.nanos()));
     }
 
 }
