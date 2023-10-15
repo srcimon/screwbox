@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.entities.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.Entity;
