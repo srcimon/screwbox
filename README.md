@@ -105,4 +105,4 @@ So please be understanding of any inconsistencies in the API or if you find any 
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
 
 
-<div style="text-align:center"><img alt="super hero and cat standing next to each other" src="docs/outro.gif"></div>
+<p align="center"><img alt="super hero and cat standing next to each other" src="docs/outro.gif"></p>
