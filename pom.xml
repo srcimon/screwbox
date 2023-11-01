@@ -12,8 +12,8 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>20</maven.compiler.target>
-        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
@@ -83,6 +83,12 @@
                 <artifactId>assertj-core</artifactId>
                 <version>3.24.2</version>
                 <scope>test</scope>
+                <exclusions><!-- current version (assertj-core 3.24.2) uses non java 21 compatible bytebuddy version -->
+                    <exclusion>
+                        <artifactId>byte-buddy</artifactId>
+                        <groupId>net.bytebuddy</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
