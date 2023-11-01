@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
+import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -21,7 +21,7 @@ class FrameTest {
 
     @ParameterizedTest
     @CsvSource({"-1,1", "100,1", "4,-2", "4,44"})
-    void colorAt_outOfBounds_throwsException(int x, int y) throws Exception {
+    void colorAt_outOfBounds_throwsException(int x, int y) {
         assertThatThrownBy(() -> frame.colorAt(x, y))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Position is out of bounds: " + x + ":" + y);
