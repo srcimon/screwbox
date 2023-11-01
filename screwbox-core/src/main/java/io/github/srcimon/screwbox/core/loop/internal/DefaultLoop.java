@@ -6,8 +6,6 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
 
-import static java.lang.Math.min;
-
 public class DefaultLoop implements Loop {
 
     private static final int CRITICAL_FPS_COUNT = 10;

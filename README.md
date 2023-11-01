@@ -31,41 +31,41 @@ So please be understanding of any inconsistencies in the API or if you find any 
 3. Create your own Maven project.
 4. Add dependency:
 
-``` xml
-<dependency>
-  <groupId>io.github.srcimon</groupId>
-  <artifactId>screwbox-core</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-</dependency>
-```
+    ``` xml
+    <dependency>
+      <groupId>io.github.srcimon</groupId>
+      <artifactId>screwbox-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    ```
 
 5. Create your first game and run. Recommended JVM Options `-Dsun.java2d.opengl=true` and only on
    osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
-``` java
-package io.github.srcimon.screwbox.examples.helloworld;
-
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Pixelfont;
-
-public class HelloWorldExample {
-
-    public static void main(String[] args) {
-        Engine screwBox = ScrewBox.createEngine("Hello World Example");
-
-        screwBox.entities().add(engine -> {
-            Offset position = engine.mouse().position();
-            Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
-            engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
-        });
-
-        screwBox.start();
+    ``` java
+    package io.github.srcimon.screwbox.examples.helloworld;
+    
+    import io.github.srcimon.screwbox.core.Engine;
+    import io.github.srcimon.screwbox.core.ScrewBox;
+    import io.github.srcimon.screwbox.core.graphics.Color;
+    import io.github.srcimon.screwbox.core.graphics.Offset;
+    import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+    
+    public class HelloWorldExample {
+    
+        public static void main(String[] args) {
+            Engine screwBox = ScrewBox.createEngine("Hello World Example");
+    
+            screwBox.entities().add(engine -> {
+                Offset position = engine.mouse().position();
+                Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+                engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
+            });
+    
+            screwBox.start();
+        }
     }
-}
-```
+    ```
 
 6. Check out the example applications:
     - **HelloWorldExample** an hello world application
@@ -105,4 +105,4 @@ public class HelloWorldExample {
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
 
 
-<p align="center"><img src="docs/outro.gif"></p>
+<p align="center"><img alt="super hero and cat standing next to each other" src="docs/outro.gif"></p>

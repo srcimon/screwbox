@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.test.EntitiesExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(EntitiesExtension.class)

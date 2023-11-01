@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
@@ -24,7 +23,7 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
     private final Map<Class<?>, Object> parameters = new HashMap<>();
 
     @Override
-    public void beforeEach(final ExtensionContext context) throws Exception {
+    public void beforeEach(final ExtensionContext context) {
         final var gameLoop = Mockito.mock(Loop.class);
         final var engine = Mockito.mock(Engine.class);
         final var graphics = Mockito.mock(Graphics.class);
