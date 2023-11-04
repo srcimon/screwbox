@@ -81,6 +81,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseExited(final MouseEvent e) {
+        pressed.clear();
         isCursorOnScreen = false;
     }
 
