@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public final class Color implements Serializable {
 
+
     private static final Random RANDOM = new Random();
 
     private static final long serialVersionUID = 1L;
@@ -19,6 +20,11 @@ public final class Color implements Serializable {
     private final int g;
     private final int b;
     private final Percent opacity;
+
+    /**
+     * The color grey.
+     */
+    public static final Color GREY = Color.rgb(128, 128, 128);
 
     /**
      * The color black.
