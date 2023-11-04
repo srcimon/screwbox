@@ -20,6 +20,7 @@ public class SidebarMenu extends UiMenu {
         addItem(engine -> engine.entities().isSystemPresent(GridUpdateSystem.class) ? "pause" : "resume")
                 .onActivate(engine -> engine.entities().toggleSystem(new GridUpdateSystem()));
 
+        addItem(engine -> engine.graphics().configuration().isUseAntialising() ? "high quality" : "low quality").onActivate(engine -> engine.graphics().configuration().toggleAntialising());
         addItem("mode").onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
         addItem("save").onActivate(engine -> engine.savegame().create("save"));
         addItem("load").onActivate(engine -> engine.savegame().load("save")).activeCondition(engine -> engine.savegame().exists("save"));
