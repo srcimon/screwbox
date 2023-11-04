@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.examples.gameoflife.components;
+package io.github.srcimon.screwbox.examples.gameoflife.grid;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Grid;

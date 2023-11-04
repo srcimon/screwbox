@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.examples.gameoflife.systems;
+package io.github.srcimon.screwbox.examples.gameoflife.camera;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;

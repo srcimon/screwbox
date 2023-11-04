@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.examples.gameoflife.systems;
+package io.github.srcimon.screwbox.examples.gameoflife.grid;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.Entities;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
-import io.github.srcimon.screwbox.examples.gameoflife.components.GridComponent;
+import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
 
 public class GridInteractionSystem implements EntitySystem {
 
