@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.examples.gameoflife.sidebar;
 
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
@@ -24,7 +25,7 @@ public class SidebarMenu extends UiMenu {
         addItem("mode").onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
         addItem("save").onActivate(engine -> engine.savegame().create("save"));
         addItem("load").onActivate(engine -> engine.savegame().load("save")).activeCondition(engine -> engine.savegame().exists("save"));
-        addItem("exit").onActivate(engine -> engine.stop());
+        addItem("exit").onActivate(Engine::stop);
     }
 
 }
