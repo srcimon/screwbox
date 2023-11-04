@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.examples.gameoflife;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.entities.Entity;
 import io.github.srcimon.screwbox.core.entities.systems.LogFpsSystem;
@@ -15,6 +16,7 @@ import io.github.srcimon.screwbox.examples.gameoflife.grid.GridUpdateSystem;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarLayouter;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarMenu;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarRenderer;
+import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarOpacitySystem;
 
 public class GameOfLifeExample {
 
@@ -27,13 +29,14 @@ public class GameOfLifeExample {
                 .add(new GridRenderSystem())
                 .add(new GridInteractionSystem())
                 .add(new QuitOnKeyPressSystem(Key.ESCAPE))
+                .add(new SidebarOpacitySystem())
                 .add(new LogFpsSystem())
                 .add(new CameraControlSystem());
 
         engine.graphics().configuration().setUseAntialiasing(true);
 
         engine.ui()
-                .setRenderer(new SidebarRenderer())
+                .setRenderer(new SidebarRenderer(Percent.min()))
                 .setLayouter(new SidebarLayouter())
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());

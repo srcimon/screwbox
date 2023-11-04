@@ -8,7 +8,9 @@ import io.github.srcimon.screwbox.examples.gameoflife.grid.GridUpdateSystem;
 public class SidebarMenu extends UiMenu {
 
     public SidebarMenu() {
-        addItem("change colors").onActivate(engine -> {
+        addItem(engine -> "fps: " + engine.loop().fps()).activeCondition(engine -> false);
+        addItem(engine -> "frame: " + engine.loop().frameNumber()).activeCondition(engine -> false);
+        addItem("colors").onActivate(engine -> {
             var grid = engine.entities().forcedFetchHaving(GridComponent.class).get(GridComponent.class);
             grid.noNeighboursColor = Color.random();
             grid.oneNeighboursColor = Color.random();
@@ -18,8 +20,10 @@ public class SidebarMenu extends UiMenu {
         addItem(engine -> engine.entities().isSystemPresent(GridUpdateSystem.class) ? "pause" : "resume")
                 .onActivate(engine -> engine.entities().toggleSystem(new GridUpdateSystem()));
 
+        addItem("mode").onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
         addItem("save").onActivate(engine -> engine.savegame().create("save"));
         addItem("load").onActivate(engine -> engine.savegame().load("save")).activeCondition(engine -> engine.savegame().exists("save"));
         addItem("exit").onActivate(engine -> engine.stop());
     }
+
 }
