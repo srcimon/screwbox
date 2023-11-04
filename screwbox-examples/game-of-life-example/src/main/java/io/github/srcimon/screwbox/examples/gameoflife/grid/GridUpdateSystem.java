@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Grid.Node;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.utils.Timer;
-import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
