@@ -11,6 +11,7 @@ public class MacOsWindowFrame extends WindowFrame {
     @Override
     public void makeFullscreen(final GraphicsDevice graphicsDevice) {
         try {
+            Thread.sleep(100); // fixes Problem when called to fast after closing a window, I am sorry!
             final var screenUtils = Class.forName("com.apple.eawt.FullScreenUtilities");
             final var canFullscreenMethod = screenUtils.getMethod("setWindowCanFullScreen", Window.class, Boolean.TYPE);
             canFullscreenMethod.invoke(screenUtils, this, true);
