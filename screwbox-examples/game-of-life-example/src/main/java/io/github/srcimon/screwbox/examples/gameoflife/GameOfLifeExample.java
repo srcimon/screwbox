@@ -22,6 +22,7 @@ public class GameOfLifeExample {
                 .add(new PauseSystem(Key.SPACE))
                 .add(new QuitOnKeyPressSystem(Key.ESCAPE))
                 .add(new LogFpsSystem())
+                .add(new OnScreenDisplaySystem())
                 .add(new CameraControlSystem());
 
         engine.graphics().configuration().setUseAntialiasing(true);
