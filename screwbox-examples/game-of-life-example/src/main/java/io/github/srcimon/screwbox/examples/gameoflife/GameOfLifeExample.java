@@ -15,8 +15,8 @@ import io.github.srcimon.screwbox.examples.gameoflife.grid.GridRenderSystem;
 import io.github.srcimon.screwbox.examples.gameoflife.grid.GridUpdateSystem;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarLayouter;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarMenu;
-import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarRenderer;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarOpacitySystem;
+import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarRenderer;
 
 public class GameOfLifeExample {
 

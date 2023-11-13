@@ -1,21 +1,26 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.internal.*;
+import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.SeparateThreadRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.StandbyRenderer;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
 import io.github.srcimon.screwbox.core.window.Window;
-import io.github.srcimon.screwbox.core.window.WindowDropListener;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
 
-public class DefaultWindow implements Window {
+public class DefaultWindow implements Window, Updatable {
 
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
@@ -26,7 +31,7 @@ public class DefaultWindow implements Window {
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
-    private final DragAndDropSupport dragAndDropSupport;
+    private FilesDropedOnWindow filesDropedOnWindow;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -38,7 +43,7 @@ public class DefaultWindow implements Window {
         this.configuration = configuration;
         this.executor = executor;
         this.screen = screen;
-        dragAndDropSupport = new DragAndDropSupport(frame);
+        new DragAndDropSupport(frame, (files, position) -> filesDropedOnWindow = new FilesDropedOnWindow(files, position));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -46,18 +51,6 @@ public class DefaultWindow implements Window {
                 open();
             }
         });
-    }
-
-    @Override
-    public Window addDropListener(WindowDropListener listener) {
-        dragAndDropSupport.addDropListener(listener);
-        return this;
-    }
-
-    @Override
-    public Window removeDropListener(WindowDropListener listener) {
-        dragAndDropSupport.removeDropListener(listener);
-        return this;
     }
 
     @Override
@@ -79,6 +72,11 @@ public class DefaultWindow implements Window {
         }
         frame.setBounds(position.x(), position.y(), frame.getWidth(), frame.getHeight());
         return this;
+    }
+
+    @Override
+    public Optional<FilesDropedOnWindow> filesDropedOnWindow() {
+        return Optional.ofNullable(filesDropedOnWindow);
     }
 
     @Override
@@ -172,6 +170,11 @@ public class DefaultWindow implements Window {
         return Size.of(frame.getWidth(), frame.getHeight());
     }
 
+    @Override
+    public void update() {
+        filesDropedOnWindow = null;
+    }
+
     private Cursor cursorFrom(final MouseCursor cursor) {
         if (MouseCursor.DEFAULT == cursor) {
             return Cursor.getDefaultCursor();
@@ -191,4 +194,5 @@ public class DefaultWindow implements Window {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
     }
+
 }

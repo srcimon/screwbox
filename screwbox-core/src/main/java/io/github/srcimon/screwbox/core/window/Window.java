@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.window;
 
 import io.github.srcimon.screwbox.core.graphics.*;
 
+import java.util.Optional;
+
 /**
  * Used to control the game window and retrieve information about the game window.
  */
@@ -38,15 +40,9 @@ public interface Window {
     Window moveTo(Offset position);
 
     /**
-     * Adds a {@link WindowDropListener} to receive {@link WindowDropEvent}s from {@link Window}.
+     * Returns all {@link java.io.File}s droped on the {@link Window} at the current frame.
      */
-    Window addDropListener(WindowDropListener listener);
-
-    /**
-     * Removes an {@link WindowDropListener} from the current listeners.
-     */
-    Window removeDropListener(WindowDropListener listener);
-
+    Optional<FilesDropedOnWindow> filesDropedOnWindow();
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * fullscreen and window mode.

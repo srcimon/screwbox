@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.window.WindowDropEvent;
-import io.github.srcimon.screwbox.core.window.WindowDropListener;
 
 import java.awt.*;
 import java.awt.datatransfer.Transferable;
@@ -13,15 +11,15 @@ import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TooManyListenersException;
+import java.util.function.BiConsumer;
 
 public class DragAndDropSupport extends DropTargetAdapter {
 
-    private final List<WindowDropListener> listeners = new ArrayList<>();
+    private final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow;
 
-    public DragAndDropSupport(final Frame frame) {
+    public DragAndDropSupport(final Frame frame, final BiConsumer<List<File>, Offset> onFilesDroppedOnWindow) {
         try {
             DropTarget dropTarget = new DropTarget();
             frame.setDropTarget(dropTarget);
@@ -29,14 +27,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
         } catch (TooManyListenersException e) {
             throw new IllegalStateException("Could not register DropTargetListener", e);
         }
-    }
-
-    public void addDropListener(final WindowDropListener listener) {
-        listeners.add(listener);
-    }
-
-    public void removeDropListener(final WindowDropListener listener) {
-        listeners.remove(listener);
+        this.onFilesDroppedOnWindow = onFilesDroppedOnWindow;
     }
 
     @Override
@@ -48,10 +39,7 @@ public class DragAndDropSupport extends DropTargetAdapter {
                 try {
                     final Offset position = Offset.at(event.getLocation().x, event.getLocation().y);
                     List<File> files = (List<File>) transferable.getTransferData(dataFlavor);
-                    WindowDropEvent dropEvent = new WindowDropEvent(this, position, files);
-                    for (final var listener : listeners) {
-                        listener.filesDroppedOnWindow(dropEvent);
-                    }
+                    onFilesDroppedOnWindow.accept(files, position);
                 } catch (UnsupportedFlavorException | IOException e) {
                     throw new IllegalStateException("drop failed", e);
                 }
