@@ -35,12 +35,11 @@ So please be understanding of any inconsistencies in the API or if you find any 
     <dependency>
       <groupId>io.github.srcimon</groupId>
       <artifactId>screwbox-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0.0-alpha.1-SNAPSHOT</version>
     </dependency>
     ```
 
-5. Create your first game and run. Recommended JVM Options `-Dsun.java2d.opengl=true` and only on
-   osx `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
+5. Create your first game and run. Required JVM Options `-Dsun.java2d.opengl=true` and MacOs only `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -92,13 +91,10 @@ So please be understanding of any inconsistencies in the API or if you find any 
 - [ ] add `LightDebugSystem`
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] publish via Maven-Central (
-  see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
+- [ ] publish via Maven-Central (see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
-- [ ] fix bug: no more stderror output (maybe osx bug in
-  13.1: [Stackoverflow](https://stackoverflow.com/questions/74609260/r-warnings-errors-in-a-fresh-install), [Jetbrains](https://youtrack.jetbrains.com/issue/PY-58036))
 
 ## Acknowledgments
 
