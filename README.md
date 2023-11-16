@@ -10,9 +10,7 @@ ScrewBox is a personal pet project since february 2021. I use it to learn about 
 The result is designed for my enjoyment, not necessarily for yours.
 So please be understanding of any inconsistencies in the API or if you find any errors.
 
-<p align="center">
 [![Watch the trailer](docs/trailer-thumbnail.jpg)]([https://www.youtube.com/watch?v=fg5MJDx78SQ](https://www.youtube.com/watch?v=fg5MJDx78SQ))
-</p>
 
 ## Features
 
