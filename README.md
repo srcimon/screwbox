@@ -10,11 +10,11 @@ ScrewBox is a personal pet project since february 2021. I use it to learn about 
 The result is designed for my enjoyment, not necessarily for yours.
 So please be understanding of any inconsistencies in the API or if you find any errors.
 
-**[Watch trailer on Youtube](https://www.youtube.com/watch?v=fg5MJDx78SQ)**
+**[▶ Watch trailer on Youtube](https://www.youtube.com/watch?v=fg5MJDx78SQ)**
 
 ## Features
 
-- **Entity Component Engine** Add and remove game objects and behaviour. Save and load the game state.
+- **Entity Component System** Add and remove game objects and behaviour. Save and load the game state.
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
   effects.
 - **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
