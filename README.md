@@ -93,7 +93,7 @@ So please be understanding of any inconsistencies in the API or if you find any 
 - [ ] add `LightDebugSystem`
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] publish via Maven-Central (see [Tutorial](https://theoverengineered.blog/posts/publishing-my-first-artifact-to-maven-central-using-github-actions))
+- [ ] publish via Maven-Central (see [Guide](https://central.sonatype.org/publish/publish-maven/#create-a-ticket-with-sonatype) and [Issue Nexus Maven Plugin](https://issues.sonatype.org/browse/OSSRH-66257?focusedCommentId=1036973&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel) or maybe use very detailed [Article on Medium](https://itnext.io/publishing-artifacts-to-maven-central-using-github-actions-a-step-by-step-guide-fd65ef075fd4))
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
