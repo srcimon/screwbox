@@ -18,7 +18,7 @@
 
     <scm>
         <connection>git:https://github.com/srcimon/screwbox.git</connection>
-        <url>https://github.com/srcimon/screwbox</url>
+        <url>scm:git:https://github.com/srcimon/screwbox</url>
     </scm>
 
     <properties>
