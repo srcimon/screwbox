@@ -30,9 +30,7 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Getting started
 
-1. Create your own Maven project:
-
-2. Add dependencies to ScrewBox Artifacts:
+1. Create a new Maven project and add dependencies to the ScrewBox Artifacts:
 
     ``` xml
    <!-- manage all ScrewBox dependencies -->
@@ -63,7 +61,7 @@ look if you want to have some fun with Java and 2d graphics.
     </dependencies>
     ```
 
-3. Create a HelloWorld class and run.
+2. Create a HelloWorld class and run.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -90,9 +88,9 @@ look if you want to have some fun with Java and 2d graphics.
     }
     ```
 
-4. Add JVM Option `-Dsun.java2d.opengl=true` to avoid massive fps drop.
+3. Add JVM Option `-Dsun.java2d.opengl=true` to massivly improve frame rate.
 
-5. Check out the example applications to learn how to use ScrewBox:
+4. Check out the example applications to learn  how to use ScrewBox:
 
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
