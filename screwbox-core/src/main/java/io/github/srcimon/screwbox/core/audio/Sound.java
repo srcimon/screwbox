@@ -8,6 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A {@link Sound} that can be played via {@link Engine#audio()}.
@@ -26,7 +27,14 @@ public final class Sound implements Serializable {
         if (nonNull(fileName) && !fileName.endsWith(".wav")) {
             throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
         }
-        return new Sound(Resources.loadBinary(fileName));
+        return fromWav(Resources.loadBinary(fileName));
+    }
+
+    /**
+     * Creates a new {@link Sound} from wav content.
+     */
+    public static Sound fromWav(final byte[] content) {
+        return new Sound(content);
     }
 
     /**
@@ -38,7 +46,7 @@ public final class Sound implements Serializable {
     }
 
     private Sound(final byte[] content) {
-        this.content = content;
+        this.content = requireNonNull(content, "content must not be null");
     }
 
     /**

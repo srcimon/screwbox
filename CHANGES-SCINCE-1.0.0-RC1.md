@@ -3,6 +3,7 @@
 ### 🚀 Features / Improvements
 
 - minimum required Java version downgraded to 17
+- added new way to load a sound `Sound.fromWav(content)`
 
 ### 🪛 Fixes
 

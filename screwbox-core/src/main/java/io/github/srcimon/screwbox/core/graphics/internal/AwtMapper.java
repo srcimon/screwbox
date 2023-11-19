@@ -9,10 +9,10 @@ import java.util.Map;
 public final class AwtMapper {
 
     private static final Map<Font.Style, Integer> STYLES = Map.of(
-            Font.Style.NORMAL, 0,
-            Font.Style.BOLD, 1,
-            Font.Style.ITALIC, 2,
-            Font.Style.ITALIC_BOLD, 3);
+            Font.Style.NORMAL, java.awt.Font.ROMAN_BASELINE,
+            Font.Style.BOLD, java.awt.Font.BOLD,
+            Font.Style.ITALIC, java.awt.Font.ITALIC,
+            Font.Style.ITALIC_BOLD, java.awt.Font.ITALIC + java.awt.Font.BOLD);
 
     private AwtMapper() {
     }
