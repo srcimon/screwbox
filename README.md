@@ -30,8 +30,9 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Getting started
 
-1. Create your own Maven project (Java 21 is required).
-2. Add dependency to ScrewBox Artifacts:
+1. Create your own Maven project (Java 21 is required):
+
+2. Add dependencies to ScrewBox Artifacts:
 
     ``` xml
    <!-- manage all ScrewBox dependencies -->
@@ -62,7 +63,7 @@ look if you want to have some fun with Java and 2d graphics.
     </dependencies>
     ```
 
-3. Create your first game and run. Add JVM Option `-Dsun.java2d.opengl=true` to avoid massive fps drop.
+3. Create a HelloWorld-Clas and run.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -73,7 +74,7 @@ look if you want to have some fun with Java and 2d graphics.
     import io.github.srcimon.screwbox.core.graphics.Offset;
     import io.github.srcimon.screwbox.core.graphics.Pixelfont;
     
-    public class HelloWorldExample {
+    public class HelloWorld {
     
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine("Hello World Example");
@@ -89,11 +90,17 @@ look if you want to have some fun with Java and 2d graphics.
     }
     ```
 
-4. Check out the example applications:
+4. Add JVM Option `-Dsun.java2d.opengl=true` to avoid massive fps drop.
+
+5. Check out the example applications to learn how to use ScrewBox:
+
     - **HelloWorldExample** an hello world application
+   
     - **GameOfLifeExample** an interactive game of life implementation
+   
     - **PathfindingExample** example showing how to use pathfinding and importing maps
       from [Tiled Editor](https://www.mapeditor.org)
+   
     - **PlatformerExample** a more complex example showing how to make a platformer
 
 ## Known issues
