@@ -2,13 +2,15 @@
 
 Minimalist 2d Java game engine. Result of covid lockdown.
 
-[![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.libktx/ktx-module.svg)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
+[![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
 ## About
 
-ScrewBox is a personal pet project since february 2021. I use it to learn about Java and designing larger libaries.
-The result is designed for my enjoyment, not necessarily for yours.
-So please be understanding of any inconsistencies in the API or if you find any errors.
+ScrewBox is a personal pet project since february 2021. I use it to learn about Java and have some fun. Maybe you have a
+look if you want to have some fun with Java and 2d graphics.
 
 **[▶ Watch trailer on Youtube](https://www.youtube.com/watch?v=fg5MJDx78SQ)**
 
@@ -28,20 +30,39 @@ So please be understanding of any inconsistencies in the API or if you find any 
 
 ## Getting started
 
-1. Clone this repository.
-2. Run `maven install`
-3. Create your own Maven project.
-4. Add dependency:
+1. Create your own Maven project (Java 21 is required).
+2. Add dependency to ScrewBox Artifacts:
 
     ``` xml
-    <dependency>
-      <groupId>io.github.srcimon</groupId>
-      <artifactId>screwbox-core</artifactId>
-      <version>1.0.0-alpha.1-SNAPSHOT</version>
-    </dependency>
+   <!-- manage all ScrewBox dependencies -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.srcimon</groupId>
+                <artifactId>screwbox</artifactId>
+                <version>1.0.0-RC1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+   
+    <dependencies>
+        <!-- ScrewBox core functionality -->
+        <dependency>
+            <groupId>io.github.srcimon</groupId>
+            <artifactId>screwbox-core</artifactId>
+        </dependency>
+   
+        <!-- Support for Tiled-Editor (not needed for the example below) -->
+        <dependency>
+            <groupId>io.github.srcimon</groupId>
+            <artifactId>screwbox-tiled</artifactId>
+        </dependency>
+    </dependencies>
     ```
 
-5. Create your first game and run. Required JVM Options `-Dsun.java2d.opengl=true` and MacOs only `--add-opens java.desktop/com.apple.eawt=ALL-UNNAMED`.
+3. Create your first game and run. Add JVM Option `-Dsun.java2d.opengl=true` to avoid massive fps drop.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -68,7 +89,7 @@ So please be understanding of any inconsistencies in the API or if you find any 
     }
     ```
 
-6. Check out the example applications:
+4. Check out the example applications:
     - **HelloWorldExample** an hello world application
     - **GameOfLifeExample** an interactive game of life implementation
     - **PathfindingExample** example showing how to use pathfinding and importing maps
@@ -88,12 +109,12 @@ So please be understanding of any inconsistencies in the API or if you find any 
 
 ## Future ideas and plans
 
+- [ ] add all keyboard keys
 - [ ] add game example like [in this video](https://www.youtube.com/watch?v=GDoBw1ogFZY)
 - [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
 - [ ] add `LightDebugSystem`
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] publish via Maven-Central (see [Guide](https://central.sonatype.org/publish/publish-maven/#create-a-ticket-with-sonatype) and [Issue Nexus Maven Plugin](https://issues.sonatype.org/browse/OSSRH-66257?focusedCommentId=1036973&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel) or maybe use very detailed [Article on Medium](https://itnext.io/publishing-artifacts-to-maven-central-using-github-actions-a-step-by-step-guide-fd65ef075fd4))
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
@@ -101,6 +122,5 @@ So please be understanding of any inconsistencies in the API or if you find any 
 ## Acknowledgments
 
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
-
 
 <p align="center"><img alt="super hero and cat standing next to each other" src="docs/outro.gif"></p>
