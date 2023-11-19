@@ -13,3 +13,7 @@
 
 # tiled
 **/*.tiled-session
+
+# Releasing
+**/.releaseBackup
+**/release.properties

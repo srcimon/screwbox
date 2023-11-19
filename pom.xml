@@ -1,12 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox</artifactId>
     <version>1.0.0-alpha2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <description>ScrewBox is a minimalistic Java 2d game engine.</description>
+    <name>ScrewBox</name>
+    <url>https://github.com/srcimon/screwbox<</url>
 
+    <description>ScrewBox is a minimalistic Java 2d game engine.</description>
     <licenses>
         <license>
             <name>MIT</name>
@@ -19,8 +22,8 @@
         <connection>scm:git:https://github.com/srcimon/screwbox.git</connection>
         <developerConnection>scm:git:https://github.com/srcimon/screwbox.git</developerConnection>
         <url>scm:git:https://github.com/srcimon/screwbox</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
