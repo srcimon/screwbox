@@ -1,8 +1,16 @@
 name: Release to Maven Central
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "Define the release version"
+        required: true
+        default: ""
+      developmentVersion:
+        description: "Define the snapshot version"
+        required: true
+        default: ""
 
 jobs:
   build:
@@ -36,6 +44,8 @@ jobs:
           javadoc:jar \
           source:jar \
           -s ./.github/settings.xml \
+          -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
+          -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
           -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} \
           deploy
       env:
