@@ -63,7 +63,7 @@ look if you want to have some fun with Java and 2d graphics.
     </dependencies>
     ```
 
-3. Create a HelloWorld-Clas and run.
+3. Create a HelloWorld class and run.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
