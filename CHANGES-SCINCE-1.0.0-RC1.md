@@ -1,8 +1,12 @@
 ## Changes
 
-### 🚀 Features
+### 🚀 Features / Improvements
 
 - minimum required Java version downgraded to 17
+
+### 🪛 Fixes
+
+-
 
 ### 🧽 Cleanup & refactoring
 

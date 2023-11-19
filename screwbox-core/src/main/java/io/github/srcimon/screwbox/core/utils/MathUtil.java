@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.utils;
 
 /**
  * Utility functions for math operations.
- *
  */
 public final class MathUtil {
 
