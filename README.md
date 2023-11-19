@@ -2,7 +2,7 @@
 
 Minimalist 2d Java game engine. Result of covid lockdown.
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.libktx/ktx-module.svg)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
 [![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
@@ -95,12 +95,9 @@ look if you want to have some fun with Java and 2d graphics.
 5. Check out the example applications to learn how to use ScrewBox:
 
     - **HelloWorldExample** an hello world application
-   
     - **GameOfLifeExample** an interactive game of life implementation
-   
     - **PathfindingExample** example showing how to use pathfinding and importing maps
       from [Tiled Editor](https://www.mapeditor.org)
-   
     - **PlatformerExample** a more complex example showing how to make a platformer
 
 ## Known issues
