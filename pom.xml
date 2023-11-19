@@ -17,7 +17,8 @@
     </licenses>
 
     <scm>
-        <connection>git:https://github.com/srcimon/screwbox.git</connection>
+        <connection>scm:git:ssh://git@github.com:srcimon/screwbox.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:srcimon/screwbox.git</developerConnection>
         <url>scm:git:https://github.com/srcimon/screwbox</url>
     </scm>
 
