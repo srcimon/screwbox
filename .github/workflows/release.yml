@@ -1,8 +1,16 @@
 name: Release to Maven Central
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: "Define the release version"
+        required: true
+        default: ""
+      developmentVersion:
+        description: "Define the snapshot version"
+        required: true
+        default: ""
 
 jobs:
   build:
@@ -17,6 +25,11 @@ jobs:
         java-package: 'jdk'
         cache: 'maven'
         server-id: ossrh
+    - name: Configure Git User
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
     - name: Import GPG Key
       uses: crazy-max/ghaction-import-gpg@v5.0.0
       with:
