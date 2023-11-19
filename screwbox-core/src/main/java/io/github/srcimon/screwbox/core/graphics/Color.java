@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
@@ -11,9 +12,9 @@ import java.util.Random;
  */
 public final class Color implements Serializable {
 
-
     private static final Random RANDOM = new Random();
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final int r;

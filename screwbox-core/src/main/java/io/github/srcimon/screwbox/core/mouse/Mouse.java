@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.graphics.World;
 public interface Mouse {
 
     /**
-     * Returns the current mouse-position
+     * Returns the current mouse-position.
      */
     Offset position();
 

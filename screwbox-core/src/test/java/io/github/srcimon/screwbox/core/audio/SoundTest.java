@@ -1,12 +1,29 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.utils.Resources;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SoundTest {
+
+    @Test
+    void fromWav_validWav_hasContent() {
+        var content = Resources.loadBinary("kill.wav");
+        var sound = Sound.fromWav(content);
+
+        assertThat(sound.content()).hasSizeGreaterThan(10000);
+    }
+
+    @Test
+    void fromWav_contentNull_exception() {
+        assertThatThrownBy(() -> Sound.fromWav(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("content must not be null");
+    }
+
 
     @Test
     void fromFile_noWav_exception() {
