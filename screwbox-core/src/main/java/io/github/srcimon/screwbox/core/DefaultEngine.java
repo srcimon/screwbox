@@ -37,6 +37,7 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,6 +111,14 @@ class DefaultEngine implements Engine {
         }
         this.name = name;
         window.setTitle(name);
+        validateJvmOptions();
+    }
+
+    private void validateJvmOptions() {
+        final List<String> jvmOptions = ManagementFactory.getRuntimeMXBean().getInputArguments();
+        if (!jvmOptions.contains("-Dsun.java2d.opengl=true")) {
+            log.warn("Please run application with JVM Option '-Dsun.java2d.opengl=true' to avoid massive fps drop.");
+        }
     }
 
     @Override
