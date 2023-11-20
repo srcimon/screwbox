@@ -40,7 +40,7 @@ look if you want to have some fun with Java and 2d graphics.
     </dependency>
     ```
 
-2. Create HelloWorld class and run.
+2. Create new class and run (JVM Option `-Dsun.java2d.opengl=true` highly recommended to improve fps significantly.)
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -66,8 +66,6 @@ look if you want to have some fun with Java and 2d graphics.
         }
     }
     ```
-
-3. Add JVM Option `-Dsun.java2d.opengl=true` to massivly improve frame rate.
 
 ## Recommended Topics
 
