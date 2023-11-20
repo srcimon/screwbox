@@ -40,11 +40,9 @@ look if you want to have some fun with Java and 2d graphics.
     </dependency>
     ```
 
-2. Create new class and run (JVM Option `-Dsun.java2d.opengl=true` highly recommended to improve fps significantly.)
+2. Create new class and run (JVM option `-Dsun.java2d.opengl=true` highly recommended)
 
     ``` java
-    package io.github.srcimon.screwbox.examples.helloworld;
-    
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
     import io.github.srcimon.screwbox.core.graphics.Color;
