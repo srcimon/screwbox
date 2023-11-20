@@ -37,9 +37,9 @@ public class DefaultSavegame implements Savegame {
         requireNonNull(scene, "scene must not be null");
         final Entities entities = scenes.entitiesOf(scene);
         final List<Entity> allEntities = entities.allEntities();
-        try (OutputStream outputStream = new FileOutputStream(name)) {
-            try (OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
-                try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
+        try (final OutputStream outputStream = new FileOutputStream(name)) {
+            try (final OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
+                try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
                     objectOutputStream.writeObject(allEntities);
                 }
             }
@@ -81,7 +81,7 @@ public class DefaultSavegame implements Savegame {
     }
 
     @Override
-    public Savegame delete(String name) {
+    public Savegame delete(final String name) {
         try {
             verifyName(name);
             final Path path = Path.of(name);
