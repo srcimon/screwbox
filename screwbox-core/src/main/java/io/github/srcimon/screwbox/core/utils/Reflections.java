@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.zip.ZipFile;
 
 import static java.util.Objects.requireNonNull;
@@ -23,8 +22,7 @@ public final class Reflections {
     public static List<Class<?>> findClassesInPackage(final String packageName) {
         requireNonNull(packageName, "packageName must not be null");
         final List<Class<?>> clazzes = new ArrayList<>();
-        final Pattern classNamePattern = Pattern.compile(".*" + packageName + ".*\\.class");
-        for (final String resourceName : getResources(classNamePattern)) {
+        for (final String resourceName : getClassResources(packageName)) {
             final String[] splittedResource = resourceName.split(SEPARATOR);
             final String className = splittedResource[splittedResource.length - 1];
             String packagen = packageName + resourceName
@@ -46,11 +44,11 @@ public final class Reflections {
         }
     }
 
-    private static List<String> getResources(final Pattern pattern) {
+    private static List<String> getClassResources(final String packageName) {
         final List<String> matchingResources = new ArrayList<>();
         for (final String element : Resources.classPathElements()) {
             for (final var resource : getResources(element)) {
-                if (pattern.matcher(resource).matches()) {
+                if (resource.contains(packageName.replace(".", SEPARATOR)) && resource.endsWith(".class")) {
                     matchingResources.add(resource);
                 }
             }

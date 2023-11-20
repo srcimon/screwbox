@@ -7,7 +7,7 @@
 
 ### 🪛 Fixes
 
--
+-  fixed crash when `Reflections.findClassesInPackage(package)` is called on Windows machines (e.g. Asset preloading)
 
 ### 🧽 Cleanup & refactoring
 
