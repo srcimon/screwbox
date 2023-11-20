@@ -30,7 +30,7 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Getting started
 
-1. Create a new Maven project and add ScrewBox Core Dependency (Java 21 required):
+1. Create a new Maven project and add `screwbox-core` dependency (Java 21 required):
 
     ``` xml
     <dependency>
