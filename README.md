@@ -98,10 +98,6 @@ look if you want to have some fun with Java and 2d graphics.
       from [Tiled Editor](https://www.mapeditor.org)
     - **PlatformerExample** a more complex example showing how to make a platformer
 
-## Known issues
-
-- [ ] asset preloading on Windows crashes the program (invalid pattern)
-
 ## Libraries used
 
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
