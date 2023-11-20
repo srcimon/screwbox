@@ -45,15 +45,11 @@ public final class Reflections {
     }
 
     private static List<String> getClassResources(final String packageName) {
-        final List<String> matchingResources = new ArrayList<>();
-        for (final String element : Resources.classPathElements()) {
-            for (final var resource : getResources(element)) {
-                if (resource.contains(packageName.replace(".", SEPARATOR)) && resource.endsWith(".class")) {
-                    matchingResources.add(resource);
-                }
-            }
-        }
-        return matchingResources;
+        return Resources.classPathElements().stream()
+                .flatMap(element -> getResources(element).stream())
+                .filter(resource -> resource.endsWith(".class"))
+                .filter(resource -> resource.contains(packageName.replace(".", SEPARATOR)))
+                .toList();
     }
 
     private static List<String> getResources(final String element) {
