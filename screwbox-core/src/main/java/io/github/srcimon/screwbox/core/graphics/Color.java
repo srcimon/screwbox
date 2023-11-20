@@ -68,6 +68,11 @@ public final class Color implements Serializable {
     public static final Color YELLOW = Color.rgb(255, 255, 0);
 
     /**
+     * The color orange.
+     */
+    public static final Color ORANGE = Color.rgb(255, 165, 0);
+
+    /**
      * A transparent color.
      */
     public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.min());
@@ -96,7 +101,7 @@ public final class Color implements Serializable {
     /**
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
-     * 
+     *
      * @see #opacity(Percent)
      */
     public Color opacity(final double opacity) {
@@ -106,7 +111,7 @@ public final class Color implements Serializable {
     /**
      * Creates a new instance with same RGB-components, but custom
      * {@link #opacity()}.
-     * 
+     *
      * @see #opacity(double)
      */
     public Color opacity(final Percent opacity) {
