@@ -30,38 +30,17 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Getting started
 
-1. Create a new Maven project (Java 21) and add dependencies to the ScrewBox Artifacts:
+1. Create a new Maven project and add ScrewBox Core Dependency (Java 21 required):
 
     ``` xml
-   <!-- manage all ScrewBox dependencies -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.github.srcimon</groupId>
-                <artifactId>screwbox</artifactId>
-                <version>1.0.0-RC1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-   
-    <dependencies>
-        <!-- ScrewBox core functionality -->
-        <dependency>
-            <groupId>io.github.srcimon</groupId>
-            <artifactId>screwbox-core</artifactId>
-        </dependency>
-   
-        <!-- Support for Tiled-Editor (not needed for the example below) -->
-        <dependency>
-            <groupId>io.github.srcimon</groupId>
-            <artifactId>screwbox-tiled</artifactId>
-        </dependency>
-    </dependencies>
+    <dependency>
+        <groupId>io.github.srcimon</groupId>
+        <artifactId>screwbox-core</artifactId>
+        <version>1.0.0-RC1</version>
+    </dependency>
     ```
 
-2. Create a HelloWorld class and run.
+2. Create HelloWorld class and run.
 
     ``` java
     package io.github.srcimon.screwbox.examples.helloworld;
@@ -90,14 +69,49 @@ look if you want to have some fun with Java and 2d graphics.
 
 3. Add JVM Option `-Dsun.java2d.opengl=true` to massivly improve frame rate.
 
-4. Check out the example applications to learn  how to use ScrewBox:
+## Recommended Topics
 
-    - **HelloWorldExample** an hello world application
-    - **GameOfLifeExample** an interactive game of life implementation
-    - **PathfindingExample** example showing how to use pathfinding and importing maps
-      from [Tiled Editor](https://www.mapeditor.org)
-    - **PlatformerExample** a more complex example showing how to make a platformer
+- Use build in [Tiled Editor](https://www.mapeditor.org)-Support
 
+    ``` xml
+    <dependency>
+        <groupId>io.github.srcimon</groupId>
+        <artifactId>screwbox-tiled</artifactId>
+        <version>1.0.0-RC1</version>
+    </dependency>
+    ```
+
+   ``` java
+   // loading a map made with Tiled Editor
+   Map map = Map.fromJson("underworld_map.json");
+   ```
+
+- Manage ScrewBox dependencies via BOM:
+
+    ``` xml
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.srcimon</groupId>
+                <artifactId>screwbox</artifactId>
+                <version>1.0.0-RC1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+   ```
+
+
+## Example projects
+Check out these example projects to learn how to use ScrewBox:
+
+- **HelloWorldExample** an hello world application
+- **GameOfLifeExample** an interactive game of life implementation
+- **PathfindingExample** example showing how to use pathfinding and importing maps
+  from [Tiled Editor](https://www.mapeditor.org)
+- **PlatformerExample** a more complex example showing how to make a platformer
+  
 ## Libraries used
 
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
