@@ -112,7 +112,7 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Libraries used
 
-- JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
+- JUnit [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
 - FasterXML Jackson Core [Apache License 2.0](https://github.com/FasterXML/jackson-core/blob/2.14/LICENSE)
 - AssertJ [Apache License 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
