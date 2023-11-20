@@ -71,6 +71,15 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Recommended Topics
 
+- Check out these example projects to learn how to use ScrewBox:
+
+    - [hello world](./screwbox-examples/hello-world-example) an hello world application
+    - [game of life](./screwbox-examples/game-of-life-example) an interactive game of life implementation
+    - [pathfinding](./screwbox-examples/pathfinding-example) example showing how to use pathfinding and importing maps
+      from [Tiled Editor](https://www.mapeditor.org)
+    - [platformer](./screwbox-examples/platformer-example) a more complex example showing how to make a platformer
+
+
 - Use build in [Tiled Editor](https://www.mapeditor.org)-Support
 
     ``` xml
@@ -86,7 +95,8 @@ look if you want to have some fun with Java and 2d graphics.
    Map map = Map.fromJson("underworld_map.json");
    ```
   
-  Also have a look at the [example application](./screwbox-examples/pathfinding-example).
+  For real code have a look at the [pathfinding example application](./screwbox-examples/pathfinding-example). 
+
 
 - Manage ScrewBox dependencies via BOM:
 
@@ -104,16 +114,6 @@ look if you want to have some fun with Java and 2d graphics.
     </dependencyManagement>
    ```
 
-
-## Example projects
-Check out these example projects to learn how to use ScrewBox:
-
-- **HelloWorldExample** an hello world application
-- **GameOfLifeExample** an interactive game of life implementation
-- **PathfindingExample** example showing how to use pathfinding and importing maps
-  from [Tiled Editor](https://www.mapeditor.org)
-- **PlatformerExample** a more complex example showing how to make a platformer
-  
 ## Libraries used
 
 - JUnit: [Eclipse Public License 2.0](https://github.com/junit-team/junit5/blob/main/LICENSE.md)
