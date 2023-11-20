@@ -3,7 +3,7 @@
 ### 🚀 Features / Improvements
 
 - added new way to load a sound `Sound.fromWav(content)`
-- added keys `CONTROL`, `A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`, `I` to enum `Key`
+- added values `CONTROL`, `A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`, `I` to `Key` enum
 - added `Color.ORANGE`
 
 ### 🪛 Fixes
