@@ -4,26 +4,26 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class OsInfoTest {
+class MacOsSupportTest {
 
     @Test
-    void isOsX_osPropertyIsOsx_isTrue() {
+    void isMacOs_osxPropertySetToMacOsX_isTrue() {
         System.setProperty("os.name", "Mac OS X");
 
-        assertThat(OsInfo.isMacOs()).isTrue();
+        assertThat(MacOsSupport.isMacOs()).isTrue();
     }
 
     @Test
-    void isOsX_osPropertyIsWindows_isFalse() {
+    void isMacOs_osxPropertySetToWindows_isFalse() {
         System.setProperty("os.name", "Windows NT");
 
-        assertThat(OsInfo.isMacOs()).isFalse();
+        assertThat(MacOsSupport.isMacOs()).isFalse();
     }
 
     @Test
-    void isOsX_onoOsProperty_isFalse() {
+    void isMacOs_osxPropertyMissing_isFalse() {
         System.clearProperty("os.name");
 
-        assertThat(OsInfo.isMacOs()).isFalse();
+        assertThat(MacOsSupport.isMacOs()).isFalse();
     }
 }

@@ -2,7 +2,6 @@
 
 ### 🚀 Features / Improvements
 
-- minimum required Java version downgraded to 17
 - added new way to load a sound `Sound.fromWav(content)`
 - added keys to enum `Key`: `CONTROL`, `A`, `B`, `C`, `D`, `E`, `F`, `G`, `H`, `I`
 
@@ -12,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- moved osx-detection to new class `OsInfo`
+- moved osx-detection to new class `MacOsSupport`
 
 ### 📦 Dependency updates
 

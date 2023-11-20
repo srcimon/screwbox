@@ -29,7 +29,7 @@ import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
-import io.github.srcimon.screwbox.core.utils.OsInfo;
+import io.github.srcimon.screwbox.core.utils.MacOsSupport;
 import io.github.srcimon.screwbox.core.window.Window;
 import io.github.srcimon.screwbox.core.window.internal.DefaultWindow;
 import io.github.srcimon.screwbox.core.window.internal.MacOsWindowFrame;
@@ -65,7 +65,7 @@ class DefaultEngine implements Engine {
     private final String name;
 
     DefaultEngine(final String name) {
-        final WindowFrame frame = OsInfo.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
+        final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
