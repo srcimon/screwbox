@@ -76,7 +76,7 @@ look if you want to have some fun with Java and 2d graphics.
     - [platformer](./screwbox-examples/platformer-example) a more complex example showing how to make a platformer
 
 
-- Use build in [Tiled Editor](https://www.mapeditor.org)-Support
+- Use build in [Tiled Editor](https://www.mapeditor.org) support
 
     ``` xml
     <dependency>
