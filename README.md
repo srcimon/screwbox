@@ -85,6 +85,8 @@ look if you want to have some fun with Java and 2d graphics.
    // loading a map made with Tiled Editor
    Map map = Map.fromJson("underworld_map.json");
    ```
+  
+  Also have a look at the [example application](./screwbox-examples/pathfinding-example).
 
 - Manage ScrewBox dependencies via BOM:
 
