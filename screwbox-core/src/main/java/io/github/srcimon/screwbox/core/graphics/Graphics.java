@@ -59,7 +59,7 @@ public interface Graphics {
      * Returns the position the given {@link Offset} in the game
      * {@link World}.
      */
-    Vector worldPositionOf(Offset offset);
+    Vector toPosition(Offset offset);
 
     /**
      * Returns the {@link Offset} on the {@link Window} of the given {@link Vector}
@@ -68,7 +68,7 @@ public interface Graphics {
      * @param position the position that will be translated
      * @return the {@link Offset} on the {@link Window}
      */
-    Offset windowPositionOf(Vector position);
+    Offset toOffset(Vector position);
 
     List<Size> supportedResolutions();
 

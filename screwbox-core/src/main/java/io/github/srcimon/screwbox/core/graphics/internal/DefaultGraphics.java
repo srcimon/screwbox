@@ -71,12 +71,12 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public Vector worldPositionOf(final Offset offset) {
+    public Vector toPosition(final Offset offset) {
         return world.toPosition(offset);
     }
 
     @Override
-    public Offset windowPositionOf(final Vector position) {
+    public Offset toOffset(final Vector position) {
         return world.toOffset(position);
     }
 
