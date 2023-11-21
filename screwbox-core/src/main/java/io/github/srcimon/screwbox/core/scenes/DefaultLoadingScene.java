@@ -13,7 +13,7 @@ import static io.github.srcimon.screwbox.core.graphics.Size.square;
 public class DefaultLoadingScene implements Scene {
 
     @Override
-    public void initialize(Entities entities) {
+    public void initialize(final Entities entities) {
         entities.add(engine -> drawLoadingAnimation(engine.graphics().screen()));
     }
 
