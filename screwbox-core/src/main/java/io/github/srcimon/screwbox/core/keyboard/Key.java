@@ -11,6 +11,8 @@ public enum Key {
     CONTROL(17),
     ESCAPE(27),
     SPACE(32),
+    PAGE_DOWN(35),
+    PAGE_UP(36),
     ARROW_LEFT(37),
     ARROW_UP(38),
     ARROW_RIGHT(39),
@@ -36,7 +38,28 @@ public enum Key {
     M(77),
     O(79),
     P(80),
-    Q(81);
+    Q(81),
+    R(82),
+    S(83),
+    T(84),
+    U(85),
+    V(86),
+    W(87),
+    X(88),
+    Y(89),
+    Z(90),
+    F1(112),
+    F2(113),
+    F3(114),
+    F4(115),
+    F5(116),
+    F6(117),
+    F7(118),
+    F8(119),
+    F9(120),
+    F10(121),
+    F11(122),
+    F12(123);
 
     private final int keyCode;
 

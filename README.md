@@ -119,7 +119,6 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Future ideas and plans
 
-- [ ] add all keyboard keys
 - [ ] add game example like [in this video](https://www.youtube.com/watch?v=GDoBw1ogFZY)
 - [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
 - [ ] add `LightDebugSystem`
