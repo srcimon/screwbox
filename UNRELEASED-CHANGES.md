@@ -1,6 +1,6 @@
 ## Changes
 
-### 🚀 Features / Improvements
+### 🚀 Features & improvements
 
 - added new way to load a sound `Sound.fromWav(content)`
 - added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
@@ -8,7 +8,7 @@
 - renamed `Graphics.worldPositionOf(offset)` to `toPosition(offset)`
 - renamed `Graphics.windowPositionOf(position)` to `toOffset(position)`
 
-### 🪛 Fixes
+### 🪛 Fixed issues
 
 -  fixed exception when calling `Reflections.findClassesInPackage(package)` on Windows
 
