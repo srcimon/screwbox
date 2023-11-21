@@ -2,8 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
+
+import java.util.function.Supplier;
 
 public class StandbyRenderer implements Renderer {
 
@@ -59,7 +60,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
                            final Angle rotation,
                            final Flip flip, final WindowBounds clipArea) {
         // does nothing

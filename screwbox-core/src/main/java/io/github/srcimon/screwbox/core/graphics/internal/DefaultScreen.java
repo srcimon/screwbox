@@ -2,11 +2,11 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.lang.Math.round;
 
@@ -146,7 +146,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawSprite(final Asset<Sprite> sprite, final Offset origin, final double scale,
+    public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
                              final Percent opacity, final Angle rotation,
                              final Flip flip, final WindowBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);

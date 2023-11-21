@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
+import java.util.function.Supplier;
+
 /**
  * Controls the audio playback of the {@link Engine}.
  */
@@ -18,7 +20,7 @@ public interface Audio {
      * Plays a {@link Sound} from an {@link Asset} a single time with
      * {@link #effectVolume()}.
      */
-    default Audio playEffect(Asset<Sound> sound) {
+    default Audio playEffect(Supplier<Sound> sound) {
         return playEffect(sound.get());
     }
 
@@ -58,14 +60,14 @@ public interface Audio {
 
     /**
      * Returns the current volume for effects.
-     * 
+     *
      * @see #musicVolume()
      */
     Percent effectVolume();
 
     /**
      * Returns the current volume for music.
-     * 
+     *
      * @see #effectVolume()
      */
     Percent musicVolume();

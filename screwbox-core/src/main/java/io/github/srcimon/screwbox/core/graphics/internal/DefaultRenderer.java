@@ -3,21 +3,21 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
-    private static final float[] FADEOUT_FRACTIONS = new float[] { 0.1f, 1f };
+    private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
 
     private final Robot robot;
@@ -125,7 +125,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale,
-            final Flip flip) {
+                                     final Flip flip) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
@@ -170,7 +170,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawFadingCircle(Offset offset, int diameter, io.github.srcimon.screwbox.core.graphics.Color color) {
         var oldPaint = graphics.getPaint();
-        var colors = new java.awt.Color[] { AwtMapper.toAwtColor(color), FADEOUT_COLOR };
+        var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
         graphics.setPaint(new RadialGradientPaint(
                 offset.x(),
                 offset.y(),
@@ -184,7 +184,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
                            Flip flip, WindowBounds clipArea) {
         drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
     }
