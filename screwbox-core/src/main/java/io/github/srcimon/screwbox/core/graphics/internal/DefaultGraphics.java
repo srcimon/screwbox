@@ -3,16 +3,16 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.Font;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
+import static java.util.Comparator.reverseOrder;
 
 public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics.Graphics, Updatable {
 
@@ -85,7 +85,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
         return stream(graphicsDevice.getDisplayModes())
                 .map(this::toDimension)
                 .distinct()
-                .sorted(Comparator.reverseOrder())
+                .sorted(reverseOrder())
                 .toList();
     }
 
