@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - moved osx-detection to new class `MacOsSupport`
+- added tests and various small refactorings
 
 ### 📦 Dependency updates
 
