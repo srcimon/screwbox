@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.Entities;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
-import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
 
 public class GridInteractionSystem implements EntitySystem {
 

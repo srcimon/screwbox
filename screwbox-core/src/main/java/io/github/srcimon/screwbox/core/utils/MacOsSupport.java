@@ -5,6 +5,9 @@ package io.github.srcimon.screwbox.core.utils;
  */
 public class MacOsSupport {
 
+    private MacOsSupport() {
+    } // hide constructor
+
     /**
      * Returns true if the current operation system is MacOs.
      */
