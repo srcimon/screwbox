@@ -91,6 +91,18 @@ BOM to manage all library dependencies.
 
 Adds the core functionality of the engine. Nothing more needed to make game.
 
+``` xml
+<dependency>
+    <groupId>io.github.srcimon</groupId>
+    <artifactId>screwbox-core</artifactId>
+</dependency>
+```
+
+``` java
+// creating a fancy black window
+ScrewBox.createEngine().start();
+```
+
 ### screwbox-tiled
 
 Adds support for tilesets and maps made with [Tiled Editor](https://www.mapeditor.org). For real code have a look at
