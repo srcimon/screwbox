@@ -1,11 +1,11 @@
-## Changes
+## v1.0.0-RC2
 
 ### 🚀 Features & improvements
 
+- build downgraded from JDK 21 to support running on JDK 17
 - added new way to load a sound `Sound.fromWav(content)`
 - added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
 - added `Color.ORANGE`
-
 
 ### 🪛 Fixed issues
 
@@ -17,6 +17,7 @@
 - `Screen`, `World` and `Audio` accept `Supplier<T>` instead of `Asset<T>`
 - renamed `Graphics` methods for offset / postion conversion to `toOffset`, `toPosition`
 - added additional tests and various small refactorings
+- added continous build with jdk 17
 
 ### 📦 Dependency updates
 
