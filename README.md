@@ -69,11 +69,11 @@ look if you want to have some fun with Java and 2d graphics.
 
 - Check out these example projects to learn how to use ScrewBox:
 
-    - [hello world](./screwbox-examples/hello-world-example) an hello world application
-    - [game of life](./screwbox-examples/game-of-life-example) an interactive game of life implementation
-    - [pathfinding](./screwbox-examples/pathfinding-example) example showing how to use pathfinding and importing maps
+    - **[Hello World](./screwbox-examples/hello-world-example)** an hello world application
+    - **[Game Of Life](./screwbox-examples/game-of-life-example)** an interactive game of life implementation
+    - **[Pathfinding](./screwbox-examples/pathfinding-example)** example showing how to use pathfinding and importing maps
       from [Tiled Editor](https://www.mapeditor.org)
-    - [platformer](./screwbox-examples/platformer-example) a more complex example showing how to make a platformer
+    - **[Platformer](./screwbox-examples/platformer-example)** a more complex example showing how to make a platformer
 
 
 - Use build in [Tiled Editor](https://www.mapeditor.org) support
