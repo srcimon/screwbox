@@ -3,6 +3,7 @@
 ### 🚀 Features & improvements
 
 - added new way to load a sound `Sound.fromWav(content)`
+- `Asset.load` returns boolean indicating whether loading happend or wasn't necessary
 - added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
 - added `Color.ORANGE`
 

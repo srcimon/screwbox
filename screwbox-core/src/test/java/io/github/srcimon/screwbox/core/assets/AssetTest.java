@@ -40,10 +40,11 @@ class AssetTest {
         asset.load();
         Time value = timeAsset.get();
 
-        timeAsset.load();
+        boolean wasLoaded = timeAsset.load();
         Time secondValue = timeAsset.get();
 
         assertThat(value).isEqualTo(secondValue);
+        assertThat(wasLoaded).isFalse();
     }
 
     @Test
@@ -53,9 +54,10 @@ class AssetTest {
 
     @Test
     void isLoaded_afterLoading_isTrue() {
-        asset.load();
+        boolean wasLoaded = asset.load();
 
         assertThat(asset.isLoaded()).isTrue();
+        assertThat(wasLoaded).isTrue();
     }
 
     @Test
