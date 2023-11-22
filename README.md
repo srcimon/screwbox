@@ -65,50 +65,59 @@ look if you want to have some fun with Java and 2d graphics.
     }
     ```
 
-## Recommended Topics
+## Modules
 
-- Check out these example projects to learn how to use ScrewBox:
+Here is a quick overview over all modules contained in this library:
 
-    - [hello world](./screwbox-examples/hello-world-example) an hello world application
-    - [game of life](./screwbox-examples/game-of-life-example) an interactive game of life implementation
-    - [pathfinding](./screwbox-examples/pathfinding-example) example showing how to use pathfinding and importing maps
-      from [Tiled Editor](https://www.mapeditor.org)
-    - [platformer](./screwbox-examples/platformer-example) a more complex example showing how to make a platformer
+### screwbox
 
+BOM to manage all library dependencies.
 
-- Use build in [Tiled Editor](https://www.mapeditor.org) support
+``` xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.srcimon</groupId>
+            <artifactId>screwbox</artifactId>
+            <version>1.0.0-RC1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
 
-    ``` xml
-    <dependency>
-        <groupId>io.github.srcimon</groupId>
-        <artifactId>screwbox-tiled</artifactId>
-        <version>1.0.0-RC1</version>
-    </dependency>
-    ```
+### screwbox-core
 
-   ``` java
-   // loading a map made with Tiled Editor
-   Map map = Map.fromJson("underworld_map.json");
-   ```
-  
-  For real code have a look at the [pathfinding example application](./screwbox-examples/pathfinding-example). 
+Adds the core functionality of the engine. Nothing more needed to make game.
 
+### screwbox-tiled
 
-- Manage ScrewBox dependencies via BOM:
+Adds support for tilesets and maps made with [Tiled Editor](https://www.mapeditor.org). For real code have a look at
+the [pathfinding example application](./screwbox-examples/pathfinding-example).
 
-    ``` xml
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.github.srcimon</groupId>
-                <artifactId>screwbox</artifactId>
-                <version>1.0.0-RC1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-   ```
+``` xml
+<dependency>
+    <groupId>io.github.srcimon</groupId>
+    <artifactId>screwbox-tiled</artifactId>
+</dependency>
+```
+
+``` java
+// loading a map made with Tiled Editor
+Map map = Map.fromJson("underworld_map.json");
+```
+
+### screwbox-examples
+
+A list of some example projects showing how to use this engine:
+
+- **[hello-world-example](./screwbox-examples/hello-world-example)** A very simplistic hello world application.
+- **[pathfinding-example](./screwbox-examples/pathfinding-example)** example showing how to use pathfinding and
+  importing maps from [Tiled Editor](https://www.mapeditor.org)
+- **[game-of-life-example](./screwbox-examples/game-of-life-example)** An interactive game of life implementation.
+- **[platformer-example](./screwbox-examples/platformer-example)** A much more complex example showing how to make a
+  platformer game with some light and reflection effects.
 
 ## Libraries used
 

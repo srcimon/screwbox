@@ -1,22 +1,24 @@
-## Changes
+## v1.0.0-RC2
 
-### 🚀 Features / Improvements
+### 🚀 Features & improvements
 
-- added new way to load a sound `Sound.fromWav(content)`
-- added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
-- added `Color.ORANGE`
-- renamed `Graphics.worldPositionOf(offset)` to `toPosition(offset)`
-- renamed `Graphics.windowPositionOf(position)` to `toOffset(position)`
+- Added new way to load a sound `Sound.fromWav(content)`
+- `Asset.load` returns boolean indicating whether loading happend or wasn't necessary
+- Added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
+- Added `Color.ORANGE`
 
-### 🪛 Fixes
+### 🪛 Bug Fixes
 
--  fixed exception when calling `Reflections.findClassesInPackage(package)` on Windows
+- Fixed exception when calling `Reflections.findClassesInPackage(package)` on Windows
 
 ### 🧽 Cleanup & refactoring
 
-- moved osx-detection to new class `MacOsSupport`
-- added tests and various small refactorings
+- Moved osx-detection to new class `MacOsSupport`
+- `Screen`, `World` and `Audio` accept `Supplier<T>` instead of `Asset<T>`
+- Renamed `Graphics` methods for offset / postion conversion to `toOffset`, `toPosition`
+- Added additional tests and various small refactorings
+- Added JavaDoc to `Archetype`
 
 ### 📦 Dependency updates
 
-- bump junit-jupiter from 5.10.0 to 5.10.1
+- Bump junit-jupiter to 5.10.1

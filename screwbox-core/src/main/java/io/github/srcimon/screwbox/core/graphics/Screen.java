@@ -2,7 +2,8 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
+
+import java.util.function.Supplier;
 
 public interface Screen {
 
@@ -47,27 +48,27 @@ public interface Screen {
         return fillCircle(offset, diameter, drawColor());
     }
 
-    Screen drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
                       Flip flip, WindowBounds clipArea);
 
-    default Screen drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity) {
+    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
     }
 
-    default Screen drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
     }
 
-    default Screen drawSprite(final Asset<Sprite> sprite, final Offset origin, final Percent opacity) {
+    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final Percent opacity) {
         return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
     }
 
-    default Screen drawSprite(final Asset<Sprite> sprite, final Offset origin) {
+    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin) {
         return drawSprite(sprite, origin, Percent.max());
     }
 
     Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-            Flip flip, WindowBounds clipArea);
+                      Flip flip, WindowBounds clipArea);
 
     default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);

@@ -21,7 +21,7 @@ public class Asset<T> implements Supplier<T> {
 
     /**
      * Creates a new {@link Asset}.
-     * 
+     *
      * @param supplier the supplier of the actual game resource.
      */
     public static <T> Asset<T> asset(final Supplier<T> supplier) {
@@ -41,15 +41,17 @@ public class Asset<T> implements Supplier<T> {
 
     /**
      * Loads the actual resource in the {@link Asset} wrapper so it can be received
-     * very fast on {@link #get()}.
+     * very fast on {@link #get()}. Returns true if the {@link Asset} was actually loaded. Returns false if the {@link Asset} has been loaded before.
      */
-    public void load() {
-        if (!isLoaded()) {
-            value = supplier.get();
-            if (!isLoaded()) {
-                throw new IllegalStateException("asset is null after loading");
-            }
+    public boolean load() {
+        if (isLoaded()) {
+            return false;
         }
+        value = supplier.get();
+        if (!isLoaded()) {
+            throw new IllegalStateException("asset is null after loading");
+        }
+        return true;
     }
 
     /**

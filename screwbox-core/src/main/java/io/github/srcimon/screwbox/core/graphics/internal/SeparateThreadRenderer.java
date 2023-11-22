@@ -2,9 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.function.Supplier;
 
 import static java.lang.Thread.currentThread;
 import static java.util.Objects.nonNull;
@@ -96,7 +96,7 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
                            Flip flip, WindowBounds clipArea) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }

@@ -2,8 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Angle;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
+
+import java.util.function.Supplier;
 
 public interface Renderer {
 
@@ -20,7 +21,7 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
                     Flip flip, WindowBounds clipArea);
 
-    void drawSprite(Asset<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
+    void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
                     WindowBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);
