@@ -1,5 +1,8 @@
 package io.github.srcimon.screwbox.core.entities;
 
+import io.github.srcimon.screwbox.core.entities.components.ReflectionComponent;
+import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,6 +10,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Describes a specific type of {@link Entity} by its {@link Component}s. E.g. an {@link Entity} containing {@link ReflectionComponent} and {@link TransformComponent}
+ * could be named 'water'. Used to search for specific {@link Entity} e.g. via {@link Entities#fetchAll(Archetype)}.
+ */
 public class Archetype implements Serializable {
 
     @Serial
@@ -15,6 +22,9 @@ public class Archetype implements Serializable {
     private final Collection<Class<? extends Component>> componentClasses;
     private final int hash;
 
+    /**
+     * Creates a new {@link Archetype}. Quite expensive. {@link Archetype}s should be stored in constants.
+     */
     @SafeVarargs
     public static Archetype of(final Class<? extends Component>... componentClasses) {
         return new Archetype(List.of(componentClasses));
@@ -51,10 +61,16 @@ public class Archetype implements Serializable {
         return names.hashCode();
     }
 
+    /**
+     * Returns true if the given {@link Entity} contains all {@link Component}s of the {@link Archetype}.
+     */
     public boolean matches(final Entity entity) {
         return entity.getComponentClasses().containsAll(componentClasses);
     }
 
+    /**
+     * Returns true if the given {@link Component} class is contained in this {@link Archetype}.
+     */
     public boolean contains(final Class<? extends Component> componentClass) {
         return componentClasses.contains(componentClass);
     }
