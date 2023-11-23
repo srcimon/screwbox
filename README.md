@@ -149,6 +149,7 @@ A list of some example projects showing how to use this engine:
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
+- [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
 
 ## Acknowledgments
 
