@@ -8,7 +8,7 @@ public class KeyboardAndMouseInteractor extends KeyboardInteractor {
     public void interactWith(final UiMenu menu, final UiLayouter layouter, final Engine engine) {
         for (final var item : menu.items()) {
             final var menuItemBounds = layouter.calculateBounds(item, menu, engine.graphics().screen());
-            if (menuItemBounds.contains(engine.mouse().position()) && item.isActive(engine)) {
+            if (menuItemBounds.contains(engine.mouse().offset()) && item.isActive(engine)) {
                 menu.selectItem(item);
                 if (engine.mouse().justClickedLeft()) {
                     item.trigger(engine);

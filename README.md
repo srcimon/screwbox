@@ -56,9 +56,9 @@ look if you want to have some fun with Java and 2d graphics.
             Engine screwBox = ScrewBox.createEngine("Hello World Example");
     
             screwBox.entities().add(engine -> {
-                Offset position = engine.mouse().position();
-                Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
-                engine.graphics().screen().drawTextCentered(position, "HELLO WORLD!", font, 4);
+                Offset offset = engine.mouse().offset();
+                Pixelfont font = Pixelfont.defaultFont();
+                engine.graphics().screen().drawTextCentered(offset, "HELLO WORLD!", font, 4);
             });
     
             screwBox.start();
@@ -150,7 +150,6 @@ A list of some example projects showing how to use this engine:
 - [ ] particle emitters
 - [ ] add menu bar
 - [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
-- [ ] Make Entity.id non optional / change type to long
 
 ## Acknowledgments
 

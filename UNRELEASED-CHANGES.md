@@ -3,6 +3,7 @@
 ### 🚀 Features & improvements
 
 - Added new way to load a sound `Sound.fromWav(content)`
+- Added `Pixelfont.defaultFont()` with white as default color
 - `Asset.load` returns boolean indicating whether loading happend or wasn't necessary
 - Added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
 - Added `Color.ORANGE`
@@ -16,6 +17,7 @@
 - Moved osx-detection to new class `MacOsSupport`
 - `Screen`, `World` and `Audio` accept `Supplier<T>` instead of `Asset<T>`
 - Renamed `Graphics` methods for offset / postion conversion to `toOffset`, `toPosition`
+- Renamed `Mouse` methods for offset / postion conversion to `position`, `offset`
 - Renamed `Timer` to `Scheduler`
 - Added additional tests and various small refactorings
 - Added JavaDoc to `Archetype`

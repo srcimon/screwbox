@@ -76,7 +76,7 @@ class DefaultMouseTest {
     }
 
     @Test
-    void position_returnsTheLatestPosition() {
+    void offset_returnsTheLatestOffset() {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151);
         when(mouseEvent.getYOnScreen()).thenReturn(242);
@@ -85,11 +85,11 @@ class DefaultMouseTest {
 
         mouse.mouseMoved(mouseEvent);
 
-        Assertions.assertThat(mouse.position()).isEqualTo(Offset.at(111, 230));
+        Assertions.assertThat(mouse.offset()).isEqualTo(Offset.at(111, 230));
     }
 
     @Test
-    void worldPosition_returnsTheLatestWorldPosition() {
+    void position_returnsTheLatestPosition() {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151, 219);
         when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
@@ -99,11 +99,11 @@ class DefaultMouseTest {
         when(graphics.toPosition(Offset.at(179, 8))).thenReturn(Vector.$(10, 30));
         mouse.mouseMoved(mouseEvent);
 
-        assertThat(mouse.worldPosition()).isEqualTo(Vector.$(40, 90));
+        assertThat(mouse.position()).isEqualTo(Vector.$(40, 90));
 
         mouse.mouseDragged(mouseEvent);
 
-        assertThat(mouse.worldPosition()).isEqualTo(Vector.$(10, 30));
+        assertThat(mouse.position()).isEqualTo(Vector.$(10, 30));
     }
 
     @Test

@@ -45,6 +45,14 @@ public class Pixelfont implements Serializable {
         return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceBlack(newColor));
     }
 
+    /**
+     * Creates a white monospace {@link Font}, containing a restricted set of characters,
+     * numbers and symbols.
+     */
+    public static Pixelfont defaultFont() {
+        return defaultFont(Color.WHITE);
+    }
+
     private static Pixelfont defaultFontBlack() {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile("default_font.png", Size.square(8));

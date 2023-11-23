@@ -11,14 +11,14 @@ import io.github.srcimon.screwbox.core.graphics.World;
 public interface Mouse {
 
     /**
-     * Returns the current mouse-position.
+     * Returns the current mouse {@link Offset} at the {@link Screen}.
      */
-    Offset position();
+    Offset offset();
 
     /**
-     * Returns the current mouse-position in the {@link World}.
+     * Returns the current mouse position in the {@link World}.
      */
-    Vector worldPosition();
+    Vector position();
 
     /**
      * Checks if the Cursor is on the {@link Screen} or not.

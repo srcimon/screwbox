@@ -36,18 +36,18 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Vector drag() {
-        final Vector current = worldPosition();
+        final Vector current = position();
         final Vector last = graphics.toPosition(lastPosition);
         return last.substract(current);
     }
 
     @Override
-    public Offset position() {
+    public Offset offset() {
         return position;
     }
 
     @Override
-    public Vector worldPosition() {
+    public Vector position() {
         return graphics.toPosition(position);
     }
 

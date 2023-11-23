@@ -8,7 +8,7 @@ public class SidebarOpacitySystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Percent opacity = Percent.of((300 - engine.mouse().position().x()) / 300.0);
+        Percent opacity = Percent.of((300 - engine.mouse().offset().x()) / 300.0);
         engine.ui().setRenderer(new SidebarRenderer(opacity));
     }
 }
