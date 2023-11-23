@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.entities.internal.DefaultEntities;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.test.EntitiesExtension;
-import io.github.srcimon.screwbox.core.utils.Timer;
+import io.github.srcimon.screwbox.core.utils.Sheduler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,8 +28,8 @@ class PathfindingGridCreationSystemTest {
     @Test
     void update_noWorldBounds_throwsException(DefaultEntities entities, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
-        Timer timer = Timer.withInterval(Duration.ofMillis(200));
-        entities.add(new PathfindingGridCreationSystem(16, timer));
+        Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
+        entities.add(new PathfindingGridCreationSystem(16, sheduler));
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalStateException.class)
@@ -39,7 +39,7 @@ class PathfindingGridCreationSystemTest {
     @Test
     void update_noGridPresent_updatesPathfindingGrid(DefaultEntities entities, Physics physics, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
-        Timer timer = Timer.withInterval(Duration.ofMillis(200));
+        Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
@@ -51,7 +51,7 @@ class PathfindingGridCreationSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        entities.add(new PathfindingGridCreationSystem(100, timer))
+        entities.add(new PathfindingGridCreationSystem(100, sheduler))
                 .add(wall)
                 .add(air)
                 .add(worldBounds);
@@ -71,12 +71,12 @@ class PathfindingGridCreationSystemTest {
     @Test
     void update_invalidGridSize_throwsException(DefaultEntities entities, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
-        Timer timer = Timer.withInterval(Duration.ofMillis(200));
+        Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
-        entities.add(new PathfindingGridCreationSystem(16, timer)).add(worldBounds);
+        entities.add(new PathfindingGridCreationSystem(16, sheduler)).add(worldBounds);
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)

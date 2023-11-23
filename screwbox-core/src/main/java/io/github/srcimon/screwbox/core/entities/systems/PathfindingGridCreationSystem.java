@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.entities.components.PathfindingBlockingComponent;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
 import io.github.srcimon.screwbox.core.entities.components.WorldBoundsComponent;
-import io.github.srcimon.screwbox.core.utils.Timer;
+import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.core.entities.*;
 
 @Order(SystemOrder.PREPARATION)
@@ -18,16 +18,16 @@ public class PathfindingGridCreationSystem implements EntitySystem {
     private static final Archetype WORLD = Archetype.of(WorldBoundsComponent.class, TransformComponent.class);
 
     private final int gridSize;
-    private final Timer updateTimer;
+    private final Sheduler updateSheduler;
 
-    public PathfindingGridCreationSystem(final int gridSize, final Timer updateTimer) {
+    public PathfindingGridCreationSystem(final int gridSize, final Sheduler updateSheduler) {
         this.gridSize = gridSize;
-        this.updateTimer = updateTimer;
+        this.updateSheduler = updateSheduler;
     }
 
     @Override
     public void update(final Engine engine) {
-        if (updateTimer.isTick(engine.loop().lastUpdate())) {
+        if (updateSheduler.isTick(engine.loop().lastUpdate())) {
             final Bounds bounds = engine.entities().forcedFetch(WORLD).get(TransformComponent.class).bounds;
 
             final Grid grid = new Grid(bounds, gridSize);
