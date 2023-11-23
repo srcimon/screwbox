@@ -5,20 +5,20 @@ import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.Grid.Node;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.utils.Timer;
+import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
 public class GridUpdateSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-    private static final Timer TIMER = Timer.withInterval(ofMillis(100));
+    private static final Sheduler SHEDULER = Sheduler.withInterval(ofMillis(100));
 
     @Override
     public void update(final Engine engine) {
         final var gridComponent = engine.entities().forcedFetch(GRID_HOLDER).get(GridComponent.class);
 
-        if (!engine.async().hasActiveTasks(gridComponent) && TIMER.isTick()) {
+        if (!engine.async().hasActiveTasks(gridComponent) && SHEDULER.isTick()) {
             engine.async().run(gridComponent, () -> update(gridComponent));
         }
     }

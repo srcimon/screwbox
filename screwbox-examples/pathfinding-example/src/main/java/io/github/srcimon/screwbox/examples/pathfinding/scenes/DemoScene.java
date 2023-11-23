@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.entities.systems.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Timer;
+import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.examples.pathfinding.components.SpriteChangeComponent;
 import io.github.srcimon.screwbox.examples.pathfinding.systems.EnemyMovementSystem;
@@ -58,7 +58,7 @@ public class DemoScene implements Scene {
                 .add(new AutomovementDebugSystem())
                 .add(new QuitOnKeyPressSystem(Key.ESCAPE))
                 .add(new LogFpsSystem())
-                .add(new PathfindingGridCreationSystem(16, Timer.withInterval(ofSeconds(1))))
+                .add(new PathfindingGridCreationSystem(16, Sheduler.withInterval(ofSeconds(1))))
                 .add(new EnemyMovementSystem())
                 .add(new SpriteChangeSystem())
                 .add(new PhysicsSystem());

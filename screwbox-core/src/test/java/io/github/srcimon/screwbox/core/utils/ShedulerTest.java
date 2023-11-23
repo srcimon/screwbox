@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TimerTest {
+class ShedulerTest {
 
-    Timer timer;
+    Sheduler sheduler;
 
     @BeforeEach
     void beforeEach() {
-        timer = Timer.withInterval(Duration.ofSeconds(5));
+        sheduler = Sheduler.withInterval(Duration.ofSeconds(5));
     }
 
     @Test
     void isTick_initialy_isTrue() {
-        boolean isTick = timer.isTick(Time.now());
+        boolean isTick = sheduler.isTick(Time.now());
 
         assertThat(isTick).isTrue();
     }
@@ -27,14 +27,14 @@ class TimerTest {
     void isTick_later_isTrueAndResetsTimer() {
         Time later = Time.now().plusSeconds(20);
 
-        assertThat(timer.isTick(later)).isTrue();
-        assertThat(timer.isTick(later)).isFalse();
+        assertThat(sheduler.isTick(later)).isTrue();
+        assertThat(sheduler.isTick(later)).isFalse();
     }
 
     @Test
     void isTick_noArgument_returnsTickStatus() {
-        assertThat(timer.isTick()).isTrue();
-        assertThat(timer.isTick()).isFalse();
+        assertThat(sheduler.isTick()).isTrue();
+        assertThat(sheduler.isTick()).isFalse();
     }
 
     @Test

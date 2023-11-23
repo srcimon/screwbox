@@ -12,7 +12,8 @@ Minimalist 2d Java game engine. Result of covid lockdown.
 ScrewBox is a personal pet project since february 2021. I use it to learn about Java and have some fun. Maybe you have a
 look if you want to have some fun with Java and 2d graphics.
 
-**[▶ Watch trailer on Youtube](https://www.youtube.com/watch?v=fg5MJDx78SQ)**
+<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/trailer-thumbnail.png"></a>
+<br/><b><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)">▶ Watch trailer on Youtube</a></b></p>
 
 ## Features
 
@@ -148,6 +149,8 @@ A list of some example projects showing how to use this engine:
 - [ ] Support for animated light
 - [ ] particle emitters
 - [ ] add menu bar
+- [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
+- [ ] Make Entity.id non optional / change type to long
 
 ## Acknowledgments
 

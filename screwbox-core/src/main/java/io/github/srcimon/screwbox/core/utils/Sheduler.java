@@ -7,38 +7,38 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import java.io.Serializable;
 
 /**
- * A simple timer to trigger timed actions.
+ * A simple sheduler to trigger timed actions.
  */
-public class Timer implements Serializable {
+public class Sheduler implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final Duration duration;
     private Time nextTick;
 
-    private Timer(final Duration duration) {
+    private Sheduler(final Duration duration) {
         this.duration = duration;
         this.nextTick = Time.unset();
     }
 
     /**
-     * Creates a new {@link Timer} with the given interval.
+     * Creates a new {@link Sheduler} with the given interval.
      */
-    public static Timer withInterval(final Duration duration) {
-        return new Timer(duration);
+    public static Sheduler withInterval(final Duration duration) {
+        return new Sheduler(duration);
     }
 
     /**
-     * Creates a new {@link Timer} with one minute interval.
+     * Creates a new {@link Sheduler} with one minute interval.
      */
-    public static Timer everyMinute() {
+    public static Sheduler everyMinute() {
         return withInterval(Duration.ofSeconds(60));
     }
 
     /**
-     * Creates a new {@link Timer} with one second interval.
+     * Creates a new {@link Sheduler} with one second interval.
      */
-    public static Timer everySecond() {
+    public static Sheduler everySecond() {
         return withInterval(Duration.ofSeconds(1));
     }
 
