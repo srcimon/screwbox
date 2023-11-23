@@ -115,8 +115,4 @@ class Lightmap {
                 fractions, colors);
     }
 
-    public List<PointLight> pointLights() {
-        return pointLights;
-    }
-
 }

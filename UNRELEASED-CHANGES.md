@@ -17,7 +17,7 @@
 - Moved osx-detection to new class `MacOsSupport`
 - `Screen`, `World` and `Audio` accept `Supplier<T>` instead of `Asset<T>`
 - Renamed `Graphics` methods for offset / postion conversion to `toOffset`, `toPosition`
-- Renamed `Mouse` methods for offset / postion conversion to `position`, `offset`
+- Renamed `Mouse` methods for current position and offset to `position`, `offset`
 - Renamed `Timer` to `Scheduler`
 - Added additional tests and various small refactorings
 - Added JavaDoc to `Archetype`
