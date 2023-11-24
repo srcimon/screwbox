@@ -9,71 +9,71 @@ import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents the {@link Angle} between two {@link Segment}s.
+ * Represents the {@link Rotation} between two {@link Segment}s.
  */
-public final class Angle implements Serializable, Comparable<Angle> {
+public final class Rotation implements Serializable, Comparable<Rotation> {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 360;
-    private static final Angle NONE = degrees(MIN_VALUE);
+    private static final Rotation NONE = degrees(MIN_VALUE);
 
     private final double degrees;
 
-    private Angle(final double degrees) {
+    private Rotation(final double degrees) {
         this.degrees = degrees % MAX_VALUE;
     }
 
     /**
-     * Creates a new {@link Angle} by the given {@link #degrees()}.
+     * Creates a new {@link Rotation} by the given {@link #degrees()}.
      */
-    public static Angle degrees(final double degrees) {
-        return new Angle(degrees);
+    public static Rotation degrees(final double degrees) {
+        return new Rotation(degrees);
     }
 
     /**
-     * Returns the {@link Angle}-value of an objects momentum. This value equals the
+     * Returns the {@link Rotation}-value of an objects momentum. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      * 
      * @see #ofMomentum(Vector)
      */
-    public static Angle ofMomentum(final double x, final double y) {
+    public static Rotation ofMomentum(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
         final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
-        return Angle.degrees(inRangeDegrees);
+        return Rotation.degrees(inRangeDegrees);
     }
 
     /**
-     * Returns the {@link Angle}-value of an objects momentum. This value equals the
+     * Returns the {@link Rotation}-value of an objects momentum. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
      * @see #ofMomentum(double, double)
      */
-    public static Angle ofMomentum(final Vector momentum) {
+    public static Rotation ofMomentum(final Vector momentum) {
         return ofMomentum(momentum.x(), momentum.y());
     }
 
     /**
-     * Creates a new {@link Angle} of zero {@link #degrees()}.
+     * Creates a new {@link Rotation} of zero {@link #degrees()}.
      */
-    public static Angle none() {
+    public static Rotation none() {
         return NONE;
     }
 
     /**
-     * Returns the radians value of this {@link Angle}.
+     * Returns the radians value of this {@link Rotation}.
      */
     public double radians() {
         return Math.toRadians(degrees);
     }
 
     /**
-     * Returns the degrees value of this {@link Angle}.
+     * Returns the degrees value of this {@link Rotation}.
      */
     public double degrees() {
         return degrees;
@@ -92,13 +92,13 @@ public final class Angle implements Serializable, Comparable<Angle> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Angle other = (Angle) obj;
+        final Rotation other = (Rotation) obj;
         return Double.doubleToLongBits(degrees) == Double.doubleToLongBits(other.degrees);
     }
 
     @Override
     public String toString() {
-        return "Angle [degrees=" + degrees + "]";
+        return "Rotation [degrees=" + degrees + "]";
     }
 
     /**
@@ -109,18 +109,18 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     /**
-     * Returns the {@link Angle} between a given {@link Segment} and a vertical line
+     * Returns the {@link Rotation} between a given {@link Segment} and a vertical line
      * from the {@link Segment#from()}.
      * 
-     * @param segment the {@link Segment} that is used to calculate the angle
+     * @param segment the {@link Segment} that is used to calculate the {@link Rotation}
      */
-    public static Angle of(final Segment segment) {
+    public static Rotation of(final Segment segment) {
         requireNonNull(segment, "segment must not be null");
         return ofMomentum(segment.to().substract(segment.from()));
     }
 
     /**
-     * Rotates the given {@link Segment} by the given {@link Angle} around
+     * Rotates the given {@link Segment} by the given {@link Rotation} around
      * {@link Segment#from()}.
      * 
      * @param segment the {@link Segment} to be rotated
@@ -139,7 +139,7 @@ public final class Angle implements Serializable, Comparable<Angle> {
     }
 
     @Override
-    public int compareTo(final Angle other) {
+    public int compareTo(final Rotation other) {
         return Double.compare(degrees, other.degrees);
     }
 }

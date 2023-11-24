@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.entities.systems;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.Entity;
@@ -20,7 +20,7 @@ public class AutoRotationSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsBodyComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.momentum.isZero()) {
-                sprite.rotation = Angle.ofMomentum(physicsBody.momentum);
+                sprite.rotation = Rotation.ofMomentum(physicsBody.momentum);
             }
         }
 

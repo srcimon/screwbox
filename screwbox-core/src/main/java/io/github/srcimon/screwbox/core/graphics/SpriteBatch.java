@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 
@@ -13,7 +13,7 @@ public class SpriteBatch {
     private final List<SpriteBatchEntry> entries = new ArrayList<>();
 
     public record SpriteBatchEntry(
-            Sprite sprite, Vector position, double scale, Percent opacity, Angle rotation, Flip flip,
+            Sprite sprite, Vector position, double scale, Percent opacity, Rotation rotation, Flip flip,
             int drawOrder)
             implements Comparable<SpriteBatchEntry> {
 
@@ -24,7 +24,7 @@ public class SpriteBatch {
     }
 
     public void addEntry(final Sprite sprite, final Vector position, final double scale, final Percent opacity,
-            final Angle rotation,
+            final Rotation rotation,
             final Flip flip,
             final int drawOrder) {
         this.entries.add(new SpriteBatchEntry(sprite, position, scale, opacity, rotation, flip, drawOrder));

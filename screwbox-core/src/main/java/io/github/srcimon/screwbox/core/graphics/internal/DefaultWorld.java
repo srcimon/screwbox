@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
@@ -82,7 +82,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
-                            final Angle rotation, final Flip flip, final Bounds clipArea) {
+                            final Rotation rotation, final Flip flip, final Bounds clipArea) {
         final var offset = toOffset(origin);
         final var windowClipArea = isNull(clipArea) ? null : toScreen(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());

@@ -90,10 +90,10 @@ class DefaultWorldTest {
         world.updateCameraPosition($(4, 2));
         world.updateCameraZoom(1.5);
 
-        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Angle.degrees(4), Flip.NONE, null);
+        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Rotation.degrees(4), Flip.NONE, null);
 
         verify(screen)
-                .drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Angle.degrees(4), Flip.NONE,
+                .drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Rotation.degrees(4), Flip.NONE,
                         null);
     }
 }

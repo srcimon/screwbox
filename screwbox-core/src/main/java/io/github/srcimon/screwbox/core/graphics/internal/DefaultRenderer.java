@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -98,7 +98,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
+                           final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
         applyOpacityConfig(opacity);
 
         final var oldClip = graphics.getClip();
@@ -184,7 +184,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                            Flip flip, ScreenBounds clipArea) {
         drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
     }

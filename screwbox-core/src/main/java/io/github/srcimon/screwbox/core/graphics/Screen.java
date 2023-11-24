@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 
 import java.util.function.Supplier;
@@ -48,38 +48,38 @@ public interface Screen {
         return fillCircle(offset, diameter, drawColor());
     }
 
-    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
 
     default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
+        return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
     }
 
-    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
     }
 
     default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
+        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), Flip.NONE, null);
     }
 
     default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin) {
         return drawSprite(sprite, origin, Percent.max());
     }
 
-    Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
 
     default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
+        return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
     }
 
-    default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation) {
+    default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation) {
         return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
     }
 
     default Screen drawSprite(final Sprite sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Angle.none(), Flip.NONE, null);
+        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), Flip.NONE, null);
     }
 
     default Screen drawSprite(final Sprite sprite, final Offset origin) {

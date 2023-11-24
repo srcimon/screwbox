@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -51,7 +51,7 @@ public class DefaultScreen implements Screen {
         for (long x = 0; x <= countX + 1; x++) {
             for (long y = 0; y <= countY + 1; y++) {
                 final Offset thisOffset = Offset.at((double) x * spriteWidth + offsetX, (double) y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Angle.none(), Flip.NONE, null);
+                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
             }
         }
         return this;
@@ -88,7 +88,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-            final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
+                             final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
     }
@@ -147,7 +147,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
-                             final Percent opacity, final Angle rotation,
+                             final Percent opacity, final Rotation rotation,
                              final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
@@ -172,7 +172,7 @@ public class DefaultScreen implements Screen {
             final Pixelfont font) {
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Angle.none(), Flip.NONE, null);
+            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }

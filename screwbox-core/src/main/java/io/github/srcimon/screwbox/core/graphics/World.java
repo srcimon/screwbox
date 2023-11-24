@@ -16,16 +16,16 @@ public interface World {
         return drawSpriteBatch(spriteBatch, null);
     }
 
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Angle rotation,
+    World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
                      Flip flip, Bounds clipArea);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
-            final Angle rotation, final Flip flip) {
+                             final Rotation rotation, final Flip flip) {
         return drawSprite(sprite, origin, 1, opacity, rotation, flip, null);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity) {
-        return drawSprite(sprite, origin, opacity, Angle.none(), Flip.NONE);
+        return drawSprite(sprite, origin, opacity, Rotation.none(), Flip.NONE);
     }
 
     default World drawSprite(final Sprite sprite, final Vector origin) {

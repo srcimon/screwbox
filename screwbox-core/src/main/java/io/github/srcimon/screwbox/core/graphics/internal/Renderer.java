@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.*;
 
@@ -18,10 +18,10 @@ public interface Renderer {
 
     void fillCircle(Offset offset, int diameter, Color color);
 
-    void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
+    void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                     Flip flip, ScreenBounds clipArea);
 
-    void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
+    void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation, Flip flip,
                     ScreenBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);

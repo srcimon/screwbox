@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
@@ -73,10 +73,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options) {
-        double minAngle = direction.degrees() - cone.degrees() / 2.0;
-        double maxAngle = direction.degrees() + cone.degrees() / 2.0;
-        addPointLight(position, options, minAngle, maxAngle);
+    public Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options) {
+        double minRotation = direction.degrees() - cone.degrees() / 2.0;
+        double maxRotation = direction.degrees() + cone.degrees() / 2.0;
+        addPointLight(position, options, minRotation, maxRotation);
 
         return this;
     }

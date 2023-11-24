@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Segment;
 import io.github.srcimon.screwbox.core.Vector;
@@ -40,7 +40,7 @@ class LightPhysics {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
-            final Segment raycast = Angle.degrees(angle).rotate(normal);
+            final Segment raycast = Rotation.degrees(angle).rotate(normal);
             Vector nearestPoint = raycast.to();
             for (final var segment : shadowCasterSegments) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);

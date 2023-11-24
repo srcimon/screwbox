@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
@@ -26,7 +26,7 @@ public interface Light {
      * @param cone      the cone size of the light
      * @param options   {@link LightOptions} of the lightsource
      */
-    Light addConeLight(Vector position, Angle direction, Angle cone, LightOptions options);
+    Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options);
 
     /**
      * Adds a pointlight to the {@link World}. Pointlights cast shadows when

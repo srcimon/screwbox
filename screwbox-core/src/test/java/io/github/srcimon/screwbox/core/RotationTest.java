@@ -9,94 +9,94 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
 import static org.assertj.core.data.Percentage.withPercentage;
 
-class AngleTest {
+class RotationTest {
 
     @Test
     void of_segmentIsNull_throwsException() {
-        assertThatThrownBy(() -> Angle.of(null))
+        assertThatThrownBy(() -> Rotation.of(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("segment must not be null");
     }
 
     @Test
-    void of_someSegment_returnsAngle() {
+    void of_someSegment_returnsRotation() {
         Segment segment = Segment.between(Vector.$(20, 10.5), Vector.$(12.1, -19));
 
-        Angle result = Angle.of(segment);
+        Rotation result = Rotation.of(segment);
 
         assertThat(result.degrees()).isEqualTo(345, offset(0.1));
     }
 
     @Test
     void ofDegrees_degreesOutOfRange_returnsNewInstance() {
-        var angle = Angle.degrees(770);
+        var rotation = Rotation.degrees(770);
 
-        assertThat(angle.degrees()).isEqualTo(50);
+        assertThat(rotation.degrees()).isEqualTo(50);
     }
 
     @Test
     void ofDegrees_degreesInRange_returnsNewInstance() {
-        var angle = Angle.degrees(359);
+        var rotation = Rotation.degrees(359);
 
-        assertThat(angle.degrees()).isEqualTo(359);
+        assertThat(rotation.degrees()).isEqualTo(359);
     }
 
     @Test
-    void isNone_noangle_isTrue() {
-        var angle = Angle.degrees(0);
+    void isNone_noRotation_isTrue() {
+        var rotation = Rotation.degrees(0);
 
-        assertThat(angle.isNone()).isTrue();
+        assertThat(rotation.isNone()).isTrue();
     }
 
     @Test
-    void isNone_someangle_isFalse() {
-        var angle = Angle.degrees(5);
+    void isNone_someRotation_isFalse() {
+        var rotation = Rotation.degrees(5);
 
-        assertThat(angle.isNone()).isFalse();
+        assertThat(rotation.isNone()).isFalse();
     }
 
     @Test
-    void equals_sameangle_isTrue() {
-        var angle = Angle.degrees(720);
-        var other = Angle.degrees(360);
+    void equals_sameRotation_isTrue() {
+        var rotation = Rotation.degrees(720);
+        var other = Rotation.degrees(360);
 
-        assertThat(angle).isEqualTo(other);
+        assertThat(rotation).isEqualTo(other);
     }
 
     @Test
-    void equals_otherangle_isFalse() {
-        var angle = Angle.degrees(269);
-        var other = Angle.degrees(100);
+    void equals_otherRotation_isFalse() {
+        var rotation = Rotation.degrees(269);
+        var other = Rotation.degrees(100);
 
-        assertThat(angle).isNotEqualTo(other);
+        assertThat(rotation).isNotEqualTo(other);
     }
 
     @Test
     void radians_returnsRadiansValue() {
-        assertThat(Angle.none().radians()).isEqualTo(0.0);
-        assertThat(Angle.degrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
+        assertThat(Rotation.none().radians()).isEqualTo(0.0);
+        assertThat(Rotation.degrees(180).radians()).isCloseTo(3.14159, withPercentage(1));
     }
 
     @ParameterizedTest
     @CsvSource({ "100,100,135", "0,100,180", "-100,0,270" })
     void ofMomentum_returnsNewInstance(double x, double y, double value) {
-        Angle angle = Angle.ofMomentum(Vector.of(x, y));
+        Rotation rotation = Rotation.ofMomentum(Vector.of(x, y));
 
-        assertThat(angle.degrees()).isEqualTo(value);
+        assertThat(rotation.degrees()).isEqualTo(value);
     }
 
     @Test
     void ofMomentum_returnsNewInstance() {
-        Angle angle = Angle.ofMomentum(10, 20);
+        Rotation rotation = Rotation.ofMomentum(10, 20);
 
-        assertThat(angle.degrees()).isCloseTo(153.4, offset(0.2));
+        assertThat(rotation.degrees()).isCloseTo(153.4, offset(0.2));
     }
 
     @Test
     void rotate_segmentNull_throwsExceptions() {
-        var angle = Angle.degrees(90);
+        var rotation = Rotation.degrees(90);
 
-        assertThatThrownBy(() -> angle.rotate(null))
+        assertThatThrownBy(() -> rotation.rotate(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("segment must not be null");
     }
@@ -110,7 +110,7 @@ class AngleTest {
     void rotate_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
         Segment input = Segment.between(Vector.zero(), Vector.$(x, y));
 
-        Segment rotated = Angle.degrees(degrees).rotate(input);
+        Segment rotated = Rotation.degrees(degrees).rotate(input);
 
         assertThat(rotated.from()).isEqualTo(Vector.zero());
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));

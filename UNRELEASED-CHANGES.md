@@ -19,6 +19,7 @@
 - Renamed `Graphics` methods for offset / postion conversion to `toOffset`, `toPosition`
 - Renamed `Mouse` methods for current position and offset to `position`, `offset`
 - Renamed `WindowBounds` to `ScreenBounds`
+- Renamed `Angle` to `Rotation`
 - Renamed `Timer` to `Scheduler`
 - Added additional tests and various small refactorings
 - Added JavaDoc to `Archetype`

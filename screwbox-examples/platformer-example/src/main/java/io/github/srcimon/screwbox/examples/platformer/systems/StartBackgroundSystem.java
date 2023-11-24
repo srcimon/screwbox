@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Angle;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -40,7 +40,7 @@ public class StartBackgroundSystem implements EntitySystem {
                 .addX((int) (xLurk.value(now) * 200))
                 .addY((int) (yLurk.value(now) * 100));
 
-        final Angle rotation = Angle.degrees(rotationLurk.value(now) * 90);
+        final Rotation rotation = Rotation.degrees(rotationLurk.value(now) * 90);
 
         final double scale = Math.abs(scaleLurk.value(now)) * 5 + 10;
         final double xCorrect = sprite.size().width() / 2.0 * scale;
