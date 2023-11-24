@@ -78,7 +78,7 @@ class RotationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "100,100,135", "0,100,180", "-100,0,270" })
+    @CsvSource({"100,100,135", "0,100,180", "-100,0,270"})
     void ofMomentum_returnsNewInstance(double x, double y, double value) {
         Rotation rotation = Rotation.ofMomentum(Vector.of(x, y));
 
@@ -93,24 +93,22 @@ class RotationTest {
     }
 
     @Test
-    void rotate_segmentNull_throwsExceptions() {
+    void applyOn_segmentNull_throwsExceptions() {
         var rotation = Rotation.degrees(90);
 
-        assertThatThrownBy(() -> rotation.rotate(null))
+        assertThatThrownBy(() -> rotation.applyOn(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("segment must not be null");
     }
 
     @ParameterizedTest
-    @CsvSource({ "10.0,0.0,0.0,10.0,90",
+    @CsvSource({"10.0,0.0,0.0,10.0,90",
             "12.4,33.9,-33.9,12.4,90",
-            "12.4,33.9,23.2,27.6,-20"
-
-    })
-    void rotate_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
+            "12.4,33.9,23.2,27.6,-20"})
+    void applyOn_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
         Segment input = Segment.between(Vector.zero(), Vector.$(x, y));
 
-        Segment rotated = Rotation.degrees(degrees).rotate(input);
+        Segment rotated = Rotation.degrees(degrees).applyOn(input);
 
         assertThat(rotated.from()).isEqualTo(Vector.zero());
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));

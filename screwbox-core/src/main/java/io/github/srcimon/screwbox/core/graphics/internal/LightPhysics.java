@@ -40,7 +40,7 @@ class LightPhysics {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
-            final Segment raycast = Rotation.degrees(angle).rotate(normal);
+            final Segment raycast = Rotation.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
             for (final var segment : shadowCasterSegments) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);

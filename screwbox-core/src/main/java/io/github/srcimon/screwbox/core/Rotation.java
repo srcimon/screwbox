@@ -126,7 +126,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * @param segment the {@link Segment} to be rotated
      * @return the rotated {@link Segment}
      */
-    public Segment rotate(final Segment segment) {
+    public Segment applyOn(final Segment segment) {
         requireNonNull(segment, "segment must not be null");
         final double radians = radians();
         final double sinus = sin(radians);
