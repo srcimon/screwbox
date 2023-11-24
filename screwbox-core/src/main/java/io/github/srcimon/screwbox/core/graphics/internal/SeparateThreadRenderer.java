@@ -68,7 +68,7 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final WindowBounds bounds, final Color color) {
+    public void fillRectangle(final ScreenBounds bounds, final Color color) {
         renderTasks.active().add(() -> next.fillRectangle(bounds, color));
     }
 
@@ -79,7 +79,7 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Angle rotation, final Flip flip, final WindowBounds clipArea) {
+                           final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
 
     }
@@ -97,7 +97,7 @@ public class SeparateThreadRenderer implements Renderer {
 
     @Override
     public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-                           Flip flip, WindowBounds clipArea) {
+                           Flip flip, ScreenBounds clipArea) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }
 

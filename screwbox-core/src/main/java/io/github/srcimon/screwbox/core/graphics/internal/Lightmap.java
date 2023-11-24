@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.WindowBounds;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
@@ -28,7 +28,7 @@ class Lightmap {
 
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
-    private final List<WindowBounds> fullBrigthnessAreas = new ArrayList<>();
+    private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
 
     public Lightmap(final Size size, final int resolution, Percent lightFade) {
         this.image = new BufferedImage(
@@ -41,7 +41,7 @@ class Lightmap {
         this.fractions = new float[]{falloffValue, 1f};
     }
 
-    public void add(final WindowBounds fullBrightnessArea) {
+    public void add(final ScreenBounds fullBrightnessArea) {
         fullBrigthnessAreas.add(fullBrightnessArea);
     }
 
@@ -53,7 +53,7 @@ class Lightmap {
         spotLights.add(spotLight);
     }
 
-    public void addFullBrightnessArea(final WindowBounds bounds) {
+    public void addFullBrightnessArea(final ScreenBounds bounds) {
         graphics.setColor(AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.BLACK));
         applyOpacityConfig(io.github.srcimon.screwbox.core.graphics.Color.BLACK);
         graphics.fillRect(bounds.offset().x() / resolution,

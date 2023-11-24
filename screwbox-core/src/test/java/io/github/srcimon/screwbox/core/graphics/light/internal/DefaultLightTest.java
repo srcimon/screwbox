@@ -72,7 +72,7 @@ class DefaultLightTest {
 
     @Test
     void render_fullBrigthnessAreaPresent_rendersImage() {
-        when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
+        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addFullBrightnessArea($$(20, 20, 50, 50));
 
         light.render();
@@ -90,7 +90,7 @@ class DefaultLightTest {
 
     @Test
     void render_pointLightAndShadowPresent_rendersImage() {
-        when(screen.isVisible(any(WindowBounds.class))).thenReturn(true);
+        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addPointLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
 

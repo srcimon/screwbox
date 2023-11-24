@@ -1,13 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.window.Window;
-
 /**
- * Defines the area on the {@link Window}.
+ * Defines the area on the {@link Screen}.
  */
-public record WindowBounds(Offset offset, Size size) {
+public record ScreenBounds(Offset offset, Size size) {
 
-    public WindowBounds(final int x, final int y, final int width, final int height) {
+    public ScreenBounds(final int x, final int y, final int width, final int height) {
         this(Offset.at(x, y), Size.of(width, height));
     }
 
@@ -19,7 +17,7 @@ public record WindowBounds(Offset offset, Size size) {
 
     /**
      * Returns {@code true} if the given {@link Offset} is within the
-     * {@link WindowBounds}.
+     * {@link ScreenBounds}.
      * 
      * @param offset the {@link Offset} that is checked
      * @return {@code true} if the {@link Offset} is within
@@ -31,7 +29,7 @@ public record WindowBounds(Offset offset, Size size) {
                 && this.offset.y() + size.height() >= offset.y();
     }
 
-    public boolean intersects(final WindowBounds other) {
+    public boolean intersects(final ScreenBounds other) {
         final var otherMinX = other.offset().x();
         final var otherMaxX = other.offset().x() + other.size().width();
         final var otherMinY = other.offset().y();

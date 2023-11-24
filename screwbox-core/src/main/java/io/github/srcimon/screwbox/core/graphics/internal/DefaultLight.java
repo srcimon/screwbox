@@ -66,7 +66,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
-            final WindowBounds bounds = world.toWindowBounds(area);
+            final ScreenBounds bounds = world.toScreen(area);
             lightmap.add(bounds);
         }
         return this;
@@ -181,7 +181,7 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return screen.isVisible(world.toWindowBounds(lightBox));
+        return screen.isVisible(world.toScreen(lightBox));
     }
 
     private void initLightmap() {

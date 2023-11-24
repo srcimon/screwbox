@@ -24,7 +24,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final WindowBounds bounds, final Color color) {
+    public void fillRectangle(final ScreenBounds bounds, final Color color) {
         // does nothing
     }
 
@@ -35,7 +35,7 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Angle rotation, final Flip flip, final WindowBounds clipArea) {
+                           final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
         // does nothing
     }
 
@@ -62,7 +62,7 @@ public class StandbyRenderer implements Renderer {
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
                            final Angle rotation,
-                           final Flip flip, final WindowBounds clipArea) {
+                           final Flip flip, final ScreenBounds clipArea) {
         // does nothing
     }
 

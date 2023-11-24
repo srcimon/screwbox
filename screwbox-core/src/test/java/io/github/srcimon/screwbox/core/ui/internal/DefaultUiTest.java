@@ -69,7 +69,7 @@ class DefaultUiTest {
         UiMenuItem firstItem = menu.addItem("some button").activeCondition(e -> activated.active())
                 .onActivate(engine -> activated.toggle());
         menu.addItem("some button");
-        WindowBounds layoutBounds = new WindowBounds(Offset.at(20, 40), Size.of(100, 20));
+        ScreenBounds layoutBounds = new ScreenBounds(Offset.at(20, 40), Size.of(100, 20));
         when(screen.isVisible(layoutBounds)).thenReturn(true);
         when(layouter.calculateBounds(firstItem, menu, screen)).thenReturn(layoutBounds);
         ui.openMenu(menu);
@@ -90,7 +90,7 @@ class DefaultUiTest {
         when(engine.graphics()).thenReturn(graphics);
         UiMenu menu = new UiMenu();
         UiMenuItem item = menu.addItem("some button");
-        WindowBounds layoutBounds = new WindowBounds(Offset.at(20, 40), Size.of(100, 20));
+        ScreenBounds layoutBounds = new ScreenBounds(Offset.at(20, 40), Size.of(100, 20));
         when(screen.isVisible(layoutBounds)).thenReturn(true);
         when(layouter.calculateBounds(item, menu, screen)).thenReturn(layoutBounds);
         ui.openMenu(menu);

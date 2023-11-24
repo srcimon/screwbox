@@ -84,7 +84,7 @@ public class DefaultWorld implements World {
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
                             final Angle rotation, final Flip flip, final Bounds clipArea) {
         final var offset = toOffset(origin);
-        final var windowClipArea = isNull(clipArea) ? null : toWindowBounds(clipArea);
+        final var windowClipArea = isNull(clipArea) ? null : toScreen(clipArea);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
         screen.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
@@ -176,10 +176,10 @@ public class DefaultWorld implements World {
         return Size.of(x, y);
     }
 
-    public WindowBounds toWindowBounds(final Bounds bounds) {
+    public ScreenBounds toScreen(final Bounds bounds) {
         final var offset = toOffset(bounds.origin());
         final var size = toDimension(bounds.size());
-        return new WindowBounds(offset, size);
+        return new ScreenBounds(offset, size);
     }
 
     public int toDistance(double distance) {

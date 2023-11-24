@@ -14,15 +14,15 @@ public interface Renderer {
 
     void fillWith(Color color);
 
-    void fillRectangle(WindowBounds bounds, Color color);
+    void fillRectangle(ScreenBounds bounds, Color color);
 
     void fillCircle(Offset offset, int diameter, Color color);
 
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-                    Flip flip, WindowBounds clipArea);
+                    Flip flip, ScreenBounds clipArea);
 
     void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation, Flip flip,
-                    WindowBounds clipArea);
+                    ScreenBounds clipArea);
 
     void drawText(Offset offset, String text, Font font, Color color);
 

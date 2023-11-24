@@ -16,7 +16,7 @@ public interface Screen {
 
     Color drawColor();
 
-    Screen fillRectangle(WindowBounds bounds, Color color);
+    Screen fillRectangle(ScreenBounds bounds, Color color);
 
     Screen fillWith(Color color);
 
@@ -26,16 +26,16 @@ public interface Screen {
         return fillWith(drawColor());
     }
 
-    default Screen fillRectangle(final WindowBounds bounds) {
+    default Screen fillRectangle(final ScreenBounds bounds) {
         return fillRectangle(bounds, drawColor());
     }
 
     default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
-        return fillRectangle(new WindowBounds(origin, size), color);
+        return fillRectangle(new ScreenBounds(origin, size), color);
     }
 
     default Screen fillRectangle(final Offset origin, final Size size) {
-        return fillRectangle(new WindowBounds(origin, size), drawColor());
+        return fillRectangle(new ScreenBounds(origin, size), drawColor());
     }
 
     Screen drawFadingCircle(Offset offset, int diameter, Color color);
@@ -49,7 +49,7 @@ public interface Screen {
     }
 
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-                      Flip flip, WindowBounds clipArea);
+                      Flip flip, ScreenBounds clipArea);
 
     default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
@@ -68,7 +68,7 @@ public interface Screen {
     }
 
     Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-                      Flip flip, WindowBounds clipArea);
+                      Flip flip, ScreenBounds clipArea);
 
     default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Angle.none(), Flip.NONE, null);
@@ -151,10 +151,10 @@ public interface Screen {
     }
 
     /**
-     * Returns {@code true} if the given {@link WindowBounds} is within the
+     * Returns {@code true} if the given {@link ScreenBounds} is within the
      * {@link Screen} area.
      */
-    boolean isVisible(WindowBounds bounds);
+    boolean isVisible(ScreenBounds bounds);
 
     /**
      * Returns {@code true} if the given {@link Offset} is within the {@link Screen}

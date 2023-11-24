@@ -98,7 +98,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Angle rotation, final Flip flip, final WindowBounds clipArea) {
+                           final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
         applyOpacityConfig(opacity);
 
         final var oldClip = graphics.getClip();
@@ -137,7 +137,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final WindowBounds bounds, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void fillRectangle(final ScreenBounds bounds, final io.github.srcimon.screwbox.core.graphics.Color color) {
         applyNewColor(color);
         graphics.fillRect(
                 bounds.offset().x(),
@@ -185,7 +185,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Angle rotation,
-                           Flip flip, WindowBounds clipArea) {
+                           Flip flip, ScreenBounds clipArea) {
         drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
     }
 

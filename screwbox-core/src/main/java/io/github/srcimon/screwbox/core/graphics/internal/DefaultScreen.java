@@ -58,7 +58,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillRectangle(final WindowBounds bounds, final Color color) {
+    public Screen fillRectangle(final ScreenBounds bounds, final Color color) {
         renderer.fillRectangle(bounds, color);
         return this;
     }
@@ -88,7 +88,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-            final Angle rotation, final Flip flip, final WindowBounds clipArea) {
+            final Angle rotation, final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
     }
@@ -124,13 +124,13 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public boolean isVisible(final WindowBounds bounds) {
-        return windowBounds().intersects(bounds);
+    public boolean isVisible(final ScreenBounds bounds) {
+        return screenBounds().intersects(bounds);
     }
 
     @Override
     public boolean isVisible(final Offset offset) {
-        return windowBounds().contains(offset);
+        return screenBounds().contains(offset);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
                              final Percent opacity, final Angle rotation,
-                             final Flip flip, final WindowBounds clipArea) {
+                             final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
         return this;
     }
@@ -183,7 +183,7 @@ public class DefaultScreen implements Screen {
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
-    private WindowBounds windowBounds() {
-        return new WindowBounds(Offset.origin(), size());
+    private ScreenBounds screenBounds() {
+        return new ScreenBounds(Offset.origin(), size());
     }
 }
