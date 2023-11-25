@@ -150,6 +150,7 @@ A list of some example projects showing how to use this engine:
 - [ ] particle emitters
 - [ ] add menu bar
 - [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
+- [ ] modular particle system with demo app [example](https://youtu.be/1CXVbCbqKyg?feature=shared)
 
 ## Acknowledgments
 
