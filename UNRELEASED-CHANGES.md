@@ -23,6 +23,7 @@
 - Renamed `Timer` to `Scheduler`
 - Added additional tests and various small refactorings
 - Added JavaDoc to `Archetype`
+- Minor performance tuning ECS
 
 ### 📦 Dependency updates
 

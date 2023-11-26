@@ -5,7 +5,10 @@ import io.github.srcimon.screwbox.core.entities.Entity;
 import io.github.srcimon.screwbox.core.entities.EntityEvent;
 import io.github.srcimon.screwbox.core.entities.EntityListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.nonNull;
 
@@ -14,9 +17,9 @@ public class EntityManager implements EntityListener {
     private final List<Entity> entities = new ArrayList<>();
     private final Map<Integer, Entity> entitiesById = new HashMap<>();
     private final Map<Archetype, List<Entity>> archetypeCache = new HashMap<>();
-    private final Set<Entity> pendingNewEntites = new HashSet<>();
-    private final Set<Entity> pendingEntityDeletions = new HashSet<>();
-    private final Set<Entity> pendingEntityCachesToRefresh = new HashSet<>();
+    private final List<Entity> pendingNewEntites = new ArrayList<>();
+    private final List<Entity> pendingEntityDeletions = new ArrayList<>();
+    private final List<Entity> pendingEntityCachesToRefresh = new ArrayList<>();
     private boolean delayChanges = false;
 
     public void addEntity(final Entity entity) {
@@ -98,8 +101,6 @@ public class EntityManager implements EntityListener {
     }
 
     public void removeEntity(final Entity entity) {
-        pendingEntityCachesToRefresh.remove(entity);
-
         if (delayChanges) {
             pendingEntityDeletions.add(entity);
         } else {
