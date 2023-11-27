@@ -1,9 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -18,13 +19,13 @@ import static java.util.Objects.nonNull;
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
-    private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
+    private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
     private final Robot robot;
     private final WindowFrame frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
-    private io.github.srcimon.screwbox.core.graphics.Color lastUsedColor;
+    private Color lastUsedColor;
 
     public DefaultRenderer(final WindowFrame frame) {
         this.frame = frame;
@@ -82,7 +83,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final io.github.srcimon.screwbox.core.graphics.Font font, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         applyNewColor(color);
         graphics.setFont(AwtMapper.toAwtFont(font));
 
@@ -90,7 +91,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawTextCentered(final Offset position, final String text, final io.github.srcimon.screwbox.core.graphics.Font font, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         final int textWidth = graphics.getFontMetrics(AwtMapper.toAwtFont(font)).stringWidth(text);
         final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
         drawText(offset, text, font, color);
@@ -137,7 +138,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final ScreenBounds bounds, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void fillRectangle(final ScreenBounds bounds, final Color color) {
         applyNewColor(color);
         graphics.fillRect(
                 bounds.offset().x(),
@@ -147,7 +148,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void fillCircle(final Offset offset, final int diameter, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void fillCircle(final Offset offset, final int diameter, final Color color) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
@@ -155,12 +156,12 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void drawLine(final Offset from, final Offset to, final Color color) {
         applyNewColor(color);
         graphics.drawLine(from.x(), from.y(), to.x(), to.y());
     }
 
-    private void applyNewColor(final io.github.srcimon.screwbox.core.graphics.Color color) {
+    private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;
             graphics.setColor(AwtMapper.toAwtColor(color));
@@ -168,7 +169,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(Offset offset, int diameter, io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void drawFadingCircle(Offset offset, int diameter, Color color) {
         var oldPaint = graphics.getPaint();
         var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
         graphics.setPaint(new RadialGradientPaint(
@@ -190,10 +191,17 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(Offset offset, int diameter, io.github.srcimon.screwbox.core.graphics.Color color) {
+    public void drawCircle(Offset offset, int diameter, Color color) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
         graphics.drawOval(x, y, diameter, diameter);
     }
+
+    @Override
+    public void drawRectangle(final Offset offset, final Size size, final Color color) {
+        applyNewColor(color);
+        graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+    }
+
 }

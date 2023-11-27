@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.utils.Latch;
 
@@ -96,8 +96,8 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                           Flip flip, ScreenBounds clipArea) {
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity, final Rotation rotation,
+                           final Flip flip, final ScreenBounds clipArea) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
     }
 
@@ -112,8 +112,13 @@ public class SeparateThreadRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(Offset offset, int diameter, Color color) {
+    public void drawCircle(final Offset offset, final int diameter, final Color color) {
         renderTasks.active().add(() -> next.drawCircle(offset, diameter, color));
+    }
+
+    @Override
+    public void drawRectangle(final Offset offset, final Size size, final Color color) {
+        renderTasks.active().add(() -> next.drawRectangle(offset, size, color));
     }
 
 }

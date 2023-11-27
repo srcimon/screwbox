@@ -165,4 +165,6 @@ public interface Screen {
     Size size();
 
     Offset center();
+
+    Screen drawRectangle(final Offset offset, final Size size, final Color color);
 }

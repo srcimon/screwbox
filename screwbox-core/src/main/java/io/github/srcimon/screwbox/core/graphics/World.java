@@ -79,4 +79,5 @@ public interface World {
 
     Bounds visibleArea();
 
+    World drawRectangle(Bounds bounds, Color color);
 }

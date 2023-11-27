@@ -119,6 +119,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawRectangle(final Offset offset, final Size size,final  Color color) {
+        renderer.drawRectangle(offset, size, color);
+        return this;
+    }
+
+    @Override
     public Size size() {
         return frame.getCanvasSize();
     }
