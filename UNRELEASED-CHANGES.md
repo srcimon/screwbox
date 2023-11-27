@@ -8,6 +8,7 @@
 - Added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
 - Added `Color.ORANGE`
 - Added methods for drawing rectangles: `World.drawRectangle()`, `Screen.drawRectangle()`
+- Added noargs contrructor to `QuitOnKeyPressSystem` (uses escape to quit)
 
 ### 🪛 Bug Fixes
 
