@@ -15,23 +15,23 @@ import java.util.concurrent.Executors;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class SeparateThreadRendererTest {
+class AsyncRendererTest {
 
     @Mock
     Renderer renderer;
 
     ExecutorService executor;
-    SeparateThreadRenderer separateThreadRenderer;
+    AsyncRenderer asyncRenderer;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        separateThreadRenderer = new SeparateThreadRenderer(renderer, executor);
+        asyncRenderer = new AsyncRenderer(renderer, executor);
     }
 
     @Test
     void applyDrawActions_noUpdate_nextRendererNotInvoked() {
-        separateThreadRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
 
         verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         verify(renderer, never()).updateScreen(anyBoolean());
@@ -39,10 +39,10 @@ class SeparateThreadRendererTest {
 
     @Test
     void applyDrawActions_update_nextRendererInvoked() {
-        separateThreadRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
-        separateThreadRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
+        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        asyncRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
 
-        separateThreadRenderer.updateScreen(true);
+        asyncRenderer.updateScreen(true);
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);

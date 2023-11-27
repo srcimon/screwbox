@@ -7,6 +7,7 @@
 - `Asset.load` returns boolean indicating whether loading happend or wasn't necessary
 - Added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
 - Added `Color.ORANGE`
+- Added methods for drawing rectangles: `World.drawRectangle()`, `Screen.drawRectangle()`
 
 ### 🪛 Bug Fixes
 
@@ -21,6 +22,7 @@
 - Renamed `WindowBounds` to `ScreenBounds`
 - Renamed `Angle` to `Rotation`
 - Renamed `Timer` to `Scheduler`
+- Renamed `SeparateThreadRender` to `AsyncRenderer`
 - Added additional tests and various small refactorings
 - Added JavaDoc to `Archetype`
 - Minor performance tuning ECS

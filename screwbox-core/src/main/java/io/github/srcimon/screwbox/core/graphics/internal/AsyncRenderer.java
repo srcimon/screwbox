@@ -16,14 +16,14 @@ import java.util.function.Supplier;
 import static java.lang.Thread.currentThread;
 import static java.util.Objects.nonNull;
 
-public class SeparateThreadRenderer implements Renderer {
+public class AsyncRenderer implements Renderer {
 
     private final Latch<List<Runnable>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
     private Future<?> currentRendering = null;
 
-    public SeparateThreadRenderer(final Renderer next, final ExecutorService executor) {
+    public AsyncRenderer(final Renderer next, final ExecutorService executor) {
         this.next = next;
         this.executor = executor;
     }
