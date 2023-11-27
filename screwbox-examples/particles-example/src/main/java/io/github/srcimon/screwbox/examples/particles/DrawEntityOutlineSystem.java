@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.examples.particles;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.EntitySystem;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
@@ -16,7 +17,7 @@ public class DrawEntityOutlineSystem implements EntitySystem {
         World world = engine.graphics().world();
         for (var entity : engine.entities().fetchAll(TRANSFORMS)) {
             var bounds = entity.get(TransformComponent.class).bounds;
-            world.drawRectangle(bounds, Color.RED);
+            world.drawRectangle(bounds, Rotation.degrees(engine.mouse().offset().x()), Color.RED);
         }
     }
 }

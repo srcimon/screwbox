@@ -97,10 +97,10 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawRectangle(final Bounds bounds, final Color color) {
+    public World drawRectangle(final Bounds bounds, final Rotation rotation, final Color color) {
         final Offset offset = toOffset(bounds.origin());
         final Size size = toDimension(bounds.size());
-        screen.drawRectangle(offset, size, color);
+        screen.drawRectangle(offset, size, rotation, color);
         return this;
     }
 

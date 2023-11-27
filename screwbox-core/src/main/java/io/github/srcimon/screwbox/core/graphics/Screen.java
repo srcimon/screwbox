@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.function.Supplier;
 
@@ -166,5 +166,9 @@ public interface Screen {
 
     Offset center();
 
-    Screen drawRectangle(final Offset offset, final Size size, final Color color);
+    Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
+
+    default Screen drawRectangle(final Offset offset, final Size size, final Color color) {
+        return drawRectangle(offset, size, Rotation.none(), color);
+    }
 }

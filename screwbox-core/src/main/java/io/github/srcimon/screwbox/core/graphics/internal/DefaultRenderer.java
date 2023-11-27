@@ -199,9 +199,19 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final Color color) {
+    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
         applyNewColor(color);
-        graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+
+        if (rotation.isNone()) {
+            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+        } else {
+            final double x = offset.x() + size.width() / 2.0;
+            final double y = offset.y() + size.height() / 2.0;
+            final double radians = rotation.radians();
+            graphics.rotate(radians, x, y);
+            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
+            graphics.rotate(-radians, x, y);
+        }
     }
 
 }

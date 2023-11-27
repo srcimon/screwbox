@@ -117,8 +117,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final Color color) {
-        renderTasks.active().add(() -> next.drawRectangle(offset, size, color));
+    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
+        renderTasks.active().add(() -> next.drawRectangle(offset, size, rotation, color));
     }
 
 }

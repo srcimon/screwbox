@@ -73,11 +73,15 @@ public interface World {
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
     default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-            final Percent opacity) {
+                                   final Percent opacity) {
         return drawTextCentered(position, text, font, opacity, 1);
     }
 
     Bounds visibleArea();
 
-    World drawRectangle(Bounds bounds, Color color);
+    World drawRectangle(Bounds bounds, Rotation rotation, Color color);
+
+    default World drawRectangle(final Bounds bounds, final Color color) {
+        return drawRectangle(bounds, Rotation.none(), color);
+    }
 }

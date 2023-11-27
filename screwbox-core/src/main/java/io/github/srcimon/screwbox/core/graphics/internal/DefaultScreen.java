@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -95,7 +95,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawTextCentered(final Offset offset, final String text, final Pixelfont font,
-            final Percent opacity, final double scale) {
+                                   final Percent opacity, final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         int totalWith = 0;
         for (final var sprite : allSprites) {
@@ -107,7 +107,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawText(final Offset offset, final String text, final Pixelfont font, final Percent opacity,
-            final double scale) {
+                           final double scale) {
         final List<Sprite> allSprites = font.spritesFor(text);
         drawTextSprites(offset, opacity, scale, allSprites, font);
         return this;
@@ -119,8 +119,8 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawRectangle(final Offset offset, final Size size,final  Color color) {
-        renderer.drawRectangle(offset, size, color);
+    public Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, Color color) {
+        renderer.drawRectangle(offset, size, rotation, color);
         return this;
     }
 
@@ -174,8 +174,8 @@ public class DefaultScreen implements Screen {
     }
 
     private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
-            final List<Sprite> allSprites,
-            final Pixelfont font) {
+                                 final List<Sprite> allSprites,
+                                 final Pixelfont font) {
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
             drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
