@@ -23,10 +23,10 @@ public final class Reflections {
         requireNonNull(packageName, "packageName must not be null");
         final List<Class<?>> clazzes = new ArrayList<>();
         for (final String resourceName : getClassResources(packageName)) {
-            final String[] splittedResource = resourceName.split(SEPARATOR);
+            final String[] splittedResource = resourceName.split(SEPARATOR.replace("\\", "\\\\"));
             final String className = splittedResource[splittedResource.length - 1];
             String packagen = packageName + resourceName
-                    .split(packageName.replace(".", SEPARATOR))[1]
+                    .split(packageName.replace(".", SEPARATOR.replace("\\", "\\\\")))[1]
                     .replace(SEPARATOR, ".")
                     .replace(className, "");
             packagen = packagen.substring(0, packagen.length() - 1);
