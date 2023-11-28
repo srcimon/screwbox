@@ -6,9 +6,9 @@
 - Added `Pixelfont.defaultFont()` with white as default color
 - `Asset.load` returns boolean indicating whether loading happend or wasn't necessary
 - Added missing keys `CONTROL`, `PAGE_DOWN`, `PAGE_UP`, `A`, to `Z`,  `F1` to `F12`
-- Added `Color.ORANGE`
 - Added mutliple methods for drawing rectangles in `World` and `Sceen`
 - Added noargs constructor to `QuitOnKeyPressSystem` (uses escape to quit)
+- Added `Color.ORANGE`
 
 ### 🪛 Bug Fixes
 

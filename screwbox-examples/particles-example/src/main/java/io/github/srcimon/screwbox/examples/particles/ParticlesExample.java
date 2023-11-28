@@ -17,8 +17,9 @@ public class ParticlesExample {
         screwBox.entities()
                 .add(new Entity()
                         .add(new TransformComponent(atPosition(0, 0, 64, 64)))
-
+                        .add(new ParticleEmitterComponent())
                 )
+                .add(new ParticleSystem())
                 .add(new LogFpsSystem())
                 .add(new QuitOnKeyPressSystem())
                 .add(new DrawEntityOutlineSystem());
