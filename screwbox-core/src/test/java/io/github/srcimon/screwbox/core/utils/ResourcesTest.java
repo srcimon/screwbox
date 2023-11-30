@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.utils;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +17,7 @@ class ResourcesTest {
     void classPathElements_returnsElementsFromClassPath() {
         List<String> elements = Resources.classPathElements();
         assertThat(elements).isNotEmpty()
-                .anyMatch(element -> element.contains("/jackson-databind/"));
+                .anyMatch(element -> element.contains(File.separator + "jackson-databind" + File.separator));
     }
 
     @Test

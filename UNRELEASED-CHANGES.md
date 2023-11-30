@@ -1,5 +1,7 @@
 ## v1.0.0-RC2
 
+Bugfixing the main issues on Windows.
+
 ### 🚀 Features & improvements
 
 - Added new way to load a sound `Sound.fromWav(content)`
@@ -13,6 +15,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed exception when calling `Reflections.findClassesInPackage(package)` on Windows
+- Fixed test case failing on Windows (#1)
 
 ### 🧽 Cleanup & refactoring
 
@@ -31,3 +34,7 @@
 ### 📦 Dependency updates
 
 - Bump junit-jupiter to 5.10.1
+
+### Contributors
+
+@myTrx
