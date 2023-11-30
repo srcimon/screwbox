@@ -152,6 +152,7 @@ A list of some example projects showing how to use this engine:
 - [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
 - [ ] modular particle system with demo app [example](https://youtu.be/1CXVbCbqKyg?feature=shared) / inspiration [here](https://dev.rbcafe.com/unity/unity-3.4.2/Documentation/Manual/Particle%20Systems.html)
 - [ ] with particle system set up: add fire to lava in level 2, replace foot smoke of player with particles
+- [ ] rename Bounds to Box and ScreenBounds to ScreenBox
 
 ## Acknowledgments
 
