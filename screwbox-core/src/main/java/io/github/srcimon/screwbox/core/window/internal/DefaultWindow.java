@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.SeparateThreadRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -107,7 +107,7 @@ public class DefaultWindow implements Window, Updatable {
         }
         executor.submit(new InitializeFontDrawingTask());
 
-        screen.setRenderer(new SeparateThreadRenderer(new DefaultRenderer(frame), executor));
+        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame), executor));
         updateCursor();
         return this;
     }

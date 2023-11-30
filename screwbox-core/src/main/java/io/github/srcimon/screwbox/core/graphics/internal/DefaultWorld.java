@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
@@ -96,6 +96,14 @@ public class DefaultWorld implements World {
         return visibleArea;
     }
 
+    @Override
+    public World drawRectangle(final Bounds bounds, final Rotation rotation, final Color color) {
+        final Offset offset = toOffset(bounds.origin());
+        final Size size = toDimension(bounds.size());
+        screen.drawRectangle(offset, size, rotation, color);
+        return this;
+    }
+
     public double cameraZoom() {
         return zoom;
     }
@@ -150,7 +158,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-            final Percent opacity, final double scale) {
+                                  final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);
         screen.drawTextCentered(offset, text, font, opacity, scale * zoom);
         return this;

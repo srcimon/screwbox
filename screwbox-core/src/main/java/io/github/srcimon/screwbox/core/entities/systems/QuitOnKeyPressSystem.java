@@ -8,6 +8,10 @@ public class QuitOnKeyPressSystem implements EntitySystem {
 
     private final Key quitKey;
 
+    public QuitOnKeyPressSystem() {
+        this(Key.ESCAPE);
+    }
+
     public QuitOnKeyPressSystem(final Key quitKey) {
         this.quitKey = quitKey;
     }

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.util.function.Supplier;
@@ -68,6 +68,11 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawCircle(final Offset offset, final int diameter, final Color color) {
+        // does nothing
+    }
+
+    @Override
+    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
         // does nothing
     }
 

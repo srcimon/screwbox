@@ -34,4 +34,5 @@ public interface Renderer {
 
     void drawCircle(Offset offset, int diameter, Color color);
 
+    void drawRectangle(Offset offset, Size size, Rotation rotation, Color color);
 }
