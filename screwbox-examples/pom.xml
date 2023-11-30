@@ -12,6 +12,5 @@
 		<module>game-of-life-example</module>
 		<module>pathfinding-example</module>
 		<module>platformer-example</module>
-        <module>particles-example</module>
     </modules>
 </project>
