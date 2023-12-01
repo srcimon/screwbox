@@ -115,7 +115,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * @param line the {@link Line} that is used to calculate the {@link Rotation}
      */
     public static Rotation of(final Line line) {
-        requireNonNull(line, "segment must not be null");
+        requireNonNull(line, "line must not be null");
         return ofMomentum(line.to().substract(line.from()));
     }
 
@@ -127,7 +127,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * @return the rotated {@link Line}
      */
     public Line applyOn(final Line line) {
-        requireNonNull(line, "segment must not be null");
+        requireNonNull(line, "line must not be null");
         final double radians = radians();
         final double sinus = sin(radians);
         final double cosinus = cos(radians);

@@ -11,10 +11,10 @@ class BordersTest {
     private static final Bounds BOX = Bounds.atPosition(10, 10, 42, 2);
 
     @Test
-    void extractSegments_ofAll_extractsAllSegments() {
-        var segments = Borders.ALL.extractSegments(BOX);
+    void extractBorders_ofAll_extractsAllBorders() {
+        var Lines = Borders.ALL.extractBorders(BOX);
 
-        assertThat(segments).containsExactly(
+        assertThat(Lines).containsExactly(
                 Line.between(BOX.origin(), BOX.topRight()),
                 Line.between(BOX.topRight(), BOX.bottomRight()),
                 Line.between(BOX.bottomRight(), BOX.bottomLeft()),
@@ -22,17 +22,17 @@ class BordersTest {
     }
 
     @Test
-    void extractSegments_ofTopOnly_extractsTopSegment() {
-        var segments = Borders.TOP_ONLY.extractSegments(BOX);
+    void extractBorders_ofTopOnly_extractsTop() {
+        var lines = Borders.TOP_ONLY.extractBorders(BOX);
 
-        assertThat(segments).containsExactly(Line.between(BOX.origin(), BOX.topRight()));
+        assertThat(lines).containsExactly(Line.between(BOX.origin(), BOX.topRight()));
     }
 
     @Test
-    void extractSegments_ofVerticalOnly_extractsVerticalSegments() {
-        var segments = Borders.VERTICAL_ONLY.extractSegments(BOX);
+    void extractBorders_ofVerticalOnly_extractsVerticals() {
+        var lines = Borders.VERTICAL_ONLY.extractBorders(BOX);
 
-        assertThat(segments).containsExactly(
+        assertThat(lines).containsExactly(
                 Line.between(BOX.topRight(), BOX.bottomRight()),
                 Line.between(BOX.bottomLeft(), BOX.origin()));
     }

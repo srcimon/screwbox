@@ -87,7 +87,7 @@ public final class Line implements Serializable, Comparable<Line> {
 
     @Override
     public String toString() {
-        return "Segment [from=" + from + ", to=" + to + "]";
+        return "Line [from=" + from + ", to=" + to + "]";
     }
 
     @Override

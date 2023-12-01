@@ -15,7 +15,7 @@ class RotationTest {
     void of_segmentIsNull_throwsException() {
         assertThatThrownBy(() -> Rotation.of(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("segment must not be null");
+                .hasMessage("line must not be null");
     }
 
     @Test
@@ -98,7 +98,7 @@ class RotationTest {
 
         assertThatThrownBy(() -> rotation.applyOn(null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("segment must not be null");
+                .hasMessage("line must not be null");
     }
 
     @ParameterizedTest
