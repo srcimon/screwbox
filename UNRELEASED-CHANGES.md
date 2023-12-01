@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Segment` to `Line`
 
 ### 📦 Dependency updates
 

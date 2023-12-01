@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Segment;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.*;
 import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
@@ -32,7 +32,7 @@ public class FollowPlayerSystem implements EntitySystem {
             var followComponent = followEntity.get(FollowPlayerComponent.class);
             final TransformComponent followTransform = followEntity.get(TransformComponent.class);
 
-            Segment lineBetweenFollowerAndPlayer = Segment.between(followTransform.bounds.position(),
+            Line lineBetweenFollowerAndPlayer = Line.between(followTransform.bounds.position(),
                     playerPosition);
             double x = MathUtil.clamp(followComponent.speed * -1,
                     lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(),

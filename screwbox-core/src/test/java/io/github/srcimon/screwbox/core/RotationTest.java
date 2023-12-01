@@ -20,9 +20,9 @@ class RotationTest {
 
     @Test
     void of_someSegment_returnsRotation() {
-        Segment segment = Segment.between(Vector.$(20, 10.5), Vector.$(12.1, -19));
+        Line line = Line.between(Vector.$(20, 10.5), Vector.$(12.1, -19));
 
-        Rotation result = Rotation.of(segment);
+        Rotation result = Rotation.of(line);
 
         assertThat(result.degrees()).isEqualTo(345, offset(0.1));
     }
@@ -106,9 +106,9 @@ class RotationTest {
             "12.4,33.9,-33.9,12.4,90",
             "12.4,33.9,23.2,27.6,-20"})
     void applyOn_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
-        Segment input = Segment.between(Vector.zero(), Vector.$(x, y));
+        Line input = Line.between(Vector.zero(), Vector.$(x, y));
 
-        Segment rotated = Rotation.degrees(degrees).applyOn(input);
+        Line rotated = Rotation.degrees(degrees).applyOn(input);
 
         assertThat(rotated.from()).isEqualTo(Vector.zero());
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));

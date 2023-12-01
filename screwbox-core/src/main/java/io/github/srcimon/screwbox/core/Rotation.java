@@ -9,7 +9,7 @@ import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents the {@link Rotation} between two {@link Segment}s.
+ * Represents the {@link Rotation} between two {@link Line}s.
  */
 public final class Rotation implements Serializable, Comparable<Rotation> {
 
@@ -109,33 +109,33 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Returns the {@link Rotation} between a given {@link Segment} and a vertical line
-     * from the {@link Segment#from()}.
+     * Returns the {@link Rotation} between a given {@link Line} and a vertical line
+     * from the {@link Line#from()}.
      * 
-     * @param segment the {@link Segment} that is used to calculate the {@link Rotation}
+     * @param line the {@link Line} that is used to calculate the {@link Rotation}
      */
-    public static Rotation of(final Segment segment) {
-        requireNonNull(segment, "segment must not be null");
-        return ofMomentum(segment.to().substract(segment.from()));
+    public static Rotation of(final Line line) {
+        requireNonNull(line, "segment must not be null");
+        return ofMomentum(line.to().substract(line.from()));
     }
 
     /**
-     * Rotates the given {@link Segment} by the given {@link Rotation} around
-     * {@link Segment#from()}.
+     * Rotates the given {@link Line} by the given {@link Rotation} around
+     * {@link Line#from()}.
      * 
-     * @param segment the {@link Segment} to be rotated
-     * @return the rotated {@link Segment}
+     * @param line the {@link Line} to be rotated
+     * @return the rotated {@link Line}
      */
-    public Segment applyOn(final Segment segment) {
-        requireNonNull(segment, "segment must not be null");
+    public Line applyOn(final Line line) {
+        requireNonNull(line, "segment must not be null");
         final double radians = radians();
         final double sinus = sin(radians);
         final double cosinus = cos(radians);
-        final Vector translated = segment.to().substract(segment.from());
-        final double xNew = translated.x() * cosinus - translated.y() * sinus + segment.from().x();
-        final double yNew = translated.x() * sinus + translated.y() * cosinus + segment.from().y();
+        final Vector translated = line.to().substract(line.from());
+        final double xNew = translated.x() * cosinus - translated.y() * sinus + line.from().x();
+        final double yNew = translated.x() * sinus + translated.y() * cosinus + line.from().y();
 
-        return Segment.between(segment.from(), Vector.$(xNew, yNew));
+        return Line.between(line.from(), Vector.$(xNew, yNew));
     }
 
     @Override

@@ -46,11 +46,11 @@ public interface World {
 
     World drawLine(Vector from, Vector to, Color color);
 
-    default World drawLine(final Segment line, final Color color) {
+    default World drawLine(final Line line, final Color color) {
         return drawLine(line.from(), line.to(), color);
     }
 
-    default World drawLine(final Segment line) {
+    default World drawLine(final Line line) {
         return drawLine(line, drawColor());
     }
 

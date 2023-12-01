@@ -49,7 +49,7 @@ class DefaultWorldTest {
     void drawColor_setsColorForDrawing() {
         when(screen.size()).thenReturn(Size.of(1024, 768));
         world.drawColor(Color.BLUE);
-        world.drawLine(Segment.between(zero(), zero()));
+        world.drawLine(Line.between(zero(), zero()));
 
         assertThat(world.drawColor()).isEqualTo(Color.BLUE);
         verify(screen).drawLine(Offset.at(512, 384), Offset.at(512, 384), Color.BLUE);

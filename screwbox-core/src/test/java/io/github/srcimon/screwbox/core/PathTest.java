@@ -68,9 +68,9 @@ class PathTest {
         Path path = Path.withNodes(createNodes(4));
 
         assertThat(path.segments()).containsExactly(
-                Segment.between(Vector.$(0, 0), Vector.$(1, 1)),
-                Segment.between(Vector.$(1, 1), Vector.$(2, 2)),
-                Segment.between(Vector.$(2, 2), Vector.$(3, 3)));
+                Line.between(Vector.$(0, 0), Vector.$(1, 1)),
+                Line.between(Vector.$(1, 1), Vector.$(2, 2)),
+                Line.between(Vector.$(2, 2), Vector.$(3, 3)));
     }
 
     private List<Vector> createNodes(int count) {

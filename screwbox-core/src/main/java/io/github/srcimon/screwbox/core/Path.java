@@ -23,10 +23,10 @@ public class Path implements Serializable {
         this.nodes = nodes;
     }
 
-    public List<Segment> segments() {
-        final var segments = new ArrayList<Segment>();
+    public List<Line> segments() {
+        final var segments = new ArrayList<Line>();
         for (int i = 0; i < nodeCount() - 1; i++) {
-            final var segment = Segment.between(nodes.get(i), nodes.get(i + 1));
+            final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
             segments.add(segment);
         }
         return segments;

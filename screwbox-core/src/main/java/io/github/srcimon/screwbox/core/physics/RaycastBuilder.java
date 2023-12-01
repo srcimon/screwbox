@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Segment;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.Archetype;
 import io.github.srcimon.screwbox.core.entities.Component;
@@ -67,7 +67,7 @@ public final class RaycastBuilder {
     }
 
     public Raycast castingTo(final Vector to) {
-        final var ray = Segment.between(from, to);
+        final var ray = Line.between(from, to);
         final List<Entity> matchingEntities = entities.fetchAll(archetype);
         return new Raycast(ray, matchingEntities, filters, borders);
     }
