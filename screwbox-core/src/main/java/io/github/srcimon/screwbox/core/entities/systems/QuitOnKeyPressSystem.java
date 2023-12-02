@@ -18,7 +18,7 @@ public class QuitOnKeyPressSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (engine.keyboard().justPressed(quitKey)) {
+        if (engine.keyboard().isPressed(quitKey)) {
             engine.stop();
         }
     }

@@ -9,10 +9,10 @@ public class DebugConfigSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        if (engine.keyboard().justPressed(Key.O)) {
+        if (engine.keyboard().isPressed(Key.O)) {
             engine.entities().toggleSystem(new PhysicsDebugSystem());
         }
-        if (engine.keyboard().justPressed(Key.L)) {
+        if (engine.keyboard().isPressed(Key.L)) {
             engine.entities().toggleSystem(new ShowFpsSystem());
             engine.loop().setTargetFps(engine.entities().isSystemPresent(ShowFpsSystem.class) ? 120 : 10000);
         }

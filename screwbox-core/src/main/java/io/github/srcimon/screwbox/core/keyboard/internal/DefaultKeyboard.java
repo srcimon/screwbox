@@ -51,7 +51,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public boolean justPressed(final Key key) {
+    public boolean isPressed(final Key key) {
         return justPressedKeys.inactive().contains(key.code());
     }
 

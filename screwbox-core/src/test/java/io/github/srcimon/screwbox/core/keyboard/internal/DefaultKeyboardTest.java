@@ -68,7 +68,7 @@ class DefaultKeyboardTest {
 
         keyboard.keyPressed(keyEvent);
 
-        assertThat(keyboard.justPressed(Key.SPACE)).isFalse();
+        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
     }
 
     @Test
@@ -79,7 +79,7 @@ class DefaultKeyboardTest {
 
         keyboard.update();
 
-        assertThat(keyboard.justPressed(Key.SPACE)).isTrue();
+        assertThat(keyboard.isPressed(Key.SPACE)).isTrue();
     }
 
 }

@@ -24,7 +24,7 @@ public class PlayerControlSystem implements EntitySystem {
         final var player = engine.entities().forcedFetch(PLAYER);
         player.get(PhysicsBodyComponent.class).momentum = determinMomemntum(engine.keyboard());
 
-        if (engine.keyboard().justPressed(Key.SPACE)) {
+        if (engine.keyboard().isPressed(Key.SPACE)) {
 
             var bomb = new Entity()
                     .add(new RenderComponent(player.get(RenderComponent.class).drawOrder - 1))

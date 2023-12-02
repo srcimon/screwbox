@@ -3,7 +3,7 @@
 
 ### 🚀 Features & improvements
 
-- ...
+- Added javadoc to `Keyboard`
 
 ### 🪛 Bug Fixes
 
@@ -13,6 +13,8 @@
 
 - Renamed generic `Entities.add()` method to specify if adding a system or an entity
 - Renamed `Segment` to `Line`
+- Renamed `Keyboard.justPressed()` to `isPressed()`
+
 
 ### 📦 Dependency updates
 
