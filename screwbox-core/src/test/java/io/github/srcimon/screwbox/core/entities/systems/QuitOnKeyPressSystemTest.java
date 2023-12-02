@@ -15,7 +15,7 @@ class QuitOnKeyPressSystemTest {
 
     @Test
     void update_quitKeyNotPressed_doesntStopEngine(Engine engine, DefaultEntities entities) {
-        entities.add(new QuitOnKeyPressSystem(Key.SPACE));
+        entities.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
         entities.update();
 
         verify(engine, never()).stop();
@@ -25,7 +25,7 @@ class QuitOnKeyPressSystemTest {
     void update_quitKeyPressed_stopsEngine(Engine engine, DefaultEntities entities, Keyboard keyboard) {
         when(keyboard.justPressed(Key.SPACE)).thenReturn(true);
 
-        entities.add(new QuitOnKeyPressSystem(Key.SPACE));
+        entities.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
         entities.update();
 
         verify(engine).stop();

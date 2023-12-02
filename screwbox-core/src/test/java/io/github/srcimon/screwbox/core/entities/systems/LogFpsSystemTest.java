@@ -22,7 +22,7 @@ class LogFpsSystemTest {
                 now().plusSeconds(-5), // no logging yet
                 now().plusSeconds(20)); // log now
 
-        entities.add(new LogFpsSystem());
+        entities.addSystem(new LogFpsSystem());
 
         entities.updateTimes(3);
 

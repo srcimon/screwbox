@@ -12,7 +12,7 @@ public class HelloWorldExample {
         Engine screwBox = ScrewBox.createEngine("Hello World Example");
 
         screwBox.entities()
-                .add(engine -> {
+                .addSystem(engine -> {
                     var screen = engine.graphics().screen();
                     screen.drawTextCentered(screen.center(), "HELLO WORLD!", defaultFont(random()), 2);
                 });

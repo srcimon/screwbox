@@ -10,7 +10,7 @@ public class StartScene implements Scene {
 
     @Override
     public void initialize(Entities entities) {
-        entities.add(new StartBackgroundSystem());
+        entities.addSystem(new StartBackgroundSystem());
     }
 
     @Override

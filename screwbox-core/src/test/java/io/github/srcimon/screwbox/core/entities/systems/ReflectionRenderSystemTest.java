@@ -51,9 +51,9 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entities.add(body)
-                .add(mirror)
-                .add(new ReflectionRenderSystem());
+        entities.addEntity(body)
+                .addEntity(mirror)
+                .addSystem(new ReflectionRenderSystem());
 
         entities.update();
 
@@ -84,9 +84,9 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(2000, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entities.add(body)
-                .add(mirror)
-                .add(new ReflectionRenderSystem());
+        entities.addEntity(body)
+                .addEntity(mirror)
+                .addSystem(new ReflectionRenderSystem());
 
         entities.update();
 
@@ -107,9 +107,9 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent(Percent.half(), true));
 
-        entities.add(body)
-                .add(mirror)
-                .add(new ReflectionRenderSystem());
+        entities.addEntity(body)
+                .addEntity(mirror)
+                .addSystem(new ReflectionRenderSystem());
 
         entities.update();
 

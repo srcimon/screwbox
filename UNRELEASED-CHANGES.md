@@ -11,6 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Renamed generic `Entities.add()` method to specify if adding a system or an entity
 - Renamed `Segment` to `Line`
 
 ### 📦 Dependency updates

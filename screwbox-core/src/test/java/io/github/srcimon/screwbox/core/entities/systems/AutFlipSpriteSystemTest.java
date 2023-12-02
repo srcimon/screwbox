@@ -33,8 +33,8 @@ class AutFlipSpriteSystemTest {
                 .add(new PhysicsBodyComponent(Vector.y(1)))
                 .add(new AutoFlipSpriteComponent());
 
-        entities.add(movingRight, movingLeftUp, movingDown)
-                .add(new AutoFlipSpriteSystem());
+        entities.addSystem(movingRight, movingLeftUp, movingDown)
+                .addSystem(new AutoFlipSpriteSystem());
 
         entities.update();
 

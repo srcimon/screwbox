@@ -45,7 +45,7 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
                     .add(new ShadowCasterComponent())
                     .add(new StaticShadowCasterMarkerComponent())
                     .add(new TransformComponent(result.get()));
-            engine.entities().add(combined);
+            engine.entities().addEntity(combined);
             first.remove(StaticShadowCasterMarkerComponent.class);
             first.remove(ShadowCasterComponent.class);
             second.remove(StaticShadowCasterMarkerComponent.class);

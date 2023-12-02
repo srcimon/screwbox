@@ -29,7 +29,7 @@ class PathfindingGridCreationSystemTest {
     void update_noWorldBounds_throwsException(DefaultEntities entities, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
-        entities.add(new PathfindingGridCreationSystem(16, sheduler));
+        entities.addSystem(new PathfindingGridCreationSystem(16, sheduler));
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalStateException.class)
@@ -51,10 +51,10 @@ class PathfindingGridCreationSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        entities.add(new PathfindingGridCreationSystem(100, sheduler))
-                .add(wall)
-                .add(air)
-                .add(worldBounds);
+        entities.addSystem(new PathfindingGridCreationSystem(100, sheduler))
+                .addEntity(wall)
+                .addEntity(air)
+                .addEntity(worldBounds);
 
         entities.update();
 
@@ -76,7 +76,7 @@ class PathfindingGridCreationSystemTest {
                 .add(new WorldBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
-        entities.add(new PathfindingGridCreationSystem(16, sheduler)).add(worldBounds);
+        entities.addSystem(new PathfindingGridCreationSystem(16, sheduler)).addEntity(worldBounds);
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)

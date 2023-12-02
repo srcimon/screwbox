@@ -60,7 +60,7 @@ public class CombineStaticCollidersSystem implements EntitySystem {
                 new StaticMarkerComponent(),
                 new TransformComponent(combined.get()));
 
-        engine.entities().add(newEntity);
+        engine.entities().addEntity(newEntity);
 
         check.collider().remove(ColliderComponent.class);
         check.collider().remove(StaticMarkerComponent.class);

@@ -13,10 +13,10 @@ public class DeadScene implements Scene {
 
     @Override
     public void initialize(Entities entities) {
-        entities.add(new Entity().add(new TextComponent("GAME OVER", "press SPACE to restart")))
-                .add(new RestartGameSystem())
-                .add(new PrintSystem())
-                .add(new BackToMenuSystem());
+        entities.addEntity(new Entity().add(new TextComponent("GAME OVER", "press SPACE to restart")))
+                .addSystem(new RestartGameSystem())
+                .addSystem(new PrintSystem())
+                .addSystem(new BackToMenuSystem());
     }
 
     @Override

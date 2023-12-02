@@ -21,14 +21,14 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public Entities add(final Entity entity) {
+    public Entities addEntity(final Entity entity) {
         requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);
         return this;
     }
 
     @Override
-    public Entities add(final EntitySystem system) {
+    public Entities addSystem(final EntitySystem system) {
         requireNonNull(system, "system must not be null");
         systemManager.addSystem(system);
         return this;
@@ -86,17 +86,17 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public Entities add(final EntitySystem... systems) {
+    public Entities addSystems(final EntitySystem... systems) {
         for (final var system : systems) {
-            add(system);
+            addSystem(system);
         }
         return this;
     }
 
     @Override
-    public Entities add(final Entity... entities) {
+    public Entities addSystem(final Entity... entities) {
         for (final var entity : entities) {
-            add(entity);
+            addEntity(entity);
         }
         return this;
     }
@@ -146,9 +146,9 @@ public class DefaultEntities implements Entities {
     }
 
     @Override
-    public Entities add(final List<Entity> entities) {
+    public Entities addEntities(final List<Entity> entities) {
         for (final var entity : entities) {
-            add(entity);
+            addEntity(entity);
         }
         return this;
     }
@@ -176,7 +176,7 @@ public class DefaultEntities implements Entities {
         if (isSystemPresent(systemClass)) {
             remove(systemClass);
         } else {
-            add(entitySystem);
+            addSystem(entitySystem);
         }
         return this;
     }

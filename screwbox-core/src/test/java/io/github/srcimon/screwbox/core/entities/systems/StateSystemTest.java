@@ -91,8 +91,8 @@ class StateSystemTest {
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entities.add(entity);
-        entities.add(new StateSystem());
+        entities.addEntity(entity);
+        entities.addSystem(new StateSystem());
 
         entities.update();
 
@@ -107,8 +107,8 @@ class StateSystemTest {
                 new CounterComponent());
 
         entities
-                .add(entity)
-                .add(new StateSystem());
+                .addEntity(entity)
+                .addSystem(new StateSystem());
 
         assertThatThrownBy(() -> entities.updateTimes(2))
                 .isInstanceOf(IllegalStateException.class)
@@ -121,8 +121,8 @@ class StateSystemTest {
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entities.add(entity);
-        entities.add(new StateSystem());
+        entities.addEntity(entity);
+        entities.addSystem(new StateSystem());
 
         entities.updateTimes(6);
 
@@ -136,8 +136,8 @@ class StateSystemTest {
                 new StateComponent(new BoringState()),
                 new CounterComponent());
 
-        entities.add(entity);
-        entities.add(new StateSystem());
+        entities.addEntity(entity);
+        entities.addSystem(new StateSystem());
 
         entities.updateTimes(6);
 

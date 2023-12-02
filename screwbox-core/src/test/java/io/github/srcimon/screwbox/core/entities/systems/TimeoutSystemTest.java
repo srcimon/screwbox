@@ -23,8 +23,8 @@ class TimeoutSystemTest {
         when(loop.lastUpdate()).thenReturn(LATER);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(NOW));
         entities
-                .add(timedOutEntity)
-                .add(new TimeoutSystem());
+                .addEntity(timedOutEntity)
+                .addSystem(new TimeoutSystem());
 
         entities.update();
 
@@ -36,8 +36,8 @@ class TimeoutSystemTest {
         when(loop.lastUpdate()).thenReturn(NOW);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(LATER));
         entities
-                .add(timedOutEntity)
-                .add(new TimeoutSystem());
+                .addEntity(timedOutEntity)
+                .addSystem(new TimeoutSystem());
 
         entities.update();
 

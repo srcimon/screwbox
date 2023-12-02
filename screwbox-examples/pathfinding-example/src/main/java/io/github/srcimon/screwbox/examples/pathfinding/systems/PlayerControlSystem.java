@@ -31,7 +31,7 @@ public class PlayerControlSystem implements EntitySystem {
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 
-            engine.entities().add(bomb);
+            engine.entities().addEntity(bomb);
         }
     }
 

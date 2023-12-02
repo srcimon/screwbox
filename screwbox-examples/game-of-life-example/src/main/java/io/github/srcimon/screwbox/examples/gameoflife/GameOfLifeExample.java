@@ -24,14 +24,14 @@ public class GameOfLifeExample {
         Engine engine = ScrewBox.createEngine("Game Of Life Example");
 
         engine.entities()
-                .add(new Entity().add(new GridComponent()))
-                .add(new GridUpdateSystem())
-                .add(new GridRenderSystem())
-                .add(new GridInteractionSystem())
-                .add(new QuitOnKeyPressSystem(Key.ESCAPE))
-                .add(new SidebarOpacitySystem())
-                .add(new LogFpsSystem())
-                .add(new CameraControlSystem());
+                .addEntity(new Entity().add(new GridComponent()))
+                .addSystem(new GridUpdateSystem())
+                .addSystem(new GridRenderSystem())
+                .addSystem(new GridInteractionSystem())
+                .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
+                .addSystem(new SidebarOpacitySystem())
+                .addSystem(new LogFpsSystem())
+                .addSystem(new CameraControlSystem());
 
         engine.graphics().configuration().setUseAntialiasing(true);
 

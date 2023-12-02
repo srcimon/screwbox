@@ -33,8 +33,8 @@ class CombineStaticShadowCastersSystemTest {
                 new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(40, 0, 20, 20)));
 
-        entities.add(brickA, brickB, brickC);
-        entities.add(new CombineStaticShadowCastersSystem());
+        entities.addSystem(brickA, brickB, brickC);
+        entities.addSystem(new CombineStaticShadowCastersSystem());
 
         entities.update(); // one brick per cycle aligned
         entities.update(); // ...and another one
@@ -47,7 +47,7 @@ class CombineStaticShadowCastersSystemTest {
 
     @Test
     void update_removesItselfAfterFinishingAllEntities(DefaultEntities entities) {
-        entities.add(new CombineStaticShadowCastersSystem());
+        entities.addSystem(new CombineStaticShadowCastersSystem());
 
         entities.update();
 

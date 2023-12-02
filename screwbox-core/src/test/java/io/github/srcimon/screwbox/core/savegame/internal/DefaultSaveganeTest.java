@@ -132,7 +132,7 @@ class DefaultSaveganeTest {
         savegame.load(SAVEGAME_NAME);
 
         verify(entities).clearEntities();
-        verify(entities).add(entitiesCaptor.capture());
+        verify(entities).addEntities(entitiesCaptor.capture());
 
         assertThat(entitiesCaptor.getValue())
                 .anyMatch(e -> e.id().get() == 1)

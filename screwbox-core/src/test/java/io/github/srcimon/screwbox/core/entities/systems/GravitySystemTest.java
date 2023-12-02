@@ -22,8 +22,8 @@ class GravitySystemTest {
         Entity body = new Entity().add(new PhysicsBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));
 
-        entities.add(body, gravity);
-        entities.add(new GravitySystem());
+        entities.addSystem(body, gravity);
+        entities.addSystem(new GravitySystem());
 
         entities.update();
 

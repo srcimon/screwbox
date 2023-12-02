@@ -37,7 +37,7 @@ public class ChangeMapSystem implements EntitySystem {
                     engine.scenes().switchTo(GameScene.class);
                 }
             } else if (engine.keyboard().justPressed(Key.SPACE) && entity.get(SignalComponent.class).isTriggered) {
-                engine.entities().add(new Entity().add(
+                engine.entities().addEntity(new Entity().add(
                         new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofMillis(3200))));
                 changeMapComponent.time = Time.now().plusSeconds(3);
             }

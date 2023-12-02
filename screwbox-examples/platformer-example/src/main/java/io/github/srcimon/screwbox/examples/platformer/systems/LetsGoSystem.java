@@ -33,7 +33,7 @@ public class LetsGoSystem implements EntitySystem {
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
-            engine.entities().add(letsGoBubble);
+            engine.entities().addEntity(letsGoBubble);
         }
 
         var delta = engine.loop().delta();
