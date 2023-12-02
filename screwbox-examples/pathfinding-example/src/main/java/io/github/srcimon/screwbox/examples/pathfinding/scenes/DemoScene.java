@@ -31,19 +31,19 @@ public class DemoScene implements Scene {
     private static final Asset<Sprite> ENEMY_STANDING = spriteAssetFromJson("enemy.json", "standing");
     private static final Asset<Sprite> ENEMY_WALKING = spriteAssetFromJson("enemy.json", "walking");
 
-    private final Asset<Map> map = asset(() -> Map.fromJson("map.json"));
+    private static final Asset<Map> MAP = asset(() -> Map.fromJson("map.json"));
 
     @Override
     public void initialize(final Entities entities) {
-        entities.importSource(map.get().tiles())
-                .usingIndex(t -> t.layer().name())
+        entities.importSource(MAP.get().tiles())
+                .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entities.importSource(map.get())
+        entities.importSource(MAP.get())
                 .as(worldBounds());
 
-        entities.importSource(map.get().objects())
+        entities.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
