@@ -63,7 +63,7 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void justPressed_sameFrame_false() {
+    void isPressed_sameFrame_false() {
         when(keyEvent.getKeyCode()).thenReturn(32);
 
         keyboard.keyPressed(keyEvent);
@@ -72,7 +72,7 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void justPressed_nextFrame_true() {
+    void isPressed_nextFrame_true() {
         when(keyEvent.getKeyCode()).thenReturn(32);
 
         keyboard.keyPressed(keyEvent);

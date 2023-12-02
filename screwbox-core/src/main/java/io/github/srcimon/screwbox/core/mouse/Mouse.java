@@ -34,31 +34,31 @@ public interface Mouse {
      * Checks if the given {@link MouseButton} was just pressed (Will be false in
      * the next frame.).
      * 
-     * @see #justClickedLeft()
-     * @see #justClickedRight()
+     * @see #clickedLeft()
+     * @see #clickedRight()
      */
-    boolean justClicked(MouseButton button);
+    boolean clicked(MouseButton button);
 
     /**
      * Checks if the left mouse button was just pressed (Will be false in the next
      * frame.).
      * 
-     * @see #justClicked(MouseButton)
-     * @see #justClickedRight()
+     * @see #clicked(MouseButton)
+     * @see #clickedRight()
      */
-    default boolean justClickedLeft() {
-        return justClicked(MouseButton.LEFT);
+    default boolean clickedLeft() {
+        return clicked(MouseButton.LEFT);
     }
 
     /**
      * Checks if the right mouse button was just pressed (Will be false in the next
      * frame.).
      * 
-     * @see #justClickedLeft()
-     * @see #justClicked(MouseButton)
+     * @see #clickedLeft()
+     * @see #clicked(MouseButton)
      */
-    default boolean justClickedRight() {
-        return justClicked(MouseButton.RIGHT);
+    default boolean clickedRight() {
+        return clicked(MouseButton.RIGHT);
     }
 
     /**

@@ -16,25 +16,25 @@ class MouseTest {
 
     @Test
     void justClickedLeft_leftClicked_true() {
-        when(mouse.justClicked(MouseButton.LEFT)).thenReturn(true);
+        when(mouse.clicked(MouseButton.LEFT)).thenReturn(true);
 
-        assertThat(mouse.justClickedLeft()).isTrue();
+        assertThat(mouse.clickedLeft()).isTrue();
     }
 
     @Test
     void justClickedLeft_notClicked_false() {
-        assertThat(mouse.justClickedLeft()).isFalse();
+        assertThat(mouse.clickedLeft()).isFalse();
     }
 
     @Test
     void justClickedRight_rightClicked_true() {
-        when(mouse.justClicked(MouseButton.RIGHT)).thenReturn(true);
+        when(mouse.clicked(MouseButton.RIGHT)).thenReturn(true);
 
-        assertThat(mouse.justClickedRight()).isTrue();
+        assertThat(mouse.clickedRight()).isTrue();
     }
 
     @Test
     void justClickedRight_notClicked_false() {
-        assertThat(mouse.justClickedRight()).isFalse();
+        assertThat(mouse.clickedRight()).isFalse();
     }
 }

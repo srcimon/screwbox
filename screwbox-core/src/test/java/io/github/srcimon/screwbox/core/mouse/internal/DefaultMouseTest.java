@@ -32,8 +32,8 @@ class DefaultMouseTest {
     DefaultMouse mouse;
 
     @Test
-    void justClicked_mouseNotPressed_isFalse() {
-        var isPressed = mouse.justClicked(MouseButton.LEFT);
+    void clicked_mouseNotPressed_isFalse() {
+        var isPressed = mouse.clicked(MouseButton.LEFT);
 
         mouse.update();
 
@@ -41,11 +41,11 @@ class DefaultMouseTest {
     }
 
     @Test
-    void justClicked_mousePressed_isTrue() {
+    void clicked_mousePressed_isTrue() {
         mouse.mousePressed(rightMouseButtonEvent());
         mouse.update();
 
-        var isPressed = mouse.justClicked(MouseButton.RIGHT);
+        var isPressed = mouse.clicked(MouseButton.RIGHT);
 
         assertThat(isPressed).isTrue();
     }

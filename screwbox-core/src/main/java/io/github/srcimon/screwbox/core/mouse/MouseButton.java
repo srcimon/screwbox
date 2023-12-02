@@ -4,7 +4,7 @@ package io.github.srcimon.screwbox.core.mouse;
  * The mouse-Buttons.
  * 
  * @see Mouse#isDown(MouseButton)
- * @see Mouse#justClicked(MouseButton)
+ * @see Mouse#clicked(MouseButton)
  *
  */
 public enum MouseButton {
