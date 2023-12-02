@@ -13,8 +13,7 @@
 
 - Renamed generic `Entities.add()` method to specify if adding a system or an entity
 - Renamed `Segment` to `Line`
-- Renamed `Keyboard.justPressed()` to `isPressed()`
-- Renamed `Mouse.justClicked()` to `clicked()`
+- Renamed some `Keyboard` and `Mouse` methods to more specific names
 
 ### 📦 Dependency updates
 
