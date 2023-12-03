@@ -116,7 +116,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public io.github.srcimon.screwbox.core.graphics.Graphics restrictZoomRangeTo(final double min, final double max) {
+    public Graphics restrictZoomRangeTo(final double min, final double max) {
         world.restrictZoomRangeTo(min, max);
         return this;
     }

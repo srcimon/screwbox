@@ -33,8 +33,8 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 20)));
 
-        entities.add(brickA, brickB, brickC);
-        entities.add(new CombineStaticCollidersSystem());
+        entities.addSystem(brickA, brickB, brickC);
+        entities.addSystem(new CombineStaticCollidersSystem());
 
         entities.update(); // one brick per cycle aligned
         entities.update(); // ...and another one
@@ -62,8 +62,8 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 40, 20, 20)));
 
-        entities.add(brickA, brickB, brickC);
-        entities.add(new CombineStaticCollidersSystem());
+        entities.addSystem(brickA, brickB, brickC);
+        entities.addSystem(new CombineStaticCollidersSystem());
 
         entities.update(); // one brick per cycle aligned
         entities.update(); // ...and another one
@@ -91,8 +91,8 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 30)));
 
-        entities.add(brickA, brickB, brickC);
-        entities.add(new CombineStaticCollidersSystem());
+        entities.addSystem(brickA, brickB, brickC);
+        entities.addSystem(new CombineStaticCollidersSystem());
 
         entities.update();
 
@@ -102,7 +102,7 @@ class CombineStaticColliderSystemTest {
 
     @Test
     void update_removesItselfAfterFinishingAllColliders(DefaultEntities entities) {
-        entities.add(new CombineStaticCollidersSystem());
+        entities.addSystem(new CombineStaticCollidersSystem());
 
         entities.update();
 

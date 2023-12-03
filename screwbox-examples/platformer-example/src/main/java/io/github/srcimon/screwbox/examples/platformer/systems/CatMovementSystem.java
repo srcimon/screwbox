@@ -62,7 +62,7 @@ public class CatMovementSystem implements EntitySystem {
                 new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
                 new NavpointComponent(state.getClass(), flipMode));
 
-        engine.entities().add(navpoint);
+        engine.entities().addEntity(navpoint);
 
         List<Entity> navpoints = engine.entities().fetchAll(NAVPOINTS);
         if (navpoints.isEmpty()) {

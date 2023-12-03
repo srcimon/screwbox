@@ -14,8 +14,8 @@ public class PauseSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().justPressed(Key.P)
-                || engine.keyboard().justPressed(Key.ESCAPE)
+        if (engine.keyboard().isPressed(Key.P)
+                || engine.keyboard().isPressed(Key.ESCAPE)
                 || !engine.window().hasFocus()) {
 
             Entity screenshotEntity = engine.entities().forcedFetch(SCREENSHOT);

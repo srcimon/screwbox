@@ -9,16 +9,16 @@ public class KeyboardInteractor implements UiInteractor {
     public void interactWith(final UiMenu menu, final UiLayouter layouter, final Engine engine) {
         final var keyboard = engine.keyboard();
 
-        if (keyboard.justPressed(Key.ARROW_DOWN)) {
+        if (keyboard.isPressed(Key.ARROW_DOWN)) {
             menu.nextItem(engine);
         }
-        if (keyboard.justPressed(Key.ARROW_UP)) {
+        if (keyboard.isPressed(Key.ARROW_UP)) {
             menu.previousItem(engine);
         }
-        if (keyboard.justPressed(Key.ENTER)) {
+        if (keyboard.isPressed(Key.ENTER)) {
             menu.selectedItem().trigger(engine);
         }
-        if (keyboard.justPressed(Key.ESCAPE)) {
+        if (keyboard.isPressed(Key.ESCAPE)) {
             menu.onExit(engine);
         }
     }

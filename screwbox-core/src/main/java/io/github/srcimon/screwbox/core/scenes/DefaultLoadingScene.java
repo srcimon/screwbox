@@ -14,7 +14,7 @@ public class DefaultLoadingScene implements Scene {
 
     @Override
     public void initialize(final Entities entities) {
-        entities.add(engine -> drawLoadingAnimation(engine.graphics().screen()));
+        entities.addSystem(engine -> drawLoadingAnimation(engine.graphics().screen()));
     }
 
     private void drawLoadingAnimation(final Screen screen) {

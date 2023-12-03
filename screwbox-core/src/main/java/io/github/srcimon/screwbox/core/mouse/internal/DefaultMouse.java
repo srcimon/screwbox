@@ -86,7 +86,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     @Override
-    public boolean justClicked(final MouseButton button) {
+    public boolean isPressed(final MouseButton button) {
         return justPressed.inactive().contains(button);
     }
 

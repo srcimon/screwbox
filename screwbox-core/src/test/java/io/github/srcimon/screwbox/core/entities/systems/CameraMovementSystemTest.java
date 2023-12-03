@@ -46,8 +46,8 @@ class CameraMovementSystemTest {
                 new TransformComponent(Bounds.atPosition(0, 0, 20000, 20000)));
 
         entities
-                .add(camera, tracked, worldBounds)
-                .add(new CameraMovementSystem());
+                .addSystem(camera, tracked, worldBounds)
+                .addSystem(new CameraMovementSystem());
 
         entities.updateTimes(50);
 

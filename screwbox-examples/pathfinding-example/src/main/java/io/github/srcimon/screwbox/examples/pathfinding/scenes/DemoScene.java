@@ -31,37 +31,37 @@ public class DemoScene implements Scene {
     private static final Asset<Sprite> ENEMY_STANDING = spriteAssetFromJson("enemy.json", "standing");
     private static final Asset<Sprite> ENEMY_WALKING = spriteAssetFromJson("enemy.json", "walking");
 
-    private final Asset<Map> map = asset(() -> Map.fromJson("map.json"));
+    private static final Asset<Map> MAP = asset(() -> Map.fromJson("map.json"));
 
     @Override
     public void initialize(final Entities entities) {
-        entities.importSource(map.get().tiles())
-                .usingIndex(t -> t.layer().name())
+        entities.importSource(MAP.get().tiles())
+                .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entities.importSource(map.get())
+        entities.importSource(MAP.get())
                 .as(worldBounds());
 
-        entities.importSource(map.get().objects())
+        entities.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
                 .when("camera").as(camera());
 
-        entities.add(new RenderSystem())
-                .add(new CameraMovementSystem())
-                .add(new StateSystem())
-                .add(new PlayerControlSystem())
-                .add(new AutoRotationSystem())
-                .add(new AutomovementSystem())
-                .add(new AutomovementDebugSystem())
-                .add(new QuitOnKeyPressSystem(Key.ESCAPE))
-                .add(new LogFpsSystem())
-                .add(new PathfindingGridCreationSystem(16, Sheduler.withInterval(ofSeconds(1))))
-                .add(new EnemyMovementSystem())
-                .add(new SpriteChangeSystem())
-                .add(new PhysicsSystem());
+        entities.addSystem(new RenderSystem())
+                .addSystem(new CameraMovementSystem())
+                .addSystem(new StateSystem())
+                .addSystem(new PlayerControlSystem())
+                .addSystem(new AutoRotationSystem())
+                .addSystem(new AutomovementSystem())
+                .addSystem(new AutomovementDebugSystem())
+                .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
+                .addSystem(new LogFpsSystem())
+                .addSystem(new PathfindingGridCreationSystem(16, Sheduler.withInterval(ofSeconds(1))))
+                .addSystem(new EnemyMovementSystem())
+                .addSystem(new SpriteChangeSystem())
+                .addSystem(new PhysicsSystem());
     }
 
     private Converter<GameObject> camera() {

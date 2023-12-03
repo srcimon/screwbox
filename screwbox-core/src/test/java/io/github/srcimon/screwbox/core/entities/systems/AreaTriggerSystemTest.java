@@ -28,8 +28,8 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
                 new StaticMarkerComponent());
 
-        entities.add(deathTrap, sheepDeterminedToDie);
-        entities.add(new AreaTriggerSystem());
+        entities.addSystem(deathTrap, sheepDeterminedToDie);
+        entities.addSystem(new AreaTriggerSystem());
 
         entities.update();
 
@@ -48,8 +48,8 @@ class AreaTriggerSystemTest {
                 new SignalComponent(),
                 new StaticMarkerComponent());
 
-        entities.add(deathTrap, birdWatchingSheepDie);
-        entities.add(new AreaTriggerSystem());
+        entities.addSystem(deathTrap, birdWatchingSheepDie);
+        entities.addSystem(new AreaTriggerSystem());
 
         entities.update();
 

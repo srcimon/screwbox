@@ -25,8 +25,8 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.add(sender, receiverA, receiverB);
-        entities.add(new RegisterToSignalSystem());
+        entities.addSystem(sender, receiverA, receiverB);
+        entities.addSystem(new RegisterToSignalSystem());
 
         entities.update();
 
@@ -39,8 +39,8 @@ class RegisterToSignalSystemTest {
         Entity receiver = new Entity(10).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.add(receiver);
-        entities.add(new RegisterToSignalSystem());
+        entities.addEntity(receiver);
+        entities.addSystem(new RegisterToSignalSystem());
 
         assertThatThrownBy(() -> entities.update())
                 .isInstanceOf(IllegalArgumentException.class)
@@ -58,8 +58,8 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.add(sender, receiverA, receiverB);
-        entities.add(new RegisterToSignalSystem());
+        entities.addSystem(sender, receiverA, receiverB);
+        entities.addSystem(new RegisterToSignalSystem());
 
         entities.updateTimes(2);
 

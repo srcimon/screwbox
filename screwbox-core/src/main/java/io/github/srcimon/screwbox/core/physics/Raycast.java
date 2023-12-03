@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.physics;
 
-import io.github.srcimon.screwbox.core.Segment;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.entities.Entity;
 import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
@@ -16,12 +16,12 @@ import static java.util.Objects.nonNull;
 
 public class Raycast {
 
-    private final Segment ray;
+    private final Line ray;
     private final List<Entity> entities;
     private final List<Predicate<Entity>> filters;
     private final Borders borders;
 
-    Raycast(final Segment ray, final List<Entity> entities, final List<Predicate<Entity>> filters,
+    Raycast(final Line ray, final List<Entity> entities, final List<Predicate<Entity>> filters,
             final Borders borders) {
         this.ray = ray;
         this.entities = entities;
@@ -78,7 +78,7 @@ public class Raycast {
 
     private List<Vector> getIntersections(final Entity entity) {
         List<Vector> intersections = new ArrayList<>();
-        for (final Segment border : borders.extractSegments(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : borders.extractBorders(entity.get(TransformComponent.class).bounds)) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
             if (nonNull(intersectionPoint)) {
                 intersections.add(intersectionPoint);
@@ -88,7 +88,7 @@ public class Raycast {
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Segment border : borders.extractSegments(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : borders.extractBorders(entity.get(TransformComponent.class).bounds)) {
             if (ray.intersects(border)) {
                 return true;
             }

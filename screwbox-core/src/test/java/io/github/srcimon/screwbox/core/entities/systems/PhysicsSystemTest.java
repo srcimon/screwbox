@@ -23,8 +23,8 @@ class PhysicsSystemTest {
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entities.add(body);
-        entities.add(new PhysicsSystem());
+        entities.addEntity(body);
+        entities.addSystem(new PhysicsSystem());
 
         entities.update();
 
@@ -47,9 +47,9 @@ class PhysicsSystemTest {
 
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 20)));
 
-        entities.add(ball, ground, gravity);
+        entities.addSystem(ball, ground, gravity);
 
-        entities.add(
+        entities.addSystems(
                 new PhysicsSystem(),
                 new GravitySystem(),
                 new CollisionSensorSystem());

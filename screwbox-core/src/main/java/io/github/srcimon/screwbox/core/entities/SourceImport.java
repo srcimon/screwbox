@@ -26,7 +26,7 @@ public final class SourceImport<T> {
             inputs.stream()
                     .filter(condition)
                     .map(converter::convert)
-                    .forEach(engine::add);
+                    .forEach(engine::addEntity);
 
             return caller;
         }
@@ -69,7 +69,7 @@ public final class SourceImport<T> {
             inputs.stream()
                     .filter(input -> matcher.apply(input).equals(index))
                     .map(converter::convert)
-                    .forEach(engine::add);
+                    .forEach(engine::addEntity);
 
             return caller;
         }
@@ -86,7 +86,7 @@ public final class SourceImport<T> {
     public SourceImport<T> as(final Converter<T> converter) {
         requireNonNull(converter, "Converter must not be null");
         for (final var input : inputs) {
-            engine.add(converter.convert(input));
+            engine.addEntity(converter.convert(input));
         }
         return this;
     }

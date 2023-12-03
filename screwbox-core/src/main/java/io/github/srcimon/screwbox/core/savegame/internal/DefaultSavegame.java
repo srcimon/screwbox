@@ -65,7 +65,7 @@ public class DefaultSavegame implements Savegame {
             try (InputStream zippedInputStream = new GZIPInputStream(inputStream)) {
                 try (ObjectInputStream objectInputStream = new ObjectInputStream(zippedInputStream)) {
                     final var allEntities = (List<Entity>) objectInputStream.readObject();
-                    entities.add(allEntities);
+                    entities.addEntities(allEntities);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

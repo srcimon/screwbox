@@ -22,7 +22,7 @@ public class LetsGoSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().justPressed(Key.Q)) {
+        if (engine.keyboard().isPressed(Key.Q)) {
             var playerCenter = engine.entities().forcedFetch(PLAYER).get(TransformComponent.class).bounds
                     .position();
             engine.audio().playEffect(LETS_GO_SOUND);
@@ -33,7 +33,7 @@ public class LetsGoSystem implements EntitySystem {
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
-            engine.entities().add(letsGoBubble);
+            engine.entities().addEntity(letsGoBubble);
         }
 
         var delta = engine.loop().delta();

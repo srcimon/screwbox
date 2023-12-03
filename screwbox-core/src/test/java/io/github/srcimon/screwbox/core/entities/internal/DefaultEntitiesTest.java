@@ -30,8 +30,8 @@ class DefaultEntitiesTest {
     }
 
     @Test
-    void add_entityNull_exception() {
-        assertThatThrownBy(() -> entities.add((Entity) null))
+    void addEntity_entityNull_exception() {
+        assertThatThrownBy(() -> entities.addEntity(null))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -50,10 +50,10 @@ class DefaultEntitiesTest {
     }
 
     @Test
-    void add_freshEntity_addsEntity() {
+    void addEntity_freshEntity_addsEntity() {
         Entity freshEntity = new Entity();
 
-        entities.add(freshEntity);
+        entities.addEntity(freshEntity);
 
         assertThat(entities.allEntities()).contains(freshEntity);
         assertThat(entities.entityCount()).isEqualTo(1);
@@ -61,7 +61,7 @@ class DefaultEntitiesTest {
 
     @Test
     void toggleSystem_systemPresent_removesSystem() {
-        entities.add(new RenderLightSystem());
+        entities.addSystem(new RenderLightSystem());
 
         entities.toggleSystem(new RenderLightSystem());
 
@@ -80,7 +80,7 @@ class DefaultEntitiesTest {
         RenderLightSystem renderLightSystem = new RenderLightSystem();
         RenderSystem renderSystem = new RenderSystem();
 
-        entities.add(renderLightSystem).add(renderSystem);
+        entities.addSystem(renderLightSystem).addSystem(renderSystem);
 
         assertThat(entities.systems()).containsExactly(renderSystem, renderLightSystem);
     }
@@ -95,7 +95,7 @@ class DefaultEntitiesTest {
     @Test
     void fetchById_idPresent_returnsEntityWithMatchingId() {
         Entity entityWithMatchingId = new Entity(149);
-        entities.add(new Entity(20)).add(entityWithMatchingId);
+        entities.addEntity(new Entity(20)).addEntity(entityWithMatchingId);
 
         Optional<Entity> entity = entities.fetchById(149);
 

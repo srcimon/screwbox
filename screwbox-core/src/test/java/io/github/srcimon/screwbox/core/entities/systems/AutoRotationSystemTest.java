@@ -23,8 +23,8 @@ class AutoRotationSystemTest {
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entities.add(body)
-                .add(new AutoRotationSystem());
+        entities.addEntity(body)
+                .addSystem(new AutoRotationSystem());
 
         entities.update();
 
@@ -39,8 +39,8 @@ class AutoRotationSystemTest {
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.zero()));
 
-        entities.add(body)
-                .add(new AutoRotationSystem());
+        entities.addEntity(body)
+                .addSystem(new AutoRotationSystem());
 
         entities.update();
 

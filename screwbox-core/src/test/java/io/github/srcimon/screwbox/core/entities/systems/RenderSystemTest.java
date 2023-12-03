@@ -31,20 +31,20 @@ class RenderSystemTest {
         Sprite visibleForegroundsSprite = Sprite.invisible();
         Sprite outOfBoundsSprite = Sprite.invisible();
 
-        entities.add(new Entity()
+        entities.addEntity(new Entity()
                 .add(new RenderComponent(visibleBackgroundSprite, 2))
                 .add(new TransformComponent($$(100, 100, 32, 32))));
 
-        entities.add(new Entity()
+        entities.addEntity(new Entity()
                 .add(new RenderComponent(visibleForegroundsSprite, 1))
                 .add(new TransformComponent($$(50, 50, 32, 32))));
 
-        entities.add(new Entity()
+        entities.addEntity(new Entity()
                 .add(new RenderComponent(outOfBoundsSprite))
                 .add(new TransformComponent($$(400, 100, 32, 32))));
 
         Mockito.when(world.visibleArea()).thenReturn($$(0, 0, 200, 200));
-        entities.add(new RenderSystem());
+        entities.addSystem(new RenderSystem());
 
         entities.update();
 

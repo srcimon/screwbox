@@ -158,7 +158,7 @@ public final class Bounds implements Serializable {
     }
 
     /**
-     * Same as {@link #inflated(double)} but only inflates the top {@link Segment}
+     * Same as {@link #inflated(double)} but only inflates the top {@link Line}
      * of the {@link Bounds}.
      */
     public Bounds inflatedTop(final int value) {

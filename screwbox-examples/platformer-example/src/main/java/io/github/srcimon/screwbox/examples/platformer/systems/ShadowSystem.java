@@ -35,7 +35,7 @@ public class ShadowSystem implements EntitySystem {
                     new TransformComponent(bounds),
                     new RenderComponent(SHADOW, drawOrder),
                     new ShadowComponent(shadowCaster.id().orElseThrow()));
-            engine.entities().add(shadow);
+            engine.entities().addEntity(shadow);
             shadowCaster.remove(CastShadowComponent.class);
         }
 

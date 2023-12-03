@@ -22,8 +22,8 @@ class FadeOutSystemTest {
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new RenderComponent(1));
 
-        entities.add(smoke);
-        entities.add(new FadeOutSystem());
+        entities.addEntity(smoke);
+        entities.addSystem(new FadeOutSystem());
 
         entities.update();
 
@@ -37,8 +37,8 @@ class FadeOutSystemTest {
 
         Entity smoke = new Entity().add(new FadeOutComponent(1), new RenderComponent(1));
 
-        entities.add(smoke);
-        entities.add(new FadeOutSystem());
+        entities.addEntity(smoke);
+        entities.addSystem(new FadeOutSystem());
 
         entities.updateTimes(3);
 

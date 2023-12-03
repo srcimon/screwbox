@@ -63,23 +63,23 @@ class DefaultKeyboardTest {
     }
 
     @Test
-    void justPressed_sameFrame_false() {
+    void isPressed_sameFrame_false() {
         when(keyEvent.getKeyCode()).thenReturn(32);
 
         keyboard.keyPressed(keyEvent);
 
-        assertThat(keyboard.justPressed(Key.SPACE)).isFalse();
+        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
     }
 
     @Test
-    void justPressed_nextFrame_true() {
+    void isPressed_nextFrame_true() {
         when(keyEvent.getKeyCode()).thenReturn(32);
 
         keyboard.keyPressed(keyEvent);
 
         keyboard.update();
 
-        assertThat(keyboard.justPressed(Key.SPACE)).isTrue();
+        assertThat(keyboard.isPressed(Key.SPACE)).isTrue();
     }
 
 }

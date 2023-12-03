@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Segment;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
@@ -34,15 +34,15 @@ class LightPhysics {
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final List<Vector> area = new ArrayList<>();
-        final Segment normal = Segment.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
-        final List<Segment> shadowCasterSegments = getSegmentsOf(relevantShadowCasters);
+        final Line normal = Line.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
+        final List<Line> shadowCasterLines = getSegmentsOf(relevantShadowCasters);
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
-            final Segment raycast = Rotation.degrees(angle).applyOn(normal);
+            final Line raycast = Rotation.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
-            for (final var segment : shadowCasterSegments) {
+            for (final var segment : shadowCasterLines) {
                 final Vector intersectionPoint = segment.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
                         && intersectionPoint.distanceTo(lightBox.position()) < nearestPoint
@@ -55,12 +55,12 @@ class LightPhysics {
         return area;
     }
 
-    private List<Segment> getSegmentsOf(final List<Bounds> allBounds) {
-        final List<Segment> allSegments = new ArrayList<>();
+    private List<Line> getSegmentsOf(final List<Bounds> allBounds) {
+        final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
-            ListUtil.addAll(allSegments, Borders.ALL.extractSegments(bounds));
+            ListUtil.addAll(allLines, Borders.ALL.extractBorders(bounds));
         }
-        return allSegments;
+        return allLines;
     }
 
     public boolean isCoveredByShadowCasters(final Vector position) {

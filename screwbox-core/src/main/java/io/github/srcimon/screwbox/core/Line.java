@@ -4,9 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * Defines the {@link Segment} between two {@link Vector}s.
+ * Defines the {@link Line} between two {@link Vector}s.
  */
-public final class Segment implements Serializable, Comparable<Segment> {
+public final class Line implements Serializable, Comparable<Line> {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -15,47 +15,47 @@ public final class Segment implements Serializable, Comparable<Segment> {
     private final Vector to;
 
     /**
-     * Creates a new instance of {@link Segment} defined by the two endpoints.
+     * Creates a new instance of {@link Line} defined by the two endpoints.
      */
-    public static Segment between(final Vector from, final Vector to) {
-        return new Segment(from, to);
+    public static Line between(final Vector from, final Vector to) {
+        return new Line(from, to);
     }
 
-    private Segment(final Vector from, final Vector to) {
+    private Line(final Vector from, final Vector to) {
         this.from = from;
         this.to = to;
     }
 
     /**
-     * The starting point of the {@link Segment}.
+     * The starting point of the {@link Line}.
      */
     public Vector from() {
         return from;
     }
 
     /**
-     * The endpoint of the {@link Segment}.
+     * The endpoint of the {@link Line}.
      */
     public Vector to() {
         return to;
     }
 
     /**
-     * Checks if the two given {@link Segment}s intersect each other.
+     * Checks if the two given {@link Line}s intersect each other.
      *
-     * @see Segment#intersectionPoint(Segment)
+     * @see Line#intersectionPoint(Line)
      */
-    public boolean intersects(final Segment other) {
+    public boolean intersects(final Line other) {
         return intersectionPoint(other) != null;
     }
 
     /**
-     * Returns the intersection Point of this and the other {@link Segment}. Returns
+     * Returns the intersection Point of this and the other {@link Line}. Returns
      * null if there is no intersection.
      *
-     * @see Segment#intersects(Segment)
+     * @see Line#intersects(Line)
      */
-    public Vector intersectionPoint(final Segment other) {
+    public Vector intersectionPoint(final Line other) {
         final double xDelta = to.x() - from.x();
         final double yDelta = to.y() - from.y();
         final double fromToXDelta = other.to.x() - other.from.x();
@@ -87,7 +87,7 @@ public final class Segment implements Serializable, Comparable<Segment> {
 
     @Override
     public String toString() {
-        return "Segment [from=" + from + ", to=" + to + "]";
+        return "Line [from=" + from + ", to=" + to + "]";
     }
 
     @Override
@@ -107,7 +107,7 @@ public final class Segment implements Serializable, Comparable<Segment> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final Segment other = (Segment) obj;
+        final Line other = (Line) obj;
         if (from == null) {
             if (other.from != null)
                 return false;
@@ -126,7 +126,7 @@ public final class Segment implements Serializable, Comparable<Segment> {
     }
 
     @Override
-    public int compareTo(final Segment other) {
+    public int compareTo(final Line other) {
         return Double.compare(length(), other.length());
     }
 

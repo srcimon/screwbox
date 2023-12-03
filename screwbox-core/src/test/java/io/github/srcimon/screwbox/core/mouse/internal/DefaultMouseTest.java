@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,8 +31,8 @@ class DefaultMouseTest {
     DefaultMouse mouse;
 
     @Test
-    void justClicked_mouseNotPressed_isFalse() {
-        var isPressed = mouse.justClicked(MouseButton.LEFT);
+    void isPressed_mouseNotPressed_isFalse() {
+        var isPressed = mouse.isPressed(MouseButton.LEFT);
 
         mouse.update();
 
@@ -41,11 +40,11 @@ class DefaultMouseTest {
     }
 
     @Test
-    void justClicked_mousePressed_isTrue() {
+    void isPressed_mousePressed_isTrue() {
         mouse.mousePressed(rightMouseButtonEvent());
         mouse.update();
 
-        var isPressed = mouse.justClicked(MouseButton.RIGHT);
+        var isPressed = mouse.isPressed(MouseButton.RIGHT);
 
         assertThat(isPressed).isTrue();
     }
@@ -85,7 +84,7 @@ class DefaultMouseTest {
 
         mouse.mouseMoved(mouseEvent);
 
-        Assertions.assertThat(mouse.offset()).isEqualTo(Offset.at(111, 230));
+        assertThat(mouse.offset()).isEqualTo(Offset.at(111, 230));
     }
 
     @Test

@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface Entities {
 
-    Entities add(Entity entity);
+    Entities addEntity(Entity entity);
 
-    Entities add(List<Entity> entities);
+    Entities addEntities(List<Entity> entities);
 
-    Entities add(EntitySystem system);
+    Entities addSystem(EntitySystem system);
 
-    Entities add(EntitySystem... systems);
+    Entities addSystems(EntitySystem... systems);
 
     List<Entity> fetchAll(Archetype archetype);
 
@@ -64,7 +64,7 @@ public interface Entities {
 
     boolean contains(Archetype archetype);
 
-    Entities add(Entity... entities);
+    Entities addSystem(Entity... entities);
 
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 

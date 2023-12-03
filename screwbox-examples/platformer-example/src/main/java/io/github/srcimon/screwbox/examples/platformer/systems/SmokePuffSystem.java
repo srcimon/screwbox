@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
                     new RenderComponent(randomFrom(SPRITES.get().all()), order)
 
             );
-            engine.entities().add(smokePuff);
+            engine.entities().addEntity(smokePuff);
         }
     }
 }
