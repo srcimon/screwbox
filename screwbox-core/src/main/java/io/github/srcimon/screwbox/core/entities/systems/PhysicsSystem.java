@@ -31,21 +31,25 @@ public class PhysicsSystem implements EntitySystem {
             transform.bounds = transform.bounds.moveBy(momentum);
 
             if (!physicsBody.ignoreCollisions) {
-                final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
-                for (final var collider : colliders) {
-                    if (entity != collider) {
-                        final CollisionCheck check = new CollisionCheck(entity, collider);
-                        if (check.bodiesIntersect() && check.isNoOneWayFalsePositive()) {
-                            collisionPairs.add(check);
-                        }
-                    }
+                applyCollisions(entity, colliders, factor);
+            }
+        }
+    }
+
+    private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
+        final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
+        for (final var collider : colliders) {
+            if (entity != collider) {
+                final CollisionCheck check = new CollisionCheck(entity, collider);
+                if (check.bodiesIntersect() && check.isNoOneWayFalsePositive()) {
+                    collisionPairs.add(check);
                 }
-                Collections.sort(collisionPairs);
-                for (final var collisionPair : collisionPairs) {
-                    if (collisionPair.bodiesIntersect()) {
-                        CollisionResolver.resolveCollision(collisionPair, factor);
-                    }
-                }
+            }
+        }
+        Collections.sort(collisionPairs);
+        for (final var collisionPair : collisionPairs) {
+            if (collisionPair.bodiesIntersect()) {
+                CollisionResolver.resolveCollision(collisionPair, factor);
             }
         }
     }
