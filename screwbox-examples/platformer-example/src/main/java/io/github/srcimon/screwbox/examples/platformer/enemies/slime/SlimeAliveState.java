@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.examples.platformer.enemies.slime;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntityState;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntityState;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 

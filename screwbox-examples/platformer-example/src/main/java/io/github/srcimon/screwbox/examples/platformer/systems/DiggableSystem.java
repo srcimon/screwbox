@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.*;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.*;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggingComponent;
@@ -24,7 +24,7 @@ public class DiggableSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (final var digging : engine.entities().fetchAll(DIGGINGS)) {
+        for (final var digging : engine.ecosphere().fetchAll(DIGGINGS)) {
             var diggingBody = digging.get(TransformComponent.class);
             Optional<Entity> hitEntity = engine.physics().raycastFrom(diggingBody.bounds.position())
                     .checkingFor(DIGGABLES)

@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.gameoflife.grid;
 
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.Grid.Node;
-import io.github.srcimon.screwbox.core.entities.Component;
+import io.github.srcimon.screwbox.core.ecosphere.Component;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 

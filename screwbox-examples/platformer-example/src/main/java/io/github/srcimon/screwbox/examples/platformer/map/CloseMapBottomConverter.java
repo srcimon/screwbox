@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.examples.platformer.map;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.ecosphere.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.tiled.Map;
 
 public class CloseMapBottomConverter implements Converter<Map> {

@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntityState;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntityState;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;

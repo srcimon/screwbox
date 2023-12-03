@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +24,18 @@ import static org.mockito.Mockito.when;
 class RaycastTest {
 
     @Mock
-    private Entities entities;
+    private Ecosphere ecosphere;
 
     private RaycastBuilder raycastBuilder;
 
     @BeforeEach
     void beforeEach() {
-        raycastBuilder = new RaycastBuilder(entities, Vector.zero());
+        raycastBuilder = new RaycastBuilder(ecosphere, Vector.zero());
     }
 
     @Test
     void hasHit_rayIntersectsBox_isTrue() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(50, 0)));
 
         var result = raycastBuilder
@@ -47,7 +47,7 @@ class RaycastTest {
 
     @Test
     void hasHit_checkingForNotCrossedBorders_isFalse() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(50, 0)));
 
         var result = raycastBuilder
@@ -69,7 +69,7 @@ class RaycastTest {
         Entity ignoredBecauseOfComponent = boxAt(0, 200).add(new RenderComponent(0));
         Entity ignoredBecauseNotInBounds = boxAt(0, 600);
 
-        when(entities.fetchAll(physicsEntites)).thenReturn(List.of(
+        when(ecosphere.fetchAll(physicsEntites)).thenReturn(List.of(
                 ignoredBecauseOfComponent,
                 foundA,
                 ignoredEntity,
@@ -91,7 +91,7 @@ class RaycastTest {
 
     @Test
     void findHits_multipleHits_returnsAllHits() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
                 boxAt(0, 150),
                 boxAt(0, 250)));
@@ -105,7 +105,7 @@ class RaycastTest {
     }
     @Test
     void nearestHit_multipleHits_returnsNearestHitPosition() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
                 boxAt(0, 150),
                 boxAt(0, 250)));
@@ -120,7 +120,7 @@ class RaycastTest {
 
     @Test
     void selectAnyEntity_noHit_isEmpty() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 50),
                 boxAt(0, 150),
                 boxAt(0, 250)));
@@ -135,7 +135,7 @@ class RaycastTest {
 
     @Test
     void selectAnyEntity_multiplePossibleHits_returnsAnyOfHits() {
-        when(entities.fetchAll(defaultArchetype())).thenReturn(List.of(
+        when(ecosphere.fetchAll(defaultArchetype())).thenReturn(List.of(
                 boxAt(0, 30),
                 boxAt(0, 50),
                 boxAt(0, 40)));

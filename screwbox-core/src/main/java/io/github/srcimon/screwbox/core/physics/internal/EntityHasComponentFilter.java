@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.physics.internal;
 
-import io.github.srcimon.screwbox.core.entities.Component;
-import io.github.srcimon.screwbox.core.entities.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.Component;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
 
 import java.util.function.Predicate;
 

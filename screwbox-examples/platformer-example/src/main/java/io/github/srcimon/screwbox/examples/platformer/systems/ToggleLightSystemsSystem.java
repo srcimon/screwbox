@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.systems.RenderLightSystem;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.systems.RenderLightSystem;
 import io.github.srcimon.screwbox.examples.platformer.components.UseLightComponent;
 
 public class ToggleLightSystemsSystem implements EntitySystem {
@@ -13,11 +13,11 @@ public class ToggleLightSystemsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity worldInformation = engine.entities().forcedFetch(WORLD_INFORMATION);
-        boolean isCurrentlyActive = engine.entities().isSystemPresent(RenderLightSystem.class);
+        Entity worldInformation = engine.ecosphere().forcedFetch(WORLD_INFORMATION);
+        boolean isCurrentlyActive = engine.ecosphere().isSystemPresent(RenderLightSystem.class);
 
         if (worldInformation.get(UseLightComponent.class).useLight != isCurrentlyActive) {
-            engine.entities().toggleSystem(new RenderLightSystem());
+            engine.ecosphere().toggleSystem(new RenderLightSystem());
         }
     }
 }

@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
-import io.github.srcimon.screwbox.core.entities.Entities;
+import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.internal.*;
@@ -155,7 +155,7 @@ class DefaultEngine implements Engine {
     }
 
     @Override
-    public Entities entities() {
+    public Ecosphere ecosphere() {
         return scenes.activeEntities();
     }
 

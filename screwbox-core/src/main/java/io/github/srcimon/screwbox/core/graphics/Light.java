@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.systems.RenderLightSystem;
+import io.github.srcimon.screwbox.core.ecosphere.systems.RenderLightSystem;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.List;

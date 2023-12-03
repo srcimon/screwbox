@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.examples.platformer.specials;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.CameraComponent;
-import io.github.srcimon.screwbox.core.entities.components.CameraMovementComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.ecosphere.components.CameraComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.CameraMovementComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
 
 public class Camera implements Converter<GameObject> {

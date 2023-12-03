@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KilledFromAboveComponent;
@@ -21,7 +21,7 @@ public class KilledFromAboveSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Entity player = engine.entities().forcedFetch(PLAYER);
+        final Entity player = engine.ecosphere().forcedFetch(PLAYER);
         final var playerBounds = player.get(TransformComponent.class).bounds;
 
         final List<Entity> enemiesBelow = merge(

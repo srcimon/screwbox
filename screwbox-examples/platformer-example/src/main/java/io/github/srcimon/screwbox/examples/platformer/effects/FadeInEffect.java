@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.effects;
 
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.ScreenTransitionComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.ecosphere.components.ScreenTransitionComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.core.graphics.transitions.*;
 

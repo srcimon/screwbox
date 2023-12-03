@@ -4,12 +4,12 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
@@ -27,7 +27,7 @@ public class ShadowSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity shadowCaster : engine.entities().fetchAll(SHADOW_CASTERS)) {
+        for (final Entity shadowCaster : engine.ecosphere().fetchAll(SHADOW_CASTERS)) {
             final Bounds bounds = Bounds.atPosition(Vector.zero(), SHADOW.size().width(),
                     SHADOW.size().height());
             final int drawOrder = shadowCaster.get(RenderComponent.class).drawOrder;
@@ -35,13 +35,13 @@ public class ShadowSystem implements EntitySystem {
                     new TransformComponent(bounds),
                     new RenderComponent(SHADOW, drawOrder),
                     new ShadowComponent(shadowCaster.id().orElseThrow()));
-            engine.entities().addEntity(shadow);
+            engine.ecosphere().addEntity(shadow);
             shadowCaster.remove(CastShadowComponent.class);
         }
 
-        for (final Entity shadow : engine.entities().fetchAll(SHADOWS)) {
+        for (final Entity shadow : engine.ecosphere().fetchAll(SHADOWS)) {
             final int linkedId = shadow.get(ShadowComponent.class).linkedTo;
-            final var linked = engine.entities().fetchById(linkedId);
+            final var linked = engine.ecosphere().fetchById(linkedId);
             if (linked.isPresent()) {
                 final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
                 final Optional<Vector> position = engine.physics()
@@ -61,7 +61,7 @@ public class ShadowSystem implements EntitySystem {
                     shadow.get(RenderComponent.class).opacity = Percent.of(calculatedOpacity);
                 }
             } else {
-                engine.entities().remove(shadow);
+                engine.ecosphere().remove(shadow);
             }
         }
     }

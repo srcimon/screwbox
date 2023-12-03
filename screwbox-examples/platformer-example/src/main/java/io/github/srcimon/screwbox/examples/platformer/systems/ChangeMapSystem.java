@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.ScreenTransitionComponent;
-import io.github.srcimon.screwbox.core.entities.components.SignalComponent;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.ScreenTransitionComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.SignalComponent;
 import io.github.srcimon.screwbox.core.graphics.transitions.*;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.ChangeMapComponent;
@@ -29,7 +29,7 @@ public class ChangeMapSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entities().fetchAll(CHANGE_MAP_ZONES)) {
+        for (Entity entity : engine.ecosphere().fetchAll(CHANGE_MAP_ZONES)) {
             ChangeMapComponent changeMapComponent = entity.get(ChangeMapComponent.class);
             if (changeMapComponent.time.isSet()) {
                 if (Time.now().isAfter(changeMapComponent.time)) {
@@ -37,7 +37,7 @@ public class ChangeMapSystem implements EntitySystem {
                     engine.scenes().switchTo(GameScene.class);
                 }
             } else if (engine.keyboard().isPressed(Key.SPACE) && entity.get(SignalComponent.class).isTriggered) {
-                engine.entities().addEntity(new Entity().add(
+                engine.ecosphere().addEntity(new Entity().add(
                         new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofMillis(3200))));
                 changeMapComponent.time = Time.now().plusSeconds(3);
             }

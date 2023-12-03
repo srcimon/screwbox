@@ -2,12 +2,12 @@ package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Component;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Component;
+import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.EntityContainsPositionFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityHasComponentFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityNotInRangeFilter;
@@ -20,17 +20,17 @@ import java.util.function.Predicate;
 public final class SelectEntityBuilder {
 
     private final List<Predicate<Entity>> filters = new ArrayList<>();
-    private final Entities entities;
+    private final Ecosphere ecosphere;
 
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public SelectEntityBuilder(final Entities entities, final Bounds bounds) {
-        this.entities = entities;
+    public SelectEntityBuilder(final Ecosphere ecosphere, final Bounds bounds) {
+        this.ecosphere = ecosphere;
         filters.add(new EntityNotInRangeFilter(bounds));
     }
 
-    public SelectEntityBuilder(final Entities entities, final Vector position) {
-        this.entities = entities;
+    public SelectEntityBuilder(final Ecosphere ecosphere, final Vector position) {
+        this.ecosphere = ecosphere;
         filters.add(new EntityContainsPositionFilter(position));
     }
 
@@ -49,7 +49,7 @@ public final class SelectEntityBuilder {
     }
 
     public Optional<Entity> selectAny() {
-        for (final Entity entity : entities.fetchAll(archetype)) {
+        for (final Entity entity : ecosphere.fetchAll(archetype)) {
             if (isNotFiltered(entity)) {
                 return Optional.of(entity);
             }
@@ -68,7 +68,7 @@ public final class SelectEntityBuilder {
 
     public List<Entity> selectAll() {
         var selectedEntities = new ArrayList<Entity>();
-        for (final Entity foundEntities : entities.fetchAll(archetype)) {
+        for (final Entity foundEntities : ecosphere.fetchAll(archetype)) {
             if (isNotFiltered(foundEntities)) {
                 selectedEntities.add(foundEntities);
             }

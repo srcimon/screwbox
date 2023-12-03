@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.savegame;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 /**
@@ -12,7 +12,7 @@ public interface Savegame {
 
     /**
      * Creates a savegame file with the given name. The savegame contains all
-     * {@link Entities} attached to the {@link Engine#entities()}.
+     * {@link Ecosphere} attached to the {@link Engine#ecosphere()}.
      *
      * @see #create(String, Class)
      */
@@ -20,7 +20,7 @@ public interface Savegame {
 
     /**
      * Creates a savegame file with the given name. The savegame contains all
-     * {@link Entities} attached to the given {@link Scene}.
+     * {@link Ecosphere} attached to the given {@link Scene}.
      *
      * @see #create(String)
      */
@@ -28,7 +28,7 @@ public interface Savegame {
 
     /**
      * Loads a previously created savegame file from disc and restores the saved
-     * {@link Entity}s in {@link Engine#entities()}.
+     * {@link Entity}s in {@link Engine#ecosphere()}.
      */
     Savegame load(String name);
 

@@ -3,8 +3,8 @@ package io.github.srcimon.screwbox.examples.gameoflife.grid;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.World;
 
@@ -14,7 +14,7 @@ public class GridRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridComponent = engine.entities().forcedFetch(GRID_HOLDER).get(GridComponent.class);
+        final var gridComponent = engine.ecosphere().forcedFetch(GRID_HOLDER).get(GridComponent.class);
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().world().visibleArea();
         for (final var node : gridComponent.grid.nodes()) {

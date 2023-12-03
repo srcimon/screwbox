@@ -2,10 +2,10 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.Order;
-import io.github.srcimon.screwbox.core.entities.SystemOrder;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.Order;
+import io.github.srcimon.screwbox.core.ecosphere.SystemOrder;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
@@ -20,7 +20,7 @@ public class PrintSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         final Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
-        for (var entity : engine.entities().fetchAll(TEXTS)) {
+        for (var entity : engine.ecosphere().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Screen screen = engine.graphics().screen();
             screen.drawTextCentered(screen.center(), textComponent.text, font, Percent.max(), 7);

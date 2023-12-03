@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.*;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.ecosphere.components.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LightOptions;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;

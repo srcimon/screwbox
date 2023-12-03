@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.platformer.map;
 
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
-import io.github.srcimon.screwbox.core.entities.components.WorldBoundsComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.WorldBoundsComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.UseLightComponent;
 import io.github.srcimon.screwbox.tiled.Map;
 

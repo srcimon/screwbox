@@ -4,9 +4,9 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.SignalComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.SignalComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
@@ -19,7 +19,7 @@ public class ShowLabelSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.entities().fetchAll(LABELD)) {
+        for (Entity entity : engine.ecosphere().fetchAll(LABELD)) {
             if (entity.get(SignalComponent.class).isTriggered) {
                 LabelComponent labelComponent = entity.get(LabelComponent.class);
                 Bounds bounds = entity.get(TransformComponent.class).bounds;

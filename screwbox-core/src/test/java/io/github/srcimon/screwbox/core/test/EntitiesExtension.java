@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.test;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.internal.DefaultEntities;
+import io.github.srcimon.screwbox.core.ecosphere.internal.DefaultEcosphere;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -33,10 +33,10 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         final var keyboard = Mockito.mock(Keyboard.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
-        final var entities = new DefaultEntities(engine);
+        final var entities = new DefaultEcosphere(engine);
 
         // resolve a real entity engine with many mocked subsystems
-        when(engine.entities()).thenReturn(entities);
+        when(engine.ecosphere()).thenReturn(entities);
 
         // resolve mocks for any subsystem
         when(engine.graphics()).thenReturn(graphics);
@@ -58,7 +58,7 @@ public class EntitiesExtension implements Extension, BeforeEachCallback, Paramet
         parameters.put(Physics.class, physics);
         parameters.put(Keyboard.class, keyboard);
         parameters.put(Engine.class, engine);
-        parameters.put(DefaultEntities.class, entities);
+        parameters.put(DefaultEcosphere.class, entities);
     }
 
     @Override

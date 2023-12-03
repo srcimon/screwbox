@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.savegame.internal;
 
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.GameScene;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +51,7 @@ class DefaultSaveganeTest {
 
     @Test
     void create_namePresent_createsSaveFile() {
-        var entities = Mockito.mock(Entities.class);
+        var entities = Mockito.mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
 
@@ -62,7 +62,7 @@ class DefaultSaveganeTest {
 
     @Test
     void create_sceneClassGiven_createsSaveFile() {
-        var entities = mock(Entities.class);
+        var entities = mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
 
         savegame.create(SAVEGAME_NAME, GameScene.class);
@@ -86,7 +86,7 @@ class DefaultSaveganeTest {
 
     @Test
     void exists_exists_true() {
-        var entities = mock(Entities.class);
+        var entities = mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
 
@@ -113,7 +113,7 @@ class DefaultSaveganeTest {
 
     @Test
     void load_doesntExist_throwsException() {
-        var entities = mock(Entities.class);
+        var entities = mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
 
         assertThatThrownBy(() -> savegame.load("not-there.sav", GameScene.class))
@@ -123,7 +123,7 @@ class DefaultSaveganeTest {
 
     @Test
     void load_saveExists_populatesEntities() {
-        var entities = mock(Entities.class);
+        var entities = mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         when(entities.allEntities()).thenReturn(List.of(new Entity(1), new Entity(2)));
         doReturn(GameScene.class).when(scenes).activeScene();
@@ -156,7 +156,7 @@ class DefaultSaveganeTest {
 
     @Test
     void delete_savegameExists_deletesSAve() {
-        var entities = mock(Entities.class);
+        var entities = mock(Ecosphere.class);
         when(scenes.entitiesOf(GameScene.class)).thenReturn(entities);
         doReturn(GameScene.class).when(scenes).activeScene();
         savegame.create(SAVEGAME_NAME);

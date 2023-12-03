@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.examples.platformer.components.BackgroundComponent;
 
@@ -19,7 +19,7 @@ public class BackgroundSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var cameraPosition = engine.graphics().cameraPosition();
-        final List<Entity> backgroundEntities = engine.entities().fetchAll(BACKGROUNDS);
+        final List<Entity> backgroundEntities = engine.ecosphere().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {
             final var background = entity.get(BackgroundComponent.class);

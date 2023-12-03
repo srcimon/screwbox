@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.gameoflife.camera;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 public class CameraControlSystem implements EntitySystem {

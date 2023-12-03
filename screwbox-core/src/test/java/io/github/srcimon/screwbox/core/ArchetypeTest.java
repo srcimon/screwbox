@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ForwardSignalComponent;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.components.ForwardSignalComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

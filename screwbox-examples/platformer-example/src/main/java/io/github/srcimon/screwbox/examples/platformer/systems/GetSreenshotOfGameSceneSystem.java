@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
 import io.github.srcimon.screwbox.examples.platformer.components.BackgroundHolderComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
@@ -15,7 +15,7 @@ public class GetSreenshotOfGameSceneSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var holder = engine.entities().forcedFetch(HOLDER).get(BackgroundHolderComponent.class);
+        var holder = engine.ecosphere().forcedFetch(HOLDER).get(BackgroundHolderComponent.class);
         Entity screenshotEntity = engine.scenes().entitiesOf(GameScene.class).forcedFetch(SCREENSHOT);
         holder.background = screenshotEntity.get(ScreenshotComponent.class).screenshot;
 

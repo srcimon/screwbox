@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.physics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 
 import java.util.Objects;
 

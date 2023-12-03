@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.examples.pathfinding.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.StateComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.Archetype;
+import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
+import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.StateComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -21,7 +21,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.entities().forcedFetch(PLAYER);
+        final var player = engine.ecosphere().forcedFetch(PLAYER);
         player.get(PhysicsBodyComponent.class).momentum = determinMomemntum(engine.keyboard());
 
         if (engine.keyboard().isPressed(Key.SPACE)) {
@@ -31,7 +31,7 @@ public class PlayerControlSystem implements EntitySystem {
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 
-            engine.entities().addEntity(bomb);
+            engine.ecosphere().addEntity(bomb);
         }
     }
 

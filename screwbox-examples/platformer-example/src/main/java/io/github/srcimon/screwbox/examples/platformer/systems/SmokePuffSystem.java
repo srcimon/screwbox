@@ -3,10 +3,10 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.FadeOutComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.ecosphere.*;
+import io.github.srcimon.screwbox.core.ecosphere.components.FadeOutComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.SmokeEmitterComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
@@ -23,7 +23,7 @@ public class SmokePuffSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var playerEntity = engine.entities().fetch(PLAYER);
+        var playerEntity = engine.ecosphere().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
                     new RenderComponent(randomFrom(SPRITES.get().all()), order)
 
             );
-            engine.entities().addEntity(smokePuff);
+            engine.ecosphere().addEntity(smokePuff);
         }
     }
 }
