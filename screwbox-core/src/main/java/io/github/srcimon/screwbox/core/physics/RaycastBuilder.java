@@ -3,12 +3,12 @@ package io.github.srcimon.screwbox.core.physics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Component;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.EntityHasComponentFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityIsInRaycastFilter;
 import io.github.srcimon.screwbox.core.physics.internal.EntityNotInRangeFilter;
@@ -19,14 +19,14 @@ import java.util.function.Predicate;
 
 public final class RaycastBuilder {
 
-    private final Entities entities;
+    private final Environment environment;
     private final Vector from;
     private final List<Predicate<Entity>> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
     private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
-    public RaycastBuilder(final Entities entities, final Vector from) {
-        this.entities = entities;
+    public RaycastBuilder(final Environment environment, final Vector from) {
+        this.environment = environment;
         this.from = from;
     }
 
@@ -68,7 +68,7 @@ public final class RaycastBuilder {
 
     public Raycast castingTo(final Vector to) {
         final var ray = Line.between(from, to);
-        final List<Entity> matchingEntities = entities.fetchAll(archetype);
+        final List<Entity> matchingEntities = environment.fetchAll(archetype);
         return new Raycast(ray, matchingEntities, filters, borders);
     }
 

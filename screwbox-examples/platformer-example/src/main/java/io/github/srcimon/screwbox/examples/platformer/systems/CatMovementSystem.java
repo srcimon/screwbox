@@ -4,11 +4,11 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.StateComponent;
-import io.github.srcimon.screwbox.core.entities.components.TimeoutComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.StateComponent;
+import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CatMarkerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.NavpointComponent;
@@ -48,12 +48,12 @@ public class CatMovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> catEntity = engine.entities().fetch(CAT);
+        Optional<Entity> catEntity = engine.environment().fetch(CAT);
         if (catEntity.isEmpty()) {
             return;
         }
 
-        Entity player = engine.entities().forcedFetch(PLAYER);
+        Entity player = engine.environment().forcedFetch(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
         var flipMode = player.get(RenderComponent.class).flip;
@@ -62,9 +62,9 @@ public class CatMovementSystem implements EntitySystem {
                 new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
                 new NavpointComponent(state.getClass(), flipMode));
 
-        engine.entities().addEntity(navpoint);
+        engine.environment().addEntity(navpoint);
 
-        List<Entity> navpoints = engine.entities().fetchAll(NAVPOINTS);
+        List<Entity> navpoints = engine.environment().fetchAll(NAVPOINTS);
         if (navpoints.isEmpty()) {
             return;
         }

@@ -55,7 +55,7 @@ look if you want to have some fun with Java and 2d graphics.
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine("Hello World Example");
     
-            screwBox.entities().addSystem(engine -> {
+            screwBox.environment().addSystem(engine -> {
                 Offset offset = engine.mouse().offset();
                 Pixelfont font = Pixelfont.defaultFont();
                 engine.graphics().screen().drawTextCentered(offset, "HELLO WORLD!", font, 4);
@@ -146,13 +146,7 @@ A list of some example projects showing how to use this engine:
 - [ ] add `LightDebugSystem`
 - [ ] add `window.openDebugMenu()` allows change of scenes
 - [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] Support for animated light
-- [ ] particle emitters
 - [ ] add menu bar
-- [ ] Entity templates (Templates.cameraFollowing(id) alt. engine.quick().addGravity(yOnly(50))); 
-- [ ] modular particle system with demo app [example](https://youtu.be/1CXVbCbqKyg?feature=shared) / inspiration [here](https://dev.rbcafe.com/unity/unity-3.4.2/Documentation/Manual/Particle%20Systems.html)
-- [ ] with particle system set up: add fire to lava in level 2, replace foot smoke of player with particles
-- [ ] cluster components and systems by theme and add quick enablement **for all scenes** e.g. `setup().enablePhysics().debugPathfinding().quitOn(Key).cameraFixedOn(4711)`
 
 ## Acknowledgments
 

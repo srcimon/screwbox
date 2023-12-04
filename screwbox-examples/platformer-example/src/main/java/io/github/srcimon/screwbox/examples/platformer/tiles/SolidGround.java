@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.examples.platformer.tiles;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.tiled.Tile;
-import io.github.srcimon.screwbox.core.entities.components.*;
+import io.github.srcimon.screwbox.core.environment.components.*;
 
 public class SolidGround implements Converter<Tile> {
 

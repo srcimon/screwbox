@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.examples.platformer.specials.player;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntityState;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntityState;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 

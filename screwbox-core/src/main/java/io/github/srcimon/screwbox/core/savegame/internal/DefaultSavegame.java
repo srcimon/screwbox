@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.savegame.internal;
 
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.savegame.Savegame;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
@@ -35,8 +35,8 @@ public class DefaultSavegame implements Savegame {
     public Savegame create(final String name, final Class<? extends Scene> scene) {
         verifyName(name);
         requireNonNull(scene, "scene must not be null");
-        final Entities entities = scenes.entitiesOf(scene);
-        final List<Entity> allEntities = entities.allEntities();
+        final Environment environment = scenes.environmentOf(scene);
+        final List<Entity> allEntities = environment.allEntities();
         try (final OutputStream outputStream = new FileOutputStream(name)) {
             try (final OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
                 try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
@@ -59,13 +59,13 @@ public class DefaultSavegame implements Savegame {
     public Savegame load(final String name, final Class<? extends Scene> scene) {
         verifyName(name);
         requireNonNull(scene, "scene must not be null");
-        final Entities entities = scenes.entitiesOf(scene);
-        entities.clearEntities();
+        final Environment environment = scenes.environmentOf(scene);
+        environment.clearEntities();
         try (InputStream inputStream = new FileInputStream(name)) {
             try (InputStream zippedInputStream = new GZIPInputStream(inputStream)) {
                 try (ObjectInputStream objectInputStream = new ObjectInputStream(zippedInputStream)) {
                     final var allEntities = (List<Entity>) objectInputStream.readObject();
-                    entities.addEntities(allEntities);
+                    environment.addEntities(allEntities);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

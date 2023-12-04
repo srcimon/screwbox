@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -21,14 +21,14 @@ public class FollowPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.entities().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.environment().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
         Entity player = playerEntity.get();
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 
-        for (Entity followEntity : engine.entities().fetchAll(FOLLOWING)) {
+        for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
             var followComponent = followEntity.get(FollowPlayerComponent.class);
             final TransformComponent followTransform = followEntity.get(TransformComponent.class);
 

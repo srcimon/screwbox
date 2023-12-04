@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.specials;
 
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.WaypointComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
 

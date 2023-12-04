@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.examples.pathfinding.scenes;
 
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.entities.components.*;
-import io.github.srcimon.screwbox.core.entities.systems.*;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -34,22 +34,22 @@ public class DemoScene implements Scene {
     private static final Asset<Map> MAP = asset(() -> Map.fromJson("map.json"));
 
     @Override
-    public void initialize(final Entities entities) {
-        entities.importSource(MAP.get().tiles())
+    public void populate(final Environment environment) {
+        environment.importSource(MAP.get().tiles())
                 .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        entities.importSource(MAP.get())
+        environment.importSource(MAP.get())
                 .as(worldBounds());
 
-        entities.importSource(MAP.get().objects())
+        environment.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
                 .when("camera").as(camera());
 
-        entities.addSystem(new RenderSystem())
+        environment.addSystem(new RenderSystem())
                 .addSystem(new CameraMovementSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())

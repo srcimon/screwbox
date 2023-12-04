@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.scenes;
 
-import io.github.srcimon.screwbox.core.entities.Entities;
+import io.github.srcimon.screwbox.core.environment.Environment;
 
 public interface Scenes {
 
@@ -20,7 +20,7 @@ public interface Scenes {
 
     int sceneCount();
 
-    Entities entitiesOf(Class<? extends Scene> sceneClass);
+    Environment environmentOf(Class<? extends Scene> sceneClass);
 
     Scenes setLoadingScene(Scene loadingScene);
 }

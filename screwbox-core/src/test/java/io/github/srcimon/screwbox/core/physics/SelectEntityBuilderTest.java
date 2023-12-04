@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,13 +26,13 @@ import static org.mockito.Mockito.when;
 class SelectEntityBuilderTest {
 
     @Mock
-    Entities entities;
+    Environment environment;
 
     SelectEntityBuilder selectEntityBuilder;
 
     @BeforeEach
     void beforeEach() {
-        selectEntityBuilder = new SelectEntityBuilder(entities, Vector.$(40, 60));
+        selectEntityBuilder = new SelectEntityBuilder(environment, Vector.$(40, 60));
     }
 
     @Test
@@ -40,10 +40,10 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(0, 10);
         Entity second = boxAt(55, 45);
         Entity notInBounds = boxAt(155, 45);
-        when(entities.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, ColliderComponent.class)))
                 .thenReturn(List.of(first, second, notInBounds));
 
-        SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(entities, $$(0, 0, 100, 100));
+        SelectEntityBuilder boundsEntityBuilder = new SelectEntityBuilder(environment, $$(0, 0, 100, 100));
 
         Assertions.assertThat(boundsEntityBuilder.selectAll()).contains(first, second).doesNotContain(notInBounds);
 
@@ -60,7 +60,7 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_noEntityAtPosition_returnsEmpty() {
-        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(
                         boxAt(55, 45),
                         boxAt(25, 45).add(new RenderComponent(0)),
@@ -76,7 +76,7 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_entityAtPosition_returnsEntity() {
-        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(boxAt(39, 59)));
 
         var result = selectEntityBuilder
@@ -92,7 +92,7 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(39, 59);
         Entity second = boxAt(38, 58);
         Entity notAtPosition = boxAt(0, 0);
-        when(entities.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
                 .thenReturn(List.of(first, second, notAtPosition));
 
         var result = selectEntityBuilder

@@ -3,10 +3,10 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.components.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.CollectableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
@@ -23,10 +23,10 @@ public class CollectableSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.entities().forcedFetch(PLAYER);
-        for (final Entity entity : engine.entities().fetchAll(COLLECTABLES)) {
+        final var player = engine.environment().forcedFetch(PLAYER);
+        for (final Entity entity : engine.environment().fetchAll(COLLECTABLES)) {
             if (entity.get(CollisionSensorComponent.class).collidedEntities.contains(player)) {
-                engine.entities().remove(entity);
+                engine.environment().remove(entity);
                 engine.audio().playEffect(PLING.get());
             }
         }

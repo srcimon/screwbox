@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.entities.Entity;
-import io.github.srcimon.screwbox.core.entities.EntityState;
-import io.github.srcimon.screwbox.core.entities.components.RenderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntityState;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
@@ -35,13 +35,13 @@ public class BombExplosionState implements EntityState {
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
 
-        engine.entities().remove(entitiesInExplosionRange);
+        engine.environment().remove(entitiesInExplosionRange);
     }
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
         if (Time.now().isAfter(endOfAnimation)) {
-            engine.entities().remove(entity);
+            engine.environment().remove(entity);
         }
         return this;
     }

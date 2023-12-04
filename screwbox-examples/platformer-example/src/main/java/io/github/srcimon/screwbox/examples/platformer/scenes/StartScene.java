@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Entities;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.menues.StartGameMenu;
 import io.github.srcimon.screwbox.examples.platformer.systems.StartBackgroundSystem;
@@ -9,8 +9,8 @@ import io.github.srcimon.screwbox.examples.platformer.systems.StartBackgroundSys
 public class StartScene implements Scene {
 
     @Override
-    public void initialize(Entities entities) {
-        entities.addSystem(new StartBackgroundSystem());
+    public void populate(Environment environment) {
+        environment.addSystem(new StartBackgroundSystem());
     }
 
     @Override

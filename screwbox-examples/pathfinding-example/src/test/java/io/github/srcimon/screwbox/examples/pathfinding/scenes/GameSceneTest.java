@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.pathfinding.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Entities;
-import io.github.srcimon.screwbox.core.entities.components.WorldBoundsComponent;
-import io.github.srcimon.screwbox.core.entities.internal.DefaultEntities;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.components.WorldBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,11 +20,11 @@ class DemoSceneTest {
 
     @Test
     void testMapCanBeLoaded() {
-        Entities entities = new DefaultEntities(engine);
+        Environment environment = new DefaultEnvironment(engine);
 
-        new DemoScene().initialize(entities);
+        new DemoScene().populate(environment);
 
-        assertThat(entities.allEntities()).hasSizeGreaterThan(50)
+        assertThat(environment.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
                 .anyMatch(e -> e.hasComponent(WorldBoundsComponent.class));
     }

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.components;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.entities.Component;
+import io.github.srcimon.screwbox.core.environment.Component;
 
 public class LetsGoComponent implements Component {
 

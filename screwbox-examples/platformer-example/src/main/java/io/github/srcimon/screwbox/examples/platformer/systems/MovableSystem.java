@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.MovableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -22,7 +22,7 @@ public class MovableSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.entities().forcedFetch(PLAYER);
+        Entity player = engine.environment().forcedFetch(PLAYER);
         var playerMomentum = player.get(PhysicsBodyComponent.class).momentum;
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 

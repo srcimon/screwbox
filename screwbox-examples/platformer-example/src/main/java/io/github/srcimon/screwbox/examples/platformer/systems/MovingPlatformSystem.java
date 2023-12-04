@@ -2,10 +2,10 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.entities.*;
-import io.github.srcimon.screwbox.core.entities.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.entities.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.WaypointComponent;
 
@@ -20,7 +20,7 @@ public class MovingPlatformSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (var platform : engine.entities().fetchAll(PLATFORMS)) {
+        for (var platform : engine.environment().fetchAll(PLATFORMS)) {
             movePlattform(platform, engine);
         }
     }
@@ -29,7 +29,7 @@ public class MovingPlatformSystem implements EntitySystem {
         var plattformComponent = platform.get(MovingPlatformComponent.class);
 
         if (isNull(plattformComponent.targetPosition)) {
-            Entity tartetEntity = engine.entities().forcedFetchById(plattformComponent.waypoint);
+            Entity tartetEntity = engine.environment().forcedFetchById(plattformComponent.waypoint);
             plattformComponent.targetPosition = tartetEntity.get(TransformComponent.class).bounds.position();
         }
 
@@ -37,8 +37,8 @@ public class MovingPlatformSystem implements EntitySystem {
         Vector distance = transform.bounds.position().substract(plattformComponent.targetPosition);
 
         if (distance.isZero()) {
-            Entity currentTarget = engine.entities().forcedFetchById(plattformComponent.waypoint);
-            Entity nextTarget = engine.entities()
+            Entity currentTarget = engine.environment().forcedFetchById(plattformComponent.waypoint);
+            Entity nextTarget = engine.environment()
                     .forcedFetchById(currentTarget.get(WaypointComponent.class).next);
             plattformComponent.targetPosition = nextTarget.get(TransformComponent.class).bounds.position();
             plattformComponent.waypoint = nextTarget.id().orElseThrow();

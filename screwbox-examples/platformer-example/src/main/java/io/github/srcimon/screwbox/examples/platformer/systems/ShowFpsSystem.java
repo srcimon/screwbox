@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.entities.Archetype;
-import io.github.srcimon.screwbox.core.entities.EntitySystem;
-import io.github.srcimon.screwbox.core.entities.Order;
-import io.github.srcimon.screwbox.core.entities.SystemOrder;
-import io.github.srcimon.screwbox.core.entities.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.entities.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -20,8 +20,8 @@ public class ShowFpsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        long colliderCount = engine.entities().fetchAll(COLLIDERS).size();
-        long entityCount = engine.entities().entityCount();
+        long colliderCount = engine.environment().fetchAll(COLLIDERS).size();
+        long entityCount = engine.environment().entityCount();
         int fps = engine.loop().fps();
         long updateTime = engine.loop().updateDuration().milliseconds();
         String text = String.format("fps: %04d / updatetime %02d / %d entities / %d colliders",
