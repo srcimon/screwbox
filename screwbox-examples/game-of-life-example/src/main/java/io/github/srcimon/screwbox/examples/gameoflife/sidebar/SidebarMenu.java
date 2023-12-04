@@ -12,14 +12,14 @@ public class SidebarMenu extends UiMenu {
         addItem(engine -> "fps: " + engine.loop().fps()).activeCondition(engine -> false);
         addItem(engine -> "frame: " + engine.loop().frameNumber()).activeCondition(engine -> false);
         addItem("colors").onActivate(engine -> {
-            var grid = engine.ecosphere().forcedFetchHaving(GridComponent.class).get(GridComponent.class);
+            var grid = engine.environment().forcedFetchHaving(GridComponent.class).get(GridComponent.class);
             grid.noNeighboursColor = Color.random();
             grid.oneNeighboursColor = Color.random();
             grid.twoNeighboursColor = Color.random();
         });
 
-        addItem(engine -> engine.ecosphere().isSystemPresent(GridUpdateSystem.class) ? "pause" : "resume")
-                .onActivate(engine -> engine.ecosphere().toggleSystem(new GridUpdateSystem()));
+        addItem(engine -> engine.environment().isSystemPresent(GridUpdateSystem.class) ? "pause" : "resume")
+                .onActivate(engine -> engine.environment().toggleSystem(new GridUpdateSystem()));
 
         addItem(engine -> engine.graphics().configuration().isUseAntialising() ? "high quality" : "low quality").onActivate(engine -> engine.graphics().configuration().toggleAntialising());
         addItem("mode").onActivate(engine -> engine.graphics().configuration().toggleFullscreen());

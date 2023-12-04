@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.platformer.map;
 
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.ecosphere.components.GravityComponent;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.GravityComponent;
 import io.github.srcimon.screwbox.tiled.Map;
 
 public class MapGravity implements Converter<Map> {

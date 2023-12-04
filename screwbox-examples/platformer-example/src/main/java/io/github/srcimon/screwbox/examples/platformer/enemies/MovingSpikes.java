@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.examples.platformer.enemies;
 
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.ecosphere.Archetype;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.SignalComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TriggerAreaComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.SignalComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.components.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent.DeathType;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;

@@ -4,9 +4,9 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.audio.Audio;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -36,10 +36,10 @@ public interface Engine {
     Assets assets();
 
     /**
-     * Returns the games {@link Entity} management system. This is where all the
+     * Returns the games {@link Entity} management system ({@link Environment}). This is where all the
      * game logic and objects are kept.
      */
-    Ecosphere ecosphere();
+    Environment environment();
 
     /**
      * Provides access to current performance metrics and to controls the target

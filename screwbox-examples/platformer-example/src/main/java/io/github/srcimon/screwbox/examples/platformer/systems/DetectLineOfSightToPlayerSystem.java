@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
@@ -14,9 +14,9 @@ public class DetectLineOfSightToPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.ecosphere().forcedFetch(PLAYER);
+        Entity player = engine.environment().forcedFetch(PLAYER);
         var playerPosition = player.get(TransformComponent.class).bounds.position();
-        for (var detector : engine.ecosphere().fetchAll(DETECTORS)) {
+        for (var detector : engine.environment().fetchAll(DETECTORS)) {
             var detectorPosition = detector.get(TransformComponent.class).bounds.position();
             var detectorComponent = detector.get(DetectLineOfSightToPlayerComponent.class);
             detectorComponent.isInLineOfSight = detectorPosition

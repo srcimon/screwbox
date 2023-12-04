@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.internal.DefaultEcosphere;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
@@ -19,12 +19,12 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private class SceneContainer {
         private final Scene scene;
-        private final DefaultEcosphere entities;
+        private final DefaultEnvironment entities;
         boolean isInitialized;
 
         SceneContainer(Scene scene) {
             this.scene = scene;
-            this.entities = new DefaultEcosphere(engine);
+            this.entities = new DefaultEnvironment(engine);
         }
 
         void initialize() {
@@ -60,7 +60,7 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
-    public DefaultEcosphere activeEntities() {
+    public DefaultEnvironment activeEntities() {
         return activeScene.entities;
     }
 
@@ -116,7 +116,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Ecosphere entitiesOf(final Class<? extends Scene> sceneClass) {
+    public Environment environmentOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
         return scenes.get(sceneClass).entities;
     }

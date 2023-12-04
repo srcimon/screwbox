@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.*;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.TimeoutComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -23,7 +23,7 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-            var playerCenter = engine.ecosphere().forcedFetch(PLAYER).get(TransformComponent.class).bounds
+            var playerCenter = engine.environment().forcedFetch(PLAYER).get(TransformComponent.class).bounds
                     .position();
             engine.audio().playEffect(LETS_GO_SOUND);
 
@@ -33,11 +33,11 @@ public class LetsGoSystem implements EntitySystem {
                     new LetsGoComponent(),
                     new TimeoutComponent(Time.now().plusSeconds(2)));
 
-            engine.ecosphere().addEntity(letsGoBubble);
+            engine.environment().addEntity(letsGoBubble);
         }
 
         var delta = engine.loop().delta();
-        for (Entity bubble : engine.ecosphere().fetchAll(BUBBLES)) {
+        for (Entity bubble : engine.environment().fetchAll(BUBBLES)) {
             final var bubbleTranform = bubble.get(TransformComponent.class);
             var letsGoComponent = bubble.get(LetsGoComponent.class);
             bubbleTranform.bounds = bubbleTranform.bounds

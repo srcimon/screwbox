@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.CameraMovementComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.CameraMovementComponent;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
@@ -18,14 +18,14 @@ public class CameraShiftSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.ecosphere().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.environment().fetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }
 
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
-        var cameraTrackerComponent = engine.ecosphere().forcedFetch(CAMERA).get(CameraMovementComponent.class);
+        var cameraTrackerComponent = engine.environment().forcedFetch(CAMERA).get(CameraMovementComponent.class);
         if (Flip.HORIZONTAL.equals(player.get(RenderComponent.class).flip)) {
             cameraTrackerComponent.shift = Vector.of(
                     Math.max(-50,

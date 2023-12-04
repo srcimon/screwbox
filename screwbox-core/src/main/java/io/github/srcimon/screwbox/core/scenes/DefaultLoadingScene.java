@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -13,8 +13,8 @@ import static io.github.srcimon.screwbox.core.graphics.Size.square;
 public class DefaultLoadingScene implements Scene {
 
     @Override
-    public void populate(final Ecosphere ecosphere) {
-        ecosphere.addSystem(engine -> drawLoadingAnimation(engine.graphics().screen()));
+    public void populate(final Environment environment) {
+        environment.addSystem(engine -> drawLoadingAnimation(engine.graphics().screen()));
     }
 
     private void drawLoadingAnimation(final Screen screen) {

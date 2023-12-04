@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.Archetype;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
-import io.github.srcimon.screwbox.core.ecosphere.components.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
 public class ZoomSystem implements EntitySystem {
@@ -13,7 +13,7 @@ public class ZoomSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity camera = engine.ecosphere().forcedFetch(CAMERA);
+        Entity camera = engine.environment().forcedFetch(CAMERA);
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
             camera.get(CameraComponent.class).zoom += engine.loop().delta(2.5);

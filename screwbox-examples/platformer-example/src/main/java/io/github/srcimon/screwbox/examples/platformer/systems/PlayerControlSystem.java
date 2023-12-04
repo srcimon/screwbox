@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
@@ -15,7 +15,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.ecosphere().fetchAll(PLAYER)) {
+        for (Entity entity : engine.environment().fetchAll(PLAYER)) {
             var control = entity.get(PlayerControlComponent.class);
             final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
             control.jumpDownPressed = engine.keyboard().isDown(JUMP_DOWN);

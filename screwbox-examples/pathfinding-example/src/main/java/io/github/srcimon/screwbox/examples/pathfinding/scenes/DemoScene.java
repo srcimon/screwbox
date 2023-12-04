@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.examples.pathfinding.scenes;
 
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.ecosphere.components.*;
-import io.github.srcimon.screwbox.core.ecosphere.systems.*;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -34,22 +34,22 @@ public class DemoScene implements Scene {
     private static final Asset<Map> MAP = asset(() -> Map.fromJson("map.json"));
 
     @Override
-    public void populate(final Ecosphere ecosphere) {
-        ecosphere.importSource(MAP.get().tiles())
+    public void populate(final Environment environment) {
+        environment.importSource(MAP.get().tiles())
                 .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(wall())
                 .when("floor").as(floor());
 
-        ecosphere.importSource(MAP.get())
+        environment.importSource(MAP.get())
                 .as(worldBounds());
 
-        ecosphere.importSource(MAP.get().objects())
+        environment.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
                 .when("enemy").as(enemy())
                 .when("camera").as(camera());
 
-        ecosphere.addSystem(new RenderSystem())
+        environment.addSystem(new RenderSystem())
                 .addSystem(new CameraMovementSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())

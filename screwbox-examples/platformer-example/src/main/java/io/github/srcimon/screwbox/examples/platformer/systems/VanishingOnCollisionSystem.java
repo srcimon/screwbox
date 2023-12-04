@@ -6,10 +6,10 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.FadeOutComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.components.FadeOutComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
@@ -30,7 +30,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Time now = engine.loop().lastUpdate();
 
-        Entity player = engine.ecosphere().forcedFetch(PLAYER);
+        Entity player = engine.environment().forcedFetch(PLAYER);
         Bounds playerBounds = player.get(TransformComponent.class).bounds;
 
         List<Entity> activatedEntities = ListUtil.merge(
@@ -55,7 +55,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
             }
         }
 
-        for (Entity vanishEntity : engine.ecosphere().fetchAll(VANISHINGS)) {
+        for (Entity vanishEntity : engine.environment().fetchAll(VANISHINGS)) {
             if (now.isAfter(vanishEntity.get(VanishingOnCollisionComponent.class).vanishTime)) {
                 Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
                 Vector targetPosition = center.addY(200);

@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.systems.*;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
@@ -59,12 +59,12 @@ public class GameScene implements Scene {
     }
 
     @Override
-    public void populate(final Ecosphere ecosphere) {
+    public void populate(final Environment environment) {
         if (nonNull(mapName)) {
-            importEntities(ecosphere);
+            importEntities(environment);
         }
 
-        ecosphere.addSystem(new CombineStaticShadowCastersSystem())
+        environment.addSystem(new CombineStaticShadowCastersSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new RenderLightSystem())
                 .addSystem(new ReflectionRenderSystem())
@@ -108,14 +108,14 @@ public class GameScene implements Scene {
                 .addSystem(new RenderSystem());
     }
 
-    void importEntities(final Ecosphere ecosphere) {
-        ecosphere.addEntity(new Entity()
+    void importEntities(final Environment environment) {
+        environment.addEntity(new Entity()
                 .add(new ScreenshotComponent())
                 .add(new CurrentLevelComponent(mapName)));
 
         final Map map = Map.fromJson(mapName);
 
-        ecosphere.importSource(map)
+        environment.importSource(map)
                 .as(new MapGravity())
                 .as(new WorldInformation())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
@@ -123,16 +123,16 @@ public class GameScene implements Scene {
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
-        ecosphere.importSource(map.layers())
+        environment.importSource(map.layers())
                 .when(Layer::isImageLayer).as(new Background());
 
-        ecosphere.importSource(map.tiles())
+        environment.importSource(map.tiles())
                 .usingIndex(this::tileType)
                 .when("non-solid").as(new NonSolidTile())
                 .when("solid").as(new SolidGround())
                 .when("one-way").as(new OneWayGround());
 
-        ecosphere.importSource(map.objects())
+        environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("reflection-zone").as(new ReflectionZone())
                 .when("cat").as(new CatCompanion())

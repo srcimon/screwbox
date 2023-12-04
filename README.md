@@ -55,7 +55,7 @@ look if you want to have some fun with Java and 2d graphics.
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine("Hello World Example");
     
-            screwBox.ecosphere().addSystem(engine -> {
+            screwBox.environment().addSystem(engine -> {
                 Offset offset = engine.mouse().offset();
                 Pixelfont font = Pixelfont.defaultFont();
                 engine.graphics().screen().drawTextCentered(offset, "HELLO WORLD!", font, 4);

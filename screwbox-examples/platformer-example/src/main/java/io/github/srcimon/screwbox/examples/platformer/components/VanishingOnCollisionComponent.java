@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.components;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.ecosphere.Component;
+import io.github.srcimon.screwbox.core.environment.Component;
 
 public class VanishingOnCollisionComponent implements Component {
 

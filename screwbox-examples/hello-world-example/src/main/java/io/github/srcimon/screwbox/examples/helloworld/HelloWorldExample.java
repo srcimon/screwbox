@@ -11,7 +11,7 @@ public class HelloWorldExample {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World Example");
 
-        screwBox.ecosphere().addSystem(engine -> {
+        screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
             screen.drawTextCentered(screen.center(), "HELLO WORLD!", defaultFont(random()), 2);
         });

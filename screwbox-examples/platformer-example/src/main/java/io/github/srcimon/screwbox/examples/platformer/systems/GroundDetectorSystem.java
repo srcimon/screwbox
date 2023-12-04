@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.*;
-import io.github.srcimon.screwbox.core.ecosphere.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 
 @Order(SystemOrder.PREPARATION)
@@ -15,7 +15,7 @@ public class GroundDetectorSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.ecosphere().fetchAll(GROUND_DETECTORS)) {
+        for (final Entity entity : engine.environment().fetchAll(GROUND_DETECTORS)) {
             entity.get(GroundDetectorComponent.class).isOnGround = isOnGround(entity);
         }
     }

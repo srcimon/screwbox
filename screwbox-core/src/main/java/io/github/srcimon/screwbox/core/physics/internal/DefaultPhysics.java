@@ -25,17 +25,17 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public RaycastBuilder raycastFrom(final Vector position) {
-        return new RaycastBuilder(engine.ecosphere(), position);
+        return new RaycastBuilder(engine.environment(), position);
     }
 
     @Override
     public SelectEntityBuilder searchAtPosition(final Vector position) {
-        return new SelectEntityBuilder(engine.ecosphere(), position);
+        return new SelectEntityBuilder(engine.environment(), position);
     }
 
     @Override
     public SelectEntityBuilder searchInRange(final Bounds range) {
-        return new SelectEntityBuilder(engine.ecosphere(), range);
+        return new SelectEntityBuilder(engine.environment(), range);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.scenes;
 
-import io.github.srcimon.screwbox.core.ecosphere.internal.DefaultEcosphere;
+import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.test.EntitiesExtension;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 class DefaultLoadingSceneTest {
 
     @Test
-    void runDefaultLoadingScene_onUpdate_drawsThreeRectangles(DefaultEcosphere entities, Screen screen) {
+    void runDefaultLoadingScene_onUpdate_drawsThreeRectangles(DefaultEnvironment entities, Screen screen) {
         new DefaultLoadingScene().populate(entities);
         when(screen.center()).thenReturn(Offset.at(120, 50));
 

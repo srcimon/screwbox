@@ -1,11 +1,11 @@
 package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.environment.Environment;
 
 public interface Scene {
 
-    default void populate(Ecosphere ecosphere) {
+    default void populate(Environment environment) {
     }
 
     default void onEnter(Engine engine) {

@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.components.BackgroundHolderComponent;
 import io.github.srcimon.screwbox.examples.platformer.menues.PauseMenu;
@@ -18,8 +18,8 @@ public class PauseScene implements Scene {
     }
 
     @Override
-    public void populate(Ecosphere ecosphere) {
-        ecosphere.addSystem(new GetSreenshotOfGameSceneSystem())
+    public void populate(Environment environment) {
+        environment.addSystem(new GetSreenshotOfGameSceneSystem())
                 .addSystem(new RenderPauseScreenshotSystem())
                 .addEntity(new Entity()
                         .add(new BackgroundHolderComponent()));

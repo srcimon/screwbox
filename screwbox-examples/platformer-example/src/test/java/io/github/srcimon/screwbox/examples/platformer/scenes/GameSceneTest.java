@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
-import io.github.srcimon.screwbox.core.ecosphere.components.CameraComponent;
-import io.github.srcimon.screwbox.core.ecosphere.internal.DefaultEcosphere;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,11 +22,11 @@ class GameSceneTest {
     @ParameterizedTest
     @ValueSource(strings = { "maps/0-1_intro.json", "maps/1-1_teufelsinsel.json", "maps/1-2_misty_caves.json" })
     void allMapsCanBeConvertetToEntities(String mapName) {
-        Ecosphere ecosphere = new DefaultEcosphere(engine);
+        Environment environment = new DefaultEnvironment(engine);
 
-        new GameScene(mapName).importEntities(ecosphere);
+        new GameScene(mapName).importEntities(environment);
 
-        assertThat(ecosphere.allEntities()).hasSizeGreaterThan(50)
+        assertThat(environment.allEntities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
                 .anyMatch(e -> e.hasComponent(PlayerMarkerComponent.class));
     }

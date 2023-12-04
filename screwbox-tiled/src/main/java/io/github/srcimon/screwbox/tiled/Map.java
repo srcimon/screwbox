@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.ecosphere.Ecosphere;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.tiled.internal.MapEntity;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Optional;
  * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
  * in your game.
  *
- * @see Ecosphere#importSource(Object)
+ * @see Environment#importSource(Object)
  */
 public class Map {
 

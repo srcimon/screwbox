@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.examples.platformer.tiles;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.ecosphere.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.StaticMarkerComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.StaticMarkerComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.tiled.Tile;
 
 public class OneWayGround implements Converter<Tile> {

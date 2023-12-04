@@ -1,15 +1,15 @@
 package io.github.srcimon.screwbox.examples.platformer.enemies.tracer;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.ecosphere.Archetype;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.core.ecosphere.components.*;
+import io.github.srcimon.screwbox.core.environment.components.*;
 
 public class Tracer implements Converter<GameObject> {
 

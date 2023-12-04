@@ -2,11 +2,11 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.ecosphere.Archetype;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
-import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.PatrollingMovementComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -18,7 +18,7 @@ public class PatrollingMovementSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        for (final Entity entity : engine.ecosphere().fetchAll(PATROLLING)) {
+        for (final Entity entity : engine.environment().fetchAll(PATROLLING)) {
             final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
             final var patrollingMovementComponent = entity.get(PatrollingMovementComponent.class);
 

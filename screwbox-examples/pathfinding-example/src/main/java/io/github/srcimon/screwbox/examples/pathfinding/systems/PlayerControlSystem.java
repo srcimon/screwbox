@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.examples.pathfinding.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.ecosphere.Archetype;
-import io.github.srcimon.screwbox.core.ecosphere.Entity;
-import io.github.srcimon.screwbox.core.ecosphere.EntitySystem;
-import io.github.srcimon.screwbox.core.ecosphere.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.RenderComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.StateComponent;
-import io.github.srcimon.screwbox.core.ecosphere.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.components.StateComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -21,7 +21,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.ecosphere().forcedFetch(PLAYER);
+        final var player = engine.environment().forcedFetch(PLAYER);
         player.get(PhysicsBodyComponent.class).momentum = determinMomemntum(engine.keyboard());
 
         if (engine.keyboard().isPressed(Key.SPACE)) {
@@ -31,7 +31,7 @@ public class PlayerControlSystem implements EntitySystem {
                     .add(new TransformComponent(player.get(TransformComponent.class).bounds))
                     .add(new StateComponent(new BombTickingState()));
 
-            engine.ecosphere().addEntity(bomb);
+            engine.environment().addEntity(bomb);
         }
     }
 
