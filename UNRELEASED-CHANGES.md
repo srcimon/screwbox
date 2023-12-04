@@ -12,6 +12,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed misleading `Entities` to `Environment` (#132)
+- Moved all future ideas and plans from the readme to Github issues (#131)
 - Renamed generic `Ecosphere.add()` method to specify if adding a system or an entity
 - Renamed `Segment` to `Line`
 - Renamed some `Keyboard` and `Mouse` methods to more specific names

@@ -139,15 +139,6 @@ A list of some example projects showing how to use this engine:
 - AssertJ [Apache License 2.0](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 - Mockito [MIT License](https://github.com/mockito/mockito/blob/main/LICENSE)
 
-## Future ideas and plans
-
-- [ ] add game example like [in this video](https://www.youtube.com/watch?v=GDoBw1ogFZY)
-- [ ] add effects that can be applied to `Frame`s to create an animation (wind on foliage, water)
-- [ ] add `LightDebugSystem`
-- [ ] add `window.openDebugMenu()` allows change of scenes
-- [ ] add small `Pixelfont` (crop transparent image area)
-- [ ] add menu bar
-
 ## Acknowledgments
 
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
