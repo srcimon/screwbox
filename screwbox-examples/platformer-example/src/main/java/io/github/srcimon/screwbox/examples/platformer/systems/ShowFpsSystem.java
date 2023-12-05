@@ -20,12 +20,12 @@ public class ShowFpsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        long colliderCount = engine.environment().fetchAll(COLLIDERS).size();
-        long entityCount = engine.environment().entityCount();
-        int fps = engine.loop().fps();
-        long updateTime = engine.loop().updateDuration().milliseconds();
-        String text = String.format("fps: %04d / updatetime %02d / %d entities / %d colliders",
-                fps, updateTime, entityCount, colliderCount);
+        String text = "fps: %04d / updatetime %02d / %d entities (%d colliders) / %d systems".formatted(
+                engine.loop().fps(),
+                engine.loop().updateDuration().milliseconds(),
+                engine.environment().entityCount(),
+                engine.environment().fetchAll(COLLIDERS).size(),
+                engine.environment().systems().size());
         engine.graphics().screen().drawText(TEXT_POSITION, text, FONT, Color.WHITE);
     }
 }
