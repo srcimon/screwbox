@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.examples.gameoflife;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.systems.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.systems.QuitOnKeyPressSystem;
 import io.github.srcimon.screwbox.core.keyboard.Key;
@@ -24,7 +23,7 @@ public class GameOfLifeExample {
         Engine engine = ScrewBox.createEngine("Game Of Life Example");
 
         engine.environment()
-                .addEntity(new Entity().add(new GridComponent()))
+                .addEntity(new GridComponent())
                 .addSystem(new GridUpdateSystem())
                 .addSystem(new GridRenderSystem())
                 .addSystem(new GridInteractionSystem())

@@ -1,7 +1,10 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.systems.RenderLightSystem;
 import io.github.srcimon.screwbox.core.environment.systems.RenderSystem;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +34,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void addEntity_entityNull_exception() {
-        assertThatThrownBy(() -> entities.addEntity(null))
+        assertThatThrownBy(() -> entities.addEntity((Entity)null))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -47,6 +50,22 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> entities.importSource((List<String>) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Source must not be null");
+    }
+
+    @Test
+    void addEntity_byIdAndComponent_addsEntity() {
+        entities.addEntity(4, new TransformComponent(Vector.zero()));
+
+        assertThat(entities.fetchById(4)).isNotEmpty();
+        assertThat(entities.entityCount()).isEqualTo(1);
+    }
+
+    @Test
+    void addEntity_byComponent_addsEntity() {
+        entities.addEntity(new TransformComponent(Vector.zero()));
+
+        assertThat(entities.allEntities()).allMatch(entity -> entity.hasComponent(TransformComponent.class));
+        assertThat(entities.entityCount()).isEqualTo(1);
     }
 
     @Test

@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
@@ -109,9 +108,7 @@ public class GameScene implements Scene {
     }
 
     void importEntities(final Environment environment) {
-        environment.addEntity(new Entity()
-                .add(new ScreenshotComponent())
-                .add(new CurrentLevelComponent(mapName)));
+        environment.addEntity(new ScreenshotComponent(), new CurrentLevelComponent(mapName));
 
         final Map map = Map.fromJson(mapName);
 

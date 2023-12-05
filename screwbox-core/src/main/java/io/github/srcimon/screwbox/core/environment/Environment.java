@@ -5,6 +5,10 @@ import java.util.Optional;
 
 public interface Environment {
 
+    Environment addEntity(int id, Component... components);
+
+    Environment addEntity(Component... components);
+
     Environment addEntity(Entity entity);
 
     Environment addEntities(List<Entity> entities);

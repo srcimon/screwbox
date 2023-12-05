@@ -21,6 +21,16 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment addEntity(final int id, final Component... components) {
+        return addEntity(new Entity(id).add(components));
+    }
+
+    @Override
+    public Environment addEntity(final Component... components) {
+        return addEntity(new Entity().add(components));
+    }
+
+    @Override
     public Environment addEntity(final Entity entity) {
         requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);

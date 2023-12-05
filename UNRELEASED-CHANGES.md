@@ -4,6 +4,7 @@
 ### 🚀 Features & improvements
 
 - Added javadoc to `Keyboard`
+- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
 
 ### 🪛 Bug Fixes
 
