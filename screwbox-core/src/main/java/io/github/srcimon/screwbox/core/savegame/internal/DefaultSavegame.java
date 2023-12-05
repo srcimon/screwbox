@@ -36,7 +36,7 @@ public class DefaultSavegame implements Savegame {
         verifyName(name);
         requireNonNull(scene, "scene must not be null");
         final Environment environment = scenes.environmentOf(scene);
-        final List<Entity> allEntities = environment.allEntities();
+        final List<Entity> allEntities = environment.entities();
         try (final OutputStream outputStream = new FileOutputStream(name)) {
             try (final OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
                 try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {

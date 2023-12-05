@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.systems.RenderLightSystem;
 import io.github.srcimon.screwbox.core.environment.systems.RenderSystem;
@@ -64,7 +63,7 @@ class DefaultEnvironmentTest {
     void addEntity_byComponent_addsEntity() {
         entities.addEntity(new TransformComponent(Vector.zero()));
 
-        assertThat(entities.allEntities()).allMatch(entity -> entity.hasComponent(TransformComponent.class));
+        assertThat(entities.entities()).allMatch(entity -> entity.hasComponent(TransformComponent.class));
         assertThat(entities.entityCount()).isEqualTo(1);
     }
 
@@ -74,7 +73,7 @@ class DefaultEnvironmentTest {
 
         entities.addEntity(freshEntity);
 
-        assertThat(entities.allEntities()).contains(freshEntity);
+        assertThat(entities.entities()).contains(freshEntity);
         assertThat(entities.entityCount()).isEqualTo(1);
     }
 

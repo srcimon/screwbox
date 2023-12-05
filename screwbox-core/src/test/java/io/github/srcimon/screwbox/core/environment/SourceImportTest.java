@@ -47,7 +47,7 @@ class SourceImportTest {
         entities.importSource("Source of Inspiration")
                 .as(source -> new Entity());
 
-        assertThat(entities.allEntities()).hasSize(1);
+        assertThat(entities.entities()).hasSize(1);
     }
 
     @Test
@@ -55,7 +55,7 @@ class SourceImportTest {
         entities.importSource("Source of Inspiration")
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entities.allEntities()).isEmpty();
+        assertThat(entities.entities()).isEmpty();
     }
 
     @Test
@@ -63,7 +63,7 @@ class SourceImportTest {
         entities.importSource("")
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entities.allEntities()).hasSize(1);
+        assertThat(entities.entities()).hasSize(1);
     }
 
     @Test
@@ -72,7 +72,7 @@ class SourceImportTest {
                 .when(String::isEmpty).as(source -> new Entity())
                 .when(String::isEmpty).as(source -> new Entity());
 
-        assertThat(entities.allEntities()).hasSize(2);
+        assertThat(entities.entities()).hasSize(2);
     }
 
     @Test
@@ -80,7 +80,7 @@ class SourceImportTest {
         entities.importSource(List.of("first", "second", "third"))
                 .when(i -> i.contains("ir")).as(source -> new Entity());
 
-        assertThat(entities.allEntities()).hasSize(2);
+        assertThat(entities.entities()).hasSize(2);
     }
 
     @Test
@@ -89,7 +89,7 @@ class SourceImportTest {
                 .usingIndex(String::length)
                 .when(6).as(source -> new Entity(6));
 
-        assertThat(entities.allEntities()).hasSize(1)
+        assertThat(entities.entities()).hasSize(1)
                 .allMatch(e -> e.id().get() == 6);
     }
 
@@ -101,6 +101,6 @@ class SourceImportTest {
                 .stopUsingIndex()
                 .as(source -> new Entity());
 
-        assertThat(entities.allEntities()).hasSize(4);
+        assertThat(entities.entities()).hasSize(4);
     }
 }

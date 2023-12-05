@@ -125,7 +125,7 @@ class DefaultSaveganeTest {
     void load_saveExists_populatesEntities() {
         var entities = mock(Environment.class);
         when(scenes.environmentOf(GameScene.class)).thenReturn(entities);
-        when(entities.allEntities()).thenReturn(List.of(new Entity(1), new Entity(2)));
+        when(entities.entities()).thenReturn(List.of(new Entity(1), new Entity(2)));
         doReturn(GameScene.class).when(scenes).activeScene();
         savegame.create(SAVEGAME_NAME);
 

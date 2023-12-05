@@ -18,6 +18,7 @@
 - Renamed `Segment` to `Line`
 - Renamed some `Keyboard` and `Mouse` methods to more specific names
 - Renamed `Scene.initialize()` to `populate()`
+- Renamed `Environment.allEntities()` to `entities()`
 
 ### 📦 Dependency updates
 

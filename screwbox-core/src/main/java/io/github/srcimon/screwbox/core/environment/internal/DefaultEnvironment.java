@@ -124,7 +124,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment clearEntities() {
-        for (final var entity : new ArrayList<>(allEntities())) {
+        for (final var entity : new ArrayList<>(entities())) {
             remove(entity);
         }
         return this;
@@ -164,7 +164,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public List<Entity> allEntities() {
+    public List<Entity> entities() {
         return entityManager.allEntities();
     }
 

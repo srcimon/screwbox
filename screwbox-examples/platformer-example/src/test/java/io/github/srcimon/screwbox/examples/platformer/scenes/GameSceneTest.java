@@ -26,7 +26,7 @@ class GameSceneTest {
 
         new GameScene(mapName).importEntities(environment);
 
-        assertThat(environment.allEntities()).hasSizeGreaterThan(50)
+        assertThat(environment.entities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(CameraComponent.class))
                 .anyMatch(e -> e.hasComponent(PlayerMarkerComponent.class));
     }
