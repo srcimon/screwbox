@@ -199,8 +199,8 @@ public class DefaultRenderer implements Renderer {
             graphics.drawOval(x, y, diameter, diameter);
         } else {
             var oldStroke = graphics.getStroke();
-            graphics.drawOval(x, y, diameter, diameter);
             graphics.setStroke(new BasicStroke(strokeWidth));
+            graphics.drawOval(x, y, diameter, diameter);
             graphics.setStroke(oldStroke);
         }
     }

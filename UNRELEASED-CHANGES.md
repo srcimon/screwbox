@@ -3,9 +3,9 @@
 
 ### 🚀 Features & improvements
 
-- Added javadoc to `Keyboard`
 - Added `Environment.addEntity(id, components)` and `.addEntity(components)`
 - Added `World.drawCircle()` (#140)
+- Added javadoc to `Keyboard`
 
 ### 🪛 Bug Fixes
 
@@ -23,4 +23,4 @@
 
 ### 📦 Dependency updates
 
-- Bump  mockito to 5.8.0
+- Bump Mockito to 5.8.0

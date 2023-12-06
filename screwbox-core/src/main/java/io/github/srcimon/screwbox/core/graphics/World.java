@@ -58,13 +58,13 @@ public interface World {
         return drawLine(from, to, drawColor());
     }
 
-    World fillCircle(Vector position, int diameter, Color color);
+    World fillCircle(Vector position, double diameter, Color color);
 
-    default World fillCircle(final Vector position, final int diameter) {
+    default World fillCircle(final Vector position, final double diameter) {
         return fillCircle(position, diameter, drawColor());
     }
 
-    World drawCircle(Vector position, int diameter, Color color, int strokeWidth);
+    World drawCircle(Vector position, double diameter, Color color, int strokeWidth);
 
     World fillRectangle(Bounds bounds, Color color);
 
