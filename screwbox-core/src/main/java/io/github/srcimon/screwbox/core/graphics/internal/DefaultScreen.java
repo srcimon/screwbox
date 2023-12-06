@@ -160,8 +160,8 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.drawCircle(offset, diameter, color);
+    public Screen drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
+        renderer.drawCircle(offset, diameter, color, strokeWidth);
         return this;
     }
 

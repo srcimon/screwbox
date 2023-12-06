@@ -1,9 +1,24 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.scenes.Scene;
+
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link Environment} manages all {@link #entities()} and all {@link #systems()} that are contained in a {@link Scene}.
+ * This is a very simple implementation of and´ <a href="https://en.wikipedia.org/wiki/Entity_component_system">Entity Component System (ECS)</a>.
+ *
+ * @see Entity
+ * @see EntitySystem
+ * @see Component
+ * @see Archetype
+ */
 public interface Environment {
+
+    Environment addEntity(int id, Component... components);
+
+    Environment addEntity(Component... components);
 
     Environment addEntity(Entity entity);
 
@@ -71,12 +86,12 @@ public interface Environment {
     /**
      * Returns all {@link Entity}s currently attached.
      */
-    List<Entity> allEntities();
+    List<Entity> entities();
 
     /**
      * Provides a compact syntax for importing {@link Entity}s from a custom source
      * using conditions and {@link SourceImport.Converter}.
-     * 
+     *
      * @see #importSource(List) for multiple sources
      */
     <T> SourceImport<T> importSource(T source);
@@ -84,7 +99,7 @@ public interface Environment {
     /**
      * Provides a compact syntax for importing {@link Entity}s from multiple custom
      * sources using conditions and {@link SourceImport.Converter}.
-     * 
+     *
      * @see #importSource(Object) for single source
      */
     <T> SourceImport<T> importSource(List<T> source);

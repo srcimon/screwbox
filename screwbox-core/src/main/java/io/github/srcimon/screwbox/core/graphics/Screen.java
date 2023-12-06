@@ -40,7 +40,11 @@ public interface Screen {
 
     Screen drawFadingCircle(Offset offset, int diameter, Color color);
 
-    Screen drawCircle(Offset offset, int diameter, Color color);
+    Screen drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
+
+    default Screen drawCircle(Offset offset, int diameter, Color color) {
+        return drawCircle(offset, diameter, color, 1);
+    }
 
     Screen fillCircle(Offset offset, int diameter, Color color);
 

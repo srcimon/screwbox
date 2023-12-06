@@ -21,6 +21,16 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment addEntity(final int id, final Component... components) {
+        return addEntity(new Entity(id).add(components));
+    }
+
+    @Override
+    public Environment addEntity(final Component... components) {
+        return addEntity(new Entity().add(components));
+    }
+
+    @Override
     public Environment addEntity(final Entity entity) {
         requireNonNull(entity, "entity must not be null");
         entityManager.addEntity(entity);
@@ -114,7 +124,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment clearEntities() {
-        for (final var entity : new ArrayList<>(allEntities())) {
+        for (final var entity : new ArrayList<>(entities())) {
             remove(entity);
         }
         return this;
@@ -154,7 +164,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public List<Entity> allEntities() {
+    public List<Entity> entities() {
         return entityManager.allEntities();
     }
 

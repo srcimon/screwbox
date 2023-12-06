@@ -3,6 +3,8 @@
 
 ### 🚀 Features & improvements
 
+- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
+- Added `World.drawCircle()` (#140)
 - Added javadoc to `Keyboard`
 
 ### 🪛 Bug Fixes
@@ -17,7 +19,8 @@
 - Renamed `Segment` to `Line`
 - Renamed some `Keyboard` and `Mouse` methods to more specific names
 - Renamed `Scene.initialize()` to `populate()`
+- Renamed `Environment.allEntities()` to `entities()`
 
 ### 📦 Dependency updates
 
-- Bump  mockito to 5.8.0
+- Bump Mockito to 5.8.0
