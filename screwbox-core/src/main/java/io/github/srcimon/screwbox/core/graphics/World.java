@@ -64,6 +64,8 @@ public interface World {
         return fillCircle(position, diameter, drawColor());
     }
 
+    World drawCircle(Vector position, int diameter, Color color, int strokeWidth);
+
     World fillRectangle(Bounds bounds, Color color);
 
     default World fillRectangle(final Bounds bounds) {

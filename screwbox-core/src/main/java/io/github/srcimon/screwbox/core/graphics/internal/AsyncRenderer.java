@@ -112,8 +112,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color));
+    public void drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
+        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color, strokeWidth));
     }
 
     @Override

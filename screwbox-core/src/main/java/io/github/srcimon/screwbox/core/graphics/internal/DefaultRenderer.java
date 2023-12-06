@@ -191,11 +191,18 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(Offset offset, int diameter, Color color) {
+    public void drawCircle(Offset offset, int diameter, Color color, int strokeWidth) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
         final int y = offset.y() - diameter / 2;
-        graphics.drawOval(x, y, diameter, diameter);
+        if (strokeWidth == 1) {
+            graphics.drawOval(x, y, diameter, diameter);
+        } else {
+            var oldStroke = graphics.getStroke();
+            graphics.drawOval(x, y, diameter, diameter);
+            graphics.setStroke(new BasicStroke(strokeWidth));
+            graphics.setStroke(oldStroke);
+        }
     }
 
     @Override

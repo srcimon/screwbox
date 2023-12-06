@@ -5,6 +5,7 @@
 
 - Added javadoc to `Keyboard`
 - Added `Environment.addEntity(id, components)` and `.addEntity(components)`
+- Added `World.drawCircle()` (#140)
 
 ### 🪛 Bug Fixes
 

@@ -149,6 +149,13 @@ public class DefaultWorld implements World {
     }
 
     @Override
+    public World drawCircle(Vector position, int diameter, Color color, final int strokeWidth) {
+        final Offset offset = toOffset(position);
+        screen.drawCircle(offset, (int) (diameter * zoom), color,strokeWidth);
+        return this;
+    }
+
+    @Override
     public World fillRectangle(final Bounds bounds, final Color color) {
         final Offset offset = toOffset(bounds.origin());
         final Size size = toDimension(bounds.size());

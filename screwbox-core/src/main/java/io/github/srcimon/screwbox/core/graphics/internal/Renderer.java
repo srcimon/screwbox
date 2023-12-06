@@ -32,7 +32,7 @@ public interface Renderer {
 
     void drawFadingCircle(Offset offset, int diameter, Color color);
 
-    void drawCircle(Offset offset, int diameter, Color color);
+    void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
     void drawRectangle(Offset offset, Size size, Rotation rotation, Color color);
 }
