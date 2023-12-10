@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -177,6 +178,42 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> environment.loadSavegame("not-there.sav"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("could not load savegame: not-there.sav");
+    }
+
+    @Test
+    void deleteSavegame_nameIsNull_throwsException() {
+        assertThatThrownBy(() -> environment.deleteSavegame(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("name must not be null");
+    }
+
+    @Test
+    void deleteSavegame_savegameDoesntExist_throwsException() {
+        assertThatThrownBy(() -> environment.deleteSavegame("not-there.sav"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("could not delete savegame: not-there.sav");
+    }
+
+    @Test
+    void deleteSavegame_savegameExists_deletesSAve() {
+        environment.createSavegame(SAVEGAME_NAME);
+
+        environment.deleteSavegame(SAVEGAME_NAME);
+
+        assertThat(environment.savegameExists(SAVEGAME_NAME)).isFalse();
+    }
+
+    @Test
+    void loadSavegame_saveExists_replacesExistingEntitiesWithSavedOnes() {
+        environment.addEntity(1, new TransformComponent($$(0, 0, 32, 32)));
+        environment.createSavegame(SAVEGAME_NAME);
+        environment.clearEntities();
+        environment.addEntity(2, new TransformComponent($$(0, 0, 32, 32)));
+
+        environment.loadSavegame(SAVEGAME_NAME);
+
+        assertThat(environment.fetchById(1)).isPresent();
+        assertThat(environment.fetchById(2)).isEmpty();
     }
 
     @AfterEach

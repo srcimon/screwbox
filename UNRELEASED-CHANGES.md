@@ -3,8 +3,9 @@
 
 ### 🚀 Features & improvements
 
-- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
+- Moved api for saving and loading the game state into `Environment` (#133)
 - Added `World.drawCircle()` (#140)
+- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
 - Added javadoc to `Keyboard`
 
 ### 🪛 Bug Fixes
