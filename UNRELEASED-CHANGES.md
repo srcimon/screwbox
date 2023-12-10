@@ -3,7 +3,6 @@
 
 ### 🚀 Features & improvements
 
-- Moved api for saving and loading the game state into `Environment` (#133)
 - Added `World.drawCircle()` (#140)
 - Added `Environment.addEntity(id, components)` and `.addEntity(components)`
 - Added javadoc to `Keyboard`
@@ -14,6 +13,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Moved api for saving and loading the game state into `Environment` (#133)
 - Renamed misleading `Entities` to `Environment` (#132)
 - Moved all future ideas and plans from the readme to Github issues (#131)
 - Renamed generic `Ecosphere.add()` method to specify if adding a system or an entity
