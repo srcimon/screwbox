@@ -28,8 +28,8 @@ public class OptionsMenu extends UiMenu {
         });
 
         addItem("delete savegame")
-                .activeCondition(engine -> engine.savegame().exists("savegame.sav"))
-                .onActivate(engine -> engine.savegame().delete("savegame.sav"));
+                .activeCondition(engine -> engine.environment().savegameExists("savegame.sav"))
+                .onActivate(engine -> engine.environment().deleteSavegame("savegame.sav"));
 
         addItem("back").onActivate(this::onExit);
     }
