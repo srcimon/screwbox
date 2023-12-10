@@ -109,4 +109,9 @@ public interface Environment {
      */
     List<EntitySystem> systems();
 
+    /**
+     * Creates a savegame file with the given name. The savegame contains all
+     * {@link #entities()} attached to the {@link Environment}.
+     */
+    Environment createSavegame(String name);
 }

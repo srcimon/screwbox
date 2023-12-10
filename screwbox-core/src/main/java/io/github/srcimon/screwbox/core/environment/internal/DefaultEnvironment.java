@@ -3,9 +3,14 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.GZIPOutputStream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
@@ -114,6 +119,21 @@ public class DefaultEnvironment implements Environment {
     @Override
     public List<EntitySystem> systems() {
         return systemManager.allSystems();
+    }
+
+    @Override
+    public Environment createSavegame(final String name) {
+        requireNonNull(name, "name must not be null");
+        try (final OutputStream outputStream = new FileOutputStream(name)) {
+            try (final OutputStream zippedOutputStream = new GZIPOutputStream(outputStream)) {
+                try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
+                    objectOutputStream.writeObject(entities());
+                }
+            }
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not create savegame: " + name, e);
+        }
+        return this;
     }
 
     public void updateTimes(final int count) {
