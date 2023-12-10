@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -156,6 +157,16 @@ class DefaultEnvironmentTest {
         assertThat(exists).isFalse();
     }
 
+    @Test
+    void savegameExists_invalidName_throwsException() {
+        assertThatThrownBy(() -> environment.savegameExists("test."))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("savegame name is invalid: test.");
+
+        assertThatThrownBy(() -> environment.savegameExists("test" + File.separator))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("savegame name is invalid: test" + File.separator);
+    }
 
     @Test
     void savegameExists_exists_isTrue() {
