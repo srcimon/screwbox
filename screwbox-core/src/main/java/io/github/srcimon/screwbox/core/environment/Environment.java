@@ -109,4 +109,27 @@ public interface Environment {
      */
     List<EntitySystem> systems();
 
+    /**
+     * Creates a savegame file with the given name. The savegame contains all
+     * {@link #entities()} attached to the {@link Environment}.
+     */
+    Environment createSavegame(String name);
+
+    /**
+     * Loads a previously created savegame file and restores the saved
+     * {@link #entities()} in the {@link Environment}.
+     */
+    Environment loadSavegame(String name);
+
+    /**
+     * Deletes the savegame with the given name. Triggers an {@link Exception} if
+     * there is no such savegame.
+     */
+    Environment deleteSavegame(String name);
+
+    /**
+     * Returns true if there is a savegame with the given name. Value is cached for a second to prevent
+     * exessive disc usage.
+     */
+    boolean savegameExists(String name);
 }

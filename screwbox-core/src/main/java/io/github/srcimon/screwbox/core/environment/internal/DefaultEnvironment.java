@@ -3,20 +3,24 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.GZIPOutputStream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultEnvironment implements Environment {
 
-    private final EntityManager entityManager;
+    private final EntityManager entityManager = new EntityManager();
+    private final SavegameManager savegameManager = new SavegameManager();
     private final SystemManager systemManager;
 
     public DefaultEnvironment(final Engine engine) {
-        this.entityManager = new EntityManager();
         this.systemManager = new SystemManager(engine, entityManager);
     }
 
@@ -66,7 +70,7 @@ public class DefaultEnvironment implements Environment {
     public Optional<Entity> fetch(final Archetype archetype) {
         final var entities = entityManager.entitiesMatching(archetype);
         if (entities.size() == 1) {
-            return Optional.of(entities.get(0));
+            return Optional.of(entities.getFirst());
         }
         return Optional.empty();
     }
@@ -189,6 +193,42 @@ public class DefaultEnvironment implements Environment {
             addSystem(entitySystem);
         }
         return this;
+    }
+
+
+    @Override
+    public Environment createSavegame(final String name) {
+        requireNonNull(name, "name must not be null");
+        try (final var outputStream = new FileOutputStream(name)) {
+            try (final var zippedOutputStream = new GZIPOutputStream(outputStream)) {
+                try (final var objectOutputStream = new ObjectOutputStream(zippedOutputStream)) {
+                    objectOutputStream.writeObject(entities());
+                }
+            }
+        } catch (final IOException e) {
+            throw new IllegalStateException("could not create savegame: " + name, e);
+        }
+        return this;
+    }
+
+    @Override
+    public Environment loadSavegame(final String name) {
+        clearEntities();
+        addEntities(savegameManager.loadSavegame(name));
+        requireNonNull(name, "name must not be null");
+        return this;
+    }
+
+    @Override
+    public Environment deleteSavegame(final String name) {
+        savegameManager.deleteSavegame(name);
+        return this;
+
+    }
+
+    @Override
+    public boolean savegameExists(String name) {
+        return savegameManager.savegameExists(name);
     }
 
 }

@@ -12,10 +12,10 @@ public class StartGameMenu extends UiMenu {
         addItem("Start Level 2").onActivate(engine -> startMap("maps/1-2_misty_caves.json", engine));
         addItem("continue").onActivate(engine -> {
             engine.scenes().add(new GameScene());
-            engine.savegame().load("savegame.sav", GameScene.class);
+            engine.scenes().environmentOf(GameScene.class).loadSavegame("savegame.sav");
             engine.scenes().switchTo(GameScene.class);
             engine.ui().closeMenu();
-        }).activeCondition(engine -> engine.savegame().exists("savegame.sav"));
+        }).activeCondition(engine -> engine.environment().savegameExists("savegame.sav"));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Quit").onActivate(Engine::stop);

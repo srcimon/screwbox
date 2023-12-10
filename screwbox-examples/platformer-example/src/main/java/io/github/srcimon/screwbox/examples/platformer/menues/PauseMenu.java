@@ -13,14 +13,14 @@ public class PauseMenu extends UiMenu {
         addItem("Resume game").onActivate(this::resumeGame);
 
         addItem("Save Game").onActivate(engine -> {
-            engine.savegame().create(SAVEGAME_NAME, GameScene.class);
+            engine.scenes().environmentOf(GameScene.class).createSavegame(SAVEGAME_NAME);
             resumeGame(engine);
         });
 
         addItem("Load Game").onActivate(engine -> {
-            engine.savegame().load(SAVEGAME_NAME, GameScene.class);
+            engine.scenes().environmentOf(GameScene.class).loadSavegame(SAVEGAME_NAME);
             resumeGame(engine);
-        }).activeCondition(engine -> engine.savegame().exists(SAVEGAME_NAME));
+        }).activeCondition(engine -> engine.environment().savegameExists(SAVEGAME_NAME));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class));

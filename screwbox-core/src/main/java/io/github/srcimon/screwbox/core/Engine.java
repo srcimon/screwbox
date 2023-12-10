@@ -4,9 +4,9 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.audio.Audio;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.log.LoggingAdapter;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.physics.Physics;
-import io.github.srcimon.screwbox.core.savegame.Savegame;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.ui.Ui;
@@ -104,13 +103,6 @@ public interface Engine {
      * @see Log
      */
     Log log();
-
-    /**
-     * Provides methods to save and load the game state.
-     *
-     * @see Savegame
-     */
-    Savegame savegame();
 
     /**
      * Used to control the game window and retrieve information about the game window.

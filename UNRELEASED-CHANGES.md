@@ -3,13 +3,14 @@
 
 ### 🚀 Features & improvements
 
-- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
+- Moved api for saving and loading the game state into `Environment` (#133)
 - Added `World.drawCircle()` (#140)
+- Added `Environment.addEntity(id, components)` and `.addEntity(components)`
 - Added javadoc to `Keyboard`
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed problems with plugin version via adding maven-enforcer-plugin
 
 ### 🧽 Cleanup & refactoring
 
@@ -24,3 +25,4 @@
 ### 📦 Dependency updates
 
 - Bump Mockito to 5.8.0
+- Updated all Maven Plugins to most recent version

@@ -22,8 +22,6 @@ import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.internal.DefaultMouse;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
-import io.github.srcimon.screwbox.core.savegame.Savegame;
-import io.github.srcimon.screwbox.core.savegame.internal.DefaultSavegame;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -57,7 +55,6 @@ class DefaultEngine implements Engine {
     private final DefaultUi ui;
     private final DefaultLog log;
     private final DefaultAsync async;
-    private final DefaultSavegame savegame;
     private final DefaultAssets assets;
     private final DefaultWindow window;
     private final WarmUpIndicator warmUpIndicator;
@@ -103,8 +100,7 @@ class DefaultEngine implements Engine {
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
-        savegame = new DefaultSavegame(scenes);
-        for(var component :  List.of(frame, frame.getCanvas())) {
+        for (var component : List.of(frame, frame.getCanvas())) {
             component.addMouseListener(mouse);
             component.addMouseMotionListener(mouse);
             component.addMouseWheelListener(mouse);
@@ -217,11 +213,6 @@ class DefaultEngine implements Engine {
     @Override
     public Async async() {
         return async;
-    }
-
-    @Override
-    public Savegame savegame() {
-        return savegame;
     }
 
     @Override

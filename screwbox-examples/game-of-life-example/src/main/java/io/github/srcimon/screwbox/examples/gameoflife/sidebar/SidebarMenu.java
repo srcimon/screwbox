@@ -23,8 +23,8 @@ public class SidebarMenu extends UiMenu {
 
         addItem(engine -> engine.graphics().configuration().isUseAntialising() ? "high quality" : "low quality").onActivate(engine -> engine.graphics().configuration().toggleAntialising());
         addItem("mode").onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
-        addItem("save").onActivate(engine -> engine.savegame().create("save"));
-        addItem("load").onActivate(engine -> engine.savegame().load("save")).activeCondition(engine -> engine.savegame().exists("save"));
+        addItem("save").onActivate(engine -> engine.environment().createSavegame("save"));
+        addItem("load").onActivate(engine -> engine.environment().loadSavegame("save")).activeCondition(engine -> engine.environment().savegameExists("save"));
         addItem("exit").onActivate(Engine::stop);
     }
 
