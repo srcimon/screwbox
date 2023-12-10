@@ -10,7 +10,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed problems with plugin version via adding maven-enforcer-plugin
 
 ### 🧽 Cleanup & refactoring
 
@@ -25,3 +25,4 @@
 ### 📦 Dependency updates
 
 - Bump Mockito to 5.8.0
+- Updated all Maven Plugins to most recent version
