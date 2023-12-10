@@ -228,7 +228,7 @@ public class DefaultEnvironment implements Environment {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new IllegalStateException("could not load entities", e);
+            throw new IllegalStateException("could not load savegame: " + name, e);
         }
         return this;
     }

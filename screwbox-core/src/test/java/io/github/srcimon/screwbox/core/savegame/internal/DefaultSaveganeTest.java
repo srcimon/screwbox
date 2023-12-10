@@ -37,43 +37,6 @@
 //
 //
 //    @Test
-//    void exists_exists_true() {
-//        var entities = mock(Environment.class);
-//        when(scenes.environmentOf(GameScene.class)).thenReturn(entities);
-//        doReturn(GameScene.class).when(scenes).activeScene();
-//
-//        savegame.create(SAVEGAME_NAME);
-//
-//        boolean exists = savegame.exists(SAVEGAME_NAME);
-//
-//        assertThat(exists).isTrue();
-//    }
-//
-//    @Test
-//    void load_nameNull_throwsException() {
-//        assertThatThrownBy(() -> savegame.load(null))
-//                .isInstanceOf(NullPointerException.class)
-//                .hasMessage("name must not be null");
-//    }
-//
-//    @Test
-//    void load_sceneNull_throwsException() {
-//        assertThatThrownBy(() -> savegame.load(SAVEGAME_NAME, null))
-//                .isInstanceOf(NullPointerException.class)
-//                .hasMessage("scene must not be null");
-//    }
-//
-//    @Test
-//    void load_doesntExist_throwsException() {
-//        var entities = mock(Environment.class);
-//        when(scenes.environmentOf(GameScene.class)).thenReturn(entities);
-//
-//        assertThatThrownBy(() -> savegame.load("not-there.sav", GameScene.class))
-//                .isInstanceOf(IllegalStateException.class)
-//                .hasMessage("could not load entities");
-//    }
-//
-//    @Test
 //    void load_saveExists_populatesEntities() {
 //        var entities = mock(Environment.class);
 //        when(scenes.environmentOf(GameScene.class)).thenReturn(entities);

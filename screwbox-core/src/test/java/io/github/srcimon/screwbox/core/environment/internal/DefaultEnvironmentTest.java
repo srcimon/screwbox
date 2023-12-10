@@ -155,6 +155,30 @@ class DefaultEnvironmentTest {
         assertThat(exists).isFalse();
     }
 
+
+    @Test
+    void savegameExists_exists_isTrue() {
+        environment.createSavegame(SAVEGAME_NAME);
+
+        boolean exists = environment.savegameExists(SAVEGAME_NAME);
+
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    void loadSavegame_nameNull_throwsException() {
+        assertThatThrownBy(() -> environment.loadSavegame(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("name must not be null");
+    }
+
+    @Test
+    void loadSavegame_doesntExist_throwsException() {
+        assertThatThrownBy(() -> environment.loadSavegame("not-there.sav"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("could not load savegame: not-there.sav");
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
