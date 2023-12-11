@@ -5,7 +5,7 @@
 
 - Added `World.drawCircle()` (#140)
 - Added `Environment.addEntity(id, components)` and `.addEntity(components)`
-- Added javadoc to `Keyboard`
+- Added / completed javadoc on `Keyboard`, `Duration`
 
 ### 🪛 Bug Fixes
 
@@ -21,6 +21,7 @@
 - Renamed some `Keyboard` and `Mouse` methods to more specific names
 - Renamed `Scene.initialize()` to `populate()`
 - Renamed `Environment.allEntities()` to `entities()`
+- Removed `Duration.addNanos(nanos)`
 
 ### 📦 Dependency updates
 

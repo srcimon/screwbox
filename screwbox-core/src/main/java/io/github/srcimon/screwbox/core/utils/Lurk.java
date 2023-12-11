@@ -26,7 +26,9 @@ public class Lurk implements Serializable {
 
     public static Lurk intervalWithDeviation(final Duration interval, final Percent intervalDeviation) {
         long nanoDeviation = Math.round(interval.nanos() * intervalDeviation.value());
-        return new Lurk(interval.addNanos(-nanoDeviation), interval.addNanos(nanoDeviation));
+        Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
+        Duration maxDeviation = Duration.ofNanos(nanoDeviation);
+        return new Lurk(interval.add(minDeviation), interval.add(maxDeviation));
     }
 
     private Lurk(final Duration minInterval, final Duration maxInterval) {

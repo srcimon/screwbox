@@ -162,8 +162,4 @@ public class Duration implements Serializable {
     public boolean isLessThan(final Duration other) {
         return !isAtLeast(other);
     }
-
-    public Duration addNanos(final long nanos) {
-        return new Duration(this.nanos + nanos);
-    }
 }
