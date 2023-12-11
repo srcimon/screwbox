@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.keyboard;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A key on your {@link Keyboard}.
@@ -21,6 +21,8 @@ public enum Key {
     ARROW_UP(38),
     ARROW_RIGHT(39),
     ARROW_DOWN(40),
+    COMMA(44),
+    DOT(46),
     NUMBER_1(49),
     NUMBER_2(50),
     NUMBER_3(51),
@@ -40,6 +42,7 @@ public enum Key {
     K(75),
     L(76),
     M(77),
+    N(78),
     O(79),
     P(80),
     Q(81),
@@ -87,13 +90,10 @@ public enum Key {
     }
 
     /**
-     * Returns the {@link Key} with the given code.
+     * Returns the {@link Key} with the given code. Empty when code is unknown.
      */
-    public static Key fromCode(final int code) {
+    public static Optional<Key> fromCode(final int code) {
         final Key key = REVERSE_LOOKUP.get(code);
-        if (Objects.isNull(key)) {
-            throw new IllegalArgumentException("key code is invalid: " + code);
-        }
-        return key;
+        return Optional.ofNullable(key);
     }
 }

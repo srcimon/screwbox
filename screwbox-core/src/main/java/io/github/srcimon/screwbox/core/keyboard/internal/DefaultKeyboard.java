@@ -56,11 +56,12 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public List<Key> pressedKeys() {
-        List<Key> keys = new ArrayList<>();
-        for(final var code : justPressedKeys.inactive()) {
-            keys.add(Key.fromCode(code));
-        }
-        return keys;
+        return mapCodes(justPressedKeys.inactive());
+    }
+
+    @Override
+    public List<Key> downKeys() {
+        return mapCodes(pressedKeys);
     }
 
     @Override
@@ -74,4 +75,14 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         justPressedKeys.toggle();
     }
 
+    private List<Key> mapCodes(final Set<Integer> codes) {
+        List<Key> keys = new ArrayList<>();
+        for (final var code : new ArrayList<>(codes)) {
+            Optional<Key> key = Key.fromCode(code);
+            if (key.isPresent()) {
+                keys.add(key.get());
+            }
+        }
+        return keys;
+    }
 }

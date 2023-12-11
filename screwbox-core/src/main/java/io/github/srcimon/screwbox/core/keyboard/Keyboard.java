@@ -31,7 +31,12 @@ public interface Keyboard {
     boolean isPressed(Key key);
 
     /**
-     * Returns all currently pressed {@link Key}s.
+     * Returns all pressed {@link Key}s.
      */
     List<Key> pressedKeys();
+
+    /**
+     * Returns all currently down {@link Key}s.
+     */
+    List<Key> downKeys();
 }

@@ -5,8 +5,9 @@
 
 - Added `World.drawCircle()` (#140)
 - Added `Environment.addEntity(id, components)` and `.addEntity(components)`
-- Added `Key.fromCode(code)` and `Keyboard.pressedKeys()`
+- Added `Key.fromCode(code)` and `Keyboard.pressedKeys()` and `.downKeys()`
 - Added / completed javadoc on `Keyboard`, `Duration`
+- Added missing keys `N`, `,`, `.`
 
 ### 🪛 Bug Fixes
 
