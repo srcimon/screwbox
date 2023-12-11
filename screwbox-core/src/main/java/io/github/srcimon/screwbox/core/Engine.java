@@ -30,7 +30,7 @@ import io.github.srcimon.screwbox.core.window.Window;
 public interface Engine {
 
     /**
-     * Loads your game {@link Asset}s.
+     * Loads your game {@link Asset}s. Used to avoid stutter due to in game loading.
      */
     Assets assets();
 

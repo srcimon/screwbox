@@ -66,8 +66,20 @@ public class Duration implements Serializable {
         return new Duration(seconds * Time.NANOS_PER_SECOND);
     }
 
+    /**
+     * Creates a new instance with the duration since the given {@link Time} value.
+     *
+     * @see #ofExecution(Runnable)
+     */
     public static Duration since(final Time time) {
         return new Duration(Time.now().nanos() - time.nanos());
+    }
+
+    /**
+     * Creates a new instance with no duration at all.
+     */
+    public static Duration none() {
+        return new Duration(0);
     }
 
     /**
@@ -82,16 +94,26 @@ public class Duration implements Serializable {
         return since(before);
     }
 
+    /**
+     * Creates a new instance with the duration between two given {@link Time} values.
+     */
+    public static Duration between(final Time aTime, final Time anotherTime) {
+        final long nanosBetween = abs(aTime.nanos() - anotherTime.nanos());
+        return Duration.ofNanos(nanosBetween);
+    }
+
+    /**
+     * Returns the total milliseconds of the {@link Duration}.
+     */
     public long milliseconds() {
         return nanos / Time.NANOS_PER_MILLISECOND;
     }
 
+    /**
+     * Returns the total nanoseconds of the {@link Duration}.
+     */
     public long nanos() {
         return nanos;
-    }
-
-    public static Duration none() {
-        return new Duration(0);
     }
 
     /**
@@ -103,11 +125,6 @@ public class Duration implements Serializable {
     public Duration add(final Duration other) {
         requireNonNull(other, "duration must not be null");
         return Duration.ofNanos(nanos + other.nanos);
-    }
-
-    public static Duration between(final Time aTime, final Time anotherTime) {
-        final long nanosBetween = abs(aTime.nanos() - anotherTime.nanos());
-        return Duration.ofNanos(nanosBetween);
     }
 
     @Override
@@ -132,10 +149,16 @@ public class Duration implements Serializable {
         return nanos == other.nanos;
     }
 
+    /**
+     * Returns {@code true} if the {@link Duration} is at least that long with the other {@link Duration}.
+     */
     public boolean isAtLeast(final Duration other) {
         return nanos >= other.nanos();
     }
 
+    /**
+     * Returns {@code true} if the {@link Duration} is at less than the other {@link Duration}.
+     */
     public boolean isLessThan(final Duration other) {
         return !isAtLeast(other);
     }
