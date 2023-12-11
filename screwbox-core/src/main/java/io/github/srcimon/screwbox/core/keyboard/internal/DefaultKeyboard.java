@@ -8,8 +8,7 @@ import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
@@ -53,6 +52,15 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public boolean isPressed(final Key key) {
         return justPressedKeys.inactive().contains(key.code());
+    }
+
+    @Override
+    public List<Key> pressedKeys() {
+        List<Key> keys = new ArrayList<>();
+        for(final var code : justPressedKeys.inactive()) {
+            keys.add(Key.fromCode(code));
+        }
+        return keys;
     }
 
     @Override

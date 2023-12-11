@@ -82,4 +82,16 @@ class DefaultKeyboardTest {
         assertThat(keyboard.isPressed(Key.SPACE)).isTrue();
     }
 
+    @Test
+    void pressedKeys_cAndSpacePressed_returnsCAndSpace() {
+        when(keyEvent.getKeyCode()).thenReturn(Key.A.code(), Key.SPACE.code());
+
+        keyboard.keyPressed(keyEvent);
+        keyboard.keyPressed(keyEvent);
+
+        keyboard.update();
+
+        assertThat(keyboard.pressedKeys()).containsExactlyInAnyOrder(Key.A, Key.SPACE);
+    }
+
 }

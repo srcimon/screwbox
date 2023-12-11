@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.keyboard;
 
+import java.util.List;
+
 public interface Keyboard {
 
     /**
@@ -27,4 +29,9 @@ public interface Keyboard {
      * @param key the {@link Key} to check
      */
     boolean isPressed(Key key);
+
+    /**
+     * Returns all currently pressed {@link Key}s.
+     */
+    List<Key> pressedKeys();
 }

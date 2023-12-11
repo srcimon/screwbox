@@ -1,5 +1,9 @@
 package io.github.srcimon.screwbox.core.keyboard;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * A key on your {@link Keyboard}.
  */
@@ -61,6 +65,14 @@ public enum Key {
     F11(122),
     F12(123);
 
+    private static final Map<Integer, Key> REVERSE_LOOKUP = new HashMap<>();
+
+    static {
+        for (final var key : Key.values()) {
+            REVERSE_LOOKUP.put(key.code(), key);
+        }
+    }
+
     private final int keyCode;
 
     Key(final int keyCode) {
@@ -74,4 +86,14 @@ public enum Key {
         return keyCode;
     }
 
+    /**
+     * Returns the {@link Key} with the given code.
+     */
+    public static Key fromCode(final int code) {
+        final Key key = REVERSE_LOOKUP.get(code);
+        if (Objects.isNull(key)) {
+            throw new IllegalArgumentException("key code is invalid: " + code);
+        }
+        return key;
+    }
 }
