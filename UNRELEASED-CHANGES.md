@@ -8,6 +8,7 @@
 - Added `Key.fromCode(code)` and `Keyboard.pressedKeys()` and `.downKeys()`
 - Added / completed javadoc on `Keyboard`, `Duration`
 - Added missing keys `N`, `,`, `.`
+- Added `Raycast.ray()`
 
 ### 🪛 Bug Fixes
 

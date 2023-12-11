@@ -76,6 +76,10 @@ public class Raycast {
         return false;
     }
 
+    public Line ray() {
+        return ray;
+    }
+
     private List<Vector> getIntersections(final Entity entity) {
         List<Vector> intersections = new ArrayList<>();
         for (final Line border : borders.extractBorders(entity.get(TransformComponent.class).bounds)) {

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Environment;
@@ -31,6 +32,13 @@ class RaycastTest {
     @BeforeEach
     void beforeEach() {
         raycastBuilder = new RaycastBuilder(environment, Vector.zero());
+    }
+
+    @Test
+    void ray_returnsRay() {
+        var raycast = raycastBuilder.castingTo(Vector.x(20));
+
+        assertThat(raycast.ray()).isEqualTo(Line.between(Vector.zero(), Vector.x(20)));
     }
 
     @Test
