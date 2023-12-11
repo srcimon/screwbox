@@ -152,7 +152,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public Environment environment() {
-        return scenes.activeEntities();
+        return scenes.activeEnvironment();
     }
 
     @Override

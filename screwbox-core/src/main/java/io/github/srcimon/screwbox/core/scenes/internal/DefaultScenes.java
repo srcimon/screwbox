@@ -19,16 +19,16 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private class SceneContainer {
         private final Scene scene;
-        private final DefaultEnvironment entities;
+        private final DefaultEnvironment environment;
         boolean isInitialized;
 
         SceneContainer(Scene scene) {
             this.scene = scene;
-            this.entities = new DefaultEnvironment(engine);
+            this.environment = new DefaultEnvironment(engine);
         }
 
         void initialize() {
-            scene.populate(entities);
+            scene.populate(environment);
             isInitialized = true;
         }
     }
@@ -60,8 +60,8 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
-    public DefaultEnvironment activeEntities() {
-        return activeScene.entities;
+    public DefaultEnvironment activeEnvironment() {
+        return activeScene.environment;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Environment environmentOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).entities;
+        return scenes.get(sceneClass).environment;
     }
 
     @Override
@@ -137,7 +137,7 @@ public class DefaultScenes implements Scenes, Updatable {
         applySceneChanges();
 
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
-        sceneToUpdate.entities.update();
+        sceneToUpdate.environment.update();
     }
 
     private void applySceneChanges() {
