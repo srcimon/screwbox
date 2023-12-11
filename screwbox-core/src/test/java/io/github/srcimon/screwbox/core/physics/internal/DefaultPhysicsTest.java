@@ -30,7 +30,7 @@ class DefaultPhysicsTest {
 
         assertThatThrownBy(() -> physics.findPath(start, end))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("no grid for pathfinding present");
+                .hasMessage("no grid present");
     }
 
     @Test
@@ -82,10 +82,19 @@ class DefaultPhysicsTest {
     }
 
     @Test
-    void snapToGrid_noGrid_exception() {
+    void snapToGrid_vectorNoGrid_exception() {
         Vector position = $(3, 10);
 
         assertThatThrownBy(() -> physics.snapToGrid(position))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("no grid present");
+    }
+
+    @Test
+    void snapToGrid_boundsNoGrid_exception() {
+        var bounds = $$(0, 0, 2, 2);
+
+        assertThatThrownBy(() -> physics.snapToGrid(bounds))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("no grid present");
     }

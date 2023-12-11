@@ -83,7 +83,7 @@ public class DefaultLog implements Log {
     }
 
     @Override
-    public Log error(Throwable throwable) {
+    public Log error(final Throwable throwable) {
         try (StringWriter stringWriter = new StringWriter()) {
             try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
                 throwable.printStackTrace(printWriter);

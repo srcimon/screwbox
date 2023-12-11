@@ -63,9 +63,7 @@ public class DefaultPhysics implements Physics {
 
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid for pathfinding present");
-        }
+        checkGridPresent();
         return findPath(grid, start, end);
     }
 
@@ -89,18 +87,14 @@ public class DefaultPhysics implements Physics {
     @Override
     public Bounds snapToGrid(final Bounds bounds) {
         requireNonNull(bounds, "bounds must not be null");
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
+        checkGridPresent();
         return bounds.moveTo(grid.snap(bounds.position()));
     }
 
     @Override
     public Vector snapToGrid(final Vector position) {
         requireNonNull(position, "position must not be null");
-        if (isNull(grid)) {
-            throw new IllegalStateException("no grid present");
-        }
+        checkGridPresent();
         return grid.snap(position);
     }
 
@@ -109,4 +103,9 @@ public class DefaultPhysics implements Physics {
         return algorithm;
     }
 
+    private void checkGridPresent() {
+        if (isNull(grid)) {
+            throw new IllegalStateException("no grid present");
+        }
+    }
 }
