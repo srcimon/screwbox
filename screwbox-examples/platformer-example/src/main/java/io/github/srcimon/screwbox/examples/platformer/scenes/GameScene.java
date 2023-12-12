@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.systems.*;
-import io.github.srcimon.screwbox.core.environment.tweening.TimeoutSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -106,7 +105,6 @@ public class GameScene implements Scene {
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
                 .addSystem(new AreaTriggerSystem())
-                .addSystem(new TimeoutSystem())
                 .addSystem(new ResetSceneSystem())
                 .addSystem(new AutoFlipSpriteSystem())
                 .addSystem(new BackgroundSystem())
