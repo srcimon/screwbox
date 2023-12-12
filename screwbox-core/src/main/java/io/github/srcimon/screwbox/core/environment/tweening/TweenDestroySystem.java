@@ -2,9 +2,13 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
-//TODO Tests and javadoc
+//TODO Tests
+/**
+ * Removes all {@link Entity}s that have ended tweening and have an {@link TweenDestroyComponent}.
+ */
 public class TweenDestroySystem implements EntitySystem {
 
     private static final Archetype DESTROYABLES = Archetype.of(TweenDestroyComponent.class);
