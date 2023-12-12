@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
-//TODO Tests
 /**
  * Removes all {@link Entity}s that have ended tweening and have an {@link TweenDestroyComponent}.
  */
