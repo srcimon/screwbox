@@ -19,6 +19,10 @@ public class TweenStateComponent implements Component {
     public Duration duration;
     public boolean isLooped;
 
+    public TweenStateComponent(final Duration duration) {
+        this(duration, false);
+    }
+
     public TweenStateComponent(final Duration duration, final boolean isLooped) {
         this(duration, isLooped, false);
     }
