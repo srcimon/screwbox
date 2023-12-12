@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutComponent;
 
 @Order(SystemOrder.SIMULATION_BEGIN)
 public class TimeoutSystem implements EntitySystem {

@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntityState;
 import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;

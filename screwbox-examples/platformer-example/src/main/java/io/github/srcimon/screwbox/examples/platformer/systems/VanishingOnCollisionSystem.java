@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.components.FadeOutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.FadeOutComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;

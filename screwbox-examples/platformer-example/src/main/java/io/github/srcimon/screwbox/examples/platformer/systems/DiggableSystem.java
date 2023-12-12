@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.tweening.FadeOutComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggingComponent;

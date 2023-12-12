@@ -2,8 +2,9 @@ package io.github.srcimon.screwbox.core.environment.systems;
 
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EntitiesExtension;
 import org.junit.jupiter.api.Test;

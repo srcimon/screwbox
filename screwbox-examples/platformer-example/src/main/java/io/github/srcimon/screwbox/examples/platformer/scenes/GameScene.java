@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.systems.*;
+import io.github.srcimon.screwbox.core.environment.tweening.FadeOutSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;

@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.StateComponent;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TimeoutComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CatMarkerComponent;

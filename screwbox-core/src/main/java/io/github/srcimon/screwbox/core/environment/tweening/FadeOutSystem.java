@@ -1,10 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.components.FadeOutComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.FadeOutComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 
 public class FadeOutSystem implements EntitySystem {
@@ -22,7 +22,5 @@ public class FadeOutSystem implements EntitySystem {
                 engine.environment().remove(entity);
             }
         }
-
     }
-
 }
