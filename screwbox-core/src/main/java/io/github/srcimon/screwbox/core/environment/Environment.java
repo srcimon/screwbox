@@ -134,9 +134,4 @@ public interface Environment {
      * exessive disc usage.
      */
     boolean savegameExists(String name);
-
-    /**
-     * Adds all systems required to add tweening functionality.
-     */
-    Environment enableTweening();
 }

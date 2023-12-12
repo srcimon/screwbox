@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
-//TODO: javadoc and tests
+//TODO: remove
 public class TimeoutComponent implements Component {
 
     @Serial

@@ -5,6 +5,9 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TimeoutSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
@@ -65,7 +68,9 @@ public class GameScene implements Scene {
         }
 
         environment
-                .enableTweening()
+                .addSystem(new TweenSystem())
+                .addSystem(new TweenDestroySystem())
+                .addSystem(new TweenOpacitySystem())
                 .addSystem(new CombineStaticShadowCastersSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new RenderLightSystem())
