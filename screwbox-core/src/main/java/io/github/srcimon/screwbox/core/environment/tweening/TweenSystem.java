@@ -17,20 +17,22 @@ public class TweenSystem implements EntitySystem {
         for (final var tween : engine.environment().fetchAll(TWEENS)) {
             final var state = tween.get(TweenState.class);
             final var elapsedDuration = Duration.between(now, state.startTime);
-            state.progress = Percent.of((state.reverse ? 1.0 : 0.0) - (1.0 * elapsedDuration.nanos() / state.duration.nanos()));
-            if(state.loopCount >= 0) {
+            state.progress = state.reverse
+                    ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / state.duration.nanos())
+                    : Percent.of(1.0 * elapsedDuration.nanos() / state.duration.nanos());
+
+            if (state.loopCount >= 0) {
                 if (state.reverse && state.progress.isMinValue() || !state.reverse && state.progress.isMaxValue()) {
                     state.reverse = !state.reverse;
-                    if(state.loopCount <= 1) {
+                    if (state.loopCount <= 1) {
                         tween.remove(TweenState.class);
                     }
-                    if(state.loopCount != 0) {
+                    if (state.loopCount != 0) {
                         state.loopCount--;
                     }
                     state.startTime = now;
                 }
             }
-            System.out.println(state.progress);
         }
     }
 }
