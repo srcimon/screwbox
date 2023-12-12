@@ -17,15 +17,15 @@ import static org.mockito.Mockito.when;
 class GravitySystemTest {
 
     @Test
-    void update_updatesEntitiesWithGravity(DefaultEnvironment entities, Loop loop) {
+    void update_updatesEntitiesWithGravity(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(new PhysicsBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));
 
-        entities.addSystem(body, gravity);
-        entities.addSystem(new GravitySystem());
+        environment.addSystem(body, gravity);
+        environment.addSystem(new GravitySystem());
 
-        entities.update();
+        environment.update();
 
         Vector momentum = body.get(PhysicsBodyComponent.class).momentum;
         assertThat(momentum).isEqualTo(Vector.of(0, 5));

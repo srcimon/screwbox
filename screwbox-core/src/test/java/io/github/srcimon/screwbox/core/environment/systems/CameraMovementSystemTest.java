@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 class CameraMovementSystemTest {
 
     @Test
-    void update_movesCameraTowardsTracker(DefaultEnvironment entities, Loop loop, Screen screen,
+    void update_movesCameraTowardsTracker(DefaultEnvironment environment, Loop loop, Screen screen,
                                           Graphics graphics) {
         when(loop.delta()).thenReturn(0.4);
         when(screen.center()).thenReturn(Offset.at(320, 240));
@@ -45,11 +45,11 @@ class CameraMovementSystemTest {
                 new WorldBoundsComponent(),
                 new TransformComponent(Bounds.atPosition(0, 0, 20000, 20000)));
 
-        entities
+        environment
                 .addSystem(camera, tracked, worldBounds)
                 .addSystem(new CameraMovementSystem());
 
-        entities.updateTimes(50);
+        environment.updateTimes(50);
 
         Vector cameraPosition = camera.get(TransformComponent.class).bounds.position();
         assertThat(cameraPosition).isEqualTo(Vector.of(1000, 200));

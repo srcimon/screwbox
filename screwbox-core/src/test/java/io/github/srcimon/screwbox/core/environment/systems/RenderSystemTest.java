@@ -26,27 +26,27 @@ class RenderSystemTest {
     ArgumentCaptor<SpriteBatch> spriteBatch;
 
     @Test
-    void bla(DefaultEnvironment entities, World world) {
+    void bla(DefaultEnvironment environment, World world) {
         Sprite visibleBackgroundSprite = Sprite.invisible();
         Sprite visibleForegroundsSprite = Sprite.invisible();
         Sprite outOfBoundsSprite = Sprite.invisible();
 
-        entities.addEntity(new Entity()
+        environment.addEntity(new Entity()
                 .add(new RenderComponent(visibleBackgroundSprite, 2))
                 .add(new TransformComponent($$(100, 100, 32, 32))));
 
-        entities.addEntity(new Entity()
+        environment.addEntity(new Entity()
                 .add(new RenderComponent(visibleForegroundsSprite, 1))
                 .add(new TransformComponent($$(50, 50, 32, 32))));
 
-        entities.addEntity(new Entity()
+        environment.addEntity(new Entity()
                 .add(new RenderComponent(outOfBoundsSprite))
                 .add(new TransformComponent($$(400, 100, 32, 32))));
 
         Mockito.when(world.visibleArea()).thenReturn($$(0, 0, 200, 200));
-        entities.addSystem(new RenderSystem());
+        environment.addSystem(new RenderSystem());
 
-        entities.update();
+        environment.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture());
 

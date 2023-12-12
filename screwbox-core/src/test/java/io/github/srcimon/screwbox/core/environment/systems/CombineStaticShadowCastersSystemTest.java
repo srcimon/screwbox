@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CombineStaticShadowCastersSystemTest {
 
     @Test
-    void update_combinesHorizontallyAlignedColliders(DefaultEnvironment entities) {
+    void update_combinesHorizontallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
                 new StaticShadowCasterMarkerComponent(),
                 new ShadowCasterComponent(),
@@ -33,24 +33,24 @@ class CombineStaticShadowCastersSystemTest {
                 new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(40, 0, 20, 20)));
 
-        entities.addSystem(brickA, brickB, brickC);
-        entities.addSystem(new CombineStaticShadowCastersSystem());
+        environment.addSystem(brickA, brickB, brickC);
+        environment.addSystem(new CombineStaticShadowCastersSystem());
 
-        entities.update(); // one brick per cycle aligned
-        entities.update(); // ...and another one
+        environment.update(); // one brick per cycle aligned
+        environment.update(); // ...and another one
 
-        var shadowCasters = entities.fetchAll(Archetype.of(ShadowCasterComponent.class));
+        var shadowCasters = environment.fetchAll(Archetype.of(ShadowCasterComponent.class));
         var bounds = shadowCasters.get(0).get(TransformComponent.class).bounds;
         assertThat(shadowCasters).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));
     }
 
     @Test
-    void update_removesItselfAfterFinishingAllEntities(DefaultEnvironment entities) {
-        entities.addSystem(new CombineStaticShadowCastersSystem());
+    void update_removesItselfAfterFinishingAllEntities(DefaultEnvironment environment) {
+        environment.addSystem(new CombineStaticShadowCastersSystem());
 
-        entities.update();
+        environment.update();
 
-        assertThat(entities.systems()).isEmpty();
+        assertThat(environment.systems()).isEmpty();
     }
 }

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AutFlipSpriteSystemTest {
 
     @Test
-    void update_updatesSpritComponentFlipMode(DefaultEnvironment entities) {
+    void update_updatesSpritComponentFlipMode(DefaultEnvironment environment) {
         Entity movingRight = new Entity()
                 .add(new RenderComponent())
                 .add(new PhysicsBodyComponent(Vector.x(4)))
@@ -33,10 +33,10 @@ class AutFlipSpriteSystemTest {
                 .add(new PhysicsBodyComponent(Vector.y(1)))
                 .add(new AutoFlipSpriteComponent());
 
-        entities.addSystem(movingRight, movingLeftUp, movingDown)
+        environment.addSystem(movingRight, movingLeftUp, movingDown)
                 .addSystem(new AutoFlipSpriteSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(movingRight.get(RenderComponent.class).flip).isEqualTo(Flip.NONE);
         assertThat(movingLeftUp.get(RenderComponent.class).flip).isEqualTo(Flip.HORIZONTAL);

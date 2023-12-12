@@ -20,28 +20,28 @@ class TimeoutSystemTest {
     private static final Time LATER = NOW.plusSeconds(1);
 
     @Test
-    void update_removesTimedOutComponents(DefaultEnvironment entities, Loop loop) {
+    void update_removesTimedOutComponents(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(LATER);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(NOW));
-        entities
+        environment
                 .addEntity(timedOutEntity)
                 .addSystem(new TimeoutSystem());
 
-        entities.update();
+        environment.update();
 
-        assertThat(entities.entityCount()).isZero();
+        assertThat(environment.entityCount()).isZero();
     }
 
     @Test
-    void update_dosntTouchNonTimedOutComponents(DefaultEnvironment entities, Loop loop) {
+    void update_dosntTouchNonTimedOutComponents(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(NOW);
         Entity timedOutEntity = new Entity().add(new TimeoutComponent(LATER));
-        entities
+        environment
                 .addEntity(timedOutEntity)
                 .addSystem(new TimeoutSystem());
 
-        entities.update();
+        environment.update();
 
-        assertThat(entities.entityCount()).isEqualTo(1);
+        assertThat(environment.entityCount()).isEqualTo(1);
     }
 }

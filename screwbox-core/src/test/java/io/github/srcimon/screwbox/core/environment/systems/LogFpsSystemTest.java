@@ -15,16 +15,16 @@ import static org.mockito.Mockito.when;
 class LogFpsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEnvironment entities, Loop loop, Log log) {
+    void update_updatesPositionOfPhysicItems(DefaultEnvironment environment, Loop loop, Log log) {
         when(loop.fps()).thenReturn(50, 30, 10);
         when(loop.lastUpdate()).thenReturn(
                 now().plusSeconds(-10), // no logging yet
                 now().plusSeconds(-5), // no logging yet
                 now().plusSeconds(20)); // log now
 
-        entities.addSystem(new LogFpsSystem());
+        environment.addSystem(new LogFpsSystem());
 
-        entities.updateTimes(3);
+        environment.updateTimes(3);
 
         verify(log).debug("current fps 30");
     }

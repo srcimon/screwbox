@@ -14,19 +14,19 @@ import static org.mockito.Mockito.*;
 class QuitOnKeyPressSystemTest {
 
     @Test
-    void update_quitKeyNotPressed_doesntStopEngine(Engine engine, DefaultEnvironment entities) {
-        entities.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
-        entities.update();
+    void update_quitKeyNotPressed_doesntStopEngine(Engine engine, DefaultEnvironment environment) {
+        environment.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
+        environment.update();
 
         verify(engine, never()).stop();
     }
 
     @Test
-    void update_quitKeyPressed_stopsEngine(Engine engine, DefaultEnvironment entities, Keyboard keyboard) {
+    void update_quitKeyPressed_stopsEngine(Engine engine, DefaultEnvironment environment, Keyboard keyboard) {
         when(keyboard.isPressed(Key.SPACE)).thenReturn(true);
 
-        entities.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
-        entities.update();
+        environment.addSystem(new QuitOnKeyPressSystem(Key.SPACE));
+        environment.update();
 
         verify(engine).stop();
     }

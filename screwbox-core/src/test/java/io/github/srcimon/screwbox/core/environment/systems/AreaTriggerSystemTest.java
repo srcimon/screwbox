@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AreaTriggerSystemTest {
 
     @Test
-    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEnvironment entities) {
+    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -28,16 +28,16 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
                 new StaticMarkerComponent());
 
-        entities.addSystem(deathTrap, sheepDeterminedToDie);
-        entities.addSystem(new AreaTriggerSystem());
+        environment.addSystem(deathTrap, sheepDeterminedToDie);
+        environment.addSystem(new AreaTriggerSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isTrue();
     }
 
     @Test
-    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEnvironment entities) {
+    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -48,10 +48,10 @@ class AreaTriggerSystemTest {
                 new SignalComponent(),
                 new StaticMarkerComponent());
 
-        entities.addSystem(deathTrap, birdWatchingSheepDie);
-        entities.addSystem(new AreaTriggerSystem());
+        environment.addSystem(deathTrap, birdWatchingSheepDie);
+        environment.addSystem(new AreaTriggerSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isFalse();
     }

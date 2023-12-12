@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class RegisterToSignalSystemTest {
 
     @Test
-    void update_registersAllSignalReceiversToSender(DefaultEnvironment entities) {
+    void update_registersAllSignalReceiversToSender(DefaultEnvironment environment) {
         Entity sender = new Entity(4711).add(
                 new ForwardSignalComponent());
 
@@ -25,30 +25,30 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.addSystem(sender, receiverA, receiverB);
-        entities.addSystem(new RegisterToSignalSystem());
+        environment.addSystem(sender, receiverA, receiverB);
+        environment.addSystem(new RegisterToSignalSystem());
 
-        entities.update();
+        environment.update();
 
         var listenerIds = sender.get(ForwardSignalComponent.class).listenerIds;
         assertThat(listenerIds).contains(10, 11);
     }
 
     @Test
-    void update_raisesExceptionOnMissingSender(DefaultEnvironment entities) {
+    void update_raisesExceptionOnMissingSender(DefaultEnvironment environment) {
         Entity receiver = new Entity(10).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.addEntity(receiver);
-        entities.addSystem(new RegisterToSignalSystem());
+        environment.addEntity(receiver);
+        environment.addSystem(new RegisterToSignalSystem());
 
-        assertThatThrownBy(() -> entities.update())
+        assertThatThrownBy(() -> environment.update())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("could not find entity with id 4711");
     }
 
     @Test
-    void update_removesComponentsAndItselfWhenNotNeededAnymore(DefaultEnvironment entities) {
+    void update_removesComponentsAndItselfWhenNotNeededAnymore(DefaultEnvironment environment) {
         Entity sender = new Entity(4711).add(
                 new ForwardSignalComponent());
 
@@ -58,13 +58,13 @@ class RegisterToSignalSystemTest {
         Entity receiverB = new Entity(11).add(
                 new RegisterToSignalComponent(4711));
 
-        entities.addSystem(sender, receiverA, receiverB);
-        entities.addSystem(new RegisterToSignalSystem());
+        environment.addSystem(sender, receiverA, receiverB);
+        environment.addSystem(new RegisterToSignalSystem());
 
-        entities.updateTimes(2);
+        environment.updateTimes(2);
 
         assertThat(receiverA.hasComponent(RegisterToSignalComponent.class)).isFalse();
         assertThat(receiverB.hasComponent(RegisterToSignalComponent.class)).isFalse();
-        assertThat(entities.systems()).isEmpty();
+        assertThat(environment.systems()).isEmpty();
     }
 }

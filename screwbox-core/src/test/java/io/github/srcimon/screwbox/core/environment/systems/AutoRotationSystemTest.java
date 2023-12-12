@@ -17,32 +17,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AutoRotationSystemTest {
 
     @Test
-    void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment entities) {
+    void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());
 
-        entities.update();
+        environment.update();
 
         var rotation = body.get(RenderComponent.class).rotation;
         assertThat(rotation.degrees()).isEqualTo(135);
     }
 
     @Test
-    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEnvironment entities) {
+    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.zero()));
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());
 
-        entities.update();
+        environment.update();
 
         var rotation = body.get(RenderComponent.class).rotation;
         assertThat(rotation.isNone()).isTrue();

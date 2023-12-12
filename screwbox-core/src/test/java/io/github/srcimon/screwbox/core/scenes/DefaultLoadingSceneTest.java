@@ -13,11 +13,11 @@ import static org.mockito.Mockito.*;
 class DefaultLoadingSceneTest {
 
     @Test
-    void runDefaultLoadingScene_onUpdate_drawsThreeRectangles(DefaultEnvironment entities, Screen screen) {
-        new DefaultLoadingScene().populate(entities);
+    void runDefaultLoadingScene_onUpdate_drawsThreeRectangles(DefaultEnvironment environment, Screen screen) {
+        new DefaultLoadingScene().populate(environment);
         when(screen.center()).thenReturn(Offset.at(120, 50));
 
-        entities.update();
+        environment.update();
 
         verify(screen, times(3)).fillRectangle(any(), any(), any());
     }
