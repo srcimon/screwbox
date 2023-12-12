@@ -20,7 +20,6 @@ public class TweenSystem implements EntitySystem {
             state.progress = state.reverse
                     ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / state.duration.nanos())
                     : Percent.of(1.0 * elapsedDuration.nanos() / state.duration.nanos());
-            System.out.println(state.progress);
             if (state.reverse && state.progress.isMinValue() || !state.reverse && state.progress.isMaxValue()) {
                 if (state.isLooped) {
                     state.startTime = now;

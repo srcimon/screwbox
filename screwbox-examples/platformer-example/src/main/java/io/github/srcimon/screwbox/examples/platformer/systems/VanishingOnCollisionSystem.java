@@ -1,15 +1,14 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.*;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.FadeOutComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
@@ -17,6 +16,8 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 import io.github.srcimon.screwbox.examples.platformer.components.VanishingOnCollisionComponent;
 
 import java.util.List;
+
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
 @Order(SystemOrder.PREPARATION)
 public class VanishingOnCollisionSystem implements EntitySystem {
@@ -59,7 +60,10 @@ public class VanishingOnCollisionSystem implements EntitySystem {
             if (now.isAfter(vanishEntity.get(VanishingOnCollisionComponent.class).vanishTime)) {
                 Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
                 Vector targetPosition = center.addY(200);
-                vanishEntity.add(new FadeOutComponent(1))
+                vanishEntity
+                        .add(new TweenStateComponent(ofMillis(400), false, true))
+                        .add(new TweenOpacityComponent())
+                        .add(new TweenDestroyComponent())
                         .add(new CollisionSensorComponent())
                         .add(new MovingPlatformComponent(targetPosition, 20))
                         .remove(VanishingOnCollisionComponent.class);
