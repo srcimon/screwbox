@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.FadeOutComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
-
+//TODO: javadoc and tests
 public class FadeOutSystem implements EntitySystem {
 
     private static final Archetype FADEOUTS = Archetype.of(FadeOutComponent.class, RenderComponent.class);

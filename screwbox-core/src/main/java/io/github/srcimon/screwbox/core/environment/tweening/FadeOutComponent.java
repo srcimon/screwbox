@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
-
+//TODO: javadoc and tests
 public class FadeOutComponent implements Component {
 
     @Serial

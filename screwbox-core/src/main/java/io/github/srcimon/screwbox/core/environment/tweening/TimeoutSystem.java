@@ -4,11 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
-import io.github.srcimon.screwbox.core.environment.tweening.TimeoutComponent;
-
-@Order(SystemOrder.SIMULATION_BEGIN)
+//TODO: javadoc and tests
 public class TimeoutSystem implements EntitySystem {
 
     private static final Archetype TIMEOUT_ENTITIES = Archetype.of(TimeoutComponent.class);
