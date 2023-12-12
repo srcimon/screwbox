@@ -5,16 +5,17 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 
-//TODO: javadoc and tests
-public class TweenOpacitySystem implements EntitySystem {
+//TODO Tests and javadoc
+public class TweenDestroySystem  implements EntitySystem {
 
-    private static final Archetype TWEENS = Archetype.of(TweenStateComponent.class, TweenOpacityComponent.class, RenderComponent.class);
+    private static final Archetype TWEENS = Archetype.of(TweenStateComponent.class, TweenDestroyComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var tween : engine.environment().fetchAll(TWEENS)) {
-            final var progress = tween.get(TweenStateComponent.class).progress;
-            tween.get(RenderComponent.class).opacity = progress;
+           if(tween.get(TweenStateComponent.class).cycleCount > 0) {
+               engine.environment().remove(tween);
+           }
         }
     }
 }

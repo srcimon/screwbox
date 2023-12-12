@@ -6,26 +6,27 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
+
 //TODO: javadoc and tests
-public class TweenState implements Component {
+public class TweenStateComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
+    public long cycleCount = 0;
     public boolean reverse;
     public Duration duration;
-    public int loopCount;
+    public boolean isLooped;
 
-    public TweenState(final Duration duration, final int loopCount) {
-        this.duration = duration;
-        this.loopCount = loopCount;
+    public TweenStateComponent(final Duration duration, final boolean isLooped) {
+        this(duration, isLooped, false);
     }
 
-    public TweenState(final Duration duration, final int loopCount, boolean reverse) {
+    public TweenStateComponent(final Duration duration, final boolean isLooped, boolean reverse) {
         this.duration = duration;
-        this.loopCount = loopCount;
+        this.isLooped = isLooped;
         this.reverse = reverse;
     }
 }
