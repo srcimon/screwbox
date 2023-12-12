@@ -22,10 +22,11 @@ public class TweenSystem implements EntitySystem {
                     : Percent.of(1.0 * elapsedDuration.nanos() / state.duration.nanos());
 
             if (state.reverse && state.progress.isMinValue() || !state.reverse && state.progress.isMaxValue()) {
-                state.cycleCount++;
                 if (state.isLooped) {
                     state.startTime = now;
                     state.reverse = !state.reverse;
+                } else {
+                    engine.environment().remove(tween);
                 }
             }
         }

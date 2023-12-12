@@ -15,7 +15,6 @@ public class TweenStateComponent implements Component {
 
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
-    public long cycleCount = 0;
     public boolean reverse;
     public Duration duration;
     public boolean isLooped;
