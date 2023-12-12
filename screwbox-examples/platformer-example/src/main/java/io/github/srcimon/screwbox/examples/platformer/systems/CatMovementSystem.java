@@ -7,20 +7,22 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.StateComponent;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CatMarkerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.NavpointComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
-import io.github.srcimon.screwbox.tiled.Tileset;
 import io.github.srcimon.screwbox.examples.platformer.specials.player.*;
+import io.github.srcimon.screwbox.tiled.Tileset;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static java.util.Objects.isNull;
 
 @Order(SystemOrder.PREPARATION)
@@ -59,7 +61,8 @@ public class CatMovementSystem implements EntitySystem {
         var flipMode = player.get(RenderComponent.class).flip;
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
-                new TimeoutComponent(engine.loop().lastUpdate().plusMillis(200)),
+                new TweenDestroyComponent(),
+                new TweenStateComponent(ofMillis(200)),
                 new NavpointComponent(state.getClass(), flipMode));
 
         engine.environment().addEntity(navpoint);

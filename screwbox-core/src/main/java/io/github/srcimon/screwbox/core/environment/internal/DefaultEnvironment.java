@@ -48,6 +48,15 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment addSystemIfNotPresent(final EntitySystem system) {
+        requireNonNull(system, "system must not be null");
+        if (!isSystemPresent(system.getClass())) {
+            addSystem(system);
+        }
+        return this;
+    }
+
     public void update() {
         systemManager.updateAllSystems();
     }
@@ -230,5 +239,6 @@ public class DefaultEnvironment implements Environment {
     public boolean savegameExists(String name) {
         return savegameManager.savegameExists(name);
     }
+
 
 }

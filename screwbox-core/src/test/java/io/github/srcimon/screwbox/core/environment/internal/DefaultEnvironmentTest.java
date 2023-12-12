@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.systems.RenderLightSystem;
 import io.github.srcimon.screwbox.core.environment.systems.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -225,6 +226,29 @@ class DefaultEnvironmentTest {
 
         assertThat(environment.fetchById(1)).isPresent();
         assertThat(environment.fetchById(2)).isEmpty();
+    }
+
+    @Test
+    void addSystemIfNotPresent_systemNull_throwsException() {
+        assertThatThrownBy(() -> environment.addSystemIfNotPresent(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("system must not be null");
+    }
+
+    @Test
+    void addSystemIfNotPresent_systemPresent_doesNothing() {
+        environment.addSystem(new TweenOpacitySystem());
+
+        environment.addSystemIfNotPresent(new TweenOpacitySystem());
+
+        assertThat(environment.systems()).hasSize(1).allMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
+    }
+
+    @Test
+    void addSystemIfNotPresent_systemMissing_addsSystem() {
+        environment.addSystemIfNotPresent(new TweenOpacitySystem());
+
+        assertThat(environment.systems()).hasSize(1).allMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }
 
     @AfterEach

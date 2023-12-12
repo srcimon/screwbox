@@ -6,14 +6,14 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntityState;
 import io.github.srcimon.screwbox.core.environment.components.StateComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class StateSystemTest {
 
     private static class CounterComponent implements Component {
@@ -86,60 +86,60 @@ class StateSystemTest {
     }
 
     @Test
-    void update_firstStateEnterMethodIsExecuted(DefaultEnvironment entities) {
+    void update_firstStateEnterMethodIsExecuted(DefaultEnvironment environment) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entities.addEntity(entity);
-        entities.addSystem(new StateSystem());
+        environment.addEntity(entity);
+        environment.addSystem(new StateSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(PingState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);
     }
 
     @Test
-    void update_nextStateIsNull_throwsException(DefaultEnvironment entities) {
+    void update_nextStateIsNull_throwsException(DefaultEnvironment environment) {
         Entity entity = new Entity().add(
                 new StateComponent(new NextStateIsNull()),
                 new CounterComponent());
 
-        entities
+        environment
                 .addEntity(entity)
                 .addSystem(new StateSystem());
 
-        assertThatThrownBy(() -> entities.updateTimes(2))
+        assertThatThrownBy(() -> environment.updateTimes(2))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Next state must not be null. Returned from EntityState: NextStateIsNull");
     }
 
     @Test
-    void update_updatesState(DefaultEnvironment entities) {
+    void update_updatesState(DefaultEnvironment environment) {
         Entity entity = new Entity().add(
                 new StateComponent(new PingState()),
                 new CounterComponent());
 
-        entities.addEntity(entity);
-        entities.addSystem(new StateSystem());
+        environment.addEntity(entity);
+        environment.addSystem(new StateSystem());
 
-        entities.updateTimes(6);
+        environment.updateTimes(6);
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(PongState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(5);
     }
 
     @Test
-    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEnvironment entities) {
+    void update_doesntExecuteStateChangeMethodsWithoutStateChange(DefaultEnvironment environment) {
         Entity entity = new Entity().add(
                 new StateComponent(new BoringState()),
                 new CounterComponent());
 
-        entities.addEntity(entity);
-        entities.addSystem(new StateSystem());
+        environment.addEntity(entity);
+        environment.addSystem(new StateSystem());
 
-        entities.updateTimes(6);
+        environment.updateTimes(6);
 
         assertThat(entity.get(StateComponent.class).state).isInstanceOf(BoringState.class);
         assertThat(entity.get(CounterComponent.class).count).isEqualTo(1);

@@ -7,42 +7,42 @@ import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyCompone
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class AutoRotationSystemTest {
 
     @Test
-    void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment entities) {
+    void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());
 
-        entities.update();
+        environment.update();
 
         var rotation = body.get(RenderComponent.class).rotation;
         assertThat(rotation.degrees()).isEqualTo(135);
     }
 
     @Test
-    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEnvironment entities) {
+    void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
                 new PhysicsBodyComponent(Vector.zero()));
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());
 
-        entities.update();
+        environment.update();
 
         var rotation = body.get(RenderComponent.class).rotation;
         assertThat(rotation.isNone()).isTrue();

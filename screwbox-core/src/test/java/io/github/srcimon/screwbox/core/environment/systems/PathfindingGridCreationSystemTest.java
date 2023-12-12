@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.components.WorldBoundsCompone
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.Physics;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,22 +22,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class PathfindingGridCreationSystemTest {
 
     @Test
-    void update_noWorldBounds_throwsException(DefaultEnvironment entities, Loop loop) {
+    void update_noWorldBounds_throwsException(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
-        entities.addSystem(new PathfindingGridCreationSystem(16, sheduler));
+        environment.addSystem(new PathfindingGridCreationSystem(16, sheduler));
 
-        assertThatThrownBy(() -> entities.update())
+        assertThatThrownBy(() -> environment.update())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("didn't find exactly one entity matching Archetype");
     }
 
     @Test
-    void update_noGridPresent_updatesPathfindingGrid(DefaultEnvironment entities, Physics physics, Loop loop) {
+    void update_noGridPresent_updatesPathfindingGrid(DefaultEnvironment environment, Physics physics, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
@@ -51,12 +51,12 @@ class PathfindingGridCreationSystemTest {
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        entities.addSystem(new PathfindingGridCreationSystem(100, sheduler))
+        environment.addSystem(new PathfindingGridCreationSystem(100, sheduler))
                 .addEntity(wall)
                 .addEntity(air)
                 .addEntity(worldBounds);
 
-        entities.update();
+        environment.update();
 
         var gridCaptor = ArgumentCaptor.forClass(Grid.class);
         verify(physics).setGrid(gridCaptor.capture());
@@ -69,16 +69,16 @@ class PathfindingGridCreationSystemTest {
     }
 
     @Test
-    void update_invalidGridSize_throwsException(DefaultEnvironment entities, Loop loop) {
+    void update_invalidGridSize_throwsException(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
                 .add(new WorldBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
-        entities.addSystem(new PathfindingGridCreationSystem(16, sheduler)).addEntity(worldBounds);
+        environment.addSystem(new PathfindingGridCreationSystem(16, sheduler)).addEntity(worldBounds);
 
-        assertThatThrownBy(() -> entities.update())
+        assertThatThrownBy(() -> environment.update())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("area origin x should be dividable by grid size.");
     }

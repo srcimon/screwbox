@@ -6,34 +6,34 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.components.*;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.Loop;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class PhysicsSystemTest {
 
     @Test
-    void update_updatesPositionOfPhysicItems(DefaultEnvironment entities, Loop loop) {
+    void update_updatesPositionOfPhysicItems(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
                 new PhysicsBodyComponent(Vector.of(4, 4)));
 
-        entities.addEntity(body);
-        entities.addSystem(new PhysicsSystem());
+        environment.addEntity(body);
+        environment.addSystem(new PhysicsSystem());
 
-        entities.update();
+        environment.update();
 
         Vector center = body.get(TransformComponent.class).bounds.position();
         assertThat(center).isEqualTo(Vector.of(2, 2));
     }
 
     @Test
-    void update_physicBodiesCollideWithEnvironment(DefaultEnvironment entities, Loop loop) {
+    void update_physicBodiesCollideWithEnvironment(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.8);
 
         Entity ball = new Entity().add(
@@ -47,14 +47,14 @@ class PhysicsSystemTest {
 
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 20)));
 
-        entities.addSystem(ball, ground, gravity);
+        environment.addSystem(ball, ground, gravity);
 
-        entities.addSystems(
+        environment.addSystems(
                 new PhysicsSystem(),
                 new GravitySystem(),
                 new CollisionSensorSystem());
 
-        entities.updateTimes(6);
+        environment.updateTimes(6);
 
         Vector ballPosition = ball.get(TransformComponent.class).bounds.position();
         assertThat(ballPosition).isEqualTo(Vector.of(60, 190));

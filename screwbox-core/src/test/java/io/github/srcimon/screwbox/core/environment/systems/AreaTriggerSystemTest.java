@@ -8,17 +8,17 @@ import io.github.srcimon.screwbox.core.environment.components.StaticMarkerCompon
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.components.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class AreaTriggerSystemTest {
 
     @Test
-    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEnvironment entities) {
+    void update_updatesTriggerStatusOfCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -28,16 +28,16 @@ class AreaTriggerSystemTest {
                 new TransformComponent(Bounds.atOrigin(10, 10, 20, 20)),
                 new StaticMarkerComponent());
 
-        entities.addSystem(deathTrap, sheepDeterminedToDie);
-        entities.addSystem(new AreaTriggerSystem());
+        environment.addSystem(deathTrap, sheepDeterminedToDie);
+        environment.addSystem(new AreaTriggerSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isTrue();
     }
 
     @Test
-    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEnvironment entities) {
+    void update_doesntUpdateStatusOfNonCollidedTriggers(DefaultEnvironment environment) {
         Entity deathTrap = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(20, 20, 20, 20)),
                 new TriggerAreaComponent(Archetype.of(StaticMarkerComponent.class)),
@@ -48,10 +48,10 @@ class AreaTriggerSystemTest {
                 new SignalComponent(),
                 new StaticMarkerComponent());
 
-        entities.addSystem(deathTrap, birdWatchingSheepDie);
-        entities.addSystem(new AreaTriggerSystem());
+        environment.addSystem(deathTrap, birdWatchingSheepDie);
+        environment.addSystem(new AreaTriggerSystem());
 
-        entities.update();
+        environment.update();
 
         assertThat(deathTrap.get(SignalComponent.class).isTriggered).isFalse();
     }

@@ -1,15 +1,20 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
-import io.github.srcimon.screwbox.core.*;
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.components.TimeoutComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
+import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
@@ -31,7 +36,8 @@ public class LetsGoSystem implements EntitySystem {
                     new TransformComponent(
                             Bounds.atPosition(playerCenter.x(), playerCenter.y() - 5, 0, 0)),
                     new LetsGoComponent(),
-                    new TimeoutComponent(Time.now().plusSeconds(2)));
+                    new TweenDestroyComponent(),
+                    new TweenStateComponent(ofSeconds(2)));
 
             engine.environment().addEntity(letsGoBubble);
         }

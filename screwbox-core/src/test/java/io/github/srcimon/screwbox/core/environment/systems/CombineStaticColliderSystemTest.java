@@ -7,17 +7,17 @@ import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.components.StaticMarkerComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class CombineStaticColliderSystemTest {
 
     @Test
-    void update_combinesHorizontallyAlignedColliders(DefaultEnvironment entities) {
+    void update_combinesHorizontallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -33,20 +33,20 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 20)));
 
-        entities.addSystem(brickA, brickB, brickC);
-        entities.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(brickA, brickB, brickC);
+        environment.addSystem(new CombineStaticCollidersSystem());
 
-        entities.update(); // one brick per cycle aligned
-        entities.update(); // ...and another one
+        environment.update(); // one brick per cycle aligned
+        environment.update(); // ...and another one
 
-        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
         var bounds = colliders.get(0).get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 60, 20));
     }
 
     @Test
-    void update_combinesVerticallyAlignedColliders(DefaultEnvironment entities) {
+    void update_combinesVerticallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(),
@@ -62,20 +62,20 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 40, 20, 20)));
 
-        entities.addSystem(brickA, brickB, brickC);
-        entities.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(brickA, brickB, brickC);
+        environment.addSystem(new CombineStaticCollidersSystem());
 
-        entities.update(); // one brick per cycle aligned
-        entities.update(); // ...and another one
+        environment.update(); // one brick per cycle aligned
+        environment.update(); // ...and another one
 
-        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
         var bounds = colliders.get(0).get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 20, 60));
     }
 
     @Test
-    void update_ignoresDifferentColliders(DefaultEnvironment entities) {
+    void update_ignoresDifferentColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
                 new StaticMarkerComponent(),
                 new ColliderComponent(4),
@@ -91,21 +91,21 @@ class CombineStaticColliderSystemTest {
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 30)));
 
-        entities.addSystem(brickA, brickB, brickC);
-        entities.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(brickA, brickB, brickC);
+        environment.addSystem(new CombineStaticCollidersSystem());
 
-        entities.update();
+        environment.update();
 
-        var colliders = entities.fetchAll(Archetype.of(ColliderComponent.class));
+        var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
         assertThat(colliders).hasSize(3);
     }
 
     @Test
-    void update_removesItselfAfterFinishingAllColliders(DefaultEnvironment entities) {
-        entities.addSystem(new CombineStaticCollidersSystem());
+    void update_removesItselfAfterFinishingAllColliders(DefaultEnvironment environment) {
+        environment.addSystem(new CombineStaticCollidersSystem());
 
-        entities.update();
+        environment.update();
 
-        assertThat(entities.systems()).isEmpty();
+        assertThat(environment.systems()).isEmpty();
     }
 }

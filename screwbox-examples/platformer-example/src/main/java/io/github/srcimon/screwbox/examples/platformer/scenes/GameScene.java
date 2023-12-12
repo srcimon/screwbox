@@ -4,6 +4,9 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.systems.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
@@ -63,7 +66,11 @@ public class GameScene implements Scene {
             importEntities(environment);
         }
 
-        environment.addSystem(new CombineStaticShadowCastersSystem())
+        environment
+                .addSystem(new TweenSystem())
+                .addSystem(new TweenDestroySystem())
+                .addSystem(new TweenOpacitySystem())
+                .addSystem(new CombineStaticShadowCastersSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new RenderLightSystem())
                 .addSystem(new ReflectionRenderSystem())
@@ -80,7 +87,6 @@ public class GameScene implements Scene {
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
                 .addSystem(new ZoomSystem())
-                .addSystem(new FadeOutSystem())
                 .addSystem(new MovableSystem())
                 .addSystem(new DiggableSystem())
                 .addSystem(new FollowPlayerSystem())
@@ -99,7 +105,6 @@ public class GameScene implements Scene {
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
                 .addSystem(new AreaTriggerSystem())
-                .addSystem(new TimeoutSystem())
                 .addSystem(new ResetSceneSystem())
                 .addSystem(new AutoFlipSpriteSystem())
                 .addSystem(new BackgroundSystem())

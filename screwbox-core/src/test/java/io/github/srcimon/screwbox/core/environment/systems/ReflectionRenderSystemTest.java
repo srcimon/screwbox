@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.Loop;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({ EntitiesExtension.class, MockitoExtension.class })
+@ExtendWith({ EnvironmentExtension.class, MockitoExtension.class })
 class ReflectionRenderSystemTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("tile.bmp");
@@ -39,7 +39,7 @@ class ReflectionRenderSystemTest {
     ArgumentCaptor<Bounds> restrictedArea;
 
     @Test
-    void update_entityInReflectedArea_drawsReflection(DefaultEnvironment entities, Loop loop, World world) {
+    void update_entityInReflectedArea_drawsReflection(DefaultEnvironment environment, Loop loop, World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
 
@@ -51,11 +51,11 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addEntity(mirror)
                 .addSystem(new ReflectionRenderSystem());
 
-        entities.update();
+        environment.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
 
@@ -71,7 +71,7 @@ class ReflectionRenderSystemTest {
     }
 
     @RepeatedTest(2)
-    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEnvironment entities, Loop loop,
+    void update_reflectionAreaNotInWindow_drawsNoSprites(DefaultEnvironment environment, Loop loop,
                                                          World world) {
         when(loop.lastUpdate()).thenReturn(Time.now());
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
@@ -84,17 +84,17 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(2000, 10, 10, 10)))
                 .add(new ReflectionComponent());
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addEntity(mirror)
                 .addSystem(new ReflectionRenderSystem());
 
-        entities.update();
+        environment.update();
 
         verify(world, never()).drawSpriteBatch(any(), any());
     }
 
     @Test
-    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEnvironment entities, Loop loop,
+    void update_waveReflectionEffectUsed_drawsOnDifferenPositions(DefaultEnvironment environment, Loop loop,
                                                                   World world) {
         when(loop.lastUpdate()).thenReturn(Time.atNanos(500000000));
         when(world.visibleArea()).thenReturn($$(0, 0, 1024, 768));
@@ -107,11 +107,11 @@ class ReflectionRenderSystemTest {
                 .add(new TransformComponent($$(0, 10, 10, 10)))
                 .add(new ReflectionComponent(Percent.half(), true));
 
-        entities.addEntity(body)
+        environment.addEntity(body)
                 .addEntity(mirror)
                 .addSystem(new ReflectionRenderSystem());
 
-        entities.update();
+        environment.update();
 
         verify(world).drawSpriteBatch(spriteBatch.capture(), restrictedArea.capture());
 
