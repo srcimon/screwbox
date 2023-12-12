@@ -11,7 +11,7 @@ import java.io.Serial;
 /**
  * Adds tweening to an {@link Entity}.
  */
-public class TweenStateComponent implements Component {
+public class TweenComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -22,15 +22,15 @@ public class TweenStateComponent implements Component {
     public Duration duration;
     public boolean isLooped;
 
-    public TweenStateComponent(final Duration duration) {
+    public TweenComponent(final Duration duration) {
         this(duration, false);
     }
 
-    public TweenStateComponent(final Duration duration, final boolean isLooped) {
+    public TweenComponent(final Duration duration, final boolean isLooped) {
         this(duration, isLooped, false);
     }
 
-    public TweenStateComponent(final Duration duration, final boolean isLooped, boolean reverse) {
+    public TweenComponent(final Duration duration, final boolean isLooped, boolean reverse) {
         this.duration = duration;
         this.isLooped = isLooped;
         this.reverse = reverse;

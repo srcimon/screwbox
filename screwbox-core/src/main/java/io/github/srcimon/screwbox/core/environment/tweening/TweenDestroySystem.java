@@ -15,7 +15,7 @@ public class TweenDestroySystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var destroyable : engine.environment().fetchAll(DESTROYABLES)) {
-            if (!destroyable.hasComponent(TweenStateComponent.class)) {
+            if (!destroyable.hasComponent(TweenComponent.class)) {
                 engine.environment().remove(destroyable);
                 System.out.println("DESTROYED");
             }

@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.SmokeEmitterComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
             Entity smokePuff = new Entity().add(
                     new TweenOpacityComponent(),
                     new TweenDestroyComponent(),
-                    new TweenStateComponent(ofMillis(300), false, true),
+                    new TweenComponent(ofMillis(300), false, true),
                     new TransformComponent(bounds),
                     new RenderComponent(randomFrom(SPRITES.get().all()), order)
 

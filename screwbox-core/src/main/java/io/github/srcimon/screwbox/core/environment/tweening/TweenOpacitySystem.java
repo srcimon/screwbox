@@ -11,12 +11,12 @@ import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
  */
 public class TweenOpacitySystem implements EntitySystem {
 
-    private static final Archetype TWEENS = Archetype.of(TweenStateComponent.class, TweenOpacityComponent.class, RenderComponent.class);
+    private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenOpacityComponent.class, RenderComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final var tween : engine.environment().fetchAll(TWEENS)) {
-            tween.get(RenderComponent.class).opacity = tween.get(TweenStateComponent.class).progress;
+            tween.get(RenderComponent.class).opacity = tween.get(TweenComponent.class).progress;
         }
     }
 }

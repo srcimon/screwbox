@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -37,7 +37,7 @@ public class LetsGoSystem implements EntitySystem {
                             Bounds.atPosition(playerCenter.x(), playerCenter.y() - 5, 0, 0)),
                     new LetsGoComponent(),
                     new TweenDestroyComponent(),
-                    new TweenStateComponent(ofSeconds(2)));
+                    new TweenComponent(ofSeconds(2)));
 
             engine.environment().addEntity(letsGoBubble);
         }

@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.StateComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CatMarkerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.NavpointComponent;
@@ -62,7 +62,7 @@ public class CatMovementSystem implements EntitySystem {
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
                 new TweenDestroyComponent(),
-                new TweenStateComponent(ofMillis(200)),
+                new TweenComponent(ofMillis(200)),
                 new NavpointComponent(state.getClass(), flipMode));
 
         engine.environment().addEntity(navpoint);

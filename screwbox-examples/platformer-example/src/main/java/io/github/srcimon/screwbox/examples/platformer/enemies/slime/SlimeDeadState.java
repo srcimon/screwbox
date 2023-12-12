@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.EntityState;
 import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;
@@ -33,7 +33,7 @@ public class SlimeDeadState implements EntityState {
         entity.remove(CastShadowComponent.class);
         entity.remove(KilledFromAboveComponent.class);
         entity.get(PhysicsBodyComponent.class).ignoreCollisions = true;
-        entity.add(new TweenStateComponent(ofSeconds(2)));
+        entity.add(new TweenComponent(ofSeconds(2)));
         entity.add(new TweenDestroyComponent());
         engine.audio().playEffect(KILL_SOUND.get());
     }

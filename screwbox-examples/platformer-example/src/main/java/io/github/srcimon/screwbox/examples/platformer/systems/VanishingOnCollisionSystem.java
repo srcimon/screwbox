@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.components.CollisionSensorCom
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenStateComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
@@ -61,7 +61,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
                 Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
                 Vector targetPosition = center.addY(200);
                 vanishEntity
-                        .add(new TweenStateComponent(ofMillis(400), false, true))
+                        .add(new TweenComponent(ofMillis(400), false, true))
                         .add(new TweenOpacityComponent())
                         .add(new TweenDestroyComponent())
                         .add(new CollisionSensorComponent())
