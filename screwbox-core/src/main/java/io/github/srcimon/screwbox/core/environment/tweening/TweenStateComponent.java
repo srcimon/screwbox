@@ -4,10 +4,13 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
-//TODO: javadoc and tests
+/**
+ * Adds tweening to an {@link Entity}.
+ */
 public class TweenStateComponent implements Component {
 
     @Serial

@@ -5,8 +5,11 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
 
-//TODO: javadoc and tests
+/**
+ * Updates the state {@link TweenStateComponent}s in the {@link Environment}. Required to enable all tweening mechanisms.
+ */
 public class TweenSystem implements EntitySystem {
 
     private static final Archetype TWEENS = Archetype.of(TweenStateComponent.class);

@@ -26,6 +26,8 @@ public interface Environment {
 
     Environment addSystem(EntitySystem system);
 
+    Environment addSystemIfNotPresent(EntitySystem system);
+
     Environment addSystems(EntitySystem... systems);
 
     List<Entity> fetchAll(Archetype archetype);
@@ -132,4 +134,9 @@ public interface Environment {
      * exessive disc usage.
      */
     boolean savegameExists(String name);
+
+    /**
+     * Adds all systems required to add tweening functionality.
+     */
+    Environment enableTweening();
 }

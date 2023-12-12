@@ -2,6 +2,9 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,6 +48,15 @@ public class DefaultEnvironment implements Environment {
     public Environment addSystem(final EntitySystem system) {
         requireNonNull(system, "system must not be null");
         systemManager.addSystem(system);
+        return this;
+    }
+
+    @Override
+    public Environment addSystemIfNotPresent(final EntitySystem system) {
+        requireNonNull(system, "system must not be null");
+        if(!isSystemPresent(system.getClass())) {
+            addSystem(system);
+        }
         return this;
     }
 
@@ -229,6 +241,14 @@ public class DefaultEnvironment implements Environment {
     @Override
     public boolean savegameExists(String name) {
         return savegameManager.savegameExists(name);
+    }
+
+    @Override
+    public Environment enableTweening() {
+        addSystemIfNotPresent(new TweenSystem());
+        addSystemIfNotPresent(new TweenDestroySystem());
+        addSystemIfNotPresent(new TweenOpacitySystem());
+        return this;
     }
 
 }
