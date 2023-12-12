@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.when;
 
-public class EntitiesExtension implements Extension, BeforeEachCallback, ParameterResolver {
+public class EnvironmentExtension implements Extension, BeforeEachCallback, ParameterResolver {
 
     private final Map<Class<?>, Object> parameters = new HashMap<>();
 

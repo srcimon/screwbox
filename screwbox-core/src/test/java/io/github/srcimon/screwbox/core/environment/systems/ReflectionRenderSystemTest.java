@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.Loop;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({ EntitiesExtension.class, MockitoExtension.class })
+@ExtendWith({ EnvironmentExtension.class, MockitoExtension.class })
 class ReflectionRenderSystemTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("tile.bmp");

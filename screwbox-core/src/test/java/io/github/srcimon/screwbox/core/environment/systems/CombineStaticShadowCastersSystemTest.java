@@ -6,14 +6,14 @@ import io.github.srcimon.screwbox.core.environment.components.ShadowCasterCompon
 import io.github.srcimon.screwbox.core.environment.components.StaticShadowCasterMarkerComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.github.srcimon.screwbox.core.Bounds.atOrigin;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(EntitiesExtension.class)
+@ExtendWith(EnvironmentExtension.class)
 class CombineStaticShadowCastersSystemTest {
 
     @Test

@@ -25,6 +25,7 @@
 - Renamed `Scene.initialize()` to `populate()`
 - Renamed `Environment.allEntities()` to `entities()`
 - Removed `Duration.addNanos(nanos)`
+- Removed `FadeOutSystem` and `FadeOutComponent`
 
 ### 📦 Dependency updates
 

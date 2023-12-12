@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
-import io.github.srcimon.screwbox.core.test.EntitiesExtension;
+import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +27,6 @@ class RelfectionsTest {
     void findClassesInPackage_packageExists_findsClasses() {
         var classes = Reflections.findClassesInPackage("io.github.srcimon.screwbox.core.test");
 
-        assertThat(classes).containsExactlyInAnyOrder(EntitiesExtension.class, TestUtil.class);
+        assertThat(classes).containsExactlyInAnyOrder(EnvironmentExtension.class, TestUtil.class);
     }
 }
