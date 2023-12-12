@@ -10,6 +10,7 @@
 - Added / completed javadoc on `Keyboard`, `Duration`
 - Added missing keys `N`, `COMMA`, `DOT`
 - Added `Raycast.ray()`
+- Replaced `FadeOutSystem`, `TimeOutSystem` with extendable `TweenSystem` (#147)
 
 ### 🪛 Bug Fixes
 
@@ -26,7 +27,6 @@
 - Renamed `Scene.initialize()` to `populate()`
 - Renamed `Environment.allEntities()` to `entities()`
 - Removed `Duration.addNanos(nanos)`
-- Removed `FadeOutSystem` and `FadeOutComponent`
 
 ### 📦 Dependency updates
 
