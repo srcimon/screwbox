@@ -48,12 +48,13 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
-    @Override
-    public Environment addSystemIfNotPresent(final EntitySystem system) {
+    public Environment addOrReplaceSystem(final EntitySystem system) {
         requireNonNull(system, "system must not be null");
-        if (!isSystemPresent(system.getClass())) {
-            addSystem(system);
+        final var systemClass = system.getClass();
+        if (isSystemPresent(systemClass)) {
+            remove(systemClass);
         }
+        addSystem(system);
         return this;
     }
 

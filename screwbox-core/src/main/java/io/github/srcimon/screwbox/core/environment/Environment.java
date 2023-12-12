@@ -26,7 +26,7 @@ public interface Environment {
 
     Environment addSystem(EntitySystem system);
 
-    Environment addSystemIfNotPresent(EntitySystem system);
+    Environment addOrReplaceSystem(EntitySystem system);
 
     Environment addSystems(EntitySystem... systems);
 

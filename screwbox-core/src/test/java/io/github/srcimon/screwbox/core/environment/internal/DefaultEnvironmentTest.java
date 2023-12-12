@@ -229,24 +229,27 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void addSystemIfNotPresent_systemNull_throwsException() {
-        assertThatThrownBy(() -> environment.addSystemIfNotPresent(null))
+    void addOrReplaceSystem_systemNull_throwsException() {
+        assertThatThrownBy(() -> environment.addOrReplaceSystem(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("system must not be null");
     }
 
     @Test
-    void addSystemIfNotPresent_systemPresent_doesNothing() {
-        environment.addSystem(new TweenOpacitySystem());
+    void addOrReplaceSystem_systemPresent_doesNothing() {
+        TweenOpacitySystem oldSystem = new TweenOpacitySystem();
+        TweenOpacitySystem newSystem = new TweenOpacitySystem();
 
-        environment.addSystemIfNotPresent(new TweenOpacitySystem());
+        environment.addSystem(oldSystem);
 
-        assertThat(environment.systems()).hasSize(1).allMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
+        environment.addOrReplaceSystem(newSystem);
+
+        assertThat(environment.systems()).containsExactly(newSystem);
     }
 
     @Test
-    void addSystemIfNotPresent_systemMissing_addsSystem() {
-        environment.addSystemIfNotPresent(new TweenOpacitySystem());
+    void addOrReplaceSystem_systemMissing_addsSystem() {
+        environment.addOrReplaceSystem(new TweenOpacitySystem());
 
         assertThat(environment.systems()).hasSize(1).allMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }
