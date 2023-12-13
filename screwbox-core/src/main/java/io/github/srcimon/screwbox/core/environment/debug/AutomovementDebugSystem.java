@@ -1,8 +1,8 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.debug;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Path;
-import io.github.srcimon.screwbox.core.environment.components.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.World;

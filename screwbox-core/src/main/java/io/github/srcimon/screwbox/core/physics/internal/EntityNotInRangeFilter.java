@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.physics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.util.function.Predicate;
 

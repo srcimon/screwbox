@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class CombineStaticColliderSystemTest {
         environment.update(); // ...and another one
 
         var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
-        var bounds = colliders.get(0).get(TransformComponent.class).bounds;
+        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 60, 20));
     }
@@ -70,7 +70,7 @@ class CombineStaticColliderSystemTest {
         environment.update(); // ...and another one
 
         var colliders = environment.fetchAll(Archetype.of(ColliderComponent.class));
-        var bounds = colliders.get(0).get(TransformComponent.class).bounds;
+        var bounds = colliders.getFirst().get(TransformComponent.class).bounds;
         assertThat(colliders).hasSize(1);
         assertThat(bounds).isEqualTo(Bounds.atOrigin(0, 0, 20, 60));
     }

@@ -1,18 +1,18 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.core;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
-public class QuitOnKeyPressSystem implements EntitySystem {
+public class QuitOnKeySystem implements EntitySystem {
 
     private final Key quitKey;
 
-    public QuitOnKeyPressSystem() {
+    public QuitOnKeySystem() {
         this(Key.ESCAPE);
     }
 
-    public QuitOnKeyPressSystem(final Key quitKey) {
+    public QuitOnKeySystem(final Key quitKey) {
         this.quitKey = quitKey;
     }
 

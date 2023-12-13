@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.environment.*;
 

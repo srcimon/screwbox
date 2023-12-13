@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.pathfinding.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.components.WorldBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
@@ -26,6 +26,6 @@ class DemoSceneTest {
 
         assertThat(environment.entities()).hasSizeGreaterThan(50)
                 .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
-                .anyMatch(e -> e.hasComponent(WorldBoundsComponent.class));
+                .anyMatch(e -> e.hasComponent(GlobalBoundsComponent.class));
     }
 }

@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.BlockPathComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.components.WorldBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.PathfindingSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
@@ -42,7 +42,7 @@ class PathfindingSystemTest {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
-                .add(new WorldBoundsComponent())
+                .add(new GlobalBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
         var wall = new Entity()
@@ -74,7 +74,7 @@ class PathfindingSystemTest {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
         var worldBounds = new Entity()
-                .add(new WorldBoundsComponent())
+                .add(new GlobalBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
         environment.addSystem(new PathfindingSystem(16, sheduler)).addEntity(worldBounds);

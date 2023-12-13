@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.physics;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.DistanceComparator;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
@@ -35,7 +35,7 @@ public class Raycast {
             return Optional.empty();
         }
         hits.sort(new DistanceComparator(ray.from()));
-        return Optional.of(hits.get(0));
+        return Optional.of(hits.getFirst());
     }
 
     public Optional<Entity> selectAnyEntity() {

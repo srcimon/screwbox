@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
 public class ZoomSystem implements EntitySystem {

@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -58,7 +57,7 @@ class EntityTest {
 
         assertThatThrownBy(() -> entity.add(component))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("component already present: PhysicsBodyComponent");
+                .hasMessage("component already present: PhysicsComponent");
     }
 
     @Test
@@ -73,7 +72,7 @@ class EntityTest {
 
     @Test
     void get_componentNotPresent_returnsNull() {
-        Assertions.assertThat(entity.get(PhysicsComponent.class)).isNull();
+        assertThat(entity.get(PhysicsComponent.class)).isNull();
     }
 
     @Test

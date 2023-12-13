@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -72,7 +72,7 @@ public class CatMovementSystem implements EntitySystem {
         if (navpoints.isEmpty()) {
             return;
         }
-        Entity nextNavpoint = navpoints.get(0); // rely on implementation: first entity is always the oldest one
+        Entity nextNavpoint = navpoints.getFirst();
         NavpointComponent navpointComponent = nextNavpoint.get(NavpointComponent.class);
         Vector nextPosition = nextNavpoint.get(TransformComponent.class).bounds.position();
         Sprite nextSprite = SPRITES.get().get(navpointComponent.state);

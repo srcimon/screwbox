@@ -1,12 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ReflectionComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -27,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({ EnvironmentExtension.class, MockitoExtension.class })
+@ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
 class ReflectionRenderSystemTest {
 
     private static final Sprite SPRITE = Sprite.fromFile("tile.bmp");
@@ -63,7 +61,7 @@ class ReflectionRenderSystemTest {
         assertThat(spriteBatchEntries).hasSize(1);
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
-        var spriteBatchEntry = spriteBatchEntries.get(0);
+        var spriteBatchEntry = spriteBatchEntries.getFirst();
         assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
         assertThat(spriteBatchEntry.opacity()).isEqualTo(Percent.of(0.25));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
@@ -119,7 +117,7 @@ class ReflectionRenderSystemTest {
         assertThat(spriteBatchEntries).hasSize(1);
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
-        var spriteBatchEntry = spriteBatchEntries.get(0);
+        var spriteBatchEntry = spriteBatchEntries.getFirst();
         assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.opacity().value()).isEqualTo(0.48, offset(0.01));

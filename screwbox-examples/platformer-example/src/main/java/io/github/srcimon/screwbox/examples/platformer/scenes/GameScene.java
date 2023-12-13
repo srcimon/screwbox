@@ -14,8 +14,8 @@ import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
-import io.github.srcimon.screwbox.core.environment.systems.CameraMovementSystem;
-import io.github.srcimon.screwbox.core.environment.systems.ReflectionRenderSystem;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -90,7 +90,7 @@ public class GameScene implements Scene {
                 .addSystem(new CollisionDetectionSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
-                .addSystem(new CameraMovementSystem())
+                .addSystem(new CameraUpdateSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())

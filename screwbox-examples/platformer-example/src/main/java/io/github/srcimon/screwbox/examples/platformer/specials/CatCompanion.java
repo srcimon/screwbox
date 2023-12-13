@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.CatMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;

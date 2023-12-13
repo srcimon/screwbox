@@ -1,22 +1,20 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.autocamera;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.components.CameraComponent;
-import io.github.srcimon.screwbox.core.environment.components.CameraMovementComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.components.WorldBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.core.environment.*;
 
 @Order(SystemOrder.PREPARATION)
-public class CameraMovementSystem implements EntitySystem {
+public class CameraUpdateSystem implements EntitySystem {
 
     private static final Archetype CAMERA = Archetype.of(TransformComponent.class, CameraComponent.class,
             CameraMovementComponent.class);
-    private static final Archetype WORLD_BOUNDS = Archetype.of(WorldBoundsComponent.class, TransformComponent.class);
+    private static final Archetype WORLD_BOUNDS = Archetype.of(GlobalBoundsComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {

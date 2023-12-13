@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.components;
+package io.github.srcimon.screwbox.core.environment.core;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
