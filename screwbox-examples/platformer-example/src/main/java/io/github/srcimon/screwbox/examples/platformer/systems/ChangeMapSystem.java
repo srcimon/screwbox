@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionComponent;
-import io.github.srcimon.screwbox.core.environment.components.SignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.graphics.transitions.*;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.ChangeMapComponent;

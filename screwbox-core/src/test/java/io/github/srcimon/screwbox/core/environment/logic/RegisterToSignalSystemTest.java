@@ -1,9 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.logic;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ForwardSignalComponent;
-import io.github.srcimon.screwbox.core.environment.components.RegisterToSignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.ForwardSignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.RegisterToSignalComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.environment.logic.RegisterToSignalSystem;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

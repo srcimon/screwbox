@@ -1,12 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.logic;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.components.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.components.TriggerAreaComponent;
 
 public class AreaTriggerSystem implements EntitySystem {
 

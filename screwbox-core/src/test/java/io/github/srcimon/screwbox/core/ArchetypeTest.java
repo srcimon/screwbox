@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ForwardSignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.ForwardSignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
