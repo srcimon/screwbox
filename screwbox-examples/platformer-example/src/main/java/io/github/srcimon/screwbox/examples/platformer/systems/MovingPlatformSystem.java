@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.WaypointComponent;
@@ -59,7 +59,7 @@ public class MovingPlatformSystem implements EntitySystem {
         var sensor = platform.get(CollisionDetectionComponent.class);
         if (nonNull(sensor)) {
             for (final Entity attachedEntity : sensor.collidedEntities) {
-                if (attachedEntity.hasComponent(RigidBodyComponent.class)) {
+                if (attachedEntity.hasComponent(PhysicsComponent.class)) {
                     final var colliderTransform = attachedEntity.get(TransformComponent.class);
                     if (transform.bounds.minY() + 1 >= colliderTransform.bounds.maxY()) {
                         colliderTransform.bounds = colliderTransform.bounds.moveBy(movement);

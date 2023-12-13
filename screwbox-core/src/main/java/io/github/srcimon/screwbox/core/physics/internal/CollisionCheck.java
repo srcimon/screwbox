@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.physics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 
 import java.util.Objects;
@@ -14,14 +14,14 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     private final Entity collider;
     private final Bounds colliderBounds;
     private final ColliderComponent colliderComponent;
-    private final RigidBodyComponent rigidBodyComponent;
+    private final PhysicsComponent rigidBodyComponent;
 
     public CollisionCheck(final Entity physics, final Entity collider) {
         this.colliderBounds = collider.get(TransformComponent.class).bounds;
         this.physics = physics;
         this.collider = collider;
         this.colliderComponent = collider.get(ColliderComponent.class);
-        this.rigidBodyComponent = physics.get(RigidBodyComponent.class);
+        this.rigidBodyComponent = physics.get(PhysicsComponent.class);
     }
 
     public boolean bodiesIntersect() {
@@ -56,7 +56,7 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return physics.get(TransformComponent.class);
     }
 
-    public RigidBodyComponent physicsBodyComponent() {
+    public PhysicsComponent physicsBodyComponent() {
         return rigidBodyComponent;
     }
 

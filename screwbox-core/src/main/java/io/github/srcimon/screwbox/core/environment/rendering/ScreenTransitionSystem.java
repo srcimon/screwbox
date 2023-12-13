@@ -1,10 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.environment.components.ScreenTransitionComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionComponent;
 import io.github.srcimon.screwbox.core.environment.*;
 
 @Order(SystemOrder.PRESENTATION_TRANSITIONS)

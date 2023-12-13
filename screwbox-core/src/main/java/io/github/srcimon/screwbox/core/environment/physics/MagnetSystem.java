@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.components.TransformComponent
 public class MagnetSystem implements EntitySystem {
 
     private static final Archetype MAGNETS = Archetype.of(TransformComponent.class, MagnetComponent.class);
-    private static final Archetype BODIES = Archetype.of(TransformComponent.class, RigidBodyComponent.class);
+    private static final Archetype BODIES = Archetype.of(TransformComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -25,7 +25,7 @@ public class MagnetSystem implements EntitySystem {
             for (final var body : bodies) {
                 if (!magnet.equals(body)) {
                     var bodyTransform = body.get(TransformComponent.class);
-                    var bodyPhysics = body.get(RigidBodyComponent.class);
+                    var bodyPhysics = body.get(PhysicsComponent.class);
                     var distance = bodyTransform.bounds.position().distanceTo(magnetPosition);
                     var force = Math.max(0, (magnetComponent.range - distance) / magnetComponent.range)
                             * magnetComponent.force * delta * bodyPhysics.magnetModifier;

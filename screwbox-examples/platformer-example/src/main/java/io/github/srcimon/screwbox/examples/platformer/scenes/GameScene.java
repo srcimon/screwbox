@@ -9,6 +9,9 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSys
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -112,7 +115,7 @@ public class GameScene implements Scene {
                 .addSystem(new PatrollingMovementSystem())
                 .addSystem(new AreaTriggerSystem())
                 .addSystem(new ResetSceneSystem())
-                .addSystem(new AutoFlipSpriteSystem())
+                .addSystem(new FlipSpriteSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem())
                 .addSystem(new RenderSystem());

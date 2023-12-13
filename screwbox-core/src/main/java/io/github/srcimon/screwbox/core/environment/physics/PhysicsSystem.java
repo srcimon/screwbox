@@ -14,7 +14,7 @@ import java.util.List;
 @Order(SystemOrder.SIMULATION_BEGIN)
 public class PhysicsSystem implements EntitySystem {
 
-    private static final Archetype PHYSICS = Archetype.of(RigidBodyComponent.class, TransformComponent.class);
+    private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);
     private static final Archetype COLLIDERS = Archetype.of(TransformComponent.class, ColliderComponent.class);
 
     @Override
@@ -22,7 +22,7 @@ public class PhysicsSystem implements EntitySystem {
         final double factor = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
-            final var physicsBody = entity.get(RigidBodyComponent.class);
+            final var physicsBody = entity.get(PhysicsComponent.class);
             final var transform = entity.get(TransformComponent.class);
 
             final Vector momentum = physicsBody.momentum.multiply(factor);

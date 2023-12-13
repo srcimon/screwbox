@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class EntityTest {
 
     @Test
     void add_componentClassNotPresent_addsComponent() {
-        entity.add(new RigidBodyComponent())
+        entity.add(new PhysicsComponent())
                 .add(new ColliderComponent());
 
         assertThat(entity.getAll()).hasSize(2);
@@ -46,14 +46,14 @@ class EntityTest {
         var listener = Mockito.mock(EntityListener.class);
         entity.registerListener(listener);
 
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
 
         verify(listener).componentAdded(argThat(event -> event.entity().equals(entity)));
     }
 
     @Test
     void add_componentClassAlreadyPresent_throwsException() {
-        Component component = new RigidBodyComponent();
+        Component component = new PhysicsComponent();
         entity.add(component);
 
         assertThatThrownBy(() -> entity.add(component))
@@ -63,22 +63,22 @@ class EntityTest {
 
     @Test
     void get_componentPresent_returnsComponent() {
-        Component component = new RigidBodyComponent();
+        Component component = new PhysicsComponent();
         entity.add(component);
 
-        RigidBodyComponent result = entity.get(RigidBodyComponent.class);
+        PhysicsComponent result = entity.get(PhysicsComponent.class);
 
         assertThat(result).isEqualTo(component);
     }
 
     @Test
     void get_componentNotPresent_returnsNull() {
-        Assertions.assertThat(entity.get(RigidBodyComponent.class)).isNull();
+        Assertions.assertThat(entity.get(PhysicsComponent.class)).isNull();
     }
 
     @Test
     void add_addsComponentsToExistingEntity() {
-        var physicsBodyComponent = new RigidBodyComponent();
+        var physicsBodyComponent = new PhysicsComponent();
         var colliderComponent = new ColliderComponent();
         Entity entity = new Entity().add(physicsBodyComponent, colliderComponent);
 
@@ -87,39 +87,39 @@ class EntityTest {
 
     @Test
     void hasComponent_componentNotPresent_returnsFalse() {
-        assertThat(entity.hasComponent(RigidBodyComponent.class)).isFalse();
+        assertThat(entity.hasComponent(PhysicsComponent.class)).isFalse();
     }
 
     @Test
     void hasComponent_componentPresent_returnsTrue() {
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
 
-        assertThat(entity.hasComponent(RigidBodyComponent.class)).isTrue();
+        assertThat(entity.hasComponent(PhysicsComponent.class)).isTrue();
     }
 
     @Test
     void remove_componentPresent_removesComponent() {
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
 
-        entity.remove(RigidBodyComponent.class);
+        entity.remove(PhysicsComponent.class);
 
-        assertThat(entity.hasComponent(RigidBodyComponent.class)).isFalse();
+        assertThat(entity.hasComponent(PhysicsComponent.class)).isFalse();
     }
 
     @Test
     void remove_componentPresent_notifiesListeners() {
         var listener = Mockito.mock(EntityListener.class);
         entity.registerListener(listener);
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
 
-        entity.remove(RigidBodyComponent.class);
+        entity.remove(PhysicsComponent.class);
 
         verify(listener).componentRemoved(argThat(event -> event.entity().equals(entity)));
     }
 
     @Test
     void componentCount_returnsCountOfComponents() {
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
         entity.add(new ColliderComponent());
 
         assertThat(entity.componentCount()).isEqualTo(2);
@@ -127,11 +127,11 @@ class EntityTest {
 
     @Test
     void getComponentClasses_returnsClassesOfComponents() {
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
         entity.add(new ColliderComponent());
 
         assertThat(entity.getComponentClasses())
-                .contains(RigidBodyComponent.class, ColliderComponent.class)
+                .contains(PhysicsComponent.class, ColliderComponent.class)
                 .hasSize(2);
     }
 
@@ -142,7 +142,7 @@ class EntityTest {
 
     @Test
     void isEmpty_hasComponents_false() {
-        entity.add(new RigidBodyComponent());
+        entity.add(new PhysicsComponent());
 
         assertThat(entity.isEmpty()).isFalse();
     }

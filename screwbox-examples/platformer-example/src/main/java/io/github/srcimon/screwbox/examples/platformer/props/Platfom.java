@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.components.*;
 import io.github.srcimon.screwbox.core.environment.light.LightBlockingComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;

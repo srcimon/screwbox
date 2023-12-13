@@ -7,8 +7,8 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
-import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.physics.Borders;
@@ -46,7 +46,7 @@ public class ShadowSystem implements EntitySystem {
                 final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
                 final Optional<Vector> position = engine.physics()
                         .raycastFrom(linkedBounds.position())
-                        .ignoringEntitiesHaving(RigidBodyComponent.class)
+                        .ignoringEntitiesHaving(PhysicsComponent.class)
                         .checkingBorders(Borders.TOP_ONLY)
                         .castingVertical(64)
                         .nearestHit();

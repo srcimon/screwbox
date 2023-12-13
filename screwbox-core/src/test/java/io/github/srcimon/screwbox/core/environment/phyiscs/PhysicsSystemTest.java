@@ -23,7 +23,7 @@ class PhysicsSystemTest {
         when(loop.delta()).thenReturn(0.5);
         Entity body = new Entity().add(
                 new TransformComponent(Bounds.atPosition(0, 0, 10, 10)),
-                new RigidBodyComponent(Vector.of(4, 4)));
+                new PhysicsComponent(Vector.of(4, 4)));
 
         environment.addEntity(body);
         environment.addSystem(new PhysicsSystem());
@@ -40,7 +40,7 @@ class PhysicsSystemTest {
 
         Entity ball = new Entity().add(
                 new TransformComponent(Bounds.atOrigin(50, 0, 20, 20)),
-                new RigidBodyComponent(),
+                new PhysicsComponent(),
                 new CollisionDetectionComponent());
 
         Entity ground = new Entity().add(

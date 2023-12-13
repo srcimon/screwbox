@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.PatrollingMovementComponent;
@@ -14,12 +14,12 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 public class PatrollingMovementSystem implements EntitySystem {
 
     private static final Archetype PATROLLING = Archetype.of(PatrollingMovementComponent.class,
-            RigidBodyComponent.class);
+            PhysicsComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final Entity entity : engine.environment().fetchAll(PATROLLING)) {
-            final var physicsBodyComponent = entity.get(RigidBodyComponent.class);
+            final var physicsBodyComponent = entity.get(PhysicsComponent.class);
             final var patrollingMovementComponent = entity.get(PatrollingMovementComponent.class);
 
             if (isOnEdge(engine, entity) || spotsWall(engine, entity)) {
@@ -60,7 +60,7 @@ public class PatrollingMovementSystem implements EntitySystem {
     }
 
     private void invertSpeed(final Entity entity) {
-        final var physicsBodyComponent = entity.get(RigidBodyComponent.class);
+        final var physicsBodyComponent = entity.get(PhysicsComponent.class);
         final var pattrolling = entity.get(PatrollingMovementComponent.class);
         physicsBodyComponent.momentum = physicsBodyComponent.momentum.invertX();
         pattrolling.right = !pattrolling.right;

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.physics;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 
-public class RigidBodyComponent implements Component {
+public class PhysicsComponent implements Component {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,11 +13,11 @@ public class RigidBodyComponent implements Component {
     public double gravityModifier = 1;
     public double magnetModifier = 1;
 
-    public RigidBodyComponent() {
+    public PhysicsComponent() {
         this(Vector.zero());
     }
 
-    public RigidBodyComponent(final Vector momentum) {
+    public PhysicsComponent(final Vector momentum) {
         this.momentum = momentum;
     }
 

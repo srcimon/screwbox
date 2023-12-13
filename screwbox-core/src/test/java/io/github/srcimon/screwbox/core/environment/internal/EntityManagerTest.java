@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.components.ForwardSignalComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,8 +46,8 @@ class EntityManagerTest {
 
     @Test
     void removeEntity_changesNotDelayed_removesEntityFromArchetypeCaches() {
-        Entity entity = new Entity().add(new RigidBodyComponent());
-        Archetype archetype = Archetype.of(RigidBodyComponent.class);
+        Entity entity = new Entity().add(new PhysicsComponent());
+        Archetype archetype = Archetype.of(PhysicsComponent.class);
 
         entityManager.removeEntity(entity);
 
@@ -84,9 +84,9 @@ class EntityManagerTest {
 
     @Test
     void entitiesMatching_oneEntityMatches_returnsMatchingEntity() {
-        entityManager.addEntity(new Entity().add(new RigidBodyComponent()));
+        entityManager.addEntity(new Entity().add(new PhysicsComponent()));
         entityManager.addEntity(new Entity().add(new ForwardSignalComponent()));
-        Archetype archetype = Archetype.of(RigidBodyComponent.class);
+        Archetype archetype = Archetype.of(PhysicsComponent.class);
 
         var result = entityManager.entitiesMatching(archetype);
 
@@ -95,7 +95,7 @@ class EntityManagerTest {
 
     @Test
     void entitiesMatching_noMatches_returnsEmptyList() {
-        entityManager.addEntity(new Entity().add(new RigidBodyComponent()));
+        entityManager.addEntity(new Entity().add(new PhysicsComponent()));
         entityManager.addEntity(new Entity().add(new ForwardSignalComponent()));
         Archetype archetype = Archetype.of(TransformComponent.class);
 
@@ -107,7 +107,7 @@ class EntityManagerTest {
     @Test
     void componentAddedToManagedEntity_changedDelayed_cachesAreNotRefreshed() {
         Archetype colliderEntities = Archetype.of(ColliderComponent.class);
-        Entity entity = new Entity().add(new RigidBodyComponent());
+        Entity entity = new Entity().add(new PhysicsComponent());
         entityManager.addEntity(entity);
         entityManager.entitiesMatching(colliderEntities); // create cached request
 
@@ -119,7 +119,7 @@ class EntityManagerTest {
     @Test
     void componentAddedToManagedEntity_pickedUpChanges_cachesAreRefreshed() {
         Archetype colliderEntities = Archetype.of(ColliderComponent.class);
-        Entity entity = new Entity().add(new RigidBodyComponent());
+        Entity entity = new Entity().add(new PhysicsComponent());
         entityManager.addEntity(entity);
         entityManager.entitiesMatching(colliderEntities); // create cached request
 

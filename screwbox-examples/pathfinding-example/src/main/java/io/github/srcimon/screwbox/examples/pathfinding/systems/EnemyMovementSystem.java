@@ -6,8 +6,8 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.components.AutomovementComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
-import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
@@ -18,7 +18,7 @@ public class EnemyMovementSystem implements EntitySystem {
             PlayerMovementComponent.class, TransformComponent.class);
 
     private static final Archetype ENEMIES = Archetype.of(
-            RigidBodyComponent.class, RenderComponent.class, AutomovementComponent.class);
+            PhysicsComponent.class, RenderComponent.class, AutomovementComponent.class);
 
     private final Sheduler sheduler = Sheduler.everySecond();
 

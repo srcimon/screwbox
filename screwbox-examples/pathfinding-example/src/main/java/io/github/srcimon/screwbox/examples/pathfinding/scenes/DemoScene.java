@@ -6,8 +6,12 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
@@ -56,7 +60,7 @@ public class DemoScene implements Scene {
                 .addSystem(new CameraMovementSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())
-                .addSystem(new AutoRotationSystem())
+                .addSystem(new RotateSpriteSystem())
                 .addSystem(new AutomovementSystem())
                 .addSystem(new AutomovementDebugSystem())
                 .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
@@ -78,8 +82,8 @@ public class DemoScene implements Scene {
         return object -> new Entity(object.id())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
-                .add(new RigidBodyComponent())
-                .add(new AutoRotationComponent())
+                .add(new PhysicsComponent())
+                .add(new RotateSpriteComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -87,9 +91,9 @@ public class DemoScene implements Scene {
     private Converter<GameObject> enemy() {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
-                .add(new RigidBodyComponent())
+                .add(new PhysicsComponent())
                 .add(new AutomovementComponent(30))
-                .add(new AutoRotationComponent())
+                .add(new RotateSpriteComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }

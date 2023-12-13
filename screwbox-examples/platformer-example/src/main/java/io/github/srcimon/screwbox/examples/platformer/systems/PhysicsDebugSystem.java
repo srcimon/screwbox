@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
-import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.environment.*;
@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.environment.*;
 @Order(SystemOrder.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {
 
-    private static final Archetype PHYSICS = Archetype.of(RigidBodyComponent.class, TransformComponent.class);
+    private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);
     private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
     private static final Archetype SENSORS = Archetype.of(CollisionDetectionComponent.class, TransformComponent.class);
 
@@ -37,8 +37,8 @@ public class PhysicsDebugSystem implements EntitySystem {
         final var bounds = entity.get(TransformComponent.class).bounds;
         engine.graphics().world().fillRectangle(bounds, color.opacity(0.7));
 
-        if (entity.hasComponent(RigidBodyComponent.class)) {
-            final Vector momentum = entity.get(RigidBodyComponent.class).momentum;
+        if (entity.hasComponent(PhysicsComponent.class)) {
+            final Vector momentum = entity.get(PhysicsComponent.class).momentum;
             final Vector destination = bounds.position().add(momentum);
 
             engine.graphics().world().drawLine(bounds.position(), destination, Color.BLUE);
