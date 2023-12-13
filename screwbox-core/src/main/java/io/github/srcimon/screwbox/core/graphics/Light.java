@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.systems.RenderLightSystem;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * Subsystem for creating and rendering light effects to the screen. All added
  * light sources and shadow casters are reseted every frame. To actually render
  * any light effect you have to call {@link #render()}. Easiest way to use is
- * the {@link RenderLightSystem}.
+ * the {@link LightRenderSystem}.
  */
 public interface Light {
 
@@ -95,7 +95,7 @@ public interface Light {
 
     /**
      * Renders the lightmap to {@link Window}. Can be automated by using
-     * {@link RenderLightSystem}.
+     * {@link LightRenderSystem}.
      */
     Light render();
 

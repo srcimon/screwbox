@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.environment.*;
 
 @Order(SystemOrder.PRESENTATION_LIGHT)
-public class RenderLightSystem implements EntitySystem {
+public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype CONELIGHT_EMITTERS = Archetype.of(
             ConeLightComponent.class, TransformComponent.class);

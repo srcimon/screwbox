@@ -21,7 +21,9 @@
 - Moved api for saving and loading the game state into `Environment` (#133)
 - Renamed misleading `Entities` to `Environment` (#132)
 - Moved all future ideas and plans from the readme to Github issues (#131)
+- Moved light and tweening related environment classes to specific packages (#149)
 - Renamed generic `Ecosphere.add()` method to specify if adding a system or an entity
+- Renamed light related components and systems
 - Renamed `Segment` to `Line`
 - Renamed some `Keyboard` and `Mouse` methods to more specific names
 - Renamed `Scene.initialize()` to `populate()`

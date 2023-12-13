@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;

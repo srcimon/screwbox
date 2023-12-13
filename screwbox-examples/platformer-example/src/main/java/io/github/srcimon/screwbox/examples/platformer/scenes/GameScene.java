@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -70,9 +72,9 @@ public class GameScene implements Scene {
                 .addSystem(new TweenSystem())
                 .addSystem(new TweenDestroySystem())
                 .addSystem(new TweenOpacitySystem())
-                .addSystem(new CombineStaticShadowCastersSystem())
+                .addSystem(new OptimizeLightPerformanceSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new RenderLightSystem())
+                .addSystem(new LightRenderSystem())
                 .addSystem(new ReflectionRenderSystem())
                 .addSystem(new CollisionSensorSystem())
                 .addSystem(new MovingPlatformSystem())

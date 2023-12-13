@@ -1,9 +1,7 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.components.ShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.components.StaticShadowCasterMarkerComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.GeometryUtil;
 import io.github.srcimon.screwbox.core.environment.*;
@@ -12,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Order(SystemOrder.OPTIMIZATION)
-public class CombineStaticShadowCastersSystem implements EntitySystem {
+public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticShadowCasterMarkerComponent.class, ShadowCasterComponent.class, TransformComponent.class);
+            StaticShadowCasterComponent.class, ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -29,9 +27,9 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
         }
         // at this point all light blockers have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticShadowCasterMarkerComponent.class);
+            entity.remove(StaticShadowCasterComponent.class);
         }
-        engine.environment().remove(CombineStaticShadowCastersSystem.class);
+        engine.environment().remove(OptimizeLightPerformanceSystem.class);
     }
 
     private boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
@@ -43,12 +41,12 @@ public class CombineStaticShadowCastersSystem implements EntitySystem {
         if (result.isPresent()) {
             Entity combined = new Entity()
                     .add(new ShadowCasterComponent())
-                    .add(new StaticShadowCasterMarkerComponent())
+                    .add(new StaticShadowCasterComponent())
                     .add(new TransformComponent(result.get()));
             engine.environment().addEntity(combined);
-            first.remove(StaticShadowCasterMarkerComponent.class);
+            first.remove(StaticShadowCasterComponent.class);
             first.remove(ShadowCasterComponent.class);
-            second.remove(StaticShadowCasterMarkerComponent.class);
+            second.remove(StaticShadowCasterComponent.class);
             second.remove(ShadowCasterComponent.class);
             return true;
         }
