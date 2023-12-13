@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +116,15 @@ class DefaultLightTest {
         assertThat(colorInLight.g()).isZero();
         assertThat(colorInLight.b()).isZero();
         assertThat(colorInLight.opacity().value()).isPositive();
+    }
+
+    @Test
+    void render_renderAlreadyCalled_throwsException() {
+        light.render();
+
+        assertThatThrownBy(() -> light.render())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("rendering lights is already in progress");
     }
 
     @AfterEach

@@ -14,6 +14,7 @@
 
 ### 🪛 Bug Fixes
 
+- Fixed possiblity of calling `Light.render()` twice in a frame (#152)
 - Fixed problems with plugin version via adding maven-enforcer-plugin
 
 ### 🧽 Cleanup & refactoring
