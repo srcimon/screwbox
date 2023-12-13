@@ -4,12 +4,16 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
+import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.core.environment.components.*;
 
 public class Tracer implements Converter<GameObject> {
 

@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 

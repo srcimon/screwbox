@@ -4,8 +4,20 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.components.*;
-import io.github.srcimon.screwbox.core.environment.systems.*;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraMovementComponent;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.debug.AutomovementDebugSystem;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -50,15 +62,15 @@ public class DemoScene implements Scene {
                 .when("camera").as(camera());
 
         environment.addSystem(new RenderSystem())
-                .addSystem(new CameraMovementSystem())
+                .addSystem(new CameraUpdateSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())
-                .addSystem(new AutoRotationSystem())
+                .addSystem(new RotateSpriteSystem())
                 .addSystem(new AutomovementSystem())
                 .addSystem(new AutomovementDebugSystem())
-                .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
+                .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
-                .addSystem(new PathfindingGridCreationSystem(16, Sheduler.withInterval(ofSeconds(1))))
+                .addSystem(new PathfindingSystem(16, Sheduler.withInterval(ofSeconds(1))))
                 .addSystem(new EnemyMovementSystem())
                 .addSystem(new SpriteChangeSystem())
                 .addSystem(new PhysicsSystem());
@@ -75,8 +87,8 @@ public class DemoScene implements Scene {
         return object -> new Entity(object.id())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
-                .add(new PhysicsBodyComponent())
-                .add(new AutoRotationComponent())
+                .add(new PhysicsComponent())
+                .add(new RotateSpriteComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -84,9 +96,9 @@ public class DemoScene implements Scene {
     private Converter<GameObject> enemy() {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
-                .add(new PhysicsBodyComponent())
+                .add(new PhysicsComponent())
                 .add(new AutomovementComponent(30))
-                .add(new AutoRotationComponent())
+                .add(new RotateSpriteComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -99,13 +111,13 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
-                .add(new PathfindingBlockingComponent())
+                .add(new BlockPathComponent())
                 .add(new ColliderComponent());
     }
 
     private static Converter<Map> worldBounds() {
         return map -> new Entity()
                 .add(new TransformComponent(map.bounds()))
-                .add(new WorldBoundsComponent());
+                .add(new GlobalBoundsComponent());
     }
 }

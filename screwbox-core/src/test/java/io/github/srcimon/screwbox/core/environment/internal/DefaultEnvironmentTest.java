@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.systems.RenderLightSystem;
-import io.github.srcimon.screwbox.core.environment.systems.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,28 +89,28 @@ class DefaultEnvironmentTest {
 
     @Test
     void toggleSystem_systemPresent_removesSystem() {
-        environment.addSystem(new RenderLightSystem());
+        environment.addSystem(new LightRenderSystem());
 
-        environment.toggleSystem(new RenderLightSystem());
+        environment.toggleSystem(new LightRenderSystem());
 
-        assertThat(environment.isSystemPresent(RenderLightSystem.class)).isFalse();
+        assertThat(environment.isSystemPresent(LightRenderSystem.class)).isFalse();
     }
 
     @Test
     void toggleSystem_systemNotPresent_addsSystem() {
-        environment.toggleSystem(new RenderLightSystem());
+        environment.toggleSystem(new LightRenderSystem());
 
-        assertThat(environment.isSystemPresent(RenderLightSystem.class)).isTrue();
+        assertThat(environment.isSystemPresent(LightRenderSystem.class)).isTrue();
     }
 
     @Test
     void systems_returnsAllSystemsInOrder() {
-        RenderLightSystem renderLightSystem = new RenderLightSystem();
+        LightRenderSystem lightRenderSystem = new LightRenderSystem();
         RenderSystem renderSystem = new RenderSystem();
 
-        environment.addSystem(renderLightSystem).addSystem(renderSystem);
+        environment.addSystem(lightRenderSystem).addSystem(renderSystem);
 
-        assertThat(environment.systems()).containsExactly(renderSystem, renderLightSystem);
+        assertThat(environment.systems()).containsExactly(renderSystem, lightRenderSystem);
     }
 
     @Test

@@ -6,10 +6,10 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
-import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,7 +68,7 @@ class RaycastTest {
 
     @Test
     void selectAllEnties_rayHitsMultipeEntitiesButSomeAreIgnored_returnsHits() {
-        var physicsEntites = Archetype.of(TransformComponent.class, PhysicsBodyComponent.class);
+        var physicsEntites = Archetype.of(TransformComponent.class, PhysicsComponent.class);
 
         Entity foundA = boxAt(0, 100);
         Entity foundB = boxAt(0, 300);

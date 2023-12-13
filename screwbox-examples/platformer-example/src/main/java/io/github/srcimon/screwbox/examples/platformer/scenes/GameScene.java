@@ -3,7 +3,20 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.systems.*;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
+import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
+import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
+import io.github.srcimon.screwbox.core.environment.autocamera.CameraUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
+import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -70,14 +83,14 @@ public class GameScene implements Scene {
                 .addSystem(new TweenSystem())
                 .addSystem(new TweenDestroySystem())
                 .addSystem(new TweenOpacitySystem())
-                .addSystem(new CombineStaticShadowCastersSystem())
+                .addSystem(new OptimizeLightPerformanceSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new RenderLightSystem())
+                .addSystem(new LightRenderSystem())
                 .addSystem(new ReflectionRenderSystem())
-                .addSystem(new CollisionSensorSystem())
+                .addSystem(new CollisionDetectionSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
-                .addSystem(new CameraMovementSystem())
+                .addSystem(new CameraUpdateSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
@@ -101,12 +114,12 @@ public class GameScene implements Scene {
                 .addSystem(new PhysicsSystem())
                 .addSystem(new GravitySystem())
                 .addSystem(new CameraShiftSystem())
-                .addSystem(new CombineStaticCollidersSystem())
+                .addSystem(new OptimizePhysicsPerformanceSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
                 .addSystem(new AreaTriggerSystem())
                 .addSystem(new ResetSceneSystem())
-                .addSystem(new AutoFlipSpriteSystem())
+                .addSystem(new FlipSpriteSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem())
                 .addSystem(new RenderSystem());

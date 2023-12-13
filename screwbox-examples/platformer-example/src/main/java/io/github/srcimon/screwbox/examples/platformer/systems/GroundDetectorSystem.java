@@ -3,15 +3,15 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 
 @Order(SystemOrder.PREPARATION)
 public class GroundDetectorSystem implements EntitySystem {
 
     private static final Archetype GROUND_DETECTORS = Archetype.of(GroundDetectorComponent.class,
-            CollisionSensorComponent.class);
+            CollisionDetectionComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -21,7 +21,7 @@ public class GroundDetectorSystem implements EntitySystem {
     }
 
     private boolean isOnGround(final Entity entity) {
-        CollisionSensorComponent sensor = entity.get(CollisionSensorComponent.class);
+        CollisionDetectionComponent sensor = entity.get(CollisionDetectionComponent.class);
         if (sensor.collidedEntities.isEmpty()) {
             return false;
         }

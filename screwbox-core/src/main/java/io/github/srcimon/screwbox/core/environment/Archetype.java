@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.environment;
 
-import io.github.srcimon.screwbox.core.environment.components.ReflectionComponent;
-import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.io.Serial;
 import java.io.Serializable;

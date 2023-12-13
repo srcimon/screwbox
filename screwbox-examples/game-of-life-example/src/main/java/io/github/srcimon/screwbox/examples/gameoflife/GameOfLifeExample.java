@@ -3,8 +3,8 @@ package io.github.srcimon.screwbox.examples.gameoflife;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.systems.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.systems.QuitOnKeyPressSystem;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.ui.KeyboardAndMouseInteractor;
 import io.github.srcimon.screwbox.examples.gameoflife.camera.CameraControlSystem;
@@ -27,7 +27,7 @@ public class GameOfLifeExample {
                 .addSystem(new GridUpdateSystem())
                 .addSystem(new GridRenderSystem())
                 .addSystem(new GridInteractionSystem())
-                .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
+                .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new SidebarOpacitySystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new CameraControlSystem());

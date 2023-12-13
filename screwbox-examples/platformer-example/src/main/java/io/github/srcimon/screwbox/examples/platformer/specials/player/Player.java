@@ -3,7 +3,16 @@ package io.github.srcimon.screwbox.examples.platformer.specials.player;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
+import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
+import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
+import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LightOptions;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
@@ -24,7 +33,7 @@ public class Player implements Converter<GameObject> {
                         .color(Color.BLACK.opacity(0.4))
                         .glow(0)),
                 new StateComponent(new PlayerStandingState()),
-                new PhysicsBodyComponent(),
+                new PhysicsComponent(),
                 new GroundDetectorComponent(),
                 new ColliderComponent(),
                 new PlayerMarkerComponent(),
@@ -32,8 +41,8 @@ public class Player implements Converter<GameObject> {
                 new CastShadowComponent(),
                 new PlayerControlComponent(),
                 new SignalComponent(),
-                new CollisionSensorComponent(),
-                new AutoFlipSpriteComponent(),
+                new CollisionDetectionComponent(),
+                new FlipSpriteComponent(),
                 new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));
     }
 

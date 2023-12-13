@@ -17,8 +17,8 @@ public class TweenSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final var now = engine.loop().lastUpdate();
-        for (final var tweening : engine.environment().fetchAll(TWEENS)) {
-            final var tween = tweening.get(TweenComponent.class);
+        for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
+            final var tween = tweenEntity.get(TweenComponent.class);
             final var elapsedDuration = Duration.between(now, tween.startTime);
             tween.progress = tween.reverse
                     ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos())
@@ -28,7 +28,7 @@ public class TweenSystem implements EntitySystem {
                     tween.startTime = now;
                     tween.reverse = !tween.reverse;
                 } else {
-                    engine.environment().remove(tweening);
+                    engine.environment().remove(tweenEntity);
                 }
             }
         }

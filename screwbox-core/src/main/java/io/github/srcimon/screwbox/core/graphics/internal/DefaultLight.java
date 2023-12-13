@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -27,11 +27,12 @@ public class DefaultLight implements Light {
     private Lightmap lightmap;
     private Percent ambientLight = Percent.min();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
+    private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
 
     public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
-            final ExecutorService executor) {
+                        final ExecutorService executor) {
         this.executor = executor;
         this.screen = screen;
         this.world = world;
@@ -136,6 +137,11 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
+        if(renderInProgress) {
+            throw new IllegalStateException("rendering lights is already in progress");
+        }
+
+        renderInProgress = true;
         final var copiedLightmap = lightmap;
         for (final var task : tasks) {
             task.run();
@@ -174,6 +180,7 @@ public class DefaultLight implements Light {
     }
 
     public void update() {
+        renderInProgress = false;
         initLightmap();
         tasks.clear();
         postDrawingTasks.clear();
