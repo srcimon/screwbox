@@ -1,26 +1,25 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Grid;
-import io.github.srcimon.screwbox.core.environment.components.PathfindingBlockingComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.components.WorldBoundsComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.core.environment.*;
 
 @Order(SystemOrder.PREPARATION)
-public class PathfindingGridCreationSystem implements EntitySystem {
+public class PathfindingSystem implements EntitySystem {
 
     private static final Archetype BLOCKING = Archetype.of(
-            PathfindingBlockingComponent.class, TransformComponent.class);
+            BlockPathComponent.class, TransformComponent.class);
 
     private static final Archetype WORLD = Archetype.of(WorldBoundsComponent.class, TransformComponent.class);
 
     private final int gridSize;
     private final Sheduler updateSheduler;
 
-    public PathfindingGridCreationSystem(final int gridSize, final Sheduler updateSheduler) {
+    public PathfindingSystem(final int gridSize, final Sheduler updateSheduler) {
         this.gridSize = gridSize;
         this.updateSheduler = updateSheduler;
     }

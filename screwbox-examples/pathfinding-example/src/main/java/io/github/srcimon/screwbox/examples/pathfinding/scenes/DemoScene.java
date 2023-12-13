@@ -5,9 +5,8 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -65,7 +64,7 @@ public class DemoScene implements Scene {
                 .addSystem(new AutomovementDebugSystem())
                 .addSystem(new QuitOnKeyPressSystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
-                .addSystem(new PathfindingGridCreationSystem(16, Sheduler.withInterval(ofSeconds(1))))
+                .addSystem(new PathfindingSystem(16, Sheduler.withInterval(ofSeconds(1))))
                 .addSystem(new EnemyMovementSystem())
                 .addSystem(new SpriteChangeSystem())
                 .addSystem(new PhysicsSystem());
@@ -106,7 +105,7 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
-                .add(new PathfindingBlockingComponent())
+                .add(new BlockPathComponent())
                 .add(new ColliderComponent());
     }
 

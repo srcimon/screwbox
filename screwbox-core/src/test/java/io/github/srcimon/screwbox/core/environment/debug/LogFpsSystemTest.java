@@ -1,5 +1,6 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.debug;
 
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;

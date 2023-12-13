@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.gameoflife;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.systems.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.systems.QuitOnKeyPressSystem;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.ui.KeyboardAndMouseInteractor;
