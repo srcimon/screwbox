@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntityState;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
@@ -32,7 +32,7 @@ public class PlayerRunningState implements EntityState {
             return new PlayerDeathState();
         }
 
-        var momentum = entity.get(PhysicsBodyComponent.class).momentum;
+        var momentum = entity.get(RigidBodyComponent.class).momentum;
 
         var controlComponent = entity.get(PlayerControlComponent.class);
         if (controlComponent.jumpPressed) {

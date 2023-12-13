@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.systems;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.components.AutoFlipSpriteComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Flip;
@@ -20,17 +20,17 @@ class AutFlipSpriteSystemTest {
     void update_updatesSpritComponentFlipMode(DefaultEnvironment environment) {
         Entity movingRight = new Entity()
                 .add(new RenderComponent())
-                .add(new PhysicsBodyComponent(Vector.x(4)))
+                .add(new RigidBodyComponent(Vector.x(4)))
                 .add(new AutoFlipSpriteComponent());
 
         Entity movingLeftUp = new Entity()
                 .add(new RenderComponent())
-                .add(new PhysicsBodyComponent(Vector.of(-4, -2)))
+                .add(new RigidBodyComponent(Vector.of(-4, -2)))
                 .add(new AutoFlipSpriteComponent());
 
         Entity movingDown = new Entity()
                 .add(new RenderComponent())
-                .add(new PhysicsBodyComponent(Vector.y(1)))
+                .add(new RigidBodyComponent(Vector.y(1)))
                 .add(new AutoFlipSpriteComponent());
 
         environment.addSystem(movingRight, movingLeftUp, movingDown)

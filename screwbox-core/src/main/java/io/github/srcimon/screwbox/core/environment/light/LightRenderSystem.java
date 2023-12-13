@@ -19,7 +19,7 @@ public class LightRenderSystem implements EntitySystem {
             SpotLightComponent.class, TransformComponent.class);
 
     private static final Archetype SHADOW_CASTERS = Archetype.of(
-            ShadowCasterComponent.class, TransformComponent.class);
+            LightBlockingComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {

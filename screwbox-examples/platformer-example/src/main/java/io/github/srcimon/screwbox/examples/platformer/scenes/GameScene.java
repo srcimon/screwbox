@@ -5,6 +5,10 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -76,7 +80,7 @@ public class GameScene implements Scene {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new LightRenderSystem())
                 .addSystem(new ReflectionRenderSystem())
-                .addSystem(new CollisionSensorSystem())
+                .addSystem(new CollisionDetectionSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new CameraMovementSystem())
@@ -103,7 +107,7 @@ public class GameScene implements Scene {
                 .addSystem(new PhysicsSystem())
                 .addSystem(new GravitySystem())
                 .addSystem(new CameraShiftSystem())
-                .addSystem(new CombineStaticCollidersSystem())
+                .addSystem(new OptimizePhysicsPerformanceSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
                 .addSystem(new AreaTriggerSystem())

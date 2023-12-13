@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
-import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;

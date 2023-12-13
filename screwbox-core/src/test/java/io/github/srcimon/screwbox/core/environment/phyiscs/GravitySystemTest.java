@@ -1,9 +1,10 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.phyiscs;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.GravityComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.GravityComponent;
+import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
@@ -19,7 +20,7 @@ class GravitySystemTest {
     @Test
     void update_updatesEntitiesWithGravity(DefaultEnvironment environment, Loop loop) {
         when(loop.delta()).thenReturn(0.5);
-        Entity body = new Entity().add(new PhysicsBodyComponent());
+        Entity body = new Entity().add(new RigidBodyComponent());
         Entity gravity = new Entity().add(new GravityComponent(Vector.of(0, 10)));
 
         environment.addSystem(body, gravity);
@@ -27,7 +28,7 @@ class GravitySystemTest {
 
         environment.update();
 
-        Vector momentum = body.get(PhysicsBodyComponent.class).momentum;
+        Vector momentum = body.get(RigidBodyComponent.class).momentum;
         assertThat(momentum).isEqualTo(Vector.of(0, 5));
     }
 

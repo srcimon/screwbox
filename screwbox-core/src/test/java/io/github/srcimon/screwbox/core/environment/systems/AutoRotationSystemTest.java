@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.systems;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.components.AutoRotationComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -21,7 +21,7 @@ class AutoRotationSystemTest {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
-                new PhysicsBodyComponent(Vector.of(4, 4)));
+                new RigidBodyComponent(Vector.of(4, 4)));
 
         environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());
@@ -37,7 +37,7 @@ class AutoRotationSystemTest {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
                 new AutoRotationComponent(),
-                new PhysicsBodyComponent(Vector.zero()));
+                new RigidBodyComponent(Vector.zero()));
 
         environment.addEntity(body)
                 .addSystem(new AutoRotationSystem());

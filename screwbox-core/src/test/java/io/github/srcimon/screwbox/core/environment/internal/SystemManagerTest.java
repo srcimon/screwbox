@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
-import io.github.srcimon.screwbox.core.environment.systems.CombineStaticCollidersSystem;
+import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.systems.PhysicsDebugSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +42,9 @@ class SystemManagerTest {
     @Test
     void addSystem_systemPriorityIsHigherThanExistingSystems_addsSystemToStart() {
         systemManager.addSystem(new PhysicsDebugSystem());
-        systemManager.addSystem(new CombineStaticCollidersSystem());
+        systemManager.addSystem(new OptimizePhysicsPerformanceSystem());
 
-        assertThat(systemManager.allSystems().get(0)).isInstanceOf(CombineStaticCollidersSystem.class);
+        assertThat(systemManager.allSystems().get(0)).isInstanceOf(OptimizePhysicsPerformanceSystem.class);
     }
 
 }

@@ -5,6 +5,9 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.environment.systems.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
@@ -75,7 +78,7 @@ public class DemoScene implements Scene {
         return object -> new Entity(object.id())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
-                .add(new PhysicsBodyComponent())
+                .add(new RigidBodyComponent())
                 .add(new AutoRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
@@ -84,7 +87,7 @@ public class DemoScene implements Scene {
     private Converter<GameObject> enemy() {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
-                .add(new PhysicsBodyComponent())
+                .add(new RigidBodyComponent())
                 .add(new AutomovementComponent(30))
                 .add(new AutoRotationComponent())
                 .add(new RenderComponent(object.layer().order()))

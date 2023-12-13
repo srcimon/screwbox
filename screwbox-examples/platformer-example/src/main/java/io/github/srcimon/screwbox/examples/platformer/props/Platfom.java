@@ -6,7 +6,9 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
+import io.github.srcimon.screwbox.core.environment.light.LightBlockingComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -24,8 +26,8 @@ public class Platfom implements Converter<GameObject> {
                 new ColliderComponent(500, Percent.min(), true),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
-                new CollisionSensorComponent(),
-                new ShadowCasterComponent(),
+                new CollisionDetectionComponent(),
+                new LightBlockingComponent(),
                 new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
     }
 

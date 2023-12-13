@@ -1,10 +1,11 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.phyiscs;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.components.StaticMarkerComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
@@ -19,22 +20,22 @@ class CombineStaticColliderSystemTest {
     @Test
     void update_combinesHorizontallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 0, 20, 20)));
 
         Entity brickB = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(20, 0, 20, 20)));
 
         Entity brickC = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 20)));
 
         environment.addSystem(brickA, brickB, brickC);
-        environment.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update(); // one brick per cycle aligned
         environment.update(); // ...and another one
@@ -48,22 +49,22 @@ class CombineStaticColliderSystemTest {
     @Test
     void update_combinesVerticallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 0, 20, 20)));
 
         Entity brickB = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 20, 20, 20)));
 
         Entity brickC = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(0, 40, 20, 20)));
 
         environment.addSystem(brickA, brickB, brickC);
-        environment.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update(); // one brick per cycle aligned
         environment.update(); // ...and another one
@@ -77,22 +78,22 @@ class CombineStaticColliderSystemTest {
     @Test
     void update_ignoresDifferentColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(4),
                 new TransformComponent(Bounds.atOrigin(0, 0, 20, 20)));
 
         Entity brickB = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(2),
                 new TransformComponent(Bounds.atOrigin(20, 0, 20, 20)));
 
         Entity brickC = new Entity().add(
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new ColliderComponent(),
                 new TransformComponent(Bounds.atOrigin(40, 0, 20, 30)));
 
         environment.addSystem(brickA, brickB, brickC);
-        environment.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update();
 
@@ -102,7 +103,7 @@ class CombineStaticColliderSystemTest {
 
     @Test
     void update_removesItselfAfterFinishingAllColliders(DefaultEnvironment environment) {
-        environment.addSystem(new CombineStaticCollidersSystem());
+        environment.addSystem(new OptimizePhysicsPerformanceSystem());
 
         environment.update();
 

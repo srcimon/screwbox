@@ -5,8 +5,8 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import org.assertj.core.api.Assertions;
@@ -51,7 +51,7 @@ class SelectEntityBuilderTest {
 
     @Test
     void checkingFor_noTransformComponent_throwsException() {
-        Archetype noTransform = Archetype.of(PhysicsBodyComponent.class);
+        Archetype noTransform = Archetype.of(RigidBodyComponent.class);
 
         assertThatThrownBy(() -> selectEntityBuilder.checkingFor(noTransform))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -60,14 +60,14 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_noEntityAtPosition_returnsEmpty() {
-        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, RigidBodyComponent.class)))
                 .thenReturn(List.of(
                         boxAt(55, 45),
                         boxAt(25, 45).add(new RenderComponent(0)),
                         boxAt(25, 15)));
 
         var result = selectEntityBuilder
-                .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
+                .checkingFor(Archetype.of(TransformComponent.class, RigidBodyComponent.class))
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
@@ -76,11 +76,11 @@ class SelectEntityBuilderTest {
 
     @Test
     void selectAny_entityAtPosition_returnsEntity() {
-        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, RigidBodyComponent.class)))
                 .thenReturn(List.of(boxAt(39, 59)));
 
         var result = selectEntityBuilder
-                .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
+                .checkingFor(Archetype.of(TransformComponent.class, RigidBodyComponent.class))
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAny();
 
@@ -92,11 +92,11 @@ class SelectEntityBuilderTest {
         Entity first = boxAt(39, 59);
         Entity second = boxAt(38, 58);
         Entity notAtPosition = boxAt(0, 0);
-        when(environment.fetchAll(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class)))
+        when(environment.fetchAll(Archetype.of(TransformComponent.class, RigidBodyComponent.class)))
                 .thenReturn(List.of(first, second, notAtPosition));
 
         var result = selectEntityBuilder
-                .checkingFor(Archetype.of(TransformComponent.class, PhysicsBodyComponent.class))
+                .checkingFor(Archetype.of(TransformComponent.class, RigidBodyComponent.class))
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .selectAll();
 

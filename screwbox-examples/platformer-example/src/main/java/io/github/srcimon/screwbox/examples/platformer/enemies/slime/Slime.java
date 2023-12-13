@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LightOptions;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -32,7 +34,7 @@ public class Slime implements Converter<GameObject> {
                 new SignalComponent(),
                 new AutoFlipSpriteComponent(),
                 new PatrollingMovementComponent(),
-                new PhysicsBodyComponent(Vector.of(10, 0)),
+                new RigidBodyComponent(Vector.of(10, 0)),
                 new RenderComponent(object.layer().order()));
     }
 

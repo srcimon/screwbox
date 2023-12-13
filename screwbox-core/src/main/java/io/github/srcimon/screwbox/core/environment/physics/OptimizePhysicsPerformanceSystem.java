@@ -1,10 +1,8 @@
-package io.github.srcimon.screwbox.core.environment.systems;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.components.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.components.StaticMarkerComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 import io.github.srcimon.screwbox.core.physics.internal.CollisionCheck;
 import io.github.srcimon.screwbox.core.utils.GeometryUtil;
@@ -13,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Order(SystemOrder.OPTIMIZATION)
-public class CombineStaticCollidersSystem implements EntitySystem {
+public class OptimizePhysicsPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticMarkerComponent.class, ColliderComponent.class, TransformComponent.class);
+            StaticColliderComponent.class, ColliderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -33,9 +31,9 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         }
         // at this point all colliders have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticMarkerComponent.class);
+            entity.remove(StaticColliderComponent.class);
         }
-        engine.environment().remove(CombineStaticCollidersSystem.class);
+        engine.environment().remove(OptimizePhysicsPerformanceSystem.class);
     }
 
     private boolean tryToCombine(final CollisionCheck check, final Engine engine) {
@@ -57,16 +55,16 @@ public class CombineStaticCollidersSystem implements EntitySystem {
         colliderComponent.isOneWay = colliderCollider.isOneWay;
         final Entity newEntity = new Entity().add(
                 colliderComponent,
-                new StaticMarkerComponent(),
+                new StaticColliderComponent(),
                 new TransformComponent(combined.get()));
 
         engine.environment().addEntity(newEntity);
 
         check.collider().remove(ColliderComponent.class);
-        check.collider().remove(StaticMarkerComponent.class);
+        check.collider().remove(StaticColliderComponent.class);
 
         check.physics().remove(ColliderComponent.class);
-        check.physics().remove(StaticMarkerComponent.class);
+        check.physics().remove(StaticColliderComponent.class);
         return true;
     }
 }

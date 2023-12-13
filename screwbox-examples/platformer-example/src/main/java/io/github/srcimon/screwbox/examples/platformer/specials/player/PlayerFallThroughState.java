@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntityState;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 
@@ -17,7 +17,7 @@ public class PlayerFallThroughState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        entity.get(PhysicsBodyComponent.class).ignoreOneWayCollisions = true;
+        entity.get(RigidBodyComponent.class).ignoreOneWayCollisions = true;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PlayerFallThroughState implements EntityState {
 
     @Override
     public void exit(Entity entity, Engine engine) {
-        entity.get(PhysicsBodyComponent.class).ignoreOneWayCollisions = false;
+        entity.get(RigidBodyComponent.class).ignoreOneWayCollisions = false;
     }
 
 }

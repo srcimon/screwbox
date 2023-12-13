@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntityState;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
@@ -29,7 +29,7 @@ public class PlayerJumpingStartedState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         engine.audio().playEffect(JUMP_SOUND.get());
         entity.get(RenderComponent.class).sprite = SPRITE.get();
-        final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
+        final var physicsBodyComponent = entity.get(RigidBodyComponent.class);
         physicsBodyComponent.momentum = Vector.of(physicsBodyComponent.momentum.x(), -180);
         entity.get(PlayerControlComponent.class).allowJumpPush = true;
     }

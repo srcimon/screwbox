@@ -13,7 +13,7 @@ import java.util.Optional;
 public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticShadowCasterComponent.class, ShadowCasterComponent.class, TransformComponent.class);
+            StaticLightBlockingComponent.class, LightBlockingComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -27,7 +27,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         }
         // at this point all light blockers have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticShadowCasterComponent.class);
+            entity.remove(StaticLightBlockingComponent.class);
         }
         engine.environment().remove(OptimizeLightPerformanceSystem.class);
     }
@@ -40,14 +40,14 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
                 second.get(TransformComponent.class).bounds);
         if (result.isPresent()) {
             Entity combined = new Entity()
-                    .add(new ShadowCasterComponent())
-                    .add(new StaticShadowCasterComponent())
+                    .add(new LightBlockingComponent())
+                    .add(new StaticLightBlockingComponent())
                     .add(new TransformComponent(result.get()));
             engine.environment().addEntity(combined);
-            first.remove(StaticShadowCasterComponent.class);
-            first.remove(ShadowCasterComponent.class);
-            second.remove(StaticShadowCasterComponent.class);
-            second.remove(ShadowCasterComponent.class);
+            first.remove(StaticLightBlockingComponent.class);
+            first.remove(LightBlockingComponent.class);
+            second.remove(StaticLightBlockingComponent.class);
+            second.remove(LightBlockingComponent.class);
             return true;
         }
         return false;

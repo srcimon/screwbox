@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
@@ -10,14 +10,14 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlCo
 @Order(SystemOrder.SIMULATION_BEGIN)
 public class PlayerControlSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerControlComponent.class, PhysicsBodyComponent.class);
+    private static final Archetype PLAYER = Archetype.of(PlayerControlComponent.class, RigidBodyComponent.class);
     private static final KeyCombination JUMP_DOWN = KeyCombination.ofKeys(Key.ARROW_DOWN, Key.SPACE);
 
     @Override
     public void update(Engine engine) {
         for (Entity entity : engine.environment().fetchAll(PLAYER)) {
             var control = entity.get(PlayerControlComponent.class);
-            final var physicsBodyComponent = entity.get(PhysicsBodyComponent.class);
+            final var physicsBodyComponent = entity.get(RigidBodyComponent.class);
             control.jumpDownPressed = engine.keyboard().isDown(JUMP_DOWN);
             control.jumpPressed = engine.keyboard().isDown(Key.SPACE);
             control.digPressed = engine.keyboard().isDown(Key.ARROW_DOWN);

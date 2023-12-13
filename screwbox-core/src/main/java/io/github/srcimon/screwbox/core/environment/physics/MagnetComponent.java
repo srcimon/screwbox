@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.components;
+package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.environment.Component;
 

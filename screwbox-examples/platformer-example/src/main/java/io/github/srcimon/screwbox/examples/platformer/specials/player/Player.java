@@ -6,6 +6,9 @@ import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.components.*;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LightOptions;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
@@ -26,7 +29,7 @@ public class Player implements Converter<GameObject> {
                         .color(Color.BLACK.opacity(0.4))
                         .glow(0)),
                 new StateComponent(new PlayerStandingState()),
-                new PhysicsBodyComponent(),
+                new RigidBodyComponent(),
                 new GroundDetectorComponent(),
                 new ColliderComponent(),
                 new PlayerMarkerComponent(),
@@ -34,7 +37,7 @@ public class Player implements Converter<GameObject> {
                 new CastShadowComponent(),
                 new PlayerControlComponent(),
                 new SignalComponent(),
-                new CollisionSensorComponent(),
+                new CollisionDetectionComponent(),
                 new AutoFlipSpriteComponent(),
                 new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));
     }

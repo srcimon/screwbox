@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.platformer.collectables;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.components.CollisionSensorComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.components.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
@@ -28,7 +28,7 @@ public class Cherries implements Converter<GameObject> {
                         .glowColor(Color.RED.opacity(0.4))),
                 new TransformComponent(object.bounds()),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
-                new CollisionSensorComponent(),
+                new CollisionDetectionComponent(),
                 new CollectableComponent());
     }
 

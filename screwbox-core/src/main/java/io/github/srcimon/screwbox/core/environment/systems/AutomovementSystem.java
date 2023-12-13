@@ -6,12 +6,12 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.components.AutomovementComponent;
-import io.github.srcimon.screwbox.core.environment.components.PhysicsBodyComponent;
+import io.github.srcimon.screwbox.core.environment.physics.RigidBodyComponent;
 import io.github.srcimon.screwbox.core.environment.components.TransformComponent;
 
 public class AutomovementSystem implements EntitySystem {
 
-    private static final Archetype AUTO_MOVERS = Archetype.of(AutomovementComponent.class, PhysicsBodyComponent.class,
+    private static final Archetype AUTO_MOVERS = Archetype.of(AutomovementComponent.class, RigidBodyComponent.class,
             TransformComponent.class);
 
     @Override
@@ -21,13 +21,13 @@ public class AutomovementSystem implements EntitySystem {
             if (automovement.path != null) {
                 final Vector position = mover.get(TransformComponent.class).bounds.position();
                 if (position.distanceTo(automovement.path.end()) < 1) {
-                    mover.get(PhysicsBodyComponent.class).momentum = Vector.zero();
+                    mover.get(RigidBodyComponent.class).momentum = Vector.zero();
                 } else {
                     if (automovement.path.nodeCount() > 1 && position.distanceTo(automovement.path.start()) < 1) {
                         automovement.path.removeNode(0);
                     }
                     final Vector direction = automovement.path.start().substract(position);
-                    mover.get(PhysicsBodyComponent.class).momentum = direction.adjustLengthTo(automovement.speed);
+                    mover.get(RigidBodyComponent.class).momentum = direction.adjustLengthTo(automovement.speed);
                 }
             }
         }
