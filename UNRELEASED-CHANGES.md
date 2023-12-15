@@ -2,7 +2,7 @@
 
 ### 🚀 Features & improvements
 
-- ...
+- Performance tweaked `Line.intersects(line)`
 
 ### 🪛 Bug Fixes
 

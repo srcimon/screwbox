@@ -46,7 +46,26 @@ public final class Line implements Serializable, Comparable<Line> {
      * @see Line#intersectionPoint(Line)
      */
     public boolean intersects(final Line other) {
-        return intersectionPoint(other) != null;
+        final double xDelta = to.x() - from.x();
+        final double yDelta = to.y() - from.y();
+        final double fromToXDelta = other.to.x() - other.from.x();
+        final double fromToYDelta = other.to.y() - other.from.y();
+        final double nominator = xDelta * fromToYDelta - fromToXDelta * yDelta;
+
+        if (nominator == 0) {
+            return false;
+        }
+        final boolean nominatorIsPositive = nominator > 0;
+        final double thisOtherXDelta = from.x() - other.from.x();
+        final double thisOtherYDelta = from.y() - other.from.y();
+
+        final double nominatorB = xDelta * thisOtherYDelta - yDelta * thisOtherXDelta;
+        if (((nominatorB <= 0) == nominatorIsPositive || (nominatorB >= nominator) == nominatorIsPositive)) {
+            return false;
+        }
+
+        final double nominatorC = fromToXDelta * thisOtherYDelta - fromToYDelta * thisOtherXDelta;
+        return !(((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive));
     }
 
     /**
