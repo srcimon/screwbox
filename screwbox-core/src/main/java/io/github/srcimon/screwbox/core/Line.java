@@ -80,8 +80,8 @@ public final class Line implements Serializable, Comparable<Line> {
         }
 
         final double collisionFactor = nominatorC / nominator;
-        final double pX = from.x() + (collisionFactor * xDelta);
-        final double pY = from.y() + (collisionFactor * yDelta);
+        final double pX = from.x() + collisionFactor * xDelta;
+        final double pY = from.y() + collisionFactor * yDelta;
         return Vector.of(pX, pY);
     }
 
