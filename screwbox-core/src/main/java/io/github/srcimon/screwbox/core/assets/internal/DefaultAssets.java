@@ -89,5 +89,4 @@ public class DefaultAssets implements Assets {
     public boolean isPreparing() {
         return async.hasActiveTasks(Assets.class);
     }
-
 }

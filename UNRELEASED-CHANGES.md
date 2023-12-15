@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Async.runSingle` to `.runExclusive`
 
 ### 📦 Dependency updates
 
