@@ -25,7 +25,7 @@ public interface Loop {
      * Sets the games target frames per second to {@link Integer#MAX_VALUE} which is
      * as good as unlimited.
      */
-    Loop setUnlimitedFps();
+    Loop unlockFps();
 
     /**
      * Returns the current target frames per second.

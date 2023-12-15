@@ -150,7 +150,7 @@ class DefaultLoopTest {
 
     @Test
     void setUnlimitedFps_setsTargetFps_toIntegerMax() {
-        loop.setUnlimitedFps();
+        loop.unlockFps();
 
         assertThat(loop.targetFps()).isEqualTo(Integer.MAX_VALUE);
     }
