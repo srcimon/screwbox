@@ -7,8 +7,23 @@ import java.util.Collections;
 
 import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SizeTest {
+
+    @Test
+    void of_negativeWidth_throwsException() {
+        assertThatThrownBy(() -> Size.of(-4, 4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("width must be positive");
+    }
+
+    @Test
+    void of_negativeHeight_throwsException() {
+        assertThatThrownBy(() -> Size.of(4, -4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("height must be positive");
+    }
 
     @Test
     void square_returnsNewInstance() {
