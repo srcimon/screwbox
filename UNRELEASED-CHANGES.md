@@ -34,4 +34,3 @@
 ### 📦 Dependency updates
 
 - Bump Mockito to 5.8.0
-- Updated all Maven Plugins to most recent version
