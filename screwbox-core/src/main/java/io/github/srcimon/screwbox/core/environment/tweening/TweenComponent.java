@@ -18,7 +18,7 @@ public class TweenComponent implements Component {
 
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
-    public boolean reverse;
+    public boolean reverse = false;
     public Duration duration;
     public boolean isLooped;
 
@@ -27,12 +27,8 @@ public class TweenComponent implements Component {
     }
 
     public TweenComponent(final Duration duration, final boolean isLooped) {
-        this(duration, isLooped, false);
-    }
-
-    public TweenComponent(final Duration duration, final boolean isLooped, boolean reverse) {
         this.duration = duration;
         this.isLooped = isLooped;
-        this.reverse = reverse;
     }
+
 }

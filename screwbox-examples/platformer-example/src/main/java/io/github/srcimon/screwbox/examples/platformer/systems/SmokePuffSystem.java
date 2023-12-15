@@ -39,7 +39,7 @@ public class SmokePuffSystem implements EntitySystem {
             Entity smokePuff = new Entity().add(
                     new TweenOpacityComponent(),
                     new TweenDestroyComponent(),
-                    new TweenComponent(ofMillis(300), false, true),
+                    new TweenComponent(ofMillis(300)),
                     new TransformComponent(bounds),
                     new RenderComponent(randomFrom(SPRITES.get().all()), order)
 

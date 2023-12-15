@@ -48,7 +48,7 @@ public class DiggableSystem implements EntitySystem {
             if (!entity.hasComponent(TweenComponent.class)) {
                 entity.add(new TweenDestroyComponent());
                 entity.add(new TweenOpacityComponent());
-                entity.add(new TweenComponent(ofMillis(300), false, true));
+                entity.add(new TweenComponent(ofMillis(300)));
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
                 rigidBodyComponent.momentum = Vector.of(rigidBodyComponent.momentum.x(), -150);
