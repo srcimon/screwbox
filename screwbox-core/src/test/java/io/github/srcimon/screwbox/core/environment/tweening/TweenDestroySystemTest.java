@@ -20,8 +20,8 @@ class TweenDestroySystemTest {
         when(loop.lastUpdate()).thenReturn(Time.now().plusSeconds(-1));
 
         environment
-                .addEntity(1, new TweenComponent(ofMillis(200), false, true), new TweenDestroyComponent())
-                .addEntity(2, new TweenComponent(ofSeconds(40), false, true), new TweenDestroyComponent())
+                .addEntity(1, new TweenComponent(ofMillis(200)), new TweenDestroyComponent())
+                .addEntity(2, new TweenComponent(ofSeconds(40)), new TweenDestroyComponent())
                 .addSystem(new TweenDestroySystem())
                 .addSystem(new TweenSystem());
 
