@@ -2,7 +2,7 @@
 
 ### 🚀 Features & improvements
 
-- Performance tweaked `Line.intersects(line)`
+- Improved performance of `Line.intersects(line)` and `Raycast.nearestHit()`
 
 ### 🪛 Bug Fixes
 

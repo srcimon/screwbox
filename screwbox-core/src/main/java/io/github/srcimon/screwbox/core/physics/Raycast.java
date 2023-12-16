@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.physics.internal.DistanceComparator;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
@@ -37,10 +36,8 @@ public class Raycast {
                 for (var intersection : getIntersections(entity)) {
                     if (isNull(currentHit)) {
                         currentHit = intersection;
-                    } else {
-                        if (new DistanceComparator(ray.from()).compare(intersection, currentHit) < 0) {
-                            currentHit = intersection;
-                        }
+                    } else if (Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                        currentHit = intersection;
                     }
                 }
             }
