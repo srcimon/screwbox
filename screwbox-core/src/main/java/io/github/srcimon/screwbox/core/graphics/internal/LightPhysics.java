@@ -35,15 +35,15 @@ class LightPhysics {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Line normal = Line.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
-        final List<Line> shadowCasterLines = getSegmentsOf(relevantShadowCasters);
+        final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
             final Line raycast = Rotation.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
-            for (final var segment : shadowCasterLines) {
-                final Vector intersectionPoint = segment.intersectionPoint(raycast);
+            for (final var line : shadowCasterLines) {
+                final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
                         && intersectionPoint.distanceTo(lightBox.position()) < nearestPoint
                                 .distanceTo(lightBox.position())) {
@@ -55,7 +55,7 @@ class LightPhysics {
         return area;
     }
 
-    private List<Line> getSegmentsOf(final List<Bounds> allBounds) {
+    private List<Line> extractLines(final List<Bounds> allBounds) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
             ListUtil.addAll(allLines, Borders.ALL.extractBorders(bounds));
