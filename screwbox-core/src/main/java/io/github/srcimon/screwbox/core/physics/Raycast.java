@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class Raycast {
@@ -30,12 +31,21 @@ public class Raycast {
     }
 
     public Optional<Vector> nearestHit() {
-        final List<Vector> hits = findHits();
-        if (hits.isEmpty()) {
-            return Optional.empty();
+        Vector currentHit = null;
+        for (final Entity entity : entities) {
+            if (isNotFiltered(entity)) {
+                for (var intersection : getIntersections(entity)) {
+                    if (isNull(currentHit)) {
+                        currentHit = intersection;
+                    } else {
+                        if (new DistanceComparator(ray.from()).compare(intersection, currentHit) < 0) {
+                            currentHit = intersection;
+                        }
+                    }
+                }
+            }
         }
-        hits.sort(new DistanceComparator(ray.from()));
-        return Optional.of(hits.getFirst());
+        return Optional.ofNullable(currentHit);
     }
 
     public Optional<Entity> selectAnyEntity() {
