@@ -49,7 +49,6 @@ public final class SourceImport<T> {
         public SourceImport<T> stopUsingIndex() {
             return caller;
         }
-
     }
 
     public final class MatchingSourceImportWithKey<M> {
@@ -98,5 +97,4 @@ public final class SourceImport<T> {
     public <M> IndexSourceImport<M> usingIndex(final Function<T, M> indexFunction) {
         return new IndexSourceImport<>(indexFunction, this);
     }
-
 }

@@ -30,5 +30,4 @@ public class TweenComponent implements Component {
         this.duration = duration;
         this.isLooped = isLooped;
     }
-
 }
