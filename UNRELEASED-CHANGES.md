@@ -8,7 +8,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed `GravitySystem` crashes when no `GravityComponent` present 
 
 ### 🧽 Cleanup & refactoring
 
