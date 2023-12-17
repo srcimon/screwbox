@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.autocamera.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import org.junit.jupiter.api.extension.ExtendWith;

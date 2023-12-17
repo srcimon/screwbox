@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.autocamera;
+package io.github.srcimon.screwbox.core.environment.camera;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
