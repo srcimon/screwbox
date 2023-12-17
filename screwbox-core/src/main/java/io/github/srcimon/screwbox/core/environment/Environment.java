@@ -17,6 +17,9 @@ import java.util.Optional;
  */
 public interface Environment {
 
+    /**
+     * Access the {@link EnvironmentSetup} that provides a simple way to setup routine features in the {@link Environment}.
+     */
     EnvironmentSetup setup();
 
     Environment addEntity(int id, Component... components);
