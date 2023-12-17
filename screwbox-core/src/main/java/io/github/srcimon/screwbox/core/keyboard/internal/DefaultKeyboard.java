@@ -79,9 +79,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
         List<Key> keys = new ArrayList<>();
         for (final var code : new ArrayList<>(codes)) {
             Optional<Key> key = Key.fromCode(code);
-            if (key.isPresent()) {
-                keys.add(key.get());
-            }
+            key.ifPresent(keys::add);
         }
         return keys;
     }
