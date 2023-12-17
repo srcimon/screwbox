@@ -65,6 +65,14 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment removeSystemIfPresent(final Class<? extends EntitySystem> systemType) {
+        if (isSystemPresent(systemType)) {
+            remove(systemType);
+        }
+        return this;
+    }
+
     public void update() {
         systemManager.updateAllSystems();
     }

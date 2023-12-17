@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultEnvironmentTest {
@@ -252,6 +251,20 @@ class DefaultEnvironmentTest {
         environment.addOrReplaceSystem(new TweenOpacitySystem());
 
         assertThat(environment.systems()).hasSize(1).allMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
+    }
+
+    @Test
+    void removeSystemIfPresent_notPresent_noException() {
+        assertThatNoException().isThrownBy(() -> environment.removeSystemIfPresent(TweenOpacitySystem.class));
+    }
+
+    @Test
+    void removeSystemIfPresent_systemPresent_removesSystem() {
+        environment.addSystem(new TweenOpacitySystem());
+
+        environment.removeSystemIfPresent(TweenOpacitySystem.class);
+
+        assertThat(environment.systems()).isEmpty();
     }
 
     @AfterEach

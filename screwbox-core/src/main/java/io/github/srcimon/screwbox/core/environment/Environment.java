@@ -34,6 +34,8 @@ public interface Environment {
 
     Environment addOrReplaceSystem(EntitySystem system);
 
+    Environment removeSystemIfPresent(Class<? extends EntitySystem> systemType);
+
     Environment addSystems(EntitySystem... systems);
 
     List<Entity> fetchAll(Archetype archetype);
