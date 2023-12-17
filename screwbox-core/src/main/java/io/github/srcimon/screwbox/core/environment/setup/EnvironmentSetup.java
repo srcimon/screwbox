@@ -16,6 +16,10 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
  */
 public interface EnvironmentSetup {
 
+    //TODO: enableTweening()
+
+    //TODO: enableLogic()
+
     /**
      * Adds systems needed for rendering {@link Sprite}s.
      *

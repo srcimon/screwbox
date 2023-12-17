@@ -6,6 +6,8 @@ import java.io.Serial;
 
 public class GlobalBoundsComponent implements Component {
 
+    //TODO: move camera area inside camera component
+
     @Serial
     private static final long serialVersionUID = 1L;
 }
