@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.setup;
 
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 
 /**
@@ -9,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.physics.*;
 public interface EnvironmentSetup {
 
     /**
-     * Adds all default systems needed for physics support in this {@link Environment}.
+     * Adds all systems needed for physics support in this {@link Environment}.
      *
      * @see AutomovementSystem
      * @see CollisionDetectionSystem
@@ -19,4 +21,12 @@ public interface EnvironmentSetup {
      * @see PhysicsSystem
      */
     EnvironmentSetup enablePhysics();
+
+    /**
+     * Enables light rendering in the {@link Environment}.
+     *
+     * @see LightRenderSystem
+     * @see OptimizeLightPerformanceSystem
+     */
+    EnvironmentSetup enableLight();
 }

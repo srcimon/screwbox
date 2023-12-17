@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.setup.internal;
 
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.setup.EnvironmentSetup;
 
@@ -20,6 +22,13 @@ public class DefaultEnvironmentSetup implements EnvironmentSetup {
         environment.addOrReplaceSystem(new MagnetSystem());
         environment.addOrReplaceSystem(new OptimizePhysicsPerformanceSystem());
         environment.addOrReplaceSystem(new PhysicsSystem());
+        return this;
+    }
+
+    @Override
+    public EnvironmentSetup enableLight() {
+        environment.addOrReplaceSystem(new LightRenderSystem());
+        environment.addOrReplaceSystem(new OptimizeLightPerformanceSystem());
         return this;
     }
 }
