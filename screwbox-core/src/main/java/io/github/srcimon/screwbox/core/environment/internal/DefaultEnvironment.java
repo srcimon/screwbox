@@ -2,8 +2,7 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.setup.EnvironmentSetup;
-import io.github.srcimon.screwbox.core.environment.setup.internal.DefaultEnvironmentSetup;
+import io.github.srcimon.screwbox.core.environment.EnvironmentSetup;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public EnvironmentSetup setup() {
-        return new DefaultEnvironmentSetup(this);
+        return new EnvironmentSetup(this);
     }
 
     @Override

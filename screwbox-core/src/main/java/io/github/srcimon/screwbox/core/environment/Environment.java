@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment;
 
-import io.github.srcimon.screwbox.core.environment.setup.EnvironmentSetup;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 import java.util.List;

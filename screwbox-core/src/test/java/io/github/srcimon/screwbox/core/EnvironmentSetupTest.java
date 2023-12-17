@@ -1,27 +1,27 @@
-package io.github.srcimon.screwbox.core.environment.setup;
+package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.setup.internal.DefaultEnvironmentSetup;
+import io.github.srcimon.screwbox.core.environment.EnvironmentSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-class DefaultEnvironmentSetupTest {
+class EnvironmentSetupTest {
 
     DefaultEnvironment environment;
 
-    DefaultEnvironmentSetup environmentSetup;
+    EnvironmentSetup environmentSetup;
 
     @BeforeEach
     void setUp() {
         environment = new DefaultEnvironment(null);
-        environmentSetup = new DefaultEnvironmentSetup(environment);
+        environmentSetup = new EnvironmentSetup(environment);
     }
 
     @Test
