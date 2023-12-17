@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.setup.EnvironmentSetup;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.Optional;
  * @see Archetype
  */
 public interface Environment {
+
+    EnvironmentSetup setup();
 
     Environment addEntity(int id, Component... components);
 
