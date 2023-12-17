@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.setup.EnvironmentSetup;
 
 public class DefaultEnvironmentSetup implements EnvironmentSetup {
@@ -12,6 +13,16 @@ public class DefaultEnvironmentSetup implements EnvironmentSetup {
 
     public DefaultEnvironmentSetup(final Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public EnvironmentSetup enableRendering() {
+        environment.addOrReplaceSystem(new ReflectionRenderSystem());
+        environment.addOrReplaceSystem(new RotateSpriteSystem());
+        environment.addOrReplaceSystem(new FlipSpriteSystem());
+        environment.addOrReplaceSystem(new RenderSystem());
+        environment.addOrReplaceSystem(new ScreenTransitionSystem());
+        return this;
     }
 
     @Override

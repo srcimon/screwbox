@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.setup.internal.DefaultEnvironmentSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,18 @@ class DefaultEnvironmentSetupTest {
     void setUp() {
         environment = new DefaultEnvironment(null);
         environmentSetup = new DefaultEnvironmentSetup(environment);
+    }
+
+    @Test
+    void enableRendering_addsRenderingSystems() {
+        environmentSetup.enableRendering();
+
+        assertThat(environment.systems()).hasSize(5)
+                .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
+                .anyMatch(system -> system.getClass().equals(RotateSpriteSystem.class))
+                .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
+                .anyMatch(system -> system.getClass().equals(ScreenTransitionSystem.class))
+                .anyMatch(system -> system.getClass().equals(RenderSystem.class));
     }
 
     @Test
