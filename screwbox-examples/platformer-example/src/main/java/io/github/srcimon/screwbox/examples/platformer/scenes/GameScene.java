@@ -5,8 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.autocamera.CameraUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
-import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
@@ -75,15 +73,15 @@ public class GameScene implements Scene {
             importEntities(environment);
         }
 
-        environment.setup().enablePhysics();
+        environment.setup()
+                .enablePhysics()
+                .enableLight();
 
         environment
                 .addSystem(new TweenSystem())
                 .addSystem(new TweenDestroySystem())
                 .addSystem(new TweenOpacitySystem())
-                .addSystem(new OptimizeLightPerformanceSystem())
                 .addSystem(new LogFpsSystem())
-                .addSystem(new LightRenderSystem())
                 .addSystem(new ReflectionRenderSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())

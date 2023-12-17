@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.window.Window;
@@ -18,9 +18,8 @@ import java.util.List;
 public interface Light {
 
     /**
-     * Adds a directed light to the {@link World}. Cone lights cast shadows when
-     * colliding with {@link #shadowCasters()}.
-     * 
+     * Adds a directed light to the {@link World}. Cone lights cast shadows.
+     *
      * @param position  position of the lightsource in the map
      * @param direction the direction of the light
      * @param cone      the cone size of the light
@@ -29,9 +28,8 @@ public interface Light {
     Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options);
 
     /**
-     * Adds a pointlight to the {@link World}. Pointlights cast shadows when
-     * colliding with {@link #shadowCasters()}.
-     * 
+     * Adds a pointlight to the {@link World}. Pointlights cast shadows.
+     *
      * @param position position of the lightsource in the map
      * @param options  {@link LightOptions} of the lightsource
      */
@@ -39,7 +37,7 @@ public interface Light {
 
     /**
      * Adds a spotlight to the {@link World}. Spotlights don't cast any shadow.
-     * 
+     *
      * @param position position of the lightsource in the map
      * @param options  {@link LightOptions} of the lightsource
      */
@@ -47,7 +45,7 @@ public interface Light {
 
     /**
      * Adds object that cast shadows.
-     * 
+     *
      * @param shadowCaster the {@link Bounds} of the shadow caster
      * @see #addPointLight(Vector, LightOptions)
      * @see #addShadowCasters(List)
@@ -56,7 +54,7 @@ public interface Light {
 
     /**
      * Adds objects that cast shadows.
-     * 
+     *
      * @param shadowCasters the {@link Bounds} of the shadow casters
      * @see #addPointLight(Vector, LightOptions)
      * @see #addShadowCaster(Bounds)
@@ -65,7 +63,7 @@ public interface Light {
 
     /**
      * Adds an area to the {@link World} that is fully illuminated.
-     * 
+     *
      * @param area the fully illuminated area
      */
     Light addFullBrightnessArea(Bounds area);
@@ -73,7 +71,7 @@ public interface Light {
     /**
      * Sets the brightness of the {@link #ambientLight()} that illuminates the
      * {@link World} even without a lightsource.
-     * 
+     *
      * @param ambientLight the brightness of the {@link #ambientLight()}.
      */
     Light setAmbientLight(Percent ambientLight);
@@ -81,17 +79,10 @@ public interface Light {
     /**
      * Returns the brightness that illuminates the {@link World} even without a
      * lightsource.
-     * 
+     *
      * @return brightness
      */
     Percent ambientLight();
-
-    /**
-     * Returns a list off all shadow casting areas.
-     * 
-     * @return shadow casting areas
-     */
-    List<Bounds> shadowCasters();
 
     /**
      * Renders the lightmap to {@link Window}. Can be automated by using

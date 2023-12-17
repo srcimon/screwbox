@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Async.runSingle` to `.runExclusive`
+- Remived `Light.shadowCasters()`
 
 ### 📦 Dependency updates
 

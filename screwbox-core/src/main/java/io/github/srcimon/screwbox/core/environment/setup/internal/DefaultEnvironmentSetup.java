@@ -31,4 +31,15 @@ public class DefaultEnvironmentSetup implements EnvironmentSetup {
         environment.addOrReplaceSystem(new OptimizeLightPerformanceSystem());
         return this;
     }
+
+    @Override
+    public EnvironmentSetup disableLight() {
+        if (environment.isSystemPresent(LightRenderSystem.class)) {//TODO: utility method in environment
+            environment.remove(LightRenderSystem.class);
+        }
+        if (environment.isSystemPresent(OptimizeLightPerformanceSystem.class)) {//TODO: utility method in environment
+            environment.remove(OptimizeLightPerformanceSystem.class);
+        }
+        return this;
+    }
 }

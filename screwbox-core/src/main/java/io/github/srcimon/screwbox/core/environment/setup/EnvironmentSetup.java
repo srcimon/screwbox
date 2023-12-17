@@ -25,8 +25,18 @@ public interface EnvironmentSetup {
     /**
      * Enables light rendering in the {@link Environment}.
      *
+     * @see #disableLight()
      * @see LightRenderSystem
      * @see OptimizeLightPerformanceSystem
      */
     EnvironmentSetup enableLight();
+
+    /**
+     * Disables light rendering in the {@link Environment}.
+     *
+     * @see #enableLight()
+     * @see LightRenderSystem
+     * @see OptimizeLightPerformanceSystem
+     */
+    EnvironmentSetup disableLight();
 }

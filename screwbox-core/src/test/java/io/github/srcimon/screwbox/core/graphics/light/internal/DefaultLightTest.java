@@ -1,12 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.light.internal;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,15 +58,6 @@ class DefaultLightTest {
         assertThatThrownBy(() -> light.addShadowCasters(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("shadowCasters must not be null");
-    }
-
-    @Test
-    void updateShadowCasters_castersPresent_updatesObstacles() {
-        Bounds shadowCaster = $$(0, 10, 20, 20);
-
-        light.addShadowCaster(shadowCaster);
-
-        assertThat(light.shadowCasters()).containsExactly(shadowCaster);
     }
 
     @Test
