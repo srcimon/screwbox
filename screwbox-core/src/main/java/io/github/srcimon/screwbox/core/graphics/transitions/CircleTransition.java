@@ -5,8 +5,11 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 
+import java.io.Serial;
+
 public class CircleTransition implements ScreenTransition {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override

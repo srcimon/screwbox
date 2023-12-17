@@ -363,7 +363,7 @@ public class Grid implements Serializable {
 
     private List<Node> backtrack(final Node node, final List<Node> path) {
         if (nonNull(node.parent)) {
-            path.add(0, node);
+            path.addFirst(node);
             backtrack(node.parent, path);
         }
         return path;

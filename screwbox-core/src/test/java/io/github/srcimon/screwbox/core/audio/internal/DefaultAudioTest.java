@@ -17,6 +17,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
+import java.io.Serial;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -189,6 +190,8 @@ class DefaultAudioTest {
 
     private LineEvent stopEventFor(Clip clipMock) {
         return new LineEvent(mock(Line.class), Type.STOP, 0) {
+
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override

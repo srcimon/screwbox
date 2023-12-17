@@ -47,7 +47,7 @@ public class Path implements Serializable {
     }
 
     public Vector start() {
-        return nodes.get(0);
+        return nodes.getFirst();
     }
 
     public int nodeCount() {

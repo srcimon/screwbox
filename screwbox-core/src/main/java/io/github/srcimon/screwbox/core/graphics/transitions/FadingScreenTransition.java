@@ -3,10 +3,13 @@ package io.github.srcimon.screwbox.core.graphics.transitions;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 
+import java.io.Serial;
+
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
 
 public class FadingScreenTransition implements ScreenTransition {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override

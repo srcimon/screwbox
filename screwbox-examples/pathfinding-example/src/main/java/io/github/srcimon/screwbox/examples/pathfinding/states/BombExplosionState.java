@@ -13,12 +13,15 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
+import java.io.Serial;
 import java.util.List;
 
 public class BombExplosionState implements EntityState {
 
     private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("bomb.json", "explosion");
     private static final Asset<Sound> EXPLOSION = Sound.assetFromFile("explosion.wav");
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Time endOfAnimation;
