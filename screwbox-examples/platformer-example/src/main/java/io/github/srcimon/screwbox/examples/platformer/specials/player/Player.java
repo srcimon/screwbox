@@ -25,7 +25,7 @@ public class Player implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
-        return new Entity(object.id()).add(
+        return new Entity(object.id(), "Player").add(
                 new PointLightComponent(LightOptions.glowing(64)
                         .color(Color.BLACK)
                         .glow(0.5)),

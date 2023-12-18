@@ -14,13 +14,32 @@ public final class Entity implements Serializable {
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private final Integer id;
     private transient List<EntityListener> listeners;
+    private String name;
 
     public Entity() {
-        this(null);
+        this.id = null;
+    }
+
+    public Entity(final Integer id, final String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Entity(final String name) {
+        this(null, name);
     }
 
     public Entity(final Integer id) {
         this.id = id;
+    }
+
+    public Entity name(final String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Optional<String> name() {
+        return Optional.ofNullable(name);
     }
 
     public Optional<Integer> id() {
@@ -99,6 +118,14 @@ public final class Entity implements Serializable {
      */
     public boolean isEmpty() {
         return componentCount() == 0;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Entity[%s%scomponents=%s]",
+                id == null ? "" : "id='" + id + "', ",
+                name == null ? "" : "name='" + name + "', ",
+                components.isEmpty() ? "none" : components.size());
     }
 
     private List<EntityListener> getListeners() {

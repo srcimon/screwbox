@@ -25,8 +25,18 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment addEntity(final String name, final Component... components) {
+        return addEntity(new Entity().name(name).add(components));
+    }
+
+    @Override
     public Environment addEntity(final int id, final Component... components) {
         return addEntity(new Entity(id).add(components));
+    }
+
+    @Override
+    public Environment addEntity(final int id, final String name, final Component... components) {
+        return addEntity(new Entity(id).name(name).add(components));
     }
 
     @Override

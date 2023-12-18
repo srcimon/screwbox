@@ -26,7 +26,12 @@ import java.util.Optional;
  */
 public interface Environment {
 
+    Environment addEntity(String name, Component... components);
+
     Environment addEntity(int id, Component... components);
+
+    Environment addEntity(int id, String name, Component... components);
+
 
     Environment addEntity(Component... components);
 

@@ -24,7 +24,7 @@ public class Slime implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
-        return new Entity(object.id()).add(
+        return new Entity(object.id(), "Slime").add(
                 new PointLightComponent(LightOptions.glowing(15)
                         .color(Color.BLACK.opacity(0.6))
                         .glow(2)

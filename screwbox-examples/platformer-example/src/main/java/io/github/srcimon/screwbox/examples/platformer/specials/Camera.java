@@ -14,7 +14,7 @@ public class Camera implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         double zoom = object.properties().getDouble("zoom").orElse(3.5);
         int trackedEntityId = object.properties().forceInt("trackedEntity");
-        return new Entity().add(
+        return new Entity("Camera").add(
                 new CameraMovementComponent(1.5, trackedEntityId),
                 new TransformComponent(Bounds.atPosition(object.position(), 0, 0)),
                 new CameraComponent(zoom));

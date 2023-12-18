@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import org.junit.jupiter.api.BeforeEach;
@@ -144,5 +145,17 @@ class EntityTest {
         entity.add(new PhysicsComponent());
 
         assertThat(entity.isEmpty()).isFalse();
+    }
+
+    @Test
+    void toString_returnsEntityInformation() {
+        assertThat(new Entity(124).name("Player").add(new PhysicsComponent(), new SignalComponent()))
+                .hasToString("Entity[id='124', name='Player', components=2]");
+
+        assertThat(new Entity().name("Player").add(new PhysicsComponent()))
+                .hasToString("Entity[name='Player', components=1]");
+
+        assertThat(new Entity())
+                .hasToString("Entity[components=none]");
     }
 }

@@ -23,7 +23,7 @@ public class MovingSpikes implements Converter<GameObject> {
     @Override
     public Entity convert(GameObject object) {
         double speed = object.properties().getDouble("speed").orElse(30.0);
-        return new Entity().add(
+        return new Entity("Moving Spikes").add(
                 new SignalComponent(),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new KillZoneComponent(DeathType.SPIKES),

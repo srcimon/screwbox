@@ -19,7 +19,7 @@ public class Tracer implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        return new Entity(object.id()).add(
+        return new Entity(object.id(), "Tracer").add(
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
                 new RenderComponent(object.layer().order()),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
