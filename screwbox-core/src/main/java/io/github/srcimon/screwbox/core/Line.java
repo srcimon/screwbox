@@ -65,7 +65,7 @@ public final class Line implements Serializable, Comparable<Line> {
         }
 
         final double nominatorC = fromToXDelta * thisOtherYDelta - fromToYDelta * thisOtherXDelta;
-        return !(((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive));
+        return !((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive);
     }
 
     /**

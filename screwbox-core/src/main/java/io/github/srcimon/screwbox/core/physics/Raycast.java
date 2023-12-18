@@ -34,9 +34,7 @@ public class Raycast {
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 for (var intersection : getIntersections(entity)) {
-                    if (isNull(currentHit)) {
-                        currentHit = intersection;
-                    } else if (Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
+                    if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
                         currentHit = intersection;
                     }
                 }
