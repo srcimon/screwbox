@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.EnvironmentSetup;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,11 +22,6 @@ public class DefaultEnvironment implements Environment {
 
     public DefaultEnvironment(final Engine engine) {
         this.systemManager = new SystemManager(engine, entityManager);
-    }
-
-    @Override
-    public EnvironmentSetup setup() {
-        return new EnvironmentSetup(this);
     }
 
     @Override
@@ -255,5 +249,39 @@ public class DefaultEnvironment implements Environment {
         return savegameManager.savegameExists(name);
     }
 
+    @Override
+    public Environment enablePhysics() {
+        enableFeature(Feature.PHYSICS);
+        return this;
+    }
 
+    @Override
+    public Environment enableRendering() {
+        enableFeature(Feature.RENDERING);
+        return this;
+    }
+
+    @Override
+    public Environment enableTweening() {
+        enableFeature(Feature.TWEENING);
+        return this;
+    }
+
+    @Override
+    public Environment enableLogic() {
+        enableFeature(Feature.LOGIC);
+        return this;
+    }
+
+    @Override
+    public Environment enableLight() {
+        enableFeature(Feature.LIGHT);
+        return this;
+    }
+
+    private void enableFeature(final Feature feature) {
+        for (final var system : feature.systems) {
+            addOrReplaceSystem(system);
+        }
+    }
 }

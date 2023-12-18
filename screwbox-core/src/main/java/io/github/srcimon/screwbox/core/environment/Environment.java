@@ -1,5 +1,15 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
+import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
+import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 import java.util.List;
@@ -15,11 +25,6 @@ import java.util.Optional;
  * @see Archetype
  */
 public interface Environment {
-
-    /**
-     * Access the {@link EnvironmentSetup} that provides a simple way to setup routine features in the {@link Environment}.
-     */
-    EnvironmentSetup setup();
 
     Environment addEntity(int id, Component... components);
 
@@ -141,4 +146,52 @@ public interface Environment {
      * exessive disc usage.
      */
     boolean savegameExists(String name);
+
+    /**
+     * Adds all systems needed for physics support in this {@link Environment}.
+     *
+     * @see AutomovementSystem
+     * @see CollisionDetectionSystem
+     * @see GravitySystem
+     * @see MagnetSystem
+     * @see OptimizePhysicsPerformanceSystem
+     * @see PhysicsSystem
+     */
+    Environment enablePhysics();
+
+    /**
+     * Adds systems needed for rendering {@link Sprite}s.
+     *
+     * @see ReflectionRenderSystem
+     * @see RotateSpriteSystem
+     * @see FlipSpriteSystem
+     * @see ScreenTransitionSystem
+     * @see RenderSystem
+     */
+    Environment enableRendering();
+
+    /**
+     * Adds systems needed for tweening.
+     *
+     * @see TweenSystem
+     * @see TweenDestroySystem
+     * @see TweenOpacitySystem
+     */
+    Environment enableTweening();
+
+    /**
+     * Adds systems needed for stateful entities and area triggers.
+     *
+     * @see AreaTriggerSystem
+     * @see StateSystem
+     */
+    Environment enableLogic();
+
+    /**
+     * Adds systems for light rendering. Enables light rendering in the {@link Environment}. If your screen stays dark you have to add some light components.
+     *
+     * @see LightRenderSystem
+     * @see OptimizeLightPerformanceSystem
+     */
+    Environment enableLight();
 }

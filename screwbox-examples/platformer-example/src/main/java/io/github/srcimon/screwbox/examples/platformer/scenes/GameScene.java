@@ -64,14 +64,12 @@ public class GameScene implements Scene {
             importEntities(environment);
         }
 
-        environment.setup()
+        environment
                 .enablePhysics()
                 .enableRendering()
                 .enableLight()
                 .enableLogic()
-                .enableTweening();
-
-        environment
+                .enableTweening()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
