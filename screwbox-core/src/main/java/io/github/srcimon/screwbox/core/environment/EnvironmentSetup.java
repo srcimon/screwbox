@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.environment;
 
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
+import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -13,12 +15,22 @@ public class EnvironmentSetup {
 
     //TODO: enableTweening()
 
-    //TODO: enableLogic()
-
     private final Environment environment;
 
     public EnvironmentSetup(final Environment environment) {
         this.environment = environment;
+    }
+
+    /**
+     * Adds systems needed for stateful entities and area triggers.
+     *
+     * @see AreaTriggerSystem
+     * @see StateSystem
+     */
+    public EnvironmentSetup enableLogic() {
+        environment.addOrReplaceSystem(new AreaTriggerSystem());
+        environment.addOrReplaceSystem(new StateSystem());
+        return this;
     }
 
     /**

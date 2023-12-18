@@ -5,8 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
-import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -72,7 +70,8 @@ public class GameScene implements Scene {
         environment.setup()
                 .enablePhysics()
                 .enableRendering()
-                .enableLight();
+                .enableLight()
+                .enableLogic();
 
         environment
                 .addSystem(new TweenSystem())
@@ -82,7 +81,6 @@ public class GameScene implements Scene {
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new CameraUpdateSystem())
-                .addSystem(new StateSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
@@ -104,7 +102,6 @@ public class GameScene implements Scene {
                 .addSystem(new CameraShiftSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
-                .addSystem(new AreaTriggerSystem())
                 .addSystem(new ResetSceneSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem());

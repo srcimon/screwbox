@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.environment.EnvironmentSetup;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
+import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.EnvironmentSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +24,15 @@ class EnvironmentSetupTest {
     void setUp() {
         environment = new DefaultEnvironment(null);
         environmentSetup = new EnvironmentSetup(environment);
+    }
+
+    @Test
+    void enableLogic_addsLogicSystems() {
+        environmentSetup.enableLogic();
+
+        assertThat(environment.systems()).hasSize(2)
+                .anyMatch(system -> system.getClass().equals(AreaTriggerSystem.class))
+                .anyMatch(system -> system.getClass().equals(StateSystem.class));
     }
 
     @Test
