@@ -6,6 +6,9 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 /**
@@ -13,12 +16,25 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
  */
 public class EnvironmentSetup {
 
-    //TODO: enableTweening()
-
     private final Environment environment;
 
     public EnvironmentSetup(final Environment environment) {
         this.environment = environment;
+    }
+
+    /**
+     * Adds systems needed for tweening.
+     *
+     * @see TweenSystem
+     * @see TweenDestroySystem
+     * @see TweenOpacitySystem
+     */
+    public EnvironmentSetup enableTweening() {
+        environment
+                .addOrReplaceSystem(new TweenSystem())
+                .addOrReplaceSystem(new TweenDestroySystem())
+                .addOrReplaceSystem(new TweenOpacitySystem());
+        return this;
     }
 
     /**
@@ -28,8 +44,9 @@ public class EnvironmentSetup {
      * @see StateSystem
      */
     public EnvironmentSetup enableLogic() {
-        environment.addOrReplaceSystem(new AreaTriggerSystem());
-        environment.addOrReplaceSystem(new StateSystem());
+        environment
+                .addOrReplaceSystem(new AreaTriggerSystem())
+                .addOrReplaceSystem(new StateSystem());
         return this;
     }
 
@@ -43,11 +60,12 @@ public class EnvironmentSetup {
      * @see RenderSystem
      */
     public EnvironmentSetup enableRendering() {
-        environment.addOrReplaceSystem(new ReflectionRenderSystem());
-        environment.addOrReplaceSystem(new RotateSpriteSystem());
-        environment.addOrReplaceSystem(new FlipSpriteSystem());
-        environment.addOrReplaceSystem(new RenderSystem());
-        environment.addOrReplaceSystem(new ScreenTransitionSystem());
+        environment
+                .addOrReplaceSystem(new ReflectionRenderSystem())
+                .addOrReplaceSystem(new RotateSpriteSystem())
+                .addOrReplaceSystem(new FlipSpriteSystem())
+                .addOrReplaceSystem(new RenderSystem())
+                .addOrReplaceSystem(new ScreenTransitionSystem());
         return this;
     }
 
@@ -62,12 +80,13 @@ public class EnvironmentSetup {
      * @see PhysicsSystem
      */
     public EnvironmentSetup enablePhysics() {
-        environment.addOrReplaceSystem(new AutomovementSystem());
-        environment.addOrReplaceSystem(new CollisionDetectionSystem());
-        environment.addOrReplaceSystem(new GravitySystem());
-        environment.addOrReplaceSystem(new MagnetSystem());
-        environment.addOrReplaceSystem(new OptimizePhysicsPerformanceSystem());
-        environment.addOrReplaceSystem(new PhysicsSystem());
+        environment
+                .addOrReplaceSystem(new AutomovementSystem())
+                .addOrReplaceSystem(new CollisionDetectionSystem())
+                .addOrReplaceSystem(new GravitySystem())
+                .addOrReplaceSystem(new MagnetSystem())
+                .addOrReplaceSystem(new OptimizePhysicsPerformanceSystem())
+                .addOrReplaceSystem(new PhysicsSystem());
         return this;
     }
 
@@ -79,8 +98,9 @@ public class EnvironmentSetup {
      * @see OptimizeLightPerformanceSystem
      */
     public EnvironmentSetup enableLight() {
-        environment.addOrReplaceSystem(new LightRenderSystem());
-        environment.addOrReplaceSystem(new OptimizeLightPerformanceSystem());
+        environment
+                .addOrReplaceSystem(new LightRenderSystem())
+                .addOrReplaceSystem(new OptimizeLightPerformanceSystem());
         return this;
     }
 
@@ -92,8 +112,9 @@ public class EnvironmentSetup {
      * @see OptimizeLightPerformanceSystem
      */
     public EnvironmentSetup disableLight() {
-        environment.removeSystemIfPresent(LightRenderSystem.class);
-        environment.removeSystemIfPresent(OptimizeLightPerformanceSystem.class);
+        environment
+                .removeSystemIfPresent(LightRenderSystem.class)
+                .removeSystemIfPresent(OptimizeLightPerformanceSystem.class);
         return this;
     }
 }

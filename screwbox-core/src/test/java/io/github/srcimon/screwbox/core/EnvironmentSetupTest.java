@@ -8,6 +8,9 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +27,16 @@ class EnvironmentSetupTest {
     void setUp() {
         environment = new DefaultEnvironment(null);
         environmentSetup = new EnvironmentSetup(environment);
+    }
+
+    @Test
+    void enableTweening_addsTweeningSystems() {
+        environmentSetup.enableTweening();
+
+        assertThat(environment.systems()).hasSize(3)
+                .anyMatch(system -> system.getClass().equals(TweenSystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }
 
     @Test

@@ -5,9 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
@@ -58,7 +55,7 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
-        engine.window().setTitle("Platformer Example (Game)");
+        engine.window().setTitle("Platformer Example");
     }
 
     @Override
@@ -71,12 +68,10 @@ public class GameScene implements Scene {
                 .enablePhysics()
                 .enableRendering()
                 .enableLight()
-                .enableLogic();
+                .enableLogic()
+                .enableTweening();
 
         environment
-                .addSystem(new TweenSystem())
-                .addSystem(new TweenDestroySystem())
-                .addSystem(new TweenOpacitySystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
