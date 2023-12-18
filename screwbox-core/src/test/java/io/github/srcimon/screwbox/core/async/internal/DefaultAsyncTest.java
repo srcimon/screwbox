@@ -78,19 +78,19 @@ class DefaultAsyncTest {
     }
 
     @Test
-    void runSingle_taskAlreadyRunning_noSecondExecution() {
+    void runExclusive_taskAlreadyRunning_noSecondExecution() {
         async.run("myContext", () -> someLongRunningTask());
 
         assertThatNoException().isThrownBy(() -> {
-            async.runSingle("myContext", () -> {
+            async.runExclusive("myContext", () -> {
                 throw new IllegalStateException("I would crash if i would start");
             });
         });
     }
 
     @Test
-    void runSingle_isOnlyTaskInContext_startsTask() {
-        async.runSingle("myContext", () -> someLongRunningTask());
+    void runExclusive_isOnlyTaskInContext_startsTask() {
+        async.runExclusive("myContext", () -> someLongRunningTask());
 
         boolean hasActiveTasks = async.hasActiveTasks("myContext");
         assertThat(hasActiveTasks).isTrue();

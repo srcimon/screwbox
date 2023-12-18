@@ -13,7 +13,7 @@ public class CatCompanion implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
-        return new Entity(object.id()).add(
+        return new Entity(object.id(), "Cat Companion").add(
                 new RenderComponent(object.layer().order()),
                 new CatMarkerComponent(),
                 new CastShadowComponent(),

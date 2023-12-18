@@ -25,8 +25,18 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment addEntity(final String name, final Component... components) {
+        return addEntity(new Entity().name(name).add(components));
+    }
+
+    @Override
     public Environment addEntity(final int id, final Component... components) {
         return addEntity(new Entity(id).add(components));
+    }
+
+    @Override
+    public Environment addEntity(final int id, final String name, final Component... components) {
+        return addEntity(new Entity(id).name(name).add(components));
     }
 
     @Override
@@ -55,6 +65,14 @@ public class DefaultEnvironment implements Environment {
             remove(systemClass);
         }
         addSystem(system);
+        return this;
+    }
+
+    @Override
+    public Environment removeSystemIfPresent(final Class<? extends EntitySystem> systemType) {
+        if (isSystemPresent(systemType)) {
+            remove(systemType);
+        }
         return this;
     }
 
@@ -241,5 +259,39 @@ public class DefaultEnvironment implements Environment {
         return savegameManager.savegameExists(name);
     }
 
+    @Override
+    public Environment enablePhysics() {
+        enableFeature(Feature.PHYSICS);
+        return this;
+    }
 
+    @Override
+    public Environment enableRendering() {
+        enableFeature(Feature.RENDERING);
+        return this;
+    }
+
+    @Override
+    public Environment enableTweening() {
+        enableFeature(Feature.TWEENING);
+        return this;
+    }
+
+    @Override
+    public Environment enableLogic() {
+        enableFeature(Feature.LOGIC);
+        return this;
+    }
+
+    @Override
+    public Environment enableLight() {
+        enableFeature(Feature.LIGHT);
+        return this;
+    }
+
+    private void enableFeature(final Feature feature) {
+        for (final var system : feature.systems) {
+            addOrReplaceSystem(system);
+        }
+    }
 }

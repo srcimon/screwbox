@@ -130,10 +130,10 @@ class GridTest {
         Grid.Node first = grid.nodeAt(0, 0);
 
         List<Grid.Node> secondGeneration = grid.reachableNeighbors(first);
-        Grid.Node second = secondGeneration.get(0);
+        Grid.Node second = secondGeneration.getFirst();
 
         List<Grid.Node> thirdGeneration = grid.reachableNeighbors(second);
-        Grid.Node third = thirdGeneration.get(0);
+        Grid.Node third = thirdGeneration.getFirst();
 
         List<Grid.Node> path = grid.backtrack(third);
 

@@ -81,5 +81,4 @@ public class AssetLocation {
     public String toString() {
         return "AssetLocation [id=" + id() + ", isLoaded=" + isLoaded() + "]";
     }
-
 }

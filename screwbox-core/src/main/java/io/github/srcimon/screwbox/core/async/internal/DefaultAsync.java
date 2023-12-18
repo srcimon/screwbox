@@ -43,7 +43,7 @@ public class DefaultAsync implements Async {
     }
 
     @Override
-    public Async runSingle(final Object context, final Runnable task) {
+    public Async runExclusive(final Object context, final Runnable task) {
         if (!hasActiveTasks(context)) {
             run(context, task);
         }

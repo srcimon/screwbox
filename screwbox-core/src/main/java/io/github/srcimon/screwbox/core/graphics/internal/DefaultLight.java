@@ -60,11 +60,6 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public List<Bounds> shadowCasters() {
-        return lightPhysics.shadowCasters();
-    }
-
-    @Override
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final ScreenBounds bounds = world.toScreen(area);
@@ -137,7 +132,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
-        if(renderInProgress) {
+        if (renderInProgress) {
             throw new IllegalStateException("rendering lights is already in progress");
         }
 

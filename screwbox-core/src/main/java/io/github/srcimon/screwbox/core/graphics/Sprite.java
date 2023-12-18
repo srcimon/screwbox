@@ -32,7 +32,7 @@ public class Sprite implements Serializable {
         if (frames.isEmpty()) {
             throw new IllegalArgumentException("can not create Sprite without frames");
         }
-        this.size = frames.get(0).size();
+        this.size = frames.getFirst().size();
 
         Duration animationDuration = Duration.none();
         for (final var frame : frames) {

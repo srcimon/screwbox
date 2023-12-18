@@ -30,7 +30,7 @@ public class EnemyMovementSystem implements EntitySystem {
             for (final Entity enemy : engine.environment().fetchAll(ENEMIES)) {
                 final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
                 final var automovement = enemy.get(AutomovementComponent.class);
-                engine.async().runSingle(automovement, () -> engine.physics().findPath(enemyPosition, playerPosition).ifPresent(value -> automovement.path = value));
+                engine.async().runExclusive(automovement, () -> engine.physics().findPath(enemyPosition, playerPosition).ifPresent(value -> automovement.path = value));
             }
         }
     }

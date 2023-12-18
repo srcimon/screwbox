@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;

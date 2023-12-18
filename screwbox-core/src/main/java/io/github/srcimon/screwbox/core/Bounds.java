@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.graphics.World;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
  */
 public final class Bounds implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final Vector position;

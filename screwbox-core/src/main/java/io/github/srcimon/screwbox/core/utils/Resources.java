@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,7 +17,7 @@ public final class Resources {
 
     private static final ClassLoader CLASS_LOADER = Resources.class.getClassLoader();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String PATH_SEPERATOR = System.getProperty("path.separator");
+    private static final String PATH_SEPERATOR = File.pathSeparator;
     private static final String CLASSPATH = System.getProperty("java.class.path", ".");
 
     private Resources() {

@@ -121,7 +121,7 @@ public class Tileset {
         if (spriteCount() != 1) {
             throw new IllegalStateException("tileset has not exactly one sprite");
         }
-        return allSprites.get(0);
+        return allSprites.getFirst();
 
     }
 
@@ -179,7 +179,7 @@ public class Tileset {
         if (spriteCount() == 0) {
             throw new IllegalStateException("tileset has no sprite");
         }
-        return allSprites.get(0);
+        return allSprites.getFirst();
     }
 
     /**

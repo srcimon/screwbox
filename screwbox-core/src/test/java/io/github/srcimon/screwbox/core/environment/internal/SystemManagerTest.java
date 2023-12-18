@@ -44,7 +44,7 @@ class SystemManagerTest {
         systemManager.addSystem(new CollisionDetectionSystem());
         systemManager.addSystem(new OptimizePhysicsPerformanceSystem());
 
-        assertThat(systemManager.allSystems().get(0)).isInstanceOf(OptimizePhysicsPerformanceSystem.class);
+        assertThat(systemManager.allSystems().getFirst()).isInstanceOf(OptimizePhysicsPerformanceSystem.class);
     }
 
 }

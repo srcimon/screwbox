@@ -15,7 +15,7 @@ public class DefaultScreen implements Screen {
     private Renderer renderer;
     private final WindowFrame frame;
 
-    public DefaultScreen(WindowFrame frame, Renderer renderer) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer) {
         this.renderer = renderer;
         this.frame = frame;
     }

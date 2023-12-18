@@ -1,9 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
@@ -11,16 +12,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.awt.AlphaComposite.SRC_OVER;
+
 class Lightmap {
 
-    record PointLight(Offset position, int radius, List<Offset> area,
-                      io.github.srcimon.screwbox.core.graphics.Color color) {
+    record PointLight(Offset position, int radius, List<Offset> area, Color color) {
     }
 
-    record SpotLight(Offset position, int radius, io.github.srcimon.screwbox.core.graphics.Color color) {
+    record SpotLight(Offset position, int radius, Color color) {
     }
 
-    private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT);
+    private static final java.awt.Color FADE_TO_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
     private final BufferedImage image;
     private final Graphics2D graphics;
     private final int resolution;
@@ -54,8 +56,8 @@ class Lightmap {
     }
 
     public void addFullBrightnessArea(final ScreenBounds bounds) {
-        graphics.setColor(AwtMapper.toAwtColor(io.github.srcimon.screwbox.core.graphics.Color.BLACK));
-        applyOpacityConfig(io.github.srcimon.screwbox.core.graphics.Color.BLACK);
+        graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
+        applyOpacityConfig(Color.BLACK);
         graphics.fillRect(bounds.offset().x() / resolution,
                 bounds.offset().y() / resolution,
                 bounds.size().width() / resolution,
@@ -100,11 +102,11 @@ class Lightmap {
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) color.opacity().value()));
+        graphics.setComposite(AlphaComposite.getInstance(SRC_OVER, (float) color.opacity().value()));
     }
 
 
-    private RadialGradientPaint radialPaint(final Offset position, final int radius, final io.github.srcimon.screwbox.core.graphics.Color color) {
+    private RadialGradientPaint radialPaint(final Offset position, final int radius, final Color color) {
         final var usedRadius = Math.max(radius, resolution);
         final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color.opacity(1)), FADE_TO_COLOR};
 
@@ -114,5 +116,4 @@ class Lightmap {
                 usedRadius / (float) resolution,
                 fractions, colors);
     }
-
 }

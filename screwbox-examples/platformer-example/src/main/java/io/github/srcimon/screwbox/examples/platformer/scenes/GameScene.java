@@ -3,23 +3,8 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
-import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
-import io.github.srcimon.screwbox.core.environment.autocamera.CameraUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
-import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
@@ -70,7 +55,7 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
-        engine.window().setTitle("Platformer Example (Game)");
+        engine.window().setTitle("Platformer Example");
     }
 
     @Override
@@ -80,18 +65,15 @@ public class GameScene implements Scene {
         }
 
         environment
-                .addSystem(new TweenSystem())
-                .addSystem(new TweenDestroySystem())
-                .addSystem(new TweenOpacitySystem())
-                .addSystem(new OptimizeLightPerformanceSystem())
+                .enablePhysics()
+                .enableRendering()
+                .enableLight()
+                .enableLogic()
+                .enableTweening()
                 .addSystem(new LogFpsSystem())
-                .addSystem(new LightRenderSystem())
-                .addSystem(new ReflectionRenderSystem())
-                .addSystem(new CollisionDetectionSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
                 .addSystem(new CameraUpdateSystem())
-                .addSystem(new StateSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
@@ -107,22 +89,15 @@ public class GameScene implements Scene {
                 .addSystem(new SmokePuffSystem())
                 .addSystem(new ShowLabelSystem())
                 .addSystem(new LetsGoSystem())
-                .addSystem(new ScreenTransitionSystem())
                 .addSystem(new PrintSystem())
                 .addSystem(new ChangeMapSystem())
                 .addSystem(new ShadowSystem())
-                .addSystem(new PhysicsSystem())
-                .addSystem(new GravitySystem())
                 .addSystem(new CameraShiftSystem())
-                .addSystem(new OptimizePhysicsPerformanceSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
-                .addSystem(new AreaTriggerSystem())
                 .addSystem(new ResetSceneSystem())
-                .addSystem(new FlipSpriteSystem())
                 .addSystem(new BackgroundSystem())
-                .addSystem(new CatMovementSystem())
-                .addSystem(new RenderSystem());
+                .addSystem(new CatMovementSystem());
     }
 
     void importEntities(final Environment environment) {

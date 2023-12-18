@@ -16,7 +16,7 @@ public interface Async {
      * Runs a task in the given context. The context can be any object that
      * correlates to the task execution.
      *
-     * @see #runSingle(Object, Runnable)
+     * @see #runExclusive(Object, Runnable)
      */
     Async run(Object context, Runnable task);
 
@@ -26,5 +26,5 @@ public interface Async {
      *
      * @see #run(Object, Runnable)
      */
-    Async runSingle(Object context, Runnable task);
+    Async runExclusive(Object context, Runnable task);
 }
