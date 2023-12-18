@@ -58,7 +58,7 @@ class LightPhysics {
     private List<Line> extractLines(final List<Bounds> allBounds) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
-            ListUtil.addAll(allLines, Borders.ALL.extractBorders(bounds));
+            ListUtil.addAll(allLines, Borders.ALL.extractFrom(bounds));
         }
         return allLines;
     }

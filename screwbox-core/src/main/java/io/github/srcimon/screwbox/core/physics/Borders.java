@@ -18,14 +18,14 @@ public enum Borders {
             Line.between(bounds.topRight(), bounds.bottomRight()),
             Line.between(bounds.bottomLeft(), bounds.origin())));
 
-    private final Function<Bounds, List<Line>> extractSegmentsMethod;
+    private final Function<Bounds, List<Line>> extractionMethod;
 
-    Borders(final Function<Bounds, List<Line>> extractSegmentsMethod) {
-        this.extractSegmentsMethod = extractSegmentsMethod;
+    Borders(final Function<Bounds, List<Line>> extractionMethod) {
+        this.extractionMethod = extractionMethod;
     }
 
-    public List<Line> extractBorders(Bounds bounds) {
-        return extractSegmentsMethod.apply(bounds);
+    public List<Line> extractFrom(final Bounds bounds) {
+        return extractionMethod.apply(bounds);
     }
 
 }

@@ -11,10 +11,10 @@ class BordersTest {
     private static final Bounds BOX = Bounds.atPosition(10, 10, 42, 2);
 
     @Test
-    void extractBorders_ofAll_extractsAllBorders() {
-        var Lines = Borders.ALL.extractBorders(BOX);
+    void extractFrom_ofAll_extractsAllBorders() {
+        var lines = Borders.ALL.extractFrom(BOX);
 
-        assertThat(Lines).containsExactly(
+        assertThat(lines).containsExactly(
                 Line.between(BOX.origin(), BOX.topRight()),
                 Line.between(BOX.topRight(), BOX.bottomRight()),
                 Line.between(BOX.bottomRight(), BOX.bottomLeft()),
@@ -22,15 +22,15 @@ class BordersTest {
     }
 
     @Test
-    void extractBorders_ofTopOnly_extractsTop() {
-        var lines = Borders.TOP_ONLY.extractBorders(BOX);
+    void extractFrom_ofTopOnly_extractsTop() {
+        var lines = Borders.TOP_ONLY.extractFrom(BOX);
 
         assertThat(lines).containsExactly(Line.between(BOX.origin(), BOX.topRight()));
     }
 
     @Test
-    void extractBorders_ofVerticalOnly_extractsVerticals() {
-        var lines = Borders.VERTICAL_ONLY.extractBorders(BOX);
+    void extractFrom_ofVerticalOnly_extractsVerticals() {
+        var lines = Borders.VERTICAL_ONLY.extractFrom(BOX);
 
         assertThat(lines).containsExactly(
                 Line.between(BOX.topRight(), BOX.bottomRight()),

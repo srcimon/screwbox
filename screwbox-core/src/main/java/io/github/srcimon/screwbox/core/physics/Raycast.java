@@ -87,7 +87,7 @@ public class Raycast {
 
     private List<Vector> getIntersections(final Entity entity) {
         List<Vector> intersections = new ArrayList<>();
-        for (final Line border : borders.extractBorders(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
             if (nonNull(intersectionPoint)) {
                 intersections.add(intersectionPoint);
@@ -97,7 +97,7 @@ public class Raycast {
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Line border : borders.extractBorders(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
             if (ray.intersects(border)) {
                 return true;
             }
