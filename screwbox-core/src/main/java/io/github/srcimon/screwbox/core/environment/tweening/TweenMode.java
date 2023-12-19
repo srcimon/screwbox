@@ -20,6 +20,11 @@ public enum TweenMode {
         this.adjustment = adjustment;
     }
 
+    public Percent applyOn(final Percent input) {
+        return adjustment.apply(input);
+    }
+
+    //TODO: remove
     public static void main(String[] args) {
         for (double i = 0; i < 1; i += 0.1) {
             System.out.println(SINE_IN_OUT.adjustment.apply(Percent.of(i)).value());

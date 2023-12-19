@@ -1,14 +1,17 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
-import io.github.srcimon.screwbox.core.*;
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;

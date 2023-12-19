@@ -15,19 +15,26 @@ public class TweenComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
+    public final TweenMode mode;
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
+    public Percent progressValue = Percent.min();//TODO: RENAME
+
     public boolean reverse = false;
     public Duration duration;
     public boolean isLooped;
 
     public TweenComponent(final Duration duration) {
-        this(duration, false);
+        this(duration, TweenMode.LINEAR_OUT);
     }
 
-    public TweenComponent(final Duration duration, final boolean isLooped) {
+    public TweenComponent(final Duration duration, final TweenMode mode) {
+        this(duration, mode, false);
+    }
+
+    public TweenComponent(final Duration duration, final TweenMode mode, final boolean isLooped) {
         this.duration = duration;
         this.isLooped = isLooped;
+        this.mode = mode;
     }
 }
