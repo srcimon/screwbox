@@ -2,11 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.srcimon</groupId>
-        <artifactId>screwbox-project</artifactId>
+        <artifactId>screwbox</artifactId>
         <version>1.0.0-RC5-SNAPSHOT</version>
     </parent>
+    <groupId></groupId>
     <packaging>pom</packaging>
-    <artifactId>examples</artifactId>
+    <artifactId>screwbox-examples</artifactId>
 
     <modules>
         <module>hello-world</module>
@@ -16,8 +17,9 @@
     </modules>
 
     <properties>
-        <sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions><!-- no test coverage on examples -->
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
