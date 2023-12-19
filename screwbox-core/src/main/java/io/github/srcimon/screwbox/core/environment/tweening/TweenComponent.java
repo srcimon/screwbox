@@ -18,12 +18,12 @@ public class TweenComponent implements Component {
     public final TweenMode mode;
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
-    public Percent progressValue = Percent.min();//TODO: RENAME
+    public Percent value = Percent.min();
 
     public boolean reverse = false;
     public Duration duration;
     public boolean isLooped;
-
+//TODO: isPingPong
     public TweenComponent(final Duration duration) {
         this(duration, TweenMode.LINEAR_OUT);
     }
