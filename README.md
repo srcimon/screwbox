@@ -37,7 +37,7 @@ look if you want to have some fun with Java and 2d graphics.
     <dependency>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-core</artifactId>
-        <version>1.0.0-RC4</version>
+        <version>1.0.0-RC5</version>
     </dependency>
     ```
 
@@ -80,7 +80,7 @@ BOM to manage all library dependencies.
         <dependency>
             <groupId>io.github.srcimon</groupId>
             <artifactId>screwbox</artifactId>
-            <version>1.0.0-RC4</version>
+            <version>1.0.0-RC5</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -121,7 +121,7 @@ the [pathfinding example](./examples/pathfinding).
 Map map = Map.fromJson("underworld_map.json");
 ```
 
-### screwbox-examples
+## Examples
 
 A list of some example projects showing how to use this engine:
 
