@@ -187,7 +187,6 @@
         </plugins>
     </build>
 
-
     <profiles>
         <profile>
             <id>relase-to-maven-central</id>
