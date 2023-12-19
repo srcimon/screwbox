@@ -5,13 +5,14 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggingComponent;
@@ -48,7 +49,7 @@ public class DiggableSystem implements EntitySystem {
             if (!entity.hasComponent(TweenComponent.class)) {
                 entity.add(new TweenDestroyComponent());
                 entity.add(new TweenOpacityComponent());
-                entity.add(new TweenComponent(ofMillis(3000)));
+                entity.add(new TweenComponent(ofMillis(300), TweenMode.SINE_OUT));
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
                 rigidBodyComponent.momentum = Vector.of(rigidBodyComponent.momentum.x(), -150);
