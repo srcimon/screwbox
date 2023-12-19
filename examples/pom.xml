@@ -16,6 +16,9 @@
         <module>platformer</module>
     </modules>
 
+    <properties>
+        <sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions>
+    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
