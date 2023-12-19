@@ -189,6 +189,20 @@
 
     <profiles>
         <profile>
+            <id>build-and-test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>screwbox-core</module>
+                <module>screwbox-tiled</module>
+                <module>examples/hello-world</module>
+                <module>examples/pathfinding</module>
+                <module>examples/game-of-life</module>
+                <module>examples/platformer</module>
+            </modules>
+        </profile>
+        <profile>
             <id>relase-to-maven-central</id>
             <build>
                 <plugins>
@@ -264,6 +278,10 @@
                     </plugin>
                 </plugins>
             </build>
+            <modules>
+                <module>screwbox-core</module>
+                <module>screwbox-tiled</module>
+            </modules>
         </profile>
     </profiles>
 
@@ -287,12 +305,4 @@
         </repository>
     </distributionManagement>
 
-    <modules>
-        <module>screwbox-core</module>
-        <module>screwbox-tiled</module>
-        <module>examples/hello-world</module>
-        <module>examples/pathfinding</module>
-        <module>examples/game-of-life</module>
-        <module>examples/platformer</module>
-    </modules>
 </project>
