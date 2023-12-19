@@ -125,11 +125,11 @@ Map map = Map.fromJson("underworld_map.json");
 
 A list of some example projects showing how to use this engine:
 
-- **[hello-world-example](./screwbox-examples/hello-world-example)** A very simplistic hello world application.
-- **[pathfinding-example](./screwbox-examples/pathfinding-example)** example showing how to use pathfinding and
+- **[hello-world](./examples/hello-world)** A very simplistic hello world application.
+- **[pathfinding](./examples/pathfinding)** example showing how to use pathfinding and
   importing maps from [Tiled Editor](https://www.mapeditor.org)
-- **[game-of-life-example](./screwbox-examples/game-of-life-example)** An interactive game of life implementation.
-- **[platformer-example](./screwbox-examples/platformer-example)** A much more complex example showing how to make a
+- **[game-of-life](./examples/game-of-life)** An interactive game of life implementation.
+- **[platformer](./examples/platformer)** A much more complex example showing how to make a
   platformer game with some light and reflection effects.
 
 ## Libraries used
