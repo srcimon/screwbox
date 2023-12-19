@@ -2,6 +2,7 @@
 
 ### 🚀 Features & improvements
 
+- Updated project structure to prevent example projects from being released (#160)
 - Added name property to `Entity` for debug purpose, also included in `Entity.toString()` (#142)
 - Added `Environment.enable...`-methods to quickly setup an environment (#129)
 - Added `Environment.removeSystemIfPresent(systemType)`
