@@ -4,12 +4,13 @@
     <parent>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-project</artifactId>
-        <version>1.0.0-RC5-SNAPSHOT</version>
+        <version>1.0.0-RC4</version>
     </parent>
 
     <artifactId>screwbox</artifactId>
     <name>ScrewBox</name>
     <packaging>pom</packaging>
+    <description>ScrewBox is a minimalistic Java 2d game engine.</description>
 
     <modules>
         <module>screwbox-core</module>
