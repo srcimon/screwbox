@@ -15,14 +15,15 @@ public class TweenComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    public final TweenMode mode;
     public Time startTime = Time.now();
     public Percent progress = Percent.min();
     public Percent value = Percent.min();
-
     public boolean reverse = false;
+
     public Duration duration;
     public boolean isLooped;
+    public final TweenMode mode;
+
 //TODO: isPingPong
     public TweenComponent(final Duration duration) {
         this(duration, TweenMode.LINEAR_OUT);
