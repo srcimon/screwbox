@@ -2,10 +2,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.srcimon</groupId>
-		<artifactId>screwbox-examples</artifactId>
+		<artifactId>examples</artifactId>
 		<version>1.0.0-RC4-SNAPSHOT</version>
 	</parent>
-	<artifactId>pathfinding-example</artifactId>
+	<artifactId>platformer</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -16,6 +16,16 @@
 			<artifactId>screwbox-tiled</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<scope>test</scope>
@@ -23,11 +33,6 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
