@@ -37,7 +37,7 @@ look if you want to have some fun with Java and 2d graphics.
     <dependency>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-core</artifactId>
-        <version>1.0.0-RC3</version>
+        <version>1.0.0-RC4</version>
     </dependency>
     ```
 
@@ -80,7 +80,7 @@ BOM to manage all library dependencies.
         <dependency>
             <groupId>io.github.srcimon</groupId>
             <artifactId>screwbox</artifactId>
-            <version>1.0.0-RC3</version>
+            <version>1.0.0-RC4</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -107,7 +107,7 @@ ScrewBox.createEngine().start();
 ### screwbox-tiled
 
 Adds support for tilesets and maps made with [Tiled Editor](https://www.mapeditor.org). For real code have a look at
-the [pathfinding example application](./screwbox-examples/pathfinding-example).
+the [pathfinding example](./examples/pathfinding).
 
 ``` xml
 <dependency>
