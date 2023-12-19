@@ -30,7 +30,7 @@
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5</sonar.issue.ignore.multicriteria>
 
         <!-- public accessibility in components by intention -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -44,23 +44,18 @@
 
         <!-- disable false-positive in CollisionSensorComponent -->
         <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e3.ruleKey>
-        <sonar.issue.ignore.multicriteria.e3.resourceKey>**/CollisionSensorComponent.java
+        <sonar.issue.ignore.multicriteria.e3.resourceKey>**/CollisionDetectionComponent.java
         </sonar.issue.ignore.multicriteria.e3.resourceKey>
 
-        <!-- disable false-positive in ForwardSignalComponent -->
-        <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e4.ruleKey>
-        <sonar.issue.ignore.multicriteria.e4.resourceKey>**/ForwardSignalComponent.java
+        <!-- disable false-positive naming convention for Vector.$ -->
+        <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e4.ruleKey>
+        <sonar.issue.ignore.multicriteria.e4.resourceKey>**/Vector.java
         </sonar.issue.ignore.multicriteria.e4.resourceKey>
 
-        <!-- disable false-positive naming convention for Vector.$ -->
-        <sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
-        <sonar.issue.ignore.multicriteria.e5.resourceKey>**/Vector.java
-        </sonar.issue.ignore.multicriteria.e5.resourceKey>
-
         <!-- disable false-positive naming convention for Bounds.$$ -->
-        <sonar.issue.ignore.multicriteria.e6.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e6.ruleKey>
-        <sonar.issue.ignore.multicriteria.e6.resourceKey>**/Bounds.java
-        </sonar.issue.ignore.multicriteria.e6.resourceKey>
+        <sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
+        <sonar.issue.ignore.multicriteria.e5.resourceKey>**/Bounds.java
+        </sonar.issue.ignore.multicriteria.e5.resourceKey>
     </properties>
     <dependencyManagement>
         <dependencies>
