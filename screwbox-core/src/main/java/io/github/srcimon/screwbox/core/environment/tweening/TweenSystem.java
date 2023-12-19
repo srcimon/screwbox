@@ -30,7 +30,7 @@ public class TweenSystem implements EntitySystem {
                     tween.startTime = now;
                     tween.reverse = !tween.reverse;
                 } else {
-                    engine.environment().remove(tweenEntity);
+                    tweenEntity.remove(TweenComponent.class);
                 }
             }
         }
