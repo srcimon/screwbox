@@ -4,7 +4,7 @@
 		<groupId>io.github.srcimon</groupId>
 		<artifactId>screwbox</artifactId>
 		<relativePath>../../pom.xml</relativePath>
-		<version>1.0.0-RC5-SNAPSHOT</version>
+		<version>1.0.0-RC4-SNAPSHOT</version>
 	</parent>
 	<artifactId>game-of-life</artifactId>
 	<properties>
@@ -16,4 +16,16 @@
 			<artifactId>screwbox-core</artifactId>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
