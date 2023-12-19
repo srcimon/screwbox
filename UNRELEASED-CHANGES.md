@@ -20,4 +20,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bumped to crazy-max/ghaction-import-gpg@v5.2.0 (#165)
