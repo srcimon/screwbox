@@ -9,7 +9,6 @@
 	<artifactId>game-of-life</artifactId>
 	<properties>
 		<sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions><!-- no test coverage on examples -->
-		<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo><!-- dont release to maven central -->
 	</properties>
 	<dependencies>
 		<dependency>
