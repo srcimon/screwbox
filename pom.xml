@@ -186,6 +186,6 @@
 
     <modules>
         <module>examples</module>
-        <module>screwbox-bom</module>
+        <module>screwbox</module>
     </modules>
 </project>

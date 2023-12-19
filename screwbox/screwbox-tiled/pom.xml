@@ -2,23 +2,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.srcimon</groupId>
-		<artifactId>screwbox-bom</artifactId>
+		<artifactId>screwbox</artifactId>
 		<version>1.0.0-RC4-SNAPSHOT</version>
 	</parent>
-	<artifactId>screwbox-core</artifactId>
+	<artifactId>screwbox-tiled</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>screwbox-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

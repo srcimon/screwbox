@@ -9,7 +9,7 @@
         <version>1.0.0-RC4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>screwbox-bom</artifactId>
+    <artifactId>screwbox</artifactId>
     <packaging>pom</packaging>
     <name>ScrewBox</name>
 
