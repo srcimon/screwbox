@@ -2,14 +2,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.srcimon</groupId>
-		<artifactId>screwbox</artifactId>
+		<artifactId>examples</artifactId>
 		<version>1.0.0-RC4-SNAPSHOT</version>
 	</parent>
-	<artifactId>screwbox-core</artifactId>
+	<artifactId>platformer-example</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>screwbox-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>screwbox-tiled</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

@@ -6,11 +6,26 @@
     <version>1.0.0-RC4-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
-  <artifactId>screwbox-examples</artifactId>
+  <artifactId>examples</artifactId>
   <modules>
     <module>hello-world-example</module>
     <module>game-of-life-example</module>
     <module>pathfinding-example</module>
     <module>platformer-example</module>
   </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>screwbox-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>screwbox-tiled</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
