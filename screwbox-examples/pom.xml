@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.github.srcimon</groupId>
-    <artifactId>screwbox-project</artifactId>
+    <artifactId>screwbox</artifactId>
     <version>1.0.0-RC4-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
