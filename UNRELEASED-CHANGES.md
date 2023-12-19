@@ -10,6 +10,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed `GravitySystem` crashes when no `GravityComponent` present 
+- Removed `screwbox-examples` module to reduce number of artifacts released (#160)
 
 ### 🧽 Cleanup & refactoring
 

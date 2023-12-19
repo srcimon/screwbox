@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox</artifactId>
-    <version>1.0.0-RC5-SNAPSHOT</version>
+    <version>1.0.0-RC4</version>
     <packaging>pom</packaging>
     <description>ScrewBox is a minimalistic Java 2d game engine.</description>
     <name>ScrewBox</name>
@@ -72,11 +72,6 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>screwbox-tiled</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>screwbox-examples</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -296,6 +291,9 @@
     <modules>
         <module>screwbox-core</module>
         <module>screwbox-tiled</module>
-        <module>screwbox-examples</module>
+        <module>examples/hello-world</module>
+        <module>examples/pathfinding</module>
+        <module>examples/game-of-life</module>
+        <module>examples/platformer</module>
     </modules>
 </project>

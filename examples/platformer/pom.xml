@@ -2,10 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.srcimon</groupId>
-		<artifactId>screwbox-examples</artifactId>
-		<version>1.0.0-RC5-SNAPSHOT</version>
+		<artifactId>screwbox</artifactId>
+		<relativePath>../../pom.xml</relativePath>
+		<version>1.0.0-RC4</version>
 	</parent>
 	<artifactId>platformer</artifactId>
+	<properties>
+		<sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions><!-- no test coverage on examples -->
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
