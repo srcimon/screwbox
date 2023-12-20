@@ -3,6 +3,7 @@
 ### 🚀 Features & improvements
 
 - Introduced `TweenMode` with different options create beautiful tweens (#164)
+- Added position tweening
 
 ### 🪛 Bug Fixes
 
