@@ -7,9 +7,7 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.*;
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ public enum Feature {
 
     TWEENING(
             new TweenSystem(),
+            new TweenPositionSystem(),
             new TweenDestroySystem(),
             new TweenOpacitySystem()
     ),
