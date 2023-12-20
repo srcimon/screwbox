@@ -24,7 +24,6 @@ public class TweenComponent implements Component {
     public boolean isLooped;
     public final TweenMode mode;
 
-//TODO: isPingPong
     public TweenComponent(final Duration duration) {
         this(duration, TweenMode.LINEAR_OUT);
     }

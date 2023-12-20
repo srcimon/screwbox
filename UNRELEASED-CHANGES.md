@@ -2,7 +2,7 @@
 
 ### 🚀 Features & improvements
 
-- ...
+- Introduced `TweenMode` with different options create fancy tweens (#164)
 
 ### 🪛 Bug Fixes
 
