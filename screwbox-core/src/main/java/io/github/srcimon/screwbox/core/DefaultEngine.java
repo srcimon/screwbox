@@ -142,6 +142,7 @@ class DefaultEngine implements Engine {
     @Override
     public void stop() {
         if(!stopCalled) {
+            stopCalled = true;
             executor.execute(() -> {
                 ui.closeMenu();
                 loop.stop();
@@ -151,7 +152,6 @@ class DefaultEngine implements Engine {
                 executor.shutdown();
             });
         }
-        stopCalled = true;
     }
 
     @Override
