@@ -4,8 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 
 import java.util.function.UnaryOperator;
 
-//TODO tests
-
 /**
  * Configures the direction and the value change in a tween.
  */
