@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-public class TweenCircleAroundPositionComponent implements Component {
+public class TweenOrbitPositionComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -13,7 +13,7 @@ public class TweenCircleAroundPositionComponent implements Component {
     public final Vector center;
     public final double distance;
 
-    public TweenCircleAroundPositionComponent(final Vector center, final double distance) {
+    public TweenOrbitPositionComponent(final Vector center, final double distance) {
         this.center = center;
         this.distance = distance;
     }
