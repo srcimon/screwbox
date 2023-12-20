@@ -34,7 +34,6 @@ public class TweenPositionSystem implements EntitySystem {
             transformComponent.bounds = transformComponent.bounds.moveTo(Vector.of(transformComponent.bounds.position().x(), positionComponent.from + advance));
         }
 
-        //TODO TEST
         for (final var tweenEntity : engine.environment().fetchAll(ORBIT_TWEENS)) {
             final var positionComponent = tweenEntity.get(TweenOrbitPositionComponent.class);
             final var transformComponent = tweenEntity.get(TransformComponent.class);

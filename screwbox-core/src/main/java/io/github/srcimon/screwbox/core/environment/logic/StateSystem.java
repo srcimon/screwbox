@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.logic;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.*;
 
 import static java.util.Objects.isNull;
