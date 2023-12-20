@@ -28,7 +28,9 @@ public class TweenSystem implements EntitySystem {
             if (tween.reverse && tween.progress.isMinValue() || !tween.reverse && tween.progress.isMaxValue()) {
                 if (tween.isLooped) {
                     tween.startTime = now;
-                    tween.reverse = !tween.reverse;
+                    if (tween.usePingPong) {
+                        tween.reverse = !tween.reverse;
+                    }
                 } else {
                     tweenEntity.remove(TweenComponent.class);
                 }

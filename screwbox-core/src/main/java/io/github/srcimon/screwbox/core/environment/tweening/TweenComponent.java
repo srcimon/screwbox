@@ -23,6 +23,7 @@ public class TweenComponent implements Component {
     public Duration duration;
     public boolean isLooped;
     public final TweenMode mode;
+    public boolean usePingPong;
 
     public TweenComponent(final Duration duration) {
         this(duration, TweenMode.LINEAR_OUT);
@@ -33,8 +34,13 @@ public class TweenComponent implements Component {
     }
 
     public TweenComponent(final Duration duration, final TweenMode mode, final boolean isLooped) {
+        this(duration, mode, isLooped, true);
+    }
+
+    public TweenComponent(final Duration duration, final TweenMode mode, final boolean isLooped, final  boolean usePingPong) {
         this.duration = duration;
         this.isLooped = isLooped;
         this.mode = mode;
+        this.usePingPong = usePingPong;
     }
 }
