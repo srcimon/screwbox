@@ -12,27 +12,27 @@ public enum TweenMode {
     /**
      * Linear fade in: 0 to 1
      */
-    LINEAR_IN(v -> v),
+    LINEAR_IN(in -> in),
 
     /**
      * Linear fade out: 1 to 0
      */
-    LINEAR_OUT(v -> v.invert()),
+    LINEAR_OUT(Percent::invert),
 
     /**
      * Sinus fade in: 0 to 1
      */
-    SINE_IN(v -> Percent.of(Math.sin((v.value() * Math.PI) / 2.0))),
+    SINE_IN(in -> Percent.of(Math.sin((in.value() * Math.PI) / 2.0))),
 
     /**
      * Sinus fade out: 1 to 0
      */
-    SINE_OUT(v -> Percent.of(Math.cos((v.value() * Math.PI) / 2.0))),
+    SINE_OUT(in -> Percent.of(Math.cos((in.value() * Math.PI) / 2.0))),
 
     /**
      * Sinus fade in and out again: 0 to 1 to 0
      */
-    SINE_IN_OUT(v -> Percent.of(-(Math.cos(Math.PI * v.value() * 2.0) - 1.0) / 2.0));
+    SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0));
 
     private final UnaryOperator<Percent> adjustment;
 
