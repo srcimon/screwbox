@@ -42,7 +42,7 @@ public class AsyncRenderer implements Renderer {
             for (final var task : renderTasks.inactive()) {
                 try {
                     task.run();
-                } catch (final Throwable e) {
+                } catch (final Exception e) {
                     Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
                 }
             }

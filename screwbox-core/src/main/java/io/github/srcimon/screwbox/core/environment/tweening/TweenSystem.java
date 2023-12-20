@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Environment;
@@ -16,16 +17,13 @@ public class TweenSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var now = engine.loop().lastUpdate();
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var tween = tweenEntity.get(TweenComponent.class);
-            final var elapsedDuration = Duration.between(now, tween.startTime);
-            tween.progress = tween.reverse
-                    ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos())
-                    : Percent.of(1.0 * elapsedDuration.nanos() / tween.duration.nanos());
+            Time now = engine.loop().lastUpdate();
+            tween.progress = calculateProgressOfTween(now, tween);
             tween.value = tween.mode.applyOn(tween.progress);
 
-            if (tween.reverse && tween.progress.isMinValue() || !tween.reverse && tween.progress.isMaxValue()) {
+            if (tweenHasReachedEnd(tween)) {
                 if (tween.isLooped) {
                     tween.startTime = now;
                     if (tween.usePingPong) {
@@ -36,5 +34,16 @@ public class TweenSystem implements EntitySystem {
                 }
             }
         }
+    }
+
+    private Percent calculateProgressOfTween(final Time now, final TweenComponent tween) {
+        final var elapsedDuration = Duration.between(now, tween.startTime);
+        return tween.reverse
+                ? Percent.of(1.0 - 1.0 * elapsedDuration.nanos() / tween.duration.nanos())
+                : Percent.of(1.0 * elapsedDuration.nanos() / tween.duration.nanos());
+    }
+
+    private boolean tweenHasReachedEnd(final TweenComponent tween) {
+        return tween.reverse && tween.progress.isMinValue() || !tween.reverse && tween.progress.isMaxValue();
     }
 }
