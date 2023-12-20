@@ -61,6 +61,7 @@ class DefaultEngine implements Engine {
     private final ExecutorService executor;
     private final String name;
 
+    private boolean stopCalled = false;
     DefaultEngine(final String name) {
         final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
@@ -140,14 +141,17 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        executor.execute(() -> {
-            ui.closeMenu();
-            loop.stop();
-            loop.awaitTermination();
-            window.close();
-            log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
-            executor.shutdown();
-        });
+        if(!stopCalled) {
+            executor.execute(() -> {
+                ui.closeMenu();
+                loop.stop();
+                loop.awaitTermination();
+                window.close();
+                log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
+                executor.shutdown();
+            });
+        }
+        stopCalled = true;
     }
 
     @Override
