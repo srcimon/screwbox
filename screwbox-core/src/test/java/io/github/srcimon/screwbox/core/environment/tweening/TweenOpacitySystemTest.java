@@ -16,7 +16,7 @@ class TweenOpacitySystemTest {
     @Test
     void update_updatesOpacityOfTweeningEntities(DefaultEnvironment environment) {
         var tweenComponent = new TweenComponent(ofSeconds(4));
-        tweenComponent.progress = Percent.half();
+        tweenComponent.value = Percent.half();
 
         var renderComponent = new RenderComponent();
 

@@ -25,7 +25,8 @@ class TweenDestroySystemTest {
                 .addSystem(new TweenDestroySystem())
                 .addSystem(new TweenSystem());
 
-        environment.update();
+        environment.update(); // entity 1 loeses is TweenComponent
+        environment.update(); // entity 1 gets removed
 
         assertThat(environment.fetchById(1)).isEmpty();
         assertThat(environment.fetchById(2)).isNotEmpty();

@@ -49,7 +49,7 @@ class TweenSystemTest {
     void update_loopedInterval_entityNotRemoved(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(Time.now().plusSeconds(4));
 
-        Entity smoke = new Entity().add(new TweenComponent(ofMillis(200), true));
+        Entity smoke = new Entity().add(new TweenComponent(ofMillis(200), TweenMode.LINEAR_IN, true));
 
         environment
                 .addEntity(smoke)
