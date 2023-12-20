@@ -6,8 +6,8 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed game gets stuck when light is rendered with radius is zero (#166)
-- Fixed exception in async render thread doens't appear in console (#166)
+- Fixed unhandled exception in render thread (#166)
+- Fixed cause of unhandled exception in render thread (light radius is zero) (#166)
 
 ### 🧽 Cleanup & refactoring
 
