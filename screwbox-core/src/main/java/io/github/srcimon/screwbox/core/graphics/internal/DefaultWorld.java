@@ -202,8 +202,10 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawFadingCircle(Vector position, double diameter, Color color) {
-        screen.drawFadingCircle(toOffset(position), toDistance(diameter), color);
+    public World drawFadingCircle(final Vector position, double diameter, final Color color) {
+        if(diameter > 0) {
+            screen.drawFadingCircle(toOffset(position), toDistance(diameter), color);
+        }
         return this;
     }
 }

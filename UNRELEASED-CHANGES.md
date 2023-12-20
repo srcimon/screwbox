@@ -6,8 +6,8 @@
 
 ### 🪛 Bug Fixes
 
-- ...
-- 
+- Fixed game gets stuck when light is rendered with radius is zero (#166)
+
 ### 🧽 Cleanup & refactoring
 
 - ...
