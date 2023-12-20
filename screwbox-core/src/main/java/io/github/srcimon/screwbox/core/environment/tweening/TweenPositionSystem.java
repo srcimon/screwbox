@@ -3,9 +3,13 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
+/**
+ * Updates the postion of all {@link Entity}s that use tweening and have an {@link TweenXPositionComponent} or {@link TweenYPositionComponent}.
+ */
 public class TweenPositionSystem implements EntitySystem {
 
     private static final Archetype X_TWEENS = Archetype.of(TweenComponent.class, TransformComponent.class, TweenXPositionComponent.class);
