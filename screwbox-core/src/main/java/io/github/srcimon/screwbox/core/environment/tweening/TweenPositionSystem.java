@@ -10,9 +10,8 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 /**
- * Updates the postion of all {@link Entity}s that use tweening and have an {@link TweenXPositionComponent} or {@link TweenYPositionComponent}.
+ * Updates the postion of all {@link Entity}s that use tweening and have an {@link TweenXPositionComponent},{@link TweenYPositionComponent} or {@link TweenOrbitPositionComponent}.
  */
-
 public class TweenPositionSystem implements EntitySystem {
 
     private static final Archetype X_TWEENS = Archetype.of(TweenComponent.class, TransformComponent.class, TweenXPositionComponent.class);
