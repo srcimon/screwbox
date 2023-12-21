@@ -80,7 +80,7 @@ class RotationTest {
     @ParameterizedTest
     @CsvSource({"100,100,135", "0,100,180", "-100,0,270"})
     void ofMomentum_returnsNewInstance(double x, double y, double value) {
-        Rotation rotation = Rotation.ofMomentum(Vector.of(x, y));
+        Rotation rotation = Rotation.ofMovement(Vector.of(x, y));
 
         assertThat(rotation.degrees()).isEqualTo(value);
     }

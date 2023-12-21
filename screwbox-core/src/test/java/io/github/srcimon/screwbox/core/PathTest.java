@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -46,7 +47,7 @@ class PathTest {
 
         assertThat(path.nodes())
                 .hasSize(4)
-                .doesNotContain(Vector.$(0, 0));
+                .doesNotContain($(0, 0));
     }
 
     @Test
@@ -68,15 +69,15 @@ class PathTest {
         Path path = Path.withNodes(createNodes(4));
 
         assertThat(path.segments()).containsExactly(
-                Line.between(Vector.$(0, 0), Vector.$(1, 1)),
-                Line.between(Vector.$(1, 1), Vector.$(2, 2)),
-                Line.between(Vector.$(2, 2), Vector.$(3, 3)));
+                Line.between($(0, 0), $(1, 1)),
+                Line.between($(1, 1), $(2, 2)),
+                Line.between($(2, 2), $(3, 3)));
     }
 
     private List<Vector> createNodes(int count) {
         List<Vector> nodes = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            nodes.add(Vector.$(i, i));
+            nodes.add($(i, i));
         }
         return nodes;
     }

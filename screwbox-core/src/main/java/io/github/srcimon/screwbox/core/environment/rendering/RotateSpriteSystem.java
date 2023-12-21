@@ -18,7 +18,7 @@ public class RotateSpriteSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.momentum.isZero()) {
-                sprite.rotation = Rotation.ofMomentum(physicsBody.momentum);
+                sprite.rotation = Rotation.ofMovement(physicsBody.momentum);
             }
         }
 

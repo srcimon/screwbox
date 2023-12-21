@@ -38,7 +38,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      * 
-     * @see #ofMomentum(Vector)
+     * @see #ofMovement(Vector)
      */
     public static Rotation ofMomentum(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
@@ -54,7 +54,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      *
      * @see #ofMomentum(double, double)
      */
-    public static Rotation ofMomentum(final Vector momentum) {
+    public static Rotation ofMovement(final Vector momentum) {
         return ofMomentum(momentum.x(), momentum.y());
     }
 
@@ -116,7 +116,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      */
     public static Rotation of(final Line line) {
         requireNonNull(line, "line must not be null");
-        return ofMomentum(line.to().substract(line.from()));
+        return ofMovement(line.to().substract(line.from()));
     }
 
     /**
