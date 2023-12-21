@@ -2,7 +2,7 @@
 
 ### 🚀 Features & improvements
 
-- Introduced `TweenMode` with different options create beautiful tweens (#164)
+- Introduced `TweenMode` with different options to create beautiful tweens (#164)
 - Added position tweening
 - Added `Line.normal(position, length)` (#169)
 
