@@ -34,7 +34,7 @@ class LightPhysics {
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final List<Vector> area = new ArrayList<>();
-        final Line normal = Line.between(lightBox.position(), lightBox.position().addY(-lightBox.height() / 2.0));
+        final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());

@@ -21,6 +21,13 @@ public final class Line implements Serializable, Comparable<Line> {
         return new Line(from, to);
     }
 
+    /**
+     * Creates a new instance of {@link Line} defined by the starting point and the length of the line goint up from this point.
+     */
+    public static Line normal(final Vector from, final double length) {
+        return between(from, from.addY(length));
+    }
+
     private Line(final Vector from, final Vector to) {
         this.from = from;
         this.to = to;

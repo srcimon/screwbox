@@ -38,7 +38,7 @@ public class TweenPositionSystem implements EntitySystem {
             final var positionComponent = tweenEntity.get(TweenOrbitPositionComponent.class);
             final var transformComponent = tweenEntity.get(TransformComponent.class);
             var progress = tweenEntity.get(TweenComponent.class).value.value();
-            var normal = Line.between(positionComponent.center, positionComponent.center.addY(positionComponent.distance));
+            var normal = Line.normal(positionComponent.center, positionComponent.distance);
             Line rotatedNormal = Rotation.degrees(progress * 360).applyOn(normal);
             var newPos = rotatedNormal.to();
             transformComponent.bounds = transformComponent.bounds.moveTo(newPos);
