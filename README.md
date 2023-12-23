@@ -18,8 +18,7 @@ look if you want to have some fun with Java and 2d graphics.
 ## Features
 
 - **Entity Component System** Add and remove game objects and behaviour. Save and load the game state.
-- **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
-  effects.
+- **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.
 - **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
 - **Asset Management** Load game assets without interrupting the game.
 - **Basic UI** Create an animated interactive game ui in an instant.
@@ -123,14 +122,14 @@ Map map = Map.fromJson("underworld_map.json");
 
 ## Examples
 
-A list of some example projects showing how to use this engine:
+ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
 
-- **[hello-world](./examples/hello-world)** A very simplistic hello world application.
-- **[pathfinding](./examples/pathfinding)** example showing how to use pathfinding and
-  importing maps from [Tiled Editor](https://www.mapeditor.org)
-- **[game-of-life](./examples/game-of-life)** An interactive game of life implementation.
-- **[platformer](./examples/platformer)** A much more complex example showing how to make a
-  platformer game with some light and reflection effects.
+| Example                                     | Description                                                                                                          |
+|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
+| **[hello-world](./examples/hello-world)**   | Very simple hello world application. Shows how to get started.                                                       |
+| **[pathfinding](./examples/pathfinding)**   | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
+| **[game-of-life](./examples/game-of-life)** | An interactive game of life implementation.                                                                          |
+| **[platformer](./examples/platformer)**     | A much more complex example showing how to make a platformer.                                                        |
 
 ## Libraries used
 

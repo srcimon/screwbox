@@ -24,12 +24,19 @@ class SoundTest {
                 .hasMessage("content must not be null");
     }
 
-
     @Test
-    void fromFile_noWav_exception() {
+    void fromFile_textFile_exception() {
         assertThatThrownBy(() -> Sound.fromFile("not-a-wav.txt"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Audio only supports WAV-Files at the moment.");
+                .hasMessage("Audio only supports WAV- and MIDI-Files at the moment.");
+    }
+
+    @Test
+    void fromFile_existingMidi_hasContent() {
+        Sound sound = Sound.fromFile("fake.mid");
+
+        assertThat(sound.content()).hasSizeGreaterThan(10);
+        assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
     }
 
     @Test
@@ -37,6 +44,7 @@ class SoundTest {
         Sound sound = Sound.fromFile("kill.wav");
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(sound.format()).isEqualTo(Sound.Format.WAV);
     }
 
     @Test
