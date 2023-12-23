@@ -17,9 +17,9 @@ look if you want to have some fun with Java and 2d graphics.
 
 ## Features
 
-- **Entity Component System** </br> Add and remove game objects and behaviour. Save and load the game state. </br>
-- **Render Engine** </br> Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.</br>
-- **Physics System** </br> Move objects and resolve collisions. Detect objects via raycasting.</br>
+- **Entity Component System** :: Add and remove game objects and behaviour. Save and load the game state. </br>
+- **Render Engine** :: Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow effects.</br>
+- **Physics System** :: Move objects and resolve collisions. Detect objects via raycasting.</br>
 - **Asset Management** </br> Load game assets without interrupting the game.</br>
 - **Basic UI** </br> Create an animated interactive game ui in an instant.</br>
 - **Input Support** </br> Receive player interactions via keyboard and mouse.</br>
