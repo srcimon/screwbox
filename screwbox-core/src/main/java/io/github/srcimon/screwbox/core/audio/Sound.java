@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.utils.Resources;
 import java.io.Serial;
 import java.io.Serializable;
 
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -18,23 +17,44 @@ public final class Sound implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The format of the sound data.
+     */
+    public enum Format {
+        MIDI,
+        WAV
+    }
+
     private final byte[] content;
+    private final Format format;
 
     /**
-     * Creates a new {@link Sound} from file. Only supports WAV-Files at the moment.
+     * Creates a new {@link Sound} from file. Only supports WAV- and MIDI-Files at the moment.
      */
     public static Sound fromFile(final String fileName) {
-        if (nonNull(fileName) && !fileName.endsWith(".wav")) {
-            throw new IllegalArgumentException("Audio only supports WAV-Files at the moment.");
+        requireNonNull(fileName, "fileName must not be null");
+
+        if (fileName.endsWith(".wav")) {
+            return fromWav(Resources.loadBinary(fileName));
         }
-        return fromWav(Resources.loadBinary(fileName));
+        if (fileName.endsWith(".mid")) {
+            return fromMidi(Resources.loadBinary(fileName));
+        }
+        throw new IllegalArgumentException("Audio only supports WAV- and MIDI-Files at the moment.");
+    }
+
+    /**
+     * Creates a new {@link Sound} from midi content.
+     */
+    public static Sound fromMidi(final byte[] content) {
+        return new Sound(content, Format.MIDI);
     }
 
     /**
      * Creates a new {@link Sound} from wav content.
      */
     public static Sound fromWav(final byte[] content) {
-        return new Sound(content);
+        return new Sound(content, Format.WAV);
     }
 
     /**
@@ -45,8 +65,9 @@ public final class Sound implements Serializable {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-    private Sound(final byte[] content) {
+    private Sound(final byte[] content, final Format type) {
         this.content = requireNonNull(content, "content must not be null");
+        this.format = type;
     }
 
     /**
@@ -54,6 +75,13 @@ public final class Sound implements Serializable {
      */
     public byte[] content() {
         return content;
+    }
+
+    /**
+     * Returns the {@link Format} of the {@link Sound}.
+     */
+    public Format format() {
+        return format;
     }
 
 }
