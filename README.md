@@ -123,7 +123,7 @@ Map map = Map.fromJson("underworld_map.json");
 
 ## Examples
 
-A list of some example projects showing how to use this engine:
+ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
 
 | Example                                     | Description                                                                                                          |
 |---------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
