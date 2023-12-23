@@ -125,15 +125,12 @@ Map map = Map.fromJson("underworld_map.json");
 
 A list of some example projects showing how to use this engine:
 
-| Example                                                                                | Description                                                    |
-|----------------------------------------------------------------------------------------|----------------------------------------------------------------| 
-| **[hello-world](./examples/hello-world)** <img src="docs/platformer-preview.png"> | Very simple hello world application. Shows how to get started. |
-- **[hello-world](./examples/hello-world)** A very simplistic hello world application.
-- **[pathfinding](./examples/pathfinding)** example showing how to use pathfinding and
-  importing maps from [Tiled Editor](https://www.mapeditor.org)
-- **[game-of-life](./examples/game-of-life)** An interactive game of life implementation.
-- **[platformer](./examples/platformer)** A much more complex example showing how to make a
-  platformer game with some light and reflection effects.
+| Example                                     | Description                                                                                                          |
+|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
+| **[hello-world](./examples/hello-world)**   | Very simple hello world application. Shows how to get started.                                                       |
+| **[pathfinding](./examples/pathfinding)**   | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
+| **[game-of-life](./examples/game-of-life)** | An interactive game of life implementation.                                                                          |
+| **[platformer](./examples/platformer)**     | A much more complex example showing how to make a platformer.                                                        |
 
 ## Libraries used
 
