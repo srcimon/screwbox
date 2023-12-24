@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -23,7 +24,7 @@ class TweenPositionSystemTest {
         var transformComponent = new TransformComponent(Bounds.atPosition(Vector.zero(), 20, 20));
 
         environment
-                .addEntity(new TweenYPositionComponent(-10, 10), new TweenXPositionComponent(-40, 40), transformComponent, tweenComponent)
+                .addEntity(new TweenPositionComponent($(-40, -10), $(40, 10)), transformComponent, tweenComponent)
                 .addSystem(new TweenPositionSystem());
 
         environment.update();

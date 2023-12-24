@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -7,17 +8,17 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import java.io.Serial;
 
 /**
- * Links tweening to the y-position of the {@link TransformComponent} of an {@link Entity}.
+ * Links tweening to the position of the {@link TransformComponent} of an {@link Entity}.
  */
-public class TweenYPositionComponent implements Component {
+public class TweenPositionComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double from;
-    public double to;
+    public Vector from;
+    public Vector to;
 
-    public TweenYPositionComponent(final double from, final double to) {
+    public TweenPositionComponent(final Vector from, final Vector to) {
         this.from = from;
         this.to = to;
     }

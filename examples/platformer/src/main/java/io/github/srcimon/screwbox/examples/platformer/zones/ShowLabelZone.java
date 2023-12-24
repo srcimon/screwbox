@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenYPositionComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -23,7 +23,7 @@ public class ShowLabelZone implements Converter<GameObject> {
         Integer size = object.properties().getInt("size").orElse(16);
         return new Entity().add(
                 new TweenComponent(ofSeconds(2), TweenMode.SINE_IN_OUT, true),
-                new TweenYPositionComponent(object.bounds().position().y() - 5, object.bounds().position().y() + 5),
+                new TweenPositionComponent(object.position().addY(-5), object.position().addY(5)),
                 new SignalComponent(),
                 new LabelComponent(label, size),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
