@@ -94,7 +94,6 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
                 .length(length);
     }
 
-    //TODO RENAME
     private double valueOfHighLow(final Key low, final Key high) {
         if (isDown(low)) {
             return isDown(high) ? 0 : -1;
