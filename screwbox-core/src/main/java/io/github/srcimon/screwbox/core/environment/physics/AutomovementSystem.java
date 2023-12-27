@@ -25,7 +25,7 @@ public class AutomovementSystem implements EntitySystem {
                         automovement.path.removeNode(0);
                     }
                     final Vector direction = automovement.path.start().substract(position);
-                    mover.get(PhysicsComponent.class).momentum = direction.adjustLengthTo(automovement.speed);
+                    mover.get(PhysicsComponent.class).momentum = direction.length(automovement.speed);
                 }
             }
         }

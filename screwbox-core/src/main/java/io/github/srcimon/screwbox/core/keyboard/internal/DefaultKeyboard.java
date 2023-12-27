@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -9,6 +10,8 @@ import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
+
+import static io.github.srcimon.screwbox.core.keyboard.Key.*;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
@@ -73,6 +76,29 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public void update() {
         justPressedKeys.backupInactive().clear();
         justPressedKeys.toggle();
+    }
+
+    @Override
+    public Vector wsadMovement(final double length) {
+        return Vector.of(
+                        valueOfHighLow(A, D),
+                        valueOfHighLow(W, S))
+                .length(length);
+    }
+
+    @Override
+    public Vector arrowKeysMovement(final double length) {
+        return Vector.of(
+                        valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
+                        valueOfHighLow(ARROW_UP, ARROW_DOWN))
+                .length(length);
+    }
+
+    private double valueOfHighLow(final Key low, final Key high) {
+        if (isDown(low)) {
+            return isDown(high) ? 0 : -1;
+        }
+        return isDown(high) ? 1 : 0;
     }
 
     private List<Key> mapCodes(final Set<Integer> codes) {
