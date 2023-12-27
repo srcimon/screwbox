@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.keyboard.internal;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
-import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.event.KeyEvent;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
@@ -102,9 +100,9 @@ class DefaultKeyboardTest {
             "D, 16, 0"
     })
     void wsadMovement_keysPressed_returnsMovement(String pressedKeys, double expectedX, double expectedY) {
-       for(char character : pressedKeys.toCharArray()) {
-           Key key = Key.valueOf(String.valueOf(character));
-           mockKeyPress(key);
+        for (char character : pressedKeys.toCharArray()) {
+            Key key = Key.valueOf(String.valueOf(character));
+            mockKeyPress(key);
         }
 
         keyboard.update();
@@ -113,6 +111,24 @@ class DefaultKeyboardTest {
 
         assertThat(result.x()).isEqualTo(expectedX, offset(0.1));
         assertThat(result.y()).isEqualTo(expectedY, offset(0.1));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "ARROW_UP, 0, -40",
+            "ARROW_DOWN, 0, 40",
+            "ARROW_LEFT, -40, 0",
+            "ARROW_RIGHT, 40, 0",
+    })
+    void arrowKeyMovement_keysPressed_returnsMovement(Key pressedKey, double expectedX, double expectedY) {
+        mockKeyPress(pressedKey);
+
+        keyboard.update();
+
+        Vector result = keyboard.arrowKeysMovement(40);
+
+        assertThat(result.x()).isEqualTo(expectedX);
+        assertThat(result.y()).isEqualTo(expectedY);
     }
 
     private void mockKeyPress(Key key) {

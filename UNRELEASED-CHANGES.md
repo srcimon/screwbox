@@ -13,7 +13,8 @@
 - Fixed unhandled exceptions in render thread (#166)
 - Fixed cause of unhandled exception in render thread (light radius is zero) (#166)
 - Fixed loading midi sounds (#168)
-- Fixed invalid result of  `Vector.zero().adjustLength(length)` returns invalid data
+- Fixed invalid result of `Vector.zero().adjustLength(length)` returns invalid data
+- Fixed no exception on calling `Vector.adjustLength(length)` with length below zero
 
 ### 🧽 Cleanup & refactoring
 

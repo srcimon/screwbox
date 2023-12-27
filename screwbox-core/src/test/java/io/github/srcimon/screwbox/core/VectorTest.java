@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Percentage.withPercentage;
 
 class VectorTest {
@@ -176,6 +177,15 @@ class VectorTest {
 
         assertThat(adjusted).isEqualTo(Vector.zero());
         assertThat(adjusted.length()).isZero();
+    }
+
+    @Test
+    void length_negativeLength_throwsException() {
+        Vector vector = Vector.$(2, 9);
+
+        assertThatThrownBy(() -> vector.length(-4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length must not be negative");
     }
 
     @Test

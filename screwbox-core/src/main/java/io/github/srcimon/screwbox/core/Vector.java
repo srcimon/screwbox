@@ -195,6 +195,9 @@ public final class Vector implements Serializable {
      * If {@link #isZero()} returns {@link #zero()}.
      */
     public Vector length(final double length) {
+        if(length < 0) {
+            throw new IllegalArgumentException("length must not be negative");
+        }
         if(isZero()) {
             return this;
         }
