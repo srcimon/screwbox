@@ -42,9 +42,15 @@ public interface Keyboard {
      */
     List<Key> downKeys();
 
-    //TODO javadoc
+    /**
+     * Returns the resulting {@link Vector} of a WSAD-movement scheme with the given length.
+     * @see #arrowKeysMovement(double)
+     */
     Vector wsadMovement(double length);
 
-    //TODO javadoc
+    /**
+     * Returns the resulting {@link Vector} of a arrow-keys-movement scheme with the given length.
+     * @see #wsadMovement(double)
+     */
     Vector arrowKeysMovement(double length);
 }
