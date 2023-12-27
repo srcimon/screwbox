@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.keyboard.internal;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -62,6 +63,16 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public List<Key> downKeys() {
         return mapCodes(pressedKeys);
+    }
+
+    @Override
+    public Vector wsadMovement(final double length) {
+        return null;
+    }
+
+    @Override
+    public Vector arrowKeysMovement(final double length) {
+        return null;
     }
 
     @Override

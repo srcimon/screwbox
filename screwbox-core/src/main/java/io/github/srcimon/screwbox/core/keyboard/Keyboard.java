@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.keyboard;
 
+import io.github.srcimon.screwbox.core.Vector;
+
 import java.util.List;
 
 public interface Keyboard {
@@ -39,4 +41,10 @@ public interface Keyboard {
      * Returns all currently down {@link Key}s.
      */
     List<Key> downKeys();
+
+    //TODO javadoc
+    Vector wsadMovement(double length);
+
+    //TODO javadoc
+    Vector arrowKeysMovement(double length);
 }
