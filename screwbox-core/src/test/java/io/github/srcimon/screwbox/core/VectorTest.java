@@ -170,17 +170,24 @@ class VectorTest {
     }
 
     @Test
-    void adjustLengthTo_lengthZero_returnsZero() {
+    void length_lengthZero_returnsZero() {
         Vector vector = Vector.$(2, 9);
-        Vector adjusted = vector.adjustLengthTo(0);
+        Vector adjusted = vector.length(0);
 
         assertThat(adjusted).isEqualTo(Vector.zero());
         assertThat(adjusted.length()).isZero();
     }
 
     @Test
-    void adjustLengthTo_lengthGiven_returnsVectorWithNewLength() {
-        Vector adjusted = Vector.$(2, 9).adjustLengthTo(4);
+    void lenght_zeroVector_returnsUnchangedVector() {
+        Vector result = Vector.zero().length(40);
+
+        assertThat(result).isEqualTo(Vector.zero());
+    }
+
+    @Test
+    void length_lengthGiven_returnsVectorWithNewLength() {
+        Vector adjusted = Vector.$(2, 9).length(4);
 
         assertThat(adjusted.x()).isCloseTo(0.867, withPercentage(0.1));
         assertThat(adjusted.y()).isCloseTo(3.904, withPercentage(0.1));

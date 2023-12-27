@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
 
+import static io.github.srcimon.screwbox.core.keyboard.Key.*;
+
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
@@ -66,16 +68,6 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     @Override
-    public Vector wsadMovement(final double length) {
-        return null;
-    }
-
-    @Override
-    public Vector arrowKeysMovement(final double length) {
-        return null;
-    }
-
-    @Override
     public boolean isAnyKeyDown() {
         return !pressedKeys.isEmpty();
     }
@@ -84,6 +76,30 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public void update() {
         justPressedKeys.backupInactive().clear();
         justPressedKeys.toggle();
+    }
+
+    @Override
+    public Vector wsadMovement(final double length) {
+        return Vector.of(
+                        valueOfHighLow(A, D),
+                        valueOfHighLow(W, S))
+                .length(length);
+    }
+
+    @Override
+    public Vector arrowKeysMovement(final double length) {
+        return Vector.of(
+                        valueOfHighLow(ARROW_LEFT, ARROW_RIGHT),
+                        valueOfHighLow(ARROW_UP, ARROW_DOWN))
+                .length(length);
+    }
+
+    //TODO RENAME
+    private double valueOfHighLow(final Key low, final Key high) {
+        if (isDown(low)) {
+            return isDown(high) ? 0 : -1;
+        }
+        return isDown(high) ? 1 : 0;
     }
 
     private List<Key> mapCodes(final Set<Integer> codes) {

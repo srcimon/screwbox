@@ -192,8 +192,12 @@ public final class Vector implements Serializable {
 
     /**
      * Returns a new {@link Vector} in the same direction but at the given length.
+     * If {@link #isZero()} returns {@link #zero()}.
      */
-    public Vector adjustLengthTo(double length) {
+    public Vector length(final double length) {
+        if(isZero()) {
+            return this;
+        }
         double factor = length / length();
         return Vector.of(x * factor, y * factor);
     }
