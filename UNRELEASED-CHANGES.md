@@ -3,10 +3,10 @@
 ### 🚀 Features & improvements
 
 - Introduced `TweenMode` with different options to create beautiful tweens (#164)
-- Added position tweening
+- Added `Keyboard.wsadMovement(length)` and `.arrowKeyMovement(length)` (#172)
 - Added `Line.normal(position, length)` (#169)
 - Added `Sound.format()`
-- Added `Keyboard.wsadMovement(length)` and `.arrowKeyMovement(length)`
+- Added position tweening
 
 ### 🪛 Bug Fixes
 
