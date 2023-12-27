@@ -3,15 +3,20 @@ package io.github.srcimon.screwbox.core.keyboard.internal;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.event.KeyEvent;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -87,14 +92,27 @@ class DefaultKeyboardTest {
         assertThat(keyboard.pressedKeys()).containsExactlyInAnyOrder(Key.A, Key.SPACE);
     }
 
-    //TODO: PROTOTYPE
-    @Test
-    void wsadMovement_keysPressed_returnsMovement() {
-        mockKeyPress(Key.A);
+    @ParameterizedTest
+    @CsvSource({
+            "W, 0, -16",
+            "WS, 0, 0",
+            "AD, 0, 0",
+            "AS, -11.3, 11.3",
+            "XZ, 0, 0",
+            "D, 16, 0"
+    })
+    void wsadMovement_keysPressed_returnsMovement(String pressedKeys, double expectedX, double expectedY) {
+       for(char character : pressedKeys.toCharArray()) {
+           Key key = Key.valueOf(String.valueOf(character));
+           mockKeyPress(key);
+        }
 
         keyboard.update();
 
-        assertThat(keyboard.wsadMovement(40)).isEqualTo(Vector.of(-40, 0));
+        Vector result = keyboard.wsadMovement(16);
+
+        assertThat(result.x()).isEqualTo(expectedX, offset(0.1));
+        assertThat(result.y()).isEqualTo(expectedY, offset(0.1));
     }
 
     private void mockKeyPress(Key key) {
