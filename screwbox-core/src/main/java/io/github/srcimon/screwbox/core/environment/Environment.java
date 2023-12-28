@@ -41,14 +41,18 @@ public interface Environment {
 
     Environment addEntity(int id, String name, Component... components);
 
-
     Environment addEntity(Component... components);
 
     Environment addEntity(Entity entity);
 
-    Environment addEntities(List<Entity> entities);
-
+    //TODO javadoc
     Environment addSystem(EntitySystem system);
+
+    //TODO javadoc
+    //TODO test
+    Environment addSystem(SystemOrder order, EntitySystem system);
+
+    Environment addEntities(List<Entity> entities);
 
     Environment addOrReplaceSystem(EntitySystem system);
 

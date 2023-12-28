@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -326,6 +328,31 @@ class DefaultEnvironmentTest {
         assertThat(environment.systems()).hasSize(2)
                 .anyMatch(system -> system.getClass().equals(LightRenderSystem.class))
                 .anyMatch(system -> system.getClass().equals(OptimizeLightPerformanceSystem.class));
+    }
+
+    @Test
+    void addSystem_orderNull_throwsException() {
+        assertThatThrownBy(() -> environment.addSystem(null, e -> e.stop()))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("order must not be null");
+    }
+
+    @Test
+    void addSystem_withOrderSystemNull_throwsException() {
+        assertThatThrownBy(() -> environment.addSystem(SystemOrder.PREPARATION, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("system must not be null");
+    }
+    @Test
+    void addSystem_orderGiven_addsSystemWithOrder() {
+        List<String> systemsExecuted = new ArrayList<>();
+
+        environment.addSystem(e -> systemsExecuted.add("first"));
+        environment.addSystem(SystemOrder.PREPARATION, e -> systemsExecuted.add("second"));
+
+        environment.update();
+
+        assertThat(systemsExecuted).containsExactly("second", "first");
     }
 
     @AfterEach
