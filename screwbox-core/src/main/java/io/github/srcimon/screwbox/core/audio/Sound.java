@@ -29,6 +29,14 @@ public final class Sound implements Serializable {
     private final Format format;
 
     /**
+     * Returns a short dummy sound effect.
+     * @return
+     */
+    public static Sound dummyEffect() {
+        return fromFile("assets/sounds/dummy_effect.wav");
+    }
+
+    /**
      * Creates a new {@link Sound} from file. Only supports WAV- and MIDI-Files at the moment.
      */
     public static Sound fromFile(final String fileName) {
