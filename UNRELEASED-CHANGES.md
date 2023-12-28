@@ -8,6 +8,7 @@
 - Added `Environment.addSystem(order, system)`
 - Added `Sound.format()`
 - Added position tweening
+- Added `Sprite.dummy16x16animated()` and `.dummy16x16()` (#159)
 
 ### 🪛 Bug Fixes
 
@@ -16,6 +17,7 @@
 - Fixed loading midi sounds (#168)
 - Fixed invalid result of `Vector.zero().adjustLength(length)` returns invalid data
 - Fixed no exception on calling `Vector.adjustLength(length)` with length below zero
+- Fixed `Frame.scaled(scale)` has no duration.
 
 ### 🧽 Cleanup & refactoring
 

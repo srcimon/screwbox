@@ -19,7 +19,7 @@ public class Sprite implements Serializable {
 
     private static final Sprite INVISIBLE = new Sprite(List.of(Frame.invisible()));
     private static final Sprite DUMMY_16X16 = Sprite.fromFile("assets/sprites/dummy_16x16.png");
-    private static final Sprite DUMMY_16X16_ANIMATED = Sprite.animatedFromFile("assets/sprites/dummy_16x16_animated.png", Size.square(16), Duration.ofMillis(100));
+    private static final Sprite DUMMY_16X16_ANIMATED = Sprite.animatedFromFile("assets/sprites/dummy_16x16_animated.png", Size.square(16), Duration.ofMillis(150));
 
     private final List<Frame> frames = new ArrayList<>();
     private final Time started = Time.now();
@@ -47,11 +47,16 @@ public class Sprite implements Serializable {
         this.duration = animationDuration;
     }
 
-    //TODO javadoc
+    /**
+     * Returns a dummy {@link Sprite}.
+     */
     public static Sprite dummy16x16() {
         return DUMMY_16X16.freshInstance();
     }
-    //TODO javadoc & test
+
+    /**
+     * Returns an animated dummy {@link Sprite}.
+     */
     public static Sprite dummy16x16animated() {
         return DUMMY_16X16_ANIMATED.freshInstance();
     }
