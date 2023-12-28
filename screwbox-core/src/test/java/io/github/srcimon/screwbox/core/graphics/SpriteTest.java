@@ -20,6 +20,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SpriteTest {
 
     @Test
+    void dummy16x16_returnsDummySprite() {
+        var sprite = Sprite.dummy16x16();
+
+        assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
+    }
+    @Test
     void invisible_returnsInvisibleSprite() {
         Sprite sprite = Sprite.invisible();
 
