@@ -56,7 +56,9 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment addSystem(final SystemOrder order, final EntitySystem system) {
-        addSystem(system);//TODO fix
+        requireNonNull(order, "order must not be null");
+        requireNonNull(system, "system must not be null");
+        systemManager.addSystem(system, order);
         return this;
     }
 

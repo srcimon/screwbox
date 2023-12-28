@@ -38,6 +38,11 @@ public class SystemManager {
         }
     }
 
+    public void addSystem(final EntitySystem system, final SystemOrder order) {
+        CACHE.put(system.getClass(), order);
+        addSystem(system);
+    }
+
     private static SystemOrder orderOf(final EntitySystem entitySystem) {
         final var clazz = entitySystem.getClass();
         return CACHE.getOrElse(clazz, () -> {

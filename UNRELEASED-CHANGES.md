@@ -5,6 +5,7 @@
 - Introduced `TweenMode` with different options to create beautiful tweens (#164)
 - Added `Keyboard.wsadMovement(length)` and `.arrowKeyMovement(length)` (#172)
 - Added `Line.normal(position, length)` (#169)
+- Added `Environment.addSystem(order, system)`
 - Added `Sound.format()`
 - Added position tweening
 
@@ -19,6 +20,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Vector.adjustLengthTo(length)` to `.length(length)`
+- Added Javadoc to `EntitySystem`
 
 ### 📦 Dependency updates
 
