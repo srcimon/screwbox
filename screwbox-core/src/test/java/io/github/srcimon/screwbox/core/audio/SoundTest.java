@@ -10,6 +10,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SoundTest {
 
     @Test
+    void dummyEffect_returnsDummySoundEffect() {
+        var sound = Sound.dummyEffect();
+
+        assertThat(sound.content()).hasSizeGreaterThan(10000);
+    }
+    
+    @Test
     void fromWav_validWav_hasContent() {
         var content = Resources.loadBinary("kill.wav");
         var sound = Sound.fromWav(content);

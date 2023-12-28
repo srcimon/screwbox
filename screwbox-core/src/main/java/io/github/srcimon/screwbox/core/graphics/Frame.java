@@ -143,7 +143,7 @@ public final class Frame implements Serializable {
             throw new IllegalArgumentException("Scaled image is size is invalid");
         }
         final var newImage = image().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        return new Frame(newImage);
+        return new Frame(newImage, duration);
     }
 
     /**

@@ -41,14 +41,21 @@ public interface Environment {
 
     Environment addEntity(int id, String name, Component... components);
 
-
     Environment addEntity(Component... components);
 
     Environment addEntity(Entity entity);
 
-    Environment addEntities(List<Entity> entities);
-
+    /**
+     * Adds an {@link EntitySystem} to the {@link Environment} with default {@link SystemOrder#SIMULATION}.
+     */
     Environment addSystem(EntitySystem system);
+
+    /**
+     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link SystemOrder} (overwrites annotated {@link SystemOrder} if present.
+     */
+    Environment addSystem(SystemOrder order, EntitySystem system);
+
+    Environment addEntities(List<Entity> entities);
 
     Environment addOrReplaceSystem(EntitySystem system);
 

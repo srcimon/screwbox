@@ -55,7 +55,7 @@ public class Pixelfont implements Serializable {
 
     private static Pixelfont defaultFontBlack() {
         final Pixelfont font = new Pixelfont();
-        final var sprites = Sprite.multipleFromFile("default_font.png", Size.square(8));
+        final var sprites = Sprite.multipleFromFile("assets/pixelfonts/default_font.png", Size.square(8));
         font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
         return font;
     }

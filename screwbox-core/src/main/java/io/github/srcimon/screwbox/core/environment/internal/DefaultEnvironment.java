@@ -54,6 +54,14 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment addSystem(final SystemOrder order, final EntitySystem system) {
+        requireNonNull(order, "order must not be null");
+        requireNonNull(system, "system must not be null");
+        systemManager.addSystem(system, order);
+        return this;
+    }
+
     public Environment addOrReplaceSystem(final EntitySystem system) {
         requireNonNull(system, "system must not be null");
         final var systemClass = system.getClass();
