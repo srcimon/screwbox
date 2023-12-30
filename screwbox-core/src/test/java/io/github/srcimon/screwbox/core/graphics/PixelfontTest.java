@@ -166,4 +166,14 @@ class PixelfontTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Padding must have positive value");
     }
+
+    @Test
+    void widthOf_noCharacters_isZero() {
+        assertThat(pixelfont.widthOf("bla")).isZero();
+    }
+
+    @Test
+    void widthOf_someCharacters_isZero() {
+        assertThat(Pixelfont.defaultFont().widthOf("This is a test")).isEqualTo(118);
+    }
 }
