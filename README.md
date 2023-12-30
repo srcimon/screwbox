@@ -8,9 +8,10 @@ Minimalist 2d Java game engine. Result of covid lockdown.
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
 ## About
-
-ScrewBox is a personal pet project since february 2021. I use it to learn about Java and have some fun. Maybe you have a
-look if you want to have some fun with Java and 2d graphics.
+ScrewBox is a small java only 2d game engine.
+I started developing ScrewBox in february 2021 right during too much time at hand because of covid lockdown.
+I use it to learn about Java and have some fun.
+If you want to get something startet in a few minutes ScrewBox might be a fun choice.
 
 <p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/trailer-thumbnail.png"></a>
 <br/><b><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)">▶ Watch trailer on Youtube</a></b></p>
@@ -36,7 +37,7 @@ look if you want to have some fun with Java and 2d graphics.
     <dependency>
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox-core</artifactId>
-        <version>1.0.0-RC5</version>
+        <version>1.0.0</version>
     </dependency>
     ```
 
@@ -79,7 +80,7 @@ BOM to manage all library dependencies.
         <dependency>
             <groupId>io.github.srcimon</groupId>
             <artifactId>screwbox</artifactId>
-            <version>1.0.0-RC5</version>
+            <version>1.0.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
