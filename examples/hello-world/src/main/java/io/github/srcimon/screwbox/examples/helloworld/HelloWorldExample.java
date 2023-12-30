@@ -2,8 +2,7 @@ package io.github.srcimon.screwbox.examples.helloworld;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-
-import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldExample {
 
@@ -12,7 +11,7 @@ public class HelloWorldExample {
 
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
-            screen.drawTextCentered(screen.center(), "HELLO WORLD!", defaultFont(), 2);
+            screen.drawTextCentered(screen.center(), "HELLO WORLD!", 2);
         });
 
         screwBox.start();
