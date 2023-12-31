@@ -11,6 +11,7 @@
 
 - Renamed `Percent.min()` and `.max()` methods
 - Added Javadoc to `Percent`
+- Excluded internal packages from Javadoc and added Javadoc badge 
 
 ### 📦 Dependency updates
 
