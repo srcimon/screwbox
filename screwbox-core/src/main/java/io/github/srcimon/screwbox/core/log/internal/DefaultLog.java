@@ -78,19 +78,19 @@ public class DefaultLog implements Log {
         return isActive;
     }
 
-    private boolean isActiveForLevel(final LogLevel level) {
-        return level.ordinal() >= minimumLevel.ordinal();
-    }
-
     @Override
     public Log error(final Throwable throwable) {
-        try (StringWriter stringWriter = new StringWriter()) {
-            try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
+        try (final var stringWriter = new StringWriter()) {
+            try (final var printWriter = new PrintWriter(stringWriter)) {
                 throwable.printStackTrace(printWriter);
                 return error(stringWriter.toString());
             }
         } catch (final IOException e) {
             throw new IllegalStateException("error handling failed", e);
         }
+    }
+
+    private boolean isActiveForLevel(final LogLevel level) {
+        return level.ordinal() >= minimumLevel.ordinal();
     }
 }

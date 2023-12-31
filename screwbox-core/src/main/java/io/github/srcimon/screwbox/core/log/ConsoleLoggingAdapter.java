@@ -21,5 +21,4 @@ public class ConsoleLoggingAdapter implements LoggingAdapter {
     protected void logError(final String message) {
         System.err.println(message);
     }
-
 }
