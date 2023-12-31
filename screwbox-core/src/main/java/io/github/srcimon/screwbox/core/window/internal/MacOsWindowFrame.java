@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
+import io.github.srcimon.screwbox.core.utils.MacOsSupport;
+
 import java.awt.*;
 import java.io.Serial;
 
@@ -23,7 +25,7 @@ public class MacOsWindowFrame extends WindowFrame {
             Thread.currentThread().interrupt();
         } catch (Exception e) {
             throw new IllegalStateException(
-                    "Please add jvm parameters to allow native fullscreen on MacOs: --add-opens java.desktop/com.apple.eawt=ALL-UNNAMED",
+                    "Please add jvm parameters to allow native fullscreen on MacOs: " + MacOsSupport.FULLSCREEN_JVM_OPTION,
                     e);
         }
     }

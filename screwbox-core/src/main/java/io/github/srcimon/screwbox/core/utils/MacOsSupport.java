@@ -5,6 +5,11 @@ package io.github.srcimon.screwbox.core.utils;
  */
 public class MacOsSupport {
 
+    /**
+     * JVM option required to support fullscreen on MacOs.
+     */
+    public static final String FULLSCREEN_JVM_OPTION = "--add-opens=java.desktop/com.apple.eawt=ALL-UNNAMED";
+
     private MacOsSupport() {
     } // hide constructor
 
