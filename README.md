@@ -3,11 +3,13 @@
 Minimalist 2d Java game engine. Result of covid lockdown.
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
+[![javadoc](https://javadoc.io/badge2/io.github.srcimon/screwbox-core/javadoc.svg)](https://javadoc.io/doc/io.github.srcimon/screwbox-core)
 [![Build](https://github.com/srcimon/screwbox/actions/workflows/build.yml/badge.svg)](https://github.com/srcimon/screwbox/actions/workflows/build.yml)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
 ## About
+
 ScrewBox is a small java only 2d game engine.
 I started developing ScrewBox in february 2021 right during too much time at hand because of covid lockdown.
 I use it to learn about Java and have some fun.
@@ -121,7 +123,7 @@ the [pathfinding example](./examples/pathfinding).
 Map map = Map.fromJson("underworld_map.json");
 ```
 
-## Examples
+## Documentation
 
 ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
 
