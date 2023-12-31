@@ -48,20 +48,14 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     ``` java
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
-    import io.github.srcimon.screwbox.core.graphics.Color;
-    import io.github.srcimon.screwbox.core.graphics.Offset;
-    import io.github.srcimon.screwbox.core.graphics.Pixelfont;
     
     public class HelloWorld {
     
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine("Hello World Example");
     
-            screwBox.environment().addSystem(engine -> {
-                Offset offset = engine.mouse().offset();
-                Pixelfont font = Pixelfont.defaultFont();
-                engine.graphics().screen().drawTextCentered(offset, "HELLO WORLD!", font, 4);
-            });
+            screwBox.environment().addSystem(engine ->
+              engine.graphics().screen().drawTextCentered(engine.mouse().offset(), "HELLO WORLD!", 4));
     
             screwBox.start();
         }
