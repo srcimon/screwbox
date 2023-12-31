@@ -13,23 +13,23 @@ class PercentTest {
     }
 
     @Test
-    void isMinValue_valueMin_returnsTrue() {
-        assertThat(Percent.of(0).isMinValue()).isTrue();
+    void isZero_valueZero_returnsTrue() {
+        assertThat(Percent.of(0).isZero()).isTrue();
     }
 
     @Test
-    void isMinValue_valueAboveMin_returnsFalse() {
-        assertThat(Percent.of(0.1).isMinValue()).isFalse();
+    void isZero_valueAboveZerp_returnsFalse() {
+        assertThat(Percent.of(0.1).isZero()).isFalse();
     }
 
     @Test
     void isMaxValue_valueMax_returnsTrue() {
-        assertThat(Percent.of(1).isMaxValue()).isTrue();
+        assertThat(Percent.of(1).isMax()).isTrue();
     }
 
     @Test
     void isMaxValue_valueLowertThanMax_returnsTrue() {
-        assertThat(Percent.of(0.8).isMaxValue()).isFalse();
+        assertThat(Percent.of(0.8).isMax()).isFalse();
     }
 
     @Test
@@ -45,7 +45,7 @@ class PercentTest {
         Percent percentage = Percent.of(0.2);
         Percent result = percentage.substract(0.7);
 
-        assertThat(result).isEqualTo(Percent.min());
+        assertThat(result).isEqualTo(Percent.zero());
     }
 
     @Test
@@ -65,10 +65,10 @@ class PercentTest {
     }
 
     @Test
-    void invert_valueIsMin_returnsMaxValue() {
-        Percent original = Percent.min();
+    void invert_valueIsZero_returnsMaxValue() {
+        Percent original = Percent.zero();
 
-        assertThat(original.invert().isMaxValue()).isTrue();
+        assertThat(original.invert().isMax()).isTrue();
     }
 
     @Test

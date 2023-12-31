@@ -52,7 +52,7 @@ public class ShadowSystem implements EntitySystem {
                         .nearestHit();
 
                 if (position.isEmpty()) {
-                    shadow.get(RenderComponent.class).opacity = Percent.min();
+                    shadow.get(RenderComponent.class).opacity = Percent.zero();
                 } else {
                     final Vector shadowPosition = position.get();
                     shadow.get(TransformComponent.class).bounds = shadow.get(TransformComponent.class).bounds.moveTo(shadowPosition);

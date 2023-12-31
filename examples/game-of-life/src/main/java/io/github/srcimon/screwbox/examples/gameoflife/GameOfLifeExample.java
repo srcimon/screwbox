@@ -35,7 +35,7 @@ public class GameOfLifeExample {
         engine.graphics().configuration().setUseAntialiasing(true);
 
         engine.ui()
-                .setRenderer(new SidebarRenderer(Percent.min()))
+                .setRenderer(new SidebarRenderer(Percent.zero()))
                 .setLayouter(new SidebarLayouter())
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());

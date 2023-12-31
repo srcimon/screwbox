@@ -21,7 +21,7 @@ public class Lurk implements Serializable {
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
     public static Lurk fixedInterval(final Duration interval) {
-        return intervalWithDeviation(interval, Percent.min());
+        return intervalWithDeviation(interval, Percent.zero());
     }
 
     public static Lurk intervalWithDeviation(final Duration interval, final Percent intervalDeviation) {

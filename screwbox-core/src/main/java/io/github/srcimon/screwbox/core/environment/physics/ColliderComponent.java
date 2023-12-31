@@ -19,7 +19,7 @@ public class ColliderComponent implements Component {
     }
 
     public ColliderComponent(final double friction) {
-        this(friction, Percent.min());
+        this(friction, Percent.zero());
     }
 
     public ColliderComponent(final double friction, final Percent bounce) {

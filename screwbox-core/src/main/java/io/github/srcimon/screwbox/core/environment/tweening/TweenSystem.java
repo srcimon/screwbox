@@ -44,6 +44,6 @@ public class TweenSystem implements EntitySystem {
     }
 
     private boolean tweenHasReachedEnd(final TweenComponent tween) {
-        return tween.reverse && tween.progress.isMinValue() || !tween.reverse && tween.progress.isMaxValue();
+        return tween.reverse && tween.progress.isZero() || !tween.reverse && tween.progress.isMax();
     }
 }

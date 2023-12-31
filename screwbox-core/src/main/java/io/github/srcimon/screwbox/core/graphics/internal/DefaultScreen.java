@@ -96,12 +96,8 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawTextCentered(final Offset offset, final String text, final Pixelfont font,
                                    final Percent opacity, final double scale) {
-        final List<Sprite> allSprites = font.spritesFor(text);
-        int totalWith = 0;
-        for (final var sprite : allSprites) {
-            totalWith += (int) ((sprite.size().width() + font.padding()) * scale);
-        }
-        drawTextSprites(offset.addX(totalWith / -2), opacity, scale, allSprites, font);
+        final int totalWidth = (int)(font.widthOf(text) * scale);
+        drawTextSprites(offset.addX(totalWidth / -2), opacity, scale, font.spritesFor(text), font);
         return this;
     }
 

@@ -62,6 +62,7 @@ class DefaultEngine implements Engine {
     private final String name;
 
     private boolean stopCalled = false;
+
     DefaultEngine(final String name) {
         final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
 
@@ -115,7 +116,10 @@ class DefaultEngine implements Engine {
     private void validateJvmOptions() {
         final List<String> jvmOptions = ManagementFactory.getRuntimeMXBean().getInputArguments();
         if (!jvmOptions.contains("-Dsun.java2d.opengl=true")) {
-            log.warn("Please run application with JVM Option '-Dsun.java2d.opengl=true' to avoid massive fps drop.");
+            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
+        }
+        if (MacOsSupport.isMacOs() && !jvmOptions.contains(MacOsSupport.FULLSCREEN_JVM_OPTION)) {
+            log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
     }
 
@@ -141,7 +145,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
-        if(!stopCalled) {
+        if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
                 ui.closeMenu();

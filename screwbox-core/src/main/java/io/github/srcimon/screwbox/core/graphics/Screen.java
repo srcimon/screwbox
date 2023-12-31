@@ -100,8 +100,16 @@ public interface Screen {
         return drawText(offset, text, font, Percent.max());
     }
 
+    default Screen drawText(Offset offset, String text) {
+        return drawText(offset, text, Pixelfont.defaultFont(), Percent.max());
+    }
+
     default Screen drawText(Offset offset, String text, Pixelfont font, double scale) {
         return drawText(offset, text, font, Percent.max(), scale);
+    }
+
+    default Screen drawText(Offset offset, String text, double scale) {
+        return drawText(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
     Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
@@ -114,8 +122,16 @@ public interface Screen {
         return drawTextCentered(offset, text, font, Percent.max());
     }
 
+    default Screen drawTextCentered(Offset offset, String text) {
+        return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max());
+    }
+
     default Screen drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
         return drawTextCentered(offset, text, font, Percent.max(), scale);
+    }
+
+    default Screen drawTextCentered(Offset offset, String text, double scale) {
+        return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
     Screen drawText(Offset offset, String text, Font font, Color color);

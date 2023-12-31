@@ -49,7 +49,7 @@ class DefaultAudioTest {
     void playEffect_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.setEffectVolume(Percent.min());
+        audio.setEffectVolume(Percent.zero());
         audio.playEffect(sound);
 
         awaitShutdown();

@@ -16,8 +16,8 @@ public class TweenComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
     public Time startTime = Time.now();
-    public Percent progress = Percent.min();
-    public Percent value = Percent.min();
+    public Percent progress = Percent.zero();
+    public Percent value = Percent.zero();
     public boolean reverse = false;
 
     public Duration duration;

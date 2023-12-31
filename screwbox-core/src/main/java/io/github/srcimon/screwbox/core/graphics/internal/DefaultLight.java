@@ -25,7 +25,7 @@ public class DefaultLight implements Light {
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private Lightmap lightmap;
-    private Percent ambientLight = Percent.min();
+    private Percent ambientLight = Percent.zero();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
     private boolean renderInProgress = false;
 

@@ -19,7 +19,7 @@ public class TweenOpacityComponent implements Component {
     public Percent to;
 
     public TweenOpacityComponent() {
-        this(Percent.min(), Percent.max());
+        this(Percent.zero(), Percent.max());
     }
 
     public TweenOpacityComponent(final Percent from, final Percent to) {

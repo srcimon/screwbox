@@ -75,7 +75,7 @@ public final class Color implements Serializable {
     /**
      * A transparent color.
      */
-    public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.min());
+    public static final Color TRANSPARENT = Color.rgb(0, 0, 0, Percent.zero());
 
     /**
      * Creates a random {@link Color} with full {@link #opacity()}.

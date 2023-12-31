@@ -166,6 +166,19 @@ public class Pixelfont implements Serializable {
         return height;
     }
 
+    /**
+     * Returns the width of a given text in this {@link Pixelfont}.  Will be 0 if there is no character jet.
+     */
+    public int widthOf(final String text) {
+        int totalWith = 0;
+        for (final var sprite : spritesFor(text)) {
+            totalWith += sprite.size().width();
+            totalWith += padding();
+        }
+
+        return totalWith;
+    }
+
     private Pixelfont replaceBlack(final Color newColor) {
         final Pixelfont newFont = new Pixelfont();
 

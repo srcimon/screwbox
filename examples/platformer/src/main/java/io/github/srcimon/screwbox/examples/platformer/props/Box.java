@@ -25,7 +25,7 @@ public class Box implements Converter<GameObject> {
                 new PhysicsComponent(),
                 new MovableComponent(),
                 new TransformComponent(object.bounds()),
-                new ColliderComponent(500, Percent.min()));
+                new ColliderComponent(500, Percent.zero()));
     }
 
 }

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 
 /**
  * Provides some super basic logging features and the ability to pick up engine
- * log events via {@link Log#setAdapter(LoggingAdapter)}}.
+ * log events via {@link Log#setAdapter(LoggingAdapter)}.
  * <p>
  * Without changing the {@link LoggingAdapter} the {@link ConsoleLoggingAdapter}
  * is used to log everything to console only.

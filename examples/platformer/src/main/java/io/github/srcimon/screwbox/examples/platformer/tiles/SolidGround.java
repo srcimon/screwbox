@@ -21,7 +21,7 @@ public class SolidGround implements Converter<Tile> {
                 new StaticColliderComponent(),
                 new StaticLightBlockingComponent(),
                 new LightBlockingComponent(),
-                new ColliderComponent(500, Percent.min()));
+                new ColliderComponent(500, Percent.zero()));
     }
 
 }

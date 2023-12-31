@@ -38,7 +38,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusic(final Sound sound) {
-        if (!musicVolume.isMinValue()) {
+        if (!musicVolume.isZero()) {
             playClip(sound, musicVolume, true);
         }
         return this;
@@ -46,7 +46,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playEffect(final Sound sound) {
-        if (!effectVolume.isMinValue()) {
+        if (!effectVolume.isZero()) {
             playClip(sound, effectVolume, false);
         }
         return this;
@@ -54,7 +54,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playEffectLooped(final Sound sound) {
-        if (!effectVolume.isMinValue()) {
+        if (!effectVolume.isZero()) {
             playClip(sound, effectVolume, true);
         }
         return this;
@@ -147,13 +147,13 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio muteMusic() {
-        setMusicVolume(Percent.min());
+        setMusicVolume(Percent.zero());
         return this;
     }
 
     @Override
     public Audio muteEffects() {
-        setEffectVolume(Percent.min());
+        setEffectVolume(Percent.zero());
         return this;
     }
 
