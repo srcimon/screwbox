@@ -27,7 +27,7 @@ class TweenSystemTest {
 
         environment.update();
 
-        assertThat(smoke.get(TweenComponent.class).progress.isMinValue()).isFalse();
+        assertThat(smoke.get(TweenComponent.class).progress.isZero()).isFalse();
     }
 
     @Test

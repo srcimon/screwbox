@@ -71,13 +71,13 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void applyOpacityConfig(final Percent opacity) {
-        if (!opacity.isMaxValue()) {
+        if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity.value()));
         }
     }
 
     private void resetOpacityConfig(final Percent opacity) {
-        if (!opacity.isMaxValue()) {
+        if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
     }

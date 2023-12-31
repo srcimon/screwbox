@@ -23,7 +23,7 @@ public class Diggable implements Converter<GameObject> {
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new DiggableComponent(),
                 new TransformComponent(object.bounds()),
-                new ColliderComponent(500, Percent.min()));
+                new ColliderComponent(500, Percent.zero()));
     }
 
 }

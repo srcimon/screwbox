@@ -21,7 +21,7 @@ public class ScreenTransitionSystem implements EntitySystem {
             final Duration progressDuration = Duration.since(transitionComponent.startTime);
             final var progress = Percent.of(1.0 * progressDuration.nanos() / transitionComponent.duration.nanos());
             transitionComponent.transition.draw(engine.graphics().screen(), progress);
-            if (progress.isMaxValue()) {
+            if (progress.isMax()) {
                 entity.remove(ScreenTransitionComponent.class);
             }
         }

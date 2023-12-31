@@ -21,21 +21,21 @@ public class SidebarRenderer implements UiRenderer {
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Screen screen) {
-        if (!opacity.isMinValue()) {
+        if (!opacity.isZero()) {
             screen.drawText(at(bounds.offset().x(), bounds.center().y()), label, FONT, WHITE.opacity(opacity));
         }
     }
 
     @Override
     public void renderSelectedItem(String label, ScreenBounds bounds, Screen screen) {
-        if (!opacity.isMinValue()) {
+        if (!opacity.isZero()) {
             screen.drawText(at(bounds.offset().x(), bounds.center().y()), label, FONT, RED.opacity(opacity));
         }
     }
 
     @Override
     public void renderInactiveItem(String label, ScreenBounds bounds, Screen screen) {
-        if (!opacity.isMinValue()) {
+        if (!opacity.isZero()) {
             screen.drawText(at(bounds.offset().x(), bounds.center().y()), label, FONT, GREY.opacity(opacity));
         }
     }

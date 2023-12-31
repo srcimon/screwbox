@@ -5,6 +5,9 @@ import io.github.srcimon.screwbox.core.utils.MathUtil;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * A percent value between 0.0 and 1.0.
+ */
 public class Percent implements Serializable {
 
     @Serial
@@ -24,6 +27,9 @@ public class Percent implements Serializable {
         this.value = MathUtil.clamp(MIN_VALUE, value, MAX_VALUE);
     }
 
+    /**
+     * Returns a new instance with the given values. Values below 0 returns {@link Percent#zero()}. Values above 1 returns {@link Percent#max()}.
+     */
     public static Percent of(final double value) {
         return new Percent(value);
     }
@@ -52,7 +58,7 @@ public class Percent implements Serializable {
     /**
      * Returns 0 percent.
      */
-    public static Percent min() {
+    public static Percent zero() {
         return MIN_PERCENT;
     }
 
@@ -63,15 +69,24 @@ public class Percent implements Serializable {
         return MAX_PERCENT;
     }
 
+    /**
+     * Returns the represented value betweeen 0.0 and 1.0.
+     */
     public double value() {
         return value;
     }
 
-    public boolean isMinValue() {
+    /**
+     * Returns {@code true} if value is 0.
+     */
+    public boolean isZero() {
         return MIN_VALUE == value;
     }
 
-    public boolean isMaxValue() {
+    /**
+     * Returns {@code true} if value is 1.0.
+     */
+    public boolean isMax() {
         return MAX_VALUE == value;
     }
 
@@ -101,6 +116,9 @@ public class Percent implements Serializable {
         return Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
     }
 
+    /**
+     * Returns the inverted value of the percentage.
+     */
     public Percent invert() {
         return Percent.of(MAX_VALUE - value);
     }
@@ -115,7 +133,7 @@ public class Percent implements Serializable {
 
     /**
      * Returns a new instance with the current value minus the given value. Returns
-     * {@link Percent#min()} when the sum is below 0 percent.
+     * {@link Percent#zero()} when the sum is below 0 percent.
      */
     public Percent substract(final double value) {
         return new Percent(this.value - value);
