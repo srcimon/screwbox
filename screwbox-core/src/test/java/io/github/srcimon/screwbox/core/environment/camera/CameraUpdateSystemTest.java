@@ -44,7 +44,7 @@ class CameraUpdateSystemTest {
                 new TransformComponent(Bounds.atPosition(0, 0, 20000, 20000)));
 
         environment
-                .addSystem(camera, tracked, worldBounds)
+                .addEntities(camera, tracked, worldBounds)
                 .addSystem(new CameraUpdateSystem());
 
         environment.updateTimes(50);

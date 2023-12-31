@@ -2,10 +2,7 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
@@ -34,7 +31,7 @@ class FlipSpriteSystemTest {
                 .add(new PhysicsComponent(Vector.y(1)))
                 .add(new FlipSpriteComponent());
 
-        environment.addSystem(movingRight, movingLeftUp, movingDown)
+        environment.addEntities(movingRight, movingLeftUp, movingDown)
                 .addSystem(new FlipSpriteSystem());
 
         environment.update();

@@ -31,7 +31,7 @@ class OptimizeLightPerformancSystemTest {
                 new LightBlockingComponent(),
                 new TransformComponent(atOrigin(40, 0, 20, 20)));
 
-        environment.addSystem(brickA, brickB, brickC);
+        environment.addEntities(brickA, brickB, brickC);
         environment.addSystem(new OptimizeLightPerformanceSystem());
 
         environment.update(); // one brick per cycle aligned

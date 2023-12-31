@@ -26,7 +26,7 @@ class CollisionDetectionSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionDetectionComponent());
 
-        environment.addSystem(ball, player)
+        environment.addEntities(ball, player)
                 .addSystem(new CollisionDetectionSystem());
 
         environment.update();
@@ -45,7 +45,7 @@ class CollisionDetectionSystemTest {
                 new TransformComponent(Bounds.atPosition(1, 0, 2, 2)),
                 new CollisionDetectionComponent());
 
-        environment.addSystem(bird, player)
+        environment.addEntities(bird, player)
                 .addSystem(new CollisionDetectionSystem());
 
         environment.update();

@@ -114,7 +114,7 @@ public interface Environment {
 
     boolean contains(Archetype archetype);
 
-    Environment addSystem(Entity... entities);
+    Environment addEntities(Entity... entities);
 
     boolean isSystemPresent(Class<? extends EntitySystem> type);
 
