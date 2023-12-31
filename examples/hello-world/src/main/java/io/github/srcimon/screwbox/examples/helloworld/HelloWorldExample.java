@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.helloworld;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldExample {
 

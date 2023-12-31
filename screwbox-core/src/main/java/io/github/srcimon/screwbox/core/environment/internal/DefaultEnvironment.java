@@ -49,7 +49,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Environment addSystem(final EntitySystem system) {
-        requireNonNull(system, "system must not be null");
+        verifySystemNotNull(system);
         systemManager.addSystem(system);
         return this;
     }
@@ -57,13 +57,13 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Environment addSystem(final SystemOrder order, final EntitySystem system) {
         requireNonNull(order, "order must not be null");
-        requireNonNull(system, "system must not be null");
+        verifySystemNotNull(system);
         systemManager.addSystem(system, order);
         return this;
     }
 
     public Environment addOrReplaceSystem(final EntitySystem system) {
-        requireNonNull(system, "system must not be null");
+        verifySystemNotNull(system);
         final var systemClass = system.getClass();
         if (isSystemPresent(systemClass)) {
             remove(systemClass);
@@ -287,5 +287,9 @@ public class DefaultEnvironment implements Environment {
         for (final var system : feature.systems) {
             addOrReplaceSystem(system);
         }
+    }
+
+    private void verifySystemNotNull(EntitySystem system) {
+        requireNonNull(system, "system must not be null");
     }
 }
