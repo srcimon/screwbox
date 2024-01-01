@@ -68,10 +68,10 @@ class PathTest {
     void segments_fourNodes_threeSegments() {
         Path path = Path.withNodes(createNodes(4));
 
-        assertThat(path.segments()).containsExactly(
-                Line.between($(0, 0), $(1, 1)),
-                Line.between($(1, 1), $(2, 2)),
-                Line.between($(2, 2), $(3, 3)));
+        assertThat(path.segments()).isUnmodifiable().containsExactly(
+                        Line.between($(0, 0), $(1, 1)),
+                        Line.between($(1, 1), $(2, 2)),
+                        Line.between($(2, 2), $(3, 3)));
     }
 
     private List<Vector> createNodes(int count) {

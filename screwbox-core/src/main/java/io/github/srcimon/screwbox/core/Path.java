@@ -5,12 +5,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class Path implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     private final List<Vector> nodes;
+    private final List<Line> segments = new ArrayList<>();
 
     public static Path withNodes(final List<Vector> nodes) {
         return new Path(nodes);
@@ -21,15 +24,14 @@ public class Path implements Serializable {
             throw new IllegalArgumentException("path must have at least one node");
         }
         this.nodes = nodes;
-    }
-
-    public List<Line> segments() {
-        final var segments = new ArrayList<Line>();
         for (int i = 0; i < nodeCount() - 1; i++) {
             final var segment = Line.between(nodes.get(i), nodes.get(i + 1));
             segments.add(segment);
         }
-        return segments;
+    }
+
+    public List<Line> segments() {
+        return unmodifiableList(segments);
     }
 
     public Path removeNode(final int node) {
