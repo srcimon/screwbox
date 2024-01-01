@@ -18,7 +18,7 @@ class PathTest {
 
         assertThatThrownBy(() -> Path.withNodes(noNodes))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Path must have at least one node.");
+                .hasMessage("path must have at least one node");
     }
 
     @Test
@@ -27,7 +27,7 @@ class PathTest {
 
         assertThatThrownBy(() -> path.removeNode(0))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cannot drop last node.");
+                .hasMessage("can not drop last node");
     }
 
     @Test
@@ -36,16 +36,16 @@ class PathTest {
 
         assertThatThrownBy(() -> path.removeNode(4))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Path doesnt have node: 4");
+                .hasMessage("path too short");
     }
 
     @Test
     void removeNode_nodesLeft_removesNode() {
         Path path = Path.withNodes(createNodes(5));
 
-        path.removeNode(0);
+        var newPath = path.removeNode(0);
 
-        assertThat(path.nodes())
+        assertThat(newPath.nodes())
                 .hasSize(4)
                 .doesNotContain($(0, 0));
     }

@@ -40,8 +40,8 @@ class DefaultPhysicsTest {
 
         Path path = physics.findPath($(0, 0), $(9, 9)).get();
 
-        assertThat(path.start()).isEqualTo($(0, 0));
-        assertThat(path.end()).isEqualTo($(9, 9));
+        assertThat(path.firstNode()).isEqualTo($(0, 0));
+        assertThat(path.lastNode()).isEqualTo($(9, 9));
         assertThat(path.nodeCount()).isEqualTo(10);
     }
 

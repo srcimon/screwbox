@@ -18,7 +18,7 @@ public class Path implements Serializable {
 
     private Path(final List<Vector> nodes) {
         if (nodes.isEmpty()) {
-            throw new IllegalArgumentException("Path must have at least one node.");
+            throw new IllegalArgumentException("path must have at least one node");
         }
         this.nodes = nodes;
     }
@@ -32,21 +32,22 @@ public class Path implements Serializable {
         return segments;
     }
 
-    public void removeNode(final int node) {
+    public Path removeNode(final int node) {
         if (nodeCount() == 1) {
-            throw new IllegalStateException("Cannot drop last node.");
+            throw new IllegalStateException("can not drop last node");
         }
         if (node > nodes.size()) {
-            throw new IllegalStateException("Path doesnt have node: " + node);
+            throw new IllegalStateException("path too short");
         }
-        nodes.remove(node);
+
+        return Path.withNodes(nodes.subList(1, nodes.size()));
     }
 
     public List<Vector> nodes() {
         return nodes;
     }
 
-    public Vector start() {
+    public Vector firstNode() {
         return nodes.getFirst();
     }
 
@@ -54,7 +55,7 @@ public class Path implements Serializable {
         return nodes.size();
     }
 
-    public Vector end() {
+    public Vector lastNode() {
         return nodes.get(nodeCount() - 1);
     }
 }
