@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MapTest {
 
@@ -13,6 +14,20 @@ class MapTest {
     @BeforeEach
     void beforeEach() {
         map = Map.fromJson("underworld_map.json");
+    }
+
+    @Test
+    void fromJson_fileNameIsNull_throwsException() {
+        assertThatThrownBy(() -> Map.fromJson(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("fileName must not be null");
+    }
+
+    @Test
+    void fromJson_filenameDoenstEndWithJson_throwsException() {
+        assertThatThrownBy(() -> Map.fromJson("Test.txt"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("file to be loaded is not a json: Test.txt");
     }
 
     @Test

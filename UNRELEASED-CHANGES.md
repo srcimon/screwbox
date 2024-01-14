@@ -3,6 +3,7 @@
 - Added methods for drawing texts on screen using `Pixelfont.default()`
 - Added `Pixelfont.widthOf(text)`
 - Added warning when started app on MacOs without required JVM option to support fullscreen (#176)
+- Added fileName validation to `Map.fromJson(fileName)`
 
 ### 🪛 Bug Fixes
 

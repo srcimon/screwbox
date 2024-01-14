@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.tiled.internal.MapEntity;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A Map created in Tiled-Editor. Used to import content created in Tiled-Editor
  * in your game.
@@ -26,6 +28,9 @@ public class Map {
      * Loads a new instance of a Tiled-Map that was saved as JSON-File.
      */
     public static Map fromJson(final String fileName) {
+        if (!requireNonNull(fileName, "fileName must not be null").toLowerCase().endsWith(".json")) {
+            throw new IllegalArgumentException("file to be loaded is not a json: " + fileName);
+        }
         final MapEntity entity = MapEntity.load(fileName);
         return new Map(entity);
     }
