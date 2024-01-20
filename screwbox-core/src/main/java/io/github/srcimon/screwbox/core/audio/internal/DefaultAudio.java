@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 public class DefaultAudio implements Audio, LineListener {
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
-    private final Map<Clip, Sound> activeSounds = new HashMap<>();
+    private final Map<Clip, Sound> activeSounds = new ConcurrentHashMap<>();
     private Percent effectVolume = Percent.max();
     private Percent musicVolume = Percent.max();
 
@@ -104,14 +105,6 @@ public class DefaultAudio implements Audio, LineListener {
         }
     }
 
-    private void start(final Clip clip, final boolean looped) {
-        if (looped) {
-            clip.loop(Integer.MAX_VALUE);
-        } else {
-            clip.start();
-        }
-    }
-
     @Override
     public int activeCount(final Sound sound) {
         return fetchClipsFor(sound).size();
@@ -156,5 +149,13 @@ public class DefaultAudio implements Audio, LineListener {
             }
         }
         return clips;
+    }
+
+    private void start(final Clip clip, final boolean looped) {
+        if (looped) {
+            clip.loop(Integer.MAX_VALUE);
+        } else {
+            clip.start();
+        }
     }
 }
