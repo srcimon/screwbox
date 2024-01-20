@@ -26,16 +26,6 @@ public class DefaultAudio implements Audio, LineListener {
         this.audioAdapter = audioAdapter;
     }
 
-    private List<Clip> reverseLookup(final Sound sound) {
-        final List<Clip> clips = new ArrayList<>();
-        for (final var activeSound : activeSounds.entrySet()) {
-            if (activeSound.getValue().equals(sound)) {
-                clips.add(activeSound.getKey());
-            }
-        }
-        return clips;
-    }
-
     @Override
     public Audio playMusic(final Sound sound) {
         if (!musicVolume.isZero()) {
@@ -93,7 +83,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio stop(final Sound sound) {
-        for (final Clip clip : reverseLookup(sound)) {
+        for (final Clip clip : fetchClipsFor(sound)) {
             executor.execute(clip::stop);
         }
         return this;
@@ -126,7 +116,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public int activeCount(final Sound sound) {
-        return reverseLookup(sound).size();
+        return fetchClipsFor(sound).size();
     }
 
     @Override
@@ -156,7 +146,17 @@ public class DefaultAudio implements Audio, LineListener {
         return this;
     }
 
-    private ArrayList<Clip> activeClips() {
+    private List<Clip> activeClips() {
         return new ArrayList<>(activeSounds.keySet());
+    }
+
+    private List<Clip> fetchClipsFor(final Sound sound) {
+        final List<Clip> clips = new ArrayList<>();
+        for (final var activeSound : activeSounds.entrySet()) {
+            if (activeSound.getValue().equals(sound)) {
+                clips.add(activeSound.getKey());
+            }
+        }
+        return clips;
     }
 }
