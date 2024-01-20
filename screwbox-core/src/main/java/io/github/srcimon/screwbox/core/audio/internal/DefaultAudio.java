@@ -28,17 +28,13 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusic(final Sound sound) {
-        if (!musicVolume.isZero()) {
-            playClip(sound, musicVolume, true);
-        }
+        playClip(sound, musicVolume, true);
         return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound) {
-        if (!effectVolume.isZero()) {
-            playClip(sound, effectVolume, false);
-        }
+        playClip(sound, effectVolume, false);
         return this;
     }
 
@@ -97,13 +93,15 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     private void playClip(final Sound sound, final Percent volume, final boolean looped) {
-        executor.execute(() -> {
-            final Clip clip = audioAdapter.createClip(sound, volume);
-            activeSounds.put(clip, sound);
-            clip.setFramePosition(0);
-            clip.addLineListener(this);
-            start(clip, looped);
-        });
+        if (!volume.isZero()) {
+            executor.execute(() -> {
+                final Clip clip = audioAdapter.createClip(sound, volume);
+                activeSounds.put(clip, sound);
+                clip.setFramePosition(0);
+                clip.addLineListener(this);
+                start(clip, looped);
+            });
+        }
     }
 
     private void start(final Clip clip, final boolean looped) {
