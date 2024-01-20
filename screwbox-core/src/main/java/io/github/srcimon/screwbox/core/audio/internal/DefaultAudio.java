@@ -82,8 +82,7 @@ public class DefaultAudio implements Audio, LineListener {
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                final List<Clip> clipsToStop = new ArrayList<>(activeSounds.keySet());
-                for (final Clip clip : clipsToStop) {
+                for (final Clip clip : activeClips()) {
                     clip.stop();
                 }
                 activeSounds.clear();
@@ -157,4 +156,7 @@ public class DefaultAudio implements Audio, LineListener {
         return this;
     }
 
+    private ArrayList<Clip> activeClips() {
+        return new ArrayList<>(activeSounds.keySet());
+    }
 }
