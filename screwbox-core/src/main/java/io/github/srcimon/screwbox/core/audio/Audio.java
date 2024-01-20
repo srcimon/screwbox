@@ -37,6 +37,12 @@ public interface Audio {
     Audio playMusic(Sound sound);
 
     /**
+     * Plays a {@link Sound} looped with {@link #musicVolume()} ()}. Can be stopped
+     * with {@link #stop(Sound)}.
+     */
+    Audio playMusicLooped(Sound sound);
+
+    /**
      * Stops all currently playing instances of the {@link Sound}.
      */
     Audio stop(Sound sound);
@@ -76,6 +82,11 @@ public interface Audio {
      * Returns the count of currently playing instances of the given {@link Sound}.
      */
     int activeCount(Sound sound);
+
+    /**
+     * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
+     */
+    boolean isActive(Sound sound);
 
     /**
      * Returns the count of currently playing {@link Sound}s.

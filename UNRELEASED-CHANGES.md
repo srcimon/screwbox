@@ -4,10 +4,12 @@
 - Added `Pixelfont.widthOf(text)`
 - Added warning when started app on MacOs without required JVM option to support fullscreen (#176)
 - Added fileName validation to `Map.fromJson(fileName)`
+- Added `Audio.playMusicLooped(Sound)`
+- Added `Audio.isActive(Sound)`
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed active audio is not affected by volume changes (#182)
 
 ### 🧽 Cleanup & refactoring
 

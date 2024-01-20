@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.test.TestUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,6 +81,38 @@ class DefaultAudioTest {
     }
 
     @Test
+    void playMusicLooped_musicVolumeZero_doesntPlayEffect() {
+        Sound sound = Sound.fromFile("kill.wav");
+
+        audio.muteMusic();
+        audio.playMusicLooped(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(any(), any());
+    }
+
+    @Test
+    void isActive_noInstanceActive_isFalse() {
+        Sound sound = Sound.fromFile("kill.wav");
+
+        assertThat(audio.isActive(sound)).isFalse();
+    }
+
+    @Test
+    void isActive_twoInstanceActive_isTrue() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound, Percent.max())).thenReturn(clip);
+
+        audio.playMusic(sound);
+        audio.playMusic(sound);
+
+        awaitShutdown();
+
+        assertThat(audio.isActive(sound)).isTrue();
+    }
+
+    @Test
     void activeCount_noneActive_isZero() {
         assertThat(audio.activeCount()).isZero();
     }
@@ -148,6 +179,7 @@ class DefaultAudioTest {
         assertThat(audio.activeCount(sound)).isZero();
     }
 
+
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
@@ -172,7 +204,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        Assertions.assertThat(audio.effectVolume()).isEqualTo(Percent.half());
+        assertThat(audio.effectVolume()).isEqualTo(Percent.half());
     }
 
     @Test
@@ -185,7 +217,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        Assertions.assertThat(audio.musicVolume()).isEqualTo(Percent.of(0.7));
+        assertThat(audio.musicVolume()).isEqualTo(Percent.of(0.7));
     }
 
     private LineEvent stopEventFor(Clip clipMock) {
