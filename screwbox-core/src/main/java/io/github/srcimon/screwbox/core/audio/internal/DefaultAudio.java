@@ -34,9 +34,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusicLooped(Sound sound) {
-        if (!musicVolume.isZero()) {
-            playClip(new ActiveSound(sound, true), musicVolume, true);
-        }
+        playClip(new ActiveSound(sound, true), musicVolume, true);
         return this;
     }
 
@@ -48,21 +46,21 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playEffectLooped(final Sound sound) {
-        if (!effectVolume.isZero()) {
-            playClip(new ActiveSound(sound, false), effectVolume, true);
-        }
+        playClip(new ActiveSound(sound, false), effectVolume, true);
         return this;
     }
 
     @Override
     public Audio setEffectVolume(final Percent volume) {
         this.effectVolume = volume;
+        updateVolumeOfActiveClips(volume, false);
         return this;
     }
 
     @Override
     public Audio setMusicVolume(final Percent volume) {
         this.musicVolume = volume;
+        updateVolumeOfActiveClips(volume, true);
         return this;
     }
 
@@ -118,6 +116,11 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
+    public boolean isActive(Sound sound) {
+        return !fetchClipsFor(sound).isEmpty();
+    }
+
+    @Override
     public int activeCount() {
         return activeSounds.size();
     }
@@ -163,6 +166,14 @@ public class DefaultAudio implements Audio, LineListener {
             clip.loop(Integer.MAX_VALUE);
         } else {
             clip.start();
+        }
+    }
+
+    private void updateVolumeOfActiveClips(final Percent volume, final boolean isMusic) {
+        for (final var activeSound : activeSounds.entrySet()) {
+            if (isMusic == activeSound.getValue().isMusic()) {
+                audioAdapter.setVolume(activeSound.getKey(), volume);
+            }
         }
     }
 }

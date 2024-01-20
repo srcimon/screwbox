@@ -84,6 +84,11 @@ public interface Audio {
     int activeCount(Sound sound);
 
     /**
+     * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
+     */
+    boolean isActive(Sound sound);
+
+    /**
      * Returns the count of currently playing {@link Sound}s.
      */
     int activeCount();
