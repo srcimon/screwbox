@@ -37,6 +37,12 @@ public interface Audio {
     Audio playMusic(Sound sound);
 
     /**
+     * Plays a {@link Sound} looped with {@link #musicVolume()} ()}. Can be stopped
+     * with {@link #stop(Sound)}.
+     */
+    Audio playMusicLooped(Sound sound);
+
+    /**
      * Stops all currently playing instances of the {@link Sound}.
      */
     Audio stop(Sound sound);

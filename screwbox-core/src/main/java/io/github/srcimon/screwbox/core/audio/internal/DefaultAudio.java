@@ -8,7 +8,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +17,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
-    private final Map<Clip, Sound> activeSounds = new ConcurrentHashMap<>();
+    private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
     private Percent effectVolume = Percent.max();
     private Percent musicVolume = Percent.max();
 
@@ -29,20 +28,28 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusic(final Sound sound) {
-        playClip(sound, musicVolume, true);
+        playClip(new ActiveSound(sound, true), musicVolume, true);
+        return this;
+    }
+
+    @Override
+    public Audio playMusicLooped(Sound sound) {
+        if (!musicVolume.isZero()) {
+            playClip(new ActiveSound(sound, true), musicVolume, true);
+        }
         return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound) {
-        playClip(sound, effectVolume, false);
+        playClip(new ActiveSound(sound, false), effectVolume, false);
         return this;
     }
 
     @Override
     public Audio playEffectLooped(final Sound sound) {
         if (!effectVolume.isZero()) {
-            playClip(sound, effectVolume, true);
+            playClip(new ActiveSound(sound, false), effectVolume, true);
         }
         return this;
     }
@@ -93,11 +100,11 @@ public class DefaultAudio implements Audio, LineListener {
         }
     }
 
-    private void playClip(final Sound sound, final Percent volume, final boolean looped) {
+    private void playClip(final ActiveSound activeSound, final Percent volume, final boolean looped) {
         if (!volume.isZero()) {
             executor.execute(() -> {
-                final Clip clip = audioAdapter.createClip(sound, volume);
-                activeSounds.put(clip, sound);
+                final Clip clip = audioAdapter.createClip(activeSound.sound(), volume);
+                activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
                 start(clip, looped);
@@ -144,7 +151,7 @@ public class DefaultAudio implements Audio, LineListener {
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
         for (final var activeSound : activeSounds.entrySet()) {
-            if (activeSound.getValue().equals(sound)) {
+            if (activeSound.getValue().sound().equals(sound)) {
                 clips.add(activeSound.getKey());
             }
         }
