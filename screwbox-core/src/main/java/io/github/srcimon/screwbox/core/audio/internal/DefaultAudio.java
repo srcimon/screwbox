@@ -116,8 +116,13 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public boolean isActive(Sound sound) {
-        return !fetchClipsFor(sound).isEmpty();
+    public boolean isActive(final Sound sound) {
+        for (final var activeSound : activeSounds.entrySet()) {
+            if (activeSound.getValue().sound().equals(sound)) {
+               return true;
+            }
+        }
+        return false;
     }
 
     @Override
