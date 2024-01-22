@@ -96,13 +96,26 @@ public interface Audio {
     /**
      * Sets {@link #musicVolume()} to zero. Can be unmuted via
      * {@link #setMusicVolume(Percent)}.
+     *
+     * @see #mute()
+     * @see #muteEffects()
      */
     Audio muteMusic();
 
     /**
      * Sets {@link #effectVolume()} to zero. Can be unmuted via
      * {@link #setEffectVolume(Percent)}.
+     *
+     * @see #mute()
+     * @see #muteMusic()
      */
     Audio muteEffects();
 
+    /**
+     * Sets {@link #effectVolume()} and {@link #musicVolume()} to zero.
+     *
+     * @see #muteEffects()
+     * @see #muteMusic()
+     */
+    Audio mute();
 }

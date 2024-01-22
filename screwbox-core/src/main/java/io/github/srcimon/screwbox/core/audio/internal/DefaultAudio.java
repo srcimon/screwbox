@@ -152,6 +152,13 @@ public class DefaultAudio implements Audio, LineListener {
         return this;
     }
 
+    @Override
+    public Audio mute() {
+        muteEffects();
+        muteMusic();
+        return this;
+    }
+
     private List<Clip> activeClips() {
         return new ArrayList<>(activeSounds.keySet());
     }
