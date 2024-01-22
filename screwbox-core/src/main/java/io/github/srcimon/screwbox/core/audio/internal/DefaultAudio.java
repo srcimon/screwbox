@@ -28,7 +28,7 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusic(final Sound sound) {
-        playClip(new ActiveSound(sound, true), musicVolume, true);
+        playClip(new ActiveSound(sound, true), musicVolume, false);
         return this;
     }
 
