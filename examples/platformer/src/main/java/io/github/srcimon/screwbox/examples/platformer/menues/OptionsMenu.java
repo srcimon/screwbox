@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.menues;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.ui.ScrollingUiLayouter;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
@@ -27,11 +28,31 @@ public class OptionsMenu extends UiMenu {
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });
 
-        addItem("delete savegame")
-                .activeCondition(engine -> engine.environment().savegameExists("savegame.sav"))
-                .onActivate(engine -> engine.environment().deleteSavegame("savegame.sav"));
+        addItem(engine -> "Music Volume %.0f".formatted(engine.audio().musicVolume().value() / 0.25 * 25))
+                .onActivate(engine -> engine.audio().setMusicVolume(engine.audio().musicVolume().value() + 0.25 > 1
+                        ? Percent.zero()
+                        : Percent.of(engine.audio().musicVolume().value() + 0.25)));
 
-        addItem("back").onActivate(this::onExit);
+        addItem(engine -> "Effects Volume %.0f".formatted(engine.audio().effectVolume().value() / 0.25 * 25))
+                .onActivate(engine -> engine.audio().setEffectVolume(engine.audio().effectVolume().value() + 0.25 > 1
+                        ? Percent.zero()
+                        : Percent.of(engine.audio().effectVolume().value() + 0.25)));
+
+        addItem("delete savegame")
+                .
+
+                activeCondition(engine -> engine.environment().
+
+                        savegameExists("savegame.sav"))
+                        .
+
+                onActivate(engine -> engine.environment().
+
+                        deleteSavegame("savegame.sav"));
+
+        addItem("back").
+
+                onActivate(this::onExit);
     }
 
     @Override

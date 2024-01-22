@@ -6,6 +6,7 @@
 - Added fileName validation to `Map.fromJson(fileName)`
 - Added `Audio.playMusicLooped(Sound)`
 - Added `Audio.isActive(Sound)`
+- Added volume control to the platformer example
 
 ### 🪛 Bug Fixes
 
