@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.Sound;
@@ -36,6 +37,11 @@ public class DefaultAudio implements Audio, LineListener {
     public Audio playMusicLooped(final Sound sound) {
         playClip(new ActiveSound(sound, true), musicVolume, true);
         return this;
+    }
+
+    @Override
+    public Duration getDuration(final Sound sound) {
+        return audioAdapter.getDuration(sound);
     }
 
     @Override
