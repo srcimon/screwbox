@@ -27,7 +27,7 @@ public class PlayerJumpingStartedState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        engine.audio().playEffect(JUMP_SOUND.get());
+        engine.audio().playEffect(JUMP_SOUND);
         entity.get(RenderComponent.class).sprite = SPRITE.get();
         final var physicsBodyComponent = entity.get(PhysicsComponent.class);
         physicsBodyComponent.momentum = Vector.of(physicsBodyComponent.momentum.x(), -180);
@@ -48,9 +48,6 @@ public class PlayerJumpingStartedState implements EntityState {
             return new PlayerDiggingState();
         }
 
-        if (entity.get(GroundDetectorComponent.class).isOnGround) {
-            return new PlayerStandingState();
-        }
         return this;
     }
 
