@@ -20,7 +20,7 @@ public interface Audio {
      * Plays a {@link Sound} from an {@link Asset} a single time with
      * {@link #effectVolume()}.
      */
-    default Audio playEffect(Supplier<Sound> sound) {
+    default Audio playEffect(final Supplier<Sound> sound) {
         return playEffect(sound.get());
     }
 
@@ -172,7 +172,7 @@ public interface Audio {
      * @see #setEffectsMuted(boolean)
      * @see #setMusicMuted(boolean)
      */
-    default Audio setMuted(boolean isMuted) {
+    default Audio setMuted(final boolean isMuted) {
         setMusicMuted(isMuted);
         setEffectsMuted(isMuted);
         return this;
