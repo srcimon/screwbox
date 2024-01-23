@@ -272,6 +272,21 @@ class DefaultAudioTest {
         assertThat(audio.areEffectsMuted()).isTrue();
     }
 
+    @Test
+    void unmuteEffects_effectsHadVolumeConfigBefore_returnsOldVolume() {
+        audio.setEffectVolume(Percent.of(0.7));
+        audio.muteEffects();
+
+        audio.unmute();
+
+        Sound sound = Sound.dummyEffect();
+        audio.playEffect(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter).createClip(sound, Percent.of(0.7));
+    }
+
     private LineEvent stopEventFor(Clip clipMock) {
         return new LineEvent(mock(Line.class), Type.STOP, 0) {
 

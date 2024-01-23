@@ -11,10 +11,6 @@ import java.util.function.Supplier;
  */
 public interface Audio {
 
-    //TODO Test mute unmute restore volume
-    //TODO Test Audio interface
-    //TODO LINK CLOSED TICKET
-
     /**
      * Plays a {@link Sound} a single time with {@link #effectVolume()}.
      */
