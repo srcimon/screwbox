@@ -33,7 +33,7 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Audio playMusicLooped(Sound sound) {
+    public Audio playMusicLooped(final Sound sound) {
         playClip(new ActiveSound(sound, true), musicVolume, true);
         return this;
     }
@@ -74,7 +74,8 @@ public class DefaultAudio implements Audio, LineListener {
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                for (final Clip clip : activeClips()) {
+                final List<Clip> activeClips = new ArrayList<>(activeSounds.keySet());
+                for (final Clip clip : activeClips) {
                     clip.stop();
                 }
                 activeSounds.clear();
@@ -157,10 +158,6 @@ public class DefaultAudio implements Audio, LineListener {
         muteEffects();
         muteMusic();
         return this;
-    }
-
-    private List<Clip> activeClips() {
-        return new ArrayList<>(activeSounds.keySet());
     }
 
     private List<Clip> fetchClipsFor(final Sound sound) {
