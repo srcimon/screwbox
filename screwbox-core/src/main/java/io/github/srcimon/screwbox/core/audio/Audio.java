@@ -11,6 +11,10 @@ import java.util.function.Supplier;
  */
 public interface Audio {
 
+    //TODO Test mute unmute restore volume
+    //TODO Test Audio interface
+    //TODO LINK CLOSED TICKET
+
     /**
      * Plays a {@link Sound} a single time with {@link #effectVolume()}.
      */
@@ -151,7 +155,7 @@ public interface Audio {
      * @see #unmuteEffects()
      */
     default Audio muteEffects() {
-        return setMusicMuted(true);
+        return setEffectsMuted(true);
     }
 
     /**
@@ -162,7 +166,7 @@ public interface Audio {
      * @see #setMusicMuted(boolean)
      */
     default Audio unmuteEffects() {
-        return setMusicMuted(false);
+        return setEffectsMuted(false);
     }
 
     /**

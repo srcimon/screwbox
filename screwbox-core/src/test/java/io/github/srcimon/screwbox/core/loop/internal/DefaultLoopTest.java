@@ -24,7 +24,7 @@ class DefaultLoopTest {
 
     @Test
     void runningTime_notStarted_returnsNone() {
-        Assertions.assertThat(loop.runningTime()).isEqualTo(Duration.none());
+        assertThat(loop.runningTime()).isEqualTo(Duration.none());
     }
 
     @Test
@@ -33,7 +33,7 @@ class DefaultLoopTest {
 
         loop.start();
 
-        Assertions.assertThat(loop.runningTime()).isNotEqualTo(Duration.none());
+        assertThat(loop.runningTime()).isNotEqualTo(Duration.none());
     }
 
     @Test
@@ -46,13 +46,13 @@ class DefaultLoopTest {
 
         loop.start();
 
-        Assertions.assertThat(loop.runningTime()).isNotEqualTo(Duration.none());
-        Assertions.assertThat(loop.runningTime().isLessThan(Duration.since(time))).isTrue();
+        assertThat(loop.runningTime()).isNotEqualTo(Duration.none());
+        assertThat(loop.runningTime().isLessThan(Duration.since(time))).isTrue();
     }
 
     @Test
     void startTime_notStarted_returnsUnset() {
-        Assertions.assertThat(loop.startTime()).isEqualTo(Time.unset());
+        assertThat(loop.startTime()).isEqualTo(Time.unset());
     }
 
     @Test
@@ -62,8 +62,8 @@ class DefaultLoopTest {
         Time before = Time.now();
         loop.start();
         Time after = Time.now();
-        Assertions.assertThat(loop.startTime().isAfter(before)).isTrue();
-        Assertions.assertThat(loop.startTime().isBefore(after)).isTrue();
+        assertThat(loop.startTime().isAfter(before)).isTrue();
+        assertThat(loop.startTime().isBefore(after)).isTrue();
     }
 
     @Test
@@ -76,8 +76,8 @@ class DefaultLoopTest {
         loop.start();
         Time after = Time.now();
 
-        Assertions.assertThat(loop.startTime().isAfter(before)).isTrue();
-        Assertions.assertThat(loop.startTime().isBefore(after)).isTrue();
+        assertThat(loop.startTime().isAfter(before)).isTrue();
+        assertThat(loop.startTime().isBefore(after)).isTrue();
     }
 
     @Test

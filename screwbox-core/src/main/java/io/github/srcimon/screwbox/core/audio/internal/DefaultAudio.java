@@ -18,8 +18,8 @@ public class DefaultAudio implements Audio, LineListener {
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
-    private Percent effectVolume = Percent.max();
-    private Percent musicVolume = Percent.max();
+    private Volume effectVolume = new Volume();
+    private Volume musicVolume = new Volume();
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
@@ -52,16 +52,26 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio setEffectVolume(final Percent volume) {
-        this.effectVolume = volume;
+        effectVolume = effectVolume.updatedValue(volume);
         updateVolumeOfActiveClips(volume, false);
         return this;
     }
 
     @Override
     public Audio setMusicVolume(final Percent volume) {
-        this.musicVolume = volume;
+        musicVolume = musicVolume.updatedValue(volume);
         updateVolumeOfActiveClips(volume, true);
         return this;
+    }
+
+    @Override
+    public Percent effectVolume() {
+        return effectVolume.value();
+    }
+
+    @Override
+    public Percent musicVolume() {
+        return musicVolume.value();
     }
 
     public void shutdown() {
@@ -99,10 +109,10 @@ public class DefaultAudio implements Audio, LineListener {
         }
     }
 
-    private void playClip(final ActiveSound activeSound, final Percent volume, final boolean looped) {
-        if (!volume.isZero()) {
+    private void playClip(final ActiveSound activeSound, final Volume volume, final boolean looped) {
+        if (!volume.playbackVolume().isZero()) {
             executor.execute(() -> {
-                final Clip clip = audioAdapter.createClip(activeSound.sound(), volume);
+                final Clip clip = audioAdapter.createClip(activeSound.sound(), volume.playbackVolume());
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
@@ -120,7 +130,7 @@ public class DefaultAudio implements Audio, LineListener {
     public boolean isActive(final Sound sound) {
         for (final var activeSound : activeSounds.entrySet()) {
             if (activeSound.getValue().sound().equals(sound)) {
-               return true;
+                return true;
             }
         }
         return false;
@@ -132,33 +142,27 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public Percent effectVolume() {
-        return effectVolume;
-    }
-
-    @Override
-    public Percent musicVolume() {
-        return musicVolume;
-    }
-
-    @Override
-    public Audio muteMusic() {
-        setMusicVolume(Percent.zero());
+    public Audio setMusicMuted(boolean isMuted) {
+        musicVolume = musicVolume.muted(isMuted);
         return this;
     }
 
     @Override
-    public Audio muteEffects() {
-        setEffectVolume(Percent.zero());
+    public boolean isMusicMuted() {
+        return musicVolume.isMuted();
+    }
+
+    @Override
+    public Audio setEffectsMuted(boolean isMuted) {
+        effectVolume = effectVolume.muted(isMuted);
         return this;
     }
 
     @Override
-    public Audio mute() {
-        muteEffects();
-        muteMusic();
-        return this;
+    public boolean areEffectsMuted() {
+        return effectVolume.isMuted();
     }
+
 
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
