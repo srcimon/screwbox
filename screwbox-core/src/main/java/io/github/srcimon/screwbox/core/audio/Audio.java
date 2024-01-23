@@ -94,28 +94,116 @@ public interface Audio {
     int activeCount();
 
     /**
-     * Sets {@link #musicVolume()} to zero. Can be unmuted via
-     * {@link #setMusicVolume(Percent)}.
-     *
-     * @see #mute()
-     * @see #muteEffects()
-     */
-    Audio muteMusic();
-
-    /**
-     * Sets {@link #effectVolume()} to zero. Can be unmuted via
-     * {@link #setEffectVolume(Percent)}.
+     * Sets music to muted or unmuted.
      *
      * @see #mute()
      * @see #muteMusic()
+     * @see #unmuteMusic()
      */
-    Audio muteEffects();
+    Audio setMusicMuted(boolean isMuted);
 
     /**
-     * Sets {@link #effectVolume()} and {@link #musicVolume()} to zero.
+     * Returns {@code true} if music is muted.
+     */
+    boolean isMusicMuted();
+
+    /**
+     * Mutes music playback.
      *
-     * @see #muteEffects()
+     * @see #mute()
+     * @see #setMusicMuted(boolean)
+     * @see #unmuteMusic()
+     */
+    default Audio muteMusic() {
+        return setMusicMuted(true);
+    }
+
+    /**
+     * Unmutes music playback.
+     *
+     * @see #mute()
+     * @see #setMusicMuted(boolean)
      * @see #muteMusic()
      */
-    Audio mute();
+    default Audio unmuteMusic() {
+        return setMusicMuted(false);
+    }
+
+    /**
+     * Sets effects to muted or unmuted.
+     *
+     * @see #mute()
+     * @see #muteEffects()
+     * @see #unmuteEffects()
+     */
+    Audio setEffectsMuted(boolean isMuted);
+
+    /**
+     * Returns {@code true} if effects are muted.
+     */
+    boolean areEffectsMuted();
+
+    /**
+     * Mutes effects playback.
+     *
+     * @see #mute()
+     * @see #setEffectsMuted(boolean)
+     * @see #unmuteEffects()
+     */
+    default Audio muteEffects() {
+        return setEffectsMuted(true);
+    }
+
+    /**
+     * Unmutes effects playback.
+     *
+     * @see #mute()
+     * @see #muteEffects()
+     * @see #setMusicMuted(boolean)
+     */
+    default Audio unmuteEffects() {
+        return setEffectsMuted(false);
+    }
+
+    /**
+     * Sets all playback muted or unmuted.
+     *
+     * @see #isMuted()
+     * @see #setEffectsMuted(boolean)
+     * @see #setMusicMuted(boolean)
+     */
+    default Audio setMuted(boolean isMuted) {
+        setMusicMuted(isMuted);
+        setEffectsMuted(isMuted);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if all playback is muted.
+     *
+     * @see #setMuted(boolean)
+     */
+    default boolean isMuted() {
+        return isMusicMuted() && areEffectsMuted();
+    }
+
+    /**
+     * Mutes all playback.
+     *
+     * @see #setMuted(boolean)
+     * @see #isMuted()
+     */
+    default Audio mute() {
+        return setMuted(true);
+    }
+
+    /**
+     * Unmutes all playback.
+     *
+     * @see #mute()
+     * @see #isMuted()
+     */
+    default Audio unmute() {
+        return setMuted(false);
+    }
 }

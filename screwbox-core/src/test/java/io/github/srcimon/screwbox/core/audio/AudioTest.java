@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AudioTest {
@@ -22,5 +24,65 @@ class AudioTest {
         audio.playEffect(soundAsset);
 
         verify(audio).playEffect(sound);
+    }
+
+    @Test
+    void muteEffects_callsSetEffectsMuted() {
+        audio.muteEffects();
+
+        verify(audio).setEffectsMuted(true);
+    }
+
+    @Test
+    void unmuteEffects_callsSetEffectsMuted() {
+        audio.unmuteEffects();
+
+        verify(audio).setEffectsMuted(false);
+    }
+
+    @Test
+    void muteMusic_callsSetMusicMuted() {
+        audio.muteMusic();
+
+        verify(audio).setMusicMuted(true);
+    }
+
+    @Test
+    void unmuteMusic_callsSetMusicMuted() {
+        audio.unmuteMusic();
+
+        verify(audio).setMusicMuted(false);
+    }
+
+    @Test
+    void setMuted_mutesMusicAndEffects() {
+        audio.setMuted(true);
+
+        verify(audio).setMusicMuted(true);
+        verify(audio).setEffectsMuted(true);
+    }
+
+    @Test
+    void isMuted_onlyMusicMuted_isFalse() {
+        when(audio.isMusicMuted()).thenReturn(true);
+        when(audio.areEffectsMuted()).thenReturn(false);
+
+        assertThat(audio.isMuted()).isFalse();
+    }
+
+    @Test
+    void mute_mutesMusicAndEfects() {
+        audio.mute();
+
+        verify(audio).setMusicMuted(true);
+        verify(audio).setEffectsMuted(true);
+    }
+
+    @Test
+    void unmute_unmutesMusicAndEfects() {
+        audio.unmute();
+
+        verify(audio).setMusicMuted(false);
+        verify(audio).setEffectsMuted(false);
     }
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,7 +28,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class DefaultAudioTest {
 
-    @InjectMocks
     DefaultAudio audio;
 
     @Mock
@@ -223,27 +221,70 @@ class DefaultAudioTest {
     }
 
     @Test
-    void muteMusic_setsMusicVoulmeToZero() {
+    void muteMusic_musicUnmuted_mutesMusic() {
         audio.muteMusic();
 
-        assertThat(audio.musicVolume()).isEqualTo(zero());
+        assertThat(audio.musicVolume()).isEqualTo(max());
         assertThat(audio.effectVolume()).isEqualTo(max());
+        assertThat(audio.isMusicMuted()).isTrue();
+        assertThat(audio.areEffectsMuted()).isFalse();
     }
 
     @Test
-    void muteEffects_setsEffectsVoulmeToZero() {
+    void muteEffects_effectUnmuted_mutesEffects() {
         audio.muteEffects();
 
         assertThat(audio.musicVolume()).isEqualTo(max());
-        assertThat(audio.effectVolume()).isEqualTo(zero());
+        assertThat(audio.effectVolume()).isEqualTo(max());
+        assertThat(audio.isMusicMuted()).isFalse();
+        assertThat(audio.areEffectsMuted()).isTrue();
     }
 
     @Test
-    void mute_setsEffectsAndMusicVolumeToZero() {
+    void playEffect_effectsMuted_doesntPlayAnySound() {
+        audio.muteEffects();
+
+        audio.playEffect(Sound.dummyEffect());
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(any(), any());
+    }
+
+    @Test
+    void playMusicmusicMuted_doesntPlayAnySound() {
+        audio.muteMusic();
+
+        audio.playMusic(Sound.dummyEffect());
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(any(), any());
+    }
+
+    @Test
+    void mute_allUnmuted_mutesEffectsAndMusic() {
         audio.mute();
 
-        assertThat(audio.musicVolume()).isEqualTo(zero());
-        assertThat(audio.effectVolume()).isEqualTo(zero());
+        assertThat(audio.musicVolume()).isEqualTo(max());
+        assertThat(audio.effectVolume()).isEqualTo(max());
+        assertThat(audio.isMusicMuted()).isTrue();
+        assertThat(audio.areEffectsMuted()).isTrue();
+    }
+
+    @Test
+    void unmuteEffects_effectsHadVolumeConfigBefore_returnsOldVolume() {
+        audio.setEffectVolume(Percent.of(0.7));
+        audio.muteEffects();
+
+        audio.unmute();
+
+        Sound sound = Sound.dummyEffect();
+        audio.playEffect(sound);
+
+        awaitShutdown();
+
+        verify(audioAdapter).createClip(sound, Percent.of(0.7));
     }
 
     private LineEvent stopEventFor(Clip clipMock) {
