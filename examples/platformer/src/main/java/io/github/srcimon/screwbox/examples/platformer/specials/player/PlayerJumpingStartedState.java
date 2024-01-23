@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
