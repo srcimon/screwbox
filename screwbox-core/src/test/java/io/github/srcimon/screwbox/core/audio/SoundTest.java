@@ -42,14 +42,13 @@ class SoundTest {
                 .hasMessage("Audio only supports WAV- and MIDI-Files at the moment.");
     }
 
-    //TODO FIX WITH REAL MIDI
     @Test
-    @Disabled
     void fromFile_existingMidi_hasContent() {
-        Sound sound = Sound.fromFile("fake.mid");
+        Sound sound = Sound.fromFile("real.mid");
 
         assertThat(sound.content()).hasSizeGreaterThan(10);
         assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(9000));
     }
 
     @Test
