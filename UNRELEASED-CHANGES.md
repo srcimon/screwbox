@@ -6,7 +6,7 @@
 - Added fileName validation to `Map.fromJson(fileName)`
 - Added `Audio.playMusicLooped(Sound)`
 - Added `Audio.isActive(Sound)`
-- Added `Sound.duration()`
+- Added `Sound.duration()` (#189)
 - Added muting and unmuting of audio. (#181)
 - Added volume control to the platformer example
 
