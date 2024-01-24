@@ -18,7 +18,7 @@ class SoundTest {
         assertThat(sound.content()).hasSizeGreaterThan(10000);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(1033));
     }
-    
+
     @Test
     void fromWav_validWav_hasContent() {
         var content = Resources.loadBinary("kill.wav");
@@ -50,6 +50,13 @@ class SoundTest {
 
         assertThat(sound.content()).hasSizeGreaterThan(10);
         assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
+    }
+
+    @Test
+    void fromFile_invalidMidi_throwsException() {
+        assertThatThrownBy(() -> Sound.fromFile("fake.mid"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("could not load audio content");
     }
 
     @Test

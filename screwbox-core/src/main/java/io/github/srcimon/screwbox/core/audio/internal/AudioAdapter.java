@@ -30,7 +30,7 @@ public class AudioAdapter {
         try (InputStream inputStream = new ByteArrayInputStream(content)) {
             return AudioSystem.getAudioInputStream(inputStream);
         } catch (UnsupportedAudioFileException | IOException e) {
-            throw new IllegalStateException("audio format unsupported", e);
+            throw new IllegalArgumentException("could not load audio content", e);
         }
     }
 }
