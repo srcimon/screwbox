@@ -24,6 +24,9 @@
 
 ### 📦 Dependency updates
 
+- Bump github action checkout to v4
+- Bump github action setup-java to v4
+- Bump github action cache to v4
 - Bump AssertJ to 3.24.2
 - Bump Mockito to 5.9.0
 - Bump Jackson to 2.16.1
