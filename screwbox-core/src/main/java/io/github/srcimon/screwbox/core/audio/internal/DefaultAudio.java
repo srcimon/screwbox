@@ -105,7 +105,9 @@ public class DefaultAudio implements Audio, LineListener {
     @Override
     public void update(final LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
-            activeSounds.remove(event.getSource());
+            final var clip = (Clip)event.getSource();
+            clip.close();
+            activeSounds.remove(clip);
         }
     }
 
