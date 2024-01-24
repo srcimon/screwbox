@@ -97,7 +97,10 @@ public class DefaultAudio implements Audio, LineListener {
     @Override
     public Audio stop(final Sound sound) {
         for (final Clip clip : fetchClipsFor(sound)) {
-            executor.execute(clip::stop);
+            executor.execute(() -> {
+                clip.stop();
+                clip.close();
+            });
         }
         return this;
     }
