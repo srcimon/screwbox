@@ -6,6 +6,7 @@
 - Added fileName validation to `Map.fromJson(fileName)`
 - Added `Audio.playMusicLooped(Sound)`
 - Added `Audio.isActive(Sound)`
+- Added `Sound.duration()` (#189)
 - Added muting and unmuting of audio. (#181)
 - Added volume control to the platformer example
 
@@ -23,6 +24,7 @@
 
 ### 📦 Dependency updates
 
+- Bump github actions to v4
 - Bump AssertJ to 3.24.2
 - Bump Mockito to 5.9.0
 - Bump Jackson to 2.16.1

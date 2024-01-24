@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.utils.Resources;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,14 +16,16 @@ class SoundTest {
         var sound = Sound.dummyEffect();
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(1033));
     }
-    
+
     @Test
     void fromWav_validWav_hasContent() {
         var content = Resources.loadBinary("kill.wav");
         var sound = Sound.fromWav(content);
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(186));
     }
 
     @Test
@@ -40,10 +44,18 @@ class SoundTest {
 
     @Test
     void fromFile_existingMidi_hasContent() {
-        Sound sound = Sound.fromFile("fake.mid");
+        Sound sound = Sound.fromFile("real.mid");
 
         assertThat(sound.content()).hasSizeGreaterThan(10);
         assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(9000));
+    }
+
+    @Test
+    void fromFile_invalidMidi_throwsException() {
+        assertThatThrownBy(() -> Sound.fromFile("fake.mid"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("could not load audio content");
     }
 
     @Test

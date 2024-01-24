@@ -11,14 +11,12 @@ import java.io.InputStream;
 public class AudioAdapter {
 
     Clip createClip(final Sound sound, final Percent volume) {
-        try (InputStream inputStream = new ByteArrayInputStream(sound.content())) {
-            try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream)) {
-                final Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                setVolume(clip, volume);
-                return clip;
-            }
-        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+        try (AudioInputStream audioInputStream = getAudioInputStream(sound.content())) {
+            final Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            setVolume(clip, volume);
+            return clip;
+        } catch (LineUnavailableException | IOException e) {
             throw new IllegalStateException("could not create sound", e);
         }
     }
@@ -28,4 +26,11 @@ public class AudioAdapter {
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
     }
 
+    public static AudioInputStream getAudioInputStream(final byte[] content) {
+        try (InputStream inputStream = new ByteArrayInputStream(content)) {
+            return AudioSystem.getAudioInputStream(inputStream);
+        } catch (UnsupportedAudioFileException | IOException e) {
+            throw new IllegalArgumentException("could not load audio content", e);
+        }
+    }
 }

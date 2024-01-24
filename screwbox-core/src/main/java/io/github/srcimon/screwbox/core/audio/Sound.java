@@ -1,9 +1,13 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
+import javax.sound.sampled.AudioInputStream;
+import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -27,6 +31,7 @@ public final class Sound implements Serializable {
 
     private final byte[] content;
     private final Format format;
+    private final Duration duration;
 
     /**
      * Returns a short dummy sound effect.
@@ -76,6 +81,12 @@ public final class Sound implements Serializable {
     private Sound(final byte[] content, final Format type) {
         this.content = requireNonNull(content, "content must not be null");
         this.format = type;
+        try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
+            var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
+            duration = Duration.ofMillis((int) length);
+        } catch (IOException e) {
+            throw new IllegalStateException("could not create sound", e);
+        }
     }
 
     /**
@@ -92,4 +103,10 @@ public final class Sound implements Serializable {
         return format;
     }
 
+    /**
+     * Returns the {@link Duration} of the {@link Sound}.
+     */
+    public Duration duration() {
+        return duration;
+    }
 }
