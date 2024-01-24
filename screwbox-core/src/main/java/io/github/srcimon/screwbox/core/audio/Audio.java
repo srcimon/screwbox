@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.audio;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -11,11 +10,6 @@ import java.util.function.Supplier;
  * Controls the audio playback of the {@link Engine}.
  */
 public interface Audio {
-
-    /**
-     * Returns the {@link Duration} of a {@link Sound}.
-     */
-    Duration getDuration(Sound sound);
 
     /**
      * Plays a {@link Sound} a single time with {@link #effectVolume()}.

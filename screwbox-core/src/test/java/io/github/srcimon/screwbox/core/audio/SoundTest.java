@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.utils.Resources;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ class SoundTest {
         var sound = Sound.dummyEffect();
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(1033));
     }
     
     @Test
@@ -22,6 +24,7 @@ class SoundTest {
         var sound = Sound.fromWav(content);
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(sound.duration()).isEqualTo(Duration.ofMillis(186));
     }
 
     @Test

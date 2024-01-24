@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
 
@@ -12,7 +11,7 @@ import java.io.InputStream;
 public class AudioAdapter {
 
     Clip createClip(final Sound sound, final Percent volume) {
-        try (AudioInputStream audioInputStream = getAudioInputStream(sound)) {
+        try (AudioInputStream audioInputStream = getAudioInputStream(sound.content())) {
             final Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             setVolume(clip, volume);
@@ -27,17 +26,8 @@ public class AudioAdapter {
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
     }
 
-    Duration getDuration(final Sound sound) {
-        try (AudioInputStream audioInputStream = getAudioInputStream(sound)) {
-            var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
-            return Duration.ofMillis((int) length);
-        } catch (IOException e) {
-            throw new IllegalStateException("could not create sound", e);
-        }
-    }
-
-    private AudioInputStream getAudioInputStream(final Sound sound) {
-        try (InputStream inputStream = new ByteArrayInputStream(sound.content())) {
+    public static AudioInputStream getAudioInputStream(final byte[] content) {
+        try (InputStream inputStream = new ByteArrayInputStream(content)) {
             return AudioSystem.getAudioInputStream(inputStream);
         } catch (UnsupportedAudioFileException | IOException e) {
             throw new IllegalStateException("audio format unsupported", e);
