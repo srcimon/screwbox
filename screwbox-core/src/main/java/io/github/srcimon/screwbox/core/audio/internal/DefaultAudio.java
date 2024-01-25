@@ -97,10 +97,7 @@ public class DefaultAudio implements Audio, LineListener {
     @Override
     public Audio stop(final Sound sound) {
         for (final Clip clip : fetchClipsFor(sound)) {
-            executor.execute(() -> {
-                clip.stop();
-                clip.close();
-            });
+            executor.execute(clip::stop);
         }
         return this;
     }
@@ -108,9 +105,7 @@ public class DefaultAudio implements Audio, LineListener {
     @Override
     public void update(final LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
-            final var clip = (Clip)event.getSource();
-            clip.close();
-            activeSounds.remove(clip);
+            activeSounds.remove(event.getSource());
         }
     }
 
