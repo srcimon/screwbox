@@ -15,5 +15,4 @@ public class PathfindingExample {
 
         engine.start(DemoScene.class);
     }
-
 }
