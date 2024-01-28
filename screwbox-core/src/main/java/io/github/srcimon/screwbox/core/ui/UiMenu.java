@@ -79,7 +79,7 @@ public class UiMenu {
             }
             index++;
         }
-        throw new IllegalArgumentException("Menu doesn't contain specified MenuItem.");
+        throw new IllegalArgumentException("menu doesn't contain specified menu item");
     }
 
     public final void selectItem(final UiMenuItem menuItem) {

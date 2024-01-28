@@ -87,4 +87,13 @@ class UiMenuTest {
         assertThat(menu.selectedItem()).isEqualTo(optionsItem);
     }
 
+    @Test
+    void itemIndex_itemNotPartOfMenu_throwsException() {
+        var optionsItem = new UiMenuItem("not part of menu");
+
+        assertThatThrownBy(() -> menu.itemIndex(optionsItem))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("menu doesn't contain specified menu item");
+    }
+
 }
