@@ -1,11 +1,10 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.*;
-import org.assertj.core.api.Assertions;
+import io.github.srcimon.screwbox.core.utils.Latch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,11 +107,29 @@ class DefaultUiTest {
 
         ui.openMenu(menu);
 
-        Assertions.assertThat(ui.currentMenu()).hasValue(menu);
+        assertThat(ui.currentMenu()).hasValue(menu);
     }
 
     @Test
     void currentMenu_noOpenMenu_isEmpty() {
-        Assertions.assertThat(ui.currentMenu()).isEmpty();
+        assertThat(ui.currentMenu()).isEmpty();
+    }
+
+    @Test
+    void openPreviousMenu_noPreviousMenu_throwsException() {
+        assertThatThrownBy(() -> ui.openPreviousMenu())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("there is no previous menu to navigate back to");
+    }
+
+    @Test
+    void openPreviousMenu_previousMenuPresent_switchesBackToPreviousMenu() {
+        UiMenu optionsMenu = new UiMenu();
+        ui.openMenu(optionsMenu);
+        ui.openMenu(new UiMenu());
+
+        ui.openPreviousMenu();
+
+        assertThat(ui.currentMenu()).contains(optionsMenu);
     }
 }
