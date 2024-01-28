@@ -88,6 +88,30 @@ class UiMenuTest {
     }
 
     @Test
+    void previousItem_secondItemSelected_switchesToFirsItem() {
+        var optionsItem = menu.addItem("Options");
+        var quitItem = menu.addItem("Quit");
+        menu.selectItem(quitItem);
+
+        menu.previousItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
+    }
+
+    @Test
+    void previousItem_previousItemIsInactive_switchesToItemBeforePreviousItem() {
+        var optionsItem = menu.addItem("Options");
+        menu.addItem("Start").activeCondition(engine -> false);
+        var quitItem = menu.addItem("Quit");
+
+        menu.selectItem(quitItem);
+
+        menu.previousItem(engine);
+
+        assertThat(menu.selectedItem()).isEqualTo(optionsItem);
+    }
+
+    @Test
     void itemIndex_itemNotPartOfMenu_throwsException() {
         var optionsItem = new UiMenuItem("not part of menu");
 

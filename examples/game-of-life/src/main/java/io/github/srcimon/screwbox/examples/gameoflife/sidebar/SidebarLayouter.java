@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.ui.UiMenuItem;
 public class SidebarLayouter implements UiLayouter {
 
     @Override
-    public ScreenBounds calculateBounds(UiMenuItem item, UiMenu menu, Screen screen) {
+    public ScreenBounds calculateBounds(final UiMenuItem item, final UiMenu menu, final Screen screen) {
         var index = menu.itemIndex(item);
         return new ScreenBounds(20, 30 * index + 30, 200, 30);
     }
