@@ -63,9 +63,25 @@ class AudioTest {
     }
 
     @Test
+    void isMuted_musicAndEffectsMuted_isTrue() {
+        when(audio.isMusicMuted()).thenReturn(true);
+        when(audio.areEffectsMuted()).thenReturn(true);
+
+        assertThat(audio.isMuted()).isTrue();
+    }
+
+    @Test
     void isMuted_onlyMusicMuted_isFalse() {
         when(audio.isMusicMuted()).thenReturn(true);
         when(audio.areEffectsMuted()).thenReturn(false);
+
+        assertThat(audio.isMuted()).isFalse();
+    }
+
+    @Test
+    void isMuted_onlyEffectsMuted_isFalse() {
+        when(audio.isMusicMuted()).thenReturn(false);
+        when(audio.areEffectsMuted()).thenReturn(true);
 
         assertThat(audio.isMuted()).isFalse();
     }
