@@ -81,7 +81,6 @@ class AudioTest {
     @Test
     void isMuted_onlyEffectsMuted_isFalse() {
         when(audio.isMusicMuted()).thenReturn(false);
-        when(audio.areEffectsMuted()).thenReturn(true);
 
         assertThat(audio.isMuted()).isFalse();
     }
