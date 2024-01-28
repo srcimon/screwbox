@@ -77,6 +77,12 @@ public interface Assets {
      */
     Assets disableLogging();
 
+    /**
+     * Returns {@code true} if preparing is currently in progress.
+     *
+     * @see #prepareClassPackage(Class)
+     * @see #preparePackage(String)
+     */
     boolean isPreparing();
 
     private static String getPackageName(Class<?> clazz) {
