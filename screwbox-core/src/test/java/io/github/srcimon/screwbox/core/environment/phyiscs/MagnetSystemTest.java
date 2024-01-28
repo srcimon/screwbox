@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.phyiscs;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetComponent;
@@ -38,5 +39,23 @@ class MagnetSystemTest {
 
         assertThat(earthTransform.bounds.position().x()).isEqualTo(0);
         assertThat(earthTransform.bounds.position().y()).isEqualTo(45.3, offset(0.1));
+    }
+
+    @Test
+    void update_noMagnetPresent_phyiscsIsNotAfected(DefaultEnvironment environment, Loop loop) {
+        when(loop.delta()).thenReturn(0.1);
+
+        TransformComponent earthTransform = new TransformComponent(0, 100, 4, 4);
+
+        environment
+                .addSystem(new MagnetSystem())
+                .addSystem(new PhysicsSystem())
+                .addEntity("earth",
+                        earthTransform,
+                        new PhysicsComponent());
+
+        environment.updateTimes(4);
+
+        assertThat(earthTransform.bounds.position()).isEqualTo(Vector.of(0, 100));
     }
 }
