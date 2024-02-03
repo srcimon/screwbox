@@ -15,6 +15,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed active audio is not affected by volume changes (#182)
+- Added minimum warm up time of 0.5 seconds to avoid flickering loading animation
 
 ### 🧽 Cleanup & refactoring
 
