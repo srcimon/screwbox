@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
@@ -14,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 public class DefaultAudio implements Audio, LineListener {
+
+    private static final Cache<Sound, Clip> CLIP_CACHE =new Cache<>();
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
@@ -112,7 +115,10 @@ public class DefaultAudio implements Audio, LineListener {
     private void playClip(final ActiveSound activeSound, final Volume volume, final boolean looped) {
         if (!volume.playbackVolume().isZero()) {
             executor.execute(() -> {
-                final Clip clip = audioAdapter.createClip(activeSound.sound(), volume.playbackVolume());
+                final Sound sound = activeSound.sound();
+                final Clip clip = isActive(sound)
+                        ? audioAdapter.createClip(sound, volume.playbackVolume())
+                        : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound, volume.playbackVolume()));
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
