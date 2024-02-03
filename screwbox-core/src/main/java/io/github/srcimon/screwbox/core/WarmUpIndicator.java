@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 class WarmUpIndicator {
 
     public static final Duration WANTED_UPDATE_TIME = Duration.ofMillis(1);
-    public static final Duration MINIMUM_WARMUP_TIME = Duration.ofMillis(500);
     public static final Duration TIMEOUT = Duration.ofSeconds(10);
     public static final int TEST_COUNT = 20;
 
@@ -26,7 +25,7 @@ class WarmUpIndicator {
             return true;
         }
 
-        if (warmedUpCount >= TEST_COUNT && loop.runningTime().isAtLeast(MINIMUM_WARMUP_TIME)) {
+        if (warmedUpCount >= TEST_COUNT) {
             isWarmedUp = true;
             return true;
         }

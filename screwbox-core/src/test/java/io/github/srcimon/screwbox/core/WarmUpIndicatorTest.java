@@ -36,17 +36,6 @@ class WarmUpIndicatorTest {
     }
 
     @Test
-    void isWarmedUp_tooFastForMinimumTimeout_isFalse() {
-        when(loop.updateDuration()).thenReturn(Duration.ofNanos(10));
-        when(loop.runningTime()).thenReturn(Duration.ofMillis(450));
-        for (int i = 0; i < 20; i++) {
-            warmUpIndicator.isWarmedUp();
-        }
-
-        assertThat(warmUpIndicator.isWarmedUp()).isFalse();
-    }
-
-    @Test
     void isWarmedUp_notFastEngoughButTimedOut_isTrue() {
         when(loop.runningTime()).thenReturn(Duration.ofSeconds(20));
 
