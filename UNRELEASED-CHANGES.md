@@ -10,6 +10,7 @@
 - Added muting and unmuting of audio. (#181)
 - Added volume control to the platformer example
 - Reduced latency when playing sounds
+- Nicer looking loading animation
 
 ### 🪛 Bug Fixes
 
