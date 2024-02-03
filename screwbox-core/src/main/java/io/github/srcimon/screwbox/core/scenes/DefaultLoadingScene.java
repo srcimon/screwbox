@@ -8,23 +8,28 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.Size.square;
+import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
 public class DefaultLoadingScene implements Scene {
 
     @Override
     public void populate(final Environment environment) {
-        environment.addSystem(engine -> drawLoadingAnimation(engine.graphics().screen()));
+        environment.addSystem(engine -> {
+            final Screen screen = engine.graphics().screen();
+            printAninatedText(screen, 0, WHITE, "L", "O", "A", "D", "I", "N", "G");
+            printAninatedText(screen, 20, RED, "S", "C", "R", "E", "W", "B", "O", "X");
+        });
     }
 
-    private void drawLoadingAnimation(final Screen screen) {
-        final int distance = 25;
-        final double timeSeed = Time.now().milliseconds() / 400.0;
-        for (int x = -distance; x <= distance; x += distance) {
-            int size = (int) (Math.abs(Math.sin(x * 4 + timeSeed)) * 14);
-            Color color = x == 0 ? RED : WHITE;
-            Offset position = screen.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0));
-            screen.fillRectangle(position, square(size), color);
+    private void printAninatedText(final Screen screen, final int yOffset, final Color color, final String... texts) {
+        var timeSeed = Time.now().milliseconds() / 600.0;
+        var distance = 25;
+        int x = -distance * texts.length / 2;
+        for (var character : texts) {
+            x += distance;
+            final int size = (int) (Math.abs(Math.sin(x * 2 + timeSeed)) * 10);
+            final Offset position = screen.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0) + yOffset);
+            screen.drawTextCentered(position, character, defaultFont(color), size / 4.0);
         }
     }
 }

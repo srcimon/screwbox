@@ -15,7 +15,7 @@ class WarmUpIndicator {
     private int warmedUpCount = 0;
     private boolean isWarmedUp = false;
 
-    WarmUpIndicator(final Loop loop, Log log) {
+    WarmUpIndicator(final Loop loop, final Log log) {
         this.loop = loop;
         this.log = log;
     }
