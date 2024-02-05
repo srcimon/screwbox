@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.tiled;
 
+import io.github.srcimon.screwbox.core.Percent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,5 +19,15 @@ class LayerTest {
     @Test
     void toString_containsName() {
         assertThat(layer).hasToString("Layer [name=world]");
+    }
+
+    @Test
+    void opacity_fullOpacity_isMax() {
+        assertThat(layer.opacity()).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void properties_noProperties_isEmpty() {
+        assertThat(layer.properties().all()).isEmpty();
     }
 }
