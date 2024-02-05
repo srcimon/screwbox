@@ -5,10 +5,21 @@ import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.List;
 
+/**
+ * Gives access to all graphics related configuration and operations.
+ */
 public interface Graphics {
 
+    /**
+     * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
+     */
     GraphicsConfiguration configuration();
 
+    /**
+     * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right poisition on the {@link Screen} (;
+     *
+     * @see #screen()
+     */
     World world();
 
     /**
@@ -20,10 +31,9 @@ public interface Graphics {
      * Updates the camera zoom nearly to the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
-     * 
+     *
      * @param zoom the zoom value that should be applied
      * @return the zoom value that was applied
-     * 
      * @see #updateCameraZoomBy(double)
      */
     double updateCameraZoom(double zoom);
@@ -34,7 +44,7 @@ public interface Graphics {
      * Updates the camera zoom nearly by the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
-     * 
+     *
      * @see #updateCameraZoom(double)
      */
     double updateCameraZoomBy(double delta);
@@ -53,6 +63,9 @@ public interface Graphics {
 
     Vector cameraPosition();
 
+    /**
+     * Returns the currently used camera zoom.
+     */
     double cameraZoom();
 
     /**
@@ -64,14 +77,24 @@ public interface Graphics {
     /**
      * Returns the {@link Offset} on the {@link Window} of the given {@link Vector}
      * in the game {@link World}.
-     * 
+     *
      * @param position the position that will be translated
      * @return the {@link Offset} on the {@link Window}
      */
     Offset toOffset(Vector position);
 
+    /**
+     * Returns a list of all supported resolutions.
+     *
+     * @see #supportedResolutions(AspectRatio)
+     */
     List<Size> supportedResolutions();
 
+    /**
+     * Returns a list of all supported resolutions of the given {@link AspectRatio}.
+     *
+     * @see #supportedResolutions()
+     */
     List<Size> supportedResolutions(AspectRatio ratio);
 
     /**
@@ -79,8 +102,16 @@ public interface Graphics {
      */
     Size currentResolution();
 
+    /**
+     * Returns a list of all font names that can were found on the current system.
+     */
     List<String> availableFonts();
 
+    /**
+     * Access drawing operations on the game screen.
+     *
+     * @see #world()
+     */
     Screen screen();
 
 }

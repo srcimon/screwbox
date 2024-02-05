@@ -19,7 +19,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Percent.min()` and `.max()` methods
-- Added Javadoc to `Percent`
+- Added Javadoc to `Percent` and `Graphics`
 - Excluded internal packages from Javadoc and added Javadoc badge
 - Renamed `Path.start()` to `.firstNode()` and `.end()` to `.lastNode()`
 - Made `Path` immutale
