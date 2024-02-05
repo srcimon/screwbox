@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UiMenuTest {
@@ -118,6 +119,16 @@ class UiMenuTest {
         assertThatThrownBy(() -> menu.itemIndex(optionsItem))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("menu doesn't contain specified menu item");
+    }
+
+    @Test
+    void addItem_dynamicLabel_addsItemWithDynamicLabel() {
+        when(engine.name()).thenReturn("engine-name");
+
+        menu.addItem(e -> e.name());
+
+        UiMenuItem item = menu.items().getFirst();
+        assertThat(item.label(engine)).isEqualTo("engine-name");
     }
 
 }
