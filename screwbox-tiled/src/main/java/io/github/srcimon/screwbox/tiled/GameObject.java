@@ -47,8 +47,4 @@ public class GameObject {
     public Layer layer() {
         return layer;
     }
-
-    public String type() {
-        return object.getType();
-    }
 }

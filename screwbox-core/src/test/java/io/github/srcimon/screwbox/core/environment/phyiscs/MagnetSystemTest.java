@@ -37,7 +37,7 @@ class MagnetSystemTest {
 
         environment.updateTimes(4);
 
-        assertThat(earthTransform.bounds.position().x()).isEqualTo(0);
+        assertThat(earthTransform.bounds.position().x()).isZero();
         assertThat(earthTransform.bounds.position().y()).isEqualTo(45.3, offset(0.1));
     }
 

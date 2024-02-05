@@ -27,6 +27,11 @@ class PropertiesTest {
     }
 
     @Test
+    void newInstance_entitiesIsNull_isEmpty() {
+        assertThat(new Properties(null).all()).isEmpty();
+    }
+
+    @Test
     void get_propertyMissing_returnsEmptyOptional() {
         assertThat(properties.get("unknown")).isEmpty();
     }
