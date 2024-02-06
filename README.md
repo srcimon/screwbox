@@ -1,4 +1,4 @@
-![Project Logo](assets/logo.png)
+![Project Logo](docs/logo.png)
 
 Minimalist 2d Java game engine. Result of covid lockdown.
 
@@ -15,7 +15,7 @@ I started developing ScrewBox in february 2021 right during too much time at han
 I use it to learn about Java and have some fun.
 If you want to get something startet in a few minutes ScrewBox might be a fun choice.
 
-<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="assets/trailer-thumbnail.png"></a>
+<p align="center"><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)"><img alt="youtube trailer" src="docs/trailer-thumbnail.png"></a>
 <br/><b><a href="https://www.youtube.com/watch?v=fg5MJDx78SQ)">▶ Watch trailer on Youtube</a></b></p>
 
 ## Features
@@ -139,4 +139,4 @@ ScrewBox packs some examples. You can inspect these examples to learn how to use
 
 The project idea was inspired by Gurkenlabs [Litiengine](https://github.com/gurkenlabs/litiengine).
 
-<p align="center"><img alt="super hero and cat standing next to each other" src="assets/outro.gif"></p>
+<p align="center"><img alt="super hero and cat standing next to each other" src="docs/outro.gif"></p>
