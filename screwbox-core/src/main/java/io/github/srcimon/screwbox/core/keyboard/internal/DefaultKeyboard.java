@@ -15,9 +15,9 @@ import static io.github.srcimon.screwbox.core.keyboard.Key.*;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
-    private final Set<Integer> pressedKeys = new HashSet<>();
+    private final Set<Integer> downKeys = new HashSet<>();
 
-    private final TrippleLatch<Set<Integer>> downKeys = TrippleLatch.of(
+    private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
 
     @Override
@@ -28,18 +28,18 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         final int keyCode = event.getKeyCode();
-        downKeys.active().add(keyCode);
-        pressedKeys.add(keyCode);
+        pressedKeys.active().add(keyCode);
+        downKeys.add(keyCode);
     }
 
     @Override
     public void keyReleased(final KeyEvent event) {
-        pressedKeys.remove(event.getKeyCode());
+        downKeys.remove(event.getKeyCode());
     }
 
     @Override
     public boolean isDown(final Key key) {
-        return pressedKeys.contains(key.code());
+        return downKeys.contains(key.code());
     }
 
     @Override
@@ -54,28 +54,28 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isPressed(final Key key) {
-        return downKeys.inactive().contains(key.code());
+        return pressedKeys.inactive().contains(key.code());
     }
 
     @Override
     public List<Key> pressedKeys() {
-        return mapCodes(downKeys.inactive());
+        return mapCodes(pressedKeys.inactive());
     }
 
     @Override
     public List<Key> downKeys() {
-        return mapCodes(pressedKeys);
+        return mapCodes(downKeys);
     }
 
     @Override
     public boolean isAnyKeyDown() {
-        return !pressedKeys.isEmpty();
+        return !downKeys.isEmpty();
     }
 
     @Override
     public void update() {
-        downKeys.backupInactive().clear();
-        downKeys.toggle();
+        pressedKeys.backupInactive().clear();
+        pressedKeys.toggle();
     }
 
     @Override
