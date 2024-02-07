@@ -10,11 +10,10 @@ import java.io.InputStream;
 
 public class AudioAdapter {
 
-    Clip createClip(final Sound sound, final Percent volume) {
+    Clip createClip(final Sound sound) {
         try (AudioInputStream audioInputStream = getAudioInputStream(sound.content())) {
             final Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-            setVolume(clip, volume);
             return clip;
         } catch (LineUnavailableException | IOException e) {
             throw new IllegalStateException("could not create sound", e);

@@ -53,7 +53,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -65,7 +65,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -77,7 +77,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -89,7 +89,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -102,7 +102,7 @@ class DefaultAudioTest {
     @Test
     void isActive_twoInstanceActive_isTrue() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playMusic(sound);
         audio.playMusic(sound);
@@ -127,7 +127,7 @@ class DefaultAudioTest {
     @Test
     void activeCount_onlyAnotherSoundIsActive_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -139,7 +139,7 @@ class DefaultAudioTest {
     @Test
     void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -153,7 +153,7 @@ class DefaultAudioTest {
     @Test
     void playEffectLooped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playEffectLooped(sound);
 
@@ -168,7 +168,7 @@ class DefaultAudioTest {
     void activeCount_oneInstanceStartedAndStopped_isZero() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playEffect(sound);
 
@@ -183,7 +183,7 @@ class DefaultAudioTest {
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, max())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playMusic(sound);
 
         audio.stopAllSounds();
@@ -197,26 +197,28 @@ class DefaultAudioTest {
     @Test
     void setEffectVolume_setsEffectVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percent.half())).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.setEffectVolume(Percent.half());
         audio.playEffect(sound);
 
         awaitShutdown();
 
+        verify(audioAdapter).setVolume(clip, Percent.half());
         assertThat(audio.effectVolume()).isEqualTo(Percent.half());
     }
 
     @Test
     void setMusicVolume_setsMusicVolume() {
         Sound sound = Sound.fromFile("kill.wav");
-        when(audioAdapter.createClip(sound, Percent.of(0.7))).thenReturn(clip);
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.setMusicVolume(Percent.of(0.7));
         audio.playMusic(sound);
 
         awaitShutdown();
 
+        verify(audioAdapter).setVolume(clip, Percent.of(0.7));
         assertThat(audio.musicVolume()).isEqualTo(Percent.of(0.7));
     }
 
@@ -248,7 +250,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -259,7 +261,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter, never()).createClip(any(), any());
+        verify(audioAdapter, never()).createClip(any());
     }
 
     @Test
@@ -274,6 +276,7 @@ class DefaultAudioTest {
 
     @Test
     void unmuteEffects_effectsHadVolumeConfigBefore_returnsOldVolume() {
+        when(audioAdapter.createClip(any())).thenReturn(clip);
         audio.setEffectVolume(Percent.of(0.7));
         audio.muteEffects();
 
@@ -284,7 +287,8 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(audioAdapter).createClip(sound, Percent.of(0.7));
+        verify(audioAdapter).createClip(sound);
+        verify(audioAdapter).setVolume(clip, Percent.of(0.7));
     }
 
     private LineEvent stopEventFor(Clip clipMock) {

@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 
 public class DefaultAudio implements Audio, LineListener {
 
-    private static final Cache<Sound, Clip> CLIP_CACHE =new Cache<>();
+    private static final Cache<Sound, Clip> CLIP_CACHE = new Cache<>();
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
@@ -117,8 +117,9 @@ public class DefaultAudio implements Audio, LineListener {
             executor.execute(() -> {
                 final Sound sound = activeSound.sound();
                 final Clip clip = isActive(sound)
-                        ? audioAdapter.createClip(sound, volume.playbackVolume())
-                        : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound, volume.playbackVolume()));
+                        ? audioAdapter.createClip(sound)
+                        : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
+                audioAdapter.setVolume(clip, volume.playbackVolume());
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
