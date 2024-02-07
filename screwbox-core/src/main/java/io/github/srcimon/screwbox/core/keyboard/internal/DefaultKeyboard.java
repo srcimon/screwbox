@@ -17,7 +17,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    private final TrippleLatch<Set<Integer>> justPressedKeys = TrippleLatch.of(
+    private final TrippleLatch<Set<Integer>> downKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
 
     @Override
@@ -28,7 +28,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         final int keyCode = event.getKeyCode();
-        justPressedKeys.active().add(keyCode);
+        downKeys.active().add(keyCode);
         pressedKeys.add(keyCode);
     }
 
@@ -54,12 +54,12 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isPressed(final Key key) {
-        return justPressedKeys.inactive().contains(key.code());
+        return downKeys.inactive().contains(key.code());
     }
 
     @Override
     public List<Key> pressedKeys() {
-        return mapCodes(justPressedKeys.inactive());
+        return mapCodes(downKeys.inactive());
     }
 
     @Override
@@ -74,8 +74,8 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public void update() {
-        justPressedKeys.backupInactive().clear();
-        justPressedKeys.toggle();
+        downKeys.backupInactive().clear();
+        downKeys.toggle();
     }
 
     @Override
