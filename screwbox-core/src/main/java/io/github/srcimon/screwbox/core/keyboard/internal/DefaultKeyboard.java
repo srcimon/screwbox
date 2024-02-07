@@ -16,7 +16,7 @@ import static io.github.srcimon.screwbox.core.keyboard.Key.*;
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     private final Set<Integer> downKeys = new HashSet<>();
-
+    private final Set<Integer> unreleasedKeys = new HashSet<>();
     private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
 
@@ -28,13 +28,17 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     @Override
     public void keyPressed(final KeyEvent event) {
         final int keyCode = event.getKeyCode();
-        pressedKeys.active().add(keyCode);
+        if (!unreleasedKeys.contains(keyCode)) {
+            pressedKeys.active().add(keyCode);
+        }
         downKeys.add(keyCode);
+        unreleasedKeys.add(keyCode);
     }
 
     @Override
     public void keyReleased(final KeyEvent event) {
         downKeys.remove(event.getKeyCode());
+        unreleasedKeys.remove(event.getKeyCode());
     }
 
     @Override

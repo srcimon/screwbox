@@ -65,6 +65,27 @@ class DefaultKeyboardTest {
     }
 
     @Test
+    void isPressed_secondCallButUnreleased_false() {
+        mockKeyPress(Key.SPACE);
+
+        keyboard.update();
+        keyboard.update();
+
+        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
+    }
+
+    @Test
+    void isPressed_secondCallButReleased_true() {
+        mockKeyPress(Key.SPACE);
+
+        keyboard.update();
+        mockKeyRelease(Key.SPACE);
+        keyboard.update();
+
+        assertThat(keyboard.isPressed(Key.SPACE)).isFalse();
+    }
+
+    @Test
     void isPressed_sameFrame_false() {
         mockKeyPress(Key.SPACE);
 
@@ -129,6 +150,11 @@ class DefaultKeyboardTest {
 
         assertThat(result.x()).isEqualTo(expectedX);
         assertThat(result.y()).isEqualTo(expectedY);
+    }
+
+    private void mockKeyRelease(Key key) {
+        when(keyEvent.getKeyCode()).thenReturn(key.code());
+        keyboard.keyReleased(keyEvent);
     }
 
     private void mockKeyPress(Key key) {
