@@ -4,44 +4,27 @@ import io.github.srcimon.screwbox.core.Percent;
 
 public class AudioConfiguration {
 
-    private record Volume(Percent value, boolean isMuted) {
-
-        Volume() {
-            this(Percent.max(), false);
-        }
-
-        Volume updatedValue(final Percent value) {
-            return new Volume(value, isMuted);
-        }
-
-        Percent playbackVolume() {
-            return isMuted ? Percent.zero() : value;
-        }
-
-        Volume muted(boolean isMuted) {
-            return new Volume(value, isMuted);
-        }
-    }
-
-    private Volume effectVolume = new Volume();
-    private Volume musicVolume = new Volume();
+    private Percent effectVolume = Percent.max();
+    private Percent musicVolume = Percent.max();
+    private boolean isMusicMuted = false;
+    private boolean areEffectsMuted = false;
 
     /**
      * Sets the volume of all {@link Sound}s that are played via
-     * {@link #playEffect(Sound)} and {@link #playEffectLooped(Sound)}.
+     * {@link Audio#playEffect(Sound)} and {@link Audio#playEffectLooped(Sound)}.
      */
     public AudioConfiguration setEffectVolume(final Percent volume) {
-        effectVolume = effectVolume.updatedValue(volume);
+        effectVolume = volume;
         //TODO updateVolumeOfActiveClips(volume, false);
         return this;
     }
 
     /**
      * Sets the volume of all {@link Sound}s that are played via
-     * {@link #playMusic(Sound)}.
+     * {@link Audio#playMusic(Sound)}.
      */
     public AudioConfiguration setMusicVolume(final Percent volume) {
-        musicVolume = musicVolume.updatedValue(volume);
+        musicVolume = volume;
         //TODO updateVolumeOfActiveClips(volume, true);
         return this;
     }
@@ -52,7 +35,7 @@ public class AudioConfiguration {
      * @see #musicVolume()
      */
     public Percent effectVolume() {
-        return effectVolume.value();
+        return effectVolume;
     }
 
     /**
@@ -61,7 +44,7 @@ public class AudioConfiguration {
      * @see #effectVolume()
      */
     public Percent musicVolume() {
-        return musicVolume.value();
+        return musicVolume;
     }
 
     /**
@@ -72,7 +55,7 @@ public class AudioConfiguration {
      * @see #unmuteMusic()
      */
     public AudioConfiguration setMusicMuted(final boolean isMuted) {
-        musicVolume = musicVolume.muted(isMuted);
+        isMusicMuted = isMuted;
         return this;
     }
 
@@ -80,7 +63,7 @@ public class AudioConfiguration {
      * Returns {@code true} if music is muted.
      */
     public boolean isMusicMuted() {
-        return musicVolume.isMuted();
+        return isMusicMuted;
     }
 
     /**
@@ -113,7 +96,7 @@ public class AudioConfiguration {
      * @see #unmuteEffects()
      */
     public AudioConfiguration setEffectsMuted(final boolean isMuted) {
-        effectVolume = effectVolume.muted(isMuted);
+        areEffectsMuted = isMuted;
         return this;
     }
 
@@ -121,7 +104,7 @@ public class AudioConfiguration {
      * Returns {@code true} if effects are muted.
      */
     public boolean areEffectsMuted() {
-        return effectVolume.isMuted();
+        return areEffectsMuted;
     }
 
     /**

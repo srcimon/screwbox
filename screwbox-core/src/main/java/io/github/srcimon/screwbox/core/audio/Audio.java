@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.util.function.Supplier;
@@ -12,32 +11,32 @@ import java.util.function.Supplier;
 public interface Audio {
 
     /**
-     * Plays a {@link Sound} a single time with {@link #effectVolume()}.
+     * Plays a {@link Sound} a single time with {@link AudioConfiguration#effectVolume()}.
      */
     Audio playEffect(Sound sound);
 
     /**
      * Plays a {@link Sound} from an {@link Asset} a single time with
-     * {@link #effectVolume()}.
+     * {@link AudioConfiguration#effectVolume()}.
      */
     default Audio playEffect(final Supplier<Sound> sound) {
         return playEffect(sound.get());
     }
 
     /**
-     * Plays a {@link Sound} looped with {@link #effectVolume()}. Can be stopped
+     * Plays a {@link Sound} looped with {@link AudioConfiguration#effectVolume()}. Can be stopped
      * with {@link #stop(Sound)}.
      */
     Audio playEffectLooped(Sound sound);
 
     /**
-     * Plays a {@link Sound} looped with {@link #musicVolume()}. Can be stopped with
+     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()}. Can be stopped with
      * {@link #stop(Sound)}.
      */
     Audio playMusic(Sound sound);
 
     /**
-     * Plays a {@link Sound} looped with {@link #musicVolume()} ()}. Can be stopped
+     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()} ()}. Can be stopped
      * with {@link #stop(Sound)}.
      */
     Audio playMusicLooped(Sound sound);
@@ -67,6 +66,8 @@ public interface Audio {
      */
     int activeCount();
 
-    //TODO JAVADOC
+    /**
+     * Read and change the current {@link AudioConfiguration}.
+     */
     AudioConfiguration configuration();
 }
