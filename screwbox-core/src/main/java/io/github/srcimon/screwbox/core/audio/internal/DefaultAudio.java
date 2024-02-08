@@ -1,9 +1,7 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.audio.Audio;
-import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
-import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.*;
 import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
@@ -15,7 +13,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
-public class DefaultAudio implements Audio, LineListener {
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
+
+public class DefaultAudio implements Audio, LineListener, AudioConfigurationListener {
 
     private static final Cache<Sound, Clip> CLIP_CACHE = new Cache<>();
 
@@ -130,6 +131,19 @@ public class DefaultAudio implements Audio, LineListener {
         return configuration;
     }
 
+    @Override
+    public void configurationChanged(final AudioConfigurationEvent event) {
+        final boolean updateMusic = MUSIC_VOLUME.equals(event.changedProperty());
+        final boolean updateEffects = EFFECTS_VOLUME.equals(event.changedProperty());
+        for (final var activeSound : activeSounds.entrySet()) {
+            if(updateMusic && activeSound.getValue().isMusic()) {
+                audioAdapter.setVolume(activeSound.getKey(), musicVolume());
+            } else if(updateEffects && activeSound.getValue().isEffect()) {
+                audioAdapter.setVolume(activeSound.getKey(), effectVolume());
+            }
+        }
+    }
+
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
         for (final var activeSound : activeSounds.entrySet()) {
@@ -156,11 +170,4 @@ public class DefaultAudio implements Audio, LineListener {
         return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
     }
 
-    private void updateVolumeOfActiveClips(final Percent volume, final boolean isMusic) {
-        for (final var activeSound : activeSounds.entrySet()) {
-            if (isMusic == activeSound.getValue().isMusic()) {
-                audioAdapter.setVolume(activeSound.getKey(), volume);
-            }
-        }
-    }
 }

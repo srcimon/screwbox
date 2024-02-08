@@ -9,7 +9,7 @@ public class AudioConfigurationEvent extends EventObject {
 
     private final ConfigurationProperty changedProperty;
 
-    enum ConfigurationProperty {
+    public enum ConfigurationProperty {
         MUSIC_VOLUME,
         EFFECTS_VOLUME
     }
