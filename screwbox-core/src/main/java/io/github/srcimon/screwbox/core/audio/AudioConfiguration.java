@@ -1,6 +1,10 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AudioConfiguration {
 
@@ -9,14 +13,28 @@ public class AudioConfiguration {
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
 
+    private final List<AudioConfigurationListener> listeners = new ArrayList<>();
+
+    public AudioConfiguration addListener(final AudioConfigurationListener listener) {
+        listeners.add(listener);
+        return this;
+    }
+
     /**
      * Sets the volume of all {@link Sound}s that are played via
      * {@link Audio#playEffect(Sound)} and {@link Audio#playEffectLooped(Sound)}.
      */
     public AudioConfiguration setEffectVolume(final Percent volume) {
         effectVolume = volume;
-        //TODO updateVolumeOfActiveClips(volume, false);
+        notifyListeners(ConfigurationProperty.EFFECTS_VOLUME);
         return this;
+    }
+
+    private void notifyListeners(final ConfigurationProperty configurationProperty) {
+        final var audioConfigurationEvent = new AudioConfigurationEvent(this, configurationProperty);
+        for (final var listener : listeners) {
+            listener.configurationChanged(audioConfigurationEvent);
+        }
     }
 
     /**
@@ -25,7 +43,7 @@ public class AudioConfiguration {
      */
     public AudioConfiguration setMusicVolume(final Percent volume) {
         musicVolume = volume;
-        //TODO updateVolumeOfActiveClips(volume, true);
+        notifyListeners(ConfigurationProperty.MUSIC_VOLUME);
         return this;
     }
 
@@ -56,6 +74,7 @@ public class AudioConfiguration {
      */
     public AudioConfiguration setMusicMuted(final boolean isMuted) {
         isMusicMuted = isMuted;
+        notifyListeners(ConfigurationProperty.MUSIC_VOLUME);
         return this;
     }
 
@@ -97,6 +116,7 @@ public class AudioConfiguration {
      */
     public AudioConfiguration setEffectsMuted(final boolean isMuted) {
         areEffectsMuted = isMuted;
+        notifyListeners(ConfigurationProperty.EFFECTS_VOLUME);
         return this;
     }
 
