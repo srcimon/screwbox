@@ -53,6 +53,21 @@ public interface Audio {
     Audio stopAllSounds();
 
     /**
+     * Returns the count of currently playing instances of the given {@link Sound}.
+     */
+    int activeCount(Sound sound);
+
+    /**
+     * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
+     */
+    boolean isActive(Sound sound);
+
+    /**
+     * Returns the count of currently playing {@link Sound}s.
+     */
+    int activeCount();
+
+    /**
      * Sets the volume of all {@link Sound}s that are played via
      * {@link #playEffect(Sound)} and {@link #playEffectLooped(Sound)}.
      */
@@ -77,21 +92,6 @@ public interface Audio {
      * @see #effectVolume()
      */
     Percent musicVolume();
-
-    /**
-     * Returns the count of currently playing instances of the given {@link Sound}.
-     */
-    int activeCount(Sound sound);
-
-    /**
-     * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
-     */
-    boolean isActive(Sound sound);
-
-    /**
-     * Returns the count of currently playing {@link Sound}s.
-     */
-    int activeCount();
 
     /**
      * Sets music to muted or unmuted.
