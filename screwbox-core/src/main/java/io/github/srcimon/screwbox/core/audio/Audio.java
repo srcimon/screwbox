@@ -67,6 +67,143 @@ public interface Audio {
      */
     int activeCount();
 
-    //TODO JAVADOC
-    AudioConfiguration configuration();
+    /**
+     * Sets the volume of all {@link Sound}s that are played via
+     * {@link #playEffect(Sound)} and {@link #playEffectLooped(Sound)}.
+     */
+    Audio setEffectVolume(Percent volume);
+
+    /**
+     * Sets the volume of all {@link Sound}s that are played via
+     * {@link #playMusic(Sound)}.
+     */
+    Audio setMusicVolume(Percent volume);
+
+    /**
+     * Returns the current volume for effects.
+     *
+     * @see #musicVolume()
+     */
+    Percent effectVolume();
+
+    /**
+     * Returns the current volume for music.
+     *
+     * @see #effectVolume()
+     */
+    Percent musicVolume();
+
+    /**
+     * Sets music to muted or unmuted.
+     *
+     * @see #mute()
+     * @see #muteMusic()
+     * @see #unmuteMusic()
+     */
+    Audio setMusicMuted(boolean isMuted);
+
+    /**
+     * Returns {@code true} if music is muted.
+     */
+    boolean isMusicMuted();
+
+    /**
+     * Mutes music playback.
+     *
+     * @see #mute()
+     * @see #setMusicMuted(boolean)
+     * @see #unmuteMusic()
+     */
+    default Audio muteMusic() {
+        return setMusicMuted(true);
+    }
+
+    /**
+     * Unmutes music playback.
+     *
+     * @see #mute()
+     * @see #setMusicMuted(boolean)
+     * @see #muteMusic()
+     */
+    default Audio unmuteMusic() {
+        return setMusicMuted(false);
+    }
+
+    /**
+     * Sets effects to muted or unmuted.
+     *
+     * @see #mute()
+     * @see #muteEffects()
+     * @see #unmuteEffects()
+     */
+    Audio setEffectsMuted(boolean isMuted);
+
+    /**
+     * Returns {@code true} if effects are muted.
+     */
+    boolean areEffectsMuted();
+
+    /**
+     * Mutes effects playback.
+     *
+     * @see #mute()
+     * @see #setEffectsMuted(boolean)
+     * @see #unmuteEffects()
+     */
+    default Audio muteEffects() {
+        return setEffectsMuted(true);
+    }
+
+    /**
+     * Unmutes effects playback.
+     *
+     * @see #mute()
+     * @see #muteEffects()
+     * @see #setMusicMuted(boolean)
+     */
+    default Audio unmuteEffects() {
+        return setEffectsMuted(false);
+    }
+
+    /**
+     * Sets all playback muted or unmuted.
+     *
+     * @see #isMuted()
+     * @see #setEffectsMuted(boolean)
+     * @see #setMusicMuted(boolean)
+     */
+    default Audio setMuted(final boolean isMuted) {
+        setMusicMuted(isMuted);
+        setEffectsMuted(isMuted);
+        return this;
+    }
+
+    /**
+     * Returns {@code true} if all playback is muted.
+     *
+     * @see #setMuted(boolean)
+     */
+    default boolean isMuted() {
+        return isMusicMuted() && areEffectsMuted();
+    }
+
+    /**
+     * Mutes all playback.
+     *
+     * @see #setMuted(boolean)
+     * @see #isMuted()
+     */
+    default Audio mute() {
+        return setMuted(true);
+    }
+
+    /**
+     * Unmutes all playback.
+     *
+     * @see #mute()
+     * @see #isMuted()
+     */
+    default Audio unmute() {
+        return setMuted(false);
+    }
 }

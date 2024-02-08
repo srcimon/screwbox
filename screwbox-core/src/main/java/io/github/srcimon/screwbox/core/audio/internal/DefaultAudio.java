@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Audio;
-import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.utils.Cache;
 
@@ -22,8 +21,8 @@ public class DefaultAudio implements Audio, LineListener {
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
-
-    private final AudioConfiguration configuration = new AudioConfiguration();
+    private Volume effectVolume = new Volume();
+    private Volume musicVolume = new Volume();
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
@@ -32,26 +31,50 @@ public class DefaultAudio implements Audio, LineListener {
 
     @Override
     public Audio playMusic(final Sound sound) {
-        playClip(new ActiveSound(sound, true), musicVolume(), false);
+        playClip(new ActiveSound(sound, true), musicVolume, false);
         return this;
     }
 
     @Override
     public Audio playMusicLooped(final Sound sound) {
-        playClip(new ActiveSound(sound, true), musicVolume(), true);
+        playClip(new ActiveSound(sound, true), musicVolume, true);
         return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound) {
-        playClip(new ActiveSound(sound, false), effectVolume(), false);
+        playClip(new ActiveSound(sound, false), effectVolume, false);
         return this;
     }
 
     @Override
     public Audio playEffectLooped(final Sound sound) {
-        playClip(new ActiveSound(sound, false), effectVolume(), true);
+        playClip(new ActiveSound(sound, false), effectVolume, true);
         return this;
+    }
+
+    @Override
+    public Audio setEffectVolume(final Percent volume) {
+        effectVolume = effectVolume.updatedValue(volume);
+        updateVolumeOfActiveClips(volume, false);
+        return this;
+    }
+
+    @Override
+    public Audio setMusicVolume(final Percent volume) {
+        musicVolume = musicVolume.updatedValue(volume);
+        updateVolumeOfActiveClips(volume, true);
+        return this;
+    }
+
+    @Override
+    public Percent effectVolume() {
+        return effectVolume.value();
+    }
+
+    @Override
+    public Percent musicVolume() {
+        return musicVolume.value();
     }
 
     public void shutdown() {
@@ -89,14 +112,14 @@ public class DefaultAudio implements Audio, LineListener {
         }
     }
 
-    private void playClip(final ActiveSound activeSound, final Percent volume, final boolean looped) {
-        if (!volume.isZero()) {
+    private void playClip(final ActiveSound activeSound, final Volume volume, final boolean looped) {
+        if (!volume.playbackVolume().isZero()) {
             executor.execute(() -> {
                 final Sound sound = activeSound.sound();
                 final Clip clip = isActive(sound)
                         ? audioAdapter.createClip(sound)
                         : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
-                audioAdapter.setVolume(clip, volume);
+                audioAdapter.setVolume(clip, volume.playbackVolume());
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
@@ -126,9 +149,27 @@ public class DefaultAudio implements Audio, LineListener {
     }
 
     @Override
-    public AudioConfiguration configuration() {
-        return configuration;
+    public Audio setMusicMuted(boolean isMuted) {
+        musicVolume = musicVolume.muted(isMuted);
+        return this;
     }
+
+    @Override
+    public boolean isMusicMuted() {
+        return musicVolume.isMuted();
+    }
+
+    @Override
+    public Audio setEffectsMuted(boolean isMuted) {
+        effectVolume = effectVolume.muted(isMuted);
+        return this;
+    }
+
+    @Override
+    public boolean areEffectsMuted() {
+        return effectVolume.isMuted();
+    }
+
 
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
@@ -146,14 +187,6 @@ public class DefaultAudio implements Audio, LineListener {
         } else {
             clip.start();
         }
-    }
-
-    private Percent musicVolume() {
-        return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
-    }
-
-    private Percent effectVolume() {
-        return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
     }
 
     private void updateVolumeOfActiveClips(final Percent volume, final boolean isMusic) {
