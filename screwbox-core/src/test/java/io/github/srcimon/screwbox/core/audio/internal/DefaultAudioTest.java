@@ -44,6 +44,38 @@ class DefaultAudioTest {
     }
 
     @Test
+    void changeEffectsVolume_afterEffectWasPlayed_changesEffectVolume() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+
+
+        audio.playEffect(sound);
+
+        awaitShutdown();
+
+        audio.configuration().setEffectVolume(Percent.half());
+
+        verify(audioAdapter).setVolume(clip, Percent.max());
+        verify(audioAdapter).setVolume(clip, Percent.half());
+    }
+
+    @Test
+    void changeMusicVolume_afterMusicWasPlayed_changesMusicVolume() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+
+
+        audio.playMusic(sound);
+
+        awaitShutdown();
+
+        audio.configuration().setMusicVolume(Percent.half());
+
+        verify(audioAdapter).setVolume(clip, Percent.max());
+        verify(audioAdapter).setVolume(clip, Percent.half());
+    }
+
+    @Test
     void playEffect_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 

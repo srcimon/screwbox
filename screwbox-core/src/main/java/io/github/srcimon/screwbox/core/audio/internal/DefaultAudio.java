@@ -29,6 +29,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
+        configuration.addListener(this);
     }
 
     @Override
