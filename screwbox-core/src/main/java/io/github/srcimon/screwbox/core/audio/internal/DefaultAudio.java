@@ -32,30 +32,6 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         configuration.addListener(this);
     }
 
-    @Override
-    public Audio playMusic(final Sound sound) {
-        playClip(new ActiveSound(sound, true), musicVolume(), false);
-        return this;
-    }
-
-    @Override
-    public Audio playMusicLooped(final Sound sound) {
-        playClip(new ActiveSound(sound, true), musicVolume(), true);
-        return this;
-    }
-
-    @Override
-    public Audio playEffect(final Sound sound) {
-        playClip(new ActiveSound(sound, false), effectVolume(), false);
-        return this;
-    }
-
-    @Override
-    public Audio playEffectLooped(final Sound sound) {
-        playClip(new ActiveSound(sound, false), effectVolume(), true);
-        return this;
-    }
-
     public void shutdown() {
         synchronized (this) {
             executor.shutdown();
@@ -77,6 +53,18 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     }
 
     @Override
+    public Audio playEffect(final Sound sound, final PlaybackOptions options) {
+        playClip(new ActiveSound(sound, false), options);
+        return this;
+    }
+
+    @Override
+    public Audio playMusic(final Sound sound, final PlaybackOptions options) {
+        playClip(new ActiveSound(sound, true), options);
+        return this;
+    }
+
+    @Override
     public Audio stop(final Sound sound) {
         for (final Clip clip : fetchClipsFor(sound)) {
             executor.execute(clip::stop);
@@ -91,7 +79,8 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         }
     }
 
-    private void playClip(final ActiveSound activeSound, final Percent volume, final boolean looped) {
+    private void playClip(final ActiveSound activeSound, final PlaybackOptions options) {
+        final Percent volume = activeSound.isMusic() ? musicVolume() : effectVolume();
         if (!volume.isZero()) {
             executor.execute(() -> {
                 final Sound sound = activeSound.sound();
@@ -102,7 +91,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
-                start(clip, looped);
+                clip.loop(options.playbackRepetitions());
             });
         }
     }
@@ -134,15 +123,15 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
-        if(MUSIC_VOLUME.equals(event.changedProperty())) {
+        if (MUSIC_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : activeSounds.entrySet()) {
-                if(activeSound.getValue().isMusic()) {
+                if (activeSound.getValue().isMusic()) {
                     audioAdapter.setVolume(activeSound.getKey(), musicVolume());
                 }
             }
-        } else if(EFFECTS_VOLUME.equals(event.changedProperty())) {
+        } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : activeSounds.entrySet()) {
-                if(activeSound.getValue().isEffect()) {
+                if (activeSound.getValue().isEffect()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume());
                 }
             }
@@ -159,13 +148,6 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         return clips;
     }
 
-    private void start(final Clip clip, final boolean looped) {
-        if (looped) {
-            clip.loop(Integer.MAX_VALUE);
-        } else {
-            clip.start();
-        }
-    }
 
     private Percent musicVolume() {
         return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();

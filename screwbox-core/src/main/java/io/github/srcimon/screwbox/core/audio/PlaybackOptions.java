@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
+//TODO TEST JAVADOC AND RENAME
 public class PlaybackOptions {
 
     public static PlaybackOptions playLooped() {
@@ -11,7 +12,7 @@ public class PlaybackOptions {
     }
 
     public static PlaybackOptions playTimes(final int times) {
-        return new PlaybackOptions(times);
+        return new PlaybackOptions(times - 1);
     }
 
     private PlaybackOptions(final int playbackRepetitions) {
@@ -19,4 +20,9 @@ public class PlaybackOptions {
     }
 
     private final int playbackRepetitions;
+
+    //TOODO: RENAME
+    public int playbackRepetitions() {
+        return playbackRepetitions;
+    }
 }

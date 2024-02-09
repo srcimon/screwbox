@@ -37,12 +37,6 @@ public interface Audio {
         return playEffect(sound.get());
     }
 
-    /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#effectVolume()}. Can be stopped
-     * with {@link #stop(Sound)}.
-     */
-    @Deprecated
-    Audio playEffectLooped(Sound sound);
 
     /**
      * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()}. Can be stopped with
@@ -55,13 +49,6 @@ public interface Audio {
 
     //TODO test and javadoc
     Audio playMusic(Sound sound, PlaybackOptions options);
-
-    /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()} ()}. Can be stopped
-     * with {@link #stop(Sound)}.
-     */
-    @Deprecated
-    Audio playMusicLooped(Sound sound);
 
 
 
