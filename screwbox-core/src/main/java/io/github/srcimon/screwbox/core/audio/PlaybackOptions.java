@@ -12,17 +12,17 @@ public class PlaybackOptions {
     }
 
     public static PlaybackOptions playTimes(final int times) {
-        return new PlaybackOptions(times - 1);
+        return new PlaybackOptions(times);
     }
 
-    private PlaybackOptions(final int playbackRepetitions) {
-        this.playbackRepetitions = playbackRepetitions;
+    private PlaybackOptions(final int times) {
+        this.times = times;
     }
 
-    private final int playbackRepetitions;
+    private final int times;
 
     //TOODO: RENAME
-    public int playbackRepetitions() {
-        return playbackRepetitions;
+    public int times() {
+        return times;
     }
 }

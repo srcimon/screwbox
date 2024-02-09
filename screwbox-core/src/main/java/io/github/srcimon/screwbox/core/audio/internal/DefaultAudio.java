@@ -91,7 +91,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
-                clip.loop(options.playbackRepetitions());
+                clip.loop(options.times() - 1);
             });
         }
     }
