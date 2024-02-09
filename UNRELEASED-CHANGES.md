@@ -5,11 +5,11 @@
 ### 🪛 Bug Fixes
 
 - Fixed wrong volume when cached sound clip is played
-- Fixed `keyboard().isPressed(key)` is true if key is pressed for a longer duration (#194)
+- Fixed `Keyboard.isPressed(key)` is true if key is pressed for a longer duration (#194)
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Graphics.moveCameraTo(position)`
 
 ### 📦 Dependency updates
 

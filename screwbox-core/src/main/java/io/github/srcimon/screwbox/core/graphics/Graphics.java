@@ -38,7 +38,7 @@ public interface Graphics {
      */
     double updateCameraZoom(double zoom);
 
-    Graphics updateCameraPosition(Vector position);
+    Graphics moveCameraTo(Vector position);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
@@ -53,7 +53,7 @@ public interface Graphics {
      * Moves the camera position by the given {@link Vector}.
      */
     default Graphics moveCameraBy(final Vector delta) {
-        return updateCameraPosition(cameraPosition().add(delta));
+        return moveCameraTo(cameraPosition().add(delta));
     }
 
     /**

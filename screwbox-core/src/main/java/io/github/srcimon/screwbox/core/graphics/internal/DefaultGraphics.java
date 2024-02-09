@@ -55,7 +55,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public Graphics updateCameraPosition(final Vector position) {
+    public Graphics moveCameraTo(final Vector position) {
         world.updateCameraPosition(position);
         return this;
     }
