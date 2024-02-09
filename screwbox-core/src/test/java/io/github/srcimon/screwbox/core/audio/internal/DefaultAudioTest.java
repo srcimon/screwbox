@@ -19,7 +19,6 @@ import java.io.Serial;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static io.github.srcimon.screwbox.core.Percent.max;
 import static io.github.srcimon.screwbox.core.Percent.zero;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -45,10 +44,42 @@ class DefaultAudioTest {
     }
 
     @Test
+    void changeEffectsVolume_afterEffectWasPlayed_changesEffectVolume() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+
+
+        audio.playEffect(sound);
+
+        awaitShutdown();
+
+        audio.configuration().setEffectVolume(Percent.half());
+
+        verify(audioAdapter).setVolume(clip, Percent.max());
+        verify(audioAdapter).setVolume(clip, Percent.half());
+    }
+
+    @Test
+    void changeMusicVolume_afterMusicWasPlayed_changesMusicVolume() {
+        Sound sound = Sound.fromFile("kill.wav");
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+
+
+        audio.playMusic(sound);
+
+        awaitShutdown();
+
+        audio.configuration().setMusicVolume(Percent.half());
+
+        verify(audioAdapter).setVolume(clip, Percent.max());
+        verify(audioAdapter).setVolume(clip, Percent.half());
+    }
+
+    @Test
     void playEffect_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.setEffectVolume(zero());
+        audio.configuration().setEffectVolume(zero());
         audio.playEffect(sound);
 
         awaitShutdown();
@@ -60,7 +91,7 @@ class DefaultAudioTest {
     void playEffectLooped_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.muteEffects();
+        audio.configuration().muteEffects();
         audio.playEffectLooped(sound);
 
         awaitShutdown();
@@ -72,7 +103,7 @@ class DefaultAudioTest {
     void playMusic_musicVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.muteMusic();
+        audio.configuration().muteMusic();
         audio.playMusic(sound);
 
         awaitShutdown();
@@ -84,7 +115,7 @@ class DefaultAudioTest {
     void playMusicLooped_musicVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
-        audio.muteMusic();
+        audio.configuration().muteMusic();
         audio.playMusicLooped(sound);
 
         awaitShutdown();
@@ -195,56 +226,34 @@ class DefaultAudioTest {
     }
 
     @Test
-    void setEffectVolume_setsEffectVolume() {
+    void playEffect_volumeHalf_playsEffectOnHalfVolume() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.setEffectVolume(Percent.half());
+        audio.configuration().setEffectVolume(Percent.half());
         audio.playEffect(sound);
 
         awaitShutdown();
 
         verify(audioAdapter).setVolume(clip, Percent.half());
-        assertThat(audio.effectVolume()).isEqualTo(Percent.half());
     }
 
     @Test
-    void setMusicVolume_setsMusicVolume() {
+    void playMusic_volumeSeventyPercent_playsMusicAtSeventyPercent() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.setMusicVolume(Percent.of(0.7));
+        audio.configuration().setMusicVolume(Percent.of(0.7));
         audio.playMusic(sound);
 
         awaitShutdown();
 
         verify(audioAdapter).setVolume(clip, Percent.of(0.7));
-        assertThat(audio.musicVolume()).isEqualTo(Percent.of(0.7));
-    }
-
-    @Test
-    void muteMusic_musicUnmuted_mutesMusic() {
-        audio.muteMusic();
-
-        assertThat(audio.musicVolume()).isEqualTo(max());
-        assertThat(audio.effectVolume()).isEqualTo(max());
-        assertThat(audio.isMusicMuted()).isTrue();
-        assertThat(audio.areEffectsMuted()).isFalse();
-    }
-
-    @Test
-    void muteEffects_effectUnmuted_mutesEffects() {
-        audio.muteEffects();
-
-        assertThat(audio.musicVolume()).isEqualTo(max());
-        assertThat(audio.effectVolume()).isEqualTo(max());
-        assertThat(audio.isMusicMuted()).isFalse();
-        assertThat(audio.areEffectsMuted()).isTrue();
     }
 
     @Test
     void playEffect_effectsMuted_doesntPlayAnySound() {
-        audio.muteEffects();
+        audio.configuration().muteEffects();
 
         audio.playEffect(Sound.dummyEffect());
 
@@ -255,40 +264,13 @@ class DefaultAudioTest {
 
     @Test
     void playMusicmusicMuted_doesntPlayAnySound() {
-        audio.muteMusic();
+        audio.configuration().muteMusic();
 
         audio.playMusic(Sound.dummyEffect());
 
         awaitShutdown();
 
         verify(audioAdapter, never()).createClip(any());
-    }
-
-    @Test
-    void mute_allUnmuted_mutesEffectsAndMusic() {
-        audio.mute();
-
-        assertThat(audio.musicVolume()).isEqualTo(max());
-        assertThat(audio.effectVolume()).isEqualTo(max());
-        assertThat(audio.isMusicMuted()).isTrue();
-        assertThat(audio.areEffectsMuted()).isTrue();
-    }
-
-    @Test
-    void unmuteEffects_effectsHadVolumeConfigBefore_returnsOldVolume() {
-        when(audioAdapter.createClip(any())).thenReturn(clip);
-        audio.setEffectVolume(Percent.of(0.7));
-        audio.muteEffects();
-
-        audio.unmute();
-
-        Sound sound = Sound.dummyEffect();
-        audio.playEffect(sound);
-
-        awaitShutdown();
-
-        verify(audioAdapter).createClip(sound);
-        verify(audioAdapter).setVolume(clip, Percent.of(0.7));
     }
 
     private LineEvent stopEventFor(Clip clipMock) {

@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Moved volume control to new `AudioConfiguration` (#186)
 
 ### 🪛 Bug Fixes
 

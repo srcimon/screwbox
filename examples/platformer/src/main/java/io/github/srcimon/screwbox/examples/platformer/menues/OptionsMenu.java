@@ -28,15 +28,15 @@ public class OptionsMenu extends UiMenu {
             engine.ui().openMenu(new ResolutionOptionMenu(resolutions, resolution));
         });
 
-        addItem(engine -> "Music Volume %.0f".formatted(engine.audio().musicVolume().value() / 0.25 * 25))
-                .onActivate(engine -> engine.audio().setMusicVolume(engine.audio().musicVolume().value() + 0.25 > 1
+        addItem(engine -> "Music Volume %.0f".formatted(engine.audio().configuration().musicVolume().value() / 0.25 * 25))
+                .onActivate(engine -> engine.audio().configuration().setMusicVolume(engine.audio().configuration().musicVolume().value() + 0.25 > 1
                         ? Percent.zero()
-                        : Percent.of(engine.audio().musicVolume().value() + 0.25)));
+                        : Percent.of(engine.audio().configuration().musicVolume().value() + 0.25)));
 
-        addItem(engine -> "Effects Volume %.0f".formatted(engine.audio().effectVolume().value() / 0.25 * 25))
-                .onActivate(engine -> engine.audio().setEffectVolume(engine.audio().effectVolume().value() + 0.25 > 1
+        addItem(engine -> "Effects Volume %.0f".formatted(engine.audio().configuration().effectVolume().value() / 0.25 * 25))
+                .onActivate(engine -> engine.audio().configuration().setEffectVolume(engine.audio().configuration().effectVolume().value() + 0.25 > 1
                         ? Percent.zero()
-                        : Percent.of(engine.audio().effectVolume().value() + 0.25)));
+                        : Percent.of(engine.audio().configuration().effectVolume().value() + 0.25)));
 
         addItem("delete savegame")
                 .activeCondition(engine -> engine.environment().savegameExists("savegame.sav"))
