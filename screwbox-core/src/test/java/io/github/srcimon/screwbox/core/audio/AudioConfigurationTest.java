@@ -1,22 +1,31 @@
 package io.github.srcimon.screwbox.core.audio;
 
-import io.github.srcimon.screwbox.core.Percent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Percent.max;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class AudioConfigurationTest {
 
     AudioConfiguration configuration;
 
+    @Mock
+    AudioConfigurationListener listener;
+
     @BeforeEach
     void setUp() {
         configuration = new AudioConfiguration();
+        configuration.addListener(listener);
     }
 
 
@@ -28,6 +37,7 @@ class AudioConfigurationTest {
         assertThat(configuration.effectVolume()).isEqualTo(max());
         assertThat(configuration.isMusicMuted()).isTrue();
         assertThat(configuration.areEffectsMuted()).isFalse();
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MUSIC_VOLUME)));
     }
 
     @Test
@@ -38,42 +48,44 @@ class AudioConfigurationTest {
         assertThat(configuration.effectVolume()).isEqualTo(max());
         assertThat(configuration.isMusicMuted()).isFalse();
         assertThat(configuration.areEffectsMuted()).isTrue();
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
     }
 
-    /*
     @Test
     void mute_allUnmuted_mutesEffectsAndMusic() {
-        audio.configuration().mute();
+        configuration.mute();
 
-        assertThat(audio.configuration().musicVolume()).isEqualTo(max());
-        assertThat(audio.configuration().effectVolume()).isEqualTo(max());
-        assertThat(audio.configuration().isMusicMuted()).isTrue();
-        assertThat(audio.configuration().areEffectsMuted()).isTrue();
+        assertThat(configuration.musicVolume()).isEqualTo(max());
+        assertThat(configuration.effectVolume()).isEqualTo(max());
+        assertThat(configuration.isMusicMuted()).isTrue();
+        assertThat(configuration.areEffectsMuted()).isTrue();
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MUSIC_VOLUME)));
     }
 
     @Test
-    void unmuteEffects_effectsHadVolumeConfigBefore_returnsOldVolume() {
-        when(audioAdapter.createClip(any())).thenReturn(clip);
-        audio.configuration().setEffectVolume(Percent.of(0.7));
-        audio.configuration().muteEffects();
-
-        audio.configuration().unmute();
-
-        Sound sound = Sound.dummyEffect();
-        audio.playEffect(sound);
-
-        awaitShutdown();
-
-        verify(audioAdapter).createClip(sound);
-        verify(audioAdapter).setVolume(clip, Percent.of(0.7));
-    }
-
-    @Test
-    void muteEffects_callsSetEffectsMuted() {
+    void unmuteEffects_effectsMuted_setsEffectsUnmuted() {
         configuration.muteEffects();
 
-        verify(configuration).setEffectsMuted(true);
+        configuration.unmuteEffects();
+
+        assertThat(configuration.areEffectsMuted()).isFalse();
+        verify(listener, times(2)).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
     }
+
+    @Test
+    void muteEffects_setEffectsMuted() {
+        configuration.muteEffects();
+
+        assertThat(configuration.areEffectsMuted()).isTrue();
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
+    }
+    
+    /*
+    
+
+   
+
 
     @Test
     void unmuteEffects_callsSetEffectsMuted() {

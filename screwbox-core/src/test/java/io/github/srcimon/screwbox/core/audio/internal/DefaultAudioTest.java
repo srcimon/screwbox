@@ -19,7 +19,6 @@ import java.io.Serial;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static io.github.srcimon.screwbox.core.Percent.max;
 import static io.github.srcimon.screwbox.core.Percent.zero;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
