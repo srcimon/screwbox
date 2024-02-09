@@ -133,13 +133,17 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
-        final boolean updateMusic = MUSIC_VOLUME.equals(event.changedProperty());
-        final boolean updateEffects = EFFECTS_VOLUME.equals(event.changedProperty());
-        for (final var activeSound : activeSounds.entrySet()) {
-            if(updateMusic && activeSound.getValue().isMusic()) {
-                audioAdapter.setVolume(activeSound.getKey(), musicVolume());
-            } else if(updateEffects && activeSound.getValue().isEffect()) {
-                audioAdapter.setVolume(activeSound.getKey(), effectVolume());
+        if(MUSIC_VOLUME.equals(event.changedProperty())) {
+            for (final var activeSound : activeSounds.entrySet()) {
+                if(activeSound.getValue().isMusic()) {
+                    audioAdapter.setVolume(activeSound.getKey(), musicVolume());
+                }
+            }
+        } else if(EFFECTS_VOLUME.equals(event.changedProperty())) {
+            for (final var activeSound : activeSounds.entrySet()) {
+                if(activeSound.getValue().isEffect()) {
+                    audioAdapter.setVolume(activeSound.getKey(), effectVolume());
+                }
             }
         }
     }
@@ -169,5 +173,4 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     private Percent effectVolume() {
         return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
     }
-
 }
