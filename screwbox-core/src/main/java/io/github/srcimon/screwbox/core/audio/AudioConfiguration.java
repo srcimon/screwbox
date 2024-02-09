@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.Configurati
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 public class AudioConfiguration {
 
     private Percent effectVolume = Percent.max();
@@ -16,7 +18,7 @@ public class AudioConfiguration {
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
     public AudioConfiguration addListener(final AudioConfigurationListener listener) {
-        listeners.add(listener);
+        listeners.add(requireNonNull(listener, "listener must not be null"));
         return this;
     }
 

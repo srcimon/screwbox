@@ -10,6 +10,7 @@ import static io.github.srcimon.screwbox.core.Percent.max;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -80,80 +81,83 @@ class AudioConfigurationTest {
         assertThat(configuration.areEffectsMuted()).isTrue();
         verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
     }
-    
-    /*
-    
-
-   
-
 
     @Test
-    void unmuteEffects_callsSetEffectsMuted() {
-        configuration.unmuteEffects();
-
-        verify(configuration).setEffectsMuted(false);
-    }
-
-    @Test
-    void muteMusic_callsSetMusicMuted() {
+    void muteMusic_setsMusicMuted() {
         configuration.muteMusic();
 
-        verify(configuration).setMusicMuted(true);
+        assertThat(configuration.isMusicMuted()).isTrue();
+
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MUSIC_VOLUME)));
     }
 
     @Test
-    void unmuteMusic_callsSetMusicMuted() {
+    void unmuteMusic_musicMuted_isUnmuted() {
+        configuration.muteMusic();
+
         configuration.unmuteMusic();
 
-        verify(configuration).setMusicMuted(false);
+        assertThat(configuration.isMusicMuted()).isFalse();
+
+        verify(listener, times(2)).configurationChanged(argThat(event -> event.changedProperty().equals(MUSIC_VOLUME)));
     }
 
     @Test
     void setMuted_mutesMusicAndEffects() {
         configuration.setMuted(true);
 
-        verify(configuration).setMusicMuted(true);
-        verify(configuration).setEffectsMuted(true);
+        assertThat(configuration.isMusicMuted()).isTrue();
+        assertThat(configuration.areEffectsMuted()).isTrue();
+
+
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(EFFECTS_VOLUME)));
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MUSIC_VOLUME)));
     }
+
 
     @Test
     void isMuted_musicAndEffectsMuted_isTrue() {
-        when(configuration.isMusicMuted()).thenReturn(true);
-        when(configuration.areEffectsMuted()).thenReturn(true);
+        configuration.muteMusic();
+        configuration.muteEffects();
 
-        assertThat(audio.isMuted()).isTrue();
+        assertThat(configuration.isMuted()).isTrue();
     }
 
     @Test
     void isMuted_onlyMusicMuted_isFalse() {
-        when(audio.isMusicMuted()).thenReturn(true);
-        when(audio.areEffectsMuted()).thenReturn(false);
+        configuration.muteMusic();
 
-        assertThat(audio.isMuted()).isFalse();
+        assertThat(configuration.isMuted()).isFalse();
     }
 
     @Test
     void isMuted_onlyEffectsMuted_isFalse() {
-        when(audio.isMusicMuted()).thenReturn(false);
+        configuration.muteEffects();
 
-        assertThat(audio.isMuted()).isFalse();
+        assertThat(configuration.isMuted()).isFalse();
     }
 
     @Test
     void mute_mutesMusicAndEfects() {
-        audio.mute();
+        configuration.mute();
 
-        verify(audio).setMusicMuted(true);
-        verify(audio).setEffectsMuted(true);
+        assertThat(configuration.areEffectsMuted()).isTrue();
+        assertThat(configuration.isMusicMuted()).isTrue();
     }
 
     @Test
     void unmute_unmutesMusicAndEfects() {
-        audio.unmute();
+        configuration.mute();
+        configuration.unmute();
 
-        verify(audio).setMusicMuted(false);
-        verify(audio).setEffectsMuted(false);
+        assertThat(configuration.areEffectsMuted()).isFalse();
+        assertThat(configuration.isMusicMuted()).isFalse();
     }
-    */
 
+    @Test
+    void addListener_listenerNull_throwsException() {
+        assertThatThrownBy(() -> configuration.addListener(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("listener must not be null");
+    }
 }
