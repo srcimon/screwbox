@@ -5,6 +5,7 @@ import java.util.EventListener;
 /**
  * Listener interface for receiving {@link AudioConfigurationEvent}s.
  */
+@FunctionalInterface
 public interface AudioConfigurationListener extends EventListener {
 
     /**

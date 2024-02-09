@@ -8,6 +8,9 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Read and change the current {@link AudioConfiguration}.
+ */
 public class AudioConfiguration {
 
     private Percent effectVolume = Percent.max();
