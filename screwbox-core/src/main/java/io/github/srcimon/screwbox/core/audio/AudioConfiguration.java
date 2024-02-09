@@ -27,7 +27,7 @@ public class AudioConfiguration {
 
     /**
      * Sets the volume of all {@link Sound}s that are played via
-     * {@link Audio#playEffect(Sound)} and {@link Audio#playEffectLooped(Sound)}.
+     * {@link Audio#playEffect(Sound)}.
      */
     public AudioConfiguration setEffectVolume(final Percent volume) {
         effectVolume = volume;
