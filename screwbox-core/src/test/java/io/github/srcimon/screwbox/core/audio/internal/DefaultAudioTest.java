@@ -183,7 +183,7 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffectLooped_invokesMethodsOnClipAndIncreasesActiveCount() {
+    void playEffect_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
@@ -191,7 +191,7 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(clip).loop(Integer.MAX_VALUE);
+        verify(clip).loop(Integer.MAX_VALUE - 1);
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }
