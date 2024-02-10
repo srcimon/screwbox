@@ -12,8 +12,6 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
-    //TODO test
-
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      * 
@@ -21,8 +19,6 @@ public interface Audio {
      */
     Audio playEffect(Sound sound, SoundOptions options);
 
-
-    //TODO TEST
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      * 
@@ -47,23 +43,28 @@ public interface Audio {
         return playEffect(sound.get());
     }
 
-
-    /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()}. Can be stopped with
-     * {@link #stop(Sound)}.
-     */
-    //TODO TEST
-    default Audio playMusic(Sound sound) {
-        return playMusic(sound, playOnce());
-    }
-
-    //TODO test
     /**
      * Plays a music {@link Sound} using the given {@link SoundOptions}.
      *
      * @see #playMusic(Supplier, SoundOptions)
      */
     Audio playMusic(Sound sound, SoundOptions options);
+
+    /**
+     * Plays a music {@link Sound} with {@link AudioConfiguration#musicVolume()}.
+     */
+    default Audio playMusic(Sound sound) {
+        return playMusic(sound, playOnce());
+    }
+
+    /**
+     * Plays a music {@link Sound}.
+     *
+     * @see #playMusic(Sound, SoundOptions)
+     */
+    default Audio playMusic(final Supplier<Sound> sound) {
+        return playMusic(sound.get(), playOnce());
+    }
 
     /**
      * Plays a music {@link Sound} using the given {@link SoundOptions}.

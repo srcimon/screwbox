@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
 
+import java.util.Objects;
+
 //TODO Test
 
 /**
@@ -60,5 +62,23 @@ public class SoundOptions {
      */
     public int times() {
         return times;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SoundOptions that = (SoundOptions) o;
+
+        if (times != that.times) return false;
+        return Objects.equals(volume, that.volume);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = times;
+        result = 31 * result + (volume != null ? volume.hashCode() : 0);
+        return result;
     }
 }
