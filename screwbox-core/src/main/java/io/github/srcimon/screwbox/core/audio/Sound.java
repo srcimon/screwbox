@@ -6,10 +6,11 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
-import java.io.IOException;
-import java.io.Serial;
-import java.io.Serializable;
+import javax.sound.sampled.AudioSystem;
+import java.io.*;
 
 import static java.util.Objects.requireNonNull;
 
@@ -67,6 +68,9 @@ public final class Sound implements Serializable {
      * Creates a new {@link Sound} from wav content.
      */
     public static Sound fromWav(final byte[] content) {
+
+
+
         return new Sound(content, Format.WAV);
     }
 
@@ -78,8 +82,40 @@ public final class Sound implements Serializable {
         return Asset.asset(() -> fromFile(fileName));
     }
 
+
+
+
+    private byte[] convertMonoToStereo(byte[] monoWavData) {
+        // Erstelle einen AudioInputStream aus dem Mono-WAV-Byte-Array
+        try(AudioInputStream monoInputStream = AudioAdapter.getAudioInputStream(monoWavData)) {
+            var f = monoInputStream.getFormat();
+            if(f.getFrameSize() > 2) {
+                return monoWavData;
+            }
+            // Erstelle einen ByteArrayOutputStream für die Stereo-Daten
+            try (ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream()) {
+
+                // Erstelle einen AudioFormat für Stereo (2 Kanäle)
+                AudioFormat stereoFormat = new AudioFormat(f.getEncoding(), f.getSampleRate(), f.getSampleSizeInBits(), 2, f.getFrameSize() * 2, f.getFrameRate(), false);
+
+                // Konvertiere Mono zu Stereo
+                ;
+                try (AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
+                    AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);
+                    return stereoOutputStream.toByteArray();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Sound(final byte[] content, final Format type) {
-        this.content = requireNonNull(content, "content must not be null");
+        this.content = convertMonoToStereo(requireNonNull(content, "content must not be null"));
         this.format = type;
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
