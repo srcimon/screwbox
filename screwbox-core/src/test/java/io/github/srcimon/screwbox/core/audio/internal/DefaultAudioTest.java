@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import java.util.concurrent.Executors;
 
 import static io.github.srcimon.screwbox.core.Percent.zero;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -227,16 +229,16 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_volumeHalf_playsEffectOnHalfVolume() {
+    void playEffect_volumeHalfAndSoundPlayedAt20Percent_playsEffectOnTenPercent() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setEffectVolume(Percent.half());
-        audio.playEffect(sound);
+        audio.playEffect(sound, playOnce().volume(Percent.of(0.2)));
 
         awaitShutdown();
 
-        verify(audioAdapter).setVolume(clip, Percent.half());
+        verify(audioAdapter).setVolume(clip, Percent.of(0.1));
     }
 
     @Test

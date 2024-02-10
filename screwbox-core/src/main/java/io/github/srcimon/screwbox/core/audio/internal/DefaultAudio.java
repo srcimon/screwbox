@@ -80,7 +80,8 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     }
 
     private void playClip(final ActiveSound activeSound, final SoundOptions options) {
-        final Percent volume = activeSound.isMusic() ? musicVolume() : effectVolume();
+        final Percent configVolume = activeSound.isMusic() ? musicVolume() : effectVolume();
+        final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
                 final Sound sound = activeSound.sound();
