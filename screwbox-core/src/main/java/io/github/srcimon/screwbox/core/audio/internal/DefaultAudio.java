@@ -53,13 +53,13 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     }
 
     @Override
-    public Audio playEffect(final Sound sound, final PlaybackOptions options) {
+    public Audio playEffect(final Sound sound, final SoundOptions options) {
         playClip(new ActiveSound(sound, false), options);
         return this;
     }
 
     @Override
-    public Audio playMusic(final Sound sound, final PlaybackOptions options) {
+    public Audio playMusic(final Sound sound, final SoundOptions options) {
         playClip(new ActiveSound(sound, true), options);
         return this;
     }
@@ -79,7 +79,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         }
     }
 
-    private void playClip(final ActiveSound activeSound, final PlaybackOptions options) {
+    private void playClip(final ActiveSound activeSound, final SoundOptions options) {
         final Percent volume = activeSound.isMusic() ? musicVolume() : effectVolume();
         if (!volume.isZero()) {
             executor.execute(() -> {

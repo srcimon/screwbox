@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.audio.PlaybackOptions.playOnce;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 
 /**
  * Controls the audio playback of the {@link Engine}.
@@ -14,12 +14,12 @@ public interface Audio {
 
     //TODO check all javadoc
     //TODO test and javadoc
-    Audio playEffect(Sound sound, PlaybackOptions options);
+    Audio playEffect(Sound sound, SoundOptions options);
 
 
     //TODO test and javadoc
     //TODO TEST
-    default Audio playEffect(final Supplier<Sound> sound, final PlaybackOptions options) {
+    default Audio playEffect(final Supplier<Sound> sound, final SoundOptions options) {
         return playEffect(sound.get(), options);
     }
 
@@ -49,12 +49,12 @@ public interface Audio {
     }
 
     //TODO test and javadoc
-    Audio playMusic(Sound sound, PlaybackOptions options);
+    Audio playMusic(Sound sound, SoundOptions options);
 
 
 
     //TODO test and javadoc
-    default Audio playMusic(final Supplier<Sound> sound, final PlaybackOptions options) {
+    default Audio playMusic(final Supplier<Sound> sound, final SoundOptions options) {
         return playMusic(sound.get(), options);
     }
 

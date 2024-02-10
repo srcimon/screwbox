@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.platformer.enemies.tracer;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.audio.PlaybackOptions;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
@@ -12,7 +11,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSig
 import io.github.srcimon.screwbox.examples.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
-import static io.github.srcimon.screwbox.core.audio.PlaybackOptions.playLooped;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 
 public class TracerActiveState implements EntityState {
 
