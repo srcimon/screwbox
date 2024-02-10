@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SoundOptionsTest {
 
@@ -29,5 +30,12 @@ class SoundOptionsTest {
 
         assertThat(options.times()).isEqualTo(3);
         assertThat(options.volume()).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void playTimes_timesIsZero_throwsException() {
+        assertThatThrownBy(() -> SoundOptions.playTimes(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sound must be played at least once");
     }
 }

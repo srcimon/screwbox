@@ -30,7 +30,9 @@ public class SoundOptions {
      * Playback {@link Sound} looped for the given times.
      */
     public static SoundOptions playTimes(final int times) {
-        //TODO Validate
+        if (times < 1) {
+            throw new IllegalArgumentException("sound must be played at least once");
+        }
         return new SoundOptions(times);
     }
 
