@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Moved volume control to new `AudioConfiguration` (#186)
-- Added `Audio.playEffect(Sound, SoundOptions)` and  `Audio.playMusic(Sound, SoundOptions)`
+- Replaced `Audio.playEffectLooped(Sound)` with `Audio.playEffect(Sound, SoundOptions)` to extend options in the future (#187)
 
 ### 🪛 Bug Fixes
 
@@ -11,7 +11,6 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Graphics.moveCameraTo(position)`
-- Removed `Audio.playEffectLooped(Sound)` and  `Audio.playMusicLooped(Sound)`
 
 ### 📦 Dependency updates
 
