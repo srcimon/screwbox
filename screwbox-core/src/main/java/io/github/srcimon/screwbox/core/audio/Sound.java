@@ -22,6 +22,11 @@ public final class Sound implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //TODO javadoc
+    public boolean isArtificalStereo() {
+        return isArtificalStereo;
+    }
+
     /**
      * The format of the sound data.
      */
@@ -33,6 +38,7 @@ public final class Sound implements Serializable {
     private final byte[] content;
     private final Format format;
     private final Duration duration;
+    private final boolean isArtificalStereo;
 
     /**
      * Returns a short dummy sound effect.
@@ -47,7 +53,6 @@ public final class Sound implements Serializable {
      */
     public static Sound fromFile(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
-
         if (fileName.endsWith(".wav")) {
             return fromWav(Resources.loadBinary(fileName));
         }
@@ -68,9 +73,6 @@ public final class Sound implements Serializable {
      * Creates a new {@link Sound} from wav content.
      */
     public static Sound fromWav(final byte[] content) {
-
-
-
         return new Sound(content, Format.WAV);
     }
 
@@ -82,14 +84,11 @@ public final class Sound implements Serializable {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-
-
-
     private byte[] convertMonoToStereo(byte[] monoWavData) {
         // Erstelle einen AudioInputStream aus dem Mono-WAV-Byte-Array
         try(AudioInputStream monoInputStream = AudioAdapter.getAudioInputStream(monoWavData)) {
             var f = monoInputStream.getFormat();
-            if(f.getFrameSize() > 2) {
+            if(!isArtificalStereo) {
                 return monoWavData;
             }
             // Erstelle einen ByteArrayOutputStream für die Stereo-Daten
@@ -119,6 +118,7 @@ public final class Sound implements Serializable {
         this.format = type;
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
+            isArtificalStereo = audioInputStream.getFormat().getFrameSize() <= 2;
             duration = Duration.ofMillis((int) length);
         } catch (IOException e) {
             throw new IllegalStateException("could not create sound", e);

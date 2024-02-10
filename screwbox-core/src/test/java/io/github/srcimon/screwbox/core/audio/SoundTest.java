@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.audio;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.utils.Resources;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +25,21 @@ class SoundTest {
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(186));
+
+    }
+
+    @Test
+    void isArtificalStereo_sourceIsMono_isTrue() {
+        var sound = Sound.fromFile("kill.wav");
+
+        assertThat(sound.isArtificalStereo()).isTrue();
+    }
+
+    @Test
+    void isArtificalStereo_sourceIsStereo_isFalse() {
+        var sound = Sound.fromFile("stereo.wav");
+
+        assertThat(sound.isArtificalStereo()).isFalse();
     }
 
     @Test
