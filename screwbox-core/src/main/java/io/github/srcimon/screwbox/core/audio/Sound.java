@@ -114,7 +114,11 @@ public final class Sound implements Serializable {
         return duration;
     }
 
-    //TODO javadoc
+    /**
+     * Returns {@code true} if the {@link Sound} was updated from mono to stereo via code.
+     * Stereo is required to apply some effects like balance and pan.
+     */
+    //TODO: link javadoc to balance and pan
     public boolean isArtificalStereo() {
         return isArtificalStereo;
     }
