@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static io.github.srcimon.screwbox.core.Percent.zero;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -92,7 +93,7 @@ class DefaultAudioTest {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteEffects();
-        audio.playEffectLooped(sound);
+        audio.playEffect(sound, playLooped());
 
         awaitShutdown();
 
@@ -116,7 +117,7 @@ class DefaultAudioTest {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteMusic();
-        audio.playMusicLooped(sound);
+        audio.playMusic(sound, playLooped());
 
         awaitShutdown();
 
@@ -176,21 +177,21 @@ class DefaultAudioTest {
 
         awaitShutdown();
 
-        verify(clip).start();
+        verify(clip).loop(0);
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }
 
     @Test
-    void playEffectLooped_invokesMethodsOnClipAndIncreasesActiveCount() {
+    void playEffect_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playEffectLooped(sound);
+        audio.playEffect(sound, playLooped());
 
         awaitShutdown();
 
-        verify(clip).loop(Integer.MAX_VALUE);
+        verify(clip).loop(Integer.MAX_VALUE - 1);
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }

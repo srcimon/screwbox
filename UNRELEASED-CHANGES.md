@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Moved volume control to new `AudioConfiguration` (#186)
+- Replaced `Audio.playEffectLooped(Sound)` with `Audio.playEffect(Sound, SoundOptions)` to extend options in the future (#187)
 
 ### 🪛 Bug Fixes
 

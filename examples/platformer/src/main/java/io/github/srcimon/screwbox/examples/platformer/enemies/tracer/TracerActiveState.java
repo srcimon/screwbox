@@ -11,6 +11,8 @@ import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSig
 import io.github.srcimon.screwbox.examples.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
+
 public class TracerActiveState implements EntityState {
 
     private static final long serialVersionUID = 1L;
@@ -22,7 +24,7 @@ public class TracerActiveState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new FollowPlayerComponent());
-        engine.audio().playEffectLooped(SOUND.get());
+        engine.audio().playEffect(SOUND, playLooped());
     }
 
     @Override

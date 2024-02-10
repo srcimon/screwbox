@@ -5,15 +5,35 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
+
 /**
  * Controls the audio playback of the {@link Engine}.
  */
 public interface Audio {
 
     /**
+     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playEffect(Supplier, SoundOptions)
+     */
+    Audio playEffect(Sound sound, SoundOptions options);
+
+    /**
+     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playEffect(Sound, SoundOptions)
+     */
+    default Audio playEffect(final Supplier<Sound> sound, final SoundOptions options) {
+        return playEffect(sound.get(), options);
+    }
+
+    /**
      * Plays a {@link Sound} a single time with {@link AudioConfiguration#effectVolume()}.
      */
-    Audio playEffect(Sound sound);
+    default Audio playEffect(final Sound sound) {
+        return playEffect(sound, playOnce());
+    }
 
     /**
      * Plays a {@link Sound} from an {@link Asset} a single time with
@@ -24,22 +44,36 @@ public interface Audio {
     }
 
     /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#effectVolume()}. Can be stopped
-     * with {@link #stop(Sound)}.
+     * Plays a music {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playMusic(Supplier, SoundOptions)
      */
-    Audio playEffectLooped(Sound sound);
+    Audio playMusic(Sound sound, SoundOptions options);
 
     /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()}. Can be stopped with
-     * {@link #stop(Sound)}.
+     * Plays a music {@link Sound} with {@link AudioConfiguration#musicVolume()}.
      */
-    Audio playMusic(Sound sound);
+    default Audio playMusic(Sound sound) {
+        return playMusic(sound, playOnce());
+    }
 
     /**
-     * Plays a {@link Sound} looped with {@link AudioConfiguration#musicVolume()} ()}. Can be stopped
-     * with {@link #stop(Sound)}.
+     * Plays a music {@link Sound}.
+     *
+     * @see #playMusic(Sound, SoundOptions)
      */
-    Audio playMusicLooped(Sound sound);
+    default Audio playMusic(final Supplier<Sound> sound) {
+        return playMusic(sound.get());
+    }
+
+    /**
+     * Plays a music {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playMusic(Sound, SoundOptions)
+     */
+    default Audio playMusic(final Supplier<Sound> sound, final SoundOptions options) {
+        return playMusic(sound.get(), options);
+    }
 
     /**
      * Stops all currently playing instances of the {@link Sound}.
