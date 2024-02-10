@@ -12,13 +12,22 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
-    //TODO check all javadoc
-    //TODO test and javadoc
+    //TODO test
+
+    /**
+     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     * 
+     * @see #playEffect(Supplier, SoundOptions)
+     */
     Audio playEffect(Sound sound, SoundOptions options);
 
 
-    //TODO test and javadoc
     //TODO TEST
+    /**
+     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     * 
+     * @see #playEffect(Sound, SoundOptions) 
+     */
     default Audio playEffect(final Supplier<Sound> sound, final SoundOptions options) {
         return playEffect(sound.get(), options);
     }
@@ -48,12 +57,20 @@ public interface Audio {
         return playMusic(sound, playOnce());
     }
 
-    //TODO test and javadoc
+    //TODO test
+    /**
+     * Plays a music {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playMusic(Supplier, SoundOptions)
+     */
     Audio playMusic(Sound sound, SoundOptions options);
 
-
-
-    //TODO test and javadoc
+    /**
+     * Plays a music {@link Sound} using the given {@link SoundOptions}.
+     *
+     * @see #playMusic(Sound, SoundOptions)
+     */
+    //TODO test
     default Audio playMusic(final Supplier<Sound> sound, final SoundOptions options) {
         return playMusic(sound.get(), options);
     }
