@@ -10,7 +10,10 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 
 import static java.util.Objects.requireNonNull;
 
@@ -21,11 +24,6 @@ public final class Sound implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    //TODO javadoc
-    public boolean isArtificalStereo() {
-        return isArtificalStereo;
-    }
 
     /**
      * The format of the sound data.
@@ -42,6 +40,7 @@ public final class Sound implements Serializable {
 
     /**
      * Returns a short dummy sound effect.
+     *
      * @return
      */
     public static Sound dummyEffect() {
@@ -84,27 +83,15 @@ public final class Sound implements Serializable {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-    private byte[] convertMonoToStereo(byte[] monoWavData) {
-        // Erstelle einen AudioInputStream aus dem Mono-WAV-Byte-Array
-        try(AudioInputStream monoInputStream = AudioAdapter.getAudioInputStream(monoWavData)) {
-            var f = monoInputStream.getFormat();
-            if(!isArtificalStereo) {
-                return monoWavData;
-            }
-            // Erstelle einen ByteArrayOutputStream für die Stereo-Daten
-            try (ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream()) {
+    private byte[] convertToStereo(final AudioInputStream monoInputStream) {
+        final var originalFormat = monoInputStream.getFormat();
+        final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),
+                originalFormat.getSampleSizeInBits(), 2, originalFormat.getFrameSize() * 2, originalFormat.getFrameRate(), false);
 
-                // Erstelle einen AudioFormat für Stereo (2 Kanäle)
-                AudioFormat stereoFormat = new AudioFormat(f.getEncoding(), f.getSampleRate(), f.getSampleSizeInBits(), 2, f.getFrameSize() * 2, f.getFrameRate(), false);
-
-                // Konvertiere Mono zu Stereo
-                ;
-                try (AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
-                    AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);
-                    return stereoOutputStream.toByteArray();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        try (final ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream()) {
+            try (final AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
+                AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);
+                return stereoOutputStream.toByteArray();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -114,12 +101,13 @@ public final class Sound implements Serializable {
     }
 
     private Sound(final byte[] content, final Format type) {
-        this.content = convertMonoToStereo(requireNonNull(content, "content must not be null"));
+        requireNonNull(content, "content must not be null");
         this.format = type;
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
             isArtificalStereo = audioInputStream.getFormat().getFrameSize() <= 2;
             duration = Duration.ofMillis((int) length);
+            this.content = isArtificalStereo ? convertToStereo(audioInputStream) : content;
         } catch (IOException e) {
             throw new IllegalStateException("could not create sound", e);
         }
@@ -144,5 +132,10 @@ public final class Sound implements Serializable {
      */
     public Duration duration() {
         return duration;
+    }
+
+    //TODO javadoc
+    public boolean isArtificalStereo() {
+        return isArtificalStereo;
     }
 }
