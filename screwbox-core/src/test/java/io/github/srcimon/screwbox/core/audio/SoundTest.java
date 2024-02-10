@@ -63,6 +63,7 @@ class SoundTest {
         assertThat(sound.content()).hasSizeGreaterThan(10);
         assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(9000));
+        assertThat(sound.isArtificalStereo()).isFalse();
     }
 
     @Test

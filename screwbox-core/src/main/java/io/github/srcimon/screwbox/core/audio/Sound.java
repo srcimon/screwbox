@@ -6,15 +6,12 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
+import static io.github.srcimon.screwbox.core.audio.internal.AudioAdapter.convertToStereo;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -81,23 +78,6 @@ public final class Sound implements Serializable {
      */
     public static Asset<Sound> assetFromFile(final String fileName) {
         return Asset.asset(() -> fromFile(fileName));
-    }
-
-    private byte[] convertToStereo(final AudioInputStream monoInputStream) {
-        final var originalFormat = monoInputStream.getFormat();
-        final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),
-                originalFormat.getSampleSizeInBits(), 2, originalFormat.getFrameSize() * 2, originalFormat.getFrameRate(), false);
-
-        try (final ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream()) {
-            try (final AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
-                AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);
-                return stereoOutputStream.toByteArray();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private Sound(final byte[] content, final Format type) {

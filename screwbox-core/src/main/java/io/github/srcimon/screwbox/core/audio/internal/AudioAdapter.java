@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,6 +31,20 @@ public class AudioAdapter {
             return AudioSystem.getAudioInputStream(inputStream);
         } catch (UnsupportedAudioFileException | IOException e) {
             throw new IllegalArgumentException("could not load audio content", e);
+        }
+    }
+
+    public static byte[] convertToStereo(final AudioInputStream monoInputStream) {
+        final var originalFormat = monoInputStream.getFormat();
+        final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),
+                originalFormat.getSampleSizeInBits(), 2, originalFormat.getFrameSize() * 2, originalFormat.getFrameRate(), false);
+
+        try (final ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream();
+             final AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
+            AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);
+            return stereoOutputStream.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException("could not convert mono to stereo audio", e);
         }
     }
 }
