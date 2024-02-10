@@ -14,15 +14,15 @@ public interface Audio {
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
-     * 
+     *
      * @see #playEffect(Supplier, SoundOptions)
      */
     Audio playEffect(Sound sound, SoundOptions options);
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
-     * 
-     * @see #playEffect(Sound, SoundOptions) 
+     *
+     * @see #playEffect(Sound, SoundOptions)
      */
     default Audio playEffect(final Supplier<Sound> sound, final SoundOptions options) {
         return playEffect(sound.get(), options);
@@ -63,7 +63,7 @@ public interface Audio {
      * @see #playMusic(Sound, SoundOptions)
      */
     default Audio playMusic(final Supplier<Sound> sound) {
-        return playMusic(sound.get(), playOnce());
+        return playMusic(sound.get());
     }
 
     /**
@@ -71,7 +71,6 @@ public interface Audio {
      *
      * @see #playMusic(Sound, SoundOptions)
      */
-    //TODO test
     default Audio playMusic(final Supplier<Sound> sound, final SoundOptions options) {
         return playMusic(sound.get(), options);
     }

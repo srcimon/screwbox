@@ -6,9 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AudioTest {
@@ -56,7 +54,7 @@ class AudioTest {
 
         audio.playMusic(soundAsset);
 
-        verify(audio).playMusic(SOUND, SoundOptions.playOnce());
+        verify(audio).playMusic(SOUND);
     }
 
     @Test
