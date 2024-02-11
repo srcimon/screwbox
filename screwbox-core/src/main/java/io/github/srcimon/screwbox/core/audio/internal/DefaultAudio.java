@@ -54,13 +54,13 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public Audio playEffect(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, false), options);
+        playClip(new ActiveSound(sound, options, false));
         return this;
     }
 
     @Override
     public Audio playMusic(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, true), options);
+        playClip(new ActiveSound(sound, options, true));
         return this;
     }
 
@@ -79,9 +79,9 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         }
     }
 
-    private void playClip(final ActiveSound activeSound, final SoundOptions options) {
+    private void playClip(final ActiveSound activeSound) {
         final Percent configVolume = activeSound.isMusic() ? musicVolume() : effectVolume();
-        final Percent volume = configVolume.multiply(options.volume().value());
+        final Percent volume = configVolume.multiply(activeSound.options().volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
                 final Sound sound = activeSound.sound();
@@ -89,10 +89,12 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                         ? audioAdapter.createClip(sound)
                         : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
                 audioAdapter.setVolume(clip, volume);
+                audioAdapter.setBalance(clip, activeSound.options().balance());
+                audioAdapter.setPan(clip, activeSound.options().pan());
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
-                clip.loop(options.times() - 1);
+                clip.loop(activeSound.options().times() - 1);
             });
         }
     }
@@ -127,13 +129,13 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : activeSounds.entrySet()) {
                 if (activeSound.getValue().isMusic()) {
-                    audioAdapter.setVolume(activeSound.getKey(), musicVolume());
+                    audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : activeSounds.entrySet()) {
                 if (activeSound.getValue().isEffect()) {
-                    audioAdapter.setVolume(activeSound.getKey(), effectVolume());
+                    audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
         }
