@@ -69,7 +69,7 @@ class SoundTest {
     void fromFile_invalidMidi_throwsException() {
         assertThatThrownBy(() -> Sound.fromFile("fake.mid"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("could not load audio content");
+                .hasMessage("could not create sound");
     }
 
     @Test
