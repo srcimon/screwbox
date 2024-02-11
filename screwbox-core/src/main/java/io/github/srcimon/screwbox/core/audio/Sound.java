@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
 import javax.sound.sampled.AudioInputStream;
-import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 

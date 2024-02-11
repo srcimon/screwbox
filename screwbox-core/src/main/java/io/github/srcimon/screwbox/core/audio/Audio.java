@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.util.function.Supplier;
@@ -11,6 +12,14 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  * Controls the audio playback of the {@link Engine}.
  */
 public interface Audio {
+
+    //TODO javadoc
+    Audio playEffect(Sound sound, Vector position);
+
+    //TODO Test and javadoc
+    default Audio playEffect(final Supplier<Sound> sound, final Vector position) {
+        return playEffect(sound.get(), position);
+    }
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
