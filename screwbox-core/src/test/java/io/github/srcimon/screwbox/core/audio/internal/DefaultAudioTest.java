@@ -52,14 +52,14 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
 
-        audio.playEffect(sound);
+        audio.playEffect(sound, SoundOptions.playOnce().volume(Percent.quater()));
 
         awaitShutdown();
 
         audio.configuration().setEffectVolume(Percent.half());
 
-        verify(audioAdapter).setVolume(clip, Percent.max());
-        verify(audioAdapter).setVolume(clip, Percent.half());
+        verify(audioAdapter).setVolume(clip, Percent.quater());
+        verify(audioAdapter).setVolume(clip, Percent.of(0.125));
     }
 
     @Test
