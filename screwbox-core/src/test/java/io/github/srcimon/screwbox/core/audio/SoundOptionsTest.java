@@ -33,6 +33,30 @@ class SoundOptionsTest {
     }
 
     @Test
+    void soundOptions_panAndBalanceOutOfLowerBounds_hasValidPanAndBalance() {
+        var options = SoundOptions.playOnce().pan(-4).balance(-9);
+
+        assertThat(options.pan()).isEqualTo(-1);
+        assertThat(options.balance()).isEqualTo(-1);
+    }
+
+    @Test
+    void soundOptions_panAndBalanceOutOfUpperBounds_hasValidPanAndBalance() {
+        var options = SoundOptions.playOnce().pan(4).balance(9);
+
+        assertThat(options.pan()).isEqualTo(1);
+        assertThat(options.balance()).isEqualTo(1);
+    }
+
+    @Test
+    void soundOptions_validInputForPanAndBalance_hasPanAndBalance() {
+        var options = SoundOptions.playOnce().pan(0.2).balance(-0.3);
+
+        assertThat(options.pan()).isEqualTo(0.2);
+        assertThat(options.balance()).isEqualTo(-0.3);
+    }
+
+    @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)

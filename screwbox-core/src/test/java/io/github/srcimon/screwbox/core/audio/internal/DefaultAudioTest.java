@@ -91,7 +91,7 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffectLooped_effectVolumeZero_doesntPlayEffect() {
+    void playEffect_effectLoopedButVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteEffects();
@@ -115,7 +115,7 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playMusicLooped_musicVolumeZero_doesntPlayEffect() {
+    void playMusic_musicLoopedVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteMusic();
@@ -180,6 +180,9 @@ class DefaultAudioTest {
         awaitShutdown();
 
         verify(clip).loop(0);
+        verify(audioAdapter).setBalance(clip, 0);
+        verify(audioAdapter).setPan(clip, 0);
+        verify(audioAdapter).setVolume(clip, Percent.max());
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }
@@ -189,11 +192,14 @@ class DefaultAudioTest {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playEffect(sound, playLooped());
+        audio.playEffect(sound, playLooped().pan(-0.2).balance(0.1));
 
         awaitShutdown();
 
         verify(clip).loop(Integer.MAX_VALUE - 1);
+        verify(audioAdapter).setBalance(clip, 0.1);
+        verify(audioAdapter).setPan(clip, -0.2);
+        verify(audioAdapter).setVolume(clip, Percent.max());
 
         assertThat(audio.activeCount(sound)).isEqualTo(1);
     }

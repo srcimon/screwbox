@@ -59,8 +59,6 @@ public class SoundOptions {
         return volume;
     }
 
-    //TODO TEST
-
     /**
      * Sets the pan of the playback. Allowed range is -1 to 1. Auto crops values out of this range.
      */
@@ -69,8 +67,6 @@ public class SoundOptions {
         return this;
     }
 
-    //TODO TEST
-
     /**
      * Get the pan.
      */
@@ -78,17 +74,13 @@ public class SoundOptions {
         return pan;
     }
 
-    //TODO TEST
-
     /**
-     * Sets the pan of the playback. Allowed range is -1 to 1. Auto crops values out of this range.
+     * Sets the balance of the playback. Allowed range is -1 to 1. Auto crops values out of this range.
      */
     public SoundOptions balance(final double balance) {
         this.balance = clamp(-1, balance, 1);
         return this;
     }
-
-    //TODO TEST
 
     /**
      * Get the balance.
