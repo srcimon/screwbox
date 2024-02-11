@@ -73,18 +73,23 @@ public final class Sound implements Serializable {
         requireNonNull(content, "content must not be null");
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             final var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
-            boolean isMono = audioInputStream.getFormat().getFrameSize() <= 2;
             this.duration = Duration.ofMillis((int) length);
-
-            if(startsWithMidiHeader(content)) {
-                sourceFormat = isMono ? SourceFormat.MINI_STEREO : SourceFormat.MIDI_MONO;
-            } else {
-                sourceFormat = isMono ? SourceFormat.WAV_MONO : SourceFormat.WAV_STEREO;
-            }
+            final var isMono = audioInputStream.getFormat().getFrameSize() <= 2;
+            sourceFormat = detectSourceFormat(content, isMono);
             this.content = isMono ? convertToStereo(audioInputStream) : content;
         } catch (IOException e) {
             throw new IllegalStateException("could not create sound", e);
         }
+    }
+
+    private SourceFormat detectSourceFormat(byte[] content, boolean isMono) {
+        final boolean startsWithMidiHeader = content.length >= 4
+                && content[0] == 0x4D && content[1] == 0x54 && content[2] == 0x68 && content[3] == 0x64;
+
+        if (startsWithMidiHeader) {
+            return isMono ? SourceFormat.MINI_STEREO : SourceFormat.MIDI_MONO;
+        }
+        return isMono ? SourceFormat.WAV_MONO : SourceFormat.WAV_STEREO;
     }
 
     /**
@@ -108,7 +113,4 @@ public final class Sound implements Serializable {
         return duration;
     }
 
-    private boolean startsWithMidiHeader(final byte[] data) {
-        return data.length >= 4 && data[0] == 0x4D && data[1] == 0x54 && data[2] == 0x68 && data[3] == 0x64;
-    }
 }
