@@ -25,21 +25,21 @@ class SoundTest {
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(186));
-        assertThat(sound.format()).isEqualTo(Sound.Format.WAV);
+        assertThat(sound.sourceFormat()).isEqualTo(Sound.SourceFormat.WAV_MONO);
     }
 
     @Test
-    void isArtificalStereo_sourceIsMono_isTrue() {
+    void sourceFormat_sourceIsMonoWav_isMonoWav() {
         var sound = Sound.fromFile("kill.wav");
 
-        assertThat(sound.isArtificalStereo()).isTrue();
+        assertThat(sound.sourceFormat()).isEqualTo(Sound.SourceFormat.WAV_MONO);
     }
 
     @Test
-    void isArtificalStereo_sourceIsStereo_isFalse() {
+    void sourceFormat_sourceIsStereoWav_isStereoWav() {
         var sound = Sound.fromFile("stereo.wav");
 
-        assertThat(sound.isArtificalStereo()).isFalse();
+        assertThat(sound.sourceFormat()).isEqualTo(Sound.SourceFormat.WAV_STEREO);
     }
 
     @Test
@@ -53,7 +53,7 @@ class SoundTest {
     void fromFile_textFile_exception() {
         assertThatThrownBy(() -> Sound.fromFile("not-a-wav.txt"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Audio only supports WAV- and MIDI-Files at the moment.");
+                .hasMessage("audio only supports WAV- and MIDI-Files at the moment.");
     }
 
     @Test
@@ -61,9 +61,8 @@ class SoundTest {
         Sound sound = Sound.fromFile("real.mid");
 
         assertThat(sound.content()).hasSizeGreaterThan(10);
-        assertThat(sound.format()).isEqualTo(Sound.Format.MIDI);
+        assertThat(sound.sourceFormat()).isEqualTo(Sound.SourceFormat.MIDI_MONO);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(9000));
-        assertThat(sound.isArtificalStereo()).isFalse();
     }
 
     @Test
@@ -78,7 +77,7 @@ class SoundTest {
         Sound sound = Sound.fromFile("kill.wav");
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
-        assertThat(sound.format()).isEqualTo(Sound.Format.WAV);
+        assertThat(sound.sourceFormat()).isEqualTo(Sound.SourceFormat.WAV_MONO);
     }
 
     @Test
@@ -92,7 +91,6 @@ class SoundTest {
     void assetFromFile_createsAsset() {
         Asset<Sound> asset = Sound.assetFromFile("kill.wav");
 
-        Sound sound = asset.get();
-        assertThat(sound.content()).hasSizeGreaterThan(10000);
+        assertThat(asset.get().content()).hasSizeGreaterThan(10000);
     }
 }

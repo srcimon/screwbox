@@ -23,17 +23,18 @@ public final class Sound implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The format of the sound data.
+     * The source format of the sound data.
      */
-    public enum Format {
-        MIDI,
-        WAV
+    public enum SourceFormat {
+        MINI_STEREO,
+        MIDI_MONO,
+        WAV_STEREO,
+        WAV_MONO
     }
 
     private final byte[] content;
-    private final Format format;
+    private final SourceFormat sourceFormat;
     private final Duration duration;
-    private final boolean isArtificalStereo;
 
     /**
      * Returns a short dummy sound effect.
@@ -50,7 +51,7 @@ public final class Sound implements Serializable {
         if (fileName.endsWith(".wav") || fileName.endsWith(".mid")) {
             return fromSoundData(Resources.loadBinary(fileName));
         }
-        throw new IllegalArgumentException("Audio only supports WAV- and MIDI-Files at the moment.");
+        throw new IllegalArgumentException("audio only supports WAV- and MIDI-Files at the moment.");
     }
 
     /**
@@ -72,10 +73,15 @@ public final class Sound implements Serializable {
         requireNonNull(content, "content must not be null");
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             final var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
-            this.isArtificalStereo = audioInputStream.getFormat().getFrameSize() <= 2;
+            boolean isMono = audioInputStream.getFormat().getFrameSize() <= 2;
             this.duration = Duration.ofMillis((int) length);
-            this.format = startsWithMidiHeader(content) ? Format.MIDI : Format.WAV;
-            this.content = isArtificalStereo ? convertToStereo(audioInputStream) : content;
+
+            if(startsWithMidiHeader(content)) {
+                sourceFormat = isMono ? SourceFormat.MINI_STEREO : SourceFormat.MIDI_MONO;
+            } else {
+                sourceFormat = isMono ? SourceFormat.WAV_MONO : SourceFormat.WAV_STEREO;
+            }
+            this.content = isMono ? convertToStereo(audioInputStream) : content;
         } catch (IOException e) {
             throw new IllegalStateException("could not create sound", e);
         }
@@ -89,10 +95,10 @@ public final class Sound implements Serializable {
     }
 
     /**
-     * Returns the {@link Format} of the {@link Sound}.
+     * Returns the {@link SourceFormat} of the {@link Sound}.
      */
-    public Format format() {
-        return format;
+    public SourceFormat sourceFormat() {
+        return sourceFormat;
     }
 
     /**
@@ -100,15 +106,6 @@ public final class Sound implements Serializable {
      */
     public Duration duration() {
         return duration;
-    }
-
-    /**
-     * Returns {@code true} if the {@link Sound} was updated from mono to stereo via code.
-     * Stereo is required to apply some effects like balance and pan.
-     */
-    //TODO: link javadoc to balance and pan
-    public boolean isArtificalStereo() {
-        return isArtificalStereo;
     }
 
     private boolean startsWithMidiHeader(final byte[] data) {
