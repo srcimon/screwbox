@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.*;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
@@ -23,13 +25,11 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
-
-    private final AudioConfiguration configuration = new AudioConfiguration();
+    private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
-        configuration.addListener(this);
     }
 
     public void shutdown() {
@@ -50,6 +50,15 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
             });
         }
         return this;
+    }
+
+    @Override
+    public Audio playEffect(final Sound sound, final Vector position) {
+        final var options = SoundOptions.playOnce()
+                .pan(0)//TODO FIX
+                .volume(Percent.max());//TODO FIX
+
+        return playEffect(sound, options);
     }
 
     @Override
