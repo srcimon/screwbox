@@ -20,7 +20,7 @@ public class CameraUpdateSystem implements EntitySystem {
     public void update(final Engine engine) {
         final Entity cameraEntity = engine.environment().forcedFetch(CAMERA);
         double wantedZoom = cameraEntity.get(CameraComponent.class).zoom;
-        double zoom = engine.graphics().updateCameraZoom(wantedZoom);
+        double zoom = engine.graphics().updateZoom(wantedZoom);
 
         final Bounds worldBounds = engine.environment().forcedFetch(WORLD_BOUNDS)
                 .get(TransformComponent.class).bounds;

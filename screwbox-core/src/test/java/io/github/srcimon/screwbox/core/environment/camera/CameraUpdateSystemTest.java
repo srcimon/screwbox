@@ -26,7 +26,7 @@ class CameraUpdateSystemTest {
                                           Graphics graphics) {
         when(loop.delta()).thenReturn(0.4);
         when(screen.center()).thenReturn(Offset.at(320, 240));
-        when(graphics.updateCameraZoom(anyDouble())).thenReturn(1.0);
+        when(graphics.updateZoom(anyDouble())).thenReturn(1.0);
 
         CameraMovementComponent cameraMovement = new CameraMovementComponent(1.5, 1239);
         cameraMovement.shift = Vector.y(200);

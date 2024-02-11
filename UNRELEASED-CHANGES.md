@@ -18,6 +18,7 @@ This release is truely audio focused.
 
 - Renamed `Graphics.moveCameraTo(position)`
 - Renamed `Sound.format()` to `.sourceFormat()` and splitted Formats in mono and stereo formats.
+- Renamed `Graphics.updateZoom` and `.updateZoomBy`
 
 ### 📦 Dependency updates
 

@@ -40,7 +40,7 @@ public class GameOfLifeExample {
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());
 
-        engine.graphics().updateCameraZoom(6);
+        engine.graphics().updateZoom(6);
         engine.start();
     }
 }

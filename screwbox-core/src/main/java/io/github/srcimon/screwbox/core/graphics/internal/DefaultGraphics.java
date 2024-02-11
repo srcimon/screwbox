@@ -45,12 +45,12 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public double updateCameraZoomBy(final double delta) {
+    public double updateZoomBy(final double delta) {
         return world.updateCameraZoom(world.wantedZoom() + delta);
     }
 
     @Override
-    public double updateCameraZoom(final double zoom) {
+    public double updateZoom(final double zoom) {
         return world.updateCameraZoom(zoom);
     }
 
