@@ -89,6 +89,8 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                         ? audioAdapter.createClip(sound)
                         : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
                 audioAdapter.setVolume(clip, volume);
+                audioAdapter.setBalance(clip, options.balance());
+                audioAdapter.setPan(clip, options.pan());
                 activeSounds.put(clip, activeSound);
                 clip.setFramePosition(0);
                 clip.addLineListener(this);

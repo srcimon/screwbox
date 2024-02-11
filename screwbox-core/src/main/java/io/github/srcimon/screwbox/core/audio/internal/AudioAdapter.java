@@ -21,9 +21,22 @@ public class AudioAdapter {
         }
     }
 
+    //TODO TEST
     void setVolume(final Clip clip, final Percent volume) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
+    }
+
+    //TODO TEST
+    void setPan(final Clip clip, final double pan) {
+        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
+        gainControl.setValue((float) pan);
+    }
+
+    //TODO TEST
+    void setBalance(final Clip clip, final double balance) {
+        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
+        gainControl.setValue((float) balance);
     }
 
     public static AudioInputStream getAudioInputStream(final byte[] content) {
