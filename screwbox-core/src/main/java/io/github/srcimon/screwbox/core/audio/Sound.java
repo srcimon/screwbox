@@ -37,8 +37,6 @@ public final class Sound implements Serializable {
 
     /**
      * Returns a short dummy sound effect.
-     *
-     * @return
      */
     public static Sound dummyEffect() {
         return fromFile("assets/sounds/dummy_effect.wav");
@@ -49,27 +47,17 @@ public final class Sound implements Serializable {
      */
     public static Sound fromFile(final String fileName) {
         requireNonNull(fileName, "fileName must not be null");
-        if (fileName.endsWith(".wav")) {
-            return fromWav(Resources.loadBinary(fileName));
-        }
-        if (fileName.endsWith(".mid")) {
-            return fromMidi(Resources.loadBinary(fileName));
+        if (fileName.endsWith(".wav") || fileName.endsWith(".mid")) {
+            return fromSoundData(Resources.loadBinary(fileName));
         }
         throw new IllegalArgumentException("Audio only supports WAV- and MIDI-Files at the moment.");
     }
 
     /**
-     * Creates a new {@link Sound} from midi content.
+     * Creates a new {@link Sound} from audio data.
      */
-    public static Sound fromMidi(final byte[] content) {
-        return new Sound(content, Format.MIDI);
-    }
-
-    /**
-     * Creates a new {@link Sound} from wav content.
-     */
-    public static Sound fromWav(final byte[] content) {
-        return new Sound(content, Format.WAV);
+    public static Sound fromSoundData(final byte[] content) {
+        return new Sound(content);
     }
 
     /**
@@ -80,13 +68,13 @@ public final class Sound implements Serializable {
         return Asset.asset(() -> fromFile(fileName));
     }
 
-    private Sound(final byte[] content, final Format type) {
+    private Sound(final byte[] content) {
         requireNonNull(content, "content must not be null");
-        this.format = type;
         try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
-            var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
-            isArtificalStereo = audioInputStream.getFormat().getFrameSize() <= 2;
-            duration = Duration.ofMillis((int) length);
+            final var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
+            this.isArtificalStereo = audioInputStream.getFormat().getFrameSize() <= 2;
+            this.duration = Duration.ofMillis((int) length);
+            this.format = startsWithMidiHeader(content) ? Format.MIDI : Format.WAV;
             this.content = isArtificalStereo ? convertToStereo(audioInputStream) : content;
         } catch (IOException e) {
             throw new IllegalStateException("could not create sound", e);
@@ -121,5 +109,9 @@ public final class Sound implements Serializable {
     //TODO: link javadoc to balance and pan
     public boolean isArtificalStereo() {
         return isArtificalStereo;
+    }
+
+    private boolean startsWithMidiHeader(final byte[] data) {
+        return data.length >= 4 && data[0] == 0x4D && data[1] == 0x54 && data[2] == 0x68 && data[3] == 0x64;
     }
 }

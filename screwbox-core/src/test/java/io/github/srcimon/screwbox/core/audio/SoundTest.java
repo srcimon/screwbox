@@ -19,13 +19,13 @@ class SoundTest {
     }
 
     @Test
-    void fromWav_validWav_hasContent() {
+    void fromSoundData_validWav_hasContent() {
         var content = Resources.loadBinary("kill.wav");
-        var sound = Sound.fromWav(content);
+        var sound = Sound.fromSoundData(content);
 
         assertThat(sound.content()).hasSizeGreaterThan(10000);
         assertThat(sound.duration()).isEqualTo(Duration.ofMillis(186));
-
+        assertThat(sound.format()).isEqualTo(Sound.Format.WAV);
     }
 
     @Test
@@ -43,8 +43,8 @@ class SoundTest {
     }
 
     @Test
-    void fromWav_contentNull_exception() {
-        assertThatThrownBy(() -> Sound.fromWav(null))
+    void fromSoundData_contentNull_exception() {
+        assertThatThrownBy(() -> Sound.fromSoundData(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("content must not be null");
     }
