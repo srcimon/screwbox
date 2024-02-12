@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,12 +39,15 @@ class DefaultAudioTest {
     @Mock
     Clip clip;
 
+    @Mock
+    Graphics graphics;
+
     ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        audio = new DefaultAudio(executor, audioAdapter);
+        audio = new DefaultAudio(executor, audioAdapter, graphics);
     }
 
     @Test

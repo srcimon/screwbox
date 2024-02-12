@@ -26,7 +26,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Graphics graphics;
-    private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
+    private final Map<Clip, Playback> activeSounds = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Graphics graphics) {
@@ -70,18 +70,19 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
 
-        return playEffect(sound, options);
+        playSound(new Playback(sound, options, false, position));
+        return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, options, false));
+        playSound(new Playback(sound, options, false));
         return this;
     }
 
     @Override
     public Audio playMusic(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, options, true));
+        playSound(new Playback(sound, options, true));
         return this;
     }
 
@@ -100,7 +101,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         }
     }
 
-    private void playClip(final ActiveSound activeSound) {
+    private void playSound(final Playback activeSound) {
         final Percent configVolume = activeSound.isMusic() ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(activeSound.options().volume().value());
         if (!volume.isZero()) {
