@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.*;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.utils.Cache;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
@@ -17,6 +16,7 @@ import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
+import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
 
@@ -57,19 +57,15 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     //TODO Test
     @Override
     public Audio playEffect(final Sound sound, final Vector position) {
-        final var options = calculateOptions(position);
-        playSound(sound, options, false, position);
-        return this;
-    }
-
-    private SoundOptions calculateOptions(final Vector position) {
-        final var microphonePosition = graphics.cameraPosition();
-        final var distance = microphonePosition.distanceTo(position);
-        final var direction = MathUtil.modifier(position.x() - microphonePosition.x());
-        var quotient = distance / configuration.soundDistance();
-        return SoundOptions.playOnce()
+        final var distance = graphics.cameraPosition().distanceTo(position);
+        final var direction = modifier(position.x() - graphics.cameraPosition().x());
+        final var quotient = distance / configuration.soundDistance();
+        final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
+
+        playSound(sound, options, false, position);
+        return this;
     }
 
     @Override
