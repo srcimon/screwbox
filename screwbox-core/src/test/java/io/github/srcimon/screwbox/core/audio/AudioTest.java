@@ -18,51 +18,26 @@ class AudioTest {
 
     @Test
     void playEffect_sound_playsSound() {
-        audio.playEffect(SOUND);
+        audio.playSound(SOUND);
 
-        verify(audio).playEffect(SOUND, SoundOptions.playOnce());
+        verify(audio).playSound(SOUND, SoundOptions.playOnce());
     }
 
     @Test
     void playEffect_soundAsset_playsSoundFromAsset() {
         Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
 
-        audio.playEffect(soundAsset);
+        audio.playSound(soundAsset);
 
-        verify(audio).playEffect(SOUND);
+        verify(audio).playSound(SOUND);
     }
 
     @Test
     void playEffect_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
         Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
 
-        audio.playEffect(soundAsset, SoundOptions.playLooped());
+        audio.playSound(soundAsset, SoundOptions.playLooped());
 
-        verify(audio).playEffect(SOUND, SoundOptions.playLooped());
-    }
-
-    @Test
-    void playMusic_sound_playsSound() {
-        audio.playMusic(SOUND);
-
-        verify(audio).playMusic(SOUND, SoundOptions.playOnce());
-    }
-
-    @Test
-    void playMusic_soundAsset_playsSoundFromAsset() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.playMusic(soundAsset);
-
-        verify(audio).playMusic(SOUND);
-    }
-
-    @Test
-    void playMusic_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.playMusic(soundAsset, SoundOptions.playLooped());
-
-        verify(audio).playMusic(SOUND, SoundOptions.playLooped());
+        verify(audio).playSound(SOUND, SoundOptions.playLooped());
     }
 }

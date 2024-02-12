@@ -7,7 +7,7 @@ import java.util.Objects;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
 
 /**
- * Sets options for the playback of a specific {@link Sound} via {@link Audio#playEffect(Sound, SoundOptions)} or {@link Audio#playMusic(Sound, SoundOptions)}.
+ * Sets options for the playback of a specific {@link Sound} via {@link Audio#playSound(Sound, SoundOptions)} or {@link Audio#playMusic(Sound, SoundOptions)}.
  */
 public class SoundOptions {
 
@@ -15,6 +15,7 @@ public class SoundOptions {
     private Percent volume = Percent.max();
     private double balance = 0;
     private double pan = 0;
+    boolean isMusic = false;
 
     /**
      * Playback {@link Sound} until stopped via {@link Audio#stop(Sound)}.
@@ -38,6 +39,18 @@ public class SoundOptions {
             throw new IllegalArgumentException("sound must be played at least once");
         }
         return new SoundOptions(times);
+    }
+
+    //TODO Test and javadoc
+    public boolean isMusic() {
+        return isMusic;
+    }
+
+
+    //TODO Test and javadoc
+    public SoundOptions asMusic() {
+        isMusic = true;
+        return this;
     }
 
     private SoundOptions(final int times) {

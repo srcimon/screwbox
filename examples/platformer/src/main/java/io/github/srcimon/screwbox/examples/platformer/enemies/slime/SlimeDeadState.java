@@ -35,7 +35,7 @@ public class SlimeDeadState implements EntityState {
         entity.get(PhysicsComponent.class).ignoreCollisions = true;
         entity.add(new TweenComponent(ofSeconds(2)));
         entity.add(new TweenDestroyComponent());
-        engine.audio().playEffect(KILL_SOUND.get());
+        engine.audio().playSound(KILL_SOUND);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     //TODO Test
     @Override
-    public Audio playEffect(final Sound sound, final Vector position) {
+    public Audio playSound(final Sound sound, final Vector position) {
         final var distance = graphics.cameraPosition().distanceTo(position);
         final var direction = modifier(position.x() - graphics.cameraPosition().x());
         final var quotient = distance / configuration.soundDistance();
@@ -64,7 +64,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
 
-        playSound(sound, options, false, position);
+        playSound(sound, options, position);
         return this;
     }
 
@@ -74,14 +74,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
-    public Audio playEffect(final Sound sound, final SoundOptions options) {
-        playSound(sound, options, false, null);
-        return this;
-    }
-
-    @Override
-    public Audio playMusic(final Sound sound, final SoundOptions options) {
-        playSound(sound, options, true, null);
+    public Audio playSound(final Sound sound, final SoundOptions options) {
+        playSound(sound, options, null);
         return this;
     }
 
@@ -93,8 +87,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    private void playSound(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
-        final Percent configVolume = isMusic ? musicVolume() : effectVolume();
+    private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
+        final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
@@ -104,7 +98,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 audioAdapter.setVolume(clip, volume);
                 audioAdapter.setBalance(clip, options.balance());
                 audioAdapter.setPan(clip, options.pan());
-                playbacks.put(clip, new Playback(sound, options, isMusic, position));
+                playbacks.put(clip, new Playback(sound, options, options.isMusic(), position));
                 clip.setFramePosition(0);
                 clip.addLineListener(event -> {
                     if (event.getType().equals(LineEvent.Type.STOP)) {

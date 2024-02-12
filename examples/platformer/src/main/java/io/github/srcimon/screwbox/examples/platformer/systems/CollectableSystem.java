@@ -27,7 +27,7 @@ public class CollectableSystem implements EntitySystem {
         for (final Entity entity : engine.environment().fetchAll(COLLECTABLES)) {
             if (entity.get(CollisionDetectionComponent.class).collidedEntities.contains(player)) {
                 engine.environment().remove(entity);
-                engine.audio().playEffect(PLING.get());
+                engine.audio().playSound(PLING.get());
             }
         }
 

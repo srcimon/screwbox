@@ -30,7 +30,7 @@ public class LetsGoSystem implements EntitySystem {
         if (engine.keyboard().isPressed(Key.Q)) {
             var playerCenter = engine.environment().forcedFetch(PLAYER).get(TransformComponent.class).bounds
                     .position();
-            engine.audio().playEffect(LETS_GO_SOUND);
+            engine.audio().playSound(LETS_GO_SOUND);
 
             Entity letsGoBubble = new Entity().add(
                     new TransformComponent(

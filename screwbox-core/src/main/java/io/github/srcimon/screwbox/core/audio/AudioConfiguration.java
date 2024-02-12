@@ -41,7 +41,7 @@ public class AudioConfiguration {
 
     /**
      * Sets the volume of all {@link Sound}s that are played via
-     * {@link Audio#playEffect(Sound)}.
+     * {@link Audio#playSound(Sound)}.
      */
     public AudioConfiguration setEffectVolume(final Percent volume) {
         effectVolume = volume;
@@ -57,8 +57,7 @@ public class AudioConfiguration {
     }
 
     /**
-     * Sets the volume of all {@link Sound}s that are played via
-     * {@link Audio#playMusic(Sound)}.
+     * Sets the volume of all {@link Sound}s that are played having {@link SoundOptions#isMusic()}
      */
     public AudioConfiguration setMusicVolume(final Percent volume) {
         musicVolume = volume;

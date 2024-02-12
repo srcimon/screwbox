@@ -56,7 +56,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
 
-        audio.playEffect(sound, SoundOptions.playOnce().volume(Percent.quater()));
+        audio.playSound(sound, playOnce().volume(Percent.quater()));
 
         awaitShutdown();
 
@@ -72,7 +72,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
 
-        audio.playMusic(sound);
+        audio.playSound(sound, playOnce().asMusic());
 
         awaitShutdown();
 
@@ -83,11 +83,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_effectVolumeZero_doesntPlayEffect() {
+    void playSound_effectVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().setEffectVolume(zero());
-        audio.playEffect(sound);
+        audio.playSound(sound);
 
         awaitShutdown();
 
@@ -95,11 +95,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_effectLoopedButVolumeZero_doesntPlayEffect() {
+    void playSound_effectLoopedButVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteEffects();
-        audio.playEffect(sound, playLooped());
+        audio.playSound(sound, playLooped());
 
         awaitShutdown();
 
@@ -107,11 +107,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playMusic_musicVolumeZero_doesntPlayEffect() {
+    void playSound_musicVolumeZero_doesntPlayMusic() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteMusic();
-        audio.playMusic(sound);
+        audio.playSound(sound, playOnce().asMusic());
 
         awaitShutdown();
 
@@ -119,11 +119,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playMusic_musicLoopedVolumeZero_doesntPlayEffect() {
+    void playSound_musicLoopedVolumeZero_doesntPlayEffect() {
         Sound sound = Sound.fromFile("kill.wav");
 
         audio.configuration().muteMusic();
-        audio.playMusic(sound, playLooped());
+        audio.playSound(sound, playOnce().asMusic());
 
         awaitShutdown();
 
@@ -142,8 +142,8 @@ class DefaultAudioTest {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playMusic(sound);
-        audio.playMusic(sound);
+        audio.playSound(sound, playOnce().asMusic());
+        audio.playSound(sound, playOnce().asMusic());
 
         awaitShutdown();
 
@@ -167,7 +167,7 @@ class DefaultAudioTest {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playEffect(sound);
+        audio.playSound(sound);
 
         Sound secondSound = Sound.fromFile("kill.wav");
 
@@ -175,11 +175,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_invokesMethodsOnClipAndIncreasesActiveCount() {
+    void playSound_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playEffect(sound);
+        audio.playSound(sound);
 
         awaitShutdown();
 
@@ -192,11 +192,11 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
+    void playSound_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playEffect(sound, playLooped().pan(-0.2).balance(0.1));
+        audio.playSound(sound, playLooped().pan(-0.2).balance(0.1));
 
         awaitShutdown();
 
@@ -212,7 +212,7 @@ class DefaultAudioTest {
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
-        audio.playMusic(sound);
+        audio.playSound(sound, playOnce().asMusic());
 
         audio.stopAllSounds();
 
@@ -223,12 +223,12 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_volumeHalfAndSoundPlayedAt20Percent_playsEffectOnTenPercent() {
+    void playSound_volumeHalfAndSoundPlayedAt20Percent_playsEffectOnTenPercent() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setEffectVolume(Percent.half());
-        audio.playEffect(sound, playOnce().volume(Percent.of(0.2)));
+        audio.playSound(sound, playOnce().volume(Percent.of(0.2)));
 
         awaitShutdown();
 
@@ -236,12 +236,12 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playMusic_volumeSeventyPercent_playsMusicAtSeventyPercent() {
+    void playSound_volumeSeventyPercent_playsMusicAtSeventyPercent() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setMusicVolume(Percent.of(0.7));
-        audio.playMusic(sound);
+        audio.playSound(sound, playOnce().asMusic());
 
         awaitShutdown();
 
@@ -249,10 +249,10 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playEffect_effectsMuted_doesntPlayAnySound() {
+    void playSound_effectsMuted_doesntPlayAnySound() {
         audio.configuration().muteEffects();
 
-        audio.playEffect(Sound.dummyEffect());
+        audio.playSound(Sound.dummyEffect());
 
         awaitShutdown();
 
@@ -260,27 +260,14 @@ class DefaultAudioTest {
     }
 
     @Test
-    void playMusicmusicMuted_doesntPlayAnySound() {
+    void playSound_musicMuted_doesntPlayAnySound() {
         audio.configuration().muteMusic();
 
-        audio.playMusic(Sound.dummyEffect());
+        audio.playSound(Sound.dummyEffect(), playOnce().asMusic());
 
         awaitShutdown();
 
         verify(audioAdapter, never()).createClip(any());
-    }
-
-    private LineEvent stopEventFor(Clip clipMock) {
-        return new LineEvent(mock(Line.class), Type.STOP, 0) {
-
-            @Serial
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Object getSource() {
-                return clipMock;
-            }
-        };
     }
 
     @AfterEach
