@@ -22,7 +22,7 @@ public class Playback {
     }
 
     public Percent progress() {
-        return Percent.of(1.0 * Duration.since(startTime).milliseconds() / sound.duration().milliseconds());
+        return Percent.of(1.0 * Duration.since(startTime).nanos() / sound.duration().nanos());
     }
 
     public Time startTime() {
