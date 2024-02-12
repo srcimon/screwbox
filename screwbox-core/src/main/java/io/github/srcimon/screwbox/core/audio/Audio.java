@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
@@ -20,6 +21,8 @@ public interface Audio {
     default Audio playEffect(final Supplier<Sound> sound, final Vector position) {
         return playEffect(sound.get(), position);
     }
+    //TODO TEST JAVADOC
+    List<Playback> activePlaybacks();
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.

@@ -60,18 +60,23 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     public Audio playEffect(final Sound sound, final Vector position) {
         final var microphonePosition = graphics.cameraPosition();
         final var distance = microphonePosition.distanceTo(position);
-        if(distance >= configuration.setSoundDistance()) {
+        if(distance >= configuration.soundDistance()) {
             return this;
         }
 
         final var direction = MathUtil.modifier(position.x() - microphonePosition.x());
-        var quotient = distance / configuration.setSoundDistance();
+        var quotient = distance / configuration.soundDistance();
         final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
 
         playSound(sound, options, false, position);
         return this;
+    }
+
+    @Override
+    public List<Playback> activePlaybacks() {
+        return new ArrayList<>(playbacks.values());
     }
 
     @Override

@@ -23,14 +23,14 @@ public class AudioConfiguration {
 
     //TODO JAVADOC TEST
     //TODO Validate > 0
-    public AudioConfiguration setSoundDistance(final  double soundDistance) {
+    public AudioConfiguration soundDistance(final  double soundDistance) {
         this.soundDistance = soundDistance;
         notifyListeners(ConfigurationProperty.SOUND_DISTANCE);
         return this;
     }
 
     //TODO JAVADOC TEST
-    public double setSoundDistance() {
+    public double soundDistance() {
         return soundDistance;
     }
 
