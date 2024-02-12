@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.audio;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -14,13 +15,17 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
-    //TODO javadoc
+    /**
+     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
+     * direction between the given position and the {@link Graphics#cameraPosition()}.
+     */
     Audio playSound(Sound sound, Vector position);
 
     //TODO Test and javadoc
     default Audio playSound(final Supplier<Sound> sound, final Vector position) {
         return playSound(sound.get(), position);
     }
+
     //TODO TEST JAVADOC
     List<Playback> activePlaybacks();
 

@@ -11,12 +11,14 @@ import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
 
@@ -56,6 +58,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio playSound(final Sound sound, final Vector position) {
+        requireNonNull(position, "position must not be null");
         final var distance = graphics.cameraPosition().distanceTo(position);
         final var direction = modifier(position.x() - graphics.cameraPosition().x());
         final var quotient = distance / configuration.soundDistance();
@@ -87,6 +90,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
+        requireNonNull(sound, "sound must not be null");
+        requireNonNull(options, "options must not be null");
         final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {

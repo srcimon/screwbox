@@ -17,14 +17,14 @@ class AudioTest {
     Audio audio;
 
     @Test
-    void playEffect_sound_playsSound() {
+    void playSound_sound_playsSound() {
         audio.playSound(SOUND);
 
         verify(audio).playSound(SOUND, SoundOptions.playOnce());
     }
 
     @Test
-    void playEffect_soundAsset_playsSoundFromAsset() {
+    void playSound_soundAsset_playsSoundFromAsset() {
         Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
 
         audio.playSound(soundAsset);
@@ -33,7 +33,7 @@ class AudioTest {
     }
 
     @Test
-    void playEffect_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
+    void playSound_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
         Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
 
         audio.playSound(soundAsset, SoundOptions.playLooped());

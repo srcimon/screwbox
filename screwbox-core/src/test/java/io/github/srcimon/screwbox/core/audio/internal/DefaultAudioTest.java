@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +25,7 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @Timeout(1)
@@ -46,6 +49,31 @@ class DefaultAudioTest {
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter, graphics);
+    }
+
+    @Test
+    void playSound_positionIsNull_throwsException() {
+        Sound sound = Sound.dummyEffect();
+
+        assertThatThrownBy(() -> audio.playSound(sound, (Vector) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("position must not be null");
+    }
+
+    @Test
+    void playSound_soundIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.playSound((Sound) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("sound must not be null");
+    }
+
+    @Test
+    void playSound_optionsIsNull_throwsException() {
+        Sound sound = Sound.dummyEffect();
+
+        assertThatThrownBy(() -> audio.playSound(sound, (SoundOptions) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("options must not be null");
     }
 
     @Test
