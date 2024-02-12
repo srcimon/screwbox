@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +111,11 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 audioAdapter.setPan(clip, options.pan());
                 playbacks.put(clip, new Playback(sound, options, isMusic, position));
                 clip.setFramePosition(0);
-                clip.addLineListener(event -> playbacks.remove(event.getSource()));
+                clip.addLineListener(event -> {
+                    if (event.getType().equals(LineEvent.Type.STOP)) {
+                        playbacks.remove(event.getSource());
+                    }
+                });
                 clip.loop(options.times() - 1);
             });
         }
