@@ -43,7 +43,7 @@ class DefaultAudioTest {
     ExecutorService executor;
 
     @BeforeEach
-    void beforeEach() {
+    void setUp() {
         executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter, graphics);
     }
@@ -313,7 +313,7 @@ class DefaultAudioTest {
     }
 
     @AfterEach
-    void afterEach() {
+    void tearDown() {
         awaitShutdown();
     }
 
