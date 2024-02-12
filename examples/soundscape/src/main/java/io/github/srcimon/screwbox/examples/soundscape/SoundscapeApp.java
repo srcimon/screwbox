@@ -13,7 +13,6 @@ public class SoundscapeApp {
                 .addSystem(new PlaySoundOnClickSystem())
                 .addSystem(new VisualizePlaybacksSystem());
 
-
         screwBox.start();
     }
 }

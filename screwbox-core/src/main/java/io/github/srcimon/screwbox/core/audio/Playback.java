@@ -33,6 +33,10 @@ public class Playback {
         return options;
     }
 
+    public boolean isEffect() {
+        return !isMusic;
+    }
+
     public boolean isMusic() {
         return isMusic;
     }

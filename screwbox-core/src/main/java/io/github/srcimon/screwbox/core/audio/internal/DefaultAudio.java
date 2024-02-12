@@ -151,7 +151,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : playbacks.entrySet()) {
-                if (!activeSound.getValue().isMusic()) {
+                if (activeSound.getValue().isEffect()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
