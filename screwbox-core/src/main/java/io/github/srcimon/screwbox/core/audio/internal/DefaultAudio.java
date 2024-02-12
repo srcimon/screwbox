@@ -82,7 +82,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
-    public Audio stop(final Sound sound) {
+    public Audio stopSound(final Sound sound) {
         for (final Clip clip : fetchClipsFor(sound)) {
             executor.execute(clip::stop);
         }

@@ -327,14 +327,14 @@ class DefaultAudioTest {
     }
 
     @Test
-    void stop_soundIsPlaying_stopsSound() {
+    void stopSound_soundIsPlaying_stopsSound() {
         Sound sound = Sound.dummyEffect();
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound);
 
         await(() -> audio.isActive(sound), ofMillis(500));
 
-        audio.stop(sound);
+        audio.stopSound(sound);
 
         awaitShutdown();
         verify(clip).stop();

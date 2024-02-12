@@ -40,4 +40,13 @@ class AudioTest {
 
         verify(audio).playSound(SOUND, SoundOptions.playLooped());
     }
+
+    @Test
+    void stopSound_assetGiven_stopsSoundFromAsset() {
+        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
+
+        audio.stopSound(soundAsset);
+
+        verify(audio).stopSound(SOUND);
+    }
 }

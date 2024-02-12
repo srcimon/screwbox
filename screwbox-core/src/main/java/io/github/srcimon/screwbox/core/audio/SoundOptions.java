@@ -18,7 +18,7 @@ public class SoundOptions {
     boolean isMusic = false;
 
     /**
-     * Playback {@link Sound} until stopped via {@link Audio#stop(Sound)}.
+     * Playback {@link Sound} until stopped via {@link Audio#stopSound(Sound)}.
      */
     public static SoundOptions playLooped() {
         return new SoundOptions(Integer.MAX_VALUE);

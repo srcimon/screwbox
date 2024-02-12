@@ -26,7 +26,13 @@ public interface Audio {
         return playSound(sound.get(), position);
     }
 
-    //TODO TEST JAVADOC
+    //TODO TEST
+    /**
+     * Returns a list of all currently active {@link Playback}s.
+     *
+     * @see #activeCount()
+     * @see #activeCount(Sound)
+     */
     List<Playback> activePlaybacks();
 
     /**
@@ -61,8 +67,19 @@ public interface Audio {
 
     /**
      * Stops all currently playing instances of the {@link Sound}.
+     *
+     * @see #stopSound(Supplier)
      */
-    Audio stop(Sound sound);
+    Audio stopSound(Sound sound);
+
+    /**
+     * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
+     *
+     * @see #stopSound(Sound)
+     */
+    default Audio stopSound(Supplier<Sound> sound) {
+        return stopSound(sound.get());
+    }
 
     /**
      * Stops all currently playing {@link Sound}s.
