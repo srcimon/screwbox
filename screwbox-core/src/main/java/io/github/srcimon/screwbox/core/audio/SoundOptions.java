@@ -46,6 +46,10 @@ public class SoundOptions {
         return isMusic;
     }
 
+    //TODO Test and javadoc
+    public boolean isEffect() {
+        return !isMusic;
+    }
 
     //TODO Test and javadoc
     public SoundOptions asMusic() {

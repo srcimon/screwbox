@@ -12,23 +12,21 @@ public class Playback {
 
     private final Sound sound;
     private final SoundOptions options;
-    private final boolean isMusic;
     private final Vector position;
-    private final Time started = Time.now();
+    private final Time startTime = Time.now();
 
-    public Playback(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
+    public Playback(final Sound sound, final SoundOptions options, final Vector position) {
         this.sound = sound;
         this.options = options;
-        this.isMusic = isMusic;
         this.position = position;
     }
 
     public Percent progress() {
-        return Percent.of(1.0 * Duration.since(started).milliseconds() / sound.duration().milliseconds());
+        return Percent.of(1.0 * Duration.since(startTime).milliseconds() / sound.duration().milliseconds());
     }
 
-    public Time started() {
-        return started;
+    public Time startTime() {
+        return startTime;
     }
 
     public Sound sound() {
@@ -37,14 +35,6 @@ public class Playback {
 
     public SoundOptions options() {
         return options;
-    }
-
-    public boolean isEffect() {
-        return !isMusic;
-    }
-
-    public boolean isMusic() {
-        return isMusic;
     }
 
     public Optional<Vector> position() {

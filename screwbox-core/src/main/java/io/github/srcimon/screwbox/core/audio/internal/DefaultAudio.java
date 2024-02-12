@@ -11,7 +11,6 @@ import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
@@ -102,7 +101,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 audioAdapter.setVolume(clip, volume);
                 audioAdapter.setBalance(clip, options.balance());
                 audioAdapter.setPan(clip, options.pan());
-                playbacks.put(clip, new Playback(sound, options, options.isMusic(), position));
+                playbacks.put(clip, new Playback(sound, options, position));
                 clip.setFramePosition(0);
                 clip.addLineListener(event -> {
                     if (event.getType().equals(LineEvent.Type.STOP)) {
@@ -143,13 +142,13 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().isMusic()) {
+                if (activeSound.getValue().options().isMusic()) {
                     audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().isEffect()) {
+                if (activeSound.getValue().options().isEffect()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
