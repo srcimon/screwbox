@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 
@@ -12,7 +14,7 @@ public class Playback {
     private final SoundOptions options;
     private final boolean isMusic;
     private final Vector position;
-    private final Time start = Time.now();
+    private final Time started = Time.now();
 
     public Playback(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
         this.sound = sound;
@@ -21,8 +23,12 @@ public class Playback {
         this.position = position;
     }
 
-    public Time start() {
-        return start;
+    public Percent progress() {
+        return Percent.of(1.0 * Duration.since(started).milliseconds() / sound.duration().milliseconds());
+    }
+
+    public Time started() {
+        return started;
     }
 
     public Sound sound() {
