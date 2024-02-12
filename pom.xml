@@ -5,6 +5,9 @@
     <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>ScrewBox is a minimalistic Java 2d game engine.</description>
+    <modules>
+        <module>examples/soundscape</module>
+    </modules>
     <name>ScrewBox</name>
     <url>https://github.com/srcimon/screwbox</url>
 
