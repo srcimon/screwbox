@@ -8,8 +8,6 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 
-public class DefaultAudio implements Audio, LineListener, AudioConfigurationListener {
+public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     private static final Cache<Sound, Clip> CLIP_CACHE = new Cache<>();
 
@@ -99,13 +97,6 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         return this;
     }
 
-    @Override
-    public void update(final LineEvent event) {
-        if (event.getType().equals(LineEvent.Type.STOP)) {
-            playbacks.remove(event.getSource());
-        }
-    }
-
     private void playSound(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
         final Percent configVolume = isMusic ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
@@ -119,7 +110,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                 audioAdapter.setPan(clip, options.pan());
                 playbacks.put(clip, new Playback(sound, options, isMusic, position));
                 clip.setFramePosition(0);
-                clip.addLineListener(this);
+                clip.addLineListener(event -> playbacks.remove(event.getSource()));
                 clip.loop(options.times() - 1);
             });
         }

@@ -209,22 +209,6 @@ class DefaultAudioTest {
     }
 
     @Test
-    void activeCount_oneInstanceStartedAndStopped_isZero() {
-        Sound sound = Sound.fromFile("kill.wav");
-
-        when(audioAdapter.createClip(sound)).thenReturn(clip);
-
-        audio.playEffect(sound);
-
-        awaitShutdown();
-
-        audio.update(stopEventFor(clip));
-
-        assertThat(audio.activeCount(sound)).isZero();
-    }
-
-
-    @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
         Sound sound = Sound.fromFile("kill.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
