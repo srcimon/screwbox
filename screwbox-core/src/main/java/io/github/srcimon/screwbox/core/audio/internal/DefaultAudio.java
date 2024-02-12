@@ -57,20 +57,19 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     //TODO Test
     @Override
     public Audio playEffect(final Sound sound, final Vector position) {
-        final var microphonePosition = graphics.cameraPosition();
-        final var distance = microphonePosition.distanceTo(position);
-        if (distance >= configuration.soundDistance()) {
-            return this;
-        }
-
-        final var direction = MathUtil.modifier(position.x() - microphonePosition.x());
-        var quotient = distance / configuration.soundDistance();
-        final var options = SoundOptions.playOnce()
-                .pan(direction * quotient)
-                .volume(Percent.of(1 - quotient));
-
+        final var options = calculateOptions(position);
         playSound(sound, options, false, position);
         return this;
+    }
+
+    private SoundOptions calculateOptions(final Vector position) {
+        final var microphonePosition = graphics.cameraPosition();
+        final var distance = microphonePosition.distanceTo(position);
+        final var direction = MathUtil.modifier(position.x() - microphonePosition.x());
+        var quotient = distance / configuration.soundDistance();
+        return SoundOptions.playOnce()
+                .pan(direction * quotient)
+                .volume(Percent.of(1 - quotient));
     }
 
     @Override
@@ -172,7 +171,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         }
         return clips;
     }
-
 
     private Percent musicVolume() {
         return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();

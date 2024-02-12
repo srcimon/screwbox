@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 //TODO Document in readme.md
 //TODO fix Audio Feature description in readme.md
@@ -12,7 +13,6 @@ public class SoundscapeApp {
 
     public static void main(String[] args) {
         var screwBox = ScrewBox.createEngine("Soundscape");
-
         screwBox.environment()
                 .addSystem(engine -> //
                         engine.graphics().screen().drawTextCentered(engine.graphics().screen().center(), "Click to play sound", 2)
