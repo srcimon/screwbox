@@ -25,10 +25,6 @@ public class Playback {
         return start;
     }
 
-    public boolean isEffect() {
-        return !isMusic;
-    }
-
     public Sound sound() {
         return sound;
     }

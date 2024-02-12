@@ -160,7 +160,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().isEffect()) {
+                if (!activeSound.getValue().isMusic()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
