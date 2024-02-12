@@ -1,8 +1,9 @@
 package io.github.srcimon.screwbox.examples.soundscape;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 
 //TODO Document in readme.md
@@ -11,17 +12,18 @@ public class SoundscapeApp {
 
     public static void main(String[] args) {
         var screwBox = ScrewBox.createEngine("Soundscape");
-
+        screwBox.graphics().configuration().setUseAntialiasing(true);
         screwBox.environment()
-                .addSystem(new LogFpsSystem())
                 .addSystem(engine -> {
                     if (engine.mouse().isPressedLeft()) {
                         engine.audio().playEffect(Sound.dummyEffect(), engine.mouse().position());
                     }
                 }).addSystem(engine -> {
-                    engine.audio().activePlaybacks().stream().filter(playback -> playback.position().isPresent())
-                            .forEach(playback -> engine.graphics().world().drawCircle(playback.position().get(),
-                                    engine.audio().configuration().soundDistance() * playback.done().value(), Color.RED.opacity(playback.done().invert()), 8));
+                    for (var playback : engine.audio().activePlaybacks()) {
+                        Percent percentDone = Percent.of(Duration.since(playback.start()).milliseconds() * 1.0 / playback.sound().duration().milliseconds());
+                        engine.graphics().world().drawCircle(playback.position().get(),
+                                engine.audio().configuration().soundDistance() * percentDone.value(), Color.BLUE.opacity(percentDone.invert()), 8);
+                    }
                 });
 
 

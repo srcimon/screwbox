@@ -60,7 +60,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     public Audio playEffect(final Sound sound, final Vector position) {
         final var microphonePosition = graphics.cameraPosition();
         final var distance = microphonePosition.distanceTo(position);
-        if(distance >= configuration.soundDistance()) {
+        if (distance >= configuration.soundDistance()) {
             return this;
         }
 
@@ -107,7 +107,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     }
 
     private void playSound(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
-        final Percent configVolume = isMusic? musicVolume() : effectVolume();
+        final Percent configVolume = isMusic ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
