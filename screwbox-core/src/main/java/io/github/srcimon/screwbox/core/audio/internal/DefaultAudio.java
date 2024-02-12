@@ -26,7 +26,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Graphics graphics;
-    private final Map<Clip, Playback> activeSounds = new ConcurrentHashMap<>();
+    private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Graphics graphics) {
@@ -45,11 +45,11 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                final List<Clip> activeClips = new ArrayList<>(activeSounds.keySet());
+                final List<Clip> activeClips = new ArrayList<>(playbacks.keySet());
                 for (final Clip clip : activeClips) {
                     clip.stop();
                 }
-                activeSounds.clear();
+                playbacks.clear();
             });
         }
         return this;
@@ -70,19 +70,19 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
 
-        playSound(new Playback(sound, options, false, position));
+        playSound(sound, options, false, position);
         return this;
     }
 
     @Override
     public Audio playEffect(final Sound sound, final SoundOptions options) {
-        playSound(new Playback(sound, options, false));
+        playSound(sound, options, false, null);
         return this;
     }
 
     @Override
     public Audio playMusic(final Sound sound, final SoundOptions options) {
-        playSound(new Playback(sound, options, true));
+        playSound(sound, options, true, null);
         return this;
     }
 
@@ -97,26 +97,25 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     @Override
     public void update(final LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
-            activeSounds.remove(event.getSource());
+            playbacks.remove(event.getSource());
         }
     }
 
-    private void playSound(final Playback activeSound) {
-        final Percent configVolume = activeSound.isMusic() ? musicVolume() : effectVolume();
-        final Percent volume = configVolume.multiply(activeSound.options().volume().value());
+    private void playSound(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
+        final Percent configVolume = isMusic? musicVolume() : effectVolume();
+        final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
-                final Sound sound = activeSound.sound();
                 final Clip clip = isActive(sound)
                         ? audioAdapter.createClip(sound)
                         : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
                 audioAdapter.setVolume(clip, volume);
-                audioAdapter.setBalance(clip, activeSound.options().balance());
-                audioAdapter.setPan(clip, activeSound.options().pan());
-                activeSounds.put(clip, activeSound);
+                audioAdapter.setBalance(clip, options.balance());
+                audioAdapter.setPan(clip, options.pan());
+                playbacks.put(clip, new Playback(sound, options, isMusic, position));
                 clip.setFramePosition(0);
                 clip.addLineListener(this);
-                clip.loop(activeSound.options().times() - 1);
+                clip.loop(options.times() - 1);
             });
         }
     }
@@ -128,7 +127,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public boolean isActive(final Sound sound) {
-        for (final var activeSound : activeSounds.entrySet()) {
+        for (final var activeSound : playbacks.entrySet()) {
             if (activeSound.getValue().sound().equals(sound)) {
                 return true;
             }
@@ -138,7 +137,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public int activeCount() {
-        return activeSounds.size();
+        return playbacks.size();
     }
 
     @Override
@@ -149,13 +148,13 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : activeSounds.entrySet()) {
+            for (final var activeSound : playbacks.entrySet()) {
                 if (activeSound.getValue().isMusic()) {
                     audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : activeSounds.entrySet()) {
+            for (final var activeSound : playbacks.entrySet()) {
                 if (activeSound.getValue().isEffect()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
@@ -165,7 +164,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
-        for (final var activeSound : activeSounds.entrySet()) {
+        for (final var activeSound : playbacks.entrySet()) {
             if (activeSound.getValue().sound().equals(sound)) {
                 clips.add(activeSound.getKey());
             }

@@ -12,10 +12,6 @@ public class Playback {
     private final boolean isMusic;
     private final Vector position;
 
-    public Playback(final Sound sound, final SoundOptions options, final boolean isMusic) {
-       this(sound, options, isMusic, null);
-    }
-
     public Playback(final Sound sound, final SoundOptions options, final boolean isMusic, final Vector position) {
         this.sound = sound;
         this.options = options;
