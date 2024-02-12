@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
@@ -56,21 +55,20 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
         return this;
     }
 
+    //TODO Test
     @Override
     public Audio playEffect(final Sound sound, final Vector position) {
         final var microphonePosition = graphics.cameraPosition();
         final var distance = microphonePosition.distanceTo(position);
-        if(distance >= configuration.soundDistance()) {
+        if(distance >= configuration.setSoundDistance()) {
             return this;
         }
 
-        final var direction = MathUtil.modifier(microphonePosition.x() - position.x());
-        var quotient = distance / configuration.soundDistance();
-        System.out.println(direction);
-        System.out.println(quotient);
+        final var direction = MathUtil.modifier(position.x() - microphonePosition.x());
+        var quotient = distance / configuration.setSoundDistance();
         final var options = SoundOptions.playOnce()
-                .pan(direction * quotient)//TODO FIX
-                .volume(Percent.of(1 - quotient));//TODO FIX
+                .pan(direction * quotient)
+                .volume(Percent.of(1 - quotient));
 
         return playEffect(sound, options);
     }
