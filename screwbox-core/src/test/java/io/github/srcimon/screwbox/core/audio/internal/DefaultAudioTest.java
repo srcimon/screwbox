@@ -16,10 +16,12 @@ import javax.sound.sampled.Clip;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Percent.zero;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
+import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -294,6 +296,20 @@ class DefaultAudioTest {
         awaitShutdown();
 
         verify(audioAdapter, never()).createClip(any());
+    }
+
+    @Test
+    void stop_soundIsPlaying_stopsSound() {
+        Sound sound = Sound.dummyEffect();
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        audio.playSound(sound);
+
+        await(() -> !audio.activePlaybacks().isEmpty(), ofMillis(500));
+
+        audio.stop(sound);
+
+        awaitShutdown();
+        verify(clip).stop();
     }
 
     @AfterEach

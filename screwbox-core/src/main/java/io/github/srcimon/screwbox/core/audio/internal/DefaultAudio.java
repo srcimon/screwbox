@@ -54,7 +54,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    //TODO Test
     @Override
     public Audio playSound(final Sound sound, final Vector position) {
         final var distance = graphics.cameraPosition().distanceTo(position);
