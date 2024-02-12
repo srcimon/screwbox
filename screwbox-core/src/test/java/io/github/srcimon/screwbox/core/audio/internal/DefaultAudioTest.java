@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static io.github.srcimon.screwbox.core.Percent.zero;
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,6 +44,37 @@ class DefaultAudioTest {
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter, graphics);
+    }
+
+    @Test
+    void playSound_positionInRange_appliesPanAndVolume() {
+        Sound sound = Sound.dummyEffect();
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        audio.configuration().setSoundDistance(1024);
+
+        when(graphics.cameraPosition()).thenReturn($(-129, 239));
+
+        audio.playSound(sound, $(30, 10));
+
+        awaitShutdown();
+
+        verify(audioAdapter).setVolume(clip, Percent.of(0.7277474054857758));
+        verify(audioAdapter).setPan(clip, 0.2722525945142242d);
+    }
+
+    @Test
+    void playSound_positionOutOfRange_doesntPlaySound() {
+        Sound sound = Sound.dummyEffect();
+
+        audio.configuration().setSoundDistance(1024);
+
+        when(graphics.cameraPosition()).thenReturn($(-129, 239));
+
+        audio.playSound(sound, $(3000, 10));
+
+        awaitShutdown();
+
+        verify(audioAdapter, never()).createClip(sound);
     }
 
     @Test
