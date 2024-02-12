@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.examples.pathfinding.scenes.DemoScene;
 public class PathfindingApp {
 
     public static void main(String[] args) {
-        Engine engine = ScrewBox.createEngine("Pathfinding Example");
+        Engine engine = ScrewBox.createEngine("Pathfinding");
 
         engine.scenes().add(new DemoScene());
 

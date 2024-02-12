@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.ScrewBox;
 public class HelloWorldApp {
 
     public static void main(String[] args) {
-        Engine screwBox = ScrewBox.createEngine("Hello World Example");
+        Engine screwBox = ScrewBox.createEngine("Hello World");
 
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();

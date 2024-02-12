@@ -20,7 +20,7 @@ import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarRenderer;
 public class GameOfLifeApp {
 
     public static void main(String[] args) {
-        Engine engine = ScrewBox.createEngine("Game Of Life Example");
+        Engine engine = ScrewBox.createEngine("Game Of Life");
 
         engine.environment()
                 .addEntity(new GridComponent())
