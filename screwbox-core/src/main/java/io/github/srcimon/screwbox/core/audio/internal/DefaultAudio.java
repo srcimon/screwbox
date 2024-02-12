@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.*;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.utils.Cache;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
@@ -24,12 +26,14 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
+    private final Graphics graphics;
     private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Graphics graphics) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
+        this.graphics = graphics;
     }
 
     public void shutdown() {
@@ -54,9 +58,19 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public Audio playEffect(final Sound sound, final Vector position) {
+        final var microphonePosition = graphics.cameraPosition();
+        final var distance = microphonePosition.distanceTo(position);
+        if(distance >= configuration.soundDistance()) {
+            return this;
+        }
+
+        final var direction = MathUtil.modifier(microphonePosition.x() - position.x());
+        var quotient = distance / configuration.soundDistance();
+        System.out.println(direction);
+        System.out.println(quotient);
         final var options = SoundOptions.playOnce()
-                .pan(0)//TODO FIX
-                .volume(Percent.max());//TODO FIX
+                .pan(direction * quotient)//TODO FIX
+                .volume(Percent.of(1 - quotient));//TODO FIX
 
         return playEffect(sound, options);
     }

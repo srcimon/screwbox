@@ -88,10 +88,10 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
-        audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice);
+        audio = new DefaultAudio(executor, new AudioAdapter(), graphics);
         scenes = new DefaultScenes(this, executor);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();

@@ -17,8 +17,22 @@ public class AudioConfiguration {
     private Percent musicVolume = Percent.max();
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
+    private double soundDistance = 1024;
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
+
+    //TODO JAVADOC TEST
+    //TODO Validate > 0
+    public AudioConfiguration soundDistance(final  double soundDistance) {
+        this.soundDistance = soundDistance;
+        notifyListeners(ConfigurationProperty.SOUND_DISTANCE);
+        return this;
+    }
+
+    //TODO JAVADOC TEST
+    public double soundDistance() {
+        return soundDistance;
+    }
 
     public AudioConfiguration addListener(final AudioConfigurationListener listener) {
         listeners.add(requireNonNull(listener, "listener must not be null"));
