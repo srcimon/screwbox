@@ -304,7 +304,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound);
 
-        await(() -> !audio.activePlaybacks().isEmpty(), ofMillis(500));
+        await(() -> audio.isActive(sound), ofMillis(500));
 
         audio.stop(sound);
 
