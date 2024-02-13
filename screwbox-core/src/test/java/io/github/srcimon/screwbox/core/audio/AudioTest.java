@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,5 +49,14 @@ class AudioTest {
         audio.stopSound(soundAsset);
 
         verify(audio).stopSound(SOUND);
+    }
+
+    @Test
+    void playSound_soundAssetAndPosition_playsSoundAtPosition() {
+        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
+
+        audio.playSound(soundAsset, $(10, 20));
+
+        verify(audio).playSound(SOUND, $(10, 20));
     }
 }

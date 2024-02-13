@@ -23,8 +23,6 @@ public interface Audio {
      */
     Audio playSound(Sound sound, Vector position);
 
-    //TODO Test
-
     /**
      * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
      * direction between the given position and the {@link Graphics#cameraPosition()}.
