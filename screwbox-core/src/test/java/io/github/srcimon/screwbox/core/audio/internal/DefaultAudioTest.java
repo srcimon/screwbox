@@ -2,11 +2,11 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.test.TestUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,6 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.mockito.Mockito.*;
 
 @Timeout(1)
@@ -93,6 +92,27 @@ class DefaultAudioTest {
 
         verify(audioAdapter).setVolume(clip, Percent.of(0.7277474054857758));
         verify(audioAdapter).setPan(clip, 0.2722525945142242d);
+    }
+
+
+    @Test
+    void playSound_positionInRange_addsPlaybackWithPosition() {
+        Sound sound = Sound.dummyEffect();
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        audio.configuration().setSoundRange(1024);
+
+        when(graphics.cameraPosition()).thenReturn($(0, 0));
+
+        audio.playSound(sound, $(80, 10));
+
+        await(() -> audio.activeCount() == 1, ofMillis(500));
+
+        assertThat(audio.activePlaybacks()).hasSize(1);
+
+        Playback playback = audio.activePlaybacks().getFirst();
+        assertThat(playback.position()).contains($(80, 10));
+        assertThat(playback.options().times()).isEqualTo(1);
+        assertThat(playback.options().balance()).isZero();
     }
 
     @Test

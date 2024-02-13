@@ -7,7 +7,7 @@ import java.util.Objects;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
 
 /**
- * Sets options for the playback of a specific {@link Sound} via {@link Audio#playSound(Sound, SoundOptions)} or {@link Audio#playMusic(Sound, SoundOptions)}.
+ * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
 public class SoundOptions {
 
@@ -51,6 +51,7 @@ public class SoundOptions {
     }
 
     //TODO Test
+
     /**
      * {@link Sound} should be played as effect using {@link AudioConfiguration#effectVolume()}.
      */
@@ -148,5 +149,16 @@ public class SoundOptions {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (isMusic ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SoundOptions{" +
+                "times=" + times +
+                ", volume=" + volume +
+                ", balance=" + balance +
+                ", pan=" + pan +
+                ", isMusic=" + isMusic +
+                '}';
     }
 }
