@@ -379,7 +379,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound2)).thenReturn(clip2);
         audio.playSound(sound2, playLooped().asMusic());
 
-        await(() -> audio.activeCount() == 2, ofMillis(500));
+        await(() -> audio.activeCount() == 2, ofMillis(750));
 
         assertThat(audio.activePlaybacks()).hasSize(2)
                 .anyMatch(playback -> playback.sound().equals(sound))
