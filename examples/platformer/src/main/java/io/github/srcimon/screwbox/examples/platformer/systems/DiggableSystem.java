@@ -53,7 +53,7 @@ public class DiggableSystem implements EntitySystem {
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
                 rigidBodyComponent.momentum = Vector.of(rigidBodyComponent.momentum.x(), -150);
-                engine.audio().playEffect(DIG_SOUND);
+                engine.audio().playSound(DIG_SOUND);
             }
         }
     }

@@ -13,7 +13,7 @@ public class CameraControlSystem implements EntitySystem {
         }
 
         double zoomChange = engine.mouse().unitsScrolled() * -engine.loop().delta();
-        engine.graphics().updateCameraZoomBy(zoomChange);
+        engine.graphics().updateZoomBy(zoomChange);
     }
 
 }

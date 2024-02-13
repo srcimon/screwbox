@@ -26,7 +26,7 @@ public class PlayerJumpingStartedState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        engine.audio().playEffect(JUMP_SOUND);
+        engine.audio().playSound(JUMP_SOUND);
         entity.get(RenderComponent.class).sprite = SPRITE.get();
         final var physicsBodyComponent = entity.get(PhysicsComponent.class);
         physicsBodyComponent.momentum = Vector.of(physicsBodyComponent.momentum.x(), -180);

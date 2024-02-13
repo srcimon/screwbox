@@ -1,84 +1,91 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 
 /**
- * Controls the audio playback of the {@link Engine}.
+ * Controls the audio playback of the {@link Engine} and gives information to the currently {@link #activePlaybacks()}.
  */
 public interface Audio {
 
     /**
+     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
+     * direction between the given position and the {@link Graphics#cameraPosition()}.
+     * 
+     * @see #playSound(Supplier, Vector)
+     */
+    Audio playSound(Sound sound, Vector position);
+
+    /**
+     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
+     * direction between the given position and the {@link Graphics#cameraPosition()}.
+     * 
+     * @see #playSound(Sound, Vector) 
+     */
+    default Audio playSound(final Supplier<Sound> sound, final Vector position) {
+        return playSound(sound.get(), position);
+    }
+
+    /**
+     * Returns a list of all currently active {@link Playback}s.
+     *
+     * @see #activeCount()
+     * @see #activeCount(Sound)
+     */
+    List<Playback> activePlaybacks();
+
+    /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
-     * @see #playEffect(Supplier, SoundOptions)
+     * @see #playSound(Supplier, SoundOptions)
      */
-    Audio playEffect(Sound sound, SoundOptions options);
+    Audio playSound(Sound sound, SoundOptions options);
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
-     * @see #playEffect(Sound, SoundOptions)
+     * @see #playSound(Sound, SoundOptions)
      */
-    default Audio playEffect(final Supplier<Sound> sound, final SoundOptions options) {
-        return playEffect(sound.get(), options);
+    default Audio playSound(final Supplier<Sound> sound, final SoundOptions options) {
+        return playSound(sound.get(), options);
     }
 
     /**
-     * Plays a {@link Sound} a single time with {@link AudioConfiguration#effectVolume()}.
+     * Plays a {@link Sound} a single time.
      */
-    default Audio playEffect(final Sound sound) {
-        return playEffect(sound, playOnce());
+    default Audio playSound(final Sound sound) {
+        return playSound(sound, playOnce());
     }
 
     /**
-     * Plays a {@link Sound} from an {@link Asset} a single time with
-     * {@link AudioConfiguration#effectVolume()}.
+     * Plays a {@link Sound} from an {@link Asset} a single time.
      */
-    default Audio playEffect(final Supplier<Sound> sound) {
-        return playEffect(sound.get());
-    }
-
-    /**
-     * Plays a music {@link Sound} using the given {@link SoundOptions}.
-     *
-     * @see #playMusic(Supplier, SoundOptions)
-     */
-    Audio playMusic(Sound sound, SoundOptions options);
-
-    /**
-     * Plays a music {@link Sound} with {@link AudioConfiguration#musicVolume()}.
-     */
-    default Audio playMusic(Sound sound) {
-        return playMusic(sound, playOnce());
-    }
-
-    /**
-     * Plays a music {@link Sound}.
-     *
-     * @see #playMusic(Sound, SoundOptions)
-     */
-    default Audio playMusic(final Supplier<Sound> sound) {
-        return playMusic(sound.get());
-    }
-
-    /**
-     * Plays a music {@link Sound} using the given {@link SoundOptions}.
-     *
-     * @see #playMusic(Sound, SoundOptions)
-     */
-    default Audio playMusic(final Supplier<Sound> sound, final SoundOptions options) {
-        return playMusic(sound.get(), options);
+    default Audio playSound(final Supplier<Sound> sound) {
+        return playSound(sound.get());
     }
 
     /**
      * Stops all currently playing instances of the {@link Sound}.
+     *
+     * @see #stopSound(Supplier)
      */
-    Audio stop(Sound sound);
+    Audio stopSound(Sound sound);
+
+    /**
+     * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
+     *
+     * @see #stopSound(Sound)
+     */
+    default Audio stopSound(Supplier<Sound> sound) {
+        return stopSound(sound.get());
+    }
 
     /**
      * Stops all currently playing {@link Sound}s.

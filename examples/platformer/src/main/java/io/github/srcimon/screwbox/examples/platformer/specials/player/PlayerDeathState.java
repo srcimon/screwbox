@@ -44,9 +44,9 @@ public class PlayerDeathState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.remove(PlayerControlComponent.class);
         switch (entity.get(DeathEventComponent.class).deathType) {
-            case WATER -> engine.audio().playEffect(BLUPP_SOUND);
-            case LAVA -> engine.audio().playEffect(ZISCH_SOUND);
-            default -> engine.audio().playEffect(OUCH_SOUND);
+            case WATER -> engine.audio().playSound(BLUPP_SOUND);
+            case LAVA -> engine.audio().playSound(ZISCH_SOUND);
+            default -> engine.audio().playSound(OUCH_SOUND);
         }
 
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();

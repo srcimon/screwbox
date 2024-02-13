@@ -49,7 +49,7 @@ public enum Feature {
 
     final List<EntitySystem> systems;
 
-    Feature(EntitySystem... systems) {
+    Feature(final EntitySystem... systems) {
         this.systems = List.of(systems);
     }
 

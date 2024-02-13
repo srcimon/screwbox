@@ -17,10 +17,10 @@ import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarMenu;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarOpacitySystem;
 import io.github.srcimon.screwbox.examples.gameoflife.sidebar.SidebarRenderer;
 
-public class GameOfLifeExample {
+public class GameOfLifeApp {
 
     public static void main(String[] args) {
-        Engine engine = ScrewBox.createEngine("Game Of Life Example");
+        Engine engine = ScrewBox.createEngine("Game Of Life");
 
         engine.environment()
                 .addEntity(new GridComponent())
@@ -40,7 +40,7 @@ public class GameOfLifeExample {
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());
 
-        engine.graphics().updateCameraZoom(6);
+        engine.graphics().updateZoom(6);
         engine.start();
     }
 }

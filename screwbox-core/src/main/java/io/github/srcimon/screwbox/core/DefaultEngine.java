@@ -88,7 +88,6 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
-        audio = new DefaultAudio(executor, new AudioAdapter());
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice);
@@ -97,6 +96,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window));
+        audio = new DefaultAudio(executor, new AudioAdapter(), graphics);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

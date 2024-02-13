@@ -7,7 +7,7 @@ import java.util.Objects;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
 
 /**
- * Sets options for the playback of a specific {@link Sound} via {@link Audio#playEffect(Sound, SoundOptions)} or {@link Audio#playMusic(Sound, SoundOptions)}.
+ * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
 public class SoundOptions {
 
@@ -15,9 +15,10 @@ public class SoundOptions {
     private Percent volume = Percent.max();
     private double balance = 0;
     private double pan = 0;
+    boolean isMusic = false;
 
     /**
-     * Playback {@link Sound} until stopped via {@link Audio#stop(Sound)}.
+     * Playback {@link Sound} until stopped via {@link Audio#stopSound(Sound)}.
      */
     public static SoundOptions playLooped() {
         return new SoundOptions(Integer.MAX_VALUE);
@@ -38,6 +39,28 @@ public class SoundOptions {
             throw new IllegalArgumentException("sound must be played at least once");
         }
         return new SoundOptions(times);
+    }
+
+    /**
+     * Returns {@code true} if {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
+     */
+    public boolean isMusic() {
+        return isMusic;
+    }
+
+    /**
+     * {@link Sound} should be played as effect using {@link AudioConfiguration#effectVolume()}.
+     */
+    public boolean isEffect() {
+        return !isMusic;
+    }
+
+    /**
+     * {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
+     */
+    public SoundOptions asMusic() {
+        isMusic = true;
+        return this;
     }
 
     private SoundOptions(final int times) {
@@ -104,13 +127,34 @@ public class SoundOptions {
         SoundOptions that = (SoundOptions) o;
 
         if (times != that.times) return false;
+        if (Double.compare(balance, that.balance) != 0) return false;
+        if (Double.compare(pan, that.pan) != 0) return false;
+        if (isMusic != that.isMusic) return false;
         return Objects.equals(volume, that.volume);
     }
 
     @Override
     public int hashCode() {
-        int result = times;
+        int result;
+        long temp;
+        result = times;
         result = 31 * result + (volume != null ? volume.hashCode() : 0);
+        temp = Double.doubleToLongBits(balance);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pan);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (isMusic ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SoundOptions{" +
+                "times=" + times +
+                ", volume=" + volume +
+                ", balance=" + balance +
+                ", pan=" + pan +
+                ", isMusic=" + isMusic +
+                '}';
     }
 }

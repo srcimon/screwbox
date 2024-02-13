@@ -54,7 +54,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
         for (final Entity entity : activatedEntities) {
             var vanish = entity.get(VanishingOnCollisionComponent.class);
             if (vanish.vanishTime.isUnset()) {
-                engine.audio().playEffect(STEAM_SOUND);
+                engine.audio().playSound(STEAM_SOUND);
                 vanish.vanishTime = now.plus(vanish.timeout);
             }
         }

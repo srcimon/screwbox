@@ -20,6 +20,6 @@ public class DeadScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.window().setTitle("Platformer Example (Game Over)");
+        engine.window().setTitle("Platformer (Game Over)");
     }
 }

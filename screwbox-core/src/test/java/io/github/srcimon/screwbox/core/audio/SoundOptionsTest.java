@@ -57,9 +57,31 @@ class SoundOptionsTest {
     }
 
     @Test
+    void soundOptions_notMarkedAsMusic_isEffect() {
+        var options = SoundOptions.playOnce();
+
+        assertThat(options.isEffect()).isTrue();
+        assertThat(options.isMusic()).isFalse();
+    }
+
+    @Test
+    void soundOptions_markedAsMusic_isEffect() {
+        var options = SoundOptions.playOnce().asMusic();
+
+        assertThat(options.isEffect()).isFalse();
+        assertThat(options.isMusic()).isTrue();
+    }
+
+    @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("sound must be played at least once");
+    }
+
+    @Test
+    void toString_valuesSet_containsReadableString() {
+        assertThat(SoundOptions.playTimes(5).balance(2).asMusic())
+                .hasToString("SoundOptions{times=5, volume=Percentage [value=1.0], balance=1.0, pan=0.0, isMusic=true}");
     }
 }

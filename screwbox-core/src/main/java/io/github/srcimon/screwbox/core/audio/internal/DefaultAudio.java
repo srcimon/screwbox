@@ -1,12 +1,13 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.*;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,21 +16,23 @@ import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
+import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.requireNonNull;
 
-public class DefaultAudio implements Audio, LineListener, AudioConfigurationListener {
+public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     private static final Cache<Sound, Clip> CLIP_CACHE = new Cache<>();
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
-    private final Map<Clip, ActiveSound> activeSounds = new ConcurrentHashMap<>();
+    private final Graphics graphics;
+    private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
+    private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
-    private final AudioConfiguration configuration = new AudioConfiguration();
-
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Graphics graphics) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
-        configuration.addListener(this);
+        this.graphics = graphics;
     }
 
     public void shutdown() {
@@ -42,59 +45,70 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                final List<Clip> activeClips = new ArrayList<>(activeSounds.keySet());
+                final List<Clip> activeClips = new ArrayList<>(playbacks.keySet());
                 for (final Clip clip : activeClips) {
                     clip.stop();
                 }
-                activeSounds.clear();
+                playbacks.clear();
             });
         }
         return this;
     }
 
     @Override
-    public Audio playEffect(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, options, false));
+    public Audio playSound(final Sound sound, final Vector position) {
+        requireNonNull(position, "position must not be null");
+        final var distance = graphics.cameraPosition().distanceTo(position);
+        final var direction = modifier(position.x() - graphics.cameraPosition().x());
+        final var quotient = distance / configuration.soundRange();
+        final var options = SoundOptions.playOnce()
+                .pan(direction * quotient)
+                .volume(Percent.of(1 - quotient));
+
+        playSound(sound, options, position);
         return this;
     }
 
     @Override
-    public Audio playMusic(final Sound sound, final SoundOptions options) {
-        playClip(new ActiveSound(sound, options, true));
+    public List<Playback> activePlaybacks() {
+        return new ArrayList<>(playbacks.values());
+    }
+
+    @Override
+    public Audio playSound(final Sound sound, final SoundOptions options) {
+        playSound(sound, options, null);
         return this;
     }
 
     @Override
-    public Audio stop(final Sound sound) {
+    public Audio stopSound(final Sound sound) {
         for (final Clip clip : fetchClipsFor(sound)) {
             executor.execute(clip::stop);
         }
         return this;
     }
 
-    @Override
-    public void update(final LineEvent event) {
-        if (event.getType().equals(LineEvent.Type.STOP)) {
-            activeSounds.remove(event.getSource());
-        }
-    }
-
-    private void playClip(final ActiveSound activeSound) {
-        final Percent configVolume = activeSound.isMusic() ? musicVolume() : effectVolume();
-        final Percent volume = configVolume.multiply(activeSound.options().volume().value());
+    private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
+        requireNonNull(sound, "sound must not be null");
+        requireNonNull(options, "options must not be null");
+        final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
+        final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
-                final Sound sound = activeSound.sound();
                 final Clip clip = isActive(sound)
                         ? audioAdapter.createClip(sound)
                         : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
                 audioAdapter.setVolume(clip, volume);
-                audioAdapter.setBalance(clip, activeSound.options().balance());
-                audioAdapter.setPan(clip, activeSound.options().pan());
-                activeSounds.put(clip, activeSound);
+                audioAdapter.setBalance(clip, options.balance());
+                audioAdapter.setPan(clip, options.pan());
+                playbacks.put(clip, new Playback(sound, options, position));
                 clip.setFramePosition(0);
-                clip.addLineListener(this);
-                clip.loop(activeSound.options().times() - 1);
+                clip.addLineListener(event -> {
+                    if (event.getType().equals(LineEvent.Type.STOP)) {
+                        playbacks.remove(event.getSource());
+                    }
+                });
+                clip.loop(options.times() - 1);
             });
         }
     }
@@ -106,7 +120,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public boolean isActive(final Sound sound) {
-        for (final var activeSound : activeSounds.entrySet()) {
+        for (final var activeSound : playbacks.entrySet()) {
             if (activeSound.getValue().sound().equals(sound)) {
                 return true;
             }
@@ -116,7 +130,7 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     @Override
     public int activeCount() {
-        return activeSounds.size();
+        return playbacks.size();
     }
 
     @Override
@@ -127,14 +141,14 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : activeSounds.entrySet()) {
-                if (activeSound.getValue().isMusic()) {
+            for (final var activeSound : playbacks.entrySet()) {
+                if (activeSound.getValue().options().isMusic()) {
                     audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : activeSounds.entrySet()) {
-                if (activeSound.getValue().isEffect()) {
+            for (final var activeSound : playbacks.entrySet()) {
+                if (activeSound.getValue().options().isEffect()) {
                     audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
                 }
             }
@@ -143,14 +157,13 @@ public class DefaultAudio implements Audio, LineListener, AudioConfigurationList
 
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
-        for (final var activeSound : activeSounds.entrySet()) {
+        for (final var activeSound : playbacks.entrySet()) {
             if (activeSound.getValue().sound().equals(sound)) {
                 clips.add(activeSound.getKey());
             }
         }
         return clips;
     }
-
 
     private Percent musicVolume() {
         return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
