@@ -12,7 +12,7 @@ public class AudioConfigurationEvent extends EventObject {
     public enum ConfigurationProperty {
         MUSIC_VOLUME,
         EFFECTS_VOLUME,
-        SOUND_DISTANCE
+        SOUND_RANGE
     }
     public AudioConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {
         super(source);

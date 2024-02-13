@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
 
 import java.util.ArrayList;
@@ -21,15 +22,23 @@ public class AudioConfiguration {
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
-    //TODO JAVADOC TEST
-    //TODO Validate > 0
-    public AudioConfiguration setSoundRange(final  double soundRange) {
+    /**
+     * Sets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
+     * when using {@link Audio#playSound(Sound, Vector)}.
+     */
+    public AudioConfiguration setSoundRange(final double soundRange) {
+        if (soundRange <= 0) {
+            throw new IllegalArgumentException("sound range must be positive");
+        }
         this.soundRange = soundRange;
-        notifyListeners(ConfigurationProperty.SOUND_DISTANCE);
+        notifyListeners(ConfigurationProperty.SOUND_RANGE);
         return this;
     }
 
-    //TODO JAVADOC TEST
+    /**
+     * Gets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
+     * when using {@link Audio#playSound(Sound, Vector)}.
+     */
     public double soundRange() {
         return soundRange;
     }
@@ -47,13 +56,6 @@ public class AudioConfiguration {
         effectVolume = volume;
         notifyListeners(ConfigurationProperty.EFFECTS_VOLUME);
         return this;
-    }
-
-    private void notifyListeners(final ConfigurationProperty configurationProperty) {
-        final var audioConfigurationEvent = new AudioConfigurationEvent(this, configurationProperty);
-        for (final var listener : listeners) {
-            listener.configurationChanged(audioConfigurationEvent);
-        }
     }
 
     /**
@@ -207,5 +209,12 @@ public class AudioConfiguration {
      */
     public AudioConfiguration unmute() {
         return setMuted(false);
+    }
+
+    private void notifyListeners(final ConfigurationProperty configurationProperty) {
+        final var audioConfigurationEvent = new AudioConfigurationEvent(this, configurationProperty);
+        for (final var listener : listeners) {
+            listener.configurationChanged(audioConfigurationEvent);
+        }
     }
 }

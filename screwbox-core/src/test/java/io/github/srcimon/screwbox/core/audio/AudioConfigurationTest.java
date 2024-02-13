@@ -7,8 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Percent.max;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -28,7 +27,6 @@ class AudioConfigurationTest {
         configuration = new AudioConfiguration();
         configuration.addListener(listener);
     }
-
 
     @Test
     void muteMusic_musicUnmuted_mutesMusic() {
@@ -152,6 +150,21 @@ class AudioConfigurationTest {
 
         assertThat(configuration.areEffectsMuted()).isFalse();
         assertThat(configuration.isMusicMuted()).isFalse();
+    }
+
+    @Test
+    void setSoundRange_rangeZero_throwsException() {
+        assertThatThrownBy(() -> configuration.setSoundRange(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sound range must be positive");
+    }
+
+    @Test
+    void setSoundRange_positiveRange_setsRangeAndNotifiesListeners() {
+        configuration.setSoundRange(4);
+
+        assertThat(configuration.soundRange()).isEqualTo(4);
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(SOUND_RANGE)));
     }
 
     @Test
