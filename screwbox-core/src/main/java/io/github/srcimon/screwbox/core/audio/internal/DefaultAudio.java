@@ -60,7 +60,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         requireNonNull(position, "position must not be null");
         final var distance = graphics.cameraPosition().distanceTo(position);
         final var direction = modifier(position.x() - graphics.cameraPosition().x());
-        final var quotient = distance / configuration.soundDistance();
+        final var quotient = distance / configuration.soundRange();
         final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));

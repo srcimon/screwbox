@@ -80,7 +80,7 @@ class DefaultAudioTest {
     void playSound_positionInRange_appliesPanAndVolume() {
         Sound sound = Sound.dummyEffect();
         when(audioAdapter.createClip(sound)).thenReturn(clip);
-        audio.configuration().setSoundDistance(1024);
+        audio.configuration().setSoundRange(1024);
 
         when(graphics.cameraPosition()).thenReturn($(-129, 239));
 
@@ -96,7 +96,7 @@ class DefaultAudioTest {
     void playSound_positionOutOfRange_doesntPlaySound() {
         Sound sound = Sound.dummyEffect();
 
-        audio.configuration().setSoundDistance(1024);
+        audio.configuration().setSoundRange(1024);
 
         when(graphics.cameraPosition()).thenReturn($(-129, 239));
 
