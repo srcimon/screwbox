@@ -6,12 +6,14 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.sound.sampled.Clip;
@@ -26,6 +28,7 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.mockito.Mockito.*;
 
 @Timeout(1)
@@ -338,6 +341,30 @@ class DefaultAudioTest {
 
         awaitShutdown();
         verify(clip).stop();
+    }
+
+    @Test
+    void activePlaybacks_noPlaybacks_isEmpty() {
+        assertThat(audio.activePlaybacks()).isEmpty();
+    }
+
+    @Test
+    void activePlaybacks_twoPlaybacks_containsBothPlaybacks() {
+        Sound sound = Sound.dummyEffect();
+        when(audioAdapter.createClip(sound)).thenReturn(clip);
+        audio.playSound(sound);
+
+        Sound sound2 = Sound.dummyEffect();
+        Clip clip2 = Mockito.mock(Clip.class);
+        when(audioAdapter.createClip(sound2)).thenReturn(clip2);
+        audio.playSound(sound2, playLooped().asMusic());
+
+        await(() -> audio.activeCount() == 2, ofMillis(500));
+
+        assertThat(audio.activePlaybacks()).hasSize(2)
+                .anyMatch(playback -> playback.sound().equals(sound))
+                .anyMatch(playback -> playback.sound().equals(sound2))
+                .anyMatch(playback -> playback.options().equals(playLooped().asMusic()));
     }
 
     @AfterEach

@@ -18,15 +18,23 @@ public interface Audio {
     /**
      * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
      * direction between the given position and the {@link Graphics#cameraPosition()}.
+     * 
+     * @see #playSound(Supplier, Vector)
      */
     Audio playSound(Sound sound, Vector position);
 
-    //TODO Test and javadoc
+    //TODO Test
+
+    /**
+     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
+     * direction between the given position and the {@link Graphics#cameraPosition()}.
+     * 
+     * @see #playSound(Sound, Vector) 
+     */
     default Audio playSound(final Supplier<Sound> sound, final Vector position) {
         return playSound(sound.get(), position);
     }
 
-    //TODO TEST
     /**
      * Returns a list of all currently active {@link Playback}s.
      *

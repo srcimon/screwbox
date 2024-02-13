@@ -121,13 +121,23 @@ public class SoundOptions {
         SoundOptions that = (SoundOptions) o;
 
         if (times != that.times) return false;
+        if (Double.compare(balance, that.balance) != 0) return false;
+        if (Double.compare(pan, that.pan) != 0) return false;
+        if (isMusic != that.isMusic) return false;
         return Objects.equals(volume, that.volume);
     }
 
     @Override
     public int hashCode() {
-        int result = times;
+        int result;
+        long temp;
+        result = times;
         result = 31 * result + (volume != null ? volume.hashCode() : 0);
+        temp = Double.doubleToLongBits(balance);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pan);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (isMusic ? 1 : 0);
         return result;
     }
 }
