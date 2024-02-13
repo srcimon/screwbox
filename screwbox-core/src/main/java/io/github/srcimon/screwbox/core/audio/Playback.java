@@ -7,8 +7,6 @@ import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.Optional;
 
-//TODO Test and javadoc
-
 /**
  * Information about currently playing {@link Sound}. Retrieved via {@link Audio#activePlaybacks()}.
  */

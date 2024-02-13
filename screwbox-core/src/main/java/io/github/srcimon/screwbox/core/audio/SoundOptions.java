@@ -41,16 +41,12 @@ public class SoundOptions {
         return new SoundOptions(times);
     }
 
-    //TODO Test
-
     /**
      * Returns {@code true} if {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
      */
     public boolean isMusic() {
         return isMusic;
     }
-
-    //TODO Test
 
     /**
      * {@link Sound} should be played as effect using {@link AudioConfiguration#effectVolume()}.
