@@ -41,17 +41,26 @@ public class SoundOptions {
         return new SoundOptions(times);
     }
 
-    //TODO Test and javadoc
+    //TODO Test
+
+    /**
+     * Returns {@code true} if {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
+     */
     public boolean isMusic() {
         return isMusic;
     }
 
-    //TODO Test and javadoc
+    //TODO Test
+    /**
+     * {@link Sound} should be played as effect using {@link AudioConfiguration#effectVolume()}.
+     */
     public boolean isEffect() {
         return !isMusic;
     }
 
-    //TODO Test and javadoc
+    /**
+     * {@link Sound} should be played as music using {@link AudioConfiguration#musicVolume()}.
+     */
     public SoundOptions asMusic() {
         isMusic = true;
         return this;

@@ -57,6 +57,22 @@ class SoundOptionsTest {
     }
 
     @Test
+    void soundOptions_notMarkedAsMusic_isEffect() {
+        var options = SoundOptions.playOnce();
+
+        assertThat(options.isEffect()).isTrue();
+        assertThat(options.isMusic()).isFalse();
+    }
+
+    @Test
+    void soundOptions_markedAsMusic_isEffect() {
+        var options = SoundOptions.playOnce().asMusic();
+
+        assertThat(options.isEffect()).isFalse();
+        assertThat(options.isMusic()).isTrue();
+    }
+
+    @Test
     void playTimes_timesIsZero_throwsException() {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
