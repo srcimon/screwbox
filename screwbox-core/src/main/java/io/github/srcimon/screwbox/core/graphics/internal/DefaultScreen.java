@@ -20,19 +20,6 @@ public class DefaultScreen implements Screen {
         this.frame = frame;
     }
 
-    private Color drawColor = Color.WHITE;
-
-    @Override
-    public Screen drawColor(final Color color) {
-        drawColor = color;
-        return this;
-    }
-
-    @Override
-    public Color drawColor() {
-        return drawColor;
-    }
-
     @Override
     public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
         renderer.fillCircle(offset, diameter, color);
@@ -96,7 +83,7 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawTextCentered(final Offset offset, final String text, final Pixelfont font,
                                    final Percent opacity, final double scale) {
-        final int totalWidth = (int)(font.widthOf(text) * scale);
+        final int totalWidth = (int) (font.widthOf(text) * scale);
         drawTextSprites(offset.addX(totalWidth / -2), opacity, scale, font.spritesFor(text), font);
         return this;
     }

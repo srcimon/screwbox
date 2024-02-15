@@ -4,10 +4,6 @@ import io.github.srcimon.screwbox.core.*;
 
 public interface World {
 
-    World drawColor(Color color);
-
-    Color drawColor();
-
     World drawFadingCircle(Vector position, double diameter, Color color);
 
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea);
@@ -34,15 +30,7 @@ public interface World {
 
     World drawText(Vector offset, String text, Font font, Color color);
 
-    default World drawText(final Vector offset, final String text, final Font font) {
-        return drawText(offset, text, font, drawColor());
-    }
-
     World drawTextCentered(Vector position, String text, Font font, Color color);
-
-    default World drawTextCentered(final Vector position, final String text, final Font font) {
-        return drawTextCentered(position, text, font, drawColor());
-    }
 
     World drawLine(Vector from, Vector to, Color color);
 
@@ -50,27 +38,11 @@ public interface World {
         return drawLine(line.from(), line.to(), color);
     }
 
-    default World drawLine(final Line line) {
-        return drawLine(line, drawColor());
-    }
-
-    default World drawLine(final Vector from, final Vector to) {
-        return drawLine(from, to, drawColor());
-    }
-
     World fillCircle(Vector position, double diameter, Color color);
-
-    default World fillCircle(final Vector position, final double diameter) {
-        return fillCircle(position, diameter, drawColor());
-    }
 
     World drawCircle(Vector position, double diameter, Color color, int strokeWidth);
 
     World fillRectangle(Bounds bounds, Color color);
-
-    default World fillRectangle(final Bounds bounds) {
-        return fillRectangle(bounds, drawColor());
-    }
 
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 

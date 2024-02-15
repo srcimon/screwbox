@@ -1,6 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.*;
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,16 +46,6 @@ class DefaultWorldTest {
         world.fillRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
 
         verify(screen).fillRectangle(Offset.at(387, 259), Size.of(250, 250), Color.RED);
-    }
-
-    @Test
-    void drawColor_setsColorForDrawing() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
-        world.drawColor(Color.BLUE);
-        world.drawLine(Line.between(zero(), zero()));
-
-        assertThat(world.drawColor()).isEqualTo(Color.BLUE);
-        verify(screen).drawLine(Offset.at(512, 384), Offset.at(512, 384), Color.BLUE);
     }
 
     @Test

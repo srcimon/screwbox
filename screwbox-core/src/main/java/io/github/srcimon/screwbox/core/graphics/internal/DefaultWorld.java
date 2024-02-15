@@ -25,21 +25,8 @@ public class DefaultWorld implements World {
             Double.MAX_VALUE,
             Double.MAX_VALUE);
 
-    private Color drawColor = Color.WHITE;
-
     public DefaultWorld(final Screen screen) {
         this.screen = screen;
-    }
-
-    @Override
-    public World drawColor(final Color color) {
-        this.drawColor = color;
-        return this;
-    }
-
-    @Override
-    public Color drawColor() {
-        return drawColor;
     }
 
     public void restrictZoomRangeTo(final double min, final double max) {
@@ -151,7 +138,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawCircle(Vector position, double diameter, Color color, final int strokeWidth) {
         final Offset offset = toOffset(position);
-        screen.drawCircle(offset, (int) (diameter * zoom), color,strokeWidth);
+        screen.drawCircle(offset, (int) (diameter * zoom), color, strokeWidth);
         return this;
     }
 
@@ -203,7 +190,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawFadingCircle(final Vector position, double diameter, final Color color) {
-        if(diameter > 0) {
+        if (diameter > 0) {
             screen.drawFadingCircle(toOffset(position), toDistance(diameter), color);
         }
         return this;

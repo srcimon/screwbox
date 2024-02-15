@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ScreenTest {
@@ -32,17 +31,6 @@ class ScreenTest {
         screen.fillWith(Offset.at(2, 3), sprite);
 
         verify(screen).fillWith(Offset.at(2, 3), sprite, 1, Percent.max());
-    }
-
-    @Test
-    void drawLine_fromAndTo_callsActualMethod() {
-        Offset from = Offset.at(2, 4);
-        Offset to = Offset.at(1, 1);
-        when(screen.drawColor()).thenReturn(Color.BLUE);
-
-        screen.drawLine(from, to);
-
-        verify(screen).drawLine(from, to, Color.BLUE);
     }
 
     @Test

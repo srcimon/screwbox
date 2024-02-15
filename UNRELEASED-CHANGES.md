@@ -24,6 +24,7 @@ This release is truely audio focused.
 - Renamed `Graphics.updateZoom` and `.updateZoomBy`
 - Renamed `Audio.stop(Sound)` to `.stopSound(Sound)`
 - Renamed all example applications to ...App
+- Removed color configuration on `Screen` and `World`
 
 ### 📦 Dependency updates
 
