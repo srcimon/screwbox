@@ -7,7 +7,9 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AudioTest {
@@ -58,5 +60,23 @@ class AudioTest {
         audio.playSound(soundAsset, $(10, 20));
 
         verify(audio).playSound(SOUND, $(10, 20));
+    }
+
+    @Test
+    void isActive_supplierGiven_returnsIsActiveOfSound() {
+        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
+
+        when(audio.isActive(SOUND)).thenReturn(true);
+
+        assertThat(audio.isActive(soundAsset)).isTrue();
+    }
+
+    @Test
+    void activeCount_supplierGiven_returnsActiveCountSound() {
+        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
+
+        when(audio.activeCount(SOUND)).thenReturn(6);
+
+        assertThat(audio.activeCount(soundAsset)).isEqualTo(6);
     }
 }

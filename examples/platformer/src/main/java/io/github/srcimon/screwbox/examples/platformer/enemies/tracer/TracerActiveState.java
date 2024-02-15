@@ -11,10 +11,13 @@ import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSig
 import io.github.srcimon.screwbox.examples.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
 
+import java.io.Serial;
+
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
 
 public class TracerActiveState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sprite> SPRITE = Tileset.spriteAssetFromJson("tilesets/enemies/tracer.json", "active");
