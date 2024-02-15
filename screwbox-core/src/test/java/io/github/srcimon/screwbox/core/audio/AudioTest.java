@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 class AudioTest {
 
     public static final Sound SOUND = Sound.fromFile("kill.wav");
+    public static final Asset<Sound> ASSET = Asset.asset(() -> SOUND);
 
     @Spy
     Audio audio;
@@ -28,55 +29,43 @@ class AudioTest {
 
     @Test
     void playSound_soundAsset_playsSoundFromAsset() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.playSound(soundAsset);
+        audio.playSound(ASSET);
 
         verify(audio).playSound(SOUND);
     }
 
     @Test
     void playSound_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.playSound(soundAsset, SoundOptions.playLooped());
+        audio.playSound(ASSET, SoundOptions.playLooped());
 
         verify(audio).playSound(SOUND, SoundOptions.playLooped());
     }
 
     @Test
     void stopSound_assetGiven_stopsSoundFromAsset() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.stopSound(soundAsset);
+        audio.stopSound(ASSET);
 
         verify(audio).stopSound(SOUND);
     }
 
     @Test
     void playSound_soundAssetAndPosition_playsSoundAtPosition() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
-        audio.playSound(soundAsset, $(10, 20));
+        audio.playSound(ASSET, $(10, 20));
 
         verify(audio).playSound(SOUND, $(10, 20));
     }
 
     @Test
     void isActive_supplierGiven_returnsIsActiveOfSound() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
         when(audio.isActive(SOUND)).thenReturn(true);
 
-        assertThat(audio.isActive(soundAsset)).isTrue();
+        assertThat(audio.isActive(ASSET)).isTrue();
     }
 
     @Test
     void activeCount_supplierGiven_returnsActiveCountSound() {
-        Asset<Sound> soundAsset = Asset.asset(() -> SOUND);
-
         when(audio.activeCount(SOUND)).thenReturn(6);
 
-        assertThat(audio.activeCount(soundAsset)).isEqualTo(6);
+        assertThat(audio.activeCount(ASSET)).isEqualTo(6);
     }
 }
