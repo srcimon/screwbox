@@ -5,6 +5,11 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.function.Supplier;
 
+/**
+ * Access drawing operations on the game screen.
+ *
+ * @see World
+ */
 public interface Screen {
 
     /**
@@ -12,9 +17,23 @@ public interface Screen {
      */
     Offset position();
 
-    Screen fillRectangle(ScreenBounds bounds, Color color);
+    /**
+     * Returns the {@link Size} of the {@link Screen}.
+     */
+    Size size();
 
+    /**
+     * Returns the center position of the {@link Screen}.
+     * @return
+     */
+    Offset center();
+
+    /**
+     * Fills the whole {@link Screen} with the given {@link Color}.
+     */
     Screen fillWith(Color color);
+
+    Screen fillRectangle(ScreenBounds bounds, Color color);
 
     Sprite takeScreenshot();
 
@@ -140,20 +159,14 @@ public interface Screen {
     Screen drawLine(Offset from, Offset to, Color color);
 
     /**
-     * Returns {@code true} if the given {@link ScreenBounds} is within the
-     * {@link Screen} area.
+     * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.
      */
     boolean isVisible(ScreenBounds bounds);
 
     /**
-     * Returns {@code true} if the given {@link Offset} is within the {@link Screen}
-     * area.
+     * Returns {@code true} if the given {@link Offset} is within the {@link Screen} area.
      */
     boolean isVisible(Offset offset);
-
-    Size size();
-
-    Offset center();
 
     Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
 
