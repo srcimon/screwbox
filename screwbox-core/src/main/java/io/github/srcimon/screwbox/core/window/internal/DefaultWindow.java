@@ -3,9 +3,9 @@ package io.github.srcimon.screwbox.core.window.internal;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -88,6 +88,7 @@ public class DefaultWindow implements Window, Updatable {
         frame.setSize(width, height);
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setIgnoreRepaint(true);
         if (configuration.isFullscreen()) {
             if (nonNull(graphicsDevice.getFullScreenWindow())) {
                 throw new IllegalStateException("can not replace current fullscreen window");
@@ -107,9 +108,19 @@ public class DefaultWindow implements Window, Updatable {
         }
         executor.submit(new InitializeFontDrawingTask());
 
-        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame), executor));
+        frame.getCanvas().createBufferStrategy(2);
+        final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame, graphics, createRobot()), executor));
         updateCursor();
         return this;
+    }
+
+    private Robot createRobot() {
+        try {
+            return new Robot();
+        } catch (final AWTException e) {
+            throw new IllegalStateException("could not create robot for screenshots");
+        }
     }
 
     @Override

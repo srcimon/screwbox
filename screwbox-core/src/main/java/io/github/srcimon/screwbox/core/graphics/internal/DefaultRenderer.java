@@ -27,16 +27,10 @@ public class DefaultRenderer implements Renderer {
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final WindowFrame frame) {
+    public DefaultRenderer(final WindowFrame frame, final Graphics2D graphics, final Robot robot) {
         this.frame = frame;
-        this.frame.setIgnoreRepaint(true);
-        frame.getCanvas().createBufferStrategy(2);
-        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-        try {
-            robot = new Robot();
-        } catch (final AWTException e) {
-            throw new IllegalStateException("could not create robot for screenshots");
-        }
+        this.robot = robot;
+        this.graphics = graphics;
     }
 
     @Override

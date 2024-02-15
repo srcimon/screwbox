@@ -21,6 +21,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen fillWith(final Color color) {
+        renderer.fillWith(color);
+        return this;
+    }
+
+    @Override
     public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
         renderer.fillCircle(offset, diameter, color);
         return this;
@@ -53,12 +59,6 @@ public class DefaultScreen implements Screen {
     @Override
     public Sprite takeScreenshot() {
         return renderer.takeScreenshot();
-    }
-
-    @Override
-    public Screen fillWith(final Color color) {
-        renderer.fillWith(color);
-        return this;
     }
 
     @Override
