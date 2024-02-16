@@ -10,8 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.*;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultRendererTest {
@@ -29,11 +28,23 @@ class DefaultRendererTest {
     void fillWith_newColor_changesColorAndFillsRect() {
         when(frame.getWidth()).thenReturn(640);
         when(frame.getHeight()).thenReturn(480);
+
         renderer.fillWith(Color.RED);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
         verify(graphics).fillRect(0, 0, 640, 480);
     }
 
-    //TODO Test fillWith_sameColor_doesntChangeColorAgain()
+    @Test
+    void fillWith_sameColor_changesColorOnlyOnce() {
+        when(frame.getWidth()).thenReturn(640);
+        when(frame.getHeight()).thenReturn(480);
+
+        renderer.fillWith(Color.RED);
+        renderer.fillWith(Color.RED);
+
+        verify(graphics).setColor(new java.awt.Color(255, 0, 0));
+        verify(graphics, times(2)).fillRect(0, 0, 640, 480);
+    }
+
 }
