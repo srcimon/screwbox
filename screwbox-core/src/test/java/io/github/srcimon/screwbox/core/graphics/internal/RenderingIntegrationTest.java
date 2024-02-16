@@ -1,22 +1,22 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +38,7 @@ class RenderingIntegrationTest {
     Graphics2D graphics;
 
     Image image;
+
     @BeforeEach
     void beforeEach() {
         Mockito.when(frame.getWidth()).thenReturn(320);
@@ -53,14 +54,18 @@ class RenderingIntegrationTest {
         renderer = new DefaultRenderer(frame, graphics, robot);
         asyncRenderer = new AsyncRenderer(renderer, executor);
         Mockito.when(bufferStrategy.getDrawGraphics()).thenReturn(graphics);
-        Mockito.doAnswer(invocation -> ImageIO.write(ImageUtil.toBufferedImage(image), "png",new File("save.png"))).when(bufferStrategy).show();
 
     }
 
     @Test
     void xxx() throws IOException {
         renderer.fillWith(Color.RED);
+        renderer.drawCircle(Offset.at(4, 10), 4, Color.BLUE, 3);
         renderer.updateScreen(true);
+
+        var sprite = Sprite.fromImage(image);
+        Assertions.assertThat(sprite.frame(0).colorAt(0, 0)).isEqualTo(Color.RED);
+        ImageIO.write(ImageUtil.toBufferedImage(image), "png", new File("save.png"));
 
     }
 
