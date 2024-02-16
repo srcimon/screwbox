@@ -16,6 +16,13 @@ public interface Graphics {
     GraphicsConfiguration configuration();
 
     /**
+     * Access drawing operations on the game screen.
+     *
+     * @see #world()
+     */
+    Screen screen();
+
+    /**
      * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right poisition on the {@link Screen} (;
      *
      * @see #screen()
@@ -106,12 +113,5 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
-
-    /**
-     * Access drawing operations on the game screen.
-     *
-     * @see #world()
-     */
-    Screen screen();
 
 }

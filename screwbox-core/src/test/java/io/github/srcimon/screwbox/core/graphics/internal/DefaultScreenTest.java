@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +25,15 @@ class DefaultScreenTest {
     @Mock
     WindowFrame frame;
 
+    @Mock
+    Renderer renderer;
+
+    @Test
+    void fillWith_callsRendererFillWith() {
+        screen.fillWith(Color.BLUE);
+
+        verify(renderer).fillWith(Color.BLUE);
+    }
     @Test
     void position_returnsScreenPosition() {
         when(frame.getBounds()).thenReturn(new Rectangle(40, 30, 1024, 768));

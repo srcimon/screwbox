@@ -5,6 +5,11 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.function.Supplier;
 
+/**
+ * Access drawing operations on the game screen.
+ *
+ * @see World
+ */
 public interface Screen {
 
     /**
@@ -12,15 +17,42 @@ public interface Screen {
      */
     Offset position();
 
-    Screen fillRectangle(ScreenBounds bounds, Color color);
+    /**
+     * Returns the {@link Size} of the {@link Screen}.
+     */
+    Size size();
 
+    /**
+     * Returns the center position of the {@link Screen}.
+     */
+    Offset center();
+
+    /**
+     * Fills the whole {@link Screen} with the given {@link Color}.
+     */
     Screen fillWith(Color color);
 
-    Sprite takeScreenshot();
+    /**
+     * Fills the {@link ScreenBounds} with the given {@link Color}.
+     * 
+     * @see #fillRectangle(Offset, Size, Color) 
+     */
+    Screen fillRectangle(ScreenBounds bounds, Color color);
 
+    /**
+     * Fills the area markt by origin and size with the given {@link Color}.
+     *
+     * @see #fillRectangle(ScreenBounds, Color)
+     */
     default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
         return fillRectangle(new ScreenBounds(origin, size), color);
     }
+
+    /**
+     * Takes a sceenshot of the whole {@link Screen}. This operation is very slow and will propably cause a small lag.
+     * The screenshot may also include other applications that are in front of your game screen.
+     */
+    Sprite takeScreenshot();
 
     Screen drawFadingCircle(Offset offset, int diameter, Color color);
 
@@ -140,20 +172,14 @@ public interface Screen {
     Screen drawLine(Offset from, Offset to, Color color);
 
     /**
-     * Returns {@code true} if the given {@link ScreenBounds} is within the
-     * {@link Screen} area.
+     * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.
      */
     boolean isVisible(ScreenBounds bounds);
 
     /**
-     * Returns {@code true} if the given {@link Offset} is within the {@link Screen}
-     * area.
+     * Returns {@code true} if the given {@link Offset} is within the {@link Screen} area.
      */
     boolean isVisible(Offset offset);
-
-    Size size();
-
-    Offset center();
 
     Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
 
