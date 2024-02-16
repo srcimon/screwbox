@@ -16,6 +16,7 @@ This release is truely audio focused.
 
 - Fixed wrong volume when cached sound clip is played
 - Fixed `Keyboard.isPressed(key)` is true if key is pressed for a longer duration (#194)
+- Fixed position validation in `Frame.colorAt(x, y)`
 
 ### 🧽 Cleanup & refactoring
 
@@ -25,6 +26,7 @@ This release is truely audio focused.
 - Renamed `Audio.stop(Sound)` to `.stopSound(Sound)`
 - Renamed all example applications to ...App
 - Removed color configuration on `Screen` and `World`
+- Added JavaDoc to `Screen`
 
 ### 📦 Dependency updates
 
