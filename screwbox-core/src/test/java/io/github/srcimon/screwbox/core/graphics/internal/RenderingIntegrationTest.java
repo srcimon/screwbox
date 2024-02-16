@@ -35,15 +35,14 @@ class RenderingIntegrationTest {
     @Mock
     Robot robot;
 
-    Graphics2D graphics;
-
-    Image image;
+    Frame result;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
-        graphics = (Graphics2D) image.getGraphics();
+        Image image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
+        result = Frame.fromImage(image);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer = new DefaultRenderer(frame, graphics, robot);
         asyncRenderer = new AsyncRenderer(renderer, executor);
 
@@ -56,33 +55,30 @@ class RenderingIntegrationTest {
 
     @Test
     void fillWith_colorRed_fillsWholeImageWithRed() {
-        when(frame.getWidth()).thenReturn(image.getWidth(null));
-        when(frame.getHeight()).thenReturn(image.getHeight(null));
+        when(frame.getWidth()).thenReturn(result.size().width());
+        when(frame.getHeight()).thenReturn(result.size().height());
 
         renderer.fillWith(Color.RED);
         renderer.drawCircle(Offset.at(4, 10), 4, Color.BLUE, 3);
         renderer.updateScreen(true);
 
-        var frame = Frame.fromImage(image);
-        assertThat(frame.colorAt(0, 0)).isEqualTo(Color.RED);
-        assertThat(frame.colorAt(20, 30)).isEqualTo(Color.RED);
+        assertThat(result.colorAt(0, 0)).isEqualTo(Color.RED);
+        assertThat(result.colorAt(20, 30)).isEqualTo(Color.RED);
     }
 
     @Test
     void fillRectangle_colorBlue_fillsRectangleBlue() {
-        renderer.fillRectangle(new ScreenBounds(10,10, 4, 4), Color.BLUE);
+        renderer.fillRectangle(new ScreenBounds(10, 10, 4, 4), Color.BLUE);
         renderer.updateScreen(true);
 
-        var frame = Frame.fromImage(image);
-        assertThat(frame.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
-        assertThat(frame.colorAt(10, 10)).isEqualTo(Color.BLUE);
-        assertThat(frame.colorAt(12, 12)).isEqualTo(Color.BLUE);
-        assertThat(frame.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(10, 10)).isEqualTo(Color.BLUE);
+        assertThat(result.colorAt(12, 12)).isEqualTo(Color.BLUE);
+        assertThat(result.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
     }
 
     @AfterEach
     void afterEach() {
-        graphics.dispose();
         executor.shutdown();
     }
 }
