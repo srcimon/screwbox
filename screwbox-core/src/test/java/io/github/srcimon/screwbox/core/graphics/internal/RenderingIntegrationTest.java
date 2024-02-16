@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -20,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,6 +76,19 @@ class RenderingIntegrationTest {
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
         assertThat(result.colorAt(10, 10)).isEqualTo(Color.BLUE);
         assertThat(result.colorAt(12, 12)).isEqualTo(Color.BLUE);
+        assertThat(result.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
+    }
+
+    @Test
+    void fillRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
+        renderer.fillRectangle(new ScreenBounds(10, 10, 4, 4), Color.BLUE.opacity(Percent.half()));
+        renderer.updateScreen(true);
+
+        assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(10, 10).b()).isEqualTo(255);
+        assertThat(result.colorAt(10, 10).opacity().value()).isEqualTo(0.5, offset(0.05));
+        assertThat(result.colorAt(12, 12).b()).isEqualTo(255);
+        assertThat(result.colorAt(12, 12).opacity().value()).isEqualTo(0.5, offset(0.05));
         assertThat(result.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
     }
 
