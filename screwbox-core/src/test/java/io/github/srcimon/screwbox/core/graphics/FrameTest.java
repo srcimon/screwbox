@@ -24,7 +24,7 @@ class FrameTest {
     void colorAt_outOfBounds_throwsException(int x, int y) {
         assertThatThrownBy(() -> frame.colorAt(x, y))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Position is out of bounds: " + x + ":" + y);
+                .hasMessage("position is out of bounds: " + x + ":" + y);
     }
 
     @Test

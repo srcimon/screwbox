@@ -114,8 +114,8 @@ public final class Frame implements Serializable {
      */
     public Color colorAt(final int x, final int y) {
         final Image image = image();
-        if (x < 0 || x > image.getWidth(null) || y < 0 || y > image.getHeight(null)) {
-            throw new IllegalArgumentException(format("Position is out of bounds: %d:%d", x, y));
+        if (x < 0 || x >= image.getWidth(null) || y < 0 || y >= image.getHeight(null)) {
+            throw new IllegalArgumentException(format("position is out of bounds: %d:%d", x, y));
         }
         final BufferedImage bufferedImage = ImageUtil.toBufferedImage(image);
         final int rgb = bufferedImage.getRGB(x, y);
