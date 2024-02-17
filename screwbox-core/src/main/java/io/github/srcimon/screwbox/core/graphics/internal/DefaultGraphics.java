@@ -106,6 +106,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
         return Stream.of(allFonts)
                 .map(Font::getFontName)
                 .toList();
+
     }
 
     @Override
