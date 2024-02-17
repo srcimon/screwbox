@@ -19,10 +19,10 @@ public interface Renderer {
     void fillCircle(Offset offset, int diameter, Color color);
 
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                    Flip flip, ScreenBounds clipArea);
+                    Flip flip, ScreenBounds clip);
 
     void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation, Flip flip,
-                    ScreenBounds clipArea);
+                    ScreenBounds clip);
 
     void drawText(Offset offset, String text, Font font, Color color);
 

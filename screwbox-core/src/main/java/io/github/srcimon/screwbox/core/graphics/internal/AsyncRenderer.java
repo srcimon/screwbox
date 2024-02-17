@@ -83,8 +83,8 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
+                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
 
     }
 
@@ -101,8 +101,8 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity, final Rotation rotation,
-                           final Flip flip, final ScreenBounds clipArea) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea));
+                           final Flip flip, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
     }
 
     private void waitForCurrentRenderingToEnd() {

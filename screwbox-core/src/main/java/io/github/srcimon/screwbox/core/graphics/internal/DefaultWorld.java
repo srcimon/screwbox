@@ -69,9 +69,9 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
-                            final Rotation rotation, final Flip flip, final Bounds clipArea) {
+                            final Rotation rotation, final Flip flip, final Bounds clip) {
         final var offset = toOffset(origin);
-        final var windowClipArea = isNull(clipArea) ? null : toScreen(clipArea);
+        final var windowClipArea = isNull(clip) ? null : toScreen(clip);
         final var x = offset.x() - ((scale - 1) * sprite.size().width());
         final var y = offset.y() - ((scale - 1) * sprite.size().height());
         screen.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
@@ -159,7 +159,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clipArea) {
+    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
         for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(),
                     entry.position(),
@@ -167,7 +167,7 @@ public class DefaultWorld implements World {
                     entry.opacity(),
                     entry.rotation(),
                     entry.flip(),
-                    clipArea);
+                    clip);
         }
         return this;
     }

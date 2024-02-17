@@ -6,14 +6,14 @@ public interface World {
 
     World drawFadingCircle(Vector position, double diameter, Color color);
 
-    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clipArea);
+    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
     default World drawSpriteBatch(final SpriteBatch spriteBatch) {
         return drawSpriteBatch(spriteBatch, null);
     }
 
     World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
-                     Flip flip, Bounds clipArea);
+                     Flip flip, Bounds clip);
 
     default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
                              final Rotation rotation, final Flip flip) {

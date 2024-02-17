@@ -75,8 +75,8 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                             final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
+                             final Rotation rotation, final Flip flip, final ScreenBounds clip) {
+        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip);
         return this;
     }
 

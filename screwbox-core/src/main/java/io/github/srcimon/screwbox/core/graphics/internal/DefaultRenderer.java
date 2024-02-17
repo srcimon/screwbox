@@ -93,13 +93,13 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
+                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
         applyOpacityConfig(opacity);
 
         final var oldClip = graphics.getClip();
-        if (nonNull(clipArea)) {
-            graphics.setClip(clipArea.offset().x(), clipArea.offset().y(), clipArea.size().width(),
-                    clipArea.size().height());
+        if (nonNull(clip)) {
+            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.size().width(),
+                    clip.size().height());
         }
         if (!rotation.isNone()) {
             final double x = origin.x() + sprite.size().width() * scale / 2.0;
@@ -112,7 +112,7 @@ public class DefaultRenderer implements Renderer {
             drawSpriteInContext(sprite, origin, scale, flip);
         }
 
-        if (nonNull(clipArea)) {
+        if (nonNull(clip)) {
             graphics.setClip(oldClip);
         }
 
@@ -180,8 +180,8 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                           Flip flip, ScreenBounds clipArea) {
-        drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clipArea);
+                           Flip flip, ScreenBounds clip) {
+        drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clip);
     }
 
     @Override

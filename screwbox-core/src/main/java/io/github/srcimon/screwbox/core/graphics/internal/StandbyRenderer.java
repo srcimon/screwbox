@@ -35,7 +35,7 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clipArea) {
+                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
         // does nothing
     }
 
@@ -62,7 +62,7 @@ public class StandbyRenderer implements Renderer {
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
                            final Rotation rotation,
-                           final Flip flip, final ScreenBounds clipArea) {
+                           final Flip flip, final ScreenBounds clip) {
         // does nothing
     }
 

@@ -84,7 +84,7 @@ public interface Screen {
     }
 
     Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                      Flip flip, ScreenBounds clipArea);
+                      Flip flip, ScreenBounds clip);
 
     default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
         return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
