@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AspectRatioTest {
 
     @Test
-    void matches_dimensionMatchesAspectRatio_true() {
+    void matches_dimensionMatchesAspectRatio_isTrue() {
         Size resolution = Size.of(2048, 1536);
 
         boolean matches = AspectRatio.STANDARD.matches(resolution);
@@ -16,7 +16,7 @@ class AspectRatioTest {
     }
 
     @Test
-    void matches_dimensionDoesntMatcheAspectRatio_flase() {
+    void matches_dimensionDoesntMatcheAspectRatio_isFalse() {
         Size resolution = Size.of(640, 480);
 
         boolean matches = AspectRatio.WIDESCREEN.matches(resolution);
