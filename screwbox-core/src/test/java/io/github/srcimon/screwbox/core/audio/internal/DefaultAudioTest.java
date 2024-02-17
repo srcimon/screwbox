@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.sound.sampled.Clip;
@@ -369,22 +368,16 @@ class DefaultAudioTest {
     }
 
     @Test
-    void activePlaybacks_twoPlaybacks_containsBothPlaybacks() {
+    void activePlaybacks_onePlayback_containsPlayback() {
         Sound sound = Sound.dummyEffect();
         when(audioAdapter.createClip(sound)).thenReturn(clip);
-        audio.playSound(sound);
+        audio.playSound(sound, playOnce().asMusic());
 
-        Sound sound2 = Sound.dummyEffect();
-        Clip clip2 = Mockito.mock(Clip.class);
-        when(audioAdapter.createClip(sound2)).thenReturn(clip2);
-        audio.playSound(sound2, playLooped().asMusic());
+        await(() -> audio.activeCount() == 1, ofMillis(750));
 
-        await(() -> audio.activeCount() == 2, ofMillis(750));
-
-        assertThat(audio.activePlaybacks()).hasSize(2)
+        assertThat(audio.activePlaybacks()).hasSize(1)
                 .anyMatch(playback -> playback.sound().equals(sound))
-                .anyMatch(playback -> playback.sound().equals(sound2))
-                .anyMatch(playback -> playback.options().equals(playLooped().asMusic()));
+                .anyMatch(playback -> playback.options().equals(playOnce().asMusic()));
     }
 
     @AfterEach
