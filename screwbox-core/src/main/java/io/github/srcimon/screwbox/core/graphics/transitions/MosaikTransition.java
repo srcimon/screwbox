@@ -1,14 +1,15 @@
 package io.github.srcimon.screwbox.core.graphics.transitions;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
+import static io.github.srcimon.screwbox.core.graphics.RectangleOptions.filled;
 import static java.util.Collections.shuffle;
 
 public final class MosaikTransition implements ScreenTransition {
@@ -39,7 +40,7 @@ public final class MosaikTransition implements ScreenTransition {
         for (int i = 0; i < offsetCountToDraw; i++) {
             final Offset mosaikOffset = mosaikOffsets.get(i);
             final Offset screenOffset = Offset.at(mosaikOffset.x() * mosaikWidth, mosaikOffset.y() * mosaikHeight);
-            screen.fillRectangle(screenOffset, mosaikSize, Color.BLACK);
+            screen.drawRectangle(screenOffset, mosaikSize, filled(BLACK));
         }
     }
 
