@@ -24,16 +24,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final ScreenBounds bounds, final Color color) {
-        // does nothing
-    }
-
-    @Override
-    public void drawRectangle(ScreenBounds bounds, RectangleOptions options) {
-        // does nothing
-    }
-
-    @Override
     public void fillCircle(final Offset offset, final int diameter, final Color color) {
         // does nothing
     }
@@ -77,7 +67,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
+    public void drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
         // does nothing
     }
 

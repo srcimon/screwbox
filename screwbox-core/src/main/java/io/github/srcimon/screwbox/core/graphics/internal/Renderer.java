@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.util.function.Supplier;
@@ -14,9 +14,6 @@ public interface Renderer {
 
     void fillWith(Color color);
 
-    void fillRectangle(ScreenBounds bounds, Color color);
-
-    void drawRectangle(ScreenBounds bounds, RectangleOptions options);
 
     void fillCircle(Offset offset, int diameter, Color color);
 
@@ -36,5 +33,5 @@ public interface Renderer {
 
     void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
-    void drawRectangle(Offset offset, Size size, Rotation rotation, Color color);
+    void drawRectangle(ScreenBounds bounds, RectangleOptions options);
 }

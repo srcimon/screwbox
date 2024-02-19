@@ -1,10 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +18,9 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static io.github.srcimon.screwbox.core.Percent.half;
+import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
+import static io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
@@ -61,7 +62,7 @@ class RenderingIntegrationTest {
         when(frame.getHeight()).thenReturn(result.size().height());
 
         renderer.fillWith(Color.RED);
-        renderer.drawCircle(Offset.at(4, 10), 4, Color.BLUE, 3);
+        renderer.drawCircle(Offset.at(4, 10), 4, BLUE, 3);
         renderer.updateScreen(true);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.RED);
@@ -69,27 +70,38 @@ class RenderingIntegrationTest {
     }
 
     @Test
-    void fillRectangle_colorBlue_fillsRectangleBlue() {
-        renderer.fillRectangle(new ScreenBounds(10, 10, 4, 4), Color.BLUE);
+    void drawRectangle_colorBlue_fillsRectangleBlue() {
+        renderer.drawRectangle(new ScreenBounds(10, 10, 4, 4), RectangleOptions.filled(BLUE));
         renderer.updateScreen(true);
 
-        assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
-        assertThat(result.colorAt(10, 10)).isEqualTo(Color.BLUE);
-        assertThat(result.colorAt(12, 12)).isEqualTo(Color.BLUE);
-        assertThat(result.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
+        assertThat(result.colorAt(10, 10)).isEqualTo(BLUE);
+        assertThat(result.colorAt(12, 12)).isEqualTo(BLUE);
+        assertThat(result.colorAt(20, 20)).isEqualTo(TRANSPARENT);
     }
 
     @Test
-    void fillRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
-        renderer.fillRectangle(new ScreenBounds(10, 10, 4, 4), Color.BLUE.opacity(Percent.half()));
+    void drawRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
+        renderer.drawRectangle(new ScreenBounds(10, 10, 4, 4), RectangleOptions.filled(BLUE.opacity(half())));
         renderer.updateScreen(true);
 
-        assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
         assertThat(result.colorAt(10, 10).b()).isEqualTo(255);
         assertThat(result.colorAt(10, 10).opacity().value()).isEqualTo(0.5, offset(0.05));
         assertThat(result.colorAt(12, 12).b()).isEqualTo(255);
         assertThat(result.colorAt(12, 12).opacity().value()).isEqualTo(0.5, offset(0.05));
-        assertThat(result.colorAt(20, 20)).isEqualTo(Color.TRANSPARENT);
+        assertThat(result.colorAt(20, 20)).isEqualTo(TRANSPARENT);
+    }
+
+    @Test
+    void drawRectangle_outline_onlyPaintsOutline() {
+        renderer.drawRectangle(new ScreenBounds(10, 10, 10, 10), RectangleOptions.outline(BLUE).strokeWidth(2));
+        renderer.updateScreen(true);
+
+        assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
+        assertThat(result.colorAt(10, 10)).isEqualTo(BLUE);
+        assertThat(result.colorAt(15, 15)).isEqualTo(TRANSPARENT);
+        assertThat(result.colorAt(20, 20)).isEqualTo(BLUE);
     }
 
     @AfterEach

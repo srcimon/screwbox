@@ -132,16 +132,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final ScreenBounds bounds, final Color color) {
-        applyNewColor(color);
-        graphics.fillRect(
-                bounds.offset().x(),
-                bounds.offset().y(),
-                bounds.size().width(),
-                bounds.size().height());
-    }
-
-    @Override
     public void fillCircle(final Offset offset, final int diameter, final Color color) {
         applyNewColor(color);
         final int x = offset.x() - diameter / 2;
@@ -200,27 +190,18 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
-        applyNewColor(color);
-
-        if (rotation.isNone()) {
-            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-        } else {
-            final double x = offset.x() + size.width() / 2.0;
-            final double y = offset.y() + size.height() / 2.0;
-            final double radians = rotation.radians();
-            graphics.rotate(radians, x, y);
-            graphics.drawRect(offset.x(), offset.y(), size.width(), size.height());
-            graphics.rotate(-radians, x, y);
-        }
-    }
-
-    @Override
     public void drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
         applyNewColor(options.color());
 
         if (options.rotation().isNone()) {
-            graphics.fillRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+            if (options.isFilled()) {
+                graphics.fillRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+            } else {
+                final var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.drawRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+                graphics.setStroke(oldStroke);
+            }
         } else {
             final double x = bounds.offset().x() + bounds.size().width() / 2.0;
             final double y = bounds.offset().y() + bounds.size().height() / 2.0;
