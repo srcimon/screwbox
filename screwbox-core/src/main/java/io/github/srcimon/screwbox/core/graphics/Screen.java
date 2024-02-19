@@ -32,6 +32,12 @@ public interface Screen {
      */
     Screen fillWith(Color color);
 
+    Screen drawRectangle(ScreenBounds bounds, RectangleOptions options);
+
+    default Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options) {
+        return drawRectangle(new ScreenBounds(origin, size), options);
+    }
+
     /**
      * Fills the {@link ScreenBounds} with the given {@link Color}.
      * 
@@ -46,6 +52,12 @@ public interface Screen {
      */
     default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
         return fillRectangle(new ScreenBounds(origin, size), color);
+    }
+
+    Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
+
+    default Screen drawRectangle(final Offset offset, final Size size, final Color color) {
+        return drawRectangle(offset, size, Rotation.none(), color);
     }
 
     /**
@@ -181,9 +193,4 @@ public interface Screen {
      */
     boolean isVisible(Offset offset);
 
-    Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
-
-    default Screen drawRectangle(final Offset offset, final Size size, final Color color) {
-        return drawRectangle(offset, size, Rotation.none(), color);
-    }
 }

@@ -27,6 +27,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawRectangle(ScreenBounds bounds, RectangleOptions options) {
+        //TODO: RENDERER
+        return this;
+    }
+
+    @Override
     public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
         renderer.fillCircle(offset, diameter, color);
         return this;
