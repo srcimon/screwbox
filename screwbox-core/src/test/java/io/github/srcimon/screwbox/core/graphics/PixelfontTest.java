@@ -173,7 +173,12 @@ class PixelfontTest {
     }
 
     @Test
-    void widthOf_someCharacters_isZero() {
+    void widthOf_someCharacters_isCorrect() {
         assertThat(Pixelfont.defaultFont().widthOf("This is a test")).isEqualTo(118);
+    }
+
+    @Test
+    void sizeOf_someCharacters_isCorrect() {
+        assertThat(Pixelfont.defaultFont().sizeOf("This is a test")).isEqualTo(Size.of(118, 8));
     }
 }

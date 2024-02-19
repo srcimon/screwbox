@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Pixelfont.sizeOf(String)`
 
 ### 🪛 Bug Fixes
 

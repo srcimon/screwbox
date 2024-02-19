@@ -168,6 +168,8 @@ public class Pixelfont implements Serializable {
 
     /**
      * Returns the width of a given text in this {@link Pixelfont}.  Will be 0 if there is no character jet.
+     *
+     * @see #sizeOf(String)
      */
     public int widthOf(final String text) {
         int totalWith = 0;
@@ -177,6 +179,16 @@ public class Pixelfont implements Serializable {
         }
 
         return totalWith;
+    }
+
+
+    /**
+     * Returns the {@link Size} of a given text in this {@link Pixelfont}. Width will be 0 if there is no character jet.
+     *
+     * @see #widthOf(String)
+     */
+    public Size sizeOf(final String text) {
+        return Size.of(widthOf(text), height);
     }
 
     private Pixelfont replaceBlack(final Color newColor) {
