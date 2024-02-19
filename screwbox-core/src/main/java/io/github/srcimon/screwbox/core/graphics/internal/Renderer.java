@@ -16,6 +16,8 @@ public interface Renderer {
 
     void fillRectangle(ScreenBounds bounds, Color color);
 
+    void drawRectangle(ScreenBounds bounds, RectangleOptions options);
+
     void fillCircle(Offset offset, int diameter, Color color);
 
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,

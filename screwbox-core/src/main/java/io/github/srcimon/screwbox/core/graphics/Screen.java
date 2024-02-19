@@ -32,8 +32,10 @@ public interface Screen {
      */
     Screen fillWith(Color color);
 
+    //TODO JAVADOC and test
     Screen drawRectangle(ScreenBounds bounds, RectangleOptions options);
 
+    //TODO JAVADOC and test
     default Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options) {
         return drawRectangle(new ScreenBounds(origin, size), options);
     }
@@ -43,6 +45,7 @@ public interface Screen {
      * 
      * @see #fillRectangle(Offset, Size, Color) 
      */
+    @Deprecated
     Screen fillRectangle(ScreenBounds bounds, Color color);
 
     /**
@@ -50,12 +53,15 @@ public interface Screen {
      *
      * @see #fillRectangle(ScreenBounds, Color)
      */
+    @Deprecated
     default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
         return fillRectangle(new ScreenBounds(origin, size), color);
     }
 
+    @Deprecated
     Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
 
+    @Deprecated
     default Screen drawRectangle(final Offset offset, final Size size, final Color color) {
         return drawRectangle(offset, size, Rotation.none(), color);
     }

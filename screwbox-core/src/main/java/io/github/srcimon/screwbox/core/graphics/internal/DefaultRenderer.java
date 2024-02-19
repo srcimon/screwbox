@@ -215,4 +215,27 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
+    @Override
+    public void drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
+        applyNewColor(options.color());
+
+        if (options.rotation().isNone()) {
+            graphics.fillRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+        } else {
+            final double x = bounds.offset().x() + bounds.size().width() / 2.0;
+            final double y = bounds.offset().y() + bounds.size().height() / 2.0;
+            final double radians = options.rotation().radians();
+            graphics.rotate(radians, x, y);
+            if (options.isFilled()) {
+                graphics.fillRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+            } else {
+                final var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.drawRect(bounds.offset().x(), bounds.offset().y(), bounds.size().width(), bounds.size().height());
+                graphics.setStroke(oldStroke);
+            }
+            graphics.rotate(-radians, x, y);
+        }
+    }
+
 }

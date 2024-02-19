@@ -77,6 +77,11 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
+    public void drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
+        renderTasks.active().add(() -> next.drawRectangle(bounds, options));
+    }
+
+    @Override
     public void fillCircle(final Offset offset, final int diameter, final Color color) {
         renderTasks.active().add(() -> next.fillCircle(offset, diameter, color));
     }
