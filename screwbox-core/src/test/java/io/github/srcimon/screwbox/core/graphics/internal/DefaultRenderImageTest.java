@@ -21,12 +21,13 @@ import java.util.concurrent.Executors;
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
 import static io.github.srcimon.screwbox.core.graphics.Color.TRANSPARENT;
+import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RenderingIntegrationTest {
+class DefaultRenderImageTest {
 
     @Mock
     WindowFrame frame;
@@ -103,6 +104,6 @@ class RenderingIntegrationTest {
 
     @AfterEach
     void afterEach() {
-        executor.shutdown();
+        shutdown(executor);
     }
 }
