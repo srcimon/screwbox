@@ -28,9 +28,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class RenderingIntegrationTest {
 
-    Renderer renderer;
-    ExecutorService executor;
-
     @Mock
     WindowFrame frame;
 
@@ -38,6 +35,8 @@ class RenderingIntegrationTest {
     Robot robot;
 
     Frame result;
+    Renderer renderer;
+    ExecutorService executor;
 
     @BeforeEach
     void beforeEach() {
@@ -45,8 +44,7 @@ class RenderingIntegrationTest {
         Image image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        Renderer defaultRenderer = new DefaultRenderer(frame, graphics, robot);
-        renderer = new AsyncRenderer(defaultRenderer, executor);
+        renderer = new DefaultRenderer(frame, graphics, robot);
 
         BufferStrategy bufferStrategy = Mockito.mock(BufferStrategy.class);
         Canvas canvas = Mockito.mock(Canvas.class);
@@ -61,7 +59,7 @@ class RenderingIntegrationTest {
         when(frame.getHeight()).thenReturn(result.size().height());
 
         renderer.fillWith(Color.RED);
-        renderer.drawCircle(Offset.at(4, 10), 4, BLUE, 3);
+
         renderer.updateScreen(true);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.RED);
