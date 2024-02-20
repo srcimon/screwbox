@@ -4,7 +4,9 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.Objects;
 
-//TODO javadoc and test
+/**
+ * Customize the drawings of rectangles.
+ */
 public class RectangleOptions {
 
     private final boolean isFilled;
@@ -17,36 +19,60 @@ public class RectangleOptions {
         this.color = color;
     }
 
+    /**
+     * Draw a filled rectangle with the given {@link Color}.
+     */
     public static RectangleOptions filled(final Color color) {
         return new RectangleOptions(true, color);
     }
 
+    /**
+     * Draw only the outline with the given {@link Color}.
+     */
     public static RectangleOptions outline(final Color color) {
         return new RectangleOptions(false, color);
     }
 
+    /**
+     * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
+     */
     public RectangleOptions strokeWidth(final int strokeWidth) {
         this.strokeWidth = strokeWidth;
         return this;
     }
 
+    /**
+     * Sets the {@link #rotation()} of the drawn rectangle.
+     */
     public RectangleOptions rotation(final Rotation rotation) {
         this.rotation = rotation;
         return this;
     }
 
+    /**
+     * Returns {@code true} if the rectangle is filled.
+     */
     public boolean isFilled() {
         return isFilled;
     }
 
+    /**
+     * Returns the {@link Color} used when drawing the rectangle.
+     */
     public Color color() {
         return color;
     }
 
+    /**
+     * Returns the strokeWidth used when drawing the rectangle.
+     */
     public int strokeWidth() {
         return strokeWidth;
     }
 
+    /**
+     * Returns the {@link Rotation} used when drawing the rectangle.
+     */
     public Rotation rotation() {
         return rotation;
     }
