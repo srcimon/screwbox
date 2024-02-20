@@ -37,6 +37,12 @@ public class RectangleOptions {
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
      */
     public RectangleOptions strokeWidth(final int strokeWidth) {
+        if (isFilled) {
+            throw new IllegalArgumentException("stroke width is not used when drawing filled rectangles");
+        }
+        if (strokeWidth < 1) {
+            throw new IllegalArgumentException("stroke width must be positive");
+        }
         this.strokeWidth = strokeWidth;
         return this;
     }
