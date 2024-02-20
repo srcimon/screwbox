@@ -30,7 +30,6 @@ class RenderingIntegrationTest {
 
     Renderer renderer;
     ExecutorService executor;
-    AsyncRenderer asyncRenderer;
 
     @Mock
     WindowFrame frame;
@@ -46,8 +45,8 @@ class RenderingIntegrationTest {
         Image image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        renderer = new DefaultRenderer(frame, graphics, robot);
-        asyncRenderer = new AsyncRenderer(renderer, executor);
+        Renderer defaultRenderer = new DefaultRenderer(frame, graphics, robot);
+        renderer = new AsyncRenderer(defaultRenderer, executor);
 
         BufferStrategy bufferStrategy = Mockito.mock(BufferStrategy.class);
         Canvas canvas = Mockito.mock(Canvas.class);
