@@ -27,8 +27,8 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
-        renderer.drawRectangle(bounds, options);
+    public Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options) {
+        renderer.drawRectangle(origin, size, options);
         return this;
     }
 

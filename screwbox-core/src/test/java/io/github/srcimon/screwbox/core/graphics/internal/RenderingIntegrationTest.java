@@ -71,7 +71,7 @@ class RenderingIntegrationTest {
 
     @Test
     void drawRectangle_colorBlue_fillsRectangleBlue() {
-        renderer.drawRectangle(new ScreenBounds(10, 10, 4, 4), RectangleOptions.filled(BLUE));
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleOptions.filled(BLUE));
         renderer.updateScreen(true);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
@@ -82,7 +82,7 @@ class RenderingIntegrationTest {
 
     @Test
     void drawRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
-        renderer.drawRectangle(new ScreenBounds(10, 10, 4, 4), RectangleOptions.filled(BLUE.opacity(half())));
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleOptions.filled(BLUE.opacity(half())));
         renderer.updateScreen(true);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
@@ -95,7 +95,7 @@ class RenderingIntegrationTest {
 
     @Test
     void drawRectangle_outline_onlyPaintsOutline() {
-        renderer.drawRectangle(new ScreenBounds(10, 10, 10, 10), RectangleOptions.outline(BLUE).strokeWidth(2));
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(10, 10), RectangleOptions.outline(BLUE).strokeWidth(2));
         renderer.updateScreen(true);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);

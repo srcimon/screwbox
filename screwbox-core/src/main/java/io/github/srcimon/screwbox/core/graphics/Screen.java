@@ -35,17 +35,17 @@ public interface Screen {
     /**
      * Draws a rectangle on the screen using the given {@link ScreenBounds} and {@link RectangleOptions}.
      *
-     * @see #drawRectangle(Offset, Size, RectangleOptions)
+     * @see #drawRectangle(ScreenBounds, RectangleOptions)
      */
-    Screen drawRectangle(ScreenBounds bounds, RectangleOptions options);
+    Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options);
 
     /**
      * Draws a rectangle on the screen using the given {@link ScreenBounds} and {@link RectangleOptions}.
      *
-     * @see #drawRectangle(ScreenBounds, RectangleOptions)
+     * @see #drawRectangle(Offset, Size, RectangleOptions)
      */
-    default Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options) {
-        return drawRectangle(new ScreenBounds(origin, size), options);
+    default Screen drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
+        return drawRectangle(bounds.offset(), bounds.size(), options);
     }
 
     /**
