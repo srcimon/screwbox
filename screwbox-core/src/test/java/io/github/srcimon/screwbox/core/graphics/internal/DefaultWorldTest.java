@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.Vector.zero;
+import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Sprite.invisible;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,9 +44,9 @@ class DefaultWorldTest {
         world.updateCameraPosition(zero());
         world.updateCameraZoom(2.5);
 
-        world.fillRectangle(Bounds.atPosition(0, 0, 100, 100), Color.RED);
+        world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleOptions.filled(RED));
 
-        verify(screen).fillRectangle(Offset.at(387, 259), Size.of(250, 250), Color.RED);
+        verify(screen).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleOptions.filled(RED));
     }
 
     @Test

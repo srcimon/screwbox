@@ -42,8 +42,6 @@ public interface World {
 
     World drawCircle(Vector position, double diameter, Color color, int strokeWidth);
 
-    World fillRectangle(Bounds bounds, Color color);
-
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
     default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
@@ -53,9 +51,5 @@ public interface World {
 
     Bounds visibleArea();
 
-    World drawRectangle(Bounds bounds, Rotation rotation, Color color);
-
-    default World drawRectangle(final Bounds bounds, final Color color) {
-        return drawRectangle(bounds, Rotation.none(), color);
-    }
+    World drawRectangle(Bounds bounds, RectangleOptions options);
 }

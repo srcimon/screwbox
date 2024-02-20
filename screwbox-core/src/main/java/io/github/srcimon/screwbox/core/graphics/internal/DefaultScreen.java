@@ -27,6 +27,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options) {
+        renderer.drawRectangle(origin, size, options);
+        return this;
+    }
+
+    @Override
     public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
         renderer.fillCircle(offset, diameter, color);
         return this;
@@ -50,11 +56,6 @@ public class DefaultScreen implements Screen {
         return this;
     }
 
-    @Override
-    public Screen fillRectangle(final ScreenBounds bounds, final Color color) {
-        renderer.fillRectangle(bounds, color);
-        return this;
-    }
 
     @Override
     public Sprite takeScreenshot() {
@@ -99,12 +100,6 @@ public class DefaultScreen implements Screen {
     @Override
     public Offset center() {
         return size().center();
-    }
-
-    @Override
-    public Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, Color color) {
-        renderer.drawRectangle(offset, size, rotation, color);
-        return this;
     }
 
     @Override

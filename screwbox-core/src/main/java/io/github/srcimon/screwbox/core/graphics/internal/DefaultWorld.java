@@ -84,10 +84,10 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawRectangle(final Bounds bounds, final Rotation rotation, final Color color) {
+    public World drawRectangle(final Bounds bounds, final RectangleOptions options) {
         final Offset offset = toOffset(bounds.origin());
         final Size size = toDimension(bounds.size());
-        screen.drawRectangle(offset, size, rotation, color);
+        screen.drawRectangle(offset, size, options);
         return this;
     }
 
@@ -139,14 +139,6 @@ public class DefaultWorld implements World {
     public World drawCircle(Vector position, double diameter, Color color, final int strokeWidth) {
         final Offset offset = toOffset(position);
         screen.drawCircle(offset, (int) (diameter * zoom), color, strokeWidth);
-        return this;
-    }
-
-    @Override
-    public World fillRectangle(final Bounds bounds, final Color color) {
-        final Offset offset = toOffset(bounds.origin());
-        final Size size = toDimension(bounds.size());
-        screen.fillRectangle(offset, size, color);
         return this;
     }
 

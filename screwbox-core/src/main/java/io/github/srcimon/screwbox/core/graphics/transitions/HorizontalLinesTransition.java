@@ -1,11 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.transitions;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
+import static io.github.srcimon.screwbox.core.graphics.RectangleOptions.filled;
 
 public class HorizontalLinesTransition implements ScreenTransition {
 
@@ -24,7 +25,7 @@ public class HorizontalLinesTransition implements ScreenTransition {
             final int height = (int) (maxHeightPerLine
                     - screen.size().height() / (double) lineCount * progress.value());
             final Size size = Size.of(screen.size().width(), height);
-            screen.fillRectangle(offset, size, BLACK);
+            screen.drawRectangle(offset, size, filled(BLACK));
         }
     }
 

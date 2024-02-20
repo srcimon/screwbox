@@ -98,7 +98,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
 
     @Override
     public String toString() {
-        return "Rotation [degrees=" + degrees + "]";
+        return "Rotation [" + degrees + "°]";
     }
 
     /**

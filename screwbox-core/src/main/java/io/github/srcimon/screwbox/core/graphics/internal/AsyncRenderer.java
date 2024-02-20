@@ -37,19 +37,6 @@ public class AsyncRenderer implements Renderer {
         currentRendering = executor.submit(finishRenderTasks());
     }
 
-    private FutureTask<Void> finishRenderTasks() {
-        return new FutureTask<>(() -> {
-            for (final var task : renderTasks.inactive()) {
-                try {
-                    task.run();
-                } catch (final Exception e) {
-                    Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
-                }
-            }
-            renderTasks.inactive().clear();
-        }, null);
-    }
-
     @Override
     public Sprite takeScreenshot() {
         return next.takeScreenshot();
@@ -72,8 +59,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void fillRectangle(final ScreenBounds bounds, final Color color) {
-        renderTasks.active().add(() -> next.fillRectangle(bounds, color));
+    public void drawRectangle(final Offset offset, final Size size, final RectangleOptions options) {
+        renderTasks.active().add(() -> next.drawRectangle(offset, size, options));
     }
 
     @Override
@@ -105,6 +92,24 @@ public class AsyncRenderer implements Renderer {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
     }
 
+    @Override
+    public void drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
+        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color, strokeWidth));
+    }
+
+    private FutureTask<Void> finishRenderTasks() {
+        return new FutureTask<>(() -> {
+            for (final var task : renderTasks.inactive()) {
+                try {
+                    task.run();
+                } catch (final Exception e) {
+                    Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
+                }
+            }
+            renderTasks.inactive().clear();
+        }, null);
+    }
+
     private void waitForCurrentRenderingToEnd() {
         if (nonNull(currentRendering)) {
             try {
@@ -114,15 +119,4 @@ public class AsyncRenderer implements Renderer {
             }
         }
     }
-
-    @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
-        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color, strokeWidth));
-    }
-
-    @Override
-    public void drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color) {
-        renderTasks.active().add(() -> next.drawRectangle(offset, size, rotation, color));
-    }
-
 }

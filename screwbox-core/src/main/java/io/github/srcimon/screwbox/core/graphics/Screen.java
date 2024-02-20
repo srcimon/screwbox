@@ -33,19 +33,19 @@ public interface Screen {
     Screen fillWith(Color color);
 
     /**
-     * Fills the {@link ScreenBounds} with the given {@link Color}.
-     * 
-     * @see #fillRectangle(Offset, Size, Color) 
+     * Draws a rectangle on the screen using the given {@link ScreenBounds} and {@link RectangleOptions}.
+     *
+     * @see #drawRectangle(ScreenBounds, RectangleOptions)
      */
-    Screen fillRectangle(ScreenBounds bounds, Color color);
+    Screen drawRectangle(final Offset origin, final Size size, final RectangleOptions options);
 
     /**
-     * Fills the area markt by origin and size with the given {@link Color}.
+     * Draws a rectangle on the screen using the given {@link ScreenBounds} and {@link RectangleOptions}.
      *
-     * @see #fillRectangle(ScreenBounds, Color)
+     * @see #drawRectangle(Offset, Size, RectangleOptions)
      */
-    default Screen fillRectangle(final Offset origin, final Size size, final Color color) {
-        return fillRectangle(new ScreenBounds(origin, size), color);
+    default Screen drawRectangle(final ScreenBounds bounds, final RectangleOptions options) {
+        return drawRectangle(bounds.offset(), bounds.size(), options);
     }
 
     /**
@@ -181,9 +181,4 @@ public interface Screen {
      */
     boolean isVisible(Offset offset);
 
-    Screen drawRectangle(final Offset offset, final Size size, final Rotation rotation, final Color color);
-
-    default Screen drawRectangle(final Offset offset, final Size size, final Color color) {
-        return drawRectangle(offset, size, Rotation.none(), color);
-    }
 }
