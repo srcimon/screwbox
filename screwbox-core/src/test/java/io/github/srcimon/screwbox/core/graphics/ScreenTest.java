@@ -16,6 +16,14 @@ class ScreenTest {
     Screen screen;
 
     @Test
+    void drawRectangle_usingBounds_drawsRectangleAtPositionWithSize() {
+
+        screen.drawRectangle(new ScreenBounds(10, 4, 13, 20), RectangleOptions.filled(Color.RED));
+
+        verify(screen).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleOptions.filled(Color.RED));
+    }
+
+    @Test
     void fillWith_sprite_callsActualMethod() {
         Sprite sprite = sprite();
 
