@@ -33,5 +33,5 @@ public interface Renderer {
 
     void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
-    void drawRectangle(Offset offset, Size size, RectangleOptions options);
+    void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
 }

@@ -51,5 +51,5 @@ public interface World {
 
     Bounds visibleArea();
 
-    World drawRectangle(Bounds bounds, RectangleOptions options);
+    World drawRectangle(Bounds bounds, RectangleDrawOptions options);
 }

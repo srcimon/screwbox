@@ -59,7 +59,7 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         renderTasks.active().add(() -> next.drawRectangle(offset, size, options));
     }
 

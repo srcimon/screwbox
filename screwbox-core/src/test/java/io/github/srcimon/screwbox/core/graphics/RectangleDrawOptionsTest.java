@@ -6,18 +6,18 @@ import static io.github.srcimon.screwbox.core.Rotation.degrees;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class RectangleOptionsTest {
+class RectangleDrawOptionsTest {
 
     @Test
     void toString_returnsInformationOnTheDrawing() {
-        var options = RectangleOptions.filled(Color.RED).rotation(degrees(4));
+        var options = RectangleDrawOptions.filled(Color.RED).rotation(degrees(4));
 
         assertThat(options).hasToString("RectangleOptions{isFilled=true, color=Color [r=255, g=0, b=0, opacity=1.0], strokeWidth=1, rotation=Rotation [4.0°]}");
     }
 
     @Test
     void strokeWidth_filledRectangle_throwsException() {
-        var options = RectangleOptions.filled(Color.RED);
+        var options = RectangleDrawOptions.filled(Color.RED);
 
         assertThatThrownBy(() -> options.strokeWidth(4))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -26,7 +26,7 @@ class RectangleOptionsTest {
 
     @Test
     void strokeWidth_widthZero_throwsException() {
-        var options = RectangleOptions.outline(Color.RED);
+        var options = RectangleDrawOptions.outline(Color.RED);
 
         assertThatThrownBy(() -> options.strokeWidth(0))
                 .isInstanceOf(IllegalArgumentException.class)

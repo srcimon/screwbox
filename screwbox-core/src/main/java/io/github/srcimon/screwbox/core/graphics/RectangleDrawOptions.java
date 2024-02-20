@@ -7,14 +7,14 @@ import java.util.Objects;
 /**
  * Customize the drawings of rectangles.
  */
-public class RectangleOptions {
+public class RectangleDrawOptions {
 
     private final boolean isFilled;
     private final Color color;
     private int strokeWidth = 1;
     private Rotation rotation = Rotation.none();
 
-    private RectangleOptions(final boolean isFilled, final Color color) {
+    private RectangleDrawOptions(final boolean isFilled, final Color color) {
         this.isFilled = isFilled;
         this.color = color;
     }
@@ -22,21 +22,21 @@ public class RectangleOptions {
     /**
      * Draw a filled rectangle with the given {@link Color}.
      */
-    public static RectangleOptions filled(final Color color) {
-        return new RectangleOptions(true, color);
+    public static RectangleDrawOptions filled(final Color color) {
+        return new RectangleDrawOptions(true, color);
     }
 
     /**
      * Draw only the outline with the given {@link Color}.
      */
-    public static RectangleOptions outline(final Color color) {
-        return new RectangleOptions(false, color);
+    public static RectangleDrawOptions outline(final Color color) {
+        return new RectangleDrawOptions(false, color);
     }
 
     /**
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
      */
-    public RectangleOptions strokeWidth(final int strokeWidth) {
+    public RectangleDrawOptions strokeWidth(final int strokeWidth) {
         if (isFilled) {
             throw new IllegalArgumentException("stroke width is not used when drawing filled rectangles");
         }
@@ -50,7 +50,7 @@ public class RectangleOptions {
     /**
      * Sets the {@link #rotation()} of the drawn rectangle.
      */
-    public RectangleOptions rotation(final Rotation rotation) {
+    public RectangleDrawOptions rotation(final Rotation rotation) {
         this.rotation = rotation;
         return this;
     }
@@ -88,7 +88,7 @@ public class RectangleOptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RectangleOptions that = (RectangleOptions) o;
+        RectangleDrawOptions that = (RectangleDrawOptions) o;
 
         if (isFilled != that.isFilled) return false;
         if (strokeWidth != that.strokeWidth) return false;

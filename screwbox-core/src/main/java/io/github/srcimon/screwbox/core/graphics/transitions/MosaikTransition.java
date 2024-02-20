@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
-import static io.github.srcimon.screwbox.core.graphics.RectangleOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static java.util.Collections.shuffle;
 
 public final class MosaikTransition implements ScreenTransition {

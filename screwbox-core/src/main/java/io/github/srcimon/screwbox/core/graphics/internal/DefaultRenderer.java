@@ -190,7 +190,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         applyNewColor(options.color());
 
         if (options.rotation().isNone()) {

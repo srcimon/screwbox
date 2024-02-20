@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Pixelfont.sizeOf(String)`
-- Optimized drawing of rectangles using `RectangleOptions` (#205) 
+- Optimized drawing of rectangles using `RectangleDrawOptions` (#205) 
 
 ### 🪛 Bug Fixes
 

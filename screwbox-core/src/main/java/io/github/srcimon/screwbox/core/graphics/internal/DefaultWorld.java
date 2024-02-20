@@ -84,7 +84,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawRectangle(final Bounds bounds, final RectangleOptions options) {
+    public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
         final Offset offset = toOffset(bounds.origin());
         final Size size = toDimension(bounds.size());
         screen.drawRectangle(offset, size, options);

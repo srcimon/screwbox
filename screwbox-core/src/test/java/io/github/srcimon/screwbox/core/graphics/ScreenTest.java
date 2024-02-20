@@ -18,9 +18,9 @@ class ScreenTest {
     @Test
     void drawRectangle_usingBounds_drawsRectangleAtPositionWithSize() {
 
-        screen.drawRectangle(new ScreenBounds(10, 4, 13, 20), RectangleOptions.filled(Color.RED));
+        screen.drawRectangle(new ScreenBounds(10, 4, 13, 20), RectangleDrawOptions.filled(Color.RED));
 
-        verify(screen).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleOptions.filled(Color.RED));
+        verify(screen).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleDrawOptions.filled(Color.RED));
     }
 
     @Test

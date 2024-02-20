@@ -67,7 +67,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         // does nothing
     }
 

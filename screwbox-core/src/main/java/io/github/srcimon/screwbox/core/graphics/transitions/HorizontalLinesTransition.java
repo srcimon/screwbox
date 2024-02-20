@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Size;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
-import static io.github.srcimon.screwbox.core.graphics.RectangleOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 
 public class HorizontalLinesTransition implements ScreenTransition {
 
