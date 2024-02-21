@@ -33,6 +33,12 @@ class PropertyTest {
     }
 
     @Test
+    void hasValue_valueIsEmpty_returnsFalse() {
+        var property = new Property(new PropertyEntity("isOn", "type", ""));
+        assertThat(property.hasValue()).isFalse();
+    }
+
+    @Test
     void hasValue_isNotEmpty_returnsTrue() {
         var property = createNumberProperty();
         assertThat(property.hasValue()).isTrue();
