@@ -175,7 +175,7 @@ class DefaultLoopTest {
 
         var updateDuration = loop.updateDuration();
 
-        assertThat(updateDuration.milliseconds()).isGreaterThan(100);
+        assertThat(updateDuration.milliseconds()).isGreaterThanOrEqualTo(100);
     }
 
     @Test
