@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.test.TestUtil.sleep;
 import static org.assertj.core.api.Assertions.*;
 
@@ -158,7 +159,7 @@ class DefaultLoopTest {
     @Test
     void updateDuration_oneSystemNeedsAtLeast10ms_isBetween10and100ms() {
         updatables.add(stopAfterOneFrameUpdatable());
-        updatables.add(() -> sleep(Duration.ofMillis(10)));
+        updatables.add(() -> sleep(ofMillis(10)));
         loop.start();
 
         var updateDuration = loop.updateDuration();
@@ -169,12 +170,22 @@ class DefaultLoopTest {
     @Test
     void updateDuration_oneSystemNeedsAtLeast100ms_isGreaterThan100ms() {
         updatables.add(stopAfterOneFrameUpdatable());
-        updatables.add(() -> sleep(Duration.ofMillis(100)));
+        updatables.add(() -> sleep(ofMillis(100)));
         loop.start();
 
         var updateDuration = loop.updateDuration();
 
         assertThat(updateDuration.milliseconds()).isGreaterThan(100);
+    }
+
+    @Test
+    void lastUpdate_onlyOneSystem_isAfterStartingLoop() {
+        updatables.add(stopAfterOneFrameUpdatable());
+
+        Time before = Time.now();
+        loop.start();
+
+        assertThat(loop.lastUpdate().isAfter(before)).isTrue();
     }
 
     private Updatable stopAfterOneFrameUpdatable() {
