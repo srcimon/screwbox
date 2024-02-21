@@ -21,6 +21,13 @@ public final class TestUtil {
         }
     }
 
+    public static void sleep(final Duration duration) {
+        try {
+            Thread.sleep(duration.milliseconds());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
     public static void await(final Supplier<Boolean> condition, final Duration timeout) {
         final Time start = Time.now();
         while (!condition.get()) {

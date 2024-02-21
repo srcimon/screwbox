@@ -2,13 +2,13 @@ package io.github.srcimon.screwbox.core.loop.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.test.TestUtil.sleep;
 import static org.assertj.core.api.Assertions.*;
 
 class DefaultLoopTest {
@@ -149,10 +149,32 @@ class DefaultLoopTest {
     }
 
     @Test
-    void setUnlimitedFps_setsTargetFps_toIntegerMax() {
+    void unlockFps_setsTargetFps_toIntegerMax() {
         loop.unlockFps();
 
         assertThat(loop.targetFps()).isEqualTo(Integer.MAX_VALUE);
+    }
+
+    @Test
+    void updateDuration_oneSystemNeedsAtLeast10ms_isBetween10and100ms() {
+        updatables.add(stopAfterOneFrameUpdatable());
+        updatables.add(() -> sleep(Duration.ofMillis(10)));
+        loop.start();
+
+        var updateDuration = loop.updateDuration();
+
+        assertThat(updateDuration.milliseconds()).isBetween(10L, 100L);
+    }
+
+    @Test
+    void updateDuration_oneSystemNeedsAtLeast100ms_isGreaterThan100ms() {
+        updatables.add(stopAfterOneFrameUpdatable());
+        updatables.add(() -> sleep(Duration.ofMillis(100)));
+        loop.start();
+
+        var updateDuration = loop.updateDuration();
+
+        assertThat(updateDuration.milliseconds()).isGreaterThan(100);
     }
 
     private Updatable stopAfterOneFrameUpdatable() {
