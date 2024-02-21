@@ -30,4 +30,9 @@ class LayerTest {
     void properties_noProperties_isEmpty() {
         assertThat(layer.properties().all()).isEmpty();
     }
+
+    @Test
+    void isImageLayer_tilelayer_isFalse() {
+        assertThat(layer.isImageLayer()).isFalse();
+    }
 }
