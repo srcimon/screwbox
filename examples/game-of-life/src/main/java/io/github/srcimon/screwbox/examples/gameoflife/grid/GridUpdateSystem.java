@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.gameoflife.grid;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Grid;
-import io.github.srcimon.screwbox.core.Grid.Node;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
@@ -26,7 +25,7 @@ public class GridUpdateSystem implements EntitySystem {
     private void update(final GridComponent gridComponent) {
         final Grid oldGrid = gridComponent.grid;
         final Grid grid = oldGrid.clearedInstance();
-        for (final Node node : oldGrid.nodes()) {
+        oldGrid.nodes().stream().parallel().forEach(node -> {
             final int count = oldGrid.blockedNeighbors(node).size();
             if (oldGrid.isFree(node)) {
                 if (count == 3) {
@@ -35,8 +34,7 @@ public class GridUpdateSystem implements EntitySystem {
             } else if (count == 2 || count == 3) {
                 grid.block(node);
             }
-        }
+        });
         gridComponent.grid = grid;
     }
-
 }
