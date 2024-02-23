@@ -42,7 +42,7 @@ class DefaultWorldTest {
     void drawRectangle_inBounds_callsWindow() {
         when(screen.size()).thenReturn(Size.of(1024, 768));
         world.updateCameraPosition(zero());
-        world.updateCameraZoom(2.5);
+        world.updateZoom(2.5);
 
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleDrawOptions.filled(RED));
 
@@ -69,10 +69,10 @@ class DefaultWorldTest {
 
         world.restrictZoomRangeTo(1, 5);
 
-        assertThat(world.updateCameraZoom(0.2)).isEqualTo(1);
+        assertThat(world.updateZoom(0.2)).isEqualTo(1);
         assertThat(world.wantedZoom()).isEqualTo(1);
 
-        assertThat(world.updateCameraZoom(12)).isEqualTo(5);
+        assertThat(world.updateZoom(12)).isEqualTo(5);
         assertThat(world.wantedZoom()).isEqualTo(5);
     }
 
@@ -82,7 +82,7 @@ class DefaultWorldTest {
         Sprite sprite = invisible();
 
         world.updateCameraPosition($(4, 2));
-        world.updateCameraZoom(1.5);
+        world.updateZoom(1.5);
 
         world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Rotation.degrees(4), Flip.NONE, null);
 

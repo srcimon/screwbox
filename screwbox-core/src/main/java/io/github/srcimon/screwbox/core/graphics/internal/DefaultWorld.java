@@ -44,7 +44,7 @@ public class DefaultWorld implements World {
         return wantedZoom;
     }
 
-    public double updateCameraZoom(final double zoom) {
+    public double updateZoom(final double zoom) {
         this.wantedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
         final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
