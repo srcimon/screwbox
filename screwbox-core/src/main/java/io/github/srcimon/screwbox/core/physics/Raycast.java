@@ -33,7 +33,7 @@ public class Raycast {
         Vector currentHit = null;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : getIntersections(entity)) {
+                for (var intersection : getIntersections(getLines(entity))) {
                     if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
                         currentHit = intersection;
                     }
@@ -66,10 +66,15 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                ListUtil.addAll(intersections, getIntersections(entity));
+                final var lines = getLines(entity);
+                ListUtil.addAll(intersections, getIntersections(lines));
             }
         }
         return intersections;
+    }
+
+    private List<Line> getLines(final Entity entity) {
+        return borders.extractFrom(entity.get(TransformComponent.class).bounds);
     }
 
     public boolean hasHit() {
@@ -85,9 +90,9 @@ public class Raycast {
         return ray;
     }
 
-    private List<Vector> getIntersections(final Entity entity) {
+    private List<Vector> getIntersections(final List<Line> borders) {
         List<Vector> intersections = new ArrayList<>();
-        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : borders) {
             final Vector intersectionPoint = ray.intersectionPoint(border);
             if (nonNull(intersectionPoint)) {
                 intersections.add(intersectionPoint);
@@ -97,7 +102,7 @@ public class Raycast {
     }
 
     private boolean intersectsRay(final Entity entity) {
-        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : getLines(entity)) {
             if (ray.intersects(border)) {
                 return true;
             }

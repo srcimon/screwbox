@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.physics.Borders;
 
 import java.awt.Font;
 import java.awt.*;
@@ -145,8 +147,19 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
-        final var calculatedPosition = position;
-        world.updateCameraPosition(calculatedPosition);
+        if(bounds.contains(position)) {
+            world.updateCameraPosition(position);
+        } else {
+            if(bounds.contains(world.cameraPosition())) {
+                var borders = Borders.ALL.extractFrom(bounds);
+                var movement = Line.between(world.cameraPosition(), position);
+
+
+                final var calculatedPosition = position;
+                world.updateCameraPosition(calculatedPosition);
+            }
+
+        }
         return world.cameraPosition();
     }
 }
