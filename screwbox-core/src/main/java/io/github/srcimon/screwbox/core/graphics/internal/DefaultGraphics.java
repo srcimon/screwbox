@@ -151,8 +151,8 @@ public class DefaultGraphics implements Graphics, Updatable {
         if(bounds.contains(position)) {
             world.updateCameraPosition(position);
         } else {
+            var borders = Borders.ALL.extractFrom(bounds);
             if(bounds.contains(world.cameraPosition())) {
-                var borders = Borders.ALL.extractFrom(bounds);
                 var movement = Line.between(world.cameraPosition(), position);
                 var allIntersections = movement.intersections(borders);
                 if(allIntersections.isEmpty()) {
@@ -161,6 +161,11 @@ public class DefaultGraphics implements Graphics, Updatable {
                     var nearestIntersection = position.nearestOf(allIntersections);
                     world.updateCameraPosition(nearestIntersection);
                 }
+            } else {
+                var movement = Line.between(position, bounds.position());
+                var allIntersections = movement.intersections(borders);
+                var nearestIntersection = position.nearestOf(allIntersections);
+                world.updateCameraPosition(nearestIntersection);
             }
         }
         return world.cameraPosition();

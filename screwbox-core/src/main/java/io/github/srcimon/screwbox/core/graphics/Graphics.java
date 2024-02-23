@@ -81,6 +81,12 @@ public interface Graphics {
         return updateCameraPosition(cameraPosition().add(delta));
     }
 
+
+    //TODO JAVADOC AND TEST
+    default Vector moveCameraWithinBounds(Vector delta, Bounds bounds) {
+        return updateCameraPositionWithinBounds(cameraPosition().add(delta), bounds);
+    }
+    
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.
      */
