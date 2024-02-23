@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.window.Window;
 
@@ -46,6 +47,23 @@ public interface Graphics {
     double updateZoom(double zoom);
 
     Graphics updateCameraPosition(Vector position);
+
+    /**
+     * Updates the camera position. Ensures that only the area within the given bounds is visible.
+     * Used {@link #cameraZoom()} to calculate these {@link Bounds}.
+     *
+     * @return the actual position of the camera after the update
+     * @see #updateCameraPositionWithinBounds(Vector, Bounds)
+     */
+    Vector updateCameraPositionWithinVisibleBounds(Vector position, Bounds bounds);
+
+    /**
+     * Updates the camera position. Ensures that the camera position is inside the given bounds.
+     *
+     * @return the actual position of the camera after the update
+     * @see #updateCameraPositionWithinVisibleBounds(Vector, Bounds)
+     */
+    Vector updateCameraPositionWithinBounds(Vector position, Bounds bounds);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
