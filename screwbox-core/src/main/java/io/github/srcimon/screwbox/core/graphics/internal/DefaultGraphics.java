@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -142,7 +143,11 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Vector updateCameraPositionWithinVisibleBounds(final Vector position, final Bounds bounds) {
-        return null;//TODO FIX
+        var x = Bounds.atPosition(
+                bounds.position(),
+                Math.max(0, bounds.width() - world.visibleArea().width()),
+                Math.max(0, bounds.height() - world.visibleArea().height()));
+        return updateCameraPositionWithinBounds(position, x);//TODO FIX and test
     }
 
     //TODO TEST and refactor
@@ -164,8 +169,12 @@ public class DefaultGraphics implements Graphics, Updatable {
             } else {
                 var movement = Line.between(position, bounds.position());
                 var allIntersections = movement.intersections(borders);
-                var nearestIntersection = position.nearestOf(allIntersections);
-                world.updateCameraPosition(nearestIntersection);
+                if(allIntersections.isEmpty()) {
+                    world.updateCameraPosition(position);
+                } else {
+                    var nearestIntersection = position.nearestOf(allIntersections);
+                    world.updateCameraPosition(nearestIntersection);
+                }
             }
         }
         return world.cameraPosition();
