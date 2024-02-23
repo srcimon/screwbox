@@ -217,10 +217,13 @@ public final class Vector implements Serializable {
         return Math.sqrt(x * x + y * y);
     }
 
-    //TODO javadoc and test
+    /**
+     * Finds the nearest {@link Vector} in a {@link List} of {@link Vector}s.
+     * Returns null if {@link List} is empty.
+     */
     public Vector nearestOf(final List<Vector> others) {
         if (others.isEmpty()) {
-            throw new IllegalArgumentException("others must not be empty");
+            return null;
         }
         double maxDistance = Double.MAX_VALUE;
         Vector nearest = null;

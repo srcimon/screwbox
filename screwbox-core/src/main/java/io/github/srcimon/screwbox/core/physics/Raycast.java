@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class Raycast {
 
@@ -33,7 +32,7 @@ public class Raycast {
         Vector currentHit = null;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : getIntersections(getLines(entity))) {
+                for (var intersection : ray.intersections(getLines(entity))) {
                     if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
                         currentHit = intersection;
                     }
@@ -67,7 +66,7 @@ public class Raycast {
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 final var lines = getLines(entity);
-                ListUtil.addAll(intersections, getIntersections(lines));
+                ListUtil.addAll(intersections, ray.intersections((lines)));
             }
         }
         return intersections;
@@ -88,17 +87,6 @@ public class Raycast {
 
     public Line ray() {
         return ray;
-    }
-
-    private List<Vector> getIntersections(final List<Line> borders) {
-        List<Vector> intersections = new ArrayList<>();
-        for (final Line border : borders) {
-            final Vector intersectionPoint = ray.intersectionPoint(border);
-            if (nonNull(intersectionPoint)) {
-                intersections.add(intersectionPoint);
-            }
-        }
-        return intersections;
     }
 
     private boolean intersectsRay(final Entity entity) {
