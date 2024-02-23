@@ -2,6 +2,11 @@ package io.github.srcimon.screwbox.core;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Defines the {@link Line} between two {@link Vector}s.
@@ -73,6 +78,19 @@ public final class Line implements Serializable, Comparable<Line> {
 
         final double nominatorC = fromToXDelta * thisOtherYDelta - fromToYDelta * thisOtherXDelta;
         return !((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive);
+    }
+
+
+    //TODO javadoc and test
+    public List<Vector> intersections(final List<Line> others) {
+        final List<Vector> intersections = new ArrayList<>();
+        for (final var other : others) {
+            final var intersectionPoint = intersectionPoint(other);
+            if (nonNull(intersectionPoint)) {
+                intersections.add(intersectionPoint);
+            }
+        }
+        return intersections;
     }
 
     /**
@@ -155,5 +173,4 @@ public final class Line implements Serializable, Comparable<Line> {
     public int compareTo(final Line other) {
         return Double.compare(length(), other.length());
     }
-
 }

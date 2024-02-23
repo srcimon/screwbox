@@ -145,6 +145,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         return null;//TODO FIX
     }
 
+    //TODO TEST and refactor
     @Override
     public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
         if(bounds.contains(position)) {
@@ -153,12 +154,14 @@ public class DefaultGraphics implements Graphics, Updatable {
             if(bounds.contains(world.cameraPosition())) {
                 var borders = Borders.ALL.extractFrom(bounds);
                 var movement = Line.between(world.cameraPosition(), position);
-
-
-                final var calculatedPosition = position;
-                world.updateCameraPosition(calculatedPosition);
+                var allIntersections = movement.intersections(borders);
+                if(allIntersections.isEmpty()) {
+                    world.updateCameraPosition(position);
+                } else {
+                    var nearestIntersection = position.nearestOf(allIntersections);
+                    world.updateCameraPosition(nearestIntersection);
+                }
             }
-
         }
         return world.cameraPosition();
     }
