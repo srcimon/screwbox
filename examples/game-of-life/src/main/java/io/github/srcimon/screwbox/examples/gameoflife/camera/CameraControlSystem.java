@@ -9,11 +9,11 @@ public class CameraControlSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.mouse().isDown(MouseButton.MIDDLE)) {
-            engine.graphics().moveCameraBy(engine.mouse().drag());
+            engine.graphics().moveCamera(engine.mouse().drag());
         }
 
         double zoomChange = engine.mouse().unitsScrolled() * -engine.loop().delta();
-        engine.graphics().updateZoomBy(zoomChange);
+        engine.graphics().updateZoomRelative(zoomChange);
     }
 
 }

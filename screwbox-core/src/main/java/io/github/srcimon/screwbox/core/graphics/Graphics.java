@@ -41,11 +41,11 @@ public interface Graphics {
      *
      * @param zoom the zoom value that should be applied
      * @return the zoom value that was applied
-     * @see #updateZoomBy(double)
+     * @see #updateZoomRelative(double)
      */
     double updateZoom(double zoom);
 
-    Graphics moveCameraTo(Vector position);
+    Graphics updateCameraPosition(Vector position);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
@@ -54,13 +54,13 @@ public interface Graphics {
      *
      * @see #updateZoom(double)
      */
-    double updateZoomBy(double delta);
+    double updateZoomRelative(double delta);
 
     /**
      * Moves the camera position by the given {@link Vector}.
      */
-    default Graphics moveCameraBy(final Vector delta) {
-        return moveCameraTo(cameraPosition().add(delta));
+    default Graphics moveCamera(final Vector delta) {
+        return updateCameraPosition(cameraPosition().add(delta));
     }
 
     /**

@@ -16,11 +16,11 @@ class GraphicsTest {
     Graphics graphics;
 
     @Test
-    void moveCameraBy_movesCameraRelativeToCurrentPosition() {
+    void moveCamera_movesCameraRelativeToCurrentPosition() {
         when(graphics.cameraPosition()).thenReturn($(10, 2));
 
-        graphics.moveCameraBy($(30, 20));
+        graphics.moveCamera($(30, 20));
 
-        verify(graphics).moveCameraTo($(40, 22));
+        verify(graphics).updateCameraPosition($(40, 22));
     }
 }

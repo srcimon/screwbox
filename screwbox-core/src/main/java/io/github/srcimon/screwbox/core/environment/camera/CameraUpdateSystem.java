@@ -49,6 +49,6 @@ public class CameraUpdateSystem implements EntitySystem {
         final var updatedBounds = camBoundsComponent.bounds.moveBy(movementX, movementY);
         camBoundsComponent.bounds = updatedBounds;
 
-        engine.graphics().moveCameraTo(updatedBounds.position());
+        engine.graphics().updateCameraPosition(updatedBounds.position());
     }
 }

@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed camera movement and zoom methods
 
 ### 📦 Dependency updates
 

@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.graphics.AspectRatio;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
