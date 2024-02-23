@@ -24,7 +24,7 @@ public class CameraControlSystem implements EntitySystem {
         engine.graphics().updateZoomRelative(zoomChange);
 
         //TODO updateZoomRelativeWithinVisualBounds...
-        engine.graphics().moveCameraWithinVisualBounds(Vector.zero(), gridComponent.grid.area());
+        engine.graphics().moveCameraWithinVisualBounds(engine.keyboard().wsadMovement(engine.loop().delta() * 80), gridComponent.grid.area());
     }
 
 }
