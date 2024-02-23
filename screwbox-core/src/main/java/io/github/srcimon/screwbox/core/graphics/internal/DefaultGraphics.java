@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
@@ -14,7 +15,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
-public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics.Graphics, Updatable {
+public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
@@ -137,4 +138,13 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
         return screen;
     }
 
+    @Override
+    public Vector updateCameraPositionWithinVisibleBounds(final Vector position, final Bounds bounds) {
+        return null;//TODO FIX
+    }
+
+    @Override
+    public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
+        return null;//TODO FIX
+    }
 }
