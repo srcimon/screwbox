@@ -145,6 +145,8 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
-        return null;//TODO FIX
+        final var calculatedPosition = position;
+        world.updateCameraPosition(calculatedPosition);
+        return world.cameraPosition();
     }
 }
