@@ -19,8 +19,7 @@ public class CameraUpdateSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final Entity cameraEntity = engine.environment().forcedFetch(CAMERA);
-        double wantedZoom = cameraEntity.get(CameraComponent.class).zoom;
-        double zoom = engine.graphics().updateZoom(wantedZoom);
+        engine.graphics().updateZoom(cameraEntity.get(CameraComponent.class).zoom);
 
         final Bounds worldBounds = engine.environment().forcedFetch(WORLD_BOUNDS)
                 .get(TransformComponent.class).bounds;
@@ -32,23 +31,14 @@ public class CameraUpdateSystem implements EntitySystem {
         final double cameraTrackerSpeed = cameraTrackerComponent.speed;
         final double distX = cameraPosition.x() - trackerPosition.x() - cameraTrackerComponent.shift.x();
         final double distY = cameraPosition.y() - trackerPosition.y() - cameraTrackerComponent.shift.y();
-        final Offset screenCenter = engine.graphics().screen().center();
-        final Vector centerExtents = Vector.of(screenCenter.x() / zoom, screenCenter.y() / zoom);
 
         double delta = engine.loop().delta();
-        final double movementX = MathUtil.clamp(
-                worldBounds.minX() + centerExtents.x() - cameraPosition.x(),
+
+        Vector cameraMovement = Vector.$(
                 distX * -1 * cameraTrackerSpeed * delta,
-                worldBounds.maxX() - cameraPosition.x() - centerExtents.x());
+                distY * -1 * cameraTrackerSpeed * delta);
 
-        final double movementY = MathUtil.clamp(
-                worldBounds.minY() + centerExtents.y() - cameraPosition.y(),
-                distY * -1 * cameraTrackerSpeed * delta,
-                worldBounds.maxY() - cameraPosition.y() - centerExtents.y());
-
-        final var updatedBounds = camBoundsComponent.bounds.moveBy(movementX, movementY);
-        camBoundsComponent.bounds = updatedBounds;
-
-        engine.graphics().updateCameraPosition(updatedBounds.position());
+        Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, worldBounds);
+        camBoundsComponent.bounds = camBoundsComponent.bounds.moveTo(newCameraPosition);
     }
 }

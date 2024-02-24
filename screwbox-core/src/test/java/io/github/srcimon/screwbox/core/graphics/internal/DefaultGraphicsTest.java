@@ -10,11 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.*;
 import java.util.List;
 
-import static io.github.srcimon.screwbox.core.Bounds.$$;
-import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.graphics.AspectRatio.WIDESCREEN;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,9 +19,6 @@ class DefaultGraphicsTest {
 
     @InjectMocks
     DefaultGraphics graphics;
-
-    @Mock
-    DefaultWorld world;
 
     @Mock
     GraphicsDevice graphicsDevice;
@@ -56,13 +50,4 @@ class DefaultGraphicsTest {
         assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
     }
 
-    @Test
-    void updateCameraPositionWithinBounds_targetPositionIsWithinBounds_updatesPosition() {
-        when(world.cameraPosition()).thenReturn($(40, 50));
-
-        var result = graphics.updateCameraPositionWithinBounds($(40, 50), $$(20, 30, 100, 100));
-
-        verify(world).updateCameraPosition($(40, 50));
-        assertThat(result).isEqualTo($(40, 50));
-    }
 }
