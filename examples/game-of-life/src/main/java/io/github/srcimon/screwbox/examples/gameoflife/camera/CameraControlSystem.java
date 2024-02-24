@@ -19,12 +19,15 @@ public class CameraControlSystem implements EntitySystem {
         if (engine.mouse().isDown(MouseButton.MIDDLE)) {
             engine.graphics().moveCameraWithinVisualBounds(engine.mouse().drag(), gridComponent.grid.area());
         }
+        Vector movement = engine.keyboard().wsadMovement(engine.loop().delta() * 80);
+        engine.graphics().moveCameraWithinVisualBounds(movement, gridComponent.grid.area());
+
 
         double zoomChange = engine.mouse().unitsScrolled() * -engine.loop().delta();
         engine.graphics().updateZoomRelative(zoomChange);
 
         //TODO updateZoomRelativeWithinVisualBounds...
-        engine.graphics().moveCameraWithinVisualBounds(engine.keyboard().wsadMovement(engine.loop().delta() * 80), gridComponent.grid.area());
+
     }
 
 }

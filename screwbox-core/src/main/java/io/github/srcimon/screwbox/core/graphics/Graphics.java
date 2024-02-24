@@ -49,23 +49,6 @@ public interface Graphics {
     Graphics updateCameraPosition(Vector position);
 
     /**
-     * Updates the camera position. Ensures that only the area within the given bounds is visible.
-     * Used {@link #cameraZoom()} to calculate these {@link Bounds}.
-     *
-     * @return the actual position of the camera after the update
-     * @see #updateCameraPositionWithinBounds(Vector, Bounds)
-     */
-    Vector updateCameraPositionWithinVisibleBounds(Vector position, Bounds bounds);
-
-    /**
-     * Updates the camera position. Ensures that the camera position is inside the given bounds.
-     *
-     * @return the actual position of the camera after the update
-     * @see #updateCameraPositionWithinVisibleBounds(Vector, Bounds)
-     */
-    Vector updateCameraPositionWithinBounds(Vector position, Bounds bounds);
-
-    /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
@@ -79,17 +62,6 @@ public interface Graphics {
      */
     default Graphics moveCamera(final Vector delta) {
         return updateCameraPosition(cameraPosition().add(delta));
-    }
-
-
-    //TODO JAVADOC AND TEST
-    default Vector moveCameraWithinBounds(Vector delta, Bounds bounds) {
-        return updateCameraPositionWithinBounds(cameraPosition().add(delta), bounds);
-    }
-
-    //TODO JAVADOC AND TEST
-    default Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds) {
-        return updateCameraPositionWithinVisibleBounds(cameraPosition().add(delta), bounds);
     }
 
     /**
@@ -142,5 +114,8 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
+
+    //TODO JAVADOC AND TEST
+    Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds);
 
 }

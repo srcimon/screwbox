@@ -142,42 +142,47 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Vector updateCameraPositionWithinVisibleBounds(final Vector position, final Bounds bounds) {
-        var x = Bounds.atPosition(
-                bounds.position(),
-                Math.max(0, bounds.width() - world.visibleArea().width()),
-                Math.max(0, bounds.height() - world.visibleArea().height()));
-        return updateCameraPositionWithinBounds(position, x);//TODO FIX and test
+    public Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds) {
+        return cameraPosition();//TODO implement
     }
 
-    //TODO TEST and refactor
-    @Override
-    public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
-        if(bounds.contains(position)) {
-            world.updateCameraPosition(position);
-        } else {
-            var borders = Borders.ALL.extractFrom(bounds);
-            if(bounds.contains(world.cameraPosition())) {
-                var movement = Line.between(world.cameraPosition(), position);
-                var allIntersections = movement.intersections(borders);
-                if(allIntersections.isEmpty()) {
-                    world.updateCameraPosition(position);
-                } else {
-                    var nearestIntersection = position.nearestOf(allIntersections);
-                    world.updateCameraPosition(nearestIntersection);
-                }//TODO move x and y separately
-
-            } else {
-                var movement = Line.between(position, bounds.position());
-                var allIntersections = movement.intersections(borders);
-                if(allIntersections.isEmpty()) {
-                    world.updateCameraPosition(position);
-                } else {
-                    var nearestIntersection = position.nearestOf(allIntersections);
-                    world.updateCameraPosition(nearestIntersection);
-                }
-            }
-        }
-        return world.cameraPosition();
-    }
+//    @Override
+//    public Vector updateCameraPositionWithinVisibleBounds(final Vector position, final Bounds bounds) {
+//        var x = Bounds.atPosition(
+//                bounds.position(),
+//                Math.max(0, bounds.width() - world.visibleArea().width()),
+//                Math.max(0, bounds.height() - world.visibleArea().height()));
+//        return updateCameraPositionWithinBounds(position, x);//TODO FIX and test
+//    }
+//
+//    //TODO TEST and refactor
+//    @Override
+//    public Vector updateCameraPositionWithinBounds(final Vector position, final Bounds bounds) {
+//        if(bounds.contains(position)) {
+//            world.updateCameraPosition(position);
+//        } else {
+//            var borders = Borders.ALL.extractFrom(bounds);
+//            if(bounds.contains(world.cameraPosition())) {
+//                var movement = Line.between(world.cameraPosition(), position);
+//                var allIntersections = movement.intersections(borders);
+//                if(allIntersections.isEmpty()) {
+//                    world.updateCameraPosition(position);
+//                } else {
+//                    var nearestIntersection = position.nearestOf(allIntersections);
+//                    world.updateCameraPosition(nearestIntersection);
+//                }//TODO move x and y separately
+//
+//            } else {
+//                var movement = Line.between(position, bounds.position());
+//                var allIntersections = movement.intersections(borders);
+//                if(allIntersections.isEmpty()) {
+//                    world.updateCameraPosition(position);
+//                } else {
+//                    var nearestIntersection = position.nearestOf(allIntersections);
+//                    world.updateCameraPosition(nearestIntersection);
+//                }
+//            }
+//        }
+//        return world.cameraPosition();
+//    }
 }
