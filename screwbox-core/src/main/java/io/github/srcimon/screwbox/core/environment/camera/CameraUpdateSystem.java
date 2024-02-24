@@ -16,6 +16,7 @@ public class CameraUpdateSystem implements EntitySystem {
             CameraMovementComponent.class);
     private static final Archetype WORLD_BOUNDS = Archetype.of(GlobalBoundsComponent.class, TransformComponent.class);
 
+    boolean first = true;
     @Override
     public void update(final Engine engine) {
         final Entity cameraEntity = engine.environment().forcedFetch(CAMERA);
@@ -34,11 +35,16 @@ public class CameraUpdateSystem implements EntitySystem {
 
         double delta = engine.loop().delta();
 
-        Vector cameraMovement = Vector.$(
-                distX * -1 * cameraTrackerSpeed * delta,
-                distY * -1 * cameraTrackerSpeed * delta);
+        if(first) {
+            first= false;
+           engine.graphics().updateCameraPosition(trackerPosition);
+        } else {
+            Vector cameraMovement = Vector.$(
+                    distX * -1 * cameraTrackerSpeed * delta,
+                    distY * -1 * cameraTrackerSpeed * delta);
 
-        Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, worldBounds);
-        camBoundsComponent.bounds = camBoundsComponent.bounds.moveTo(newCameraPosition);
+            Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, worldBounds);
+            camBoundsComponent.bounds = camBoundsComponent.bounds.moveTo(newCameraPosition);
+        }
     }
 }
