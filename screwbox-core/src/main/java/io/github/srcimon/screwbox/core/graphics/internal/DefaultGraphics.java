@@ -165,7 +165,8 @@ public class DefaultGraphics implements Graphics, Updatable {
                 } else {
                     var nearestIntersection = position.nearestOf(allIntersections);
                     world.updateCameraPosition(nearestIntersection);
-                }
+                }//TODO move x and y separately
+
             } else {
                 var movement = Line.between(position, bounds.position());
                 var allIntersections = movement.intersections(borders);
