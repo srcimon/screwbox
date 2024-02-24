@@ -143,12 +143,13 @@ public class DefaultGraphics implements Graphics, Updatable {
     public Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds) {
         double width = bounds.width() - world.visibleArea().width();
         double height = bounds.height() - world.visibleArea().height();
-        if(width <= 0 || height <= 0) {
-            return cameraPosition();
-        }
+//        if(width <= 0 || height <= 0) {
+//            System.out.println(width);
+//            return cameraPosition();
+//        }
         final var visualBounds = Bounds.atPosition(bounds.position(),
-                width,
-                height);
+                Math.max(0.1, width),
+                Math.max(0.1, height));
 
         final double movementX = MathUtil.clamp(
                 visualBounds.minX() -cameraPosition().x(),

@@ -4,9 +4,9 @@
     ],
     "extensionsPath": "extensions",
     "folders": [
-        "."
+        ".",
+        "../../../../pathfinding/src/main/resources"
     ],
-    "objectTypesFile": "",
     "propertyTypes": [
     ]
 }
