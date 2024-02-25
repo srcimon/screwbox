@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Line;
 import java.util.List;
 import java.util.function.Function;
 
-//TODO also accessed from graphics. make public or move to common internal package?
 public enum Borders {
 
     ALL(bounds -> List.of(
