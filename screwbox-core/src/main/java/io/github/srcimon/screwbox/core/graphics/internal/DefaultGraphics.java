@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
@@ -57,7 +58,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Graphics updateCameraPosition(final Vector position) {
+    public Graphics setCameraPosition(final Vector position) {
         world.updateCameraPosition(position);
         return this;
     }
@@ -140,22 +141,22 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds) {
-        final var visualBounds = Bounds.atPosition(bounds.position(),
+    public Vector moveCameraWithinVisualBounds(final Vector delta, final Bounds bounds) {
+        final var legalPostionArea = Bounds.atPosition(bounds.position(),
                 Math.max(1, bounds.width() - world.visibleArea().width()),
                 Math.max(1, bounds.height() - world.visibleArea().height()));
 
         final double movementX = MathUtil.clamp(
-                visualBounds.minX() -cameraPosition().x(),
+                legalPostionArea.minX() - cameraPosition().x(),
                 delta.x(),
-                visualBounds.maxX()-cameraPosition().x());
+                legalPostionArea.maxX() - cameraPosition().x());
 
         final double movementY = MathUtil.clamp(
-                visualBounds.minY()-cameraPosition().y(),
+                legalPostionArea.minY() - cameraPosition().y(),
                 delta.y(),
-                visualBounds.maxY()-cameraPosition().y());
+                legalPostionArea.maxY() - cameraPosition().y());
 
-        moveCamera(Vector.$(movementX, movementY));
+        moveCamera($(movementX, movementY));
         return cameraPosition();
     }
 

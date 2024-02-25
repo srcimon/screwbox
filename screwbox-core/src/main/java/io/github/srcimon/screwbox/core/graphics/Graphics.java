@@ -46,7 +46,10 @@ public interface Graphics {
      */
     double updateZoom(double zoom);
 
-    Graphics updateCameraPosition(Vector position);
+    /**
+     * Sets the camera position.
+     */
+    Graphics setCameraPosition(Vector position);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
@@ -61,8 +64,15 @@ public interface Graphics {
      * Moves the camera position by the given {@link Vector}.
      */
     default Graphics moveCamera(final Vector delta) {
-        return updateCameraPosition(cameraPosition().add(delta));
+        return setCameraPosition(cameraPosition().add(delta));
     }
+
+    /**
+     * Moves the camera within the given {@link Bounds}.
+     *
+     * @return the actual camera position after movement is applied
+     */
+    Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds);
 
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.
@@ -114,8 +124,5 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
-
-    //TODO JAVADOC AND TEST
-    Vector moveCameraWithinVisualBounds(Vector delta, Bounds bounds);
 
 }

@@ -34,7 +34,7 @@ public class CameraUpdateSystem implements EntitySystem {
 
         if (first) {
             first = false;
-            engine.graphics().updateCameraPosition(trackerPosition);
+            engine.graphics().setCameraPosition(trackerPosition);
         } else {
             Vector cameraMovement = Vector.$(
                     distX * -1 * cameraTrackerSpeed * delta,
