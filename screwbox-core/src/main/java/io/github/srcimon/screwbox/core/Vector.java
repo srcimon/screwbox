@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,7 +36,7 @@ public final class Vector implements Serializable {
 
     /**
      * Creates a new Instance of {@link Vector} at the given coordinates.
-     * 
+     *
      * @see #$(double, double)
      */
     public static Vector of(final double x, final double y) {
@@ -195,10 +196,10 @@ public final class Vector implements Serializable {
      * If {@link #isZero()} returns {@link #zero()}.
      */
     public Vector length(final double length) {
-        if(length < 0) {
+        if (length < 0) {
             throw new IllegalArgumentException("length must not be negative");
         }
-        if(isZero()) {
+        if (isZero()) {
             return this;
         }
         double factor = length / length();
@@ -216,4 +217,23 @@ public final class Vector implements Serializable {
         return Math.sqrt(x * x + y * y);
     }
 
+    /**
+     * Finds the nearest {@link Vector} in a {@link List} of {@link Vector}s.
+     * Returns null if {@link List} is empty.
+     */
+    public Vector nearestOf(final List<Vector> others) {
+        if (others.isEmpty()) {
+            return null;
+        }
+        double maxDistance = Double.MAX_VALUE;
+        Vector nearest = null;
+        for (var other : others) {
+            final double distance = distanceTo(other);
+            if (distance < maxDistance) {
+                nearest = other;
+                maxDistance = distance;
+            }
+        }
+        return nearest;
+    }
 }

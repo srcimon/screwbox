@@ -40,7 +40,8 @@ public class GameOfLifeApp {
                 .setInteractor(new KeyboardAndMouseInteractor())
                 .openMenu(new SidebarMenu());
 
-        engine.graphics().updateZoom(6);
+        engine.graphics().restrictZoomRangeTo(2,8).updateZoom(4);
+
         engine.start();
     }
 }

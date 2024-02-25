@@ -21,6 +21,6 @@ class GraphicsTest {
 
         graphics.moveCamera($(30, 20));
 
-        verify(graphics).updateCameraPosition($(40, 22));
+        verify(graphics).setCameraPosition($(40, 22));
     }
 }

@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -22,8 +23,37 @@ import static org.mockito.Mockito.when;
 class CameraUpdateSystemTest {
 
     @Test
-    void update_movesCameraTowardsTracker(DefaultEnvironment environment, Loop loop, Screen screen,
-                                          Graphics graphics) {
+    void update_isFirstUpdate_initializesCameraPosition(DefaultEnvironment environment, Loop loop, Screen screen,
+                                                        Graphics graphics) {
+        when(loop.delta()).thenReturn(0.4);
+        when(screen.center()).thenReturn(Offset.at(320, 240));
+        when(graphics.updateZoom(anyDouble())).thenReturn(1.0);
+
+        Entity camera = new Entity().add(
+                new CameraComponent(2),
+                new CameraMovementComponent(1.5, 1239),
+                new TransformComponent(Bounds.atPosition(200, 500, 0, 0)));
+
+        Entity tracked = new Entity(1239).add(
+                new TransformComponent(Bounds.atPosition(1000, 0, 0, 0)));
+
+        Entity worldBounds = new Entity().add(
+                new GlobalBoundsComponent(),
+                new TransformComponent(Bounds.atPosition(0, 0, 20000, 20000)));
+
+        environment
+                .addEntities(camera, tracked, worldBounds)
+                .addSystem(new CameraUpdateSystem());
+
+        environment.update();
+
+        Vector cameraPosition = camera.get(TransformComponent.class).bounds.position();
+        assertThat(cameraPosition).isEqualTo(Vector.of(200, 500));
+    }
+
+    @Test
+    void update_anyFurtherUpdate_movesTrackerAndCameraTowardsTarget(DefaultEnvironment environment, Loop loop, Screen screen,
+                                                                    Graphics graphics) {
         when(loop.delta()).thenReturn(0.4);
         when(screen.center()).thenReturn(Offset.at(320, 240));
         when(graphics.updateZoom(anyDouble())).thenReturn(1.0);
@@ -47,10 +77,11 @@ class CameraUpdateSystemTest {
                 .addEntities(camera, tracked, worldBounds)
                 .addSystem(new CameraUpdateSystem());
 
-        environment.updateTimes(50);
+        when(graphics.moveCameraWithinVisualBounds(Mockito.any(), Mockito.any())).thenReturn(Vector.$(100, 100));
+        environment.updateTimes(2);
 
         Vector cameraPosition = camera.get(TransformComponent.class).bounds.position();
-        assertThat(cameraPosition).isEqualTo(Vector.of(1000, 200));
+        assertThat(cameraPosition).isEqualTo(Vector.of(100, 100));
     }
 
 }

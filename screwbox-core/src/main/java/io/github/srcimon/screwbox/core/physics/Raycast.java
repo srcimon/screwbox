@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class Raycast {
 
@@ -33,7 +32,7 @@ public class Raycast {
         Vector currentHit = null;
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                for (var intersection : getIntersections(entity)) {
+                for (var intersection : ray.intersections(getLines(entity))) {
                     if (isNull(currentHit) || Double.compare(intersection.distanceTo(ray.from()), currentHit.distanceTo(ray.from())) < 0) {
                         currentHit = intersection;
                     }
@@ -66,10 +65,15 @@ public class Raycast {
         final List<Vector> intersections = new ArrayList<>();
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
-                ListUtil.addAll(intersections, getIntersections(entity));
+                final var lines = getLines(entity);
+                ListUtil.addAll(intersections, ray.intersections((lines)));
             }
         }
         return intersections;
+    }
+
+    private List<Line> getLines(final Entity entity) {
+        return borders.extractFrom(entity.get(TransformComponent.class).bounds);
     }
 
     public boolean hasHit() {
@@ -85,19 +89,8 @@ public class Raycast {
         return ray;
     }
 
-    private List<Vector> getIntersections(final Entity entity) {
-        List<Vector> intersections = new ArrayList<>();
-        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
-            final Vector intersectionPoint = ray.intersectionPoint(border);
-            if (nonNull(intersectionPoint)) {
-                intersections.add(intersectionPoint);
-            }
-        }
-        return intersections;
-    }
-
     private boolean intersectsRay(final Entity entity) {
-        for (final Line border : borders.extractFrom(entity.get(TransformComponent.class).bounds)) {
+        for (final Line border : getLines(entity)) {
             if (ray.intersects(border)) {
                 return true;
             }

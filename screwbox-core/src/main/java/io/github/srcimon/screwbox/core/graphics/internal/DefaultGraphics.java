@@ -1,20 +1,23 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.Font;
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
-public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics.Graphics, Updatable {
+public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;
     private final DefaultWorld world;
@@ -55,7 +58,7 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     }
 
     @Override
-    public Graphics updateCameraPosition(final Vector position) {
+    public Graphics setCameraPosition(final Vector position) {
         world.updateCameraPosition(position);
         return this;
     }
@@ -135,6 +138,26 @@ public class DefaultGraphics implements io.github.srcimon.screwbox.core.graphics
     @Override
     public Screen screen() {
         return screen;
+    }
+
+    @Override
+    public Vector moveCameraWithinVisualBounds(final Vector delta, final Bounds bounds) {
+        final var legalPostionArea = Bounds.atPosition(bounds.position(),
+                Math.max(1, bounds.width() - world.visibleArea().width()),
+                Math.max(1, bounds.height() - world.visibleArea().height()));
+
+        final double movementX = MathUtil.clamp(
+                legalPostionArea.minX() - cameraPosition().x(),
+                delta.x(),
+                legalPostionArea.maxX() - cameraPosition().x());
+
+        final double movementY = MathUtil.clamp(
+                legalPostionArea.minY() - cameraPosition().y(),
+                delta.y(),
+                legalPostionArea.maxY() - cameraPosition().y());
+
+        moveCamera($(movementX, movementY));
+        return cameraPosition();
     }
 
 }

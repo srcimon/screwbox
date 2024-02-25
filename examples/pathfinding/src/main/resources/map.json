@@ -102,8 +102,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":160,
-                 "y":183
+                 "x":271,
+                 "y":239
                 }, 
                 {
                  "height":0,
@@ -120,8 +120,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":215,
-                 "y":137
+                 "x":276,
+                 "y":221
                 }, 
                 {
                  "height":0,
@@ -145,7 +145,7 @@
  "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.8.4",
+ "tiledversion":"1.10.1",
  "tileheight":16,
  "tilesets":[
         {
@@ -154,6 +154,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.8",
+ "version":"1.10",
  "width":32
 }

@@ -2,10 +2,33 @@ package io.github.srcimon.screwbox.core;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static io.github.srcimon.screwbox.core.Vector.$;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LineTest {
+
+    @Test
+    void intersections_noOthers_isEmpty() {
+        var intersections = Line.between($(10, 10), $(40, 40)).intersections(emptyList());
+
+        assertThat(intersections).isEmpty();
+    }
+
+    @Test
+    void intersections_someLinesIntersect_returnsPositions() {
+        var others = List.of(
+                Line.between($(0, 10), $(0, -0)),
+                Line.between($(0, 10), $(0, 8)),
+                Line.between($(40, 10), $(40, -8)));
+
+        var intersections = Line.between($(0, 0), $(500, 0)).intersections(others);
+
+        assertThat(intersections).containsExactly($(0, 0), $(40, 0));
+    }
+
 
     @Test
     void intersectionPoint_intersect_returnIntersectionPoint() {
