@@ -4,7 +4,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
@@ -81,7 +80,9 @@ public final class Line implements Serializable, Comparable<Line> {
     }
 
 
-    //TODO javadoc and test
+    /**
+     * Finds all intersections between this {@link Line} and the given {@link Line}s.
+     */
     public List<Vector> intersections(final List<Line> others) {
         final List<Vector> intersections = new ArrayList<>();
         for (final var other : others) {

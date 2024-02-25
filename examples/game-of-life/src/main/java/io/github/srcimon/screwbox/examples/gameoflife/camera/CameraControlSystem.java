@@ -10,10 +10,9 @@ import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
 public class CameraControlSystem implements EntitySystem {
 
     private static final Archetype GRID_HOLDER = Archetype.of(GridComponent.class);
-//TODO IX
-    @Override
-    public void update(Engine engine) {
 
+    @Override
+    public void update(final Engine engine) {
         final var gridComponent = engine.environment().forcedFetch(GRID_HOLDER).get(GridComponent.class);
 
         if (engine.mouse().isDown(MouseButton.MIDDLE)) {
@@ -25,9 +24,6 @@ public class CameraControlSystem implements EntitySystem {
 
         double zoomChange = engine.mouse().unitsScrolled() * -engine.loop().delta();
         engine.graphics().updateZoomRelative(zoomChange);
-
-        //TODO updateZoomRelativeWithinVisualBounds...
-
     }
 
 }
