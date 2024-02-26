@@ -6,6 +6,7 @@
 - Added `Pixelfont.sizeOf(String)`
 - Added `Line.intersections(List<Line>)`
 - Updated example applications with latest camera features
+- Added `Window.isOpen()`
 
 ### 🪛 Bug Fixes
 

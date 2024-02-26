@@ -176,6 +176,11 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
+    public boolean isOpen() {
+        return frame.isVisible();
+    }
+
+    @Override
     public void update() {
         filesDropedOnWindow = null;
     }

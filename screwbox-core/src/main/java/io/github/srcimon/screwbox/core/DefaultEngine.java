@@ -64,8 +64,8 @@ class DefaultEngine implements Engine {
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
+        final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
-
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -73,7 +73,6 @@ class DefaultEngine implements Engine {
             }
         });
 
-        final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool(runnable -> {
             final Thread newThread = new Thread(runnable);
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
