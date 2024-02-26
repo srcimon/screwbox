@@ -172,7 +172,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Size size() {
-        return Size.of(frame.getWidth(), frame.getHeight());
+        return configuration.resolution();
     }
 
     @Override

@@ -9,7 +9,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed `Window.size()` when window has not been opened yet
 
 ### 🧽 Cleanup & refactoring
 
