@@ -8,16 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
 import static io.github.srcimon.screwbox.core.graphics.Color.*;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,13 +53,26 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    void drawRectangle_rotatedRectangle_fillsRectangleBlue() {
+    void drawRectangle_rotated_fillsRectangleBlue() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(20, 40), filled(BLUE).rotation(degrees(45)));
 
         assertThat(result.colorAt(14, 14)).isEqualTo(BLACK);
         assertThat(result.colorAt(14, 28)).isEqualTo(BLUE);
         assertThat(result.colorAt(38, 17)).isEqualTo(BLACK);
         assertThat(result.colorAt(38, 23)).isEqualTo(BLUE);
+    }
+
+    @Test
+    void drawRectangle_rotatedOutline_outlineRectangleBlue() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(20, 40), outline(BLUE).strokeWidth(3).rotation(degrees(45)));
+
+        assertThat(result.colorAt(14, 14)).isEqualTo(BLACK);
+        assertThat(result.colorAt(27, 9)).isEqualTo(BLUE);
+        assertThat(result.colorAt(27, 8)).isEqualTo(BLUE);
+        assertThat(result.colorAt(30, 35)).isEqualTo(BLUE);
+        assertThat(result.colorAt(14, 28)).isEqualTo(BLACK);
+        assertThat(result.colorAt(38, 17)).isEqualTo(BLACK);
+        assertThat(result.colorAt(38, 23)).isEqualTo(BLACK);
     }
 
     @Test
