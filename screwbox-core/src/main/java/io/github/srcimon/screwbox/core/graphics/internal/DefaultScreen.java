@@ -10,24 +10,20 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 
 import static java.lang.Math.round;
 
 public class DefaultScreen implements Screen {
 
+    private Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
-    private final ExecutorService executor;
 
-    private Renderer renderer;
-
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final ExecutorService executor) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
-        this.executor = executor;
     }
 
     @Override
@@ -164,7 +160,7 @@ public class DefaultScreen implements Screen {
     }
 
     public void setRenderer(final Renderer renderer) {
-        this.renderer = new AsyncRenderer(renderer, executor);
+        this.renderer = renderer;
     }
 
     private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
