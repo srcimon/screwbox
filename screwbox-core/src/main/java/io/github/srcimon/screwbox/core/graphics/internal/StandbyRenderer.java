@@ -14,11 +14,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public Sprite takeScreenshot() {
-        return null;
-    }
-
-    @Override
     public void fillWith(final Color color) {
         // does nothing
     }

@@ -32,9 +32,6 @@ class DefaultRenderImageTest {
     @Mock
     WindowFrame frame;
 
-    @Mock
-    Robot robot;
-
     Frame result;
     Renderer renderer;
     ExecutorService executor;
@@ -45,7 +42,7 @@ class DefaultRenderImageTest {
         Image image = new BufferedImage(80, 40, BufferedImage.TYPE_INT_ARGB);
         result = Frame.fromImage(image);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        renderer = new DefaultRenderer(frame, graphics, robot);
+        renderer = new DefaultRenderer(frame, graphics);
 
         BufferStrategy bufferStrategy = Mockito.mock(BufferStrategy.class);
         Canvas canvas = Mockito.mock(Canvas.class);

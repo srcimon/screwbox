@@ -10,10 +10,7 @@ public interface Renderer {
 
     void updateScreen(boolean antialiased);
 
-    Sprite takeScreenshot();
-
     void fillWith(Color color);
-
 
     void fillCircle(Offset offset, int diameter, Color color);
 

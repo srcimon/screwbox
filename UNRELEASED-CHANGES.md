@@ -14,6 +14,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed camera movement and zoom methods
+- Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
 
 ### 📦 Dependency updates

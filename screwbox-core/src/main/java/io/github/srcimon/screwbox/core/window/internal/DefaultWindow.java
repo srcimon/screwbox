@@ -110,17 +110,9 @@ public class DefaultWindow implements Window, Updatable {
 
         frame.getCanvas().createBufferStrategy(2);
         final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame, graphics, createRobot()), executor));
+        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame, graphics), executor));
         updateCursor();
         return this;
-    }
-
-    private Robot createRobot() {
-        try {
-            return new Robot();
-        } catch (final AWTException e) {
-            throw new IllegalStateException("could not create robot for screenshots");
-        }
     }
 
     @Override

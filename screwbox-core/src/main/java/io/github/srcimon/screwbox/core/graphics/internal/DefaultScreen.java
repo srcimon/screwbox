@@ -2,9 +2,13 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -14,10 +18,12 @@ public class DefaultScreen implements Screen {
 
     private Renderer renderer;
     private final WindowFrame frame;
+    private final Robot robot;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
         this.frame = frame;
+        this.robot = robot;
     }
 
     @Override
@@ -59,7 +65,13 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Sprite takeScreenshot() {
-        return renderer.takeScreenshot();
+        final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
+        final Rectangle rectangle = new Rectangle(frame.getX(),
+                frame.getY() + frame.getInsets().top + menuBarHeight,
+                frame.getCanvas().getWidth(),
+                frame.canvasHeight());
+        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        return Sprite.fromImage(screenCapture);
     }
 
     @Override
@@ -170,4 +182,5 @@ public class DefaultScreen implements Screen {
     private ScreenBounds screenBounds() {
         return new ScreenBounds(Offset.origin(), size());
     }
+
 }

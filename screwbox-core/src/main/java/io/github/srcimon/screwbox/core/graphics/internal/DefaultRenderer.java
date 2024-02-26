@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
@@ -21,15 +20,13 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
-    private final Robot robot;
     private final WindowFrame frame;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final WindowFrame frame, final Graphics2D graphics, final Robot robot) {
+    public DefaultRenderer(final WindowFrame frame, final Graphics2D graphics) {
         this.frame = frame;
-        this.robot = robot;
         this.graphics = graphics;
     }
 
@@ -51,17 +48,6 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Color color) {
         applyNewColor(color);
         graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-    }
-
-    @Override
-    public Sprite takeScreenshot() {
-        int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top + menuBarHeight,
-                frame.getCanvas().getWidth(),
-                frame.canvasHeight());
-        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
-        return Sprite.fromImage(screenCapture);
     }
 
     private void applyOpacityConfig(final Percent opacity) {

@@ -85,7 +85,7 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
-        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
+        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
         final DefaultWorld world = new DefaultWorld(screen);
@@ -236,5 +236,13 @@ class DefaultEngine implements Engine {
     private void exceptionHandler(final Throwable throwable) {
         stop();
         log().error(throwable);
+    }
+
+    private Robot createRobot() {
+        try {
+            return new Robot();
+        } catch (final AWTException e) {
+            throw new IllegalStateException("could not create robot for screenshots");
+        }
     }
 }

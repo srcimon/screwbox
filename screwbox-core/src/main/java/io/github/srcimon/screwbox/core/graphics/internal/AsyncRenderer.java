@@ -38,11 +38,6 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public Sprite takeScreenshot() {
-        return next.takeScreenshot();
-    }
-
-    @Override
     public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         renderTasks.active().add(() -> next.drawTextCentered(position, text, font, color));
     }
