@@ -6,14 +6,11 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
-import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.function.Supplier;
 
-import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
@@ -21,18 +18,17 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
-    private final WindowFrame frame;
+    private final Size canvasSize;
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final WindowFrame frame, final Graphics2D graphics) {
-        this.frame = frame;
-        this.graphics = graphics;
+    public DefaultRenderer(final Size canvasSize) {
+        this.canvasSize = canvasSize;
     }
 
     @Override
-    public void updateScreen(final Supplier<Graphics2D> graphicsSupplier) {
+    public void updateGraphics(final Supplier<Graphics2D> graphicsSupplier) {
         lastUpdateTime = Time.now();
         this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
@@ -42,7 +38,7 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void fillWith(final Color color) {
         applyNewColor(color);
-        graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+        graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
     }
 
     private void applyOpacityConfig(final Percent opacity) {

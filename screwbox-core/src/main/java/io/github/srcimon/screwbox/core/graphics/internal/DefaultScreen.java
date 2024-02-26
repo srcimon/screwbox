@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
@@ -183,7 +182,7 @@ public class DefaultScreen implements Screen {
                 return graphics;
             }
         };
-        renderer.updateScreen(graphicsSupplier);
+        renderer.updateGraphics(graphicsSupplier);
     }
 
     public void setRenderer(final Renderer renderer) {

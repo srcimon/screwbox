@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateScreen(Supplier<Graphics2D> graphicsSupplier);
+    void updateGraphics(Supplier<Graphics2D> graphicsSupplier);
 
     void fillWith(Color color);
 
