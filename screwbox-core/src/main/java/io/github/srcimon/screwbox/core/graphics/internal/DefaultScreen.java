@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
-import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
-import static java.lang.Math.getExponent;
 import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
@@ -68,7 +66,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Sprite takeScreenshot() {
-        if(!frame.isVisible()) {
+        if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opend first to create screenshot");
         }
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
@@ -163,13 +161,14 @@ public class DefaultScreen implements Screen {
     }
 
     private Graphics2D lastGraphics;
+
     public void updateScreen(final boolean antialiased) {
         final var graphicsSupplier = new Supplier<Graphics2D>() {
 
             @Override
             public Graphics2D get() {
                 frame.getCanvas().getBufferStrategy().show();
-                if(nonNull(lastGraphics)) {
+                if (nonNull(lastGraphics)) {
                     lastGraphics.dispose();
                 }
                 final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
@@ -182,7 +181,7 @@ public class DefaultScreen implements Screen {
                 return graphics;
             }
         };
-        renderer.updateGraphics(graphicsSupplier);
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
     }
 
     public void setRenderer(final Renderer renderer) {

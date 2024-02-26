@@ -34,7 +34,7 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
 
         verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
-        verify(renderer, never()).updateGraphics(any());
+        verify(renderer, never()).updateGraphicsContext(any());
     }
 
     @Test
@@ -42,11 +42,11 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         asyncRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
 
-        asyncRenderer.updateGraphics(null);
+        asyncRenderer.updateGraphicsContext(null);
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);
-        verify(renderer, timeout(1000)).updateGraphics(null);
+        verify(renderer, timeout(1000)).updateGraphicsContext(null);
     }
 
     @AfterEach

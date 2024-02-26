@@ -19,6 +19,7 @@
 - Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
 - Added better error message when trying to take screenshot before window is opend
+- Removed frame dependencies from renderer to enable render to draw on any graphics
 
 ### 📦 Dependency updates
 

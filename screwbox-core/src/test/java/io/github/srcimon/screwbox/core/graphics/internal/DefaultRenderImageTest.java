@@ -58,7 +58,7 @@ class DefaultRenderImageTest {
 
         renderer.fillWith(Color.RED);
 
-        renderer.updateGraphics(() -> null);
+        renderer.updateGraphicsContext(() -> null);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.RED);
         assertThat(result.colorAt(20, 30)).isEqualTo(Color.RED);
@@ -67,7 +67,7 @@ class DefaultRenderImageTest {
     @Test
     void drawRectangle_colorBlue_fillsRectangleBlue() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleDrawOptions.filled(BLUE));
-        renderer.updateGraphics(() -> null);
+        renderer.updateGraphicsContext(() -> null);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
         assertThat(result.colorAt(10, 10)).isEqualTo(BLUE);
@@ -78,7 +78,7 @@ class DefaultRenderImageTest {
     @Test
     void drawRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleDrawOptions.filled(BLUE.opacity(half())));
-        renderer.updateGraphics(() -> null);
+        renderer.updateGraphicsContext(() -> null);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
         assertThat(result.colorAt(10, 10).b()).isEqualTo(255);
@@ -91,7 +91,7 @@ class DefaultRenderImageTest {
     @Test
     void drawRectangle_outline_onlyPaintsOutline() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(10, 10), RectangleDrawOptions.outline(BLUE).strokeWidth(2));
-        renderer.updateGraphics(() -> null);
+        renderer.updateGraphicsContext(() -> null);
 
         assertThat(result.colorAt(0, 0)).isEqualTo(TRANSPARENT);
         assertThat(result.colorAt(10, 10)).isEqualTo(BLUE);

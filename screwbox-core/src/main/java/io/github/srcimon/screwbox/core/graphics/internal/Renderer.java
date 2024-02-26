@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateGraphics(Supplier<Graphics2D> graphicsSupplier);
+    void updateGraphicsContext(Supplier<Graphics2D> graphicsSupplier, final Size canvasSize);
 
     void fillWith(Color color);
 

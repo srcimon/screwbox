@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class StandbyRenderer implements Renderer {
 
     @Override
-    public void updateGraphics(final Supplier<Graphics2D> graphicsSupplier) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         // does nothing
     }
 

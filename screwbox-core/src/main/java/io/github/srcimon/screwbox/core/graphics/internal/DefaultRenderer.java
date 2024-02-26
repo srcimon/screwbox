@@ -18,18 +18,15 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
-    private final Size canvasSize;
     private Time lastUpdateTime = Time.now();
+    private Size canvasSize;
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final Size canvasSize) {
-        this.canvasSize = canvasSize;
-    }
-
     @Override
-    public void updateGraphics(final Supplier<Graphics2D> graphicsSupplier) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         lastUpdateTime = Time.now();
+        this.canvasSize = canvasSize;
         this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
         fillWith(Color.BLACK);
