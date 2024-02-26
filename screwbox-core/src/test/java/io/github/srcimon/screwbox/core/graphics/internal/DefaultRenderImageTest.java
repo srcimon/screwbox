@@ -8,12 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
-import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
-import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
+import static io.github.srcimon.screwbox.core.Rotation.degrees;
+import static io.github.srcimon.screwbox.core.graphics.Color.*;
+import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,15 +38,15 @@ class DefaultRenderImageTest {
 
     @Test
     void fillWith_colorRed_fillsWholeImageWithRed() {
-        renderer.fillWith(Color.RED);
+        renderer.fillWith(RED);
 
-        assertThat(result.colorAt(0, 0)).isEqualTo(Color.RED);
-        assertThat(result.colorAt(20, 30)).isEqualTo(Color.RED);
+        assertThat(result.colorAt(0, 0)).isEqualTo(RED);
+        assertThat(result.colorAt(20, 30)).isEqualTo(RED);
     }
 
     @Test
     void drawRectangle_colorBlue_fillsRectangleBlue() {
-        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleDrawOptions.filled(BLUE));
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), filled(BLUE));
 
         assertThat(result.colorAt(0, 0)).isEqualTo(BLACK);
         assertThat(result.colorAt(10, 10)).isEqualTo(BLUE);
@@ -51,8 +55,18 @@ class DefaultRenderImageTest {
     }
 
     @Test
+    void drawRectangle_rotatedRectangle_fillsRectangleBlue() {
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(20, 40), filled(BLUE).rotation(degrees(45)));
+
+        assertThat(result.colorAt(14, 14)).isEqualTo(BLACK);
+        assertThat(result.colorAt(14, 28)).isEqualTo(BLUE);
+        assertThat(result.colorAt(38, 17)).isEqualTo(BLACK);
+        assertThat(result.colorAt(38, 23)).isEqualTo(BLUE);
+    }
+
+    @Test
     void drawRectangle_colorBlueWithOpacityHalf_fillsRectangleBlueAndAppliesOpacityChanges() {
-        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), RectangleDrawOptions.filled(BLUE.opacity(half())));
+        renderer.drawRectangle(Offset.at(10, 10), Size.of(4, 4), filled(BLUE.opacity(half())));
 
         assertThat(result.colorAt(0, 0)).isEqualTo(BLACK);
         assertThat(result.colorAt(10, 10)).isEqualTo(Color.rgb(0, 0, 127));
