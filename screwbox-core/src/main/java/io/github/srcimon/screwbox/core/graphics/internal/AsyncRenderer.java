@@ -3,8 +3,11 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.utils.Latch;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,9 +32,9 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateScreen(final boolean antialiased) {
+    public void updateScreen(final Supplier<Graphics2D> graphicsSupplier) {
         waitForCurrentRenderingToEnd();
-        next.updateScreen(antialiased);
+        next.updateScreen(graphicsSupplier);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());

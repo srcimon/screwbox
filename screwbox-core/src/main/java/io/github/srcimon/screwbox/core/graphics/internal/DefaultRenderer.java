@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -31,16 +32,10 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void updateScreen(final boolean antialiased) {
+    public void updateScreen(final Supplier<Graphics2D> graphicsSupplier) {
         lastUpdateTime = Time.now();
-        frame.getCanvas().getBufferStrategy().show();
-        graphics.dispose();
-        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        if (antialiased) {
-            graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-            graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-        }
         fillWith(Color.BLACK);
     }
 

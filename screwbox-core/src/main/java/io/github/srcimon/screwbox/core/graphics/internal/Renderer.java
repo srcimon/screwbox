@@ -3,12 +3,15 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateScreen(boolean antialiased);
+    void updateScreen(Supplier<Graphics2D> graphicsSupplier);
 
     void fillWith(Color color);
 

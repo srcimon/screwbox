@@ -10,9 +10,14 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
+import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+import static java.lang.Math.getExponent;
 import static java.lang.Math.round;
+import static java.util.Objects.nonNull;
 
 public class DefaultScreen implements Screen {
 
@@ -158,8 +163,27 @@ public class DefaultScreen implements Screen {
         return this;
     }
 
+    private Graphics2D lastGraphics;
     public void updateScreen(final boolean antialiased) {
-        renderer.updateScreen(antialiased);
+        final var graphicsSupplier = new Supplier<Graphics2D>() {
+
+            @Override
+            public Graphics2D get() {
+                frame.getCanvas().getBufferStrategy().show();
+                if(nonNull(lastGraphics)) {
+                    lastGraphics.dispose();
+                }
+                final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+
+                if (antialiased) {
+                    graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                    graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+                }
+                lastGraphics = graphics;
+                return graphics;
+            }
+        };
+        renderer.updateScreen(graphicsSupplier);
     }
 
     public void setRenderer(final Renderer renderer) {
