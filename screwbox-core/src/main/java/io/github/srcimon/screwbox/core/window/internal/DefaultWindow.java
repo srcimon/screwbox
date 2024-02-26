@@ -109,18 +109,10 @@ public class DefaultWindow implements Window, Updatable {
         executor.submit(new InitializeFontDrawingTask());
 
         frame.getCanvas().createBufferStrategy(2);
-        final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame, graphics, createRobot()), executor));
+        final AsyncRenderer asyncRenderer = new AsyncRenderer(new DefaultRenderer(), executor);
+        screen.setRenderer(asyncRenderer);
         updateCursor();
         return this;
-    }
-
-    private Robot createRobot() {
-        try {
-            return new Robot();
-        } catch (final AWTException e) {
-            throw new IllegalStateException("could not create robot for screenshots");
-        }
     }
 
     @Override
@@ -178,7 +170,12 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Size size() {
-        return Size.of(frame.getWidth(), frame.getHeight());
+        return configuration.resolution();
+    }
+
+    @Override
+    public boolean isOpen() {
+        return frame.isVisible();
     }
 
     @Override

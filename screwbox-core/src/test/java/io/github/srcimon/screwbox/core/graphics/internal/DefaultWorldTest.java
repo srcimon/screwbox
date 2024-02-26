@@ -5,9 +5,9 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,15 +23,24 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DefaultWorldTest {
 
-    @InjectMocks
     DefaultWorld world;
 
     @Mock
     Screen screen;
 
+    @BeforeEach
+    void setUp() {
+        when(screen.size()).thenReturn(Size.of(1024, 768));
+        world = new DefaultWorld(screen);
+    }
+
+    @Test
+    void visibleArea_noCameraUpdateYet_returnsVisibleArea() {
+        assertThat(world.visibleArea()).isEqualTo(Bounds.$$(-512, -384, 1024, 768));
+    }
+
     @Test
     void updateCameraPosition_updatesVisibleArea() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
         world.updateCameraPosition(Vector.of(100, 20));
 
         assertThat(world.visibleArea())
@@ -40,7 +49,6 @@ class DefaultWorldTest {
 
     @Test
     void drawRectangle_inBounds_callsWindow() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
         world.updateCameraPosition(zero());
         world.updateZoom(2.5);
 
@@ -65,8 +73,6 @@ class DefaultWorldTest {
 
     @Test
     void restrictZoomRangeTo_validMinAndMax_restrictsZoomRange() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
-
         world.restrictZoomRangeTo(1, 5);
 
         assertThat(world.updateZoom(0.2)).isEqualTo(1);
@@ -78,7 +84,6 @@ class DefaultWorldTest {
 
     @Test
     void drawSprite_callsWindow() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
         Sprite sprite = invisible();
 
         world.updateCameraPosition($(4, 2));

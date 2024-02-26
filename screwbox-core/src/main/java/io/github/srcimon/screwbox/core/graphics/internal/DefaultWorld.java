@@ -19,14 +19,11 @@ public class DefaultWorld implements World {
     private double minZoom = 0.5;
     private double maxZoom = 10;
 
-    private Bounds visibleArea = Bounds.atOrigin(
-            -Double.MAX_VALUE / 2,
-            -Double.MAX_VALUE / 2,
-            Double.MAX_VALUE,
-            Double.MAX_VALUE);
+    private Bounds visibleArea;
 
     public DefaultWorld(final Screen screen) {
         this.screen = screen;
+        recalculateVisibleArea();
     }
 
     public void restrictZoomRangeTo(final double min, final double max) {
@@ -58,7 +55,7 @@ public class DefaultWorld implements World {
     }
 
     public void recalculateVisibleArea() {
-        this.visibleArea = Bounds.atPosition(cameraPosition,
+        visibleArea = Bounds.atPosition(cameraPosition,
                 screen.size().width() / zoom,
                 screen.size().height() / zoom);
     }

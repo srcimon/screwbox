@@ -150,4 +150,9 @@ public interface Window {
      * Returns the current size of the {@link Window}.
      */
     Size size();
+
+    /**
+     * Returns {@code true} if the {@link Window} is currently open.
+     */
+    boolean isOpen();
 }

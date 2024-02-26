@@ -6,14 +6,11 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.function.Supplier;
 
-import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
@@ -21,47 +18,24 @@ public class DefaultRenderer implements Renderer {
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
-    private final Robot robot;
-    private final WindowFrame frame;
     private Time lastUpdateTime = Time.now();
+    private Size canvasSize;
     private Graphics2D graphics;
     private Color lastUsedColor;
 
-    public DefaultRenderer(final WindowFrame frame, final Graphics2D graphics, final Robot robot) {
-        this.frame = frame;
-        this.robot = robot;
-        this.graphics = graphics;
-    }
-
     @Override
-    public void updateScreen(final boolean antialiased) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         lastUpdateTime = Time.now();
-        frame.getCanvas().getBufferStrategy().show();
-        graphics.dispose();
-        graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+        this.canvasSize = canvasSize;
+        this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        if (antialiased) {
-            graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-            graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-        }
         fillWith(Color.BLACK);
     }
 
     @Override
     public void fillWith(final Color color) {
         applyNewColor(color);
-        graphics.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-    }
-
-    @Override
-    public Sprite takeScreenshot() {
-        int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX(),
-                frame.getY() + frame.getInsets().top + menuBarHeight,
-                frame.getCanvas().getWidth(),
-                frame.canvasHeight());
-        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
-        return Sprite.fromImage(screenCapture);
+        graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
@@ -119,8 +93,7 @@ public class DefaultRenderer implements Renderer {
         resetOpacityConfig(opacity);
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale,
-                                     final Flip flip) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale, final Flip flip) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
@@ -128,7 +101,7 @@ public class DefaultRenderer implements Renderer {
         final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         transform.scale(scale * (flip.isHorizontal() ? -1 : 1), scale * (flip.isVertical() ? -1 : 1));
-        graphics.drawImage(image, transform, frame);
+        graphics.drawImage(image, transform, null);
     }
 
     @Override

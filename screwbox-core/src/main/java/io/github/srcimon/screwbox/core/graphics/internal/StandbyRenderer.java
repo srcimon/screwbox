@@ -3,19 +3,17 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 public class StandbyRenderer implements Renderer {
 
     @Override
-    public void updateScreen(final boolean antialiased) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         // does nothing
-    }
-
-    @Override
-    public Sprite takeScreenshot() {
-        return null;
     }
 
     @Override

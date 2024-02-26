@@ -3,17 +3,17 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateScreen(boolean antialiased);
-
-    Sprite takeScreenshot();
+    void updateGraphicsContext(Supplier<Graphics2D> graphicsSupplier, final Size canvasSize);
 
     void fillWith(Color color);
-
 
     void fillCircle(Offset offset, int diameter, Color color);
 

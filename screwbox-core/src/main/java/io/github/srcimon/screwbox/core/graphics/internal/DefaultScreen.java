@@ -2,22 +2,30 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static java.awt.RenderingHints.*;
 import static java.lang.Math.round;
+import static java.util.Objects.nonNull;
 
 public class DefaultScreen implements Screen {
 
     private Renderer renderer;
     private final WindowFrame frame;
+    private final Robot robot;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
         this.frame = frame;
+        this.robot = robot;
     }
 
     @Override
@@ -56,10 +64,19 @@ public class DefaultScreen implements Screen {
         return this;
     }
 
-
     @Override
     public Sprite takeScreenshot() {
-        return renderer.takeScreenshot();
+        if (!frame.isVisible()) {
+            throw new IllegalStateException("window must be opend first to create screenshot");
+        }
+        final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
+        final Rectangle rectangle = new Rectangle(frame.getX(),
+                frame.getY() + frame.getInsets().top + menuBarHeight,
+                frame.getCanvas().getWidth(),
+                frame.canvasHeight());
+
+        final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
+        return Sprite.fromImage(screenCapture);
     }
 
     @Override
@@ -143,11 +160,31 @@ public class DefaultScreen implements Screen {
         return this;
     }
 
+    private Graphics2D lastGraphics;
+
     public void updateScreen(final boolean antialiased) {
-        renderer.updateScreen(antialiased);
+        final var graphicsSupplier = new Supplier<Graphics2D>() {
+
+            @Override
+            public Graphics2D get() {
+                frame.getCanvas().getBufferStrategy().show();
+                if (nonNull(lastGraphics)) {
+                    lastGraphics.dispose();
+                }
+                final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+
+                if (antialiased) {
+                    graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                    graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+                }
+                lastGraphics = graphics;
+                return graphics;
+            }
+        };
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
     }
 
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(final Renderer renderer) {
         this.renderer = renderer;
     }
 
@@ -170,4 +207,5 @@ public class DefaultScreen implements Screen {
     private ScreenBounds screenBounds() {
         return new ScreenBounds(Offset.origin(), size());
     }
+
 }

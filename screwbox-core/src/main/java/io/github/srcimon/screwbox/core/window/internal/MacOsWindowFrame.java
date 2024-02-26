@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.utils.MacOsSupport;
 
 import java.awt.*;
@@ -9,6 +10,10 @@ public class MacOsWindowFrame extends WindowFrame {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public MacOsWindowFrame(Size initialSize) {
+        super(initialSize);
+    }
 
     @Override
     public void makeFullscreen(final GraphicsDevice graphicsDevice) {

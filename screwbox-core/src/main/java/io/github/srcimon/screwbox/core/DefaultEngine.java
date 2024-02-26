@@ -64,7 +64,10 @@ class DefaultEngine implements Engine {
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
-        final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
+        final GraphicsConfiguration configuration = new GraphicsConfiguration();
+        final WindowFrame frame = MacOsSupport.isMacOs()
+                ? new MacOsWindowFrame(configuration.resolution())
+                : new WindowFrame(configuration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -73,7 +76,6 @@ class DefaultEngine implements Engine {
             }
         });
 
-        final GraphicsConfiguration configuration = new GraphicsConfiguration();
         executor = Executors.newCachedThreadPool(runnable -> {
             final Thread newThread = new Thread(runnable);
             newThread.setUncaughtExceptionHandler((thread, throwable) -> exceptionHandler(throwable));
@@ -85,7 +87,7 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
-        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer());
+        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
         final DefaultWorld world = new DefaultWorld(screen);
@@ -236,5 +238,13 @@ class DefaultEngine implements Engine {
     private void exceptionHandler(final Throwable throwable) {
         stop();
         log().error(throwable);
+    }
+
+    private Robot createRobot() {
+        try {
+            return new Robot();
+        } catch (final AWTException e) {
+            throw new IllegalStateException("could not create robot for screenshots");
+        }
     }
 }
