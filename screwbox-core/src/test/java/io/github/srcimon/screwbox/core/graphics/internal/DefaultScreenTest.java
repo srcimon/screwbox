@@ -1,11 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,6 +56,27 @@ class DefaultScreenTest {
     }
 
     @Test
+    void isVisible_boundsPartiallyInsideCanvas_isTrue() {
+        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
+
+        assertThat(screen.isVisible(new ScreenBounds(200, 0, 100, 200))).isTrue();
+    }
+
+    @Test
+    void isVisible_boundsInsideCanvas_isTrue() {
+        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
+
+        assertThat(screen.isVisible(new ScreenBounds(45, 45, 50, 50))).isTrue();
+    }
+
+    @Test
+    void isVisible_boundsOutsideCanvas_isFalse() {
+        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
+
+        assertThat(screen.isVisible(new ScreenBounds(450, 450, 50, 50))).isFalse();
+    }
+
+    @Test
     void isVisible_outsideCanvas_isFalse() {
         when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
 
@@ -71,6 +89,7 @@ class DefaultScreenTest {
 
         verify(renderer).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
     }
+
     @Test
     void takeScreenshot_windowNotOpened_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
