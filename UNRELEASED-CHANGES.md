@@ -18,7 +18,7 @@
 - Renamed camera movement and zoom methods
 - Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
-- Added better error message when trying to take screenshot before window is opend
+- Added better error message when trying to take screenshot before window is opened
 - Removed frame dependencies from renderer to enable render to draw on any graphics
 
 ### 📦 Dependency updates

@@ -163,10 +163,7 @@ public class DefaultScreen implements Screen {
     private Graphics2D lastGraphics;
 
     public void updateScreen(final boolean antialiased) {
-        final var graphicsSupplier = new Supplier<Graphics2D>() {
-
-            @Override
-            public Graphics2D get() {
+        final Supplier<Graphics2D> graphicsSupplier = () -> {
                 frame.getCanvas().getBufferStrategy().show();
                 if (nonNull(lastGraphics)) {
                     lastGraphics.dispose();
@@ -179,7 +176,6 @@ public class DefaultScreen implements Screen {
                 }
                 lastGraphics = graphics;
                 return graphics;
-            }
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
     }
