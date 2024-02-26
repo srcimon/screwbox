@@ -50,6 +50,14 @@ class AsyncRendererTest {
         verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10));
     }
 
+    @Test
+    void fillWith_afterUpdateOfGraphicsContext_callsNextRenderer() {
+        asyncRenderer.fillWith(Color.BLUE);
+
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
+        verify(renderer, timeout(1000)).fillWith(Color.BLUE);
+    }
+
     @AfterEach
     void afterEach() {
         executor.shutdown();
