@@ -1,9 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,8 +17,8 @@ import java.awt.image.BufferedImage;
 
 import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultScreenTest {
@@ -40,6 +41,7 @@ class DefaultScreenTest {
 
         verify(renderer).fillWith(Color.BLUE);
     }
+
     @Test
     void position_returnsScreenPosition() {
         when(frame.getBounds()).thenReturn(new Rectangle(40, 30, 1024, 768));
@@ -63,10 +65,19 @@ class DefaultScreenTest {
     }
 
     @Test
+    void takeScreenshot_windowNotOpened_throwsException() {
+        assertThatThrownBy(() -> screen.takeScreenshot())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("window must be opend first to create screenshot");
+
+    }
+
+    @Test
     void takeScreenshot_noMenuBar_createsScreenshotFromWholeWindow() {
         Canvas canvas = mock(Canvas.class);
         when(canvas.getWidth()).thenReturn(640);
         var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
+        when(frame.isVisible()).thenReturn(true);
         when(frame.getX()).thenReturn(120);
         when(frame.getY()).thenReturn(200);
         when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
@@ -82,6 +93,7 @@ class DefaultScreenTest {
     void takeScreenshot_withMenuBar_createsScreenshoWithoutMenuBar() {
         Canvas canvas = mock(Canvas.class);
         when(canvas.getWidth()).thenReturn(640);
+        when(frame.isVisible()).thenReturn(true);
         var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
         JMenuBar menuBar = mock(JMenuBar.class);
         when(menuBar.getHeight()).thenReturn(20);

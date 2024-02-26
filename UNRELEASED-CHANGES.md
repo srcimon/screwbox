@@ -11,6 +11,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed `Window.size()` when window has not been opened yet
+- Added better error message when trying to take screenshot before window is opend
 
 ### 🧽 Cleanup & refactoring
 
