@@ -5,11 +5,9 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -38,7 +36,7 @@ class DefaultWorldTest {
 
     @Test
     void visibleArea_noCameraUpdateYet_returnsVisibleArea() {
-      assertThat(world.visibleArea()).isEqualTo(Bounds.$$(-512, -384, 1024, 768));
+        assertThat(world.visibleArea()).isEqualTo(Bounds.$$(-512, -384, 1024, 768));
     }
 
     @Test
