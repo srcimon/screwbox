@@ -114,7 +114,7 @@ public class DefaultRenderer implements Renderer {
         final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
         transform.scale(scale * (flip.isHorizontal() ? -1 : 1), scale * (flip.isVertical() ? -1 : 1));
-        graphics.drawImage(image, transform, frame);
+        graphics.drawImage(image, transform, null);
     }
 
     @Override
