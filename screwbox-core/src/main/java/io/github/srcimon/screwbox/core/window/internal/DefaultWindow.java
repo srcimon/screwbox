@@ -110,7 +110,9 @@ public class DefaultWindow implements Window, Updatable {
 
         frame.getCanvas().createBufferStrategy(2);
         final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-        screen.setRenderer(new AsyncRenderer(new DefaultRenderer(frame, graphics), executor));
+        final DefaultRenderer defaultRenderer = new DefaultRenderer(frame, graphics);
+        final AsyncRenderer asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
+        screen.setRenderer(asyncRenderer);
         updateCursor();
         return this;
     }

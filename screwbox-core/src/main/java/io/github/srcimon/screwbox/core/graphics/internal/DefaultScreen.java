@@ -159,7 +159,7 @@ public class DefaultScreen implements Screen {
         renderer.updateScreen(antialiased);
     }
 
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(final Renderer renderer) {
         this.renderer = renderer;
     }
 
