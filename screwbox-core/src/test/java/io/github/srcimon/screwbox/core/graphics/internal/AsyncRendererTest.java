@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
 
         verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
-        verify(renderer, never()).updateGraphicsContext(any());
+        verify(renderer, never()).updateGraphicsContext(any(), any());
     }
 
     @Test
@@ -42,11 +43,11 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         asyncRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
 
-        asyncRenderer.updateGraphicsContext(null);
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
         verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);
-        verify(renderer, timeout(1000)).updateGraphicsContext(null);
+        verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10));
     }
 
     @AfterEach

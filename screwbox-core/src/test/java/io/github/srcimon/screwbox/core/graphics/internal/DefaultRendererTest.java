@@ -1,7 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,35 +17,31 @@ import static org.mockito.Mockito.*;
 class DefaultRendererTest {
 
     @Mock
-    WindowFrame frame;
-
-    @Mock
     Graphics2D graphics;
 
     @InjectMocks
     DefaultRenderer renderer;
 
-    @Test
-    void fillWith_newColor_changesColorAndFillsRect() {
-        when(frame.getWidth()).thenReturn(640);
-        when(frame.getHeight()).thenReturn(480);
-
-        renderer.fillWith(Color.RED);
-
-        verify(graphics).setColor(new java.awt.Color(255, 0, 0));
-        verify(graphics).fillRect(0, 0, 640, 480);
+    @BeforeEach
+    void setUp() {
+        renderer.updateGraphicsContext(() -> graphics, Size.of(640, 480));
     }
 
     @Test
-    void fillWith_sameColor_changesColorOnlyOnce() {
-        when(frame.getWidth()).thenReturn(640);
-        when(frame.getHeight()).thenReturn(480);
-
-        renderer.fillWith(Color.RED);
+    void fillWith_newColor_changesColorAndFillsRect() {
         renderer.fillWith(Color.RED);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
         verify(graphics, times(2)).fillRect(0, 0, 640, 480);
+    }
+
+    @Test
+    void fillWith_sameColor_changesColorOnlyOnce() {
+        renderer.fillWith(Color.RED);
+        renderer.fillWith(Color.RED);
+
+        verify(graphics).setColor(new java.awt.Color(255, 0, 0));
+        verify(graphics, times(3)).fillRect(0, 0, 640, 480);
     }
 
 }
