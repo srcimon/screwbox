@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.assertj.core.api.Assertions;
@@ -64,6 +65,12 @@ class DefaultScreenTest {
         assertThat(screen.isVisible(Offset.at(-20, 40))).isFalse();
     }
 
+    @Test
+    void drawRectangle_callsRenderer() {
+        screen.drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
+
+        verify(renderer).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
+    }
     @Test
     void takeScreenshot_windowNotOpened_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
