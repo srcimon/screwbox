@@ -10,14 +10,15 @@
 
 ### 🪛 Bug Fixes
 
-- Fixed `Window.size()` when window has not been opened yet
-- Added better error message when trying to take screenshot before window is opend
+- Fixed `Window.size()` and `Screen.size()` when window has not been opened yet
+- Initial `World.visibleArea()` drastically reduced via anticipated `Screen.size()`
 
 ### 🧽 Cleanup & refactoring
 
 - Renamed camera movement and zoom methods
 - Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
+- Added better error message when trying to take screenshot before window is opend
 
 ### 📦 Dependency updates
 

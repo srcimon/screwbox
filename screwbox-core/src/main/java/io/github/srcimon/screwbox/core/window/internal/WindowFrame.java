@@ -16,8 +16,10 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private boolean hasFocus;
 
     private final Canvas canvas;
+    private final Size initialSize;
 
-    public WindowFrame() {
+    public WindowFrame(final Size initialSize) {
+        this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();
         add(canvas);
@@ -56,6 +58,8 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public Size getCanvasSize() {
         final var bounds = getCanvas().getBounds();
-        return Size.of(bounds.width, bounds.height);
+        return bounds.width == 0
+                ? initialSize
+                : Size.of(bounds.width, bounds.height);
     }
 }

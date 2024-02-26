@@ -65,7 +65,10 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name) {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final WindowFrame frame = MacOsSupport.isMacOs() ? new MacOsWindowFrame() : new WindowFrame();
+        final WindowFrame frame = MacOsSupport.isMacOs()
+                ? new MacOsWindowFrame(configuration.resolution())
+                : new WindowFrame(configuration.resolution());
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
