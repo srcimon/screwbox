@@ -85,7 +85,7 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
-        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
+        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot(), executor);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
         final DefaultWorld world = new DefaultWorld(screen);
