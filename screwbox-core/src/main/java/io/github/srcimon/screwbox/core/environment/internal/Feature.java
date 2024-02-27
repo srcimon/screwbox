@@ -39,7 +39,8 @@ public enum Feature {
             new GravitySystem(),
             new MagnetSystem(),
             new OptimizePhysicsPerformanceSystem(),
-            new PhysicsSystem()
+            new PhysicsSystem(),
+            new ChaoticMovementSystem()
     ),
 
     LIGHT(

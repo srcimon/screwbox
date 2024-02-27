@@ -9,6 +9,7 @@
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
 - Added `Frame.listPixelDifferences(Frame)`
+- Added `ChaoticMovementEntity` and `ChaoticMovementEntity`
 
 ### 🪛 Bug Fixes
 
