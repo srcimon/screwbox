@@ -45,13 +45,23 @@ public interface World {
 
     Bounds visibleArea();
 
-    //TODO javadoc
+    /**
+     * Draw a rectangle on the {@link World} using {@link RectangleDrawOptions}.
+     */
     World drawRectangle(Bounds bounds, RectangleDrawOptions options);
 
-    //TODO javadoc
+    /**
+     * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
+     * 
+     * @see #drawLine(Line, LineDrawOptions) 
+     */
     World drawLine(Vector from, Vector to, LineDrawOptions options);
 
-    //TODO javadoc and test
+    /**
+     * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
+     *
+     * @see #drawLine(Vector, Vector, LineDrawOptions)
+     */
     default World drawLine(final Line line, final LineDrawOptions options) {
         return drawLine(line.from(), line.to(), options);
     }
