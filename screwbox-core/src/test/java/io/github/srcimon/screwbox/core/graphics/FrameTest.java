@@ -123,4 +123,24 @@ class FrameTest {
         assertThat(result.colorAt(0, 0)).isEqualTo(Color.TRANSPARENT);
         assertThat(result.colorAt(0, 3)).isEqualTo(Color.rgb(102, 57, 49));
     }
+
+    @Test
+    void listPixelDifferences_differentSizes_throwsException() {
+        Frame other = Frame.invisible();
+        assertThatThrownBy(() -> frame.listPixelDifferences(other))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("other frame must have identical size to compare pixels");
+    }
+
+    @Test
+    void listPixelDifferences_sameFrame_noDifferences() {
+        assertThat(frame.listPixelDifferences(frame)).isEmpty();
+    }
+
+    @Test
+    void listPixelDifferences_differentImages_listsDifferences() {
+        var other = Frame.fromFile("transparent.png");
+
+        assertThat(frame.listPixelDifferences(other)).hasSize(256).contains(Offset.at(0,0));
+    }
 }

@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanc
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
+import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
@@ -177,6 +178,7 @@ public interface Environment {
      * @see MagnetSystem
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
+     * @see ChaoticMovementSystem
      */
     Environment enablePhysics();
 

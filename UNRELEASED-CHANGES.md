@@ -7,6 +7,9 @@
 - Added `Line.intersections(List<Line>)`
 - Updated example applications with latest camera features
 - Added `Window.isOpen()`
+- Added `Size.allPixels()`
+- Added `Frame.listPixelDifferences(Frame)`
+- Added `ChaoticMovementEntity` and `ChaoticMovementEntity`
 
 ### 🪛 Bug Fixes
 

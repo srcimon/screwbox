@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -120,6 +122,19 @@ public class Size implements Serializable, Comparable<Size> {
 
     public Offset center() {
         return Offset.at(width / 2.0, height / 2.0);
+    }
+
+    /**
+     * Returns a list off all pixel {@link Offset}s within this {@link Size}.
+     */
+    public List<Offset> allPixels() {
+        final List<Offset> allPixels = new ArrayList<>();
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
+                allPixels.add(Offset.at(x, y));
+            }
+        }
+        return allPixels;
     }
 
 }
