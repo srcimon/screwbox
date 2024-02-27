@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,6 +65,19 @@ class SizeTest {
         Collections.sort(dimensions);
 
         assertThat(dimensions).containsSequence(lowRes, mediumRes, highRes);
+    }
+
+    @Test
+    void allPixels_smallSize_containsEveryPixel() {
+        List<Offset> pixels = Size.of(3, 2).allPixels();
+
+        assertThat(pixels).containsExactly(
+                Offset.at(0, 0),
+                Offset.at(0, 1),
+                Offset.at(1, 0),
+                Offset.at(1, 1),
+                Offset.at(2, 0),
+                Offset.at(2, 1));
     }
 
 }
