@@ -14,8 +14,8 @@ import java.awt.image.BufferedImage;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
-import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
-import static io.github.srcimon.screwbox.core.graphics.Color.RED;
+import static io.github.srcimon.screwbox.core.graphics.Color.*;
+import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,6 +76,20 @@ class DefaultRenderImageTest {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(10, 10), RectangleDrawOptions.outline(BLUE).strokeWidth(2));
 
         verifyIsIdenticalWithReferenceImage("drawRectangle_outline_onlyPaintsOutline.png");
+    }
+
+    @Test
+    void drawLine_usingThickStroke_paintsUsingThickStroke() {
+        renderer.drawLine(Offset.at(4, 5), Offset.at(20, 20), color(ORANGE).strokeWidth(2));
+
+        verifyIsIdenticalWithReferenceImage("drawLine_usingThickStroke_paintsUsingThickStroke.png");
+    }
+
+    @Test
+    void drawLine_noStrokeSet_paintsUsingThinStroke() {
+        renderer.drawLine(Offset.at(8, 1), Offset.at(40, 30), color(ORANGE));
+
+        verifyIsIdenticalWithReferenceImage("drawLine_noStrokeSet_paintsUsingThinStroke.png");
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {

@@ -195,10 +195,15 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
         applyNewColor(options.color());
-        var oldStroke = graphics.getStroke();
-        graphics.setStroke(new BasicStroke(options.strokeWidth()));
-        graphics.drawLine(from.x(), from.y(), to.x(), to.y());
-        graphics.setStroke(oldStroke);
+        if (options.strokeWidth() == 1) {
+            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+        } else {
+            var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.setStroke(oldStroke);
+        }
+
     }
 
 }
