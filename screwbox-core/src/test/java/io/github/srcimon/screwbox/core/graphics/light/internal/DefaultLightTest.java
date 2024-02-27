@@ -108,6 +108,35 @@ class DefaultLightTest {
     }
 
     @Test
+    void render_spotlightAndShadowCaster_rendersImage() {
+        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
+        light.addShadowCaster($$(30, 75, 6, 6));
+        light.addSpotLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
+
+        light.render();
+        var offset = ArgumentCaptor.forClass(Offset.class);
+        var resolution = ArgumentCaptor.forClass(Double.class);
+        var opacity = ArgumentCaptor.forClass(Percent.class);
+
+        verify(screen).drawSprite(
+                spriteCaptor.capture(),
+                offset.capture(),
+                resolution.capture(),
+                opacity.capture());
+
+        Frame resultImage = spriteCaptor.getValue().get().singleFrame();
+
+        Color colorInShadow = resultImage.colorAt(78, 77);
+        assertThat(colorInShadow).isNotEqualTo(Color.BLACK);
+
+        Color colorInLight = resultImage.colorAt(93, 83);
+        assertThat(colorInLight.r()).isEqualTo(248);
+        assertThat(colorInLight.g()).isZero();
+        assertThat(colorInLight.b()).isZero();
+        assertThat(colorInLight.opacity().value()).isPositive();
+    }
+
+    @Test
     void render_renderAlreadyCalled_throwsException() {
         light.render();
 
