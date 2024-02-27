@@ -1,15 +1,16 @@
 ### 🚀 Features & improvements
 
-- Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
+- Optimized drawing of lines using `LineDrawOptions` (##206)
+- Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
+- Updated example applications with latest camera features
+- Added `ChaoticMovementEntity` and `ChaoticMovementEntity`
 - Added `Vector.nearestOf(List<Vector>)`
 - Added `Pixelfont.sizeOf(String)`
 - Added `Line.intersections(List<Line>)`
-- Updated example applications with latest camera features
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
 - Added `Frame.listPixelDifferences(Frame)`
-- Added `ChaoticMovementEntity` and `ChaoticMovementEntity`
 
 ### 🪛 Bug Fixes
 
