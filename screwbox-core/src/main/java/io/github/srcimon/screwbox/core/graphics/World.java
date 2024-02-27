@@ -32,8 +32,10 @@ public interface World {
 
     World drawTextCentered(Vector position, String text, Font font, Color color);
 
+    @Deprecated
     World drawLine(Vector from, Vector to, Color color);
 
+    @Deprecated
     default World drawLine(final Line line, final Color color) {
         return drawLine(line.from(), line.to(), color);
     }
@@ -51,5 +53,14 @@ public interface World {
 
     Bounds visibleArea();
 
+    //TODO javadoc
     World drawRectangle(Bounds bounds, RectangleDrawOptions options);
+
+    //TODO javadoc
+    World drawLine(Vector from, Vector to, LineDrawOptions options);
+
+    //TODO javadoc and test
+    default World drawLine(final Line line, final LineDrawOptions options) {
+        return drawLine(line.from(), line.to(), options);
+    }
 }

@@ -88,6 +88,12 @@ public class DefaultWorld implements World {
         return this;
     }
 
+    @Override
+    public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
+        screen.drawLine(toOffset(from), toOffset(to), options);
+        return this;
+    }
+
     public double cameraZoom() {
         return zoom;
     }

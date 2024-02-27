@@ -25,6 +25,7 @@ public interface Renderer {
 
     void drawText(Offset offset, String text, Font font, Color color);
 
+    @Deprecated
     void drawLine(Offset from, Offset to, Color color);
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
@@ -34,4 +35,6 @@ public interface Renderer {
     void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
+
+    void drawLine(Offset from, Offset to, LineDrawOptions options);
 }

@@ -69,4 +69,9 @@ public class StandbyRenderer implements Renderer {
         // does nothing
     }
 
+    @Override
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+        // does nothing
+    }
+
 }
