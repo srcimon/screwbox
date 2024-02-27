@@ -43,9 +43,9 @@ public final class TestUtil {
         }
     }
 
-    public static void exportPng(final Frame frame, final String name) {
+    public static void exportPng(final Frame frame, final String fileName) {
         try {
-            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(name + ".png"));
+            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
         } catch (IOException e) {
             throw new IllegalStateException("could not export png", e);
         }
