@@ -91,6 +91,13 @@ class DefaultScreenTest {
     }
 
     @Test
+    void drawLine_callsRenderer() {
+        screen.drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
+
+        verify(renderer).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
+    }
+
+    @Test
     void takeScreenshot_windowNotOpened_throwsException() {
         assertThatThrownBy(() -> screen.takeScreenshot())
                 .isInstanceOf(IllegalStateException.class)
