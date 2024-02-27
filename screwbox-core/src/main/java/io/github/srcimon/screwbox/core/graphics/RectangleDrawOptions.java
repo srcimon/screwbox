@@ -75,7 +75,7 @@ public class RectangleDrawOptions {
     }
 
     /**
-     * Returns the strokeWidth used when drawing the rectangle.
+     * Returns the stroke width used when drawing the rectangle.
      */
     public int strokeWidth() {
         return strokeWidth;
