@@ -8,6 +8,7 @@
 - Updated example applications with latest camera features
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
+- Added `Frame.listPixelDifferences(Frame)`
 
 ### 🪛 Bug Fixes
 

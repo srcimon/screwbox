@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -165,6 +167,22 @@ public final class Frame implements Serializable {
         final var target = Offset.at(maxX + 1, size().height());
         final var size = Size.definedBy(offset, target);
         return extractArea(offset, size);
+    }
+
+    /**
+     * Returns a list of all pixels that have a different color than the other {@link Frame}.
+     */
+    public List<Offset> listPixelDifferences(final Frame other) {
+        if (!size().equals(other.size())) {
+            throw new IllegalArgumentException("other frame must have identical size to compare pixels");
+        }
+        var distinct = new ArrayList<Offset>();
+        for (var offset : size().allPixels()) {
+            if (!colorAt(offset).equals(other.colorAt(offset))) {
+                distinct.add(offset);
+            }
+        }
+        return distinct;
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
