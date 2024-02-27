@@ -88,6 +88,12 @@ public class DefaultWorld implements World {
         return this;
     }
 
+    @Override
+    public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
+        screen.drawLine(toOffset(from), toOffset(to), options);
+        return this;
+    }
+
     public double cameraZoom() {
         return zoom;
     }
@@ -116,12 +122,6 @@ public class DefaultWorld implements World {
     public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
         final Offset offset = toOffset(position);
         screen.drawTextCentered(offset, text, font, color);
-        return this;
-    }
-
-    @Override
-    public World drawLine(final Vector from, final Vector to, final Color color) {
-        screen.drawLine(toOffset(from), toOffset(to), color);
         return this;
     }
 

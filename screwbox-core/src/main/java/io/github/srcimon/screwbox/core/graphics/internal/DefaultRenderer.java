@@ -112,12 +112,6 @@ public class DefaultRenderer implements Renderer {
         graphics.fillOval(x, y, diameter, diameter);
     }
 
-    @Override
-    public void drawLine(final Offset from, final Offset to, final Color color) {
-        applyNewColor(color);
-        graphics.drawLine(from.x(), from.y(), to.x(), to.y());
-    }
-
     private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;
@@ -190,6 +184,20 @@ public class DefaultRenderer implements Renderer {
             }
             graphics.rotate(-radians, x, y);
         }
+    }
+
+    @Override
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+        applyNewColor(options.color());
+        if (options.strokeWidth() == 1) {
+            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+        } else {
+            var oldStroke = graphics.getStroke();
+            graphics.setStroke(new BasicStroke(options.strokeWidth()));
+            graphics.drawLine(from.x(), from.y(), to.x(), to.y());
+            graphics.setStroke(oldStroke);
+        }
+
     }
 
 }

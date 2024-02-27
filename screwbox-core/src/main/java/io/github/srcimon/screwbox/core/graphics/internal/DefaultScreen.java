@@ -41,6 +41,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+        renderer.drawLine(from, to, options);
+        return this;
+    }
+
+    @Override
     public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
         renderer.fillCircle(offset, diameter, color);
         return this;
@@ -135,12 +141,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawLine(final Offset from, final Offset to, final Color color) {
-        renderer.drawLine(from, to, color);
-        return this;
-    }
-
-    @Override
     public Screen drawFadingCircle(final Offset offset, final int diameter, final Color color) {
         renderer.drawFadingCircle(offset, diameter, color);
         return this;
@@ -164,18 +164,18 @@ public class DefaultScreen implements Screen {
 
     public void updateScreen(final boolean antialiased) {
         final Supplier<Graphics2D> graphicsSupplier = () -> {
-                frame.getCanvas().getBufferStrategy().show();
-                if (nonNull(lastGraphics)) {
-                    lastGraphics.dispose();
-                }
-                final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+            frame.getCanvas().getBufferStrategy().show();
+            if (nonNull(lastGraphics)) {
+                lastGraphics.dispose();
+            }
+            final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
 
-                if (antialiased) {
-                    graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-                    graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-                }
-                lastGraphics = graphics;
-                return graphics;
+            if (antialiased) {
+                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+            }
+            lastGraphics = graphics;
+            return graphics;
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
     }

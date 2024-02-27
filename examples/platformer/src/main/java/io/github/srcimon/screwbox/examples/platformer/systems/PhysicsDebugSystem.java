@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionCom
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 
+import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 
 @Order(SystemOrder.PRESENTATION_OVERLAY)
@@ -43,7 +44,7 @@ public class PhysicsDebugSystem implements EntitySystem {
             final Vector momentum = entity.get(PhysicsComponent.class).momentum;
             final Vector destination = bounds.position().add(momentum);
 
-            engine.graphics().world().drawLine(bounds.position(), destination, Color.BLUE);
+            engine.graphics().world().drawLine(bounds.position(), destination, color(Color.BLUE).strokeWidth(2));
         }
     }
 }

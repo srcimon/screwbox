@@ -32,12 +32,6 @@ public interface World {
 
     World drawTextCentered(Vector position, String text, Font font, Color color);
 
-    World drawLine(Vector from, Vector to, Color color);
-
-    default World drawLine(final Line line, final Color color) {
-        return drawLine(line.from(), line.to(), color);
-    }
-
     World fillCircle(Vector position, double diameter, Color color);
 
     World drawCircle(Vector position, double diameter, Color color, int strokeWidth);
@@ -51,5 +45,24 @@ public interface World {
 
     Bounds visibleArea();
 
+    /**
+     * Draw a rectangle on the {@link World} using {@link RectangleDrawOptions}.
+     */
     World drawRectangle(Bounds bounds, RectangleDrawOptions options);
+
+    /**
+     * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
+     * 
+     * @see #drawLine(Line, LineDrawOptions) 
+     */
+    World drawLine(Vector from, Vector to, LineDrawOptions options);
+
+    /**
+     * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
+     *
+     * @see #drawLine(Vector, Vector, LineDrawOptions)
+     */
+    default World drawLine(final Line line, final LineDrawOptions options) {
+        return drawLine(line.from(), line.to(), options);
+    }
 }

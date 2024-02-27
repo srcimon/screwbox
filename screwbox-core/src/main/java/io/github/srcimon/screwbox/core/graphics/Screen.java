@@ -40,7 +40,7 @@ public interface Screen {
     Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options);
 
     /**
-     * Draws a rectangle on the screen using the given {@link ScreenBounds} and {@link RectangleDrawOptions}.
+     * Draws a rectangle on the {@link Screen} using the given {@link ScreenBounds} and {@link RectangleDrawOptions}.
      *
      * @see #drawRectangle(Offset, Size, RectangleDrawOptions)
      */
@@ -53,6 +53,12 @@ public interface Screen {
      * The screenshot may also include other applications that are in front of your game screen.
      */
     Sprite takeScreenshot();
+
+
+    /**
+     * Draws a line on the {@link Screen} using the given {@link Offset}s and {@link LineDrawOptions}.
+     */
+    Screen drawLine(Offset from, Offset to, LineDrawOptions options);
 
     Screen drawFadingCircle(Offset offset, int diameter, Color color);
 
@@ -168,8 +174,6 @@ public interface Screen {
     default Screen fillWith(final Sprite sprite) {
         return fillWith(sprite, 1);
     }
-
-    Screen drawLine(Offset from, Offset to, Color color);
 
     /**
      * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.

@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -25,8 +25,6 @@ public interface Renderer {
 
     void drawText(Offset offset, String text, Font font, Color color);
 
-    void drawLine(Offset from, Offset to, Color color);
-
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
     void drawFadingCircle(Offset offset, int diameter, Color color);
@@ -34,4 +32,6 @@ public interface Renderer {
     void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
+
+    void drawLine(Offset from, Offset to, LineDrawOptions options);
 }
