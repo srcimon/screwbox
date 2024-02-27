@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -82,11 +82,6 @@ public class AsyncRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         renderTasks.active().add(() -> next.drawText(offset, text, font, color));
 
-    }
-
-    @Override
-    public void drawLine(final Offset from, final Offset to, final Color color) {
-        renderTasks.active().add(() -> next.drawLine(from, to, color));
     }
 
     @Override

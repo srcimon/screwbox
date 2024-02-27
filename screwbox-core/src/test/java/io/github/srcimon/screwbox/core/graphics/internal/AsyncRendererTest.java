@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
+import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,20 +35,20 @@ class AsyncRendererTest {
 
     @Test
     void applyDrawActions_noUpdate_nextRendererNotInvoked() {
-        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
 
-        verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
         verify(renderer, never()).updateGraphicsContext(any(), any());
     }
 
     @Test
     void applyDrawActions_update_nextRendererInvoked() {
-        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
         asyncRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
 
         asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
 
-        verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), Color.YELLOW);
+        verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
         verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);
         verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10));
     }

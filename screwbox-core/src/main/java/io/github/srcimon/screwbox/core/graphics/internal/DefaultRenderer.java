@@ -112,12 +112,6 @@ public class DefaultRenderer implements Renderer {
         graphics.fillOval(x, y, diameter, diameter);
     }
 
-    @Override
-    public void drawLine(final Offset from, final Offset to, final Color color) {
-        applyNewColor(color);
-        graphics.drawLine(from.x(), from.y(), to.x(), to.y());
-    }
-
     private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;

@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -34,11 +34,6 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        // does nothing
-    }
-
-    @Override
-    public void drawLine(final Offset from, final Offset to, final Color color) {
         // does nothing
     }
 

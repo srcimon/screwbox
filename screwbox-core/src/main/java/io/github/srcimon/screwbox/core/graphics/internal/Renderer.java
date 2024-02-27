@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -24,9 +24,6 @@ public interface Renderer {
                     ScreenBounds clip);
 
     void drawText(Offset offset, String text, Font font, Color color);
-
-    @Deprecated
-    void drawLine(Offset from, Offset to, Color color);
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
