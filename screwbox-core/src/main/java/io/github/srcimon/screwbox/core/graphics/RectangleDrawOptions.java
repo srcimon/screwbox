@@ -1,11 +1,16 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.Objects;
 
 /**
- * Customize the drawings of rectangles.
+ * Customize the drawing of rectangles.
+ *
+ * @see Screen#drawRectangle(ScreenBounds, RectangleDrawOptions)
+ * @see Screen#drawRectangle(Offset, Size, RectangleDrawOptions)
+ * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
 public class RectangleDrawOptions {
 

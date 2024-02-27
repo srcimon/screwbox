@@ -54,6 +54,11 @@ public interface Screen {
      */
     Sprite takeScreenshot();
 
+    @Deprecated
+    Screen drawLine(Offset from, Offset to, Color color);
+
+    Screen drawLine(Offset from, Offset to, LineDrawOptions options);
+
     Screen drawFadingCircle(Offset offset, int diameter, Color color);
 
     Screen drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
@@ -168,8 +173,6 @@ public interface Screen {
     default Screen fillWith(final Sprite sprite) {
         return fillWith(sprite, 1);
     }
-
-    Screen drawLine(Offset from, Offset to, Color color);
 
     /**
      * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.
