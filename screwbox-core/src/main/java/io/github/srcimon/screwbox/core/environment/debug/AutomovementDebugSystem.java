@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.environment.*;
 
@@ -23,7 +24,7 @@ public class AutomovementDebugSystem implements EntitySystem {
             Path path = entity.get(AutomovementComponent.class).path;
             if (nonNull(path)) {
                 for (var segment : path.segments()) {
-                    world.drawLine(segment, Color.YELLOW);
+                    world.drawLine(segment, LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
                 }
                 int nr = 0;
                 for (var node : path.nodes()) {

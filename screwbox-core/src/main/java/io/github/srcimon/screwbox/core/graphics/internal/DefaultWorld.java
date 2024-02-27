@@ -126,12 +126,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawLine(final Vector from, final Vector to, final Color color) {
-        screen.drawLine(toOffset(from), toOffset(to), color);
-        return this;
-    }
-
-    @Override
     public World fillCircle(final Vector position, final double diameter, final Color color) {
         final Offset offset = toOffset(position);
         screen.fillCircle(offset, (int) (diameter * zoom), color);
