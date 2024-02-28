@@ -5,13 +5,8 @@
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Updated example applications with latest camera features
 - Added `ChaoticMovementEntity/System` (#214)
-- Added `Vector.nearestOf(List<Vector>)`
-- Added `Pixelfont.sizeOf(String)`
-- Added `Line.intersections(List<Line>)`
-- Added `Window.isOpen()`
-- Added `Size.allPixels()`
-- Added `Frame.listPixelDifferences(Frame)`
-- Added `Color.hex(String)`
+- Added lots of utility methods: `Vector.nearestOf(List<Vector>)`, `Pixelfont.sizeOf(String)`, `Line.intersections(List<Line>)`, `Window.isOpen()`, `Size.allPixels()`, `Frame.listPixelDifferences(Frame)`, `Color.hex(String)`
+
 ### 🪛 Bug Fixes
 
 - Fixed `Window.size()` and `Screen.size()` when window has not been opened yet
