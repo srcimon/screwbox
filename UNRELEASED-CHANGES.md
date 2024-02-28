@@ -1,9 +1,8 @@
 ### 🚀 Features & improvements
 
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
-- Optimized drawing of lines using `LineDrawOptions` (##206)
+- Optimized drawing of lines using `LineDrawOptions` (#206)
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
-- Updated example applications with latest camera features
 - Added `ChaoticMovementEntity/System` (#214)
 - Added lots of utility methods: `Vector.nearestOf(List<Vector>)`, `Pixelfont.sizeOf(String)`, `Line.intersections(List<Line>)`, `Window.isOpen()`, `Size.allPixels()`, `Frame.listPixelDifferences(Frame)`, `Color.hex(String)`
 
