@@ -11,6 +11,7 @@
 - Added `Size.allPixels()`
 - Added `Frame.listPixelDifferences(Frame)`
 - Added `Color.hex(String)`
+- Enhanced graphics of `AutomovementDebugSystem`
 
 ### 🪛 Bug Fixes
 
