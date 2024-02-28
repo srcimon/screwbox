@@ -5,8 +5,14 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Font;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.World;
 
+import static io.github.srcimon.screwbox.core.graphics.Color.*;
+import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static java.util.Objects.nonNull;
 
 @Order(SystemOrder.PRESENTATION_OVERLAY)
@@ -19,7 +25,6 @@ public class AutomovementDebugSystem implements EntitySystem {
     public void update(Engine engine) {
         World world = engine.graphics().world();
 
-
         for (Entity entity : engine.environment().fetchAll(PATH_CONTAINING)) {
             Path path = entity.get(AutomovementComponent.class).path;
 
@@ -28,18 +33,17 @@ public class AutomovementDebugSystem implements EntitySystem {
                     for (var node : grid.nodes()) {
                         Bounds bounds = grid.worldArea(node);
                         if (bounds.position().nearestOf(path.nodes()).distanceTo(bounds.position()) < grid.gridSize() * 2) {
-                            engine.graphics().world().drawRectangle(bounds, RectangleDrawOptions.filled(grid.isBlocked(node) ? Color.RED.opacity(0.5) : Color.GREEN.opacity(0.5)));
+                            world.drawRectangle(bounds, filled(grid.isBlocked(node) ? RED.opacity(0.5) : GREEN.opacity(0.5)));
                         }
                     }
                 });
                 for (var segment : path.segments()) {
-                    world.drawLine(segment, LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
+                    world.drawLine(segment, color(YELLOW).strokeWidth(2));
                 }
                 int nr = 0;
                 for (var node : path.nodes()) {
                     nr++;
-                    world.drawTextCentered(node.addY(-5), "#" + nr, FONT, Color.WHITE)
-                            .fillCircle(node, 3, Color.YELLOW);
+                    world.drawTextCentered(node.addY(-5), "#" + nr, FONT, WHITE).fillCircle(node, 3, YELLOW);
                 }
             }
         }
