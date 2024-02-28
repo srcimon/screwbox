@@ -4,7 +4,7 @@
 - Optimized drawing of lines using `LineDrawOptions` (##206)
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Updated example applications with latest camera features
-- Added `ChaoticMovementEntity/System` to automatically move entities
+- Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
 - Added `Pixelfont.sizeOf(String)`
 - Added `Line.intersections(List<Line>)`
