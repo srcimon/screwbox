@@ -11,7 +11,7 @@
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
 - Added `Frame.listPixelDifferences(Frame)`
-
+- Added `Color.hex(String)`
 ### 🪛 Bug Fixes
 
 - Fixed `Window.size()` and `Screen.size()` when window has not been opened yet
