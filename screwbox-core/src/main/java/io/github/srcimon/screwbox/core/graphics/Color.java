@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Used to store color information used in {@link Graphics}.
  */
@@ -92,10 +94,44 @@ public final class Color implements Serializable {
     }
 
     /**
-     * Creates a color based on RGB-components and custom {@link #opacity()}.
+     * Creates a {@link Color} based on RGB-components and custom {@link #opacity()}.
      */
     public static Color rgb(final int r, final int g, final int b, final Percent opacity) {
         return new Color(r, g, b, opacity);
+    }
+
+    /**
+     * Creates a {@link Color} based on the given hexadecimal value. Supports Format #RRGGBB and #AARRGGBB.
+     * Example values: #D200A1, #00D2A1A2
+     */
+    public static Color hex(final String hexValue) {
+        requireNonNull(hexValue, "hex value must not be NULL");
+        if (!hexValue.startsWith("#")) {
+            throw new IllegalArgumentException("hex value must start with '#'");
+        }
+        if (hexValue.length() == 7) {
+            return Color.rgb(
+                    parseHex(hexValue.substring(1, 3)),
+                    parseHex(hexValue.substring(3, 5)),
+                    parseHex(hexValue.substring(5, 7)));
+        }
+        if (hexValue.length() == 9) {
+            return Color.rgb(
+                    parseHex(hexValue.substring(3, 5)),
+                    parseHex(hexValue.substring(5, 7)),
+                    parseHex(hexValue.substring(7, 9)),
+                    Percent.of(parseHex(hexValue.substring(1, 3)))
+            );
+        }
+        throw new IllegalArgumentException("unknown hex format: " + hexValue);
+    }
+
+    private static int parseHex(String hex) {
+        try {
+            return Integer.valueOf(hex, 16);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("hex value contains non hexadecimal value: " + hex, e);
+        }
     }
 
     /**

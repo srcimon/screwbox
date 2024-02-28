@@ -372,4 +372,8 @@ public class Grid implements Serializable {
     private int gridValue(final double value) {
         return Math.floorDiv((int) value, gridSize);
     }
+
+    public double gridSize() {
+        return gridSize;
+    }
 }
