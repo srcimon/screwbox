@@ -4,7 +4,13 @@
 - Optimized drawing of lines using `LineDrawOptions` (#206)
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
-- Added lots of utility methods: `Vector.nearestOf(List<Vector>)`, `Pixelfont.sizeOf(String)`, `Line.intersections(List<Line>)`, `Window.isOpen()`, `Size.allPixels()`, `Frame.listPixelDifferences(Frame)`, `Color.hex(String)`
+- Added `Vector.nearestOf(List<Vector>)`
+- Added `Pixelfont.sizeOf(String)`
+- Added `Line.intersections(List<Line>)`
+- Added `Window.isOpen()`
+- Added `Size.allPixels()`
+- Added `Frame.listPixelDifferences(Frame)`
+- Added `Color.hex(String)`
 
 ### 🪛 Bug Fixes
 
