@@ -23,6 +23,7 @@
 
 - Renamed camera movement and zoom methods
 - Renamed `PathfindingObstacleComponent`
+- Renamed `Physics.updateGrid(Grid)`
 - Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
 - Added better error message when trying to take screenshot before window is opened

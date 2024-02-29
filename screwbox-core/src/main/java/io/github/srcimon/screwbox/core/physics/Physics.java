@@ -22,7 +22,7 @@ public interface Physics {
 
     Optional<Path> findPath(Vector start, Vector end, Grid grid);
 
-    Physics setGrid(Grid grid);
+    Physics updateGrid(Grid grid);
 
     Optional<Grid> grid();
 
