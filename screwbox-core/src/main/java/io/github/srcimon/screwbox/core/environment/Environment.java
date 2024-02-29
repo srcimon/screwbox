@@ -30,16 +30,16 @@ public interface Environment {
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
      * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
      * <p/>
-     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     * Please note: There is currently no way to prevent that such a {@link SingletonComponent} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
      * @see #tryFetchSingleton(Class)
      * @see #hasSingleton(Class)
      */
-    <T extends Component> Optional<T> tryFetchSingletonComponent(Class<T> component);
+    <T extends SingletonComponent> Optional<T> tryFetchSingletonComponent(Class<T> component);
 
     /**
-     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
+     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link SingletonComponent}.
      * <p/>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -47,10 +47,10 @@ public interface Environment {
      * @see #tryFetchSingletonComponent(Class)
      * @see #hasSingleton(Class)
      */
-    Optional<Entity> tryFetchSingleton(Class<? extends Component> component);
+    Optional<Entity> tryFetchSingleton(Class<? extends SingletonComponent> component);
 
     /**
-     * Returns {@code true} if the {@link Environment} contains the given singleton {@link Component}.
+     * Returns {@code true} if the {@link Environment} contains the given singleton {@link SingletonComponent}.
      * <p/>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -58,7 +58,7 @@ public interface Environment {
      * @see #tryFetchSingletonComponent(Class)
      * @see #tryFetchSingletonComponent(Class)
      */
-    boolean hasSingleton(Class<? extends Component> component);
+    boolean hasSingleton(Class<? extends SingletonComponent> component);
 
     Environment addEntity(String name, Component... components);
 

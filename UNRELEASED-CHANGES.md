@@ -2,7 +2,7 @@
 
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
-- Added `Environment.tryFetchSingletonComponent(Class)`, `.tryFetchSingleton(Class)` and `.hasSingleton(Class)`
+- Added `SingletonComponent` features to `Environment`
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
