@@ -9,15 +9,15 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 @Order(SystemOrder.PREPARATION)
-public class PathfindingSystem implements EntitySystem {
+public class PhysicsGridUpdateSystem implements EntitySystem {
 
     private static final Archetype WORLD = Archetype.of(GlobalBoundsComponent.class, TransformComponent.class);
-    private static final Archetype OBSTACLES = Archetype.of(PathfindingObstacleComponent.class, TransformComponent.class);
+    private static final Archetype OBSTACLES = Archetype.of(PhysicsGridObstacleComponent.class, TransformComponent.class);
 
     private final int gridSize;
     private final Sheduler updateSheduler;
 
-    public PathfindingSystem(final int gridSize, final Sheduler updateSheduler) {
+    public PhysicsGridUpdateSystem(final int gridSize, final Sheduler updateSheduler) {
         this.gridSize = gridSize;
         this.updateSheduler = updateSheduler;
     }

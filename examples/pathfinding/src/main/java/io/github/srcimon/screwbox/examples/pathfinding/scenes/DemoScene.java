@@ -70,7 +70,7 @@ public class DemoScene implements Scene {
                 .addSystem(new AutomovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
-                .addSystem(new PathfindingSystem(16, Sheduler.withInterval(ofSeconds(1))))
+                .addSystem(new PhysicsGridUpdateSystem(16, Sheduler.withInterval(ofSeconds(1))))
                 .addSystem(new EnemyMovementSystem())
                 .addSystem(new SpriteChangeSystem())
                 .addSystem(new PhysicsSystem());
@@ -111,7 +111,7 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
-                .add(new PathfindingObstacleComponent())
+                .add(new PhysicsGridObstacleComponent())
                 .add(new ColliderComponent());
     }
 

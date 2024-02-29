@@ -3,11 +3,11 @@ package io.github.srcimon.screwbox.core.environment.phyiscs;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.PathfindingObstacleComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.physics.PathfindingSystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
@@ -30,7 +30,7 @@ class PathfindingSystemTest {
     void update_noWorldBounds_throwsException(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(now());
         Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(200));
-        environment.addSystem(new PathfindingSystem(16, sheduler));
+        environment.addSystem(new PhysicsGridUpdateSystem(16, sheduler));
 
         assertThatThrownBy(() -> environment.update())
                 .isInstanceOf(IllegalStateException.class)
@@ -47,12 +47,12 @@ class PathfindingSystemTest {
 
         var wall = new Entity()
                 .add(new TransformComponent($$(0, 0, 100, 100)))
-                .add(new PathfindingObstacleComponent());
+                .add(new PhysicsGridObstacleComponent());
 
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
 
-        environment.addSystem(new PathfindingSystem(100, sheduler))
+        environment.addSystem(new PhysicsGridUpdateSystem(100, sheduler))
                 .addEntity(wall)
                 .addEntity(air)
                 .addEntity(worldBounds);
@@ -77,7 +77,7 @@ class PathfindingSystemTest {
                 .add(new GlobalBoundsComponent())
                 .add(new TransformComponent($$(-100, -100, 200, 200)));
 
-        environment.addSystem(new PathfindingSystem(16, sheduler)).addEntity(worldBounds);
+        environment.addSystem(new PhysicsGridUpdateSystem(16, sheduler)).addEntity(worldBounds);
 
         assertThatThrownBy(() -> environment.update())
                 .isInstanceOf(IllegalArgumentException.class)
