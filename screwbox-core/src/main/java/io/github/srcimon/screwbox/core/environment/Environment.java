@@ -4,18 +4,8 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -35,6 +25,16 @@ import java.util.Optional;
  * @see Archetype
  */
 public interface Environment {
+
+    /**
+     * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when more than one instance is found
+     */
+    Optional<Component> fetchSingletonComponent(Class<? extends Component> component);
 
     Environment addEntity(String name, Component... components);
 

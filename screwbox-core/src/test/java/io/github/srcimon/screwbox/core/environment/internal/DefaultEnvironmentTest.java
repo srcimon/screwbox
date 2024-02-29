@@ -11,10 +11,7 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -344,6 +341,7 @@ class DefaultEnvironmentTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("system must not be null");
     }
+
     @Test
     void addSystem_orderGiven_addsSystemWithOrder() {
         List<String> systemsExecuted = new ArrayList<>();
@@ -354,6 +352,33 @@ class DefaultEnvironmentTest {
         environment.update();
 
         assertThat(systemsExecuted).containsExactly("second", "first");
+    }
+
+    @Test
+    void fetchSingletonComponent_componentNotPresent_isEmpty() {
+        var singleton = environment.fetchSingletonComponent(TweenDestroyComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void fetchSingletonComponent_singletonPresent_returnsComponent() {
+        TweenDestroyComponent component = new TweenDestroyComponent();
+        environment.addEntity(component);
+
+        var singleton = environment.fetchSingletonComponent(TweenDestroyComponent.class);
+
+        assertThat(singleton).contains(component);
+    }
+
+    @Test
+    void fetchSingletonComponent_moreThanOneSingleton_returnsComponent() {
+        environment.addEntity(new TweenDestroyComponent());
+        environment.addEntity(new TweenDestroyComponent());
+
+        assertThatThrownBy(() -> environment.fetchSingletonComponent(TweenDestroyComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has been found multiple times: TweenDestroyComponent");
     }
 
     @AfterEach

@@ -21,6 +21,17 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Optional<Component> fetchSingletonComponent(Class<? extends Component> component) {
+        final var entities = fetchAllHaving(component);
+        if (entities.size() > 1) {
+            throw new IllegalStateException("singleton component has been found multiple times: " + component.getSimpleName());
+        }
+        return entities.size() == 1
+                ? Optional.of(entities.getFirst().get(component))
+                : Optional.empty();
+    }
+
+    @Override
     public Environment addEntity(final String name, final Component... components) {
         return addEntity(new Entity().name(name).add(components));
     }
