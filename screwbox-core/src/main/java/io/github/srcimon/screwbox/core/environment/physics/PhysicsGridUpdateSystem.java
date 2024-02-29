@@ -23,6 +23,7 @@ public class PhysicsGridUpdateSystem implements EntitySystem {
     }
 
     @Override
+    //TODO: use ENvironment.fetchSingletonComponent(XXX)
     public void update(final Engine engine) {
         if (updateSheduler.isTick(engine.loop().lastUpdate())) {
             final Bounds bounds = engine.environment().forcedFetch(WORLD).get(TransformComponent.class).bounds;

@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;
 
+//TODO @SingletonComponent on Adding such a component will check for already present ones => PERFORMANCE
 public class PhysicsGridConfigurationComponent implements Component {
 
     @Serial
