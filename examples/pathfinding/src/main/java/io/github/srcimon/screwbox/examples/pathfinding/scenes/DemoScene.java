@@ -70,7 +70,7 @@ public class DemoScene implements Scene {
                 .addSystem(new AutomovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
-                .addSystem(new PhysicsGridUpdateSystem(16, Sheduler.withInterval(ofSeconds(1))))
+                .addSystem(new PhysicsGridUpdateSystem())
                 .addSystem(new EnemyMovementSystem())
                 .addSystem(new SpriteChangeSystem())
                 .addSystem(new PhysicsSystem());
@@ -118,6 +118,7 @@ public class DemoScene implements Scene {
     private static Converter<Map> worldBounds() {
         return map -> new Entity()
                 .add(new TransformComponent(map.bounds()))
+                .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
                 .add(new GlobalBoundsComponent());
     }
 }
