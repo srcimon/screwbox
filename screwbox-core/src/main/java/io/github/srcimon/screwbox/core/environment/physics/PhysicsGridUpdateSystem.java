@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 public class PhysicsGridUpdateSystem implements EntitySystem {
 
     private static final Archetype OBSTACLES = Archetype.of(PhysicsGridObstacleComponent.class, TransformComponent.class);
-//TODO: add via environment.enablePhysics()
+
     @Override
     public void update(final Engine engine) {
         engine.environment().tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class).ifPresent(config -> {
