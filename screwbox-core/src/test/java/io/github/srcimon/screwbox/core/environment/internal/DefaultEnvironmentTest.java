@@ -372,11 +372,64 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void tryFetchSingletonComponent_moreThanOneSingleton_returnsComponent() {
+    void tryFetchSingletonComponent_moreThanOneSingleton_throwsException() {
         environment.addEntity(new TweenDestroyComponent());
         environment.addEntity(new TweenDestroyComponent());
 
         assertThatThrownBy(() -> environment.tryFetchSingletonComponent(TweenDestroyComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has been found multiple times: TweenDestroyComponent");
+    }
+
+    @Test
+    void tryFetchSingleton_componentNotPresent_isEmpty() {
+        var singleton = environment.tryFetchSingleton(TweenDestroyComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void tryFetchSingleton_singletonPresent_returnsEntity() {
+        var entity = new Entity().add(new TweenDestroyComponent());
+        environment.addEntity(entity);
+
+        var singleton = environment.tryFetchSingleton(TweenDestroyComponent.class);
+
+        assertThat(singleton).contains(entity);
+    }
+
+    @Test
+    void tryFetchSingleton_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new TweenDestroyComponent());
+        environment.addEntity(new TweenDestroyComponent());
+
+        assertThatThrownBy(() -> environment.tryFetchSingleton(TweenDestroyComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has been found multiple times: TweenDestroyComponent");
+    }
+
+    @Test
+    void hasSingleton_componentNotPresent_isFalse() {
+        var singleton = environment.hasSingleton(TweenDestroyComponent.class);
+
+        assertThat(singleton).isFalse();
+    }
+
+    @Test
+    void hasSingleton_singletonPresent_isTrue() {
+        environment.addEntity(new TweenDestroyComponent());
+
+        var singleton = environment.hasSingleton(TweenDestroyComponent.class);
+
+        assertThat(singleton).isTrue();
+    }
+
+    @Test
+    void hasSingleton_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new TweenDestroyComponent());
+        environment.addEntity(new TweenDestroyComponent());
+
+        assertThatThrownBy(() -> environment.hasSingleton(TweenDestroyComponent.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("singleton component has been found multiple times: TweenDestroyComponent");
     }
