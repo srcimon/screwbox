@@ -34,7 +34,8 @@ public interface Environment {
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
      */
-    Optional<Component> tryFetchSingletonComponent(Class<? extends Component> component);
+    <T extends Component> Optional<T> tryFetchSingletonComponent(Class<T> component);
+
 
     Environment addEntity(String name, Component... components);
 
