@@ -39,7 +39,7 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Optional<Path> findPath(final Grid grid, final Vector start, final Vector end) {
+    public Optional<Path> findPath(final Vector start, final Vector end, final Grid grid) {
         final Grid.Node startPoint = grid.toGrid(start);
         final Grid.Node endPoint = grid.toGrid(end);
         if (grid.isBlocked(startPoint) || grid.isBlocked(endPoint)) {
@@ -64,7 +64,7 @@ public class DefaultPhysics implements Physics {
     @Override
     public Optional<Path> findPath(final Vector start, final Vector end) {
         checkGridPresent();
-        return findPath(grid, start, end);
+        return findPath(start, end, grid);
     }
 
     @Override

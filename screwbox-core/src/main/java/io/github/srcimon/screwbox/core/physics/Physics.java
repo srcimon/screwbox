@@ -18,9 +18,9 @@ public interface Physics {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
-    Optional<Path> findPath(Grid grid, Vector start, Vector end);
-
     Optional<Path> findPath(Vector start, Vector end);
+
+    Optional<Path> findPath(Vector start, Vector end, Grid grid);
 
     Physics setGrid(Grid grid);
 

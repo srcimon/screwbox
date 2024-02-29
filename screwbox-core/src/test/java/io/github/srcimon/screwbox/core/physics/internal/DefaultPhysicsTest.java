@@ -51,7 +51,7 @@ class DefaultPhysicsTest {
         Vector startPoint = $(0, 0);
         grid.block(grid.toGrid(startPoint));
 
-        var path = physics.findPath(grid, startPoint, $(9, 9));
+        var path = physics.findPath(startPoint, $(9, 9), grid);
 
         assertThat(path).isEmpty();
     }
@@ -62,7 +62,7 @@ class DefaultPhysicsTest {
         Vector endPoint = $(10, 10);
         grid.block(grid.toGrid(endPoint));
 
-        var path = physics.findPath(grid, $(0, 0), endPoint);
+        var path = physics.findPath($(0, 0), endPoint, grid);
 
         assertThat(path).isEmpty();
     }
