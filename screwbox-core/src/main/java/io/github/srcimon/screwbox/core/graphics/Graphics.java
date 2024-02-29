@@ -24,7 +24,8 @@ public interface Graphics {
     Screen screen();
 
     /**
-     * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right poisition on the {@link Screen} (;
+     * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right postion
+     * on the {@link Screen}.
      *
      * @see #screen()
      */
@@ -49,7 +50,7 @@ public interface Graphics {
     /**
      * Sets the camera position.
      */
-    Graphics setCameraPosition(Vector position);
+    Graphics updateCameraPosition(Vector position);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
@@ -64,7 +65,7 @@ public interface Graphics {
      * Moves the camera position by the given {@link Vector}.
      */
     default Graphics moveCamera(final Vector delta) {
-        return setCameraPosition(cameraPosition().add(delta));
+        return updateCameraPosition(cameraPosition().add(delta));
     }
 
     /**
@@ -87,17 +88,15 @@ public interface Graphics {
     double cameraZoom();
 
     /**
-     * Returns the position the given {@link Offset} in the game
-     * {@link World}.
+     * Returns the position the given {@link Offset} in the {@link World}.
      */
     Vector toPosition(Offset offset);
 
     /**
-     * Returns the {@link Offset} on the {@link Window} of the given {@link Vector}
-     * in the game {@link World}.
+     * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
      *
      * @param position the position that will be translated
-     * @return the {@link Offset} on the {@link Window}
+     * @return the {@link Offset} on the {@link Screen}
      */
     Offset toOffset(Vector position);
 
