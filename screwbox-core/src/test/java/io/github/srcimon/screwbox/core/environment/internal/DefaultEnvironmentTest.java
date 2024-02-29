@@ -309,13 +309,14 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(7)
+        assertThat(environment.systems()).hasSize(8)
                 .anyMatch(system -> system.getClass().equals(AutomovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
                 .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
+                .anyMatch(system -> system.getClass().equals(PhysicsGridUpdateSystem.class))
                 .anyMatch(system -> system.getClass().equals(CollisionDetectionSystem.class));
     }
 

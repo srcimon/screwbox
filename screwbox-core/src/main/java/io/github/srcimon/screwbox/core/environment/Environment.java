@@ -38,7 +38,6 @@ public interface Environment {
      */
     <T extends Component> Optional<T> tryFetchSingletonComponent(Class<T> component);
 
-
     /**
      * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
      * <p/>
@@ -204,6 +203,7 @@ public interface Environment {
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
+     * @see PhysicsGridUpdateSystem
      */
     Environment enablePhysics();
 
