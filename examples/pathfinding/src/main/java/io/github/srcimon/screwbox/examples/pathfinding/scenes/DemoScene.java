@@ -111,7 +111,7 @@ public class DemoScene implements Scene {
 
     private Converter<Tile> wall() {
         return tile -> floor().convert(tile)
-                .add(new BlockPathComponent())
+                .add(new PathfindingObstacleComponent())
                 .add(new ColliderComponent());
     }
 

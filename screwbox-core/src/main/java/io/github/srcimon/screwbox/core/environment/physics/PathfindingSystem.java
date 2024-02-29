@@ -11,9 +11,7 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 @Order(SystemOrder.PREPARATION)
 public class PathfindingSystem implements EntitySystem {
 
-    private static final Archetype BLOCKING = Archetype.of(
-            BlockPathComponent.class, TransformComponent.class);
-
+    private static final Archetype OBSTACLES = Archetype.of(PathfindingObstacleComponent.class, TransformComponent.class);
     private static final Archetype WORLD = Archetype.of(GlobalBoundsComponent.class, TransformComponent.class);
 
     private final int gridSize;
@@ -29,7 +27,7 @@ public class PathfindingSystem implements EntitySystem {
         if (updateSheduler.isTick(engine.loop().lastUpdate())) {
             final Bounds bounds = engine.environment().forcedFetch(WORLD).get(TransformComponent.class).bounds;
             final Grid grid = new Grid(bounds, gridSize);
-            for (final Entity blocking : engine.environment().fetchAll(BLOCKING)) {
+            for (final Entity blocking : engine.environment().fetchAll(OBSTACLES)) {
                 grid.blockArea(blocking.get(TransformComponent.class).bounds);
             }
             engine.physics().setGrid(grid);

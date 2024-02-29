@@ -21,6 +21,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed camera movement and zoom methods
+- Renamed `PathfindingObstacleComponent`
 - Moved screenshot taking from `Renderer` to `Screen`
 - Simplified `CameraUpdateSystem`
 - Added better error message when trying to take screenshot before window is opened

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.phyiscs;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.BlockPathComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PathfindingObstacleComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
@@ -47,7 +47,7 @@ class PathfindingSystemTest {
 
         var wall = new Entity()
                 .add(new TransformComponent($$(0, 0, 100, 100)))
-                .add(new BlockPathComponent());
+                .add(new PathfindingObstacleComponent());
 
         var air = new Entity()
                 .add(new TransformComponent($$(-100, -100, 100, 100)));
