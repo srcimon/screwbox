@@ -33,10 +33,10 @@ public interface Environment {
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
-     * @see #tryFetchSingletonEntity(Class)
+     * @see #tryFetchSingleton(Class)
      * @see #hasSingleton(Class)
      */
-    <T extends Component> Optional<T> tryFetchSingleton(Class<T> component);
+    <T extends Component> Optional<T> tryFetchSingletonComponent(Class<T> component);
 
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
@@ -45,11 +45,11 @@ public interface Environment {
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when not exactly one instance is found
-     * @see #tryFetchSingletonEntity(Class)
+     * @see #tryFetchSingleton(Class)
      * @see #hasSingleton(Class)
      */
-    default <T extends Component> T fetchSingleton(Class<T> component) {
-        return tryFetchSingleton(component).orElseThrow(() -> new IllegalStateException("didn't find singleton"));
+    default <T extends Component> T fetchSingletonComponent(Class<T> component) {
+        return tryFetchSingletonComponent(component).orElseThrow(() -> new IllegalStateException("didn't find singleton"));
     }
 
     /**
@@ -58,11 +58,11 @@ public interface Environment {
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
-     * @see #fetchSingletonEntity(Class) 
-     * @see #tryFetchSingleton(Class)
+     * @see #fetchSingleton(Class)
+     * @see #tryFetchSingletonComponent(Class)
      * @see #hasSingleton(Class)
      */
-    Optional<Entity> tryFetchSingletonEntity(Class<? extends Component> component);
+    Optional<Entity> tryFetchSingleton(Class<? extends Component> component);
 
     /**
      * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
@@ -70,12 +70,12 @@ public interface Environment {
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
-     * @see #tryFetchSingletonEntity(Class)
      * @see #tryFetchSingleton(Class)
+     * @see #tryFetchSingletonComponent(Class)
      * @see #hasSingleton(Class)
      */
-    default Entity fetchSingletonEntity(Class<? extends Component> component) {
-        return tryFetchSingletonEntity(component).orElseThrow(() -> new IllegalStateException("didn't find singleton entity"));
+    default Entity fetchSingleton(Class<? extends Component> component) {
+        return tryFetchSingleton(component).orElseThrow(() -> new IllegalStateException("didn't find singleton entity"));
     }
 
     /**
@@ -84,14 +84,14 @@ public interface Environment {
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
-     * @see #tryFetchSingleton(Class)
-     * @see #tryFetchSingleton(Class)
+     * @see #tryFetchSingletonComponent(Class)
+     * @see #tryFetchSingletonComponent(Class)
      */
     boolean hasSingleton(Class<? extends Component> component);
 
-    Optional<Entity> tryFetch(Archetype archetype);
+    Optional<Entity> tryFetchSingleton(Archetype archetype);
 
-    Entity fetch(Archetype archetype);
+    Entity fetchSingleton(Archetype archetype);
 
     Environment addEntity(String name, Component... components);
 

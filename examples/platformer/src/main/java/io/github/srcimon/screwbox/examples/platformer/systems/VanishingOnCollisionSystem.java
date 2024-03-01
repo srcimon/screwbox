@@ -34,7 +34,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
     public void update(Engine engine) {
         Time now = engine.loop().lastUpdate();
 
-        Entity player = engine.environment().fetch(PLAYER);
+        Entity player = engine.environment().fetchSingleton(PLAYER);
         Bounds playerBounds = player.get(TransformComponent.class).bounds;
 
         List<Entity> activatedEntities = ListUtil.merge(

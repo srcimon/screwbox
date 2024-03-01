@@ -12,7 +12,7 @@ public class PhysicsGridUpdateSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().tryFetchSingleton(PhysicsGridConfigurationComponent.class).ifPresent(config -> {
+        engine.environment().tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class).ifPresent(config -> {
             if (config.updateSheduler.isTick(engine.loop().lastUpdate())) {
                 final Grid grid = new Grid(config.worldBounds, config.gridSize);
                 for (final Entity obstacle : engine.environment().fetchAll(OBSTACLES)) {

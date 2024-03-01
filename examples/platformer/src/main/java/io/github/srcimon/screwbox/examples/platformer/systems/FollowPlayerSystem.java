@@ -21,7 +21,7 @@ public class FollowPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.environment().tryFetch(PLAYER);
+        Optional<Entity> playerEntity = engine.environment().tryFetchSingleton(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }

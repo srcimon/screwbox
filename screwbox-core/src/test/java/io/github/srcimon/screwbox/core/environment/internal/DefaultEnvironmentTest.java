@@ -359,6 +359,33 @@ class DefaultEnvironmentTest {
     }
 
     @Test
+    void tryFetchSingletonComponent_componentNotPresent_isEmpty() {
+        var singleton = environment.tryFetchSingletonComponent(ColliderComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void tryFetchSingletonComponent_singletonPresent_returnsComponent() {
+        ColliderComponent component = new ColliderComponent();
+        environment.addEntity(component);
+
+        var singleton = environment.tryFetchSingletonComponent(ColliderComponent.class);
+
+        assertThat(singleton).contains(component);
+    }
+
+    @Test
+    void tryFetchSingletonComponent_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
+
+        assertThatThrownBy(() -> environment.tryFetchSingletonComponent(ColliderComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has been found multiple times: ColliderComponent");
+    }
+
+    @Test
     void tryFetchSingleton_componentNotPresent_isEmpty() {
         var singleton = environment.tryFetchSingleton(ColliderComponent.class);
 
@@ -366,13 +393,13 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void tryFetchSingleton_singletonPresent_returnsComponent() {
-        ColliderComponent component = new ColliderComponent();
-        environment.addEntity(component);
+    void tryFetchSingleton_singletonPresent_returnsEntity() {
+        var entity = new Entity().add(new ColliderComponent());
+        environment.addEntity(entity);
 
         var singleton = environment.tryFetchSingleton(ColliderComponent.class);
 
-        assertThat(singleton).contains(component);
+        assertThat(singleton).contains(entity);
     }
 
     @Test
@@ -381,33 +408,6 @@ class DefaultEnvironmentTest {
         environment.addEntity(new ColliderComponent());
 
         assertThatThrownBy(() -> environment.tryFetchSingleton(ColliderComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: ColliderComponent");
-    }
-
-    @Test
-    void tryFetchSingletonEntity_componentNotPresent_isEmpty() {
-        var singleton = environment.tryFetchSingletonEntity(ColliderComponent.class);
-
-        assertThat(singleton).isEmpty();
-    }
-
-    @Test
-    void tryFetchSingletonEntity_singletonPresent_returnsEntity() {
-        var entity = new Entity().add(new ColliderComponent());
-        environment.addEntity(entity);
-
-        var singleton = environment.tryFetchSingletonEntity(ColliderComponent.class);
-
-        assertThat(singleton).contains(entity);
-    }
-
-    @Test
-    void tryFetchSingletonEntity_moreThanOneSingleton_throwsException() {
-        environment.addEntity(new ColliderComponent());
-        environment.addEntity(new ColliderComponent());
-
-        assertThatThrownBy(() -> environment.tryFetchSingletonEntity(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("singleton component has been found multiple times: ColliderComponent");
     }

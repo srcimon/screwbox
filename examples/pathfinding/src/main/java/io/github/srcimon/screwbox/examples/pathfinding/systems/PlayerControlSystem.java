@@ -19,7 +19,7 @@ public class PlayerControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var player = engine.environment().fetch(PLAYER);
+        final var player = engine.environment().fetchSingleton(PLAYER);
         player.get(PhysicsComponent.class).momentum = engine.keyboard().arrowKeysMovement(80);
         if (engine.keyboard().isPressed(Key.SPACE)) {
 

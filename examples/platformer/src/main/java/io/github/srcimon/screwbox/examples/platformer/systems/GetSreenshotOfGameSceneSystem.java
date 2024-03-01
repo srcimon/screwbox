@@ -15,8 +15,8 @@ public class GetSreenshotOfGameSceneSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var holder = engine.environment().fetch(HOLDER).get(BackgroundHolderComponent.class);
-        Entity screenshotEntity = engine.scenes().environmentOf(GameScene.class).fetch(SCREENSHOT);
+        var holder = engine.environment().fetchSingleton(HOLDER).get(BackgroundHolderComponent.class);
+        Entity screenshotEntity = engine.scenes().environmentOf(GameScene.class).fetchSingleton(SCREENSHOT);
         holder.background = screenshotEntity.get(ScreenshotComponent.class).screenshot;
 
     }

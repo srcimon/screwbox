@@ -14,7 +14,7 @@ public class DetectLineOfSightToPlayerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.environment().fetch(PLAYER);
+        Entity player = engine.environment().fetchSingleton(PLAYER);
         var playerPosition = player.get(TransformComponent.class).bounds.position();
         for (var detector : engine.environment().fetchAll(DETECTORS)) {
             var detectorPosition = detector.get(TransformComponent.class).bounds.position();

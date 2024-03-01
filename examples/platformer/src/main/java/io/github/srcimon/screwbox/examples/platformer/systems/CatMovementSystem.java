@@ -51,12 +51,12 @@ public class CatMovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> catEntity = engine.environment().tryFetch(CAT);
+        Optional<Entity> catEntity = engine.environment().tryFetchSingleton(CAT);
         if (catEntity.isEmpty()) {
             return;
         }
 
-        Entity player = engine.environment().fetch(PLAYER);
+        Entity player = engine.environment().fetchSingleton(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
         var flipMode = player.get(RenderComponent.class).flip;

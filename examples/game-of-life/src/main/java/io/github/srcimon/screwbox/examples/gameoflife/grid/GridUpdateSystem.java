@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.gameoflife.grid;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Grid;
-import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
@@ -14,7 +13,7 @@ public class GridUpdateSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridComponent = engine.environment().fetchSingleton(GridComponent.class);
+        final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
 
         if (!engine.async().hasActiveTasks(gridComponent) && SHEDULER.isTick()) {
             engine.async().run(gridComponent, () -> update(gridComponent));
