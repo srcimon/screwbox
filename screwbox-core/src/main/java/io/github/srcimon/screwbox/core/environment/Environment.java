@@ -4,20 +4,8 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.rendering.*;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -72,6 +60,20 @@ public interface Environment {
      */
     boolean hasSingleton(Class<? extends Component> component);
 
+
+    Optional<Entity> tryFetch(Archetype archetype);
+
+    default Optional<Entity> tryFetchHaving(Class<? extends Component> component) {
+        return tryFetch(Archetype.of(component));
+    }
+
+    Entity fetch(Archetype archetype);
+
+    default Entity fetchHaving(Class<? extends Component> component) {
+        return fetch(Archetype.of(component));
+    }
+
+
     Environment addEntity(String name, Component... components);
 
     Environment addEntity(int id, Component... components);
@@ -110,26 +112,6 @@ public interface Environment {
         return fetchAll(Archetype.of(componentA, componentB));
     }
 
-    Optional<Entity> tryFetch(Archetype archetype);
-
-    default Optional<Entity> tryFetchHaving(Class<? extends Component> component) {
-        return tryFetch(Archetype.of(component));
-    }
-
-    default Optional<Entity> tryFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return tryFetch(Archetype.of(componentA, componentB));
-    }
-
-    Entity fetch(Archetype archetype);
-
-    default Entity fetchHaving(Class<? extends Component> component) {
-        return fetch(Archetype.of(component));
-    }
-
-    default Entity fetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return fetch(Archetype.of(componentA, componentB));
-    }
-
     /**
      * Fetches an {@link Entity} by {@link Entity#id()}.
      *
@@ -140,6 +122,7 @@ public interface Environment {
 
     /**
      * Fetches an {@link Entity} by {@link Entity#id()}.
+     *
      * @see #fetchById(int)
      */
     Optional<Entity> tryFetchById(int id);
