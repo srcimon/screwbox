@@ -11,11 +11,10 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 public class GravitySystem implements EntitySystem {
 
     private static final Archetype GRAVITY_AFFECTED = Archetype.of(PhysicsComponent.class);
-    private static final Archetype GRAVITY = Archetype.of(GravityComponent.class);
 
     @Override
     public void update(Engine engine) {
-        engine.environment().tryFetch(GRAVITY).ifPresent(gravityEntity -> {
+        engine.environment().tryFetchSingleton(GravityComponent.class).ifPresent(gravityEntity -> {
             Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
             Vector gravityDelta = gravity.multiply(engine.loop().delta());
             for (var entity : engine.environment().fetchAll(GRAVITY_AFFECTED)) {

@@ -74,7 +74,7 @@ public interface Environment {
      * @see #tryFetchSingletonComponent(Class)
      * @see #hasSingleton(Class)
      */
-    default Entity fetchSingleton(Class<? extends Component> component) {
+    default Entity fetchSingleton(final Class<? extends Component> component) {
         return tryFetchSingleton(component).orElseThrow(() -> new IllegalStateException("didn't find singleton entity"));
     }
 
@@ -91,7 +91,9 @@ public interface Environment {
 
     Optional<Entity> tryFetchSingleton(Archetype archetype);
 
-    Entity fetchSingleton(Archetype archetype);
+    default Entity fetchSingleton(final Archetype archetype) {
+        return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
+    }
 
     Environment addEntity(String name, Component... components);
 

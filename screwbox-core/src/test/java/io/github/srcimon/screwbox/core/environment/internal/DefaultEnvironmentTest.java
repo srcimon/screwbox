@@ -382,7 +382,7 @@ class DefaultEnvironmentTest {
 
         assertThatThrownBy(() -> environment.tryFetchSingletonComponent(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: ColliderComponent");
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @Test
@@ -409,7 +409,7 @@ class DefaultEnvironmentTest {
 
         assertThatThrownBy(() -> environment.tryFetchSingleton(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: ColliderComponent");
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @Test
@@ -435,7 +435,7 @@ class DefaultEnvironmentTest {
 
         assertThatThrownBy(() -> environment.hasSingleton(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: ColliderComponent");
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @AfterEach

@@ -46,23 +46,10 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Entity fetchSingleton(final Archetype archetype) {
-
-        //TODO use code from above and fix tests
-        final Optional<Entity> entity = tryFetchSingleton(archetype);
-        if (entity.isEmpty()) {
-            throw new IllegalStateException("singleton has been found multiple times " + archetype);
-        }
-        return entity.get();
-    }
-
-    @Override
     public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
-
-        //TODO use code from above and fix tests
-        final var entities = entityManager.entitiesMatching(archetype);
+        final var entities = fetchAll(archetype);
         if (entities.size() > 1) {
-            throw new IllegalStateException("singleton has been found multiple times " + archetype);
+            throw new IllegalStateException("singleton has been found multiple times: " + archetype);
         }
         return entities.size() == 1
                 ? Optional.of(entities.getFirst())
