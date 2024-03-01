@@ -30,17 +30,17 @@ class EnvironmentTest {
     }
 
     @Test
-    void fetchHaving_component_callsActualMethod() {
-        environment.fetchHaving(RenderComponent.class);
+    void tryFetchHaving_component_callsActualMethod() {
+        environment.tryFetchHaving(RenderComponent.class);
 
-        verify(environment).fetch(Archetype.of(RenderComponent.class));
+        verify(environment).tryFetch(Archetype.of(RenderComponent.class));
     }
 
     @Test
-    void fetchHaving_twoComponents_callsActualMethod() {
-        environment.fetchHaving(RenderComponent.class, TransformComponent.class);
+    void tryFetchHaving_twoComponents_callsActualMethod() {
+        environment.tryFetchHaving(RenderComponent.class, TransformComponent.class);
 
-        verify(environment).fetch(Archetype.of(RenderComponent.class, TransformComponent.class));
+        verify(environment).tryFetch(Archetype.of(RenderComponent.class, TransformComponent.class));
     }
 
     @Test

@@ -51,7 +51,7 @@ public class CatMovementSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> catEntity = engine.environment().fetch(CAT);
+        Optional<Entity> catEntity = engine.environment().tryFetch(CAT);
         if (catEntity.isEmpty()) {
             return;
         }

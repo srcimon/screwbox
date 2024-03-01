@@ -30,7 +30,7 @@ public interface Environment {
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
      * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
      * <p/>
-     * Please note: There is currently no way to prevent that such a {@link SingletonComponent} is added more than once (for performance reasons).
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when more than one instance is found
      * @see #tryFetchSingletonEntity(Class)
@@ -39,7 +39,7 @@ public interface Environment {
     <T extends Component> Optional<T> tryFetchSingleton(Class<T> component);
 
     /**
-     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link SingletonComponent}.
+     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
      * <p/>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -50,7 +50,7 @@ public interface Environment {
     Optional<Entity> tryFetchSingletonEntity(Class<? extends Component> component);
 
     /**
-     * Returns {@code true} if the {@link Environment} contains the given singleton {@link SingletonComponent}.
+     * Returns {@code true} if the {@link Environment} contains the given singleton {@link Component}.
      * <p/>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
@@ -98,14 +98,14 @@ public interface Environment {
         return fetchAll(Archetype.of(componentA, componentB));
     }
 
-    Optional<Entity> fetch(Archetype archetype);
+    Optional<Entity> tryFetch(Archetype archetype);
 
-    default Optional<Entity> fetchHaving(Class<? extends Component> component) {
-        return fetch(Archetype.of(component));
+    default Optional<Entity> tryFetchHaving(Class<? extends Component> component) {
+        return tryFetch(Archetype.of(component));
     }
 
-    default Optional<Entity> fetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return fetch(Archetype.of(componentA, componentB));
+    default Optional<Entity> tryFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+        return tryFetch(Archetype.of(componentA, componentB));
     }
 
     Entity forcedFetch(Archetype archetype);

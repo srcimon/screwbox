@@ -18,7 +18,7 @@ public class CameraShiftSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Optional<Entity> playerEntity = engine.environment().fetch(PLAYER);
+        Optional<Entity> playerEntity = engine.environment().tryFetch(PLAYER);
         if (playerEntity.isEmpty()) {
             return;
         }

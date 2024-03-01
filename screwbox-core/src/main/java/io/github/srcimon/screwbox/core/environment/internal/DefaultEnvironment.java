@@ -112,7 +112,7 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Entity forcedFetch(final Archetype archetype) {
-        final Optional<Entity> entity = fetch(archetype);
+        final Optional<Entity> entity = tryFetch(archetype);
         if (entity.isEmpty()) {
             throw new IllegalStateException("didn't find exactly one entity matching " + archetype);
         }
@@ -120,7 +120,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Optional<Entity> fetch(final Archetype archetype) {
+    public Optional<Entity> tryFetch(final Archetype archetype) {
         final var entities = entityManager.entitiesMatching(archetype);
         if (entities.size() == 1) {
             return Optional.of(entities.getFirst());
