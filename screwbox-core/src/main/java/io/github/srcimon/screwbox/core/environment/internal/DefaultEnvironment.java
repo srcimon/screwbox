@@ -33,20 +33,18 @@ public class DefaultEnvironment implements Environment {
 
     @Override
     public Optional<Entity> tryFetchSingleton(final Class<? extends Component> component) {
-        final var entities = fetchAll(Archetype.of(component));
-        if (entities.size() > 1) {
-            throw new IllegalStateException("singleton has been found multiple times: " + component.getSimpleName());
-        }
-        return entities.size() == 1
-                ? Optional.of(entities.getFirst())
-                : Optional.empty();
+        return fetchAllOfArchetype(Archetype.of(component), component.getSimpleName());
     }
 
     @Override
     public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
+        return fetchAllOfArchetype(archetype, archetype.toString());
+    }
+
+    private Optional<Entity> fetchAllOfArchetype(Archetype archetype, String searchItem) {
         final var entities = fetchAll(archetype);
         if (entities.size() > 1) {
-            throw new IllegalStateException("singleton has been found multiple times: " + archetype);
+            throw new IllegalStateException("singleton has been found multiple times: " + searchItem);
         }
         return entities.size() == 1
                 ? Optional.of(entities.getFirst())
