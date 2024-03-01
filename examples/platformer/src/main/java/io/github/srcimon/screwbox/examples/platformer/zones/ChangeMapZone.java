@@ -17,7 +17,7 @@ public class ChangeMapZone implements Converter<GameObject> {
         return new Entity().add(
                 new SignalComponent(),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
-                new ChangeMapComponent(object.properties().force("file-name")),
+                new ChangeMapComponent(object.properties().getString("file-name")),
                 new TransformComponent(object.bounds()));
     }
 

@@ -11,8 +11,8 @@ public class ReflectionZone implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        boolean useWaveEffect = object.properties().forceBoolean("useWaveEffect");
-        Percent opacityModifier = Percent.of(object.properties().forceDouble("opacityModifier"));
+        boolean useWaveEffect = object.properties().getBoolean("useWaveEffect");
+        Percent opacityModifier = Percent.of(object.properties().getDouble("opacityModifier"));
 
         return new Entity()
                 .add(new ReflectionComponent(opacityModifier, useWaveEffect))

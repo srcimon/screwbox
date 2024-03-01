@@ -15,7 +15,7 @@ public class Background implements Converter<Layer> {
         Sprite image = Sprite.fromFile(imagePath);
         var backgroundComponent = new BackgroundComponent(
                 layer.parallaxX(), layer.parallaxY(),
-                layer.properties().forceDouble("zoom"));
+                layer.properties().getDouble("zoom"));
 
         var renderComponent = new RenderComponent(image, layer.order(), layer.opacity());
         return new Entity().add(backgroundComponent, renderComponent);

@@ -40,7 +40,8 @@ public enum Feature {
             new MagnetSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),
-            new ChaoticMovementSystem()
+            new ChaoticMovementSystem(),
+            new PhysicsGridUpdateSystem()
     ),
 
     LIGHT(

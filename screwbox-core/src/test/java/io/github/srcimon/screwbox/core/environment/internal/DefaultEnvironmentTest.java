@@ -73,7 +73,7 @@ class DefaultEnvironmentTest {
     void addEntity_byIdAndComponent_addsEntity() {
         environment.addEntity(4, new TransformComponent(Vector.zero()));
 
-        assertThat(environment.fetchById(4)).isNotEmpty();
+        assertThat(environment.tryFetchById(4)).isNotEmpty();
         assertThat(environment.entityCount()).isEqualTo(1);
     }
 
@@ -122,18 +122,18 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void fetchById_idNotPresent_isEmpty() {
-        Optional<Entity> entity = environment.fetchById(149);
+    void tryFetchById_idNotPresent_isEmpty() {
+        Optional<Entity> entity = environment.tryFetchById(149);
 
         assertThat(entity).isEmpty();
     }
 
     @Test
-    void fetchById_idPresent_returnsEntityWithMatchingId() {
+    void tryFetchById_idPresent_returnsEntityWithMatchingId() {
         Entity entityWithMatchingId = new Entity(149);
         environment.addEntity(new Entity(20)).addEntity(entityWithMatchingId);
 
-        Optional<Entity> entity = environment.fetchById(149);
+        Optional<Entity> entity = environment.tryFetchById(149);
 
         assertThat(entity).isEqualTo(Optional.of(entityWithMatchingId));
     }
@@ -232,8 +232,8 @@ class DefaultEnvironmentTest {
 
         environment.loadSavegame(SAVEGAME_NAME);
 
-        assertThat(environment.fetchById(1)).isPresent();
-        assertThat(environment.fetchById(2)).isEmpty();
+        assertThat(environment.tryFetchById(1)).isPresent();
+        assertThat(environment.tryFetchById(2)).isEmpty();
     }
 
     @Test
@@ -312,13 +312,14 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(7)
+        assertThat(environment.systems()).hasSize(8)
                 .anyMatch(system -> system.getClass().equals(AutomovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
                 .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
+                .anyMatch(system -> system.getClass().equals(PhysicsGridUpdateSystem.class))
                 .anyMatch(system -> system.getClass().equals(CollisionDetectionSystem.class));
     }
 
@@ -333,7 +334,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void addSystem_orderNull_throwsException() {
-        assertThatThrownBy(() -> environment.addSystem(null, e -> e.stop()))
+        assertThatThrownBy(() -> environment.addSystem(null, Engine::stop))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("order must not be null");
     }
@@ -344,6 +345,7 @@ class DefaultEnvironmentTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("system must not be null");
     }
+
     @Test
     void addSystem_orderGiven_addsSystemWithOrder() {
         List<String> systemsExecuted = new ArrayList<>();
@@ -354,6 +356,86 @@ class DefaultEnvironmentTest {
         environment.update();
 
         assertThat(systemsExecuted).containsExactly("second", "first");
+    }
+
+    @Test
+    void tryFetchSingletonComponent_componentNotPresent_isEmpty() {
+        var singleton = environment.tryFetchSingletonComponent(ColliderComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void tryFetchSingletonComponent_singletonPresent_returnsComponent() {
+        ColliderComponent component = new ColliderComponent();
+        environment.addEntity(component);
+
+        var singleton = environment.tryFetchSingletonComponent(ColliderComponent.class);
+
+        assertThat(singleton).contains(component);
+    }
+
+    @Test
+    void tryFetchSingletonComponent_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
+
+        assertThatThrownBy(() -> environment.tryFetchSingletonComponent(ColliderComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
+    }
+
+    @Test
+    void tryFetchSingleton_componentNotPresent_isEmpty() {
+        var singleton = environment.tryFetchSingleton(ColliderComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void tryFetchSingleton_singletonPresent_returnsEntity() {
+        var entity = new Entity().add(new ColliderComponent());
+        environment.addEntity(entity);
+
+        var singleton = environment.tryFetchSingleton(ColliderComponent.class);
+
+        assertThat(singleton).contains(entity);
+    }
+
+    @Test
+    void tryFetchSingleton_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
+
+        assertThatThrownBy(() -> environment.tryFetchSingleton(ColliderComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
+    }
+
+    @Test
+    void hasSingleton_componentNotPresent_isFalse() {
+        var singleton = environment.hasSingleton(ColliderComponent.class);
+
+        assertThat(singleton).isFalse();
+    }
+
+    @Test
+    void hasSingleton_singletonPresent_isTrue() {
+        environment.addEntity(new ColliderComponent());
+
+        var singleton = environment.hasSingleton(ColliderComponent.class);
+
+        assertThat(singleton).isTrue();
+    }
+
+    @Test
+    void hasSingleton_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
+
+        assertThatThrownBy(() -> environment.hasSingleton(ColliderComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton has been found multiple times: ColliderComponent");
     }
 
     @AfterEach

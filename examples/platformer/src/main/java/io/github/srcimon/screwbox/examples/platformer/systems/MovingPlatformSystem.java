@@ -29,7 +29,7 @@ public class MovingPlatformSystem implements EntitySystem {
         var plattformComponent = platform.get(MovingPlatformComponent.class);
 
         if (isNull(plattformComponent.targetPosition)) {
-            Entity tartetEntity = engine.environment().forcedFetchById(plattformComponent.waypoint);
+            Entity tartetEntity = engine.environment().fetchById(plattformComponent.waypoint);
             plattformComponent.targetPosition = tartetEntity.get(TransformComponent.class).bounds.position();
         }
 
@@ -37,9 +37,9 @@ public class MovingPlatformSystem implements EntitySystem {
         Vector distance = transform.bounds.position().substract(plattformComponent.targetPosition);
 
         if (distance.isZero()) {
-            Entity currentTarget = engine.environment().forcedFetchById(plattformComponent.waypoint);
+            Entity currentTarget = engine.environment().fetchById(plattformComponent.waypoint);
             Entity nextTarget = engine.environment()
-                    .forcedFetchById(currentTarget.get(WaypointComponent.class).next);
+                    .fetchById(currentTarget.get(WaypointComponent.class).next);
             plattformComponent.targetPosition = nextTarget.get(TransformComponent.class).bounds.position();
             plattformComponent.waypoint = nextTarget.id().orElseThrow();
         }

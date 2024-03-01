@@ -21,6 +21,47 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public <T extends Component> T fetchSingletonComponent(Class<T> component) {
+        final var entities = fetchAllHaving(component);
+        if (entities.size() != 1) {
+            throw new IllegalStateException("singleton component has been found multiple times: " + component.getSimpleName());
+        }
+        return entities.getFirst().get(component);
+    }
+
+    @Override
+    public <T extends Component> Optional<T> tryFetchSingletonComponent(final Class<T> component) {
+        return tryFetchSingleton(component).map(entity -> entity.get(component));
+    }
+
+    @Override
+    public Optional<Entity> tryFetchSingleton(final Class<? extends Component> component) {
+        final var entities = fetchAllHaving(component);
+        if (entities.size() > 1) {
+            throw new IllegalStateException("singleton has been found multiple times: " + component.getSimpleName());
+        }
+        return entities.size() == 1
+                ? Optional.of(entities.getFirst())
+                : Optional.empty();
+    }
+
+    @Override
+    public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
+        final var entities = fetchAll(archetype);
+        if (entities.size() > 1) {
+            throw new IllegalStateException("singleton has been found multiple times: " + archetype);
+        }
+        return entities.size() == 1
+                ? Optional.of(entities.getFirst())
+                : Optional.empty();
+    }
+
+    @Override
+    public boolean hasSingleton(final Class<? extends Component> component) {
+        return tryFetchSingleton(component).isPresent();
+    }
+
+    @Override
     public Environment addEntity(final String name, final Component... components) {
         return addEntity(new Entity().name(name).add(components));
     }
@@ -87,24 +128,6 @@ public class DefaultEnvironment implements Environment {
     @Override
     public List<Entity> fetchAll(final Archetype archetype) {
         return entityManager.entitiesMatching(archetype);
-    }
-
-    @Override
-    public Entity forcedFetch(final Archetype archetype) {
-        final Optional<Entity> entity = fetch(archetype);
-        if (entity.isEmpty()) {
-            throw new IllegalStateException("didn't find exactly one entity matching " + archetype);
-        }
-        return entity.get();
-    }
-
-    @Override
-    public Optional<Entity> fetch(final Archetype archetype) {
-        final var entities = entityManager.entitiesMatching(archetype);
-        if (entities.size() == 1) {
-            return Optional.of(entities.getFirst());
-        }
-        return Optional.empty();
     }
 
     @Override
@@ -177,7 +200,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Entity forcedFetchById(final int id) {
+    public Entity fetchById(final int id) {
         final Entity entity = entityManager.findById(id);
         if (isNull(entity)) {
             throw new IllegalArgumentException("could not find entity with id " + id);
@@ -186,7 +209,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Optional<Entity> fetchById(final int id) {
+    public Optional<Entity> tryFetchById(final int id) {
         final Entity entity = entityManager.findById(id);
         return Optional.ofNullable(entity);
     }

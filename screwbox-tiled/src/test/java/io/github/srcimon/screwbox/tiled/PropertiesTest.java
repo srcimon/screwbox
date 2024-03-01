@@ -28,61 +28,62 @@ class PropertiesTest {
 
     @Test
     void newInstance_entitiesIsNull_isEmpty() {
-        assertThat(new Properties(null).all()).isEmpty();
+        Properties newInstance = new Properties(null);
+        assertThat(newInstance.all()).isEmpty();
     }
 
     @Test
-    void get_propertyMissing_returnsEmptyOptional() {
-        assertThat(properties.get("unknown")).isEmpty();
+    void tryGetString_propertyMissing_returnsEmptyOptional() {
+        assertThat(properties.tryGetString("unknown")).isEmpty();
     }
 
     @Test
-    void getInt_propertyMissing_returnsEmptyOptional() {
-        assertThat(properties.getInt("unknown")).isEmpty();
+    void tryGetInt_propertyMissing_returnsEmptyOptional() {
+        assertThat(properties.tryGetInt("unknown")).isEmpty();
     }
 
     @Test
-    void getDouble_propertyMissing_returnsEmptyOptional() {
-        assertThat(properties.getDouble("unknown")).isEmpty();
+    void tryGetDouble_propertyMissing_returnsEmptyOptional() {
+        assertThat(properties.tryGetDouble("unknown")).isEmpty();
     }
 
     @Test
-    void get_propertyExists_returnsValue() {
-        assertThat(properties.get("material")).isEqualTo(Optional.of("ice"));
+    void tryGetString_propertyExists_returnsValue() {
+        assertThat(properties.tryGetString("material")).isEqualTo(Optional.of("ice"));
     }
 
     @Test
-    void getInt_propertyExists_returnsValue() {
-        assertThat(properties.getInt("referenceId")).isEqualTo(Optional.of(125));
+    void tryGetInt_propertyExists_returnsValue() {
+        assertThat(properties.tryGetInt("referenceId")).isEqualTo(Optional.of(125));
     }
 
     @Test
-    void getDouble_propertyExists_returnsValue() {
-        assertThat(properties.getDouble("length")).isEqualTo(Optional.of(15.5));
+    void tryGetDouble_propertyExists_returnsValue() {
+        assertThat(properties.tryGetDouble("length")).isEqualTo(Optional.of(15.5));
     }
 
     @Test
-    void getDouble_propertyNotANumber_throwsException() {
-        assertThatThrownBy(() -> properties.getDouble("material"))
+    void tryGetDouble_propertyNotANumber_throwsException() {
+        assertThatThrownBy(() -> properties.tryGetDouble("material"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("property material is not a number: ice");
     }
 
     @Test
-    void getInt_propertyNotANumber_throwsException() {
-        assertThatThrownBy(() -> properties.getInt("material"))
+    void tryGetInt_propertyNotANumber_throwsException() {
+        assertThatThrownBy(() -> properties.tryGetInt("material"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("property material is not a number: ice");
     }
 
     @Test
-    void getBoolean_valueSetToFalse_returnsOptionalOfFalse() {
-        assertThat(properties.getBoolean("unchecked")).isEqualTo(Optional.of(false));
+    void tryGetBoolean_valueSetToFalse_returnsOptionalOfFalse() {
+        assertThat(properties.tryGetBoolean("unchecked")).isEqualTo(Optional.of(false));
     }
 
     @Test
-    void forceBoolean_valueSetToTrue_returnsTrue() {
-        assertThat(properties.forceBoolean("checked")).isTrue();
+    void getBoolean_valueSetToTrue_returnsTrue() {
+        assertThat(properties.getBoolean("checked")).isTrue();
     }
 
     private PropertyEntity createPropertyEntity(String name, String value) {

@@ -10,12 +10,14 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSys
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -35,6 +37,75 @@ import java.util.Optional;
  * @see Archetype
  */
 public interface Environment {
+
+    /**
+     * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when more than one instance is found
+     * @see #tryFetchSingleton(Class)
+     * @see #hasSingleton(Class)
+     */
+    <T extends Component> Optional<T> tryFetchSingletonComponent(Class<T> component);
+
+    /**
+     * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when not exactly one instance is found
+     * @see #tryFetchSingleton(Class)
+     * @see #hasSingleton(Class)
+     */
+    default <T extends Component> T fetchSingletonComponent(Class<T> component) {
+        return tryFetchSingletonComponent(component).orElseThrow(() -> new IllegalStateException("didn't find singleton"));
+    }
+
+    /**
+     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when more than one instance is found
+     * @see #fetchSingleton(Class)
+     * @see #tryFetchSingletonComponent(Class)
+     * @see #hasSingleton(Class)
+     */
+    Optional<Entity> tryFetchSingleton(Class<? extends Component> component);
+
+    /**
+     * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when more than one instance is found
+     * @see #tryFetchSingleton(Class)
+     * @see #tryFetchSingletonComponent(Class)
+     * @see #hasSingleton(Class)
+     */
+    default Entity fetchSingleton(final Class<? extends Component> component) {
+        return tryFetchSingleton(component).orElseThrow(() -> new IllegalStateException("didn't find singleton entity"));
+    }
+
+    /**
+     * Returns {@code true} if the {@link Environment} contains the given singleton {@link Component}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when more than one instance is found
+     * @see #tryFetchSingletonComponent(Class)
+     * @see #tryFetchSingletonComponent(Class)
+     */
+    boolean hasSingleton(Class<? extends Component> component);
+
+    Optional<Entity> tryFetchSingleton(Archetype archetype);
+
+    default Entity fetchSingleton(final Archetype archetype) {
+        return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
+    }
 
     Environment addEntity(String name, Component... components);
 
@@ -74,36 +145,27 @@ public interface Environment {
         return fetchAll(Archetype.of(componentA, componentB));
     }
 
-    Optional<Entity> fetch(Archetype archetype);
+    /**
+     * Fetches an {@link Entity} by {@link Entity#id()}.
+     *
+     * @throws IllegalStateException when {@link Entity} was not found
+     * @see #tryFetchById(int)
+     */
+    Entity fetchById(int id);
 
-    default Optional<Entity> fetchHaving(Class<? extends Component> component) {
-        return fetch(Archetype.of(component));
-    }
-
-    default Optional<Entity> fetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return fetch(Archetype.of(componentA, componentB));
-    }
-
-    Entity forcedFetch(Archetype archetype);
-
-    default Entity forcedFetchHaving(Class<? extends Component> component) {
-        return forcedFetch(Archetype.of(component));
-    }
-
-    default Entity forcedFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return forcedFetch(Archetype.of(componentA, componentB));
-    }
-
-    Entity forcedFetchById(int id);
-
-    Optional<Entity> fetchById(int id);
+    /**
+     * Fetches an {@link Entity} by {@link Entity#id()}.
+     *
+     * @see #fetchById(int)
+     */
+    Optional<Entity> tryFetchById(int id);
 
     Environment remove(Entity entity);
 
     Environment remove(List<Entity> entities);
 
     /**
-     * Drops all current {@link Entity}s. All {@link EntitySystem}s stay untouched.
+     * Removes all current {@link Entity}s. All {@link EntitySystem}s stay untouched.
      */
     Environment clearEntities();
 
@@ -179,6 +241,7 @@ public interface Environment {
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
+     * @see PhysicsGridUpdateSystem
      */
     Environment enablePhysics();
 

@@ -13,7 +13,7 @@ public class ZoomSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity camera = engine.environment().forcedFetch(CAMERA);
+        Entity camera = engine.environment().fetchSingleton(CAMERA);
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
             camera.get(CameraComponent.class).zoom += engine.loop().delta(2.5);

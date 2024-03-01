@@ -36,7 +36,7 @@ class DefaultPhysicsTest {
     @Test
     void findPath_gridPresent_addsStartEndEndPositions() {
         Grid grid = new Grid($$(0, 0, 10, 10), 2, false);
-        physics.setGrid(grid);
+        physics.updateGrid(grid);
 
         Path path = physics.findPath($(0, 0), $(9, 9)).get();
 
@@ -101,7 +101,7 @@ class DefaultPhysicsTest {
 
     @Test
     void snapToGrid_gridPresent_snapsVectorToGrid() {
-        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+        physics.updateGrid(new Grid($$(0, 0, 16, 16), 16));
 
         var result = physics.snapToGrid($(3, 10));
 
@@ -110,7 +110,7 @@ class DefaultPhysicsTest {
 
     @Test
     void snapToGrid_gridPresent_snapsBoundsToGrid() {
-        physics.setGrid(new Grid($$(0, 0, 16, 16), 16));
+        physics.updateGrid(new Grid($$(0, 0, 16, 16), 16));
 
         var result = physics.snapToGrid($$(3, 10, 8, 8));
 

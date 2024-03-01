@@ -12,7 +12,7 @@ public class Waypoint implements Converter<GameObject> {
     public Entity convert(GameObject object) {
         return new Entity(object.id()).add(
                 new TransformComponent(object.bounds()),
-                new WaypointComponent(object.properties().forceInt("next")));
+                new WaypointComponent(object.properties().getInt("next")));
     }
 
 }

@@ -22,14 +22,14 @@ public class Platfom implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        double speed = object.properties().getDouble("speed").orElse(60.0);
+        double speed = object.properties().tryGetDouble("speed").orElse(60.0);
         return new Entity().add(
                 new ColliderComponent(500, Percent.zero(), true),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(Bounds.atPosition(object.position(), 48, 12)),
                 new CollisionDetectionComponent(),
                 new LightBlockingComponent(),
-                new MovingPlatformComponent(object.properties().forceInt("waypoint"), speed));
+                new MovingPlatformComponent(object.properties().getInt("waypoint"), speed));
     }
 
 }
