@@ -40,6 +40,11 @@ public class CameraUpdateSystem implements EntitySystem {
                     distX * -1 * cameraTrackerSpeed * delta,
                     distY * -1 * cameraTrackerSpeed * delta);
 
+            if (camera.shakeStrength > 0) {
+                cameraMovement = cameraMovement.add(
+                        camera.shakeX.value(engine.loop().lastUpdate()) * camera.shakeStrength * engine.loop().delta(),
+                        camera.shakeY.value(engine.loop().lastUpdate()) * camera.shakeStrength * engine.loop().delta());
+            }
             engine.graphics().moveCameraWithinVisualBounds(cameraMovement, camera.visibleArea);
         }
     }

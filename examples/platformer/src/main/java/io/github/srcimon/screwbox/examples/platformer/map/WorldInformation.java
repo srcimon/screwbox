@@ -12,7 +12,7 @@ public class WorldInformation implements Converter<Map> {
     public Entity convert(Map map) {
         return new Entity().add(
                 new UseLightComponent(map.properties().tryGetBoolean("uses-light").orElse(false)),
-                new CameraComponent(2.5, map.bounds()));
+                new CameraComponent(3.5, map.bounds()));
     }
 
 }
