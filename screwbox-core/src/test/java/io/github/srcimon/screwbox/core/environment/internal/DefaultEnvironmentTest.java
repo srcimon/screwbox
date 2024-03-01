@@ -356,33 +356,6 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void tryFetchSingletonComponent_componentNotPresent_isEmpty() {
-        var singleton = environment.tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class);
-
-        assertThat(singleton).isEmpty();
-    }
-
-    @Test
-    void tryFetchSingletonComponent_singletonPresent_returnsComponent() {
-        PhysicsGridConfigurationComponent component = new PhysicsGridConfigurationComponent(null, 0, null);
-        environment.addEntity(component);
-
-        var singleton = environment.tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class);
-
-        assertThat(singleton).contains(component);
-    }
-
-    @Test
-    void tryFetchSingletonComponent_moreThanOneSingleton_throwsException() {
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
-
-        assertThatThrownBy(() -> environment.tryFetchSingletonComponent(PhysicsGridConfigurationComponent.class))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
-    }
-
-    @Test
     void tryFetchSingleton_componentNotPresent_isEmpty() {
         var singleton = environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class);
 
@@ -390,13 +363,13 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void tryFetchSingleton_singletonPresent_returnsEntity() {
-        var entity = new Entity().add(new PhysicsGridConfigurationComponent(null, 0, null));
-        environment.addEntity(entity);
+    void tryFetchSingleton_singletonPresent_returnsComponent() {
+        PhysicsGridConfigurationComponent component = new PhysicsGridConfigurationComponent(null, 0, null);
+        environment.addEntity(component);
 
         var singleton = environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class);
 
-        assertThat(singleton).contains(entity);
+        assertThat(singleton).contains(component);
     }
 
     @Test
@@ -405,6 +378,33 @@ class DefaultEnvironmentTest {
         environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
 
         assertThatThrownBy(() -> environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
+    }
+
+    @Test
+    void tryFetchSingletonEntity_componentNotPresent_isEmpty() {
+        var singleton = environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class);
+
+        assertThat(singleton).isEmpty();
+    }
+
+    @Test
+    void tryFetchSingletonEntity_singletonPresent_returnsEntity() {
+        var entity = new Entity().add(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(entity);
+
+        var singleton = environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class);
+
+        assertThat(singleton).contains(entity);
+    }
+
+    @Test
+    void tryFetchSingletonEntity_moreThanOneSingleton_throwsException() {
+        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+
+        assertThatThrownBy(() -> environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
     }
