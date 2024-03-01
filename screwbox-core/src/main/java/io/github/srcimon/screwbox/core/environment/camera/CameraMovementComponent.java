@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
+//TODO replace with CameraTargetComponent
 public final class CameraMovementComponent implements Component {
 
     @Serial

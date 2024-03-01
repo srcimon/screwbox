@@ -12,7 +12,7 @@ public class CameraSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        var camera = engine.environment().fetchSingletonComponent(CameraComponent.class);
+        var configuration = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
 
         final Vector cameraPosition = engine.graphics().cameraPosition();
         final var cameraMovementComponent = engine.environment().fetchSingletonComponent(CameraMovementComponent.class);
@@ -30,7 +30,7 @@ public class CameraSystem implements EntitySystem {
                     distX * -1 * cameraTrackerSpeed * delta,
                     distY * -1 * cameraTrackerSpeed * delta);
 
-            engine.graphics().moveCameraWithinVisualBounds(cameraMovement, camera.visibleArea);
+            engine.graphics().moveCameraWithinVisualBounds(cameraMovement, configuration.visibleArea);
         }
     }
 }
