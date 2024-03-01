@@ -36,7 +36,7 @@ public interface Environment {
      * @see #tryFetchSingletonEntity(Class)
      * @see #hasSingleton(Class)
      */
-    <T extends SingletonComponent> Optional<T> tryFetchSingleton(Class<T> component);
+    <T extends Component> Optional<T> tryFetchSingleton(Class<T> component);
 
     /**
      * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link SingletonComponent}.
@@ -47,7 +47,7 @@ public interface Environment {
      * @see #tryFetchSingleton(Class)
      * @see #hasSingleton(Class)
      */
-    Optional<Entity> tryFetchSingletonEntity(Class<? extends SingletonComponent> component);
+    Optional<Entity> tryFetchSingletonEntity(Class<? extends Component> component);
 
     /**
      * Returns {@code true} if the {@link Environment} contains the given singleton {@link SingletonComponent}.
@@ -58,7 +58,7 @@ public interface Environment {
      * @see #tryFetchSingleton(Class)
      * @see #tryFetchSingleton(Class)
      */
-    boolean hasSingleton(Class<? extends SingletonComponent> component);
+    boolean hasSingleton(Class<? extends Component> component);
 
     Environment addEntity(String name, Component... components);
 

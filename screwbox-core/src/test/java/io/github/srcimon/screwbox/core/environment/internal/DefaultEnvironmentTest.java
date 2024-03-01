@@ -11,7 +11,10 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.*;
-import io.github.srcimon.screwbox.core.environment.tweening.*;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -357,82 +360,82 @@ class DefaultEnvironmentTest {
 
     @Test
     void tryFetchSingleton_componentNotPresent_isEmpty() {
-        var singleton = environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.tryFetchSingleton(ColliderComponent.class);
 
         assertThat(singleton).isEmpty();
     }
 
     @Test
     void tryFetchSingleton_singletonPresent_returnsComponent() {
-        PhysicsGridConfigurationComponent component = new PhysicsGridConfigurationComponent(null, 0, null);
+        ColliderComponent component = new ColliderComponent();
         environment.addEntity(component);
 
-        var singleton = environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.tryFetchSingleton(ColliderComponent.class);
 
         assertThat(singleton).contains(component);
     }
 
     @Test
     void tryFetchSingleton_moreThanOneSingleton_throwsException() {
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
 
-        assertThatThrownBy(() -> environment.tryFetchSingleton(PhysicsGridConfigurationComponent.class))
+        assertThatThrownBy(() -> environment.tryFetchSingleton(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
+                .hasMessage("singleton component has been found multiple times: ColliderComponent");
     }
 
     @Test
     void tryFetchSingletonEntity_componentNotPresent_isEmpty() {
-        var singleton = environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.tryFetchSingletonEntity(ColliderComponent.class);
 
         assertThat(singleton).isEmpty();
     }
 
     @Test
     void tryFetchSingletonEntity_singletonPresent_returnsEntity() {
-        var entity = new Entity().add(new PhysicsGridConfigurationComponent(null, 0, null));
+        var entity = new Entity().add(new ColliderComponent());
         environment.addEntity(entity);
 
-        var singleton = environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.tryFetchSingletonEntity(ColliderComponent.class);
 
         assertThat(singleton).contains(entity);
     }
 
     @Test
     void tryFetchSingletonEntity_moreThanOneSingleton_throwsException() {
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
 
-        assertThatThrownBy(() -> environment.tryFetchSingletonEntity(PhysicsGridConfigurationComponent.class))
+        assertThatThrownBy(() -> environment.tryFetchSingletonEntity(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
+                .hasMessage("singleton component has been found multiple times: ColliderComponent");
     }
 
     @Test
     void hasSingleton_componentNotPresent_isFalse() {
-        var singleton = environment.hasSingleton(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.hasSingleton(ColliderComponent.class);
 
         assertThat(singleton).isFalse();
     }
 
     @Test
     void hasSingleton_singletonPresent_isTrue() {
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(new ColliderComponent());
 
-        var singleton = environment.hasSingleton(PhysicsGridConfigurationComponent.class);
+        var singleton = environment.hasSingleton(ColliderComponent.class);
 
         assertThat(singleton).isTrue();
     }
 
     @Test
     void hasSingleton_moreThanOneSingleton_throwsException() {
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
-        environment.addEntity(new PhysicsGridConfigurationComponent(null, 0, null));
+        environment.addEntity(new ColliderComponent());
+        environment.addEntity(new ColliderComponent());
 
-        assertThatThrownBy(() -> environment.hasSingleton(PhysicsGridConfigurationComponent.class))
+        assertThatThrownBy(() -> environment.hasSingleton(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("singleton component has been found multiple times: PhysicsGridConfigurationComponent");
+                .hasMessage("singleton component has been found multiple times: ColliderComponent");
     }
 
     @AfterEach

@@ -1,13 +1,13 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.environment.SingletonComponent;
+import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;
 
 //TODO @SingletonComponent on Adding such a component will check for already present ones => PERFORMANCE
-public class PhysicsGridConfigurationComponent implements SingletonComponent {
+public class PhysicsGridConfigurationComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

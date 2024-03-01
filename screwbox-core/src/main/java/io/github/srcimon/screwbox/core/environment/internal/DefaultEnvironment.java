@@ -21,12 +21,12 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public <T extends SingletonComponent> Optional<T> tryFetchSingleton(final Class<T> component) {
+    public <T extends Component> Optional<T> tryFetchSingleton(final Class<T> component) {
         return tryFetchSingletonEntity(component).map(entity -> entity.get(component));
     }
 
     @Override
-    public Optional<Entity> tryFetchSingletonEntity(final Class<? extends SingletonComponent> component) {
+    public Optional<Entity> tryFetchSingletonEntity(final Class<? extends Component> component) {
         final var entities = fetchAllHaving(component);
         if (entities.size() > 1) {
             throw new IllegalStateException("singleton component has been found multiple times: " + component.getSimpleName());
@@ -37,7 +37,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public boolean hasSingleton(final Class<? extends SingletonComponent> component) {
+    public boolean hasSingleton(final Class<? extends Component> component) {
         return tryFetchSingletonEntity(component).isPresent();
     }
 
