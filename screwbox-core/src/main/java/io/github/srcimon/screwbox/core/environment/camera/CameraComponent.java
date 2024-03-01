@@ -17,13 +17,11 @@ public final class CameraComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double zoom;
     public Bounds visibleArea;
 
     //TODO shake may be relative to screen and be set in graphics().setcamerashake(interval, strength)
 
-    public CameraComponent(final double zoom, final Bounds visibleArea) {
-        this.zoom = zoom;
+    public CameraComponent(final Bounds visibleArea) {
         this.visibleArea = visibleArea;
     }
 

@@ -13,7 +13,6 @@ public class CameraSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         var camera = engine.environment().fetchSingletonComponent(CameraComponent.class);
-        engine.graphics().updateZoom(camera.zoom);
 
         final Vector cameraPosition = engine.graphics().cameraPosition();
         final var cameraMovementComponent = engine.environment().fetchSingletonComponent(CameraMovementComponent.class);

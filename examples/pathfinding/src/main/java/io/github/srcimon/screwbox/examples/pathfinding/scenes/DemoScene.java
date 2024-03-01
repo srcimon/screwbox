@@ -113,6 +113,6 @@ public class DemoScene implements Scene {
     private static Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
                 .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
-                .add(new CameraComponent(2.5, map.bounds()));
+                .add(new CameraComponent(map.bounds()));
     }
 }
