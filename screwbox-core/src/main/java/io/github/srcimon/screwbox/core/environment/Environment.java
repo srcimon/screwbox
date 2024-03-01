@@ -39,6 +39,20 @@ public interface Environment {
     <T extends Component> Optional<T> tryFetchSingleton(Class<T> component);
 
     /**
+     * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
+     * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
+     * <p/>
+     * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
+     *
+     * @throws IllegalStateException will be thrown when not exactly one instance is found
+     * @see #tryFetchSingletonEntity(Class)
+     * @see #hasSingleton(Class)
+     */
+    default <T extends Component> T fetchSingleton(Class<T> component) {
+        return tryFetchSingleton(component).orElseThrow(() -> new IllegalStateException("didn't find singleton component"));
+    }
+
+    /**
      * Returns an {@link Entity} that is expected to be the only {@link Entity} in the {@link Environment} that contains the given singleton {@link Component}.
      * <p/>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
@@ -60,10 +74,8 @@ public interface Environment {
      */
     boolean hasSingleton(Class<? extends Component> component);
 
-    //TODO apply singleton naming schema
     Optional<Entity> tryFetch(Archetype archetype);
 
-    //TODO apply singleton naming schema
     Entity fetch(Archetype archetype);
 
     Environment addEntity(String name, Component... components);
