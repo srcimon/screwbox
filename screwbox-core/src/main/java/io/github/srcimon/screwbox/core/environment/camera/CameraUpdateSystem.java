@@ -25,11 +25,11 @@ public class CameraUpdateSystem implements EntitySystem {
         var config = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
         final var camBoundsComponent = cameraEntity.get(TransformComponent.class);
         final Vector cameraPosition = camBoundsComponent.bounds.position();
-        final var cameraTrackerComponent = cameraEntity.get(CameraMovementComponent.class);
-        final Vector trackerPosition = engine.environment().fetchById(cameraTrackerComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
-        final double cameraTrackerSpeed = cameraTrackerComponent.speed;
-        final double distX = cameraPosition.x() - trackerPosition.x() - cameraTrackerComponent.shift.x();
-        final double distY = cameraPosition.y() - trackerPosition.y() - cameraTrackerComponent.shift.y();
+        final var cameraMovementComponent = cameraEntity.get(CameraMovementComponent.class);
+        final Vector trackerPosition = engine.environment().fetchById(cameraMovementComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
+        final double cameraTrackerSpeed = cameraMovementComponent.speed;
+        final double distX = cameraPosition.x() - trackerPosition.x() - cameraMovementComponent.shift.x();
+        final double distY = cameraPosition.y() - trackerPosition.y() - cameraMovementComponent.shift.y();
 
         double delta = engine.loop().delta();
 
