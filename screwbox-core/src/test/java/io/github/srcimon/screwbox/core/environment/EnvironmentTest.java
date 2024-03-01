@@ -28,18 +28,4 @@ class EnvironmentTest {
 
         verify(environment).fetchAll(Archetype.of(RenderComponent.class, TransformComponent.class));
     }
-
-    @Test
-    void tryFetchHaving_component_callsActualMethod() {
-        environment.tryFetchHaving(RenderComponent.class);
-
-        verify(environment).tryFetch(Archetype.of(RenderComponent.class));
-    }
-
-    @Test
-    void fetchHaving_component_callsActualMethod() {
-        environment.fetchHaving(RenderComponent.class);
-
-        verify(environment).fetch(Archetype.of(RenderComponent.class));
-    }
 }

@@ -6,13 +6,15 @@ import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.gameoflife.grid.GridComponent;
 import io.github.srcimon.screwbox.examples.gameoflife.grid.GridUpdateSystem;
 
+import static io.github.srcimon.screwbox.core.environment.Archetype.of;
+
 public class SidebarMenu extends UiMenu {
 
     public SidebarMenu() {
         addItem(engine -> "fps: " + engine.loop().fps()).activeCondition(engine -> false);
         addItem(engine -> "frame: " + engine.loop().frameNumber()).activeCondition(engine -> false);
         addItem("colors").onActivate(engine -> {
-            var grid = engine.environment().fetchHaving(GridComponent.class).get(GridComponent.class);
+            var grid = engine.environment().fetch(of(GridComponent.class)).get(GridComponent.class);
             grid.noNeighboursColor = Color.random();
             grid.oneNeighboursColor = Color.random();
             grid.twoNeighboursColor = Color.random();

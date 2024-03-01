@@ -60,19 +60,11 @@ public interface Environment {
      */
     boolean hasSingleton(Class<? extends Component> component);
 
-
+    //TODO apply singleton naming schema
     Optional<Entity> tryFetch(Archetype archetype);
 
-    default Optional<Entity> tryFetchHaving(Class<? extends Component> component) {
-        return tryFetch(Archetype.of(component));
-    }
-
+    //TODO apply singleton naming schema
     Entity fetch(Archetype archetype);
-
-    default Entity fetchHaving(Class<? extends Component> component) {
-        return fetch(Archetype.of(component));
-    }
-
 
     Environment addEntity(String name, Component... components);
 
