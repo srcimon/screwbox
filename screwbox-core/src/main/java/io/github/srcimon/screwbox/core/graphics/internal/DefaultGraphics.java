@@ -32,9 +32,9 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
 
-    private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(500), Percent.half());
-    private Lurk y= Lurk.intervalWithDeviation(Duration.ofMillis(500), Percent.half());
-    private double shakeStrength = 30;
+    private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
+    private Lurk y= Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
+    private double shakeStrength = 10;
     private Vector shake = Vector.zero();
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -68,8 +68,10 @@ public class DefaultGraphics implements Graphics, Updatable {
         return world.updateZoom(zoom);
     }
 
+    Vector camPos = Vector.zero();
     @Override
     public Graphics updateCameraPosition(final Vector position) {
+        camPos = position;
         world.updateCameraPosition(position.add(shake));
 
         return this;
@@ -77,7 +79,8 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Vector cameraPosition() {
-        return world.cameraPosition().substract(shake);
+        return camPos;
+//        return world.cameraPosition().substract(shake);
     }
 
     @Override
