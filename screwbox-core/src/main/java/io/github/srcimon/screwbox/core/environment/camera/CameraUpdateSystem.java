@@ -12,19 +12,18 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 @Order(SystemOrder.PREPARATION)
 public class CameraUpdateSystem implements EntitySystem {
 
-    private static final Archetype CAMERA = Archetype.of(TransformComponent.class, CameraComponent.class,
+    private static final Archetype CAMERA = Archetype.of(
             CameraMovementComponent.class);
 
     boolean first = true;
 
     @Override
     public void update(final Engine engine) {
+        var camera = engine.environment().fetchSingletonComponent(CameraComponent.class);
         final Entity cameraEntity = engine.environment().fetchSingleton(CAMERA);
-        engine.graphics().updateZoom(cameraEntity.get(CameraComponent.class).zoom);
+        engine.graphics().updateZoom(camera.zoom);
 
-        var config = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
-        final var camBoundsComponent = cameraEntity.get(TransformComponent.class);
-        final Vector cameraPosition = camBoundsComponent.bounds.position();
+        final Vector cameraPosition = engine.graphics().cameraPosition();
         final var cameraMovementComponent = cameraEntity.get(CameraMovementComponent.class);
         final Vector trackerPosition = engine.environment().fetchById(cameraMovementComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
         final double cameraTrackerSpeed = cameraMovementComponent.speed;
@@ -41,8 +40,7 @@ public class CameraUpdateSystem implements EntitySystem {
                     distX * -1 * cameraTrackerSpeed * delta,
                     distY * -1 * cameraTrackerSpeed * delta);
 
-            Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, config.visibleArea);
-            camBoundsComponent.bounds = camBoundsComponent.bounds.moveTo(newCameraPosition);
+            engine.graphics().moveCameraWithinVisualBounds(cameraMovement, camera.visibleArea);
         }
     }
 }
