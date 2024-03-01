@@ -9,8 +9,20 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.*;
-import io.github.srcimon.screwbox.core.environment.rendering.*;
+import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
+import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
+import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
+import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
@@ -31,7 +43,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultEnvironmentTest {
@@ -436,6 +450,24 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> environment.hasSingleton(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("singleton has been found multiple times: ColliderComponent");
+    }
+
+    @Test
+    void fetchSingletonComponent_singletonFound_returnsSingleton() {
+        var collider = new ColliderComponent();
+
+        environment.addEntity(collider);
+
+        var singleton = environment.fetchSingletonComponent(ColliderComponent.class);
+
+        assertThat(singleton).isEqualTo(collider);
+    }
+
+    @Test
+    void fetchSingletonComponent_singletonNotFound_throwsException() {
+        assertThatThrownBy(() -> environment.fetchSingletonComponent(ColliderComponent.class))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("singleton component has not been found: ColliderComponent");
     }
 
     @AfterEach

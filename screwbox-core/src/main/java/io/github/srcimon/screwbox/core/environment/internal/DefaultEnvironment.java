@@ -1,7 +1,13 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.SourceImport;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +24,6 @@ public class DefaultEnvironment implements Environment {
 
     public DefaultEnvironment(final Engine engine) {
         this.systemManager = new SystemManager(engine, entityManager);
-    }
-
-    @Override
-    public <T extends Component> T fetchSingletonComponent(Class<T> component) {
-        final var entities = fetchAllHaving(component);
-        if (entities.size() != 1) {
-            throw new IllegalStateException("singleton component has been found multiple times: " + component.getSimpleName());
-        }
-        return entities.getFirst().get(component);
     }
 
     @Override

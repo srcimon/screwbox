@@ -61,7 +61,7 @@ public interface Environment {
      * @see #hasSingleton(Class)
      */
     default <T extends Component> T fetchSingletonComponent(Class<T> component) {
-        return tryFetchSingletonComponent(component).orElseThrow(() -> new IllegalStateException("didn't find singleton"));
+        return tryFetchSingletonComponent(component).orElseThrow(() -> new IllegalStateException("singleton component has not been found: " + component.getSimpleName()));
     }
 
     /**
