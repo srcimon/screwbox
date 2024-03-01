@@ -38,7 +38,31 @@ public class DefaultEnvironment implements Environment {
     public Optional<Entity> tryFetchSingleton(final Class<? extends Component> component) {
         final var entities = fetchAllHaving(component);
         if (entities.size() > 1) {
-            throw new IllegalStateException("singleton component has been found multiple times: " + component.getSimpleName());
+            throw new IllegalStateException("singleton has been found multiple times: " + component.getSimpleName());
+        }
+        return entities.size() == 1
+                ? Optional.of(entities.getFirst())
+                : Optional.empty();
+    }
+
+    @Override
+    public Entity fetchSingleton(final Archetype archetype) {
+
+        //TODO use code from above and fix tests
+        final Optional<Entity> entity = tryFetchSingleton(archetype);
+        if (entity.isEmpty()) {
+            throw new IllegalStateException("singleton has been found multiple times " + archetype);
+        }
+        return entity.get();
+    }
+
+    @Override
+    public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
+
+        //TODO use code from above and fix tests
+        final var entities = entityManager.entitiesMatching(archetype);
+        if (entities.size() > 1) {
+            throw new IllegalStateException("singleton has been found multiple times " + archetype);
         }
         return entities.size() == 1
                 ? Optional.of(entities.getFirst())
@@ -117,26 +141,6 @@ public class DefaultEnvironment implements Environment {
     @Override
     public List<Entity> fetchAll(final Archetype archetype) {
         return entityManager.entitiesMatching(archetype);
-    }
-
-    @Override
-    public Entity fetchSingleton(final Archetype archetype) {
-        final Optional<Entity> entity = tryFetchSingleton(archetype);
-        if (entity.isEmpty()) {
-            throw new IllegalStateException("didn't find exactly one entity matching " + archetype);
-        }
-        return entity.get();
-    }
-
-    @Override
-    public Optional<Entity> tryFetchSingleton(final Archetype archetype) {
-        final var entities = entityManager.entitiesMatching(archetype);
-        if (entities.size() > 1) {
-            throw new IllegalStateException("found more than one entity with matching archetype");
-        }
-        return entities.size() == 1
-                ? Optional.of(entities.getFirst())
-                : Optional.empty();
     }
 
     @Override
