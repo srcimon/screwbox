@@ -32,4 +32,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Mockito to 5.11.0
