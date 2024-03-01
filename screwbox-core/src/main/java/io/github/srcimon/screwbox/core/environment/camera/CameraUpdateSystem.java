@@ -12,19 +12,13 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 @Order(SystemOrder.PREPARATION)
 public class CameraUpdateSystem implements EntitySystem {
 
-    private static final Archetype CAMERA = Archetype.of(
-            CameraMovementComponent.class);
-
-    boolean first = true;
-
     @Override
     public void update(final Engine engine) {
         var camera = engine.environment().fetchSingletonComponent(CameraComponent.class);
-        final Entity cameraEntity = engine.environment().fetchSingleton(CAMERA);
         engine.graphics().updateZoom(camera.zoom);
 
         final Vector cameraPosition = engine.graphics().cameraPosition();
-        final var cameraMovementComponent = cameraEntity.get(CameraMovementComponent.class);
+        final var cameraMovementComponent = engine.environment().fetchSingletonComponent(CameraMovementComponent.class);
         final Vector trackerPosition = engine.environment().fetchById(cameraMovementComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
         final double cameraTrackerSpeed = cameraMovementComponent.speed;
         final double distX = cameraPosition.x() - trackerPosition.x() - cameraMovementComponent.shift.x();
@@ -32,8 +26,7 @@ public class CameraUpdateSystem implements EntitySystem {
 
         double delta = engine.loop().delta();
 
-        if (first) {
-            first = false;
+        if (cameraPosition.isZero()) {
             engine.graphics().updateCameraPosition(trackerPosition);
         } else {
             Vector cameraMovement = Vector.$(
