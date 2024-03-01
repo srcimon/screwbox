@@ -37,7 +37,7 @@ class MapTest {
 
     @Test
     void properties_returnsMapProperties() {
-        assertThat(map.properties().force("aMapProperty")).isEqualTo("aMapPropertyValue");
+        assertThat(map.properties().getString("aMapProperty")).isEqualTo("aMapPropertyValue");
     }
 
     @Test

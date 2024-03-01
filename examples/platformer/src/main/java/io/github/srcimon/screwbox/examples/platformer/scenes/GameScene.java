@@ -148,12 +148,12 @@ public class GameScene implements Scene {
     }
 
     private Predicate<Map> propertyIsActive(final String property) {
-        return map -> map.properties().getBoolean(property).orElse(false);
+        return map -> map.properties().tryGetBoolean(property).orElse(false);
     }
 
     private String tileType(final Tile tile) {
-        final var layerType = tile.layer().properties().get("type");
-        return layerType.orElseGet(() -> tile.properties().get("type").orElse("none"));
+        final var layerType = tile.layer().properties().tryGetString("type");
+        return layerType.orElseGet(() -> tile.properties().tryGetString("type").orElse("none"));
     }
 
 }

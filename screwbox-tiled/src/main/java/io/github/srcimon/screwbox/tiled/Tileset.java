@@ -70,7 +70,7 @@ public class Tileset {
                 addSprite(tilesetEntity.getFirstgid() + tileEntity.id(), animatedSprite);
             }
             final Properties properties = new Properties(tileEntity.properties());
-            properties.get("name").ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
+            properties.tryGetString("name").ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
         }
     }
 

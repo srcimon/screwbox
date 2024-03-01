@@ -19,8 +19,8 @@ public class ShowLabelZone implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        String label = object.properties().force("label");
-        Integer size = object.properties().getInt("size").orElse(16);
+        String label = object.properties().getString("label");
+        Integer size = object.properties().tryGetInt("size").orElse(16);
         return new Entity().add(
                 new TweenComponent(ofSeconds(2), TweenMode.SINE_IN_OUT, true),
                 new TweenPositionComponent(object.position().addY(-5), object.position().addY(5)),

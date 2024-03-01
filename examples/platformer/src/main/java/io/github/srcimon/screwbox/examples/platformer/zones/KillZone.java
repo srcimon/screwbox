@@ -15,7 +15,7 @@ public class KillZone implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        String deathType = object.properties().get("death-type").orElse("SPIKES");
+        String deathType = object.properties().tryGetString("death-type").orElse("SPIKES");
 
         return new Entity().add(
                 new SignalComponent(),

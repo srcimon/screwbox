@@ -21,6 +21,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Applied new naming schema for for optional and mandatory return values (#222)
 - Renamed camera movement and zoom methods
 - Renamed `PathfindingObstacleComponent`
 - Renamed `Physics.updateGrid(Grid)`

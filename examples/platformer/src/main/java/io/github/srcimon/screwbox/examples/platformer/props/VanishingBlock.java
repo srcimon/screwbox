@@ -19,7 +19,7 @@ public class VanishingBlock implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        Integer timeoutMillis = object.properties().getInt("timeout-millis").orElse(300);
+        Integer timeoutMillis = object.properties().tryGetInt("timeout-millis").orElse(300);
         return new Entity().add(
                 new ColliderComponent(500),
                 new VanishingOnCollisionComponent(Duration.ofMillis(timeoutMillis)),

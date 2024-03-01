@@ -13,7 +13,7 @@ public class FadeInEffect implements Converter<GameObject> {
 
     @Override
     public Entity convert(GameObject object) {
-        int duration = object.properties().forceInt("duration-secs");
+        int duration = object.properties().getInt("duration-secs");
 
         var randomFadeIn = randomFrom(
                 new HorizontalLinesTransition(20),

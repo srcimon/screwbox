@@ -78,7 +78,7 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new TransformComponent(object.bounds()))
                 .add(new CameraComponent(2.5))
-                .add(new CameraMovementComponent(2, object.properties().forceInt("target")));
+                .add(new CameraMovementComponent(2, object.properties().getInt("target")));
     }
 
     private Converter<GameObject> player() {

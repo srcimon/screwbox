@@ -21,56 +21,56 @@ public class Properties {
                         .toList();
     }
 
-    public Optional<String> get(final String name) {
-        return findProperty(name).map(Property::get);
+    public Optional<String> tryGetString(final String name) {
+        return tryGet(name).map(Property::get);
     }
 
-    private Optional<Property> findProperty(final String name) {
+    private Optional<Property> tryGet(final String name) {
         return propertyList.stream()
                 .filter(p -> name.equals(p.name()))
                 .findFirst();
     }
 
-    public Optional<Integer> getInt(final String name) {
-        final Optional<Property> property = findProperty(name);
+    public Optional<Integer> tryGetInt(final String name) {
+        final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getInt())
                 : Optional.empty();
 
     }
 
-    public Optional<Double> getDouble(final String name) {
-        final Optional<Property> property = findProperty(name);
+    public Optional<Double> tryGetDouble(final String name) {
+        final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getDouble())
                 : Optional.empty();
     }
 
-    public String force(final String name) {
-        return get(name).orElseThrow(() -> missingProperty(name));
+    public String getString(final String name) {
+        return tryGetString(name).orElseThrow(() -> missingProperty(name));
     }
 
-    public int forceInt(final String name) {
-        return getInt(name).orElseThrow(() -> missingProperty(name));
+    public int getInt(final String name) {
+        return tryGetInt(name).orElseThrow(() -> missingProperty(name));
     }
 
-    public double forceDouble(final String name) {
-        return getDouble(name).orElseThrow(() -> missingProperty(name));
+    public double getDouble(final String name) {
+        return tryGetDouble(name).orElseThrow(() -> missingProperty(name));
     }
 
     public List<Property> all() {
         return propertyList;
     }
 
-    public Optional<Boolean> getBoolean(final String name) {
-        final Optional<Property> property = findProperty(name);
+    public Optional<Boolean> tryGetBoolean(final String name) {
+        final Optional<Property> property = tryGet(name);
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getBoolean())
                 : Optional.empty();
     }
 
-    public boolean forceBoolean(final String name) {
-        return getBoolean(name).orElseThrow(() -> missingProperty(name));
+    public boolean getBoolean(final String name) {
+        return tryGetBoolean(name).orElseThrow(() -> missingProperty(name));
     }
 
     private IllegalStateException missingProperty(final String name) {

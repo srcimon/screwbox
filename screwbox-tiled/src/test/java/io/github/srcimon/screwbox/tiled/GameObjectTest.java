@@ -49,9 +49,9 @@ class GameObjectTest {
     void properties_returnsCorrectProperties() {
         Properties properties = pointer.properties();
 
-        assertThat(properties.force("material")).isEqualTo("ice");
-        assertThat(properties.forceDouble("length")).isEqualTo(66.6);
-        assertThat(properties.forceInt("numbervalue")).isEqualTo(2);
+        assertThat(properties.getString("material")).isEqualTo("ice");
+        assertThat(properties.getDouble("length")).isEqualTo(66.6);
+        assertThat(properties.getInt("numbervalue")).isEqualTo(2);
     }
 
     @Test
