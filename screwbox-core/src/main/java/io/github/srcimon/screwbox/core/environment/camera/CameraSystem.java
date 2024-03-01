@@ -2,15 +2,13 @@ package io.github.srcimon.screwbox.core.environment.camera;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 @Order(SystemOrder.PREPARATION)
-public class CameraUpdateSystem implements EntitySystem {
+public class CameraSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {

@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.camera.CameraComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraMovementComponent;
-import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.AutomovementDebugSystem;
@@ -62,7 +62,7 @@ public class DemoScene implements Scene {
         environment
                 .enablePhysics()
                 .addSystem(new RenderSystem())
-                .addSystem(new CameraUpdateSystem())
+                .addSystem(new CameraSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())
                 .addSystem(new RotateSpriteSystem())

@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
+import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.*;
@@ -73,7 +73,7 @@ public class GameScene implements Scene {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
-                .addSystem(new CameraUpdateSystem())
+                .addSystem(new CameraSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
