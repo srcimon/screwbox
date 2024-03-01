@@ -2,7 +2,7 @@
 
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
-- Added methods for handling of singleton components and entitie to `Environment`
+- Added methods for handling of singleton components and entitie to `Environment` (#219)
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
