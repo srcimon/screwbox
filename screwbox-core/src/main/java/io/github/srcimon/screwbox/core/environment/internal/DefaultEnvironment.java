@@ -131,10 +131,12 @@ public class DefaultEnvironment implements Environment {
     @Override
     public Optional<Entity> tryFetch(final Archetype archetype) {
         final var entities = entityManager.entitiesMatching(archetype);
-        if (entities.size() == 1) {
-            return Optional.of(entities.getFirst());
+        if (entities.size() > 1) {
+            throw new IllegalStateException("found more than one entity with matching archetype");
         }
-        return Optional.empty();
+        return entities.size() == 1
+                ? Optional.of(entities.getFirst())
+                : Optional.empty();
     }
 
     @Override
