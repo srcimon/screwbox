@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 @Order(SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
 
+    private boolean first  = true;
     @Override
     public void update(final Engine engine) {
         var configuration = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
@@ -23,8 +24,9 @@ public class CameraSystem implements EntitySystem {
 
         double delta = engine.loop().delta();
 
-        if (cameraPosition.isZero()) {
+        if (first) {
             engine.graphics().updateCameraPosition(trackerPosition);
+            first = false;
         } else {
             Vector cameraMovement = Vector.$(
                     distX * -1 * cameraTrackerSpeed * delta,

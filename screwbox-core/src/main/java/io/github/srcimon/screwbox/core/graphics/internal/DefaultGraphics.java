@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
@@ -25,6 +26,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
 
+    private CameraShake         shake = new CameraShake();
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
@@ -35,6 +37,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
+
     }
 
     @Override
@@ -59,6 +62,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Graphics updateCameraPosition(final Vector position) {
+
         world.updateCameraPosition(position);
         return this;
     }
@@ -116,7 +120,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     public void update() {
         screen.updateScreen(configuration.isUseAntialising());
         light.update();
-        world.recalculateVisibleArea();
     }
 
     @Override
