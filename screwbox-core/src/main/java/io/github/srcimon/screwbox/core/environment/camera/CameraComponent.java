@@ -12,6 +12,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
 public final class CameraComponent implements Component {
 
+
     //TODO remove camera from Tiled Maps
     @Serial
     private static final long serialVersionUID = 1L;
@@ -19,9 +20,7 @@ public final class CameraComponent implements Component {
     public double zoom;
     public Bounds visibleArea;
 
-    public double shakeStrength = 0;
-    public Lurk shakeX = Lurk.intervalWithDeviation(ofMillis(100), Percent.half());
-    public Lurk shakeY = Lurk.intervalWithDeviation(ofMillis(100), Percent.half());
+    //TODO shake may be relative to screen and be set in graphics().setcamerashake(interval, strength)
 
     public CameraComponent(final double zoom, final Bounds visibleArea) {
         this.zoom = zoom;
