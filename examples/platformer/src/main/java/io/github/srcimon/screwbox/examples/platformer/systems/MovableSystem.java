@@ -22,7 +22,7 @@ public class MovableSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity player = engine.environment().forcedFetch(PLAYER);
+        Entity player = engine.environment().fetch(PLAYER);
         var playerMomentum = player.get(PhysicsComponent.class).momentum;
         var playerPosition = player.get(TransformComponent.class).bounds.position();
 

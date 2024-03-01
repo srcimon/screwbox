@@ -13,7 +13,7 @@ public class ToggleLightSystemsSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Entity worldInformation = engine.environment().forcedFetch(WORLD_INFORMATION);
+        Entity worldInformation = engine.environment().fetch(WORLD_INFORMATION);
         boolean isCurrentlyActive = engine.environment().isSystemPresent(LightRenderSystem.class);
 
         if (worldInformation.get(UseLightComponent.class).useLight != isCurrentlyActive) {

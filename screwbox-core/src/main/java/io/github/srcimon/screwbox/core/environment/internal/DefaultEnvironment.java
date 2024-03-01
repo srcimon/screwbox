@@ -111,7 +111,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Entity forcedFetch(final Archetype archetype) {
+    public Entity fetch(final Archetype archetype) {
         final Optional<Entity> entity = tryFetch(archetype);
         if (entity.isEmpty()) {
             throw new IllegalStateException("didn't find exactly one entity matching " + archetype);
@@ -198,7 +198,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Entity forcedFetchById(final int id) {
+    public Entity fetchById(final int id) {
         final Entity entity = entityManager.findById(id);
         if (isNull(entity)) {
             throw new IllegalArgumentException("could not find entity with id " + id);
@@ -207,7 +207,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Optional<Entity> fetchById(final int id) {
+    public Optional<Entity> tryFetchById(final int id) {
         final Entity entity = entityManager.findById(id);
         return Optional.ofNullable(entity);
     }

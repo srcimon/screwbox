@@ -108,26 +108,26 @@ public interface Environment {
         return tryFetch(Archetype.of(componentA, componentB));
     }
 
-    Entity forcedFetch(Archetype archetype);
+    Entity fetch(Archetype archetype);
 
-    default Entity forcedFetchHaving(Class<? extends Component> component) {
-        return forcedFetch(Archetype.of(component));
+    default Entity fetchHaving(Class<? extends Component> component) {
+        return fetch(Archetype.of(component));
     }
 
-    default Entity forcedFetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
-        return forcedFetch(Archetype.of(componentA, componentB));
+    default Entity fetchHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
+        return fetch(Archetype.of(componentA, componentB));
     }
 
-    Entity forcedFetchById(int id);
+    Entity fetchById(int id);
 
-    Optional<Entity> fetchById(int id);
+    Optional<Entity> tryFetchById(int id);
 
     Environment remove(Entity entity);
 
     Environment remove(List<Entity> entities);
 
     /**
-     * Drops all current {@link Entity}s. All {@link EntitySystem}s stay untouched.
+     * Removes all current {@link Entity}s. All {@link EntitySystem}s stay untouched.
      */
     Environment clearEntities();
 

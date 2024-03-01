@@ -12,7 +12,7 @@ public class GridInteractionSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridComponent = engine.environment().forcedFetch(GRID_HOLDER).get(GridComponent.class);
+        final var gridComponent = engine.environment().fetch(GRID_HOLDER).get(GridComponent.class);
         final Vector mousePosition = engine.mouse().position();
 
         if (engine.mouse().isDown(MouseButton.LEFT)) {

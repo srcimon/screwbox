@@ -13,7 +13,7 @@ public class CameraControlSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridComponent = engine.environment().forcedFetch(GRID_HOLDER).get(GridComponent.class);
+        final var gridComponent = engine.environment().fetch(GRID_HOLDER).get(GridComponent.class);
 
         if (engine.mouse().isDown(MouseButton.MIDDLE)) {
             engine.graphics().moveCameraWithinVisualBounds(engine.mouse().drag(), gridComponent.grid.area());

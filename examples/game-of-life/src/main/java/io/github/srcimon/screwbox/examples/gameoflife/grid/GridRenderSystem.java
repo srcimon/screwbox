@@ -14,7 +14,7 @@ public class GridRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var gridComponent = engine.environment().forcedFetch(GRID_HOLDER).get(GridComponent.class);
+        final var gridComponent = engine.environment().fetch(GRID_HOLDER).get(GridComponent.class);
         final World world = engine.graphics().world();
         Bounds visibleArea = engine.graphics().world().visibleArea();
         for (final var node : gridComponent.grid.nodes()) {

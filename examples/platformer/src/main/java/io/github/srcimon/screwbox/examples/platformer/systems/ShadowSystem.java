@@ -41,7 +41,7 @@ public class ShadowSystem implements EntitySystem {
 
         for (final Entity shadow : engine.environment().fetchAll(SHADOWS)) {
             final int linkedId = shadow.get(ShadowComponent.class).linkedTo;
-            final var linked = engine.environment().fetchById(linkedId);
+            final var linked = engine.environment().tryFetchById(linkedId);
             if (linked.isPresent()) {
                 final Bounds linkedBounds = linked.get().get(TransformComponent.class).bounds;
                 final Optional<Vector> position = engine.physics()

@@ -12,7 +12,7 @@ public class SidebarMenu extends UiMenu {
         addItem(engine -> "fps: " + engine.loop().fps()).activeCondition(engine -> false);
         addItem(engine -> "frame: " + engine.loop().frameNumber()).activeCondition(engine -> false);
         addItem("colors").onActivate(engine -> {
-            var grid = engine.environment().forcedFetchHaving(GridComponent.class).get(GridComponent.class);
+            var grid = engine.environment().fetchHaving(GridComponent.class).get(GridComponent.class);
             grid.noNeighboursColor = Color.random();
             grid.oneNeighboursColor = Color.random();
             grid.twoNeighboursColor = Color.random();

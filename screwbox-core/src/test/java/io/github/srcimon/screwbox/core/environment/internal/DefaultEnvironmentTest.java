@@ -73,7 +73,7 @@ class DefaultEnvironmentTest {
     void addEntity_byIdAndComponent_addsEntity() {
         environment.addEntity(4, new TransformComponent(Vector.zero()));
 
-        assertThat(environment.fetchById(4)).isNotEmpty();
+        assertThat(environment.tryFetchById(4)).isNotEmpty();
         assertThat(environment.entityCount()).isEqualTo(1);
     }
 
@@ -122,18 +122,18 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void fetchById_idNotPresent_isEmpty() {
-        Optional<Entity> entity = environment.fetchById(149);
+    void tryFetchById_idNotPresent_isEmpty() {
+        Optional<Entity> entity = environment.tryFetchById(149);
 
         assertThat(entity).isEmpty();
     }
 
     @Test
-    void fetchById_idPresent_returnsEntityWithMatchingId() {
+    void tryFetchById_idPresent_returnsEntityWithMatchingId() {
         Entity entityWithMatchingId = new Entity(149);
         environment.addEntity(new Entity(20)).addEntity(entityWithMatchingId);
 
-        Optional<Entity> entity = environment.fetchById(149);
+        Optional<Entity> entity = environment.tryFetchById(149);
 
         assertThat(entity).isEqualTo(Optional.of(entityWithMatchingId));
     }
@@ -232,8 +232,8 @@ class DefaultEnvironmentTest {
 
         environment.loadSavegame(SAVEGAME_NAME);
 
-        assertThat(environment.fetchById(1)).isPresent();
-        assertThat(environment.fetchById(2)).isEmpty();
+        assertThat(environment.tryFetchById(1)).isPresent();
+        assertThat(environment.tryFetchById(2)).isEmpty();
     }
 
     @Test

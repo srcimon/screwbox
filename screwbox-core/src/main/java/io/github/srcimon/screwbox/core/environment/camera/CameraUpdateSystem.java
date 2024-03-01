@@ -18,14 +18,14 @@ public class CameraUpdateSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final Entity cameraEntity = engine.environment().forcedFetch(CAMERA);
+        final Entity cameraEntity = engine.environment().fetch(CAMERA);
         engine.graphics().updateZoom(cameraEntity.get(CameraComponent.class).zoom);
 
-        final Bounds worldBounds = engine.environment().forcedFetch(WORLD_BOUNDS).get(TransformComponent.class).bounds;
+        final Bounds worldBounds = engine.environment().fetch(WORLD_BOUNDS).get(TransformComponent.class).bounds;
         final var camBoundsComponent = cameraEntity.get(TransformComponent.class);
         final Vector cameraPosition = camBoundsComponent.bounds.position();
         final var cameraTrackerComponent = cameraEntity.get(CameraMovementComponent.class);
-        final Vector trackerPosition = engine.environment().forcedFetchById(cameraTrackerComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
+        final Vector trackerPosition = engine.environment().fetchById(cameraTrackerComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
         final double cameraTrackerSpeed = cameraTrackerComponent.speed;
         final double distX = cameraPosition.x() - trackerPosition.x() - cameraTrackerComponent.shift.x();
         final double distY = cameraPosition.y() - trackerPosition.y() - cameraTrackerComponent.shift.y();

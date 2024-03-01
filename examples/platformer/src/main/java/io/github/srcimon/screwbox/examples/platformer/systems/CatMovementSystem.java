@@ -56,7 +56,7 @@ public class CatMovementSystem implements EntitySystem {
             return;
         }
 
-        Entity player = engine.environment().forcedFetch(PLAYER);
+        Entity player = engine.environment().fetch(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
         Vector playerPosition = player.get(TransformComponent.class).bounds.position();
         var flipMode = player.get(RenderComponent.class).flip;
