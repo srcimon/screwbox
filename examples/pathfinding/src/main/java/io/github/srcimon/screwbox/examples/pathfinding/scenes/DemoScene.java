@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.camera.CameraComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraMovementComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.AutomovementDebugSystem;
@@ -52,7 +52,7 @@ public class DemoScene implements Scene {
                 .when("floor").as(floor());
 
         environment.importSource(MAP.get())
-                .as(worldBounds());
+                .as(worldInfoSingleton());
 
         environment.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
@@ -113,10 +113,9 @@ public class DemoScene implements Scene {
                 .add(new ColliderComponent());
     }
 
-    private static Converter<Map> worldBounds() {
+    private static Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
-                .add(new TransformComponent(map.bounds()))
                 .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
-                .add(new GlobalBoundsComponent());
+                .add(new CameraConfigurationComponent(map.bounds()));
     }
 }

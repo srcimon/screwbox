@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.environment.camera;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 @Order(SystemOrder.PREPARATION)
@@ -12,7 +14,6 @@ public class CameraUpdateSystem implements EntitySystem {
 
     private static final Archetype CAMERA = Archetype.of(TransformComponent.class, CameraComponent.class,
             CameraMovementComponent.class);
-    private static final Archetype WORLD_BOUNDS = Archetype.of(GlobalBoundsComponent.class, TransformComponent.class);
 
     boolean first = true;
 
@@ -21,7 +22,7 @@ public class CameraUpdateSystem implements EntitySystem {
         final Entity cameraEntity = engine.environment().fetchSingleton(CAMERA);
         engine.graphics().updateZoom(cameraEntity.get(CameraComponent.class).zoom);
 
-        final Bounds worldBounds = engine.environment().fetchSingleton(WORLD_BOUNDS).get(TransformComponent.class).bounds;
+        var config = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
         final var camBoundsComponent = cameraEntity.get(TransformComponent.class);
         final Vector cameraPosition = camBoundsComponent.bounds.position();
         final var cameraTrackerComponent = cameraEntity.get(CameraMovementComponent.class);
@@ -40,7 +41,7 @@ public class CameraUpdateSystem implements EntitySystem {
                     distX * -1 * cameraTrackerSpeed * delta,
                     distY * -1 * cameraTrackerSpeed * delta);
 
-            Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, worldBounds);
+            Vector newCameraPosition = engine.graphics().moveCameraWithinVisualBounds(cameraMovement, config.visibleArea);
             camBoundsComponent.bounds = camBoundsComponent.bounds.moveTo(newCameraPosition);
         }
     }
