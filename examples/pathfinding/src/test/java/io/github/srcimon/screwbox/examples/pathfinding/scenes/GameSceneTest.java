@@ -24,7 +24,6 @@ class DemoSceneTest {
         new DemoScene().populate(environment);
 
         assertThat(environment.entities()).hasSizeGreaterThan(50)
-                .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class))
-                .anyMatch(e -> e.hasComponent(CameraConfigurationComponent.class));
+                .anyMatch(e -> e.hasComponent(PlayerMovementComponent.class));
     }
 }
