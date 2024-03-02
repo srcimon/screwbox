@@ -149,7 +149,7 @@ public class DefaultCamera implements Camera, Updatable {
         final var progress = activeShake.duration().isNone()
                 ? Percent.zero()
                 : Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
-        return $(xNoise.value(now), yNoise.value(now)).multiply(activeShake.strength() * progress.invert().value());
+        return $(xNoise.value(now), yNoise.value(now)).multiply(activeShake.strength() * progress.invert().value() / zoom);
     }
 
 }
