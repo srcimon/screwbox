@@ -56,12 +56,17 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public double updateZoomRelative(final double delta) {
-        return world.updateZoom(world.wantedZoom() + delta);
+        var actualZoom = camera.updateZoom(camera.wantedZoom() + delta);
+        world.updateZoom(actualZoom);
+        return actualZoom;
     }
 
     @Override
     public double updateZoom(final double zoom) {
-        return world.updateZoom(zoom);
+        var actualZoom = camera.updateZoom(zoom);
+        world.updateZoom(actualZoom);
+        world.updateZoom(zoom);
+        return actualZoom;
     }
 
     @Override
@@ -129,7 +134,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Graphics restrictZoomRangeTo(final double min, final double max) {
-        world.restrictZoomRangeTo(min, max);
+        camera.restrictZoomRangeTo(min, max);
         return this;
     }
 

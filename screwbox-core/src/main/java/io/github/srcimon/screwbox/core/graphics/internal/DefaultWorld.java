@@ -14,10 +14,7 @@ public class DefaultWorld implements World {
     private final Screen screen;
 
     private Vector cameraPosition = Vector.zero();
-    private double zoom = 2;
-    private double wantedZoom = zoom;
-    private double minZoom = 2;
-    private double maxZoom = 5;
+    private double zoom = 1;
 
     private Bounds visibleArea;
 
@@ -26,27 +23,9 @@ public class DefaultWorld implements World {
         recalculateVisibleArea();
     }
 
-    public void restrictZoomRangeTo(final double min, final double max) {
-        if (min <= 0) {
-            throw new IllegalArgumentException("min zoom must be positive");
-        }
-        if (min > max) {
-            throw new IllegalArgumentException("max zoom must not be lower than min zoom");
-        }
-        this.minZoom = min;
-        this.maxZoom = max;
-    }
-
-    public double wantedZoom() {
-        return wantedZoom;
-    }
-
-    public double updateZoom(final double zoom) {
-        this.wantedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
-        final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
-        this.zoom = actualZoomValue;
+    public void updateZoom(final double zoom) {
+        this.zoom = zoom;
         recalculateVisibleArea();
-        return actualZoomValue;
     }
 
     public void updateCameraPosition(final Vector position) {
