@@ -5,22 +5,23 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.AspectRatio;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.graphics.Light;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Lurk;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
 
-import java.awt.Font;
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
-import static java.util.Arrays.sort;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
@@ -33,9 +34,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
 
     private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
-    private Lurk y= Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
+    private Lurk y = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
     private double shakeStrength = 8;
     private Vector shake = Vector.zero();
+    Vector cameraPosition = Vector.zero();
+
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
@@ -68,10 +71,9 @@ public class DefaultGraphics implements Graphics, Updatable {
         return world.updateZoom(zoom);
     }
 
-    Vector camPos = Vector.zero();
     @Override
     public Graphics updateCameraPosition(final Vector position) {
-        camPos = position;
+        cameraPosition = position;
         world.updateCameraPosition(position.add(shake));
 
         return this;
@@ -79,8 +81,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Vector cameraPosition() {
-        return camPos;
-//        return world.cameraPosition().substract(shake);
+        return cameraPosition;
     }
 
     @Override
@@ -132,11 +133,10 @@ public class DefaultGraphics implements Graphics, Updatable {
         screen.updateScreen(configuration.isUseAntialising());
         light.update();
 
-
-            shake = Vector.$(
-                    x.value(Time.now()) * shakeStrength,
-                    y.value(Time.now()) * shakeStrength
-            );
+        shake = Vector.$(
+                x.value(Time.now()) * shakeStrength,
+                y.value(Time.now()) * shakeStrength
+        );
     }
 
     @Override
