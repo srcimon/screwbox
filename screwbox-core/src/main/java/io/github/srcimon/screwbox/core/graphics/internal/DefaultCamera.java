@@ -26,9 +26,6 @@ public class DefaultCamera implements Camera, Updatable {
         this.world = world;
     }
 
-    //TODO CameraShakeOptions...
-
-    //TODO ADD ZOOM TO shake
     @Override
     public Camera updatePosition(Vector position) {
         this.position = position;
