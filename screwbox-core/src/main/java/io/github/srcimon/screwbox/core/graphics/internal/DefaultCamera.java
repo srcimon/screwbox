@@ -47,11 +47,8 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector focus() {
-//        return position.add(shake);
-        var old =  position.add(shake);
-        return Vector.of(
-                Math.floor(old.x() * 16.0) / 16.0,
-                Math.floor(old.y() * 16.0) / 16.0);
+        final var position =  this.position.add(shake);
+        return Vector.of(pixelPerfectValue(position.x()), pixelPerfectValue(position.y()));
     }
 
     @Override
@@ -70,7 +67,7 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public double updateZoom(final double zoom) {
         this.requestedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
-        this.zoom = Math.floor(requestedZoom * 16.0) / 16.0;
+        this.zoom = pixelPerfectValue(requestedZoom);
         world.updateZoom(this.zoom);
         return this.zoom;
     }
@@ -156,4 +153,7 @@ public class DefaultCamera implements Camera, Updatable {
         return $(xNoise.value(now), yNoise.value(now)).multiply(activeShake.strength() * progress.invert().value() / zoom);
     }
 
+    private double pixelPerfectValue(final  double value) {
+        return Math.floor(value * 16.0) / 16.0;
+    }
 }
