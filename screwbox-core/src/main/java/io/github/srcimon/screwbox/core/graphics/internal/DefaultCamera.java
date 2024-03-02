@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.CameraShake;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Lurk;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
@@ -15,9 +16,6 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 public class DefaultCamera implements Camera, Updatable {
 
     private final DefaultWorld world;
-    private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
-    private Lurk y = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
-    private double shakeStrength = 0;
     private Vector shake = Vector.zero();
     Vector position = Vector.zero();
     private double zoom = 2;
@@ -25,8 +23,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double minZoom = 2;
     private double maxZoom = 5;
     private Time start = null;
-    private Time end = null;
-
+private CameraShake activeShake = null;
     public DefaultCamera(DefaultWorld world) {
         this.world = world;
     }
@@ -98,13 +95,9 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera addShake(double strength, Duration interval, Duration duration) {
+    public Camera addShake(CameraShake shake) {
         start = Time.now();
-        end = start.plus(duration);
-        shakeStrength = strength;
-        x = Lurk.intervalWithDeviation(interval, Percent.half());
-        y = Lurk.intervalWithDeviation(interval, Percent.half());
-
+        activeShake =  shake;
         return this;
     }
 
@@ -127,13 +120,10 @@ public class DefaultCamera implements Camera, Updatable {
     public void update() {
         Time now = Time.now();
 
-        if (start != null) {
-            Duration elapsed = Duration.between(start, now);
-            var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
-            shake = $(x.value(now), y.value(now)).multiply(shakeStrength * progress.invert().value());
-            if (progress.isMax()) {
-                start = null;
-                end = null;
+        if (activeShake != null) {
+            shake = activeShake.getDistorion(start, now);
+            if(activeShake.isFinished(start, now)) {
+                activeShake = null;
             }
         } else {
             shake = Vector.zero();

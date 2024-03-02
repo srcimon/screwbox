@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 
 public interface Camera {
@@ -45,7 +44,7 @@ public interface Camera {
         return updatePosition(position().add(delta));
     }
 
-    Camera addShake(double strength, Duration interval, Duration duration);
+    Camera addShake(CameraShake shake);
 
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.
@@ -55,6 +54,7 @@ public interface Camera {
     Vector position();
 
     Vector focus();
+
     /**
      * Returns the currently used camera zoom.
      */

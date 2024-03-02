@@ -15,11 +15,14 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.graphics.CameraShake;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.graphics.CameraShake.strength;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
@@ -33,7 +36,8 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-            engine.graphics().camera().addShake(10, Duration.ofMillis(100), Duration.ofSeconds(1));
+            engine.graphics().camera().addShake(strength(10).interval(ofMillis(100)).duration(ofSeconds(1)));
+
             var playerCenter = engine.environment().fetchSingleton(PLAYER).get(TransformComponent.class).bounds
                     .position();
             engine.audio().playSound(LETS_GO_SOUND);
