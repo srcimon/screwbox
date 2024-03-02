@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.utils.Lurk;
+import io.github.srcimon.screwbox.core.utils.Noise;
 
 import java.io.Serial;
 
@@ -17,12 +17,12 @@ public class ChaoticMovementComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final double speed;
-    public final Lurk xModifier;
-    public final Lurk yModifier;
+    public final Noise xModifier;
+    public final Noise yModifier;
 
     public ChaoticMovementComponent(final double speed, final Duration interval) {
         this.speed = speed;
-        xModifier = Lurk.intervalWithDeviation(interval, Percent.half());
-        yModifier = Lurk.intervalWithDeviation(interval, Percent.half());
+        xModifier = Noise.variableInterval(interval);
+        yModifier = Noise.variableInterval(interval);
     }
 }

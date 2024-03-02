@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.utils.Lurk;
+import io.github.srcimon.screwbox.core.utils.Noise;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 
@@ -14,8 +14,8 @@ public class CameraShake {
     private Duration interval;
     private Duration duration = Duration.none();
 
-    private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
-    private Lurk y = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
+    private Noise x = Noise.variableInterval(Duration.ofMillis(200));
+    private Noise y = Noise.variableInterval(Duration.ofMillis(200));
 
     private CameraShake(final double strength) {
         this.strength = strength;

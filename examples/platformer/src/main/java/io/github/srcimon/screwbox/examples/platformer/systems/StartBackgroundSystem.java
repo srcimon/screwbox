@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.utils.Lurk;
+import io.github.srcimon.screwbox.core.utils.Noise;
 
 import java.util.List;
 
@@ -26,10 +26,10 @@ public class StartBackgroundSystem implements EntitySystem {
                     fromJson("tilesets/collectables/cherries.json").first(),
                     fromJson("tilesets/props/box.json").first()));
 
-    private final Lurk rotationLurk = Lurk.intervalWithDeviation(ofSeconds(4), half());
-    private final Lurk scaleLurk = Lurk.intervalWithDeviation(ofSeconds(4), half());
-    private final Lurk xLurk = Lurk.intervalWithDeviation(ofSeconds(4), half());
-    private final Lurk yLurk = Lurk.intervalWithDeviation(ofSeconds(4), half());
+    private final Noise rotationNoise = Noise.variableInterval(ofSeconds(4));
+    private final Noise scaleNoise = Noise.variableInterval(ofSeconds(4));
+    private final Noise xNoise = Noise.variableInterval(ofSeconds(4));
+    private final Noise yNoise = Noise.variableInterval(ofSeconds(4));
 
     @Override
     public void update(final Engine engine) {
@@ -37,12 +37,12 @@ public class StartBackgroundSystem implements EntitySystem {
         final int index = (int) ((now.milliseconds() / 2000.0) % BACKGROUNDS.get().size());
         final Sprite sprite = BACKGROUNDS.get().get(index);
         final Offset center = engine.graphics().screen().center()
-                .addX((int) (xLurk.value(now) * 200))
-                .addY((int) (yLurk.value(now) * 100));
+                .addX((int) (xNoise.value(now) * 200))
+                .addY((int) (yNoise.value(now) * 100));
 
-        final Rotation rotation = Rotation.degrees(rotationLurk.value(now) * 90);
+        final Rotation rotation = Rotation.degrees(rotationNoise.value(now) * 90);
 
-        final double scale = Math.abs(scaleLurk.value(now)) * 5 + 10;
+        final double scale = Math.abs(scaleNoise.value(now)) * 5 + 10;
         final double xCorrect = sprite.size().width() / 2.0 * scale;
         final double yCorrect = sprite.size().height() / 2.0 * scale;
 

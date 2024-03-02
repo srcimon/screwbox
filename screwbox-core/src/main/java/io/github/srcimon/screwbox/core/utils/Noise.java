@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static java.util.Objects.isNull;
 
-public class Lurk implements Serializable {
+public class Noise implements Serializable {
 
     private static final Random RANDOM = new Random();
 
@@ -20,18 +20,18 @@ public class Lurk implements Serializable {
     private double lastValue = 0;
     private double targetValue = RANDOM.nextDouble(-1, 1);
 
-    public static Lurk fixedInterval(final Duration interval) {
-        return intervalWithDeviation(interval, Percent.zero());
+    public static Noise fixedInterval(final Duration interval) {
+        return new Noise(interval, interval);
     }
 
-    public static Lurk intervalWithDeviation(final Duration interval, final Percent intervalDeviation) {
-        long nanoDeviation = Math.round(interval.nanos() * intervalDeviation.value());
+    public static Noise variableInterval(final Duration interval) {
+        long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
         Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
         Duration maxDeviation = Duration.ofNanos(nanoDeviation);
-        return new Lurk(interval.add(minDeviation), interval.add(maxDeviation));
+        return new Noise(interval.add(minDeviation), interval.add(maxDeviation));
     }
 
-    private Lurk(final Duration minInterval, final Duration maxInterval) {
+    private Noise(final Duration minInterval, final Duration maxInterval) {
         this.minInterval = minInterval;
         this.maxInterval = maxInterval;
     }
@@ -39,7 +39,7 @@ public class Lurk implements Serializable {
     public double value(final Time time) {
         if (isNull(intervalStart) || time.isAfter(intervalEnd)) {
             intervalStart = time;
-            intervalEnd = time.plus(calcNextInterval());
+            intervalEnd = time.plus(calculateNextInterval());
             lastValue = targetValue;
             targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }
@@ -50,7 +50,7 @@ public class Lurk implements Serializable {
         return (dist * percent.value() * speedAtDist) - lastValue;
     }
 
-    private Duration calcNextInterval() {
+    private Duration calculateNextInterval() {
         return minInterval.equals(maxInterval)
                 ? minInterval
                 : Duration.ofNanos(RANDOM.nextLong(minInterval.nanos(), maxInterval.nanos()));
