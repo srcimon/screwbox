@@ -32,7 +32,7 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public Camera updatePosition(Vector position) {
         this.position = position;
-        world.updateCameraPosition(position);
+        world.updateCameraPosition(focus());
         return this;
     }
 
@@ -85,7 +85,7 @@ public class DefaultCamera implements Camera, Updatable {
                 legalPostionArea.maxY() - position().y());
 
         move($(movementX, movementY));
-        return position;
+        return position();
     }
 
     @Override
