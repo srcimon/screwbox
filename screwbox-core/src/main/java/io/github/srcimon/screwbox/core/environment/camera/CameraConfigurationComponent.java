@@ -8,7 +8,6 @@ import java.io.Serial;
 
 public final class CameraConfigurationComponent implements Component {
 
-    //TODO remove camera from Tiled Maps
     @Serial
     private static final long serialVersionUID = 1L;
 

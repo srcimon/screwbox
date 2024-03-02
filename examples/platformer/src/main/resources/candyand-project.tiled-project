@@ -5,7 +5,9 @@
     "extensionsPath": "extensions",
     "folders": [
         ".",
-        "../../../../pathfinding/src/main/resources"
+        "../../../../pathfinding/src/main/resources",
+        "maps",
+        "templates"
     ],
     "propertyTypes": [
     ]

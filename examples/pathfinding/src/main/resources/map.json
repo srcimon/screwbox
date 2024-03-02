@@ -107,24 +107,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":2,
-                 "name":"camera",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"target",
-                         "type":"object",
-                         "value":1
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":276,
-                 "y":221
-                }, 
-                {
-                 "height":0,
                  "id":3,
                  "name":"enemy",
                  "point":true,
