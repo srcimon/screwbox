@@ -58,8 +58,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio playSound(final Sound sound, final Vector position) {
         requireNonNull(position, "position must not be null");
-        final var distance = graphics.cameraPosition().distanceTo(position);
-        final var direction = modifier(position.x() - graphics.cameraPosition().x());
+        final var distance = graphics.camera().position().distanceTo(position);
+        final var direction = modifier(position.x() - graphics.camera().position().x());
         final var quotient = distance / configuration.soundRange();
         final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)

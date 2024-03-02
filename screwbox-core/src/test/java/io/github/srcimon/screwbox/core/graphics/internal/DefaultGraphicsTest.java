@@ -61,7 +61,7 @@ class DefaultGraphicsTest {
         when(world.cameraPosition()).thenReturn($(10, 10));
         when(world.visibleArea()).thenReturn($$(-50, -50, 100, 100));
 
-        var result = graphics.moveCameraWithinVisualBounds($(20, 20), $$(-200, -20, 400, 400));
+        var result = graphics.camera().moveWithinVisualBounds($(20, 20), $$(-200, -20, 400, 400));
 
         verify(world).updateCameraPosition($(30, 30));
         assertThat(result).isEqualTo($(10, 10));

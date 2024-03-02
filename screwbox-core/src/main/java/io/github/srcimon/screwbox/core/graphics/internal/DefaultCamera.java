@@ -1,16 +1,18 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Lurk;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 
-public class Camera implements Updatable {
+public class DefaultCamera implements Camera, Updatable {
 
     private final DefaultWorld world;
     private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
@@ -25,23 +27,17 @@ public class Camera implements Updatable {
     private Time start = null;
     private Time end = null;
 
-    public Camera(DefaultWorld world) {
+    public DefaultCamera(DefaultWorld world) {
         this.world = world;
     }
 
-    public void addTimedShake(double strength, Duration interval, Duration duration) {
-        start = Time.now();
-        end = start.plus(duration);
-        shakeStrength = strength;
-        x = Lurk.intervalWithDeviation(interval, Percent.half());
-        x = Lurk.intervalWithDeviation(interval, Percent.half());
-
-    }//TODO CameraShakeOptions...
+    //TODO CameraShakeOptions...
 
     //TODO ADD ZOOM TO shake
-    public void updatePosition(Vector position) {
+    @Override
+    public Camera updatePosition(Vector position) {
         this.position = position;
-        world.updateCameraPosition(focus());
+        return this;
     }
 
     public Vector position() {
@@ -52,7 +48,7 @@ public class Camera implements Updatable {
         return position.add(shake);
     }
 
-    public void restrictZoomRangeTo(final double min, final double max) {
+    public Camera restrictZoomRangeTo(final double min, final double max) {
         if (min <= 0) {
             throw new IllegalArgumentException("min zoom must be positive");
         }
@@ -61,18 +57,62 @@ public class Camera implements Updatable {
         }
         this.minZoom = min;
         this.maxZoom = max;
+        return this;
     }
 
     public double wantedZoom() {
         return wantedZoom;
     }
 
+    @Override
     public double updateZoom(final double zoom) {
         this.wantedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
         final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         world.updateZoom(this.zoom);
         return actualZoomValue;
+    }
+
+    @Override
+    public Vector moveWithinVisualBounds(final Vector delta, final Bounds bounds) {
+        final var legalPostionArea = Bounds.atPosition(bounds.position(),
+                Math.max(1, bounds.width() - world.visibleArea().width()),
+                Math.max(1, bounds.height() - world.visibleArea().height()));
+
+        final double movementX = MathUtil.clamp(
+                legalPostionArea.minX() - position().x(),
+                delta.x(),
+                legalPostionArea.maxX() - position().x());
+
+        final double movementY = MathUtil.clamp(
+                legalPostionArea.minY() - position().y(),
+                delta.y(),
+                legalPostionArea.maxY() - position().y());
+
+        updatePosition(position.add(movementX, movementY));
+        return position();
+    }
+
+    @Override
+    public double updateZoomRelative(final double delta) {
+        return updateZoom(wantedZoom() + delta);
+    }
+
+    @Override
+    public Camera addCameraShake(double strength, Duration interval, Duration duration) {
+        start = Time.now();
+        end = start.plus(duration);
+        shakeStrength = strength;
+        x = Lurk.intervalWithDeviation(interval, Percent.half());
+        y = Lurk.intervalWithDeviation(interval, Percent.half());
+
+        return this;
+    }
+
+
+    @Override
+    public double cameraZoom() {
+        return world.cameraZoom();
     }
 
     @Override

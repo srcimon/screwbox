@@ -1,14 +1,11 @@
 package io.github.srcimon.screwbox.core.environment.camera;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 
 @Order(SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
@@ -18,7 +15,7 @@ public class CameraSystem implements EntitySystem {
     public void update(final Engine engine) {
         var configuration = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
 
-        final Vector cameraPosition = engine.graphics().cameraPosition();
+        final Vector cameraPosition = engine.graphics().camera().position();
         final var cameraMovementComponent = engine.environment().fetchSingletonComponent(CameraMovementComponent.class);
         final Vector trackerPosition = engine.environment().fetchById(cameraMovementComponent.trackedEntityId).get(TransformComponent.class).bounds.position();
         final double cameraTrackerSpeed = cameraMovementComponent.speed;
@@ -28,14 +25,14 @@ public class CameraSystem implements EntitySystem {
         double delta = engine.loop().delta();
 
         if (first) {
-            engine.graphics().updateCameraPosition(trackerPosition);
+            engine.graphics().camera().updatePosition(trackerPosition);
             first = false;
         } else {
             Vector cameraMovement = Vector.$(
                     distX * -1 * cameraTrackerSpeed * delta,
                     distY * -1 * cameraTrackerSpeed * delta);
 
-            engine.graphics().moveCameraWithinVisualBounds(cameraMovement, configuration.visibleArea);
+            engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.visibleArea);
         }
     }
 }

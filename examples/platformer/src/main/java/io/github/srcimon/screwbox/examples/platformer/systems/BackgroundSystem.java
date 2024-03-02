@@ -18,7 +18,7 @@ public class BackgroundSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var cameraPosition = engine.graphics().cameraPosition();
+        final var cameraPosition = engine.graphics().camera().position();
         final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {

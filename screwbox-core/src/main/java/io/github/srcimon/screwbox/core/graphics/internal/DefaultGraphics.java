@@ -1,9 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.AspectRatio;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
@@ -12,13 +11,11 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
@@ -29,14 +26,14 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultLight light;
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
-    private final Camera camera;
+    private final DefaultCamera camera;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
-                           final Camera camera) {
+                           final DefaultCamera camera) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -56,35 +53,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public double updateZoomRelative(final double delta) {
-        return camera.updateZoom(camera.wantedZoom() + delta);
-    }
-
-    @Override
-    public Graphics addCameraShake(double strength, Duration interval, Duration duration) {
-        camera.addTimedShake(strength, interval, duration);
-        return this;
-    }
-
-    @Override
-    public double updateZoom(final double zoom) {
-        return camera.updateZoom(zoom);
-    }
-
-    @Override
-    public Graphics updateCameraPosition(final Vector position) {
-        camera.updatePosition(position);
-        return this;
-    }
-
-    @Override
-    public Vector cameraPosition() {
-        return camera.position();
-    }
-
-    @Override
-    public double cameraZoom() {
-        return world.cameraZoom();
+    public Camera camera() {
+        return camera;
     }
 
     @Override
@@ -134,12 +104,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Graphics restrictZoomRangeTo(final double min, final double max) {
-        camera.restrictZoomRangeTo(min, max);
-        return this;
-    }
-
-    @Override
     public Size currentResolution() {
         return toDimension(graphicsDevice.getDisplayMode());
     }
@@ -153,25 +117,4 @@ public class DefaultGraphics implements Graphics, Updatable {
     public Screen screen() {
         return screen;
     }
-
-    @Override
-    public Vector moveCameraWithinVisualBounds(final Vector delta, final Bounds bounds) {
-        final var legalPostionArea = Bounds.atPosition(bounds.position(),
-                Math.max(1, bounds.width() - world.visibleArea().width()),
-                Math.max(1, bounds.height() - world.visibleArea().height()));
-
-        final double movementX = MathUtil.clamp(
-                legalPostionArea.minX() - cameraPosition().x(),
-                delta.x(),
-                legalPostionArea.maxX() - cameraPosition().x());
-
-        final double movementY = MathUtil.clamp(
-                legalPostionArea.minY() - cameraPosition().y(),
-                delta.y(),
-                legalPostionArea.maxY() - cameraPosition().y());
-
-        moveCamera($(movementX, movementY));
-        return cameraPosition();
-    }
-
 }
