@@ -141,6 +141,16 @@ class DurationTest {
     }
 
     @Test
+    void isNone_hasLength_isFalse() {
+        assertThat(Duration.ofSeconds(1).isNone()).isFalse();
+    }
+
+    @Test
+    void isNone_noLength_isTrue() {
+        assertThat(Duration.none().isNone()).isTrue();
+    }
+
+    @Test
     void add_valueNull_throwsException() {
         Duration duration = Duration.ofSeconds(2);
         assertThatThrownBy(() -> duration.add(null))

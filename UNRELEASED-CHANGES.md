@@ -13,6 +13,7 @@
 - Added `Line.intersections(List<Line>)`
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
+- Added `Duration.isNone()`
 - Added `Frame.listPixelDifferences(Frame)`
 - Added `Color.hex(String)`
 - Enhanced graphics of `AutomovementDebugSystem`
