@@ -34,7 +34,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
     private Lurk y= Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
-    private double shakeStrength = 10;
+    private double shakeStrength = 8;
     private Vector shake = Vector.zero();
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,

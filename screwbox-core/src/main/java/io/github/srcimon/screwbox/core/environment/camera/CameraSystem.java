@@ -1,11 +1,14 @@
 package io.github.srcimon.screwbox.core.environment.camera;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 
 @Order(SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
@@ -34,5 +37,14 @@ public class CameraSystem implements EntitySystem {
 
             engine.graphics().moveCameraWithinVisualBounds(cameraMovement, configuration.visibleArea);
         }
+//
+//        //TODO: fill outline of world with black?
+//        var left = Bounds.atOrigin(
+//                configuration.visibleArea.minX() -1000,
+//                configuration.visibleArea.minY(),
+//                1000,
+//                configuration.visibleArea.height());
+//        engine.graphics().world().drawRectangle(left, RectangleDrawOptions.filled(Color.BLACK));
+
     }
 }
