@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.AspectRatio;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
@@ -59,6 +60,12 @@ public class DefaultGraphics implements Graphics, Updatable {
         var actualZoom = camera.updateZoom(camera.wantedZoom() + delta);
         world.updateZoom(actualZoom);
         return actualZoom;
+    }
+
+    @Override
+    public Graphics addCameraShake(double strength, Duration interval, Duration duration) {
+        camera.addTimedShake(strength,interval,duration);
+        return this;
     }
 
     @Override

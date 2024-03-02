@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.List;
 
@@ -67,6 +67,8 @@ public interface Graphics {
     default Graphics moveCamera(final Vector delta) {
         return updateCameraPosition(cameraPosition().add(delta));
     }
+
+    Graphics addCameraShake(double strength, Duration interval, Duration duration);
 
     /**
      * Moves the camera within the given {@link Bounds}.

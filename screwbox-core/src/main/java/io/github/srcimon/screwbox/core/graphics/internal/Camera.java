@@ -21,16 +21,21 @@ public class Camera implements Updatable {
     private double wantedZoom = zoom;
     private double minZoom = 2;
     private double maxZoom = 5;
+private Time start = Time.now();
+private Time end= Time.now();
+
+    public void addTimedShake(double strength, Duration interval, Duration duration) {
+        start = Time.now();
+        end = start.plus(duration);
+        shakeStrength = strength;
+        x = Lurk.intervalWithDeviation(interval, Percent.half());
+        x = Lurk.intervalWithDeviation(interval, Percent.half());
+
+    }//TODO CameraShakeOptions...
 
     //TODO ADD ZOOM TO shake
     public void updatePosition(Vector position) {
         this.position = position;
-    }
-
-    @Override
-    public void update() {
-        Time time = Time.now();
-        shake = $(x.value(time), y.value(time)).multiply(shakeStrength);
     }
 
     public Vector position() {
@@ -61,5 +66,14 @@ public class Camera implements Updatable {
         final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         return actualZoomValue;
+    }
+
+    @Override
+    public void update() {
+        Time now = Time.now();
+        Duration elapsed = Duration.between(start, now);
+        var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
+
+        shake = $(x.value(now), y.value(now)).multiply(shakeStrength * progress.invert().value());
     }
 }

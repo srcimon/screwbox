@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.examples.platformer.enemies.slime;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
@@ -26,7 +27,7 @@ public class SlimeDeadState implements EntityState {
 
     @Override
     public void enter(final Entity entity, Engine engine) {
-
+        engine.graphics().addCameraShake(2, Duration.ofMillis(50), Duration.ofMillis(600));
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);
