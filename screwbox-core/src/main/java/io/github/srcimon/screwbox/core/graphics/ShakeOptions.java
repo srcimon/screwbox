@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.utils.Noise;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 
-public class CameraShake {
+public class ShakeOptions {
 
     private final double strength;
     private Duration duration = Duration.none();
@@ -16,21 +16,21 @@ public class CameraShake {
     private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));
     private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));
 
-    private CameraShake(final double strength) {
+    private ShakeOptions(final double strength) {
         this.strength = strength;
     }
 
-    public static CameraShake strength(final double strength) {
+    public static ShakeOptions strength(final double strength) {
         //TODO validate > 0
-        return new CameraShake(strength);
+        return new ShakeOptions(strength);
     }
 
-    public CameraShake duration(final Duration duration) {
+    public ShakeOptions duration(final Duration duration) {
         this.duration = duration;
         return this;
     }
 
-    public CameraShake interval(final Duration interval) {
+    public ShakeOptions interval(final Duration interval) {
         this.xNoise = Noise.variableInterval(interval);
         this.yNoise = Noise.variableInterval(interval);
         return this;

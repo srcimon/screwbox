@@ -3,6 +3,9 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 
+/**
+ * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.
+ */
 public interface Camera {
 
     /**
@@ -44,7 +47,30 @@ public interface Camera {
         return updatePosition(position().add(delta));
     }
 
-    Camera setShake(CameraShake shake);
+    /**
+     * Shakes the {@link Camera} with the given {@link ShakeOptions}. Shaking has no effect
+     * on {@link Camera#position()}. Shake only afflicts {@link Camera#focus()} and the rendering of {@link World}.
+     *
+     * @see #stopShaking()
+     * @see #isShaking()
+     */
+    Camera shake(ShakeOptions options);
+
+    /**
+     * Stops any {@link Camera} if there is currently shake in progress. Does nothing if {@link Camera} is not shaking.
+     *
+     * @see #shake(ShakeOptions)
+     * @see #isShaking()
+     */
+    Camera stopShaking();
+
+    /**
+     * Returns {@true} if {@link Camera} is curently shaking.
+     *
+     * @see #shake(ShakeOptions)
+     * @see #stopShaking()
+     */
+    boolean isShaking();
 
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.

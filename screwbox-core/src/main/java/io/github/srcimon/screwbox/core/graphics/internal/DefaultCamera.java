@@ -4,11 +4,12 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.CameraShake;
+import io.github.srcimon.screwbox.core.graphics.ShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
+import static java.util.Objects.nonNull;
 
 public class DefaultCamera implements Camera, Updatable {
 
@@ -20,7 +21,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double minZoom = 2;
     private double maxZoom = 5;
     private Time start = null;
-    private CameraShake activeShake = null;
+    private ShakeOptions activeShake = null;
 
     public DefaultCamera(DefaultWorld world) {
         this.world = world;
@@ -91,10 +92,21 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera setShake(CameraShake shake) {
+    public Camera shake(ShakeOptions options) {
         start = Time.now();
-        activeShake = shake;
+        activeShake = options;
         return this;
+    }
+
+    @Override
+    public Camera stopShaking() {
+        activeShake = null;
+        return this;
+    }
+
+    @Override
+    public boolean isShaking() {
+        return nonNull(activeShake);
     }
 
     @Override
