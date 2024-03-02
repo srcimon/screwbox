@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import static java.util.Objects.isNull;
 
@@ -37,10 +36,6 @@ public class DefaultWorld implements World {
         visibleArea = Bounds.atPosition(cameraPosition,
                 screen.size().width() / zoom,
                 screen.size().height() / zoom);
-    }
-
-    public Vector cameraPosition() {
-        return cameraPosition;
     }
 
     @Override

@@ -1,5 +1,7 @@
 ### 🚀 Features & improvements
 
+- Moved camera control to `Graphics.camera()`
+- Added `CameraShake` (#211)
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
 - Added methods for handling of singleton components and entitie to `Environment` (#219)

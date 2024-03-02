@@ -1,14 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.CameraShake;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.Lurk;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
@@ -23,7 +20,8 @@ public class DefaultCamera implements Camera, Updatable {
     private double minZoom = 2;
     private double maxZoom = 5;
     private Time start = null;
-private CameraShake activeShake = null;
+    private CameraShake activeShake = null;
+
     public DefaultCamera(DefaultWorld world) {
         this.world = world;
     }
@@ -34,6 +32,7 @@ private CameraShake activeShake = null;
     @Override
     public Camera updatePosition(Vector position) {
         this.position = position;
+        world.updateCameraPosition(position);
         return this;
     }
 
@@ -85,8 +84,8 @@ private CameraShake activeShake = null;
                 delta.y(),
                 legalPostionArea.maxY() - position().y());
 
-        updatePosition(position.add(movementX, movementY));
-        return position();
+        move($(movementX, movementY));
+        return position;
     }
 
     @Override
@@ -97,7 +96,7 @@ private CameraShake activeShake = null;
     @Override
     public Camera addShake(CameraShake shake) {
         start = Time.now();
-        activeShake =  shake;
+        activeShake = shake;
         return this;
     }
 
@@ -122,7 +121,7 @@ private CameraShake activeShake = null;
 
         if (activeShake != null) {
             shake = activeShake.getDistorion(start, now);
-            if(activeShake.isFinished(start, now)) {
+            if (activeShake.isFinished(start, now)) {
                 activeShake = null;
             }
         } else {
