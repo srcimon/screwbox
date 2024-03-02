@@ -136,6 +136,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen(configuration.isUseAntialising());
+        world.updateCameraPosition(camera.focus());
         light.update();
     }
 

@@ -37,14 +37,5 @@ public class CameraSystem implements EntitySystem {
 
             engine.graphics().moveCameraWithinVisualBounds(cameraMovement, configuration.visibleArea);
         }
-//
-//        //TODO: fill outline of world with black?
-//        var left = Bounds.atOrigin(
-//                configuration.visibleArea.minX() -1000,
-//                configuration.visibleArea.minY(),
-//                1000,
-//                configuration.visibleArea.height());
-//        engine.graphics().world().drawRectangle(left, RectangleDrawOptions.filled(Color.BLACK));
-
     }
 }
