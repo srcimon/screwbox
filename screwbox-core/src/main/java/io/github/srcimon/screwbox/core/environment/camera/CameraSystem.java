@@ -17,21 +17,28 @@ public class CameraSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var targetPosition = engine.environment().fetchSingleton(TARGET).get(TransformComponent.class).bounds.position();
+        engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
+            final var targetPosition = targetEntity.get(TransformComponent.class).bounds.position();
+            final var target = targetEntity.get(CameraTargetComponent.class);
 
-        if (mustInitializeCamera) {
-            engine.graphics().camera().updatePosition(targetPosition);
-            mustInitializeCamera = false;
-        } else {
-            var configuration = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
+            if (mustInitializeCamera) {
+                engine.graphics().camera().updatePosition(targetPosition);
+                mustInitializeCamera = false;
+                return;
+            }
             final Vector cameraPosition = engine.graphics().camera().position();
 
             final Vector cameraMovement = cameraPosition
                     .substract(targetPosition)
-                    .substract(configuration.shift)
-                    .multiply(-1 * configuration.speed * engine.loop().delta());
+                    .substract(target.shift)
+                    .multiply(-1 * target.speed * engine.loop().delta());
 
-            engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.visibleArea);
-        }
+            var configuration = engine.environment().tryFetchSingletonComponent(CameraConfigurationComponent.class);
+            if(configuration.isPresent()) {
+                engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.get().visibleArea);
+            } else {
+                engine.graphics().camera().move(cameraMovement);
+            }
+        });
     }
 }
