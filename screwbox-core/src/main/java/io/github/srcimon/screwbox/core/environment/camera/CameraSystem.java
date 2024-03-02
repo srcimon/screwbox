@@ -21,12 +21,12 @@ public class CameraSystem implements EntitySystem {
             final var cameraPosition = engine.graphics().camera().position();
             final var targetPosition = targetEntity.get(TransformComponent.class).bounds.position();
 
-            if (targetPosition.distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0) {
+            final var target = targetEntity.get(CameraTargetComponent.class);
+            if (target.allowJumping && targetPosition.distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0) {
                 engine.graphics().camera().updatePosition(targetPosition);
                 return;
             }
 
-            final var target = targetEntity.get(CameraTargetComponent.class);
             final Vector distance = cameraPosition
                     .substract(targetPosition)
                     .substract(target.shift);

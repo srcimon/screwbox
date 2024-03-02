@@ -12,6 +12,7 @@ public class CameraTargetComponent implements Component {
 
     public double followSpeed;
     public Vector shift = Vector.zero();
+    public boolean allowJumping = true;
 
     public CameraTargetComponent() {
         this(2);
