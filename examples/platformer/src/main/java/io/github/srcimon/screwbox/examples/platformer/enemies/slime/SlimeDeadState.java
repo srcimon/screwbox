@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.examples.platformer.enemies.slime;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
@@ -8,8 +7,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;
@@ -27,7 +26,6 @@ public class SlimeDeadState implements EntityState {
 
     @Override
     public void enter(final Entity entity, Engine engine) {
-        engine.graphics().addCameraShake(2, Duration.ofMillis(50), Duration.ofMillis(600));
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);

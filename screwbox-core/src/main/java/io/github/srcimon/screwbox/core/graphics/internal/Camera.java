@@ -21,8 +21,8 @@ public class Camera implements Updatable {
     private double wantedZoom = zoom;
     private double minZoom = 2;
     private double maxZoom = 5;
-private Time start = Time.now();
-private Time end= Time.now();
+private Time start = null;
+private Time end= null;
 
     public void addTimedShake(double strength, Duration interval, Duration duration) {
         start = Time.now();
@@ -71,9 +71,17 @@ private Time end= Time.now();
     @Override
     public void update() {
         Time now = Time.now();
-        Duration elapsed = Duration.between(start, now);
-        var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
 
-        shake = $(x.value(now), y.value(now)).multiply(shakeStrength * progress.invert().value());
+        if(start != null) {
+            Duration elapsed = Duration.between(start, now);
+            var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
+            shake = $(x.value(now), y.value(now)).multiply(shakeStrength * progress.invert().value());
+if(progress.isMax()) {
+    start = null;
+    end = null;
+}
+        } else {
+            shake = Vector.zero();
+        }
     }
 }
