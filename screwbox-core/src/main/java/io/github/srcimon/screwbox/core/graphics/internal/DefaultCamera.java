@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.utils.Noise;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultCamera implements Camera, Updatable {
 
@@ -25,16 +26,16 @@ public class DefaultCamera implements Camera, Updatable {
     private double maxZoom = 5;
     private Time start = null;
     private CameraShakeOptions activeShake = null;
-    private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));
-    private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));
+    private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));//TODO BUG INTERVAL IS NEVER CHANGED
+    private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));//TODO BUG INTERVAL IS NEVER CHANGED
 
-    public DefaultCamera(DefaultWorld world) {
+    public DefaultCamera(final DefaultWorld world) {
         this.world = world;
     }
 
     @Override
-    public Camera updatePosition(Vector position) {
-        this.position = position;
+    public Camera updatePosition(final Vector position) {
+        this.position = requireNonNull(position, "position must not be NULL");
         world.updateCameraPosition(focus());
         return this;
     }
@@ -116,7 +117,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public double zoom() {
-        return world.cameraZoom();
+        return zoom;
     }
 
     @Override

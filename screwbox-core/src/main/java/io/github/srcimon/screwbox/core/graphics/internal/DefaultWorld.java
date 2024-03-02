@@ -68,10 +68,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    public double cameraZoom() {
-        return zoom;
-    }
-
     public Offset toOffset(final Vector position) {
         final double x = (position.x() - cameraPosition.x()) * zoom + (screen.size().width() / 2.0);
         final double y = (position.y() - cameraPosition.y()) * zoom + (screen.size().height() / 2.0);

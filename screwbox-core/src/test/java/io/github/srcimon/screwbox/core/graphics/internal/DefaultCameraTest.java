@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,5 +31,39 @@ class DefaultCameraTest {
 
         verify(world).updateCameraPosition($(30, 30));
         assertThat(result).isEqualTo($(30, 30));
+    }
+
+    @Test
+    void updatePosition_positionNull_throwsException() {
+        assertThatThrownBy(() -> camera.updatePosition(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("position must not be NULL");
+    }
+
+
+    @Test
+    void updateZoomRestriction_minNegative_exception() {
+        assertThatThrownBy(() -> camera.updateZoomRestriction(-2, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("min zoom must be positive");
+    }
+
+    @Test
+    void updateZoomRestriction_maxBelowMin_exception() {
+        assertThatThrownBy(() -> camera.updateZoomRestriction(1, 0.3))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("max zoom must not be lower than min zoom");
+    }
+
+    @Test
+    //TODO: FIX
+    void updateZoomRestriction_validMinAndMax_restrictsZoomRange() {
+        camera.updateZoomRestriction(1, 5);
+
+        assertThat(camera.updateZoom(0.2)).isEqualTo(1);
+        assertThat(camera.zoom()).isEqualTo(1);
+
+        assertThat(camera.updateZoom(12)).isEqualTo(5);
+        assertThat(camera.zoom()).isEqualTo(5);
     }
 }
