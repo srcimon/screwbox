@@ -61,7 +61,7 @@ class CameraSystemTest {
     }
 
     @Test
-    void update_tooFarAway_movesCameraDirectlyToTarge(DefaultEnvironment environment, Camera camera, Loop loop, World world) {
+    void update_tooFarAway_movesCameraDirectlyToTarge(DefaultEnvironment environment, Camera camera, World world) {
         when(world.visibleArea()).thenReturn(Bounds.$$(0, 0, 640, 480));
         when(camera.position()).thenReturn($(10000, 10000));
         environment
@@ -75,7 +75,7 @@ class CameraSystemTest {
     }
 
     @Test
-    void update_tooFarAwayButJumpingNotAllowed_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Camera camera, Loop loop, World world) {
+    void update_tooFarAwayButJumpingNotAllowed_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Camera camera, World world) {
         when(world.visibleArea()).thenReturn(Bounds.$$(0, 0, 640, 480));
         when(camera.position()).thenReturn($(10000, 10000));
         CameraTargetComponent target = new CameraTargetComponent();
