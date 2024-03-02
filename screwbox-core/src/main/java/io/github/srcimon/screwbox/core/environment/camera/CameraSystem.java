@@ -26,9 +26,8 @@ public class CameraSystem implements EntitySystem {
                 mustInitializeCamera = false;
                 return;
             }
-            final Vector cameraPosition = engine.graphics().camera().position();
 
-            final Vector cameraMovement = cameraPosition
+            final Vector cameraMovement = engine.graphics().camera().position()
                     .substract(targetPosition)
                     .substract(target.shift)
                     .multiply(-1 * target.speed * engine.loop().delta());

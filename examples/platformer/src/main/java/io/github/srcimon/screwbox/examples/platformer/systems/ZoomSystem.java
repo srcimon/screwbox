@@ -23,6 +23,5 @@ public class ZoomSystem implements EntitySystem {
         } else if (engine.keyboard().isDown(Key.NUMBER_4)) {
             camera.updateZoom(4.0);
         }
-
     }
 }
