@@ -11,6 +11,8 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.core.utils.Noise;
 
+import java.util.Objects;
+
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -26,8 +28,8 @@ public class DefaultCamera implements Camera, Updatable {
     private double maxZoom = 5;
     private Time start = null;
     private CameraShakeOptions activeShake = null;
-    private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));//TODO BUG INTERVAL IS NEVER CHANGED
-    private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));//TODO BUG INTERVAL IS NEVER CHANGED
+    private Noise xNoise;
+    private Noise yNoise;
 
     public DefaultCamera(final DefaultWorld world) {
         this.world = world;
@@ -47,7 +49,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector focus() {
-        final var position =  this.position.add(shake);
+        final var position = this.position.add(shake);
         return Vector.of(pixelPerfectValue(position.x()), pixelPerfectValue(position.y()));
     }
 
@@ -101,6 +103,8 @@ public class DefaultCamera implements Camera, Updatable {
     public Camera shake(CameraShakeOptions options) {
         start = Time.now();
         activeShake = options;
+        xNoise = Noise.variableInterval(options.interval());
+        yNoise = Noise.variableInterval(options.interval());
         return this;
     }
 
@@ -134,7 +138,7 @@ public class DefaultCamera implements Camera, Updatable {
     public void update() {
         Time now = Time.now();
 
-        if (activeShake != null) {
+        if (Objects.nonNull(activeShake)) {
             shake = calculateDistortion(now);
             if (activeShake.duration().isNone() || now.isAfter(start.plus(activeShake.duration()))) {
                 activeShake = null;
@@ -153,7 +157,7 @@ public class DefaultCamera implements Camera, Updatable {
         return $(xNoise.value(now), yNoise.value(now)).multiply(activeShake.strength() * progress.invert().value() / zoom);
     }
 
-    private double pixelPerfectValue(final  double value) {
+    private double pixelPerfectValue(final double value) {
         return Math.floor(value * 16.0) / 16.0;
     }
 }
