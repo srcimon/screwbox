@@ -5,8 +5,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.camera.CameraMovementComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
+import io.github.srcimon.screwbox.core.environment.camera.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.AutomovementDebugSystem;
@@ -56,8 +56,7 @@ public class DemoScene implements Scene {
         environment.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
-                .when("enemy").as(enemy())
-                .when("camera").as(camera());
+                .when("enemy").as(enemy());
 
         environment
                 .enablePhysics()
@@ -73,13 +72,9 @@ public class DemoScene implements Scene {
                 .addSystem(new SpriteChangeSystem());
     }
 
-    private Converter<GameObject> camera() {
-        return object -> new Entity()
-                .add(new CameraMovementComponent(2, object.properties().getInt("target")));
-    }
-
     private Converter<GameObject> player() {
         return object -> new Entity(object.id())
+                .add(new CameraTargetComponent())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())

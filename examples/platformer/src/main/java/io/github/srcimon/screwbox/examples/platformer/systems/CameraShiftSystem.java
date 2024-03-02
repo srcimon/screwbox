@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.camera.CameraMovementComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -14,7 +14,6 @@ import java.util.Optional;
 public class CameraShiftSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, RenderComponent.class);
-    private static final Archetype CAMERA = Archetype.of(CameraMovementComponent.class);
 
     @Override
     public void update(Engine engine) {
@@ -25,16 +24,16 @@ public class CameraShiftSystem implements EntitySystem {
 
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
-        var cameraTrackerComponent = engine.environment().fetchSingleton(CAMERA).get(CameraMovementComponent.class);
+        var configuration = engine.environment().fetchSingletonComponent(CameraConfigurationComponent.class);
         if (Flip.HORIZONTAL.equals(player.get(RenderComponent.class).flip)) {
-            cameraTrackerComponent.shift = Vector.of(
+            configuration.shift = Vector.of(
                     Math.max(-50,
-                            cameraTrackerComponent.shift.x() - cameraTrackerComponent.speed * delta * 100),
+                            configuration.shift.x() - configuration.speed * delta * 100),
                     0);
         } else {
-            cameraTrackerComponent.shift = Vector.of(
+            configuration.shift = Vector.of(
                     Math.min(50,
-                            cameraTrackerComponent.shift.x() + cameraTrackerComponent.speed * delta * 100),
+                            configuration.shift.x() + configuration.speed * delta * 100),
                     0);
         }
     }

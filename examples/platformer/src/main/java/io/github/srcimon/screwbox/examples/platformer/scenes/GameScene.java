@@ -19,7 +19,6 @@ import io.github.srcimon.screwbox.examples.platformer.props.Box;
 import io.github.srcimon.screwbox.examples.platformer.props.Diggable;
 import io.github.srcimon.screwbox.examples.platformer.props.Platfom;
 import io.github.srcimon.screwbox.examples.platformer.props.VanishingBlock;
-import io.github.srcimon.screwbox.examples.platformer.specials.Camera;
 import io.github.srcimon.screwbox.examples.platformer.specials.CatCompanion;
 import io.github.srcimon.screwbox.examples.platformer.specials.Waypoint;
 import io.github.srcimon.screwbox.examples.platformer.specials.player.Player;
@@ -132,7 +131,6 @@ public class GameScene implements Scene {
                 .when("slime").as(new Slime())
                 .when("platform").as(new Platfom())
                 .when("waypoint").as(new Waypoint())
-                .when("camera").as(new Camera())
                 .when("player").as(new Player())
                 .when("debo-d").as(new DeboD())
                 .when("debo-e").as(new DeboE())
