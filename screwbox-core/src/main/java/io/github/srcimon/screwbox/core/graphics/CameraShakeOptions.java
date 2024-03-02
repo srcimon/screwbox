@@ -9,7 +9,7 @@ public class CameraShakeOptions {
     private Duration interval = Duration.ofMillis(50);
 
     private CameraShakeOptions(final Duration duration) {
-       this.duration = duration;
+        this.duration = duration;
     }
 
     public static CameraShakeOptions infinite() {
@@ -21,6 +21,7 @@ public class CameraShakeOptions {
     }
 
     public CameraShakeOptions strength(final double strength) {
+        //TODO validate
         this.strength = strength;
         return this;
     }
@@ -38,4 +39,7 @@ public class CameraShakeOptions {
         return duration;
     }
 
+    public Duration interval() {
+        return interval;
+    }
 }
