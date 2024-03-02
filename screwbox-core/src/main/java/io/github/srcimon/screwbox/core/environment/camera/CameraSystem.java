@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.utils.MathUtil;
+
+import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
 
 @Order(SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
@@ -27,10 +30,11 @@ public class CameraSystem implements EntitySystem {
                 return;
             }
 
-            final Vector cameraMovement = engine.graphics().camera().position()
+            final Vector distance = engine.graphics().camera().position()
                     .substract(targetPosition)
-                    .substract(target.shift)
-                    .multiply(engine.loop().delta(-1 * target.followSpeed));
+                    .substract(target.shift);
+
+            final Vector cameraMovement = distance.multiply(clamp(-1, engine.loop().delta(-1 * target.followSpeed), 1));
 
             var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
             if (configuration.isPresent()) {
