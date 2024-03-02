@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.examples.pathfinding.states;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -9,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.CameraShake;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.pathfinding.components.PlayerMovementComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
@@ -28,6 +30,7 @@ public class BombExplosionState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
+        engine.graphics().camera().addShake(CameraShake.strength(10).interval(Duration.ofMillis(10)).duration(Duration.ofMillis(500)));
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
