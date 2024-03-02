@@ -13,8 +13,6 @@ public final class CameraConfigurationComponent implements Component {
 
     public Bounds visibleArea;
 
-    //TODO shake may be relative to screen and be set in graphics().setcamerashake(interval, strength)
-
     public CameraConfigurationComponent(final Bounds visibleArea) {
         this.visibleArea = visibleArea;
     }
