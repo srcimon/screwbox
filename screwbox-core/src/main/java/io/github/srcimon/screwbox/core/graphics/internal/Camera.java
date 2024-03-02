@@ -12,6 +12,7 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 
 public class Camera implements Updatable {
 
+    private final DefaultWorld world;
     private Lurk x = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
     private Lurk y = Lurk.intervalWithDeviation(Duration.ofMillis(200), Percent.half());
     private double shakeStrength = 0;
@@ -21,8 +22,12 @@ public class Camera implements Updatable {
     private double wantedZoom = zoom;
     private double minZoom = 2;
     private double maxZoom = 5;
-private Time start = null;
-private Time end= null;
+    private Time start = null;
+    private Time end = null;
+
+    public Camera(DefaultWorld world) {
+        this.world = world;
+    }
 
     public void addTimedShake(double strength, Duration interval, Duration duration) {
         start = Time.now();
@@ -36,6 +41,7 @@ private Time end= null;
     //TODO ADD ZOOM TO shake
     public void updatePosition(Vector position) {
         this.position = position;
+        world.updateCameraPosition(focus());
     }
 
     public Vector position() {
@@ -65,6 +71,7 @@ private Time end= null;
         this.wantedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
         final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
+        world.updateZoom(this.zoom);
         return actualZoomValue;
     }
 
@@ -72,14 +79,14 @@ private Time end= null;
     public void update() {
         Time now = Time.now();
 
-        if(start != null) {
+        if (start != null) {
             Duration elapsed = Duration.between(start, now);
             var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
             shake = $(x.value(now), y.value(now)).multiply(shakeStrength * progress.invert().value());
-if(progress.isMax()) {
-    start = null;
-    end = null;
-}
+            if (progress.isMax()) {
+                start = null;
+                end = null;
+            }
         } else {
             shake = Vector.zero();
         }

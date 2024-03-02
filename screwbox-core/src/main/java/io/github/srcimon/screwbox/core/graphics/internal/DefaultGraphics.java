@@ -57,30 +57,23 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public double updateZoomRelative(final double delta) {
-        var actualZoom = camera.updateZoom(camera.wantedZoom() + delta);
-        world.updateZoom(actualZoom);
-        return actualZoom;
+        return camera.updateZoom(camera.wantedZoom() + delta);
     }
 
     @Override
     public Graphics addCameraShake(double strength, Duration interval, Duration duration) {
-        camera.addTimedShake(strength,interval,duration);
+        camera.addTimedShake(strength, interval, duration);
         return this;
     }
 
     @Override
     public double updateZoom(final double zoom) {
-        var actualZoom = camera.updateZoom(zoom);
-        world.updateZoom(actualZoom);
-        world.updateZoom(zoom);
-        return actualZoom;
+        return camera.updateZoom(zoom);
     }
 
     @Override
     public Graphics updateCameraPosition(final Vector position) {
         camera.updatePosition(position);
-        world.updateCameraPosition(camera.focus());
-
         return this;
     }
 
