@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Duration;
 public class CameraShakeOptions {
 
     private final Duration duration;
-    private double strength;
+    private double strength = 10;
     private Duration interval = Duration.ofMillis(50);
 
     private CameraShakeOptions(final Duration duration) {
@@ -21,7 +21,9 @@ public class CameraShakeOptions {
     }
 
     public CameraShakeOptions strength(final double strength) {
-        //TODO validate
+        if (strength <= 0) {
+            throw new IllegalArgumentException("strength must be positive");
+        }
         this.strength = strength;
         return this;
     }
