@@ -34,7 +34,7 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-            engine.graphics().camera().addShake(strength(10).interval(ofMillis(100)).duration(ofSeconds(1)));
+            engine.graphics().camera().setShake(strength(10).interval(ofMillis(100)).duration(ofSeconds(1)));
 
             var playerCenter = engine.environment().fetchSingleton(PLAYER).get(TransformComponent.class).bounds
                     .position();

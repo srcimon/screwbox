@@ -44,7 +44,7 @@ public interface Camera {
         return updatePosition(position().add(delta));
     }
 
-    Camera addShake(CameraShake shake);
+    Camera setShake(CameraShake shake);
 
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.

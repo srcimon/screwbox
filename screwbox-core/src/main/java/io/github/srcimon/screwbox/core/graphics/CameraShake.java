@@ -36,10 +36,10 @@ public class CameraShake {
         return this;
     }
 
-    public Vector getDistorion(Time start, Time now) {
+    public Vector calculateDistortion(Time start, Time now) {
         Duration elapsed = Duration.between(start, now);
         Time end = now.plus(duration);
-        var progress = Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
+        var progress = duration.isNone() ? Percent.zero() : Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
         return $(xNoise.value(now), yNoise.value(now)).multiply(strength * progress.invert().value());
     }
 

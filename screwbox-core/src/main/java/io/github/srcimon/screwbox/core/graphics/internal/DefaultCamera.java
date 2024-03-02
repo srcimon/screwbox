@@ -91,7 +91,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera addShake(CameraShake shake) {
+    public Camera setShake(CameraShake shake) {
         start = Time.now();
         activeShake = shake;
         return this;
@@ -117,7 +117,7 @@ public class DefaultCamera implements Camera, Updatable {
         Time now = Time.now();
 
         if (activeShake != null) {
-            shake = activeShake.getDistorion(start, now);
+            shake = activeShake.calculateDistortion(start, now);
             if (activeShake.isFinished(start, now)) {
                 activeShake = null;
             }

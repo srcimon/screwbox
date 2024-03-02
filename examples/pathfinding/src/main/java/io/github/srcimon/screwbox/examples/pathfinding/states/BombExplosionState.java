@@ -30,7 +30,7 @@ public class BombExplosionState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        engine.graphics().camera().addShake(CameraShake.strength(10).interval(Duration.ofMillis(10)).duration(Duration.ofMillis(500)));
+        engine.graphics().camera().setShake(CameraShake.strength(10).interval(Duration.ofMillis(10)).duration(Duration.ofMillis(500)));
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
