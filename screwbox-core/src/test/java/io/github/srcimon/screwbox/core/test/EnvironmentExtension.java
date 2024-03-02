@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.test;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -10,7 +11,11 @@ import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.window.Window;
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolver;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -33,6 +38,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var keyboard = Mockito.mock(Keyboard.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
+        final var camera = Mockito.mock(Camera.class);
         final var entities = new DefaultEnvironment(engine);
 
         // resolve a real entity engine with many mocked subsystems
@@ -47,10 +53,12 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(engine.window()).thenReturn(window);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
+        when(graphics.camera()).thenReturn(camera);
 
         // resolve test method parameters
         parameters.put(Loop.class, gameLoop);
         parameters.put(Graphics.class, graphics);
+        parameters.put(Camera.class, camera);
         parameters.put(Screen.class, screen);
         parameters.put(World.class, world);
         parameters.put(Window.class, window);

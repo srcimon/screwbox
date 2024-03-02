@@ -25,9 +25,9 @@ public class Noise implements Serializable {
     }
 
     public static Noise variableInterval(final Duration interval) {
-        long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
-        Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
-        Duration maxDeviation = Duration.ofNanos(nanoDeviation);
+        final long nanoDeviation = Math.round(interval.nanos() * Percent.half().value());
+        final Duration minDeviation = Duration.ofNanos(-1 * nanoDeviation);
+        final Duration maxDeviation = Duration.ofNanos(nanoDeviation);
         return new Noise(interval.add(minDeviation), interval.add(maxDeviation));
     }
 
