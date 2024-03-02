@@ -1,10 +1,11 @@
 ### 🚀 Features & improvements
 
-- Moved camera control to `Graphics.camera()`
-- Added `CameraShake` (#211)
+- Added methods for handling of singleton components and entitie to `Environment` (#219)
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
-- Added methods for handling of singleton components and entitie to `Environment` (#219)
+- Moved camera control to `Graphics.camera()`
+- Added `CameraShake` (#211)
+- Added `Environment.enableCamera()`
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
