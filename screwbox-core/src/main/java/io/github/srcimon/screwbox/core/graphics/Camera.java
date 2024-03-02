@@ -48,18 +48,18 @@ public interface Camera {
     }
 
     /**
-     * Shakes the {@link Camera} with the given {@link ShakeOptions}. Shaking has no effect
+     * Shakes the {@link Camera} with the given {@link CameraShakeOptions}. Shaking has no effect
      * on {@link Camera#position()}. Shake only afflicts {@link Camera#focus()} and the rendering of {@link World}.
      *
      * @see #stopShaking()
      * @see #isShaking()
      */
-    Camera shake(ShakeOptions options);
+    Camera shake(CameraShakeOptions options);
 
     /**
      * Stops any {@link Camera} if there is currently shake in progress. Does nothing if {@link Camera} is not shaking.
      *
-     * @see #shake(ShakeOptions)
+     * @see #shake(CameraShakeOptions)
      * @see #isShaking()
      */
     Camera stopShaking();
@@ -67,7 +67,7 @@ public interface Camera {
     /**
      * Returns {@true} if {@link Camera} is curently shaking.
      *
-     * @see #shake(ShakeOptions)
+     * @see #shake(CameraShakeOptions)
      * @see #stopShaking()
      */
     boolean isShaking();

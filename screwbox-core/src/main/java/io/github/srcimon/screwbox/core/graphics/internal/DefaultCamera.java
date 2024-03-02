@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.ShakeOptions;
+import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.core.utils.Noise;
@@ -24,7 +24,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double minZoom = 2;
     private double maxZoom = 5;
     private Time start = null;
-    private ShakeOptions activeShake = null;
+    private CameraShakeOptions activeShake = null;
     private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));
     private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));
 
@@ -97,7 +97,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera shake(ShakeOptions options) {
+    public Camera shake(CameraShakeOptions options) {
         start = Time.now();
         activeShake = options;
         return this;
