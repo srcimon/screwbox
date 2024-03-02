@@ -10,14 +10,13 @@ public class CameraTargetComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double speed;
-
+    public double followSpeed;
     public Vector shift = Vector.zero();
 
     public CameraTargetComponent() {
         this(2);
     }
-    public CameraTargetComponent(final double speed) {
-        this.speed = speed;
+    public CameraTargetComponent(final double followSpeed) {
+        this.followSpeed = followSpeed;
     }
 }

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.camera.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
@@ -108,6 +108,6 @@ public class DemoScene implements Scene {
     private static Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
                 .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
-                .add(new CameraConfigurationComponent(map.bounds()));
+                .add(new CameraBoundsComponent(map.bounds()));
     }
 }

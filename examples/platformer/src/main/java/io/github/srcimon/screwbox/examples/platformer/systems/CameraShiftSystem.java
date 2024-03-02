@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.camera.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Flip;
@@ -29,12 +28,12 @@ public class CameraShiftSystem implements EntitySystem {
         if (Flip.HORIZONTAL.equals(player.get(RenderComponent.class).flip)) {
             configuration.shift = Vector.of(
                     Math.max(-50,
-                            configuration.shift.x() - configuration.speed * delta * 100),
+                            configuration.shift.x() - configuration.followSpeed * delta * 100),
                     0);
         } else {
             configuration.shift = Vector.of(
                     Math.min(50,
-                            configuration.shift.x() + configuration.speed * delta * 100),
+                            configuration.shift.x() + configuration.followSpeed * delta * 100),
                     0);
         }
     }

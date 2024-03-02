@@ -30,11 +30,11 @@ public class CameraSystem implements EntitySystem {
             final Vector cameraMovement = engine.graphics().camera().position()
                     .substract(targetPosition)
                     .substract(target.shift)
-                    .multiply(-1 * target.speed * engine.loop().delta());
+                    .multiply(engine.loop().delta(-1 * target.followSpeed));
 
-            var configuration = engine.environment().tryFetchSingletonComponent(CameraConfigurationComponent.class);
-            if(configuration.isPresent()) {
-                engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.get().visibleArea);
+            var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
+            if (configuration.isPresent()) {
+                engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.get().cameraBounds);
             } else {
                 engine.graphics().camera().move(cameraMovement);
             }

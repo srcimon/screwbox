@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.camera.CameraConfigurationComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class GameSceneTest {
         new GameScene(mapName).importEntities(environment);
 
         assertThat(environment.entities()).hasSizeGreaterThan(50)
-                .anyMatch(e -> e.hasComponent(CameraConfigurationComponent.class))
+                .anyMatch(e -> e.hasComponent(CameraBoundsComponent.class))
                 .anyMatch(e -> e.hasComponent(PlayerMarkerComponent.class));
     }
 }
