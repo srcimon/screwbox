@@ -13,7 +13,6 @@ public interface Camera {
      */
     Vector moveWithinVisualBounds(Vector delta, Bounds bounds);
 
-
     /**
      * Updates the camera zoom nearly to the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
@@ -42,22 +41,26 @@ public interface Camera {
     /**
      * Moves the camera position by the given {@link Vector}.
      */
-    default Camera moveCamera(final Vector delta) {
+    default Camera move(final Vector delta) {
         return updatePosition(position().add(delta));
     }
 
-    Camera addCameraShake(double strength, Duration interval, Duration duration);
+    Camera addShake(double strength, Duration interval, Duration duration);
 
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.
      */
-    Camera restrictZoomRangeTo(double min, double max);
+    Camera updateZoomRestriction(double min, double max);
 
     Vector position();
 
+    Vector focus();
     /**
      * Returns the currently used camera zoom.
      */
-    double cameraZoom();
+    double zoom();
 
+    double minZoom();
+
+    double maxZoom();
 }

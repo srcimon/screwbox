@@ -2,8 +2,14 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.audio.*;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.audio.Audio;
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
+import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent;
+import io.github.srcimon.screwbox.core.audio.AudioConfigurationListener;
+import io.github.srcimon.screwbox.core.audio.Playback;
+import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
@@ -25,14 +31,14 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
-    private final Graphics graphics;
+    private final Camera camera;
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Graphics graphics) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
-        this.graphics = graphics;
+        this.camera = camera;
     }
 
     public void shutdown() {
@@ -58,8 +64,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio playSound(final Sound sound, final Vector position) {
         requireNonNull(position, "position must not be null");
-        final var distance = graphics.camera().position().distanceTo(position);
-        final var direction = modifier(position.x() - graphics.camera().position().x());
+        final var distance = camera.position().distanceTo(position);
+        final var direction = modifier(position.x() - camera.position().x());
         final var quotient = distance / configuration.soundRange();
         final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)

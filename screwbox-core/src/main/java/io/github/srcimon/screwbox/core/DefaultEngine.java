@@ -99,7 +99,7 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
-        audio = new DefaultAudio(executor, new AudioAdapter(), graphics);
+        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

@@ -21,7 +21,7 @@ public class DefaultCamera implements Camera, Updatable {
     private Vector shake = Vector.zero();
     Vector position = Vector.zero();
     private double zoom = 2;
-    private double wantedZoom = zoom;
+    private double requestedZoom = zoom;
     private double minZoom = 2;
     private double maxZoom = 5;
     private Time start = null;
@@ -40,15 +40,18 @@ public class DefaultCamera implements Camera, Updatable {
         return this;
     }
 
+    @Override
     public Vector position() {
         return position;
     }
 
+    @Override
     public Vector focus() {
         return position.add(shake);
     }
 
-    public Camera restrictZoomRangeTo(final double min, final double max) {
+    @Override
+    public Camera updateZoomRestriction(final double min, final double max) {
         if (min <= 0) {
             throw new IllegalArgumentException("min zoom must be positive");
         }
@@ -60,14 +63,10 @@ public class DefaultCamera implements Camera, Updatable {
         return this;
     }
 
-    public double wantedZoom() {
-        return wantedZoom;
-    }
-
     @Override
     public double updateZoom(final double zoom) {
-        this.wantedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
-        final double actualZoomValue = Math.floor(wantedZoom * 16.0) / 16.0;
+        this.requestedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
+        final double actualZoomValue = Math.floor(requestedZoom * 16.0) / 16.0;
         this.zoom = actualZoomValue;
         world.updateZoom(this.zoom);
         return actualZoomValue;
@@ -95,11 +94,11 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public double updateZoomRelative(final double delta) {
-        return updateZoom(wantedZoom() + delta);
+        return updateZoom(requestedZoom + delta);
     }
 
     @Override
-    public Camera addCameraShake(double strength, Duration interval, Duration duration) {
+    public Camera addShake(double strength, Duration interval, Duration duration) {
         start = Time.now();
         end = start.plus(duration);
         shakeStrength = strength;
@@ -109,10 +108,19 @@ public class DefaultCamera implements Camera, Updatable {
         return this;
     }
 
+    @Override
+    public double zoom() {
+        return world.cameraZoom();
+    }
 
     @Override
-    public double cameraZoom() {
-        return world.cameraZoom();
+    public double minZoom() {
+        return minZoom;
+    }
+
+    @Override
+    public double maxZoom() {
+        return maxZoom;
     }
 
     @Override

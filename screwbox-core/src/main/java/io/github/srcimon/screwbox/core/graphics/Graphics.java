@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.List;
@@ -31,7 +29,11 @@ public interface Graphics {
      */
     World world();
 
+    /**
+     * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.
+     */
     Camera camera();
+
     /**
      * Subsystem for creating and rendering light effects to the screen.
      */
