@@ -3,10 +3,13 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.examples.platformer.collectables.*;
+import io.github.srcimon.screwbox.examples.platformer.collectables.Cherries;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboB;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboD;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboE;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboO;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
@@ -14,7 +17,11 @@ import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
 import io.github.srcimon.screwbox.examples.platformer.enemies.MovingSpikes;
 import io.github.srcimon.screwbox.examples.platformer.enemies.slime.Slime;
 import io.github.srcimon.screwbox.examples.platformer.enemies.tracer.Tracer;
-import io.github.srcimon.screwbox.examples.platformer.map.*;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderLeft;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderRight;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderTop;
+import io.github.srcimon.screwbox.examples.platformer.map.MapGravity;
+import io.github.srcimon.screwbox.examples.platformer.map.WorldInformation;
 import io.github.srcimon.screwbox.examples.platformer.props.Box;
 import io.github.srcimon.screwbox.examples.platformer.props.Diggable;
 import io.github.srcimon.screwbox.examples.platformer.props.Platfom;
@@ -70,10 +77,10 @@ public class GameScene implements Scene {
                 .enableLight()
                 .enableLogic()
                 .enableTweening()
+                .enableCamera()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
-                .addSystem(new CameraSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
