@@ -12,9 +12,7 @@ public class ShakeOptions {
 
     private final double strength;
     private Duration duration = Duration.none();
-
-    private Noise xNoise = Noise.variableInterval(Duration.ofMillis(200));
-    private Noise yNoise = Noise.variableInterval(Duration.ofMillis(200));
+    private Duration interval = Duration.none();
 
     private ShakeOptions(final double strength) {
         this.strength = strength;
@@ -31,22 +29,16 @@ public class ShakeOptions {
     }
 
     public ShakeOptions interval(final Duration interval) {
-        this.xNoise = Noise.variableInterval(interval);
-        this.yNoise = Noise.variableInterval(interval);
+        this.interval = interval;
         return this;
     }
 
-    public Vector calculateDistortion(Time start, Time now) {
-        Duration elapsed = Duration.between(start, now);
-        Time end = now.plus(duration);
-        var progress = duration.isNone() ? Percent.zero() : Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
-        return $(xNoise.value(now), yNoise.value(now)).multiply(strength * progress.invert().value());
+    public double strength() {
+        return strength;
     }
 
-    public boolean isFinished(Time start, Time now) {
-        if(duration.isNone()) {//TODO: isNone
-            return false;
-        }
-        return now.isAfter(start.plus(duration));
+    public Duration duration() {
+        return duration;
     }
+
 }
