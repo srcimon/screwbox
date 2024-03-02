@@ -15,21 +15,19 @@ public class CameraSystem implements EntitySystem {
 
     private static final Archetype TARGET = Archetype.of(CameraTargetComponent.class, TransformComponent.class);
 
-    private boolean mustInitializeCamera = true;
-
     @Override
     public void update(final Engine engine) {
         engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
+            final var cameraPosition = engine.graphics().camera().position();
             final var targetPosition = targetEntity.get(TransformComponent.class).bounds.position();
-            final var target = targetEntity.get(CameraTargetComponent.class);
 
-            if (mustInitializeCamera) {
+            if (targetPosition.distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0) {
                 engine.graphics().camera().updatePosition(targetPosition);
-                mustInitializeCamera = false;
                 return;
             }
 
-            final Vector distance = engine.graphics().camera().position()
+            final var target = targetEntity.get(CameraTargetComponent.class);
+            final Vector distance = cameraPosition
                     .substract(targetPosition)
                     .substract(target.shift);
 

@@ -30,31 +30,20 @@ class CameraSystemTest {
     }
 
     @Test
-    void update_firstUpdateWithTarget_movesCameraToTarget(DefaultEnvironment environment, Camera camera) {
-        environment
-                .addSystem(new CameraSystem())
-                .addEntity(new CameraTargetComponent(), new TransformComponent(200, 300, 10, 10));
-
-        environment.update();
-
-        verify(camera).updatePosition($(200, 300));
-    }
-
-    @Test
-    void update_secondUpdateWithTarget_movesCameraTowardsTarget(DefaultEnvironment environment, Camera camera, Loop loop) {
+    void update_withTarget_movesCameraTowardsTarget(DefaultEnvironment environment, Camera camera, Loop loop) {
         when(loop.delta(-2)).thenReturn(0.4);
         when(camera.position()).thenReturn($(100, 100));
         environment
                 .addSystem(new CameraSystem())
                 .addEntity(new CameraTargetComponent(), new TransformComponent(200, 300, 10, 10));
 
-        environment.updateTimes(2);
+        environment.update();
 
         verify(camera).move($(-40.00, -80.00));
     }
 
     @Test
-    void update_secondUpdateWithTargetAndBounds_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Camera camera, Loop loop) {
+    void update_withTargetAndBounds_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Camera camera, Loop loop) {
         when(loop.delta(-2)).thenReturn(0.4);
         when(camera.position()).thenReturn($(100, 100));
         environment
@@ -62,7 +51,7 @@ class CameraSystemTest {
                 .addEntity(new CameraBoundsComponent($$(0, 0, 1000, 1000)))
                 .addEntity(new CameraTargetComponent(), new TransformComponent(200, 300, 10, 10));
 
-        environment.updateTimes(2);
+        environment.update();
 
         verify(camera).moveWithinVisualBounds($(-40.00, -80.00), $$(0, 0, 1000, 1000));
     }
