@@ -28,17 +28,17 @@ class BoundsTest {
     }
 
     @Test
-    void inflated_returnsNewLargerInstance() {
+    void expandreturnsNewLargerInstance() {
         Bounds player = Bounds.$$(10, 10, 20, 20);
-        Bounds playerAfterLargeMeal = player.inflated(2);
+        Bounds playerAfterLargeMeal = player.expand(2);
 
         assertThat(playerAfterLargeMeal).isEqualTo(Bounds.$$(9, 9, 22, 22));
     }
 
     @Test
-    void inflatedTop_returnsNewLargerInstance() {
+    void expandTop_returnsNewLargerInstance() {
         Bounds player = Bounds.$$(10, 10, 20, 20);
-        Bounds playerAfterStrechingLegs = player.inflatedTop(2);
+        Bounds playerAfterStrechingLegs = player.expandTop(2);
 
         assertThat(playerAfterStrechingLegs).isEqualTo(Bounds.$$(10, 8, 20, 22));
     }

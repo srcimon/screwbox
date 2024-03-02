@@ -35,7 +35,7 @@ public class ReflectionRenderSystem implements EntitySystem {
             opacityModifier = useWaveEffect
                     ? (Math.sin(waveSeed) * 0.25 + 0.75) * options.opacityModifier.value()
                     : options.opacityModifier.value();
-            reflectedArea = area.moveBy(0, -area.height()).inflatedTop(useWaveEffect ? 2 : 0);
+            reflectedArea = area.moveBy(0, -area.height()).expandTop(useWaveEffect ? 2 : 0);
         }
 
         public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities) {

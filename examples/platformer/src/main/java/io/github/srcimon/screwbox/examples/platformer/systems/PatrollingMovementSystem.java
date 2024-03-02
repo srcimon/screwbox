@@ -39,7 +39,7 @@ public class PatrollingMovementSystem implements EntitySystem {
                 .raycastFrom(bounds.position())
                 .ignoringEntities(entity)
                 .ignoringEntitiesHaving(PlayerMarkerComponent.class)
-                .ignoringEntitesNotIn(bounds.inflated(8))
+                .ignoringEntitesNotIn(bounds.expand(8))
                 .checkingBorders(Borders.VERTICAL_ONLY)
                 .castingHorizontal(slimeComp.right ? 8 : -8).hasHit();
     }
@@ -54,7 +54,7 @@ public class PatrollingMovementSystem implements EntitySystem {
         return engine.physics()
                 .raycastFrom(start)
                 .checkingBorders(Borders.TOP_ONLY)
-                .ignoringEntitesNotIn(bounds.inflated(8))
+                .ignoringEntitesNotIn(bounds.expand(8))
                 .castingVertical(8)
                 .noHit();
     }

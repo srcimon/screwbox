@@ -202,7 +202,7 @@ public class Grid implements Serializable {
     }
 
     private void markArea(final Bounds area, final boolean status) {
-        final var areaTranslated = tanslate(area).inflated(-0.1);
+        final var areaTranslated = tanslate(area).expand(-0.1);
         final int minX = Math.max(gridValue(areaTranslated.origin().x()), 0);
         final int maxX = Math.min(gridValue(areaTranslated.bottomRight().x()), width - 1);
         final int minY = Math.max(gridValue(areaTranslated.origin().y()), 0);
