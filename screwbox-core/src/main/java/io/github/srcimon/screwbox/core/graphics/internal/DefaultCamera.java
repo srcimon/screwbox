@@ -26,6 +26,8 @@ public class DefaultCamera implements Camera, Updatable {
     private double requestedZoom = zoom;
     private double minZoom = 2;
     private double maxZoom = 5;
+
+    //TODO Refactor all this in ActiveShake class
     private Time start = null;
     private CameraShakeOptions activeShake = null;
     private Noise xNoise;
@@ -138,9 +140,9 @@ public class DefaultCamera implements Camera, Updatable {
     public void update() {
         Time now = Time.now();
 
-        if (Objects.nonNull(activeShake)) {
+        if (nonNull(activeShake)) {
             shake = calculateDistortion(now);
-            if (activeShake.duration().isNone() || now.isAfter(start.plus(activeShake.duration()))) {
+            if (!activeShake.duration().isNone() && now.isAfter(start.plus(activeShake.duration()))) {
                 activeShake = null;
             }
         } else {
