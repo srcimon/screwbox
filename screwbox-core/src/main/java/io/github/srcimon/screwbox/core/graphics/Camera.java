@@ -65,7 +65,7 @@ public interface Camera {
     Camera stopShaking();
 
     /**
-     * Returns {@true} if {@link Camera} is curently shaking.
+     * Returns {@code true} if {@link Camera} is curently shaking.
      *
      * @see #shake(CameraShakeOptions)
      * @see #stopShaking()

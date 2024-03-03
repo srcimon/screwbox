@@ -56,7 +56,7 @@ public interface Environment {
     /**
      * Returns a {@link Component} that is expected not have more than on instance in the {@link Environment}.
      * Can be used to store configuration for an {@link EntitySystem} e.g. {@link PhysicsGridConfigurationComponent}.
-     * <p/>
+     * <p>
      * Please note: There is currently no way to prevent that such a {@link Component} is added more than once (for performance reasons).
      *
      * @throws IllegalStateException will be thrown when not exactly one instance is found

@@ -49,7 +49,7 @@ public interface Engine {
     /**
      * Provides access to the {@link Graphics}, which has methods for drawing on
      * screen, changing the {@link GraphicsConfiguration}, to update and read the
-     * {@link Graphics#cameraPosition()} and to adjust the {@link Window}.
+     * {@link Graphics#camera()}.
      */
     Graphics graphics();
 
