@@ -6,7 +6,7 @@
 - Moved camera control to `Graphics.camera()`
 - Added  camera shake (#211)
 - Added `Environment.enableCamera()`
-- Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
+- Added `Camera.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
 - Added `Pixelfont.sizeOf(String)`
