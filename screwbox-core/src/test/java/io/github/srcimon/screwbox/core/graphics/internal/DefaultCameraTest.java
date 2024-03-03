@@ -28,7 +28,7 @@ class DefaultCameraTest {
 
     @Test
     void moveCameraWithinVisualBounds_cameraIsWithinBounds_updatesCameraPosition() {
-        camera.updatePosition($(10, 10));
+        camera.setPosition($(10, 10));
         when(world.visibleArea()).thenReturn($$(-50, -50, 100, 100));
 
         var result = camera.moveWithinVisualBounds($(20, 20), $$(-200, -20, 400, 400));
@@ -39,34 +39,34 @@ class DefaultCameraTest {
 
     @Test
     void updatePosition_positionNull_throwsException() {
-        assertThatThrownBy(() -> camera.updatePosition(null))
+        assertThatThrownBy(() -> camera.setPosition(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("position must not be NULL");
     }
 
 
     @Test
-    void updateZoomRestriction_minNegative_exception() {
-        assertThatThrownBy(() -> camera.updateZoomRestriction(-2, 1))
+    void setZoomRestriction_minNegative_exception() {
+        assertThatThrownBy(() -> camera.setZoomRestriction(-2, 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("min zoom must be positive");
     }
 
     @Test
-    void updateZoomRestriction_maxBelowMin_exception() {
-        assertThatThrownBy(() -> camera.updateZoomRestriction(1, 0.3))
+    void setZoomRestriction_maxBelowMin_exception() {
+        assertThatThrownBy(() -> camera.setZoomRestriction(1, 0.3))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("max zoom must not be lower than min zoom");
     }
 
     @Test
-    void updateZoomRestriction_validMinAndMax_restrictsZoomRange() {
-        camera.updateZoomRestriction(1, 5);
+    void setZoomRestriction_validMinAndMax_restrictsZoomRange() {
+        camera.setZoomRestriction(1, 5);
 
-        assertThat(camera.updateZoom(0.2)).isEqualTo(1);
+        assertThat(camera.setZoom(0.2)).isEqualTo(1);
         assertThat(camera.zoom()).isEqualTo(1);
 
-        assertThat(camera.updateZoom(12)).isEqualTo(5);
+        assertThat(camera.setZoom(12)).isEqualTo(5);
         assertThat(camera.zoom()).isEqualTo(5);
     }
 

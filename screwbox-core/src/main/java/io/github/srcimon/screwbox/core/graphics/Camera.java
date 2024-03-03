@@ -22,29 +22,29 @@ public interface Camera {
      *
      * @param zoom the zoom value that should be applied
      * @return the zoom value that was applied
-     * @see #updateZoomRelative(double)
+     * @see #changeZoom(double)
      */
-    double updateZoom(double zoom);
+    double setZoom(double zoom);
 
     /**
      * Sets the camera position.
      */
-    Camera updatePosition(Vector position);
+    Camera setPosition(Vector position);
 
     /**
      * Updates the camera zoom nearly by the given value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
      *
-     * @see #updateZoom(double)
+     * @see #setZoom(double)
      */
-    double updateZoomRelative(double delta);
+    double changeZoom(double delta);
 
     /**
      * Moves the camera position by the given {@link Vector}.
      */
     default Camera move(final Vector delta) {
-        return updatePosition(position().add(delta));
+        return setPosition(position().add(delta));
     }
 
     /**
@@ -75,7 +75,7 @@ public interface Camera {
     /**
      * Restricts zooming to the given range. Default min zoom is 0.5 and max is 10.
      */
-    Camera updateZoomRestriction(double min, double max);
+    Camera setZoomRestriction(double min, double max);
 
     Vector position();
 

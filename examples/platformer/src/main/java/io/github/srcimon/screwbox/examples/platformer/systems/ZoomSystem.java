@@ -15,13 +15,13 @@ public class ZoomSystem implements EntitySystem {
         Camera camera = engine.graphics().camera();
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
-            camera.updateZoomRelative(engine.loop().delta(2.5));
+            camera.changeZoom(engine.loop().delta(2.5));
         } else if (engine.keyboard().isDown(Key.NUMBER_2)) {
-            camera.updateZoomRelative(engine.loop().delta(-2.5));
+            camera.changeZoom(engine.loop().delta(-2.5));
         } else if (engine.keyboard().isDown(Key.NUMBER_3)) {
-            camera.updateZoom(3.0);
+            camera.setZoom(3.0);
         } else if (engine.keyboard().isDown(Key.NUMBER_4)) {
-            camera.updateZoom(4.0);
+            camera.setZoom(4.0);
         }
     }
 }

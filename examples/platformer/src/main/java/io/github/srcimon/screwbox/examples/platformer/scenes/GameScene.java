@@ -61,8 +61,8 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(final Engine engine) {
-        engine.graphics().camera().updatePosition(Vector.zero());
-        engine.graphics().camera().updateZoom(3.0);
+        engine.graphics().camera().setPosition(Vector.zero());
+        engine.graphics().camera().setZoom(3.0);
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
         engine.window().setTitle("Platformer");
     }

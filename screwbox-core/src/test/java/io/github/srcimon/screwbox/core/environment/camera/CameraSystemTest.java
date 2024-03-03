@@ -28,7 +28,7 @@ class CameraSystemTest {
 
         verify(camera, never()).moveWithinVisualBounds(any(), any());
         verify(camera, never()).move(any());
-        verify(camera, never()).updatePosition(any());
+        verify(camera, never()).setPosition(any());
     }
 
     @Test
@@ -71,7 +71,7 @@ class CameraSystemTest {
 
         environment.update();
 
-        verify(camera).updatePosition($(200, 300));
+        verify(camera).setPosition($(200, 300));
     }
 
     @Test

@@ -11,8 +11,6 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.core.utils.Noise;
 
-import java.util.Objects;
-
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -38,7 +36,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera updatePosition(final Vector position) {
+    public Camera setPosition(final Vector position) {
         this.position = requireNonNull(position, "position must not be NULL");
         world.updateCameraPosition(focus());
         return this;
@@ -56,7 +54,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera updateZoomRestriction(final double min, final double max) {
+    public Camera setZoomRestriction(final double min, final double max) {
         if (min <= 0) {
             throw new IllegalArgumentException("min zoom must be positive");
         }
@@ -69,7 +67,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public double updateZoom(final double zoom) {
+    public double setZoom(final double zoom) {
         this.requestedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
         this.zoom = pixelPerfectValue(requestedZoom);
         world.updateZoom(this.zoom);
@@ -97,8 +95,8 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public double updateZoomRelative(final double delta) {
-        return updateZoom(requestedZoom + delta);
+    public double changeZoom(final double delta) {
+        return setZoom(requestedZoom + delta);
     }
 
     @Override

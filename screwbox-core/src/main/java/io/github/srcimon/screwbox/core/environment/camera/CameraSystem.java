@@ -23,7 +23,7 @@ public class CameraSystem implements EntitySystem {
 
             final var target = targetEntity.get(CameraTargetComponent.class);
             if (target.allowJumping && targetPosition.distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0) {
-                engine.graphics().camera().updatePosition(targetPosition);
+                engine.graphics().camera().setPosition(targetPosition);
                 return;
             }
 
