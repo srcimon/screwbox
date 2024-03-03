@@ -42,8 +42,8 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Vector focus() {
-        final var position = this.position.add(shake);
-        return Vector.of(pixelPerfectValue(position.x()), pixelPerfectValue(position.y()));
+        final var focus = this.position.add(shake);
+        return Vector.of(pixelPerfectValue(focus.x()), pixelPerfectValue(focus.y()));
     }
 
     @Override
