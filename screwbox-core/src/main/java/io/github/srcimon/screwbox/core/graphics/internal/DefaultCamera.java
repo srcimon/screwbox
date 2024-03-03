@@ -1,15 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
-import io.github.srcimon.screwbox.core.utils.Noise;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
@@ -25,11 +22,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double minZoom = 2;
     private double maxZoom = 5;
 
-    //TODO Refactor all this in ActiveShake class
-    private Time start = null;
-    private CameraShakeOptions activeShake = null;
-    private Noise xNoise;
-    private Noise yNoise;
+    private ActiveCameraShake activeShake;
 
     public DefaultCamera(final DefaultWorld world) {
         this.world = world;
@@ -101,10 +94,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public Camera shake(CameraShakeOptions options) {
-        start = Time.now();
-        activeShake = options;
-        xNoise = Noise.variableInterval(options.interval());
-        yNoise = Noise.variableInterval(options.interval());
+        activeShake = new ActiveCameraShake(options);
         return this;
     }
 
@@ -139,22 +129,13 @@ public class DefaultCamera implements Camera, Updatable {
         Time now = Time.now();
 
         if (nonNull(activeShake)) {
-            shake = calculateDistortion(now);
-            if (!activeShake.duration().isNone() && now.isAfter(start.plus(activeShake.duration()))) {
+            shake = activeShake.calculateDistortion(now, zoom);
+            if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
         }
-    }
-
-    private Vector calculateDistortion(Time now) {
-        final Duration elapsed = Duration.between(start, now);
-        final Time end = now.plus(activeShake.duration());
-        final var progress = activeShake.duration().isNone()
-                ? Percent.zero()
-                : Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
-        return $(xNoise.value(now), yNoise.value(now)).multiply(activeShake.strength() * progress.invert().value() / zoom);
     }
 
     private double pixelPerfectValue(final double value) {
