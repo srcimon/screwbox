@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -139,4 +139,20 @@ class DefaultCameraTest {
 
         assertThat(camera.isShaking()).isFalse();
     }
+
+    @Test
+    void focus_noShake_isSameAsPosition() {
+        assertThat(camera.focus()).isEqualTo(camera.position());
+    }
+
+    @RepeatedTest(3)
+    void focus_isShaking_isDifferentFromPositionButLessThanStrength() {
+        camera.shake(CameraShakeOptions.infinite().strength(4));
+
+        camera.update();
+
+        assertThat(camera.focus().distanceTo(camera.position())).isLessThan(4);
+        assertThat(camera.focus()).isNotEqualTo(camera.position());
+    }
+
 }
