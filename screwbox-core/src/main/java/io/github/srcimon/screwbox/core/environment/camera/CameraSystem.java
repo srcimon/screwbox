@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.camera;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -24,12 +23,11 @@ public class CameraSystem implements EntitySystem {
 
             final var target = targetEntity.get(CameraTargetComponent.class);
             final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
-            if (target.allowJumping && targetBounds.position().distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0) {
-                if(configuration.isPresent()) {
-                    if(configuration.get().cameraBounds.expand(-targetBounds.extents().length()).contains(targetBounds.position())) {
-                        engine.graphics().camera().setPosition(targetBounds.position());
-                    }
-                }
+            if (target.allowJumping
+                    && targetBounds.position().distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0
+                    && (configuration.isEmpty()
+                    || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
+                engine.graphics().camera().setPosition(targetBounds.position());
                 return;
             }
 
