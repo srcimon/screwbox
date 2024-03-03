@@ -22,7 +22,7 @@ public interface Camera {
      *
      * @param zoom the zoom value that should be applied
      * @return the zoom value that was applied
-     * @see #changeZoom(double)
+     * @see #changeZoomBy(double)
      */
     double setZoom(double zoom);
 
@@ -38,7 +38,7 @@ public interface Camera {
      *
      * @see #setZoom(double)
      */
-    double changeZoom(double delta);
+    double changeZoomBy(double delta);
 
     /**
      * Moves the camera position by the given {@link Vector}.

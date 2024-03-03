@@ -27,6 +27,22 @@ class DefaultCameraTest {
     DefaultCamera camera;
 
     @Test
+    void changeZoomBy_changeIsPixelperfectValue_changesZoom() {
+        var result = camera.changeZoomBy(1);
+
+        assertThat(camera.zoom()).isEqualTo(3.0);
+        assertThat(result).isEqualTo(3.0);
+    }
+
+    @Test
+    void changeZoomBy_changeIsNotPixelperfectValue_changesZoomByPixelperfectValue() {
+        var result = camera.changeZoomBy(0.2);
+
+        assertThat(camera.zoom()).isEqualTo(2.1875);
+        assertThat(result).isEqualTo(2.1875);
+    }
+
+    @Test
     void moveCameraWithinVisualBounds_cameraIsWithinBounds_updatesCameraPosition() {
         camera.setPosition($(10, 10));
         when(world.visibleArea()).thenReturn($$(-50, -50, 100, 100));
@@ -65,13 +81,17 @@ class DefaultCameraTest {
 
         assertThat(camera.setZoom(0.2)).isEqualTo(1);
         assertThat(camera.zoom()).isEqualTo(1);
+        assertThat(camera.minZoom()).isEqualTo(1);
 
         assertThat(camera.setZoom(12)).isEqualTo(5);
         assertThat(camera.zoom()).isEqualTo(5);
+        assertThat(camera.maxZoom()).isEqualTo(5);
     }
 
     @Test
     void isShaking_noActiveShake_isFalse() {
+        camera.update();
+
         assertThat(camera.isShaking()).isFalse();
     }
 

@@ -21,7 +21,7 @@ public class CameraControlSystem implements EntitySystem {
         camera.moveWithinVisualBounds(movement, gridArea);
 
         double zoomChange = engine.mouse().unitsScrolled() * -engine.loop().delta();
-        camera.changeZoom(zoomChange);
+        camera.changeZoomBy(zoomChange);
     }
 
 }

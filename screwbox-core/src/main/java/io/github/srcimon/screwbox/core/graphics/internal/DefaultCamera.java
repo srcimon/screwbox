@@ -95,7 +95,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public double changeZoom(final double delta) {
+    public double changeZoomBy(final double delta) {
         return setZoom(requestedZoom + delta);
     }
 
