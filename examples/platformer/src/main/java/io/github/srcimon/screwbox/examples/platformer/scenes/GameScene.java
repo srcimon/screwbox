@@ -118,7 +118,6 @@ public class GameScene implements Scene {
                 .as(new MapGravity())
                 .as(new WorldInformation())
                 .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
-                .when(propertyIsActive("closed-left")).as(new MapBorderLeft())
                 .when(propertyIsActive("closed-right")).as(new MapBorderRight())
                 .when(propertyIsActive("closed-top")).as(new MapBorderTop());
 
