@@ -4,7 +4,7 @@
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
 - Moved camera control to `Graphics.camera()`
-- Added `Camera.shake(Options)` (#211)
+- Added  camera shake (#211)
 - Added `Environment.enableCamera()`
 - Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
