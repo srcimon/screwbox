@@ -13,7 +13,7 @@ public class PathfindingApp {
 
         engine.assets().enableLogging().prepareClassPackageAsync(PathfindingApp.class);
 
-        engine.graphics().camera().setZoom(2.5);
+        engine.graphics().camera().setZoom(2.7);
 
         engine.start(DemoScene.class);
     }
