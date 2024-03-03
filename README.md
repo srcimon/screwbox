@@ -1,6 +1,6 @@
 ![Project Logo](docs/logo.png)
 
-Minimalist 2d Java game engine. Result of covid lockdown.
+Minimalist 2D Java game engine. Result of covid lockdown.
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.srcimon/screwbox)](https://search.maven.org/artifact/io.github.srcimon/screwbox)
 [![javadoc](https://javadoc.io/badge2/io.github.srcimon/screwbox-core/javadoc.svg)](https://javadoc.io/doc/io.github.srcimon/screwbox-core)
