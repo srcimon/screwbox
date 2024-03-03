@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Added methods for handling of singleton components and entitie to `Environment` (#219)
+- Added methods for handling of singleton components and entities to `Environment` (#219)
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
 - Moved camera control to `Graphics.camera()`
