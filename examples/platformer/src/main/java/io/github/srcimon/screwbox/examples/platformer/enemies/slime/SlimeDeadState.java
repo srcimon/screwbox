@@ -7,8 +7,8 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.KillZoneComponent;
@@ -26,7 +26,6 @@ public class SlimeDeadState implements EntityState {
 
     @Override
     public void enter(final Entity entity, Engine engine) {
-
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.remove(KillZoneComponent.class);
         entity.remove(CastShadowComponent.class);

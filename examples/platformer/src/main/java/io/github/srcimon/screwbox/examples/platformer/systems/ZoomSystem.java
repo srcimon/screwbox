@@ -1,29 +1,27 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.camera.CameraComponent;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
+@Order(SystemOrder.OPTIMIZATION)
 public class ZoomSystem implements EntitySystem {
-
-    private static final Archetype CAMERA = Archetype.of(CameraComponent.class);
 
     @Override
     public void update(Engine engine) {
-        Entity camera = engine.environment().fetchSingleton(CAMERA);
+        Camera camera = engine.graphics().camera();
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
-            camera.get(CameraComponent.class).zoom += engine.loop().delta(2.5);
+            camera.changeZoomBy(engine.loop().delta(2.5));
         } else if (engine.keyboard().isDown(Key.NUMBER_2)) {
-            camera.get(CameraComponent.class).zoom -= engine.loop().delta(2.5);
+            camera.changeZoomBy(engine.loop().delta(-2.5));
         } else if (engine.keyboard().isDown(Key.NUMBER_3)) {
-            camera.get(CameraComponent.class).zoom = 3.0;
+            camera.setZoom(3.0);
         } else if (engine.keyboard().isDown(Key.NUMBER_4)) {
-            camera.get(CameraComponent.class).zoom = 4.0;
+            camera.setZoom(4.0);
         }
-
     }
 }

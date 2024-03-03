@@ -7,18 +7,18 @@ import org.junit.jupiter.api.RepeatedTest;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LurkTest {
+class NoiseTest {
 
-    private Lurk lurk;
+    private Noise noise;
 
     @BeforeEach
     void setUp() {
-        lurk = Lurk.fixedInterval(ofSeconds(1));
+        noise = Noise.fixedInterval(ofSeconds(1));
     }
 
     @RepeatedTest(4)
     void value_isInRangeButNotZero() {
-        assertThat(lurk.value(Time.now())).isBetween(-1.0, 1.0).isNotEqualTo(0.0);
+        assertThat(noise.value(Time.now())).isBetween(-1.0, 1.0).isNotEqualTo(0.0);
     }
 
 }

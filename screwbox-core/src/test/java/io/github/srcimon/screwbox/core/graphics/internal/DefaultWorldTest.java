@@ -4,7 +4,12 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Flip;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +21,6 @@ import static io.github.srcimon.screwbox.core.Vector.zero;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Sprite.invisible;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,31 +59,6 @@ class DefaultWorldTest {
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleDrawOptions.filled(RED));
 
         verify(screen).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
-    }
-
-    @Test
-    void restrictZoomRangeTo_minNegative_exception() {
-        assertThatThrownBy(() -> world.restrictZoomRangeTo(-2, 1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("min zoom must be positive");
-    }
-
-    @Test
-    void restrictZoomRangeTo_maxBelowMin_exception() {
-        assertThatThrownBy(() -> world.restrictZoomRangeTo(1, 0.3))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("max zoom must not be lower than min zoom");
-    }
-
-    @Test
-    void restrictZoomRangeTo_validMinAndMax_restrictsZoomRange() {
-        world.restrictZoomRangeTo(1, 5);
-
-        assertThat(world.updateZoom(0.2)).isEqualTo(1);
-        assertThat(world.wantedZoom()).isEqualTo(1);
-
-        assertThat(world.updateZoom(12)).isEqualTo(5);
-        assertThat(world.wantedZoom()).isEqualTo(5);
     }
 
     @Test

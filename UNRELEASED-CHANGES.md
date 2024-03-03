@@ -1,15 +1,19 @@
 ### 🚀 Features & improvements
 
+- Added methods for handling of singleton components and entities in `Environment` (#219)
 - Optimized drawing of rectangles using `RectangleDrawOptions` (#205)
 - Optimized drawing of lines using `LineDrawOptions` (#206)
-- Added methods for handling of singleton components and entitie to `Environment` (#219)
-- Added `Graphics.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
+- Moved camera control to `Graphics.camera()`
+- Added  camera shake (#211)
+- Added `Environment.enableCamera()`
+- Added `Camera.moveCameraWithinVisualBounds(Vector, Bounds)` (#210)
 - Added `ChaoticMovementEntity/System` (#214)
 - Added `Vector.nearestOf(List<Vector>)`
 - Added `Pixelfont.sizeOf(String)`
 - Added `Line.intersections(List<Line>)`
 - Added `Window.isOpen()`
 - Added `Size.allPixels()`
+- Added `Duration.isNone()`
 - Added `Frame.listPixelDifferences(Frame)`
 - Added `Color.hex(String)`
 - Enhanced graphics of `AutomovementDebugSystem`
@@ -23,6 +27,8 @@
 
 - Applied new naming schema for for optional and mandatory return values (#222)
 - Renamed camera movement and zoom methods
+- Renamed `Noise`
+- Renamed `Bounds.expand(Double)` and `.expandTop(Double)`
 - Renamed `PathfindingObstacleComponent`
 - Renamed `Physics.updateGrid(Grid)`
 - Moved screenshot taking from `Renderer` to `Screen`

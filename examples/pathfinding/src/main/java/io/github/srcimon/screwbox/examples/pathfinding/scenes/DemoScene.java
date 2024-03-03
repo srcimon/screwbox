@@ -4,16 +4,18 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.camera.CameraComponent;
-import io.github.srcimon.screwbox.core.environment.camera.CameraMovementComponent;
-import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.core.GlobalBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.camera.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.AutomovementDebugSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.*;
+import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
@@ -52,18 +54,17 @@ public class DemoScene implements Scene {
                 .when("floor").as(floor());
 
         environment.importSource(MAP.get())
-                .as(worldBounds());
+                .as(worldInfoSingleton());
 
         environment.importSource(MAP.get().objects())
                 .usingIndex(GameObject::name)
                 .when("player").as(player())
-                .when("enemy").as(enemy())
-                .when("camera").as(camera());
+                .when("enemy").as(enemy());
 
         environment
                 .enablePhysics()
+                .enableCamera()
                 .addSystem(new RenderSystem())
-                .addSystem(new CameraUpdateSystem())
                 .addSystem(new StateSystem())
                 .addSystem(new PlayerControlSystem())
                 .addSystem(new RotateSpriteSystem())
@@ -74,15 +75,9 @@ public class DemoScene implements Scene {
                 .addSystem(new SpriteChangeSystem());
     }
 
-    private Converter<GameObject> camera() {
-        return object -> new Entity()
-                .add(new TransformComponent(object.bounds()))
-                .add(new CameraComponent(2.5))
-                .add(new CameraMovementComponent(2, object.properties().getInt("target")));
-    }
-
     private Converter<GameObject> player() {
         return object -> new Entity(object.id())
+                .add(new CameraTargetComponent())
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())
@@ -113,10 +108,9 @@ public class DemoScene implements Scene {
                 .add(new ColliderComponent());
     }
 
-    private static Converter<Map> worldBounds() {
+    private static Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
-                .add(new TransformComponent(map.bounds()))
                 .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
-                .add(new GlobalBoundsComponent());
+                .add(new CameraBoundsComponent(map.bounds()));
     }
 }

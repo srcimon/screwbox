@@ -77,9 +77,17 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with no duration at all.
+     * @see #isNone()
      */
     public static Duration none() {
         return new Duration(0);
+    }
+
+    /**
+     * Checks if duration has no length.
+     */
+    public boolean isNone() {
+        return nanos == 0;
     }
 
     /**

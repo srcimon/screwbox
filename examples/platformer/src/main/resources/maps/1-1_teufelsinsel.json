@@ -746,23 +746,6 @@
                  "y":345
                 }, 
                 {
-                 "id":441,
-                 "properties":[
-                        {
-                         "name":"trackedEntity",
-                         "type":"object",
-                         "value":440
-                        }, 
-                        {
-                         "name":"zoom",
-                         "type":"float",
-                         "value":3
-                        }],
-                 "template":"..\/templates\/specials\/camera.json",
-                 "x":62,
-                 "y":334
-                }, 
-                {
                  "id":442,
                  "properties":[
                         {

@@ -2,11 +2,15 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.camera.CameraUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.examples.platformer.collectables.*;
+import io.github.srcimon.screwbox.examples.platformer.collectables.Cherries;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboB;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboD;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboE;
+import io.github.srcimon.screwbox.examples.platformer.collectables.DeboO;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
@@ -14,12 +18,15 @@ import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
 import io.github.srcimon.screwbox.examples.platformer.enemies.MovingSpikes;
 import io.github.srcimon.screwbox.examples.platformer.enemies.slime.Slime;
 import io.github.srcimon.screwbox.examples.platformer.enemies.tracer.Tracer;
-import io.github.srcimon.screwbox.examples.platformer.map.*;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderLeft;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderRight;
+import io.github.srcimon.screwbox.examples.platformer.map.MapBorderTop;
+import io.github.srcimon.screwbox.examples.platformer.map.MapGravity;
+import io.github.srcimon.screwbox.examples.platformer.map.WorldInformation;
 import io.github.srcimon.screwbox.examples.platformer.props.Box;
 import io.github.srcimon.screwbox.examples.platformer.props.Diggable;
 import io.github.srcimon.screwbox.examples.platformer.props.Platfom;
 import io.github.srcimon.screwbox.examples.platformer.props.VanishingBlock;
-import io.github.srcimon.screwbox.examples.platformer.specials.Camera;
 import io.github.srcimon.screwbox.examples.platformer.specials.CatCompanion;
 import io.github.srcimon.screwbox.examples.platformer.specials.Waypoint;
 import io.github.srcimon.screwbox.examples.platformer.specials.player.Player;
@@ -54,6 +61,8 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(final Engine engine) {
+        engine.graphics().camera().setPosition(Vector.zero());
+        engine.graphics().camera().setZoom(3.0);
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
         engine.window().setTitle("Platformer");
     }
@@ -70,10 +79,10 @@ public class GameScene implements Scene {
                 .enableLight()
                 .enableLogic()
                 .enableTweening()
+                .enableCamera()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
-                .addSystem(new CameraUpdateSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
@@ -131,7 +140,6 @@ public class GameScene implements Scene {
                 .when("slime").as(new Slime())
                 .when("platform").as(new Platfom())
                 .when("waypoint").as(new Waypoint())
-                .when("camera").as(new Camera())
                 .when("player").as(new Player())
                 .when("debo-d").as(new DeboD())
                 .when("debo-e").as(new DeboE())

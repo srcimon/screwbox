@@ -181,23 +181,6 @@
                  "y":195
                 }, 
                 {
-                 "id":2,
-                 "properties":[
-                        {
-                         "name":"trackedEntity",
-                         "type":"object",
-                         "value":1
-                        }, 
-                        {
-                         "name":"zoom",
-                         "type":"float",
-                         "value":3
-                        }],
-                 "template":"..\/templates\/specials\/camera.json",
-                 "x":176,
-                 "y":183
-                }, 
-                {
                  "height":80,
                  "id":3,
                  "properties":[
@@ -445,7 +428,7 @@
          "value":false
         }],
  "renderorder":"right-down",
- "tiledversion":"1.8.4",
+ "tiledversion":"1.10.1",
  "tileheight":16,
  "tilesets":[
         {
@@ -466,6 +449,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":"1.8",
+ "version":"1.10",
  "width":104
 }

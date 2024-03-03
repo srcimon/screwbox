@@ -301,6 +301,12 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment enableCamera() {
+        enableFeature(Feature.CAMERA);
+        return this;
+    }
+
     private void enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
             addOrReplaceSystem(system);

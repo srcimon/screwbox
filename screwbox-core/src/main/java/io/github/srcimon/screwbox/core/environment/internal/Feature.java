@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -47,6 +48,10 @@ public enum Feature {
     LIGHT(
             new LightRenderSystem(),
             new OptimizeLightPerformanceSystem()
+    ),
+
+    CAMERA(
+            new CameraSystem()
     );
 
     final List<EntitySystem> systems;

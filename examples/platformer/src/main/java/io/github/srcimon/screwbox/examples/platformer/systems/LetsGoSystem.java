@@ -6,7 +6,11 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
@@ -14,7 +18,9 @@ import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
@@ -28,6 +34,8 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
+            engine.graphics().camera().shake(lastingForDuration(ofSeconds(1)).strength(10).interval(ofMillis(100)));
+
             var playerCenter = engine.environment().fetchSingleton(PLAYER).get(TransformComponent.class).bounds
                     .position();
             engine.audio().playSound(LETS_GO_SOUND);

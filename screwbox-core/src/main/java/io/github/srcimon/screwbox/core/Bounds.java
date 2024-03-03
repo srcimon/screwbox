@@ -155,15 +155,15 @@ public final class Bounds implements Serializable {
      * with different {@link #size()}. Positive values increase the {@link #size()},
      * negative one decreases the {@link #size()}.
      */
-    public Bounds inflated(final double inflation) {
+    public Bounds expand(final double inflation) {
         return Bounds.atPosition(position, width() + inflation, height() + inflation);
     }
 
     /**
-     * Same as {@link #inflated(double)} but only inflates the top {@link Line}
+     * Same as {@link #expand(double)} but only inflates the top {@link Line}
      * of the {@link Bounds}.
      */
-    public Bounds inflatedTop(final int value) {
+    public Bounds expandTop(final int value) {
         return Bounds.atOrigin(origin.addY(-value), width(), height() + value);
     }
 
@@ -174,7 +174,7 @@ public final class Bounds implements Serializable {
      * @see #intersects(Bounds)
      */
     public boolean touches(final Bounds other) {
-        return inflated(0.001).intersects(other);
+        return expand(0.001).intersects(other);
     }
 
     /**

@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,10 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
@@ -42,14 +45,14 @@ class DefaultAudioTest {
     Clip clip;
 
     @Mock
-    Graphics graphics;
+    Camera camera;
 
     ExecutorService executor;
 
     @BeforeEach
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
-        audio = new DefaultAudio(executor, audioAdapter, graphics);
+        audio = new DefaultAudio(executor, audioAdapter, camera);
     }
 
     @Test
@@ -83,7 +86,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
-        when(graphics.cameraPosition()).thenReturn($(-129, 239));
+        when(camera.position()).thenReturn($(-129, 239));
 
         audio.playSound(sound, $(30, 10));
 
@@ -100,7 +103,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
-        when(graphics.cameraPosition()).thenReturn($(0, 0));
+        when(camera.position()).thenReturn($(0, 0));
 
         audio.playSound(sound, $(80, 10));
 
@@ -120,7 +123,7 @@ class DefaultAudioTest {
 
         audio.configuration().setSoundRange(1024);
 
-        when(graphics.cameraPosition()).thenReturn($(-129, 239));
+        when(camera.position()).thenReturn($(-129, 239));
 
         audio.playSound(sound, $(3000, 10));
 
