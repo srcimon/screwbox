@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Moved `CameraSystem` to `Environment.enableRendering()`
 
 ### 📦 Dependency updates
 

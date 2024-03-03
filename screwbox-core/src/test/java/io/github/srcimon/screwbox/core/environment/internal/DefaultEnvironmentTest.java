@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
-import io.github.srcimon.screwbox.core.environment.camera.CameraSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -311,21 +311,15 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(StateSystem.class));
     }
 
-    @Test
-    void enableCamera_addsCameraSystem() {
-        environment.enableCamera();
-
-        assertThat(environment.systems()).hasSize(1)
-                .anyMatch(system -> system.getClass().equals(CameraSystem.class));
-    }
 
     @Test
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(5)
+        assertThat(environment.systems()).hasSize(6)
                 .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
                 .anyMatch(system -> system.getClass().equals(RotateSpriteSystem.class))
+                .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
                 .anyMatch(system -> system.getClass().equals(ScreenTransitionSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderSystem.class));

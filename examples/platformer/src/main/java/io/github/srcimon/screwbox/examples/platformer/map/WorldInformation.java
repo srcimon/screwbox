@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.map;
 
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
-import io.github.srcimon.screwbox.core.environment.camera.CameraBoundsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.UseLightComponent;
 import io.github.srcimon.screwbox.tiled.Map;
 

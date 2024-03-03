@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.camera;
+package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
