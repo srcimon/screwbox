@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +14,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.infinite;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
@@ -110,6 +113,29 @@ class DefaultCameraTest {
         TestUtil.sleep(ofMillis(20));
 
         camera.update();
+
+        assertThat(camera.isShaking()).isFalse();
+    }
+
+    @Test
+    void setZoom_notPixelperfect_setsPixelperfectValueAndUpdatesWorld() {
+        var result = camera.setZoom(3.2);
+
+        verify(world).updateZoom(3.1875);
+        assertThat(camera.zoom()).isEqualTo(3.1875);
+        assertThat(result).isEqualTo(3.1875);
+    }
+
+    @Test
+    void stopShaking_notShaking_noException() {
+        assertThatNoException().isThrownBy(camera::stopShaking);
+    }
+
+    @Test
+    void stopShaking_isShaking_stopsShaking() {
+        camera.shake(CameraShakeOptions.infinite());
+
+        camera.stopShaking();
 
         assertThat(camera.isShaking()).isFalse();
     }
