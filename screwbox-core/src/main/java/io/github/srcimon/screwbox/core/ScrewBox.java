@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core;
 import io.github.srcimon.screwbox.core.window.Window;
 
 /**
- * Best game engine ever made (not). The entry point for starting a game.
+ * Best game engine ever made (not). The entry point for starting a game via {@link ScrewBox#createEngine()}.
  *
  * @see #createEngine()
  */
