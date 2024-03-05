@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DefaultLoop implements Loop {
 
-    private static final int CRITICAL_FPS_COUNT = 10;
+    private static final int CRITICAL_FPS_COUNT = 30;
     private final List<Updatable> updatables;
 
     private int fps = 0;
