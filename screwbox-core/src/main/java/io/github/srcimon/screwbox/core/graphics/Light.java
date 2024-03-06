@@ -24,7 +24,7 @@ public interface Light {
      * @param direction the direction of the light
      * @param cone      the cone size of the light
      * @param radius    the radius of the light
-     * @param color    the {@link Color} of the light
+     * @param color     the {@link Color} of the light
      */
     Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color);
 
@@ -40,9 +40,10 @@ public interface Light {
      * Adds a spotlight to the {@link World}. Spotlights don't cast any shadow.
      *
      * @param position position of the lightsource in the map
-     * @param options  {@link LightOptions} of the lightsource
+     * @param radius    the radius of the light
+     * @param color     the {@link Color} of the light
      */
-    Light addSpotLight(Vector position, LightOptions options);
+    Light addSpotLight(Vector position, double radius, Color color);
 
     /**
      * Adds object that cast shadows.

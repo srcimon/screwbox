@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
 import io.github.srcimon.screwbox.core.graphics.Light;
-import io.github.srcimon.screwbox.core.graphics.LightOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -77,25 +76,25 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options) {
+    public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
         double minRotation = direction.degrees() - cone.degrees() / 2.0;
         double maxRotation = direction.degrees() + cone.degrees() / 2.0;
-        addPointLight(position, options, minRotation, maxRotation);
+        addPointLight(position, radius, color, minRotation, maxRotation);
 
         return this;
     }
 
     @Override
-    public Light addPointLight(final Vector position, final LightOptions options) {
-        addPointLight(position, options, 0, 360);
+    public Light addPointLight(final Vector position, final double radius, final Color color) {
+        addPointLight(position, radius, color, 0, 360);
 
         return this;
     }
 
-    private void addPointLight(final Vector position, final LightOptions options, double minAngle, double maxAngle) {
+    private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
-                final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+                final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
                 if (isVisible(lightBox)) {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
@@ -103,8 +102,8 @@ public class DefaultLight implements Light {
                         area.add(world.toOffset(vector));
                     }
                     final Offset offset = world.toOffset(position);
-                    final int screenRadius = world.toDistance(options.radius());
-                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, options.color()));
+                    final int screenRadius = world.toDistance(radius);
+                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
                 }
             }
         });

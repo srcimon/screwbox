@@ -2,7 +2,14 @@ package io.github.srcimon.screwbox.core.graphics.light.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import org.junit.jupiter.api.AfterEach;
@@ -82,7 +89,7 @@ class DefaultLightTest {
     void render_pointLightAndShadowPresent_rendersImage() {
         when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
-        light.addPointLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
+        light.addPointLight($(40, 80), 140, Color.RED);
 
         light.render();
         var offset = ArgumentCaptor.forClass(Offset.class);
