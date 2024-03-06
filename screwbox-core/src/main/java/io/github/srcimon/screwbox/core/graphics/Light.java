@@ -32,16 +32,17 @@ public interface Light {
      * Adds a pointlight to the {@link World}. Pointlights cast shadows.
      *
      * @param position position of the lightsource in the map
-     * @param options  {@link LightOptions} of the lightsource
+     * @param radius   the radius of the light
+     * @param color    the {@link Color} of the light
      */
-    Light addPointLight(Vector position, LightOptions options);
+    Light addPointLight(Vector position, double radius, Color color);
 
     /**
      * Adds a spotlight to the {@link World}. Spotlights don't cast any shadow.
      *
      * @param position position of the lightsource in the map
-     * @param radius    the radius of the light
-     * @param color     the {@link Color} of the light
+     * @param radius   the radius of the light
+     * @param color    the {@link Color} of the light
      */
     Light addSpotLight(Vector position, double radius, Color color);
 

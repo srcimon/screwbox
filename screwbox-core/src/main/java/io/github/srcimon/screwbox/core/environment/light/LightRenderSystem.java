@@ -30,12 +30,12 @@ public class LightRenderSystem implements EntitySystem {
         for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {
             final var coneLight = coneLightEntity.get(ConeLightComponent.class);
             final Vector position = coneLightEntity.get(TransformComponent.class).bounds.position();
-            light.addConeLight(position, coneLight.direction, coneLight.cone, coneLight.options);
+            light.addConeLight(position, coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
         }
         for (final Entity pointLightEntity : engine.environment().fetchAll(POINTLIGHTS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);
             final Vector position = pointLightEntity.get(TransformComponent.class).bounds.position();
-            light.addPointLight(position, pointLight.options);
+            light.addPointLight(position, pointLight.radius, pointLight.color);
         }
 
         for (final Entity spotLightEntity : engine.environment().fetchAll(SPOTLIGHTS)) {

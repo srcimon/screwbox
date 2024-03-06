@@ -30,17 +30,17 @@ class LightRenderSystemTest {
         environment
                 .addEntity(new TransformComponent($$(0, 0, 32, 32)), new ConeLightComponent(degrees(20), degrees(45), 30))
                 .addEntity(new TransformComponent($$(100, 0, 32, 32)), new SpotLightComponent(45))
-                .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(LightOptions.noGlow(20)))
+                .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
                 .addEntity(new TransformComponent($$(50, 50, 32, 32)), new LightBlockingComponent())
                 .addSystem(new LightRenderSystem());
 
         environment.update();
 
-        verify(light).addConeLight($(16,16), degrees(20), degrees(45), 30, Color.BLACK);
-        verify(light).addSpotLight($(116,16), LightOptions.glowing(45));
-        verify(light).addGlow($(116,16), 20, Color.BLUE);
-        verify(light).addPointLight($(216,16), LightOptions.noGlow(20));
+        verify(light).addConeLight($(16, 16), degrees(20), degrees(45), 30, Color.BLACK);
+        verify(light).addSpotLight($(116, 16), LightOptions.glowing(45));
+        verify(light).addGlow($(116, 16), 20, Color.BLUE);
+        verify(light).addPointLight($(216, 16), 22, Color.BLUE);
         verify(light).addShadowCaster($$(50, 50, 32, 32));
         verify(light).render();
     }
