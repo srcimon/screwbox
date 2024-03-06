@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import static java.util.Objects.requireNonNull;
 
+@Deprecated
+//TODO remove from component
+//TODO maybe remove from Light
 public class LightOptions implements Serializable {
 
     private final double radius;
