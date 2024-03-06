@@ -23,9 +23,10 @@ public interface Light {
      * @param position  position of the lightsource in the map
      * @param direction the direction of the light
      * @param cone      the cone size of the light
-     * @param options   {@link LightOptions} of the lightsource
+     * @param radius    the radius of the light
+     * @param color    the {@link Color} of the light
      */
-    Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options);
+    Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color);
 
     /**
      * Adds a pointlight to the {@link World}. Pointlights cast shadows.
@@ -84,7 +85,8 @@ public interface Light {
      */
     Percent ambientLight();
 
-    Light addGlow(Vector position, LightOptions options);
+    //TODO javadoc
+    Light addGlow(Vector position, double radius, Color color);
 
     /**
      * Renders the lightmap to {@link Window}. Can be automated by using

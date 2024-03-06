@@ -5,7 +5,15 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
+import io.github.srcimon.screwbox.core.graphics.Light;
+import io.github.srcimon.screwbox.core.graphics.LightOptions;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -116,13 +124,12 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public  Light addGlow(final Vector position, final LightOptions options) {
-        final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-        if (options.radius() != 0 && isVisible(lightBox)) {
-            final Color color = options.color();
+    public Light addGlow(final Vector position, final double radius, final Color color) {
+        final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        if (radius != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(position, i * options.radius(), color);
+                    world.drawFadingCircle(position, i * radius, color);
                 }
             });
         }
