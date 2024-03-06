@@ -21,11 +21,34 @@ public class DefaultScreen implements Screen {
     private Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
+    private Graphics2D lastGraphics;
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
+    }
+
+    public void updateScreen(final boolean antialiased) {
+        final Supplier<Graphics2D> graphicsSupplier = () -> {
+            frame.getCanvas().getBufferStrategy().show();
+            if (nonNull(lastGraphics)) {
+                lastGraphics.dispose();
+            }
+            final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+
+            if (antialiased) {
+                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+            }
+            lastGraphics = graphics;
+            return graphics;
+        };
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+    }
+
+    public void setRenderer(final Renderer renderer) {
+        this.renderer = renderer;
     }
 
     @Override
@@ -160,28 +183,10 @@ public class DefaultScreen implements Screen {
         return this;
     }
 
-    private Graphics2D lastGraphics;
-
-    public void updateScreen(final boolean antialiased) {
-        final Supplier<Graphics2D> graphicsSupplier = () -> {
-            frame.getCanvas().getBufferStrategy().show();
-            if (nonNull(lastGraphics)) {
-                lastGraphics.dispose();
-            }
-            final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-
-            if (antialiased) {
-                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-            }
-            lastGraphics = graphics;
-            return graphics;
-        };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
-    }
-
-    public void setRenderer(final Renderer renderer) {
-        this.renderer = renderer;
+    @Override
+    public Offset position() {
+        final var bounds = frame.getBounds();
+        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
     private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
@@ -192,12 +197,6 @@ public class DefaultScreen implements Screen {
             drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
-    }
-
-    @Override
-    public Offset position() {
-        final var bounds = frame.getBounds();
-        return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
     private ScreenBounds screenBounds() {
