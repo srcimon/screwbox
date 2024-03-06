@@ -84,6 +84,8 @@ public interface Light {
      */
     Percent ambientLight();
 
+    Light addGlow(Vector position, LightOptions options);
+
     /**
      * Renders the lightmap to {@link Window}. Can be automated by using
      * {@link LightRenderSystem}.

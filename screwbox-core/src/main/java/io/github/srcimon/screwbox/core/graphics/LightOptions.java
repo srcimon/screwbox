@@ -2,29 +2,38 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import java.io.Serializable;
 
-public record LightOptions(double radius, Color color, double glow, Color glowColor) implements Serializable {
+import static java.util.Objects.requireNonNull;
 
-    public static LightOptions glowing(final double radius) {
-        return new LightOptions(radius, Color.BLACK, 1.0, Color.WHITE.opacity(0.2));
+public class LightOptions implements Serializable {
+
+    private final double radius;
+    private Color color = Color.BLACK;
+
+    public static LightOptions radius(final double radius) {
+        return new LightOptions(radius);
     }
 
-    public static LightOptions noGlow(final double radius) {
-        return new LightOptions(radius, Color.BLACK, 0, Color.WHITE);
-    }
-
-    public LightOptions radius(final double radius) {
-        return new LightOptions(radius, color, glow, glowColor);
-    }
-
-    public LightOptions glow(final double glow) {
-        return new LightOptions(radius, color, glow, glowColor);
+    private LightOptions(final double radius) {
+        //TODO: VALIDATE NO < 0
+        this.radius = radius;
     }
 
     public LightOptions color(final Color color) {
-        return new LightOptions(radius, color, glow, glowColor);
+        this.color = requireNonNull(color, "color must not be NULL");
+        return this;
     }
 
-    public LightOptions glowColor(final Color glowColor) {
-        return new LightOptions(radius, color, glow, glowColor);
+    public LightOptions opacity(final double opacity) {
+        //TODO validate
+        color = color.opacity(opacity);
+        return this;
+    }
+
+    public double radius() {
+        return radius;
+    }
+
+    public Color color() {
+        return color;
     }
 }

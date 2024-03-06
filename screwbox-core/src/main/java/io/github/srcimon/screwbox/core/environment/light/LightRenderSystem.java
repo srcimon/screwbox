@@ -2,9 +2,13 @@ package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Light;
-import io.github.srcimon.screwbox.core.environment.*;
 
 @Order(SystemOrder.PRESENTATION_LIGHT)
 public class LightRenderSystem implements EntitySystem {
@@ -17,6 +21,9 @@ public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype SPOTLIGHT_EMITTERS = Archetype.of(
             SpotLightComponent.class, TransformComponent.class);
+
+    private static final Archetype GLOW_EMITTERS = Archetype.of(
+            GlowComponent.class, TransformComponent.class);
 
     private static final Archetype SHADOW_CASTERS = Archetype.of(
             LightBlockingComponent.class, TransformComponent.class);
@@ -44,6 +51,12 @@ public class LightRenderSystem implements EntitySystem {
             final var spotLight = spotLightEntity.get(SpotLightComponent.class);
             final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
             light.addSpotLight(position, spotLight.options);
+        }
+
+        for (final Entity glowEmitter : engine.environment().fetchAll(GLOW_EMITTERS)) {
+            final var glow = glowEmitter.get(GlowComponent.class);
+            final Vector position = glowEmitter.get(TransformComponent.class).bounds.position();
+            light.addGlow(position, glow.options);
         }
         light.render();
     }

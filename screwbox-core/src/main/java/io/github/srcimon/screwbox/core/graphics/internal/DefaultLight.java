@@ -88,7 +88,6 @@ public class DefaultLight implements Light {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
                 final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-                addPotentialGlow(position, options);
                 if (isVisible(lightBox)) {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
@@ -106,7 +105,6 @@ public class DefaultLight implements Light {
     @Override
     public Light addSpotLight(final Vector position, final LightOptions options) {
         tasks.add(() -> {
-            addPotentialGlow(position, options);
             final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
             if (isVisible(lightBox)) {
                 final Offset offset = world.toOffset(position);
@@ -117,17 +115,18 @@ public class DefaultLight implements Light {
         return this;
     }
 
-    private void addPotentialGlow(final Vector position, final LightOptions options) {
-        final double sideLength = options.radius() * 3 * options.glow();
-        final Bounds lightBox = Bounds.atPosition(position, sideLength, sideLength);
-        if (options.glow() != 0 && isVisible(lightBox)) {
-            final Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
+    @Override
+    public  Light addGlow(final Vector position, final LightOptions options) {
+        final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+        if (options.radius() != 0 && isVisible(lightBox)) {
+            final Color color = options.color();
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(position, i * options.radius() * options.glow(), color);
+                    world.drawFadingCircle(position, i * options.radius(), color);
                 }
             });
         }
+        return this;
     }
 
     @Override
