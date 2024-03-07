@@ -25,15 +25,13 @@ import io.github.srcimon.screwbox.examples.platformer.components.PatrollingMovem
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
 
-import static io.github.srcimon.screwbox.core.graphics.LightOptions.radius;
-
 public class Slime implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id(), "Slime").add(
-                new PointLightComponent(radius(15).opacity(0.6)),
-                new GlowComponent(radius(30).color(Color.YELLOW.opacity(0.2))),
+                new PointLightComponent(15, Color.BLACK.opacity(0.6)),
+                new GlowComponent(30, Color.YELLOW.opacity(0.2)),
                 new StateComponent(new SlimeAliveState()),
                 new TransformComponent(Bounds.atPosition(object.position(), 12, 10)),
                 new KillZoneComponent(DeathEventComponent.DeathType.ENEMY_TOUCHED),

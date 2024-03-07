@@ -17,7 +17,6 @@ import io.github.srcimon.screwbox.examples.platformer.components.CollectableComp
 import io.github.srcimon.screwbox.tiled.GameObject;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
-import static io.github.srcimon.screwbox.core.graphics.LightOptions.radius;
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class Cherries implements Converter<GameObject> {
@@ -29,8 +28,8 @@ public class Cherries implements Converter<GameObject> {
         return new Entity().add(
                 new TweenOrbitPositionComponent(object.position(), 2),
                 new TweenComponent(ofSeconds(2), TweenMode.LINEAR_IN, true, false),
-                new PointLightComponent(radius(20).color(Color.RED)),
-                new GlowComponent(radius(36).color(Color.RED.opacity(0.2))),
+                new PointLightComponent(20, Color.RED),
+                new GlowComponent(36, Color.RED.opacity(0.2)),
                 new TransformComponent(object.bounds()),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new CollisionDetectionComponent(),

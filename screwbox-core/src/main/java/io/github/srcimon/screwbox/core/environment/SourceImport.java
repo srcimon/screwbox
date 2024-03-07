@@ -8,6 +8,7 @@ import static java.util.Objects.requireNonNull;
 
 public final class SourceImport<T> {
 
+    @FunctionalInterface
     public interface Converter<T> {
         Entity convert(final T object);
     }

@@ -22,17 +22,15 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlCo
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
 
-import static io.github.srcimon.screwbox.core.graphics.LightOptions.radius;
-
 public class Player implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
         return new Entity(object.id(), "Player").add(
                 new CameraTargetComponent(),
-                new GlowComponent(radius(32).color(Color.WHITE.opacity(0.1))),
-                new PointLightComponent(radius(64).color(Color.BLACK)),
-                new SpotLightComponent(radius(64).color(Color.BLACK.opacity(0.4))),
+                new GlowComponent(32, Color.WHITE.opacity(0.1)),
+                new PointLightComponent(64, Color.BLACK),
+                new SpotLightComponent(64, Color.BLACK.opacity(0.4)),
                 new StateComponent(new PlayerStandingState()),
                 new PhysicsComponent(),
                 new GroundDetectorComponent(),

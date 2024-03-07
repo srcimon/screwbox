@@ -50,7 +50,7 @@ public interface Light {
      * Adds object that cast shadows.
      *
      * @param shadowCaster the {@link Bounds} of the shadow caster
-     * @see #addPointLight(Vector, LightOptions)
+     * @see #addPointLight(Vector, double, Color) )
      * @see #addShadowCasters(List)
      */
     Light addShadowCaster(Bounds shadowCaster);
@@ -59,7 +59,7 @@ public interface Light {
      * Adds objects that cast shadows.
      *
      * @param shadowCasters the {@link Bounds} of the shadow casters
-     * @see #addPointLight(Vector, LightOptions)
+     * @see #addPointLight(Vector, double, Color)
      * @see #addShadowCaster(Bounds)
      */
     Light addShadowCasters(List<Bounds> shadowCasters);
@@ -80,14 +80,19 @@ public interface Light {
     Light setAmbientLight(Percent ambientLight);
 
     /**
-     * Returns the brightness that illuminates the {@link World} even without a
-     * lightsource.
+     * Returns the current ambient light brightness.
      *
      * @return brightness
      */
     Percent ambientLight();
 
-    //TODO javadoc
+    /**
+     * Adds a glow effect to the given position. Can be combined with other light sources.
+     *
+     * @param position position of the glow effect
+     * @param radius   radius of the glow effect
+     * @param color    color of the glow effect
+     */
     Light addGlow(Vector position, double radius, Color color);
 
     /**
