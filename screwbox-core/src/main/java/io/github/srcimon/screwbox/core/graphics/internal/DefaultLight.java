@@ -169,7 +169,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light setAmbientLight(final Percent ambientLight) {
-        requireNonNull(ambientLight, "ambientLight must not be null");
+        requireNonNull(ambientLight, "ambient light must not be null");
         this.ambientLight = ambientLight;
         return this;
     }

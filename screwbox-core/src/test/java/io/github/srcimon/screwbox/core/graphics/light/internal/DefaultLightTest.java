@@ -152,6 +152,20 @@ class DefaultLightTest {
                 .hasMessage("rendering lights is already in progress");
     }
 
+    @Test
+    void setAmbientLight_validInput_setsAmbientLight() {
+        light.setAmbientLight(Percent.of(0.4));
+
+        assertThat(light.ambientLight()).isEqualTo(Percent.of(0.4));
+    }
+
+    @Test
+    void setAmbientLight_ambientLightNull_throwsException() {
+        assertThatThrownBy(() -> light.setAmbientLight(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("ambient light must not be null");
+    }
+
     @AfterEach
     void afterEach() {
         shutdown(executor);
