@@ -110,13 +110,13 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addSpotLight(final Vector position, final LightOptions options) {
+    public Light addSpotLight(final Vector position, final double radius, final Color color) {
         tasks.add(() -> {
-            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
                 final Offset offset = world.toOffset(position);
-                final int distance = world.toDistance(options.radius());
-                lightmap.add(new Lightmap.SpotLight(offset, distance, options.color()));
+                final int distance = world.toDistance(radius);
+                lightmap.add(new Lightmap.SpotLight(offset, distance, color));
             }
         });
         return this;

@@ -118,7 +118,7 @@ class DefaultLightTest {
     void render_spotlightAndShadowCaster_rendersImage() {
         when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
-        light.addSpotLight($(40, 80), LightOptions.glowing(140).color(Color.RED));
+        light.addSpotLight($(40, 80), 140, Color.RED);
 
         light.render();
         var offset = ArgumentCaptor.forClass(Offset.class);

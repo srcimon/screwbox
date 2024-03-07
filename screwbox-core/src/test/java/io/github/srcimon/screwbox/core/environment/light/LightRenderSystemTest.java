@@ -38,8 +38,8 @@ class LightRenderSystemTest {
         environment.update();
 
         verify(light).addConeLight($(16, 16), degrees(20), degrees(45), 30, Color.BLACK);
-        verify(light).addSpotLight($(116, 16), LightOptions.glowing(45));
-        verify(light).addGlow($(116, 16), 20, Color.BLUE);
+        verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
+        verify(light).addGlow($(216, 16), 20, Color.BLUE);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
         verify(light).addShadowCaster($$(50, 50, 32, 32));
         verify(light).render();
