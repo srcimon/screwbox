@@ -5,7 +5,14 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
+import io.github.srcimon.screwbox.core.graphics.Light;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -69,26 +76,25 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addConeLight(Vector position, Rotation direction, Rotation cone, LightOptions options) {
+    public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
         double minRotation = direction.degrees() - cone.degrees() / 2.0;
         double maxRotation = direction.degrees() + cone.degrees() / 2.0;
-        addPointLight(position, options, minRotation, maxRotation);
+        addPointLight(position, radius, color, minRotation, maxRotation);
 
         return this;
     }
 
     @Override
-    public Light addPointLight(final Vector position, final LightOptions options) {
-        addPointLight(position, options, 0, 360);
+    public Light addPointLight(final Vector position, final double radius, final Color color) {
+        addPointLight(position, radius, color, 0, 360);
 
         return this;
     }
 
-    private void addPointLight(final Vector position, final LightOptions options, double minAngle, double maxAngle) {
+    private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
-                final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
-                addPotentialGlow(position, options);
+                final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
                 if (isVisible(lightBox)) {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
@@ -96,38 +102,37 @@ public class DefaultLight implements Light {
                         area.add(world.toOffset(vector));
                     }
                     final Offset offset = world.toOffset(position);
-                    final int screenRadius = world.toDistance(options.radius());
-                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, options.color()));
+                    final int screenRadius = world.toDistance(radius);
+                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
                 }
             }
         });
     }
 
     @Override
-    public Light addSpotLight(final Vector position, final LightOptions options) {
+    public Light addSpotLight(final Vector position, final double radius, final Color color) {
         tasks.add(() -> {
-            addPotentialGlow(position, options);
-            final Bounds lightBox = Bounds.atPosition(position, options.radius() * 2, options.radius() * 2);
+            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
                 final Offset offset = world.toOffset(position);
-                final int distance = world.toDistance(options.radius());
-                lightmap.add(new Lightmap.SpotLight(offset, distance, options.color()));
+                final int distance = world.toDistance(radius);
+                lightmap.add(new Lightmap.SpotLight(offset, distance, color));
             }
         });
         return this;
     }
 
-    private void addPotentialGlow(final Vector position, final LightOptions options) {
-        final double sideLength = options.radius() * 3 * options.glow();
-        final Bounds lightBox = Bounds.atPosition(position, sideLength, sideLength);
-        if (options.glow() != 0 && isVisible(lightBox)) {
-            final Color color = options.glowColor().opacity(options.glowColor().opacity().value() / 3);
+    @Override
+    public Light addGlow(final Vector position, final double radius, final Color color) {
+        final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        if (radius != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(position, i * options.radius() * options.glow(), color);
+                    world.drawFadingCircle(position, i * radius, color);
                 }
             });
         }
+        return this;
     }
 
     @Override
@@ -164,7 +169,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light setAmbientLight(final Percent ambientLight) {
-        requireNonNull(ambientLight, "ambientLight must not be null");
+        requireNonNull(ambientLight, "ambient light must not be null");
         this.ambientLight = ambientLight;
         return this;
     }
