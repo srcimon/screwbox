@@ -104,14 +104,6 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    @Override
-    public void fillCircle(final Offset offset, final int diameter, final Color color) {
-        applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        graphics.fillOval(x, y, diameter, diameter);
-    }
-
     private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;
@@ -123,21 +115,6 @@ public class DefaultRenderer implements Renderer {
     public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                            Flip flip, ScreenBounds clip) {
         drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clip);
-    }
-
-    @Override
-    public void drawCircle(Offset offset, int diameter, Color color, int strokeWidth) {
-        applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        if (strokeWidth == 1) {
-            graphics.drawOval(x, y, diameter, diameter);
-        } else {
-            var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(strokeWidth));
-            graphics.drawOval(x, y, diameter, diameter);
-            graphics.setStroke(oldStroke);
-        }
     }
 
     @Override

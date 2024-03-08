@@ -102,20 +102,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World fillCircle(final Vector position, final double diameter, final Color color) {
-        final Offset offset = toOffset(position);
-        screen.fillCircle(offset, (int) (diameter * zoom), color);
-        return this;
-    }
-
-    @Override
-    public World drawCircle(Vector position, double diameter, Color color, final int strokeWidth) {
-        final Offset offset = toOffset(position);
-        screen.drawCircle(offset, (int) (diameter * zoom), color, strokeWidth);
-        return this;
-    }
-
-    @Override
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
                                   final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);

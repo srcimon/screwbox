@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -44,12 +45,12 @@ class AsyncRendererTest {
     @Test
     void applyDrawActions_update_nextRendererInvoked() {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
-        asyncRenderer.fillCircle(Offset.origin(), 25, Color.BLUE);
+        asyncRenderer.drawCircle(Offset.origin(), 25, CircleDrawOptions.filled(Color.BLUE));
 
         asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
-        verify(renderer, timeout(1000)).fillCircle(Offset.origin(), 25, Color.BLUE);
+        verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, CircleDrawOptions.filled(Color.BLUE));
         verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10));
     }
 

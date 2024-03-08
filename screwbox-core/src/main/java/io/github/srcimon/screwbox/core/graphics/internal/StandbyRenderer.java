@@ -22,11 +22,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void fillCircle(final Offset offset, final int diameter, final Color color) {
-        // does nothing
-    }
-
-    @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
                            final Rotation rotation, final Flip flip, final ScreenBounds clip) {
         // does nothing
@@ -46,11 +41,6 @@ public class StandbyRenderer implements Renderer {
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
                            final Rotation rotation,
                            final Flip flip, final ScreenBounds clip) {
-        // does nothing
-    }
-
-    @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color, int strokeWidth) {
         // does nothing
     }
 

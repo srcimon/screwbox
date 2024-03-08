@@ -64,14 +64,6 @@ public interface Screen {
      */
     Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
-    Screen drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
-
-    default Screen drawCircle(Offset offset, int diameter, Color color) {
-        return drawCircle(offset, diameter, color, 1);
-    }
-
-    Screen fillCircle(Offset offset, int diameter, Color color);
-
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
 

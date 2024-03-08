@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.World;
 
@@ -41,7 +42,7 @@ public class AutomovementDebugSystem implements EntitySystem {
                 int nr = 0;
                 for (var node : path.nodes()) {
                     nr++;
-                    world.drawTextCentered(node.addY(-5), "#" + nr, FONT, WHITE).fillCircle(node, 3, YELLOW);
+                    world.drawTextCentered(node.addY(-5), "#" + nr, FONT, WHITE).drawCircle(node, 1.5, CircleDrawOptions.filled(YELLOW));
                 }
             }
         }

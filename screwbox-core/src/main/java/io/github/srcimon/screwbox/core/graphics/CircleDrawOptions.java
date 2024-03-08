@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import java.util.Objects;
+
 //TODO Javadoc and test
 public class CircleDrawOptions {
 
@@ -63,5 +65,34 @@ public class CircleDrawOptions {
 
     public int strokeWidth() {
         return strokeWidth;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CircleDrawOptions that = (CircleDrawOptions) o;
+
+        if (strokeWidth != that.strokeWidth) return false;
+        if (style != that.style) return false;
+        return Objects.equals(color, that.color);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = style != null ? style.hashCode() : 0;
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + strokeWidth;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CircleDrawOptions{" +
+                "style=" + style +
+                ", color=" + color +
+                ", strokeWidth=" + strokeWidth +
+                '}';
     }
 }

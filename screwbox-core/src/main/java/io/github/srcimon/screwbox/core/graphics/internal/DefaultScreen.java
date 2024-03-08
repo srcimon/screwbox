@@ -79,12 +79,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.fillCircle(offset, diameter, color);
-        return this;
-    }
-
-    @Override
     public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
@@ -177,14 +171,6 @@ public class DefaultScreen implements Screen {
                              final Percent opacity, final Rotation rotation,
                              final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
-        return this;
-    }
-
-    @Override
-    public Screen drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
-        if (diameter > 0) {
-            renderer.drawCircle(offset, diameter, color, strokeWidth);
-        }
         return this;
     }
 
