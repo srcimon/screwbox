@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Optimized drawing of circles using `CircleDrawOptions` (#208)
 - Seperate `GlowComponent` and method `Light.addGlow()` for adding light glow
 
 ### 🪛 Bug Fixes
