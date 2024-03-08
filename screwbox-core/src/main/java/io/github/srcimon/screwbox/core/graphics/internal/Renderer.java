@@ -27,8 +27,6 @@ public interface Renderer {
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
-    void drawFadingCircle(Offset offset, int diameter, Color color);
-
     void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);

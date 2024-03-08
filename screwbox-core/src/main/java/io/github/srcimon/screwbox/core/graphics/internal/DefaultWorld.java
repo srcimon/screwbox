@@ -68,6 +68,12 @@ public class DefaultWorld implements World {
         return this;
     }
 
+    @Override
+    public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
+        screen.drawCircle(toOffset(position), toDistance(radius), options);
+        return this;
+    }
+
     public Offset toOffset(final Vector position) {
         final double x = (position.x() - cameraPosition.x()) * zoom + (screen.size().width() / 2.0);
         final double y = (position.y() - cameraPosition.y()) * zoom + (screen.size().height() / 2.0);
@@ -145,14 +151,6 @@ public class DefaultWorld implements World {
 
     public int toDistance(double distance) {
         return (int) Math.round(distance * zoom);
-    }
-
-    @Override
-    public World drawFadingCircle(final Vector position, double diameter, final Color color) {
-        if (diameter > 0) {
-            screen.drawFadingCircle(toOffset(position), toDistance(diameter), color);
-        }
-        return this;
     }
 
 }

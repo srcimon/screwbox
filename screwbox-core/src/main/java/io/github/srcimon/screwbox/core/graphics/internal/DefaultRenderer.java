@@ -120,22 +120,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(Offset offset, int diameter, Color color) {
-        var oldPaint = graphics.getPaint();
-        var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
-        graphics.setPaint(new RadialGradientPaint(
-                offset.x(),
-                offset.y(),
-                diameter / 2f,
-                FADEOUT_FRACTIONS, colors));
-
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        graphics.fillOval(x, y, diameter, diameter);
-        graphics.setPaint(oldPaint);
-    }
-
-    @Override
     public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                            Flip flip, ScreenBounds clip) {
         drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clip);
@@ -206,32 +190,32 @@ public class DefaultRenderer implements Renderer {
         final int y = offset.y() - radius;
         final int diameter = radius * 2;
 
-        // FILL
         if (options.style() == CircleDrawOptions.Style.FILLED) {
             applyNewColor(options.color());
             graphics.fillOval(x, y, diameter, diameter);
-        }
-        // FADING
-        var oldPaint = graphics.getPaint();
-        var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
-        graphics.setPaint(new RadialGradientPaint(
-                offset.x(),
-                offset.y(),
-                diameter / 2f,
-                FADEOUT_FRACTIONS, colors));
+        } else if (options.style() == CircleDrawOptions.Style.FADING) {
+            final var oldPaint = graphics.getPaint();
+            final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(options.color()), FADEOUT_COLOR};
+            graphics.setPaint(new RadialGradientPaint(
+                    offset.x(),
+                    offset.y(),
+                    radius,
+                    FADEOUT_FRACTIONS, colors));
 
-        graphics.fillOval(x, y, diameter, diameter);
-        graphics.setPaint(oldPaint);
+            graphics.fillOval(x, y, diameter, diameter);
+            graphics.setPaint(oldPaint);
 
-        //OUTLINE
-        applyNewColor(color);
-        if (strokeWidth == 1) {
-            graphics.drawOval(x, y, diameter, diameter);
         } else {
-            var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(strokeWidth));
-            graphics.drawOval(x, y, diameter, diameter);
-            graphics.setStroke(oldStroke);
+            //OUTLINE
+            applyNewColor(options.color());
+            if (options.strokeWidth() == 1) {
+                graphics.drawOval(x, y, diameter, diameter);
+            } else {
+                var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.drawOval(x, y, diameter, diameter);
+                graphics.setStroke(oldStroke);
+            }
         }
     }
 

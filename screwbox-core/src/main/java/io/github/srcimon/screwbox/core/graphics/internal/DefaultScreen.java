@@ -173,12 +173,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawFadingCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.drawFadingCircle(offset, diameter, color);
-        return this;
-    }
-
-    @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
                              final Percent opacity, final Rotation rotation,
                              final Flip flip, final ScreenBounds clipArea) {
@@ -188,7 +182,9 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
-        renderer.drawCircle(offset, diameter, color, strokeWidth);
+        if (diameter > 0) {
+            renderer.drawCircle(offset, diameter, color, strokeWidth);
+        }
         return this;
     }
 

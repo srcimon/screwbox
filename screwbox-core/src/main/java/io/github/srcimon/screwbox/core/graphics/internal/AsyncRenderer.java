@@ -51,12 +51,6 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.active().add(() -> next.drawFadingCircle(offset, diameter, color));
-
-    }
-
-    @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         renderTasks.active().add(() -> next.drawRectangle(offset, size, options));
     }

@@ -64,8 +64,6 @@ public interface Screen {
      */
     Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
-    Screen drawFadingCircle(Offset offset, int diameter, Color color);
-
     Screen drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
 
     default Screen drawCircle(Offset offset, int diameter, Color color) {

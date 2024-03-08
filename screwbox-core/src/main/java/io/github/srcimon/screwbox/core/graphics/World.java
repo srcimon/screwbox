@@ -4,8 +4,6 @@ import io.github.srcimon.screwbox.core.*;
 
 public interface World {
 
-    World drawFadingCircle(Vector position, double diameter, Color color);
-
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
     default World drawSpriteBatch(final SpriteBatch spriteBatch) {
@@ -65,4 +63,7 @@ public interface World {
     default World drawLine(final Line line, final LineDrawOptions options) {
         return drawLine(line.from(), line.to(), options);
     }
+
+//TODO Javadoc
+    World drawCircle(Vector position, double radius, CircleDrawOptions options);
 }

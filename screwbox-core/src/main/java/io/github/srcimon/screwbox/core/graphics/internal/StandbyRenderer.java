@@ -43,11 +43,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(final Offset offset, final int diameter, final Color color) {
-        // does nothing
-    }
-
-    @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
                            final Rotation rotation,
                            final Flip flip, final ScreenBounds clip) {
