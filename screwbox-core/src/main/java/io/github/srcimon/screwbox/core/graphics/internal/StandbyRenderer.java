@@ -69,4 +69,9 @@ public class StandbyRenderer implements Renderer {
         // does nothing
     }
 
+    @Override
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        // does nothing
+    }
+
 }

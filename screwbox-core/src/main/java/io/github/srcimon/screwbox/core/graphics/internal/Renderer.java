@@ -34,4 +34,6 @@ public interface Renderer {
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
 
     void drawLine(Offset from, Offset to, LineDrawOptions options);
+
+    void drawCircle(Offset offset, int radius, CircleDrawOptions options);
 }

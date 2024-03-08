@@ -18,7 +18,7 @@ public class RectangleDrawOptions {
     private final Color color;
     private int strokeWidth = 1;
     private Rotation rotation = Rotation.none();
-
+//TODO Also use style
     private RectangleDrawOptions(final boolean isFilled, final Color color) {
         this.isFilled = isFilled;
         this.color = color;

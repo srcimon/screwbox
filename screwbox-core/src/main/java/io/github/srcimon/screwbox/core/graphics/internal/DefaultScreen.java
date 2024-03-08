@@ -12,7 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
@@ -66,6 +69,12 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
         renderer.drawLine(from, to, options);
+        return this;
+    }
+
+    @Override
+    public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        renderer.drawCircle(offset, radius, options);
         return this;
     }
 
