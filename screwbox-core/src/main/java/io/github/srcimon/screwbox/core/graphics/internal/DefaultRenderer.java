@@ -202,12 +202,15 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        // FILL
-        applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        graphics.fillOval(x, y, diameter, diameter);
+        final int x = offset.x() - radius;
+        final int y = offset.y() - radius;
+        final int diameter = radius * 2;
 
+        // FILL
+        if (options.style() == CircleDrawOptions.Style.FILLED) {
+            applyNewColor(options.color());
+            graphics.fillOval(x, y, diameter, diameter);
+        }
         // FADING
         var oldPaint = graphics.getPaint();
         var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
@@ -217,15 +220,11 @@ public class DefaultRenderer implements Renderer {
                 diameter / 2f,
                 FADEOUT_FRACTIONS, colors));
 
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
         graphics.fillOval(x, y, diameter, diameter);
         graphics.setPaint(oldPaint);
 
         //OUTLINE
         applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
         if (strokeWidth == 1) {
             graphics.drawOval(x, y, diameter, diameter);
         } else {

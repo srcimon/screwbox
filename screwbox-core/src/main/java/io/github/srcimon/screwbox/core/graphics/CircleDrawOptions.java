@@ -7,7 +7,7 @@ public class CircleDrawOptions {
     private final Color color;
     private int strokeWidth;
 
-    enum Style {
+    public enum Style {
         OUTLINE,
         FILLED,
         FADING
