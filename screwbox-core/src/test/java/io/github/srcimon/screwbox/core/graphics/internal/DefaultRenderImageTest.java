@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +16,10 @@ import java.awt.image.BufferedImage;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
-import static io.github.srcimon.screwbox.core.graphics.Color.*;
+import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
+import static io.github.srcimon.screwbox.core.graphics.Color.ORANGE;
+import static io.github.srcimon.screwbox.core.graphics.Color.RED;
+import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
@@ -90,6 +95,13 @@ class DefaultRenderImageTest {
         renderer.drawLine(Offset.at(8, 1), Offset.at(40, 30), color(ORANGE));
 
         verifyIsIdenticalWithReferenceImage("drawLine_noStrokeSet_paintsUsingThinStroke.png");
+    }
+
+    @Test
+    void drawCircle_noStrokeSet_paintsUsingThinStroke() {
+        renderer.drawCircle(Offset.at(10, 10), 4, CircleDrawOptions.outline(WHITE));
+
+        verifyIsIdenticalWithReferenceImage("drawCircle_noStrokeSet_paintsUsingThinStroke.png");
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {
