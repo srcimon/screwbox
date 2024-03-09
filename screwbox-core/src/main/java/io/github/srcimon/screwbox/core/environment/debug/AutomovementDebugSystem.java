@@ -29,19 +29,16 @@ public class AutomovementDebugSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        World world = engine.graphics().world();
-
         for (Entity entity : engine.environment().fetchAll(PATH_CONTAINING)) {
             Path path = entity.get(AutomovementComponent.class).path;
-
             if (nonNull(path)) {
                 renderNearbyGridNodes(engine, path);
-                renderPath(path, world);
+                renderPath(engine, path);
             }
         }
     }
 
-    private void renderNearbyGridNodes(Engine engine, Path path) {
+    private void renderNearbyGridNodes(final Engine engine, final Path path) {
         final var world = engine.graphics().world();
         engine.physics().grid().ifPresent(grid -> {
             for (var node : grid.nodes()) {
@@ -53,7 +50,8 @@ public class AutomovementDebugSystem implements EntitySystem {
         });
     }
 
-    private void renderPath(Path path, World world) {
+    private void renderPath(final Engine engine, final Path path) {
+        final var world = engine.graphics().world();
         for (var segment : path.segments()) {
             world.drawLine(segment, color(YELLOW).strokeWidth(2));
         }
