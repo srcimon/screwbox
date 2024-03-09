@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.*;
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
-
-    World drawFadingCircle(Vector position, double diameter, Color color);
 
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
@@ -32,10 +34,6 @@ public interface World {
 
     World drawTextCentered(Vector position, String text, Font font, Color color);
 
-    World fillCircle(Vector position, double diameter, Color color);
-
-    World drawCircle(Vector position, double diameter, Color color, int strokeWidth);
-
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
     default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
@@ -43,6 +41,9 @@ public interface World {
         return drawTextCentered(position, text, font, opacity, 1);
     }
 
+    /**
+     * Returns the area currently visible on the {@link Screen}.
+     */
     Bounds visibleArea();
 
     /**
@@ -65,4 +66,9 @@ public interface World {
     default World drawLine(final Line line, final LineDrawOptions options) {
         return drawLine(line.from(), line.to(), options);
     }
+
+    /**
+     * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
+     */
+    World drawCircle(Vector position, double radius, CircleDrawOptions options);
 }

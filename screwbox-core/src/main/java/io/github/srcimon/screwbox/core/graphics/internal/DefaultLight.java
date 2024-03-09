@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
@@ -124,11 +125,12 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
+        final CircleDrawOptions options = CircleDrawOptions.fading(color);
         final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
         if (radius != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawFadingCircle(position, i * radius, color);
+                    world.drawCircle(position, i * radius / 2, options);
                 }
             });
         }

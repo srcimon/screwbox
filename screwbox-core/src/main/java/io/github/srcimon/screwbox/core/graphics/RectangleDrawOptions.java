@@ -14,13 +14,29 @@ import java.util.Objects;
  */
 public class RectangleDrawOptions {
 
-    private final boolean isFilled;
+    /**
+     * The style used to draw.
+     */
+    public enum Style {
+
+        /**
+         * Draws a filled form.
+         */
+        FILLED,
+
+        /**
+         * Draws only the outline using {@link RectangleDrawOptions#strokeWidth()}.
+         */
+        OUTLINE
+    }
+
+    private final Style style;
     private final Color color;
     private int strokeWidth = 1;
     private Rotation rotation = Rotation.none();
 
-    private RectangleDrawOptions(final boolean isFilled, final Color color) {
-        this.isFilled = isFilled;
+    private RectangleDrawOptions(final Style style, final Color color) {
+        this.style = style;
         this.color = color;
     }
 
@@ -28,22 +44,22 @@ public class RectangleDrawOptions {
      * Draw a filled rectangle with the given {@link Color}.
      */
     public static RectangleDrawOptions filled(final Color color) {
-        return new RectangleDrawOptions(true, color);
+        return new RectangleDrawOptions(Style.FILLED, color);
     }
 
     /**
      * Draw only the outline with the given {@link Color}.
      */
     public static RectangleDrawOptions outline(final Color color) {
-        return new RectangleDrawOptions(false, color);
+        return new RectangleDrawOptions(Style.OUTLINE, color);
     }
 
     /**
      * Sets the {@link #strokeWidth()} when drawing {@link #outline(Color)}. Not used when using {@link #filled(Color)}.
      */
     public RectangleDrawOptions strokeWidth(final int strokeWidth) {
-        if (isFilled) {
-            throw new IllegalArgumentException("stroke width is not used when drawing filled rectangles");
+        if (Style.OUTLINE != style) {
+            throw new IllegalArgumentException("stroke width is only used when drawing outline of rectangles");
         }
         if (strokeWidth < 1) {
             throw new IllegalArgumentException("stroke width must be positive");
@@ -61,10 +77,10 @@ public class RectangleDrawOptions {
     }
 
     /**
-     * Returns {@code true} if the rectangle is filled.
+     * Returns the {@link Style} used when drawing the rectangle.
      */
-    public boolean isFilled() {
-        return isFilled;
+    public Style style() {
+        return style;
     }
 
     /**
@@ -75,7 +91,7 @@ public class RectangleDrawOptions {
     }
 
     /**
-     * Returns the stroke width used when drawing the rectangle.
+     * Returns the stroke width used when drawing the outline of a rectangle.
      */
     public int strokeWidth() {
         return strokeWidth;
@@ -95,15 +111,15 @@ public class RectangleDrawOptions {
 
         RectangleDrawOptions that = (RectangleDrawOptions) o;
 
-        if (isFilled != that.isFilled) return false;
         if (strokeWidth != that.strokeWidth) return false;
+        if (style != that.style) return false;
         if (!Objects.equals(color, that.color)) return false;
         return Objects.equals(rotation, that.rotation);
     }
 
     @Override
     public int hashCode() {
-        int result = (isFilled ? 1 : 0);
+        int result = style != null ? style.hashCode() : 0;
         result = 31 * result + (color != null ? color.hashCode() : 0);
         result = 31 * result + strokeWidth;
         result = 31 * result + (rotation != null ? rotation.hashCode() : 0);
@@ -112,8 +128,8 @@ public class RectangleDrawOptions {
 
     @Override
     public String toString() {
-        return "RectangleOptions{" +
-                "isFilled=" + isFilled +
+        return "RectangleDrawOptions{" +
+                "style=" + style +
                 ", color=" + color +
                 ", strokeWidth=" + strokeWidth +
                 ", rotation=" + rotation +

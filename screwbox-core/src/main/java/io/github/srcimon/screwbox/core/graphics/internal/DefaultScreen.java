@@ -12,7 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static java.awt.RenderingHints.*;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
@@ -70,8 +73,10 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.fillCircle(offset, diameter, color);
+    public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        if(radius > 0) {
+            renderer.drawCircle(offset, radius, options);
+        }
         return this;
     }
 
@@ -164,22 +169,10 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawFadingCircle(final Offset offset, final int diameter, final Color color) {
-        renderer.drawFadingCircle(offset, diameter, color);
-        return this;
-    }
-
-    @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
                              final Percent opacity, final Rotation rotation,
                              final Flip flip, final ScreenBounds clipArea) {
         renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
-        return this;
-    }
-
-    @Override
-    public Screen drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
-        renderer.drawCircle(offset, diameter, color, strokeWidth);
         return this;
     }
 

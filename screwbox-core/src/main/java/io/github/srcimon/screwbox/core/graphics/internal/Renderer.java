@@ -15,8 +15,6 @@ public interface Renderer {
 
     void fillWith(Color color);
 
-    void fillCircle(Offset offset, int diameter, Color color);
-
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                     Flip flip, ScreenBounds clip);
 
@@ -27,11 +25,9 @@ public interface Renderer {
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
-    void drawFadingCircle(Offset offset, int diameter, Color color);
-
-    void drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
-
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
 
     void drawLine(Offset from, Offset to, LineDrawOptions options);
+
+    void drawCircle(Offset offset, int radius, CircleDrawOptions options);
 }

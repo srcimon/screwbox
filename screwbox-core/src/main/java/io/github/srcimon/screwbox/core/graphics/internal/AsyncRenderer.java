@@ -51,12 +51,6 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawFadingCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.active().add(() -> next.drawFadingCircle(offset, diameter, color));
-
-    }
-
-    @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         renderTasks.active().add(() -> next.drawRectangle(offset, size, options));
     }
@@ -67,8 +61,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void fillCircle(final Offset offset, final int diameter, final Color color) {
-        renderTasks.active().add(() -> next.fillCircle(offset, diameter, color));
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        renderTasks.active().add(() -> next.drawCircle(offset, radius, options));
     }
 
     @Override
@@ -88,11 +82,6 @@ public class AsyncRenderer implements Renderer {
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity, final Rotation rotation,
                            final Flip flip, final ScreenBounds clip) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
-    }
-
-    @Override
-    public void drawCircle(final Offset offset, final int diameter, final Color color, final int strokeWidth) {
-        renderTasks.active().add(() -> next.drawCircle(offset, diameter, color, strokeWidth));
     }
 
     private FutureTask<Void> finishRenderTasks() {

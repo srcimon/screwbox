@@ -14,7 +14,7 @@ class RectangleDrawOptionsTest {
     void toString_returnsInformationOnTheDrawing() {
         var options = filled(Color.RED).rotation(degrees(4));
 
-        assertThat(options).hasToString("RectangleOptions{isFilled=true, color=Color [r=255, g=0, b=0, opacity=1.0], strokeWidth=1, rotation=Rotation [4.0°]}");
+        assertThat(options).hasToString("RectangleDrawOptions{style=FILLED, color=Color [r=255, g=0, b=0, opacity=1.0], strokeWidth=1, rotation=Rotation [4.0°]}");
     }
 
     @Test
@@ -23,7 +23,7 @@ class RectangleDrawOptionsTest {
 
         assertThatThrownBy(() -> options.strokeWidth(4))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("stroke width is not used when drawing filled rectangles");
+                .hasMessage("stroke width is only used when drawing outline of rectangles");
     }
 
     @Test

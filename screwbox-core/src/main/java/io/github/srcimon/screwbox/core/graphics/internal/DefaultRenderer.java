@@ -104,35 +104,11 @@ public class DefaultRenderer implements Renderer {
         graphics.drawImage(image, transform, null);
     }
 
-    @Override
-    public void fillCircle(final Offset offset, final int diameter, final Color color) {
-        applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        graphics.fillOval(x, y, diameter, diameter);
-    }
-
     private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;
             graphics.setColor(AwtMapper.toAwtColor(color));
         }
-    }
-
-    @Override
-    public void drawFadingCircle(Offset offset, int diameter, Color color) {
-        var oldPaint = graphics.getPaint();
-        var colors = new java.awt.Color[]{AwtMapper.toAwtColor(color), FADEOUT_COLOR};
-        graphics.setPaint(new RadialGradientPaint(
-                offset.x(),
-                offset.y(),
-                diameter / 2f,
-                FADEOUT_FRACTIONS, colors));
-
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        graphics.fillOval(x, y, diameter, diameter);
-        graphics.setPaint(oldPaint);
     }
 
     @Override
@@ -142,26 +118,11 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(Offset offset, int diameter, Color color, int strokeWidth) {
-        applyNewColor(color);
-        final int x = offset.x() - diameter / 2;
-        final int y = offset.y() - diameter / 2;
-        if (strokeWidth == 1) {
-            graphics.drawOval(x, y, diameter, diameter);
-        } else {
-            var oldStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(strokeWidth));
-            graphics.drawOval(x, y, diameter, diameter);
-            graphics.setStroke(oldStroke);
-        }
-    }
-
-    @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         applyNewColor(options.color());
 
         if (options.rotation().isNone()) {
-            if (options.isFilled()) {
+            if (options.style() == RectangleDrawOptions.Style.FILLED) {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             } else {
                 final var oldStroke = graphics.getStroke();
@@ -174,7 +135,7 @@ public class DefaultRenderer implements Renderer {
             final double y = offset.y() + size.height() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            if (options.isFilled()) {
+            if (options.style() == RectangleDrawOptions.Style.FILLED) {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             } else {
                 final var oldStroke = graphics.getStroke();
@@ -197,7 +158,39 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
             graphics.setStroke(oldStroke);
         }
+    }
 
+    @Override
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        final int x = offset.x() - radius;
+        final int y = offset.y() - radius;
+        final int diameter = radius * 2;
+
+        if (options.style() == CircleDrawOptions.Style.FILLED) {
+            applyNewColor(options.color());
+            graphics.fillOval(x, y, diameter, diameter);
+        } else if (options.style() == CircleDrawOptions.Style.FADING) {
+            final var oldPaint = graphics.getPaint();
+            final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(options.color()), FADEOUT_COLOR};
+            graphics.setPaint(new RadialGradientPaint(
+                    offset.x(),
+                    offset.y(),
+                    radius,
+                    FADEOUT_FRACTIONS, colors));
+
+            graphics.fillOval(x, y, diameter, diameter);
+            graphics.setPaint(oldPaint);
+        } else {
+            applyNewColor(options.color());
+            if (options.strokeWidth() == 1) {
+                graphics.drawOval(x, y, diameter, diameter);
+            } else {
+                var oldStroke = graphics.getStroke();
+                graphics.setStroke(new BasicStroke(options.strokeWidth()));
+                graphics.drawOval(x, y, diameter, diameter);
+                graphics.setStroke(oldStroke);
+            }
+        }
     }
 
 }

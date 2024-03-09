@@ -54,21 +54,15 @@ public interface Screen {
      */
     Sprite takeScreenshot();
 
-
     /**
      * Draws a line on the {@link Screen} using the given {@link Offset}s and {@link LineDrawOptions}.
      */
     Screen drawLine(Offset from, Offset to, LineDrawOptions options);
 
-    Screen drawFadingCircle(Offset offset, int diameter, Color color);
-
-    Screen drawCircle(Offset offset, int diameter, Color color, int strokeWidth);
-
-    default Screen drawCircle(Offset offset, int diameter, Color color) {
-        return drawCircle(offset, diameter, color, 1);
-    }
-
-    Screen fillCircle(Offset offset, int diameter, Color color);
+    /**
+     * Draws a circle on the {@link Screen} using the given position and {@link CircleDrawOptions}.
+     */
+    Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
