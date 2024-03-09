@@ -1,17 +1,39 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Vector;
+
 import java.util.Objects;
 
-//TODO Javadoc and test
+/**
+ * Customize the drawing of circles.
+ *
+ * @see Screen#drawCircle(Offset, int, CircleDrawOptions)
+ * @see World#drawCircle(Vector, double, CircleDrawOptions)
+ */
 public class CircleDrawOptions {
 
     private final Style style;
     private final Color color;
     private int strokeWidth;
 
+    /**
+     * The style used to draw.
+     */
     public enum Style {
-        OUTLINE,
+
+        /**
+         * Draws a filled form.
+         */
         FILLED,
+
+        /**
+         * Draws only the outline using {@link RectangleDrawOptions#strokeWidth()}.
+         */
+        OUTLINE,
+
+        /**
+         * Draws with {@link RectangleDrawOptions#color()} fading out from center of the circle.
+         */
         FADING
     }
 
@@ -55,14 +77,23 @@ public class CircleDrawOptions {
         return this;
     }
 
+    /**
+     * The {@link Color} used to draw the circle.
+     */
     public Color color() {
         return color;
     }
 
+    /**
+     * The {@link Style} used to draw the circle.
+     */
     public Style style() {
         return style;
     }
 
+    /**
+     * Returns the stroke width used when drawing the outline of a circle.
+     */
     public int strokeWidth() {
         return strokeWidth;
     }

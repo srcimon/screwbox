@@ -13,18 +13,28 @@ import java.util.Objects;
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
 public class RectangleDrawOptions {
-//TODO FIX JAVADOC
+
+    /**
+     * The style used to draw.
+     */
     public enum Style {
+
+        /**
+         * Draws a filled form.
+         */
         FILLED,
+
+        /**
+         * Draws only the outline using {@link RectangleDrawOptions#strokeWidth()}.
+         */
         OUTLINE
-    }//TODO COMMON STLYE ENUM / default handling in renderer
+    }
 
     private final Style style;
     private final Color color;
     private int strokeWidth = 1;
     private Rotation rotation = Rotation.none();
 
-    //TODO Also use style
     private RectangleDrawOptions(final Style style, final Color color) {
         this.style = style;
         this.color = color;
@@ -81,7 +91,7 @@ public class RectangleDrawOptions {
     }
 
     /**
-     * Returns the stroke width used when drawing the rectangle.
+     * Returns the stroke width used when drawing the outline of a rectangle.
      */
     public int strokeWidth() {
         return strokeWidth;
