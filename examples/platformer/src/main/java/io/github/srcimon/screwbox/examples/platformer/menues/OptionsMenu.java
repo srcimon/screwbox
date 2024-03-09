@@ -17,9 +17,15 @@ public class OptionsMenu extends UiMenu {
                 .onActivate(engine -> engine.graphics().configuration().toggleFullscreen());
 
         addItem(engine -> engine.graphics().configuration().isUseAntialising()
-                ? "turn off antialising"
-                : "turn on antialising")
+                ? "antialising on"
+                : "antialising off")
                 .onActivate(engine -> engine.graphics().configuration().toggleAntialising());
+
+        addItem(engine -> engine.graphics().configuration().lightmapScale() == 4
+                ? "light quality low"
+                : "light quality high").onActivate(engine ->
+                engine.graphics().configuration().setLightmapScale(engine.graphics().configuration().lightmapScale() == 4
+                        ? 2 : 4));
 
         addItem("change resolution").onActivate(engine -> {
             List<Size> resolutions = engine.graphics().supportedResolutions();
