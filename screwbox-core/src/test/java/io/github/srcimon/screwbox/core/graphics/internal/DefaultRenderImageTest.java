@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -102,6 +101,27 @@ class DefaultRenderImageTest {
         renderer.drawCircle(Offset.at(10, 10), 4, CircleDrawOptions.outline(WHITE));
 
         verifyIsIdenticalWithReferenceImage("drawCircle_noStrokeSet_paintsUsingThinStroke.png");
+    }
+
+    @Test
+    void drawCircle_thickStrokeSet_paintsUsingThickStroke() {
+        renderer.drawCircle(Offset.at(20, 20), 8, CircleDrawOptions.outline(WHITE).strokeWidth(4));
+
+        verifyIsIdenticalWithReferenceImage("drawCircle_thickStrokeSet_paintsUsingThickStroke.png");
+    }
+
+    @Test
+    void drawCircle_fading_paintFadingCircle() {
+        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.fading(RED));
+
+        verifyIsIdenticalWithReferenceImage("drawCircle_fading_paintFadingCircle.png");
+    }
+
+    @Test
+    void drawCircle_filled_paintsilledCircle() {
+        renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED));
+
+        verifyIsIdenticalWithReferenceImage("drawCircle_filled_paintsilledCircle.png");
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {
