@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
@@ -52,7 +53,16 @@ class DefaultWorldTest {
     }
 
     @Test
-    void drawRectangle_inBounds_callsWindow() {
+    void drawCircle_callsScreen() {
+        world.updateCameraPosition($(4, 2));
+        world.updateZoom(2);
+
+        world.drawCircle($(20, 19), 10, CircleDrawOptions.fading(RED));
+        verify(screen).drawCircle(Offset.at(544, 418), 20, CircleDrawOptions.fading(RED));
+    }
+
+    @Test
+    void drawRectangle_callsScreen() {
         world.updateCameraPosition(zero());
         world.updateZoom(2.5);
 
@@ -62,7 +72,7 @@ class DefaultWorldTest {
     }
 
     @Test
-    void drawSprite_callsWindow() {
+    void drawSprite_callsScreen() {
         Sprite sprite = invisible();
 
         world.updateCameraPosition($(4, 2));
@@ -70,8 +80,7 @@ class DefaultWorldTest {
 
         world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Rotation.degrees(4), Flip.NONE, null);
 
-        verify(screen)
-                .drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Rotation.degrees(4), Flip.NONE,
-                        null);
+        verify(screen).drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Rotation.degrees(4), Flip.NONE,
+                null);
     }
 }

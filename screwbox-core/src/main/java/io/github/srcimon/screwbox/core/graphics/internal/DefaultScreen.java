@@ -74,7 +74,9 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(offset, radius, options);
+        if(radius > 0) {
+            renderer.drawCircle(offset, radius, options);
+        }
         return this;
     }
 

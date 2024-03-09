@@ -1,7 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +21,10 @@ import java.awt.image.BufferedImage;
 import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultScreenTest {
@@ -95,6 +103,20 @@ class DefaultScreenTest {
         screen.drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
 
         verify(renderer).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
+    }
+
+    @Test
+    void drawCircle_radiusZero_doesntCallRender() {
+        screen.drawCircle(Offset.at(10, 20), 0, CircleDrawOptions.fading(Color.RED));
+
+        verify(renderer, never()).drawCircle(Offset.at(10, 20), 0, CircleDrawOptions.fading(Color.RED));
+    }
+
+    @Test
+    void drawCircle_radiusPositive_callsRender() {
+        screen.drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
+
+        verify(renderer).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
     }
 
     @Test

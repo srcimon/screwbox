@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Font;
-import io.github.srcimon.screwbox.core.graphics.World;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.GREEN;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
