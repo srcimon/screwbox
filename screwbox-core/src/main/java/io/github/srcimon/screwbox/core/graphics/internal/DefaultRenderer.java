@@ -122,7 +122,7 @@ public class DefaultRenderer implements Renderer {
         applyNewColor(options.color());
 
         if (options.rotation().isNone()) {
-            if (options.isFilled()) {
+            if (options.style() == RectangleDrawOptions.Style.FILLED) {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             } else {
                 final var oldStroke = graphics.getStroke();
@@ -135,7 +135,7 @@ public class DefaultRenderer implements Renderer {
             final double y = offset.y() + size.height() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            if (options.isFilled()) {
+            if (options.style() == RectangleDrawOptions.Style.FILLED) {
                 graphics.fillRect(offset.x(), offset.y(), size.width(), size.height());
             } else {
                 final var oldStroke = graphics.getStroke();
@@ -158,7 +158,6 @@ public class DefaultRenderer implements Renderer {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
             graphics.setStroke(oldStroke);
         }
-
     }
 
     @Override
