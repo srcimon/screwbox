@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.transitions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 

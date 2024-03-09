@@ -180,9 +180,7 @@ public class DefaultRenderer implements Renderer {
 
             graphics.fillOval(x, y, diameter, diameter);
             graphics.setPaint(oldPaint);
-
         } else {
-            //OUTLINE
             applyNewColor(options.color());
             if (options.strokeWidth() == 1) {
                 graphics.drawOval(x, y, diameter, diameter);
