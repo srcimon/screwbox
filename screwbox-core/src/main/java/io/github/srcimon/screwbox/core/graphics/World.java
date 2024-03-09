@@ -41,6 +41,9 @@ public interface World {
         return drawTextCentered(position, text, font, opacity, 1);
     }
 
+    /**
+     * Returns the area currently visible on the {@link Screen}.
+     */
     Bounds visibleArea();
 
     /**
@@ -64,6 +67,8 @@ public interface World {
         return drawLine(line.from(), line.to(), options);
     }
 
-//TODO Javadoc
+    /**
+     * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
+     */
     World drawCircle(Vector position, double radius, CircleDrawOptions options);
 }

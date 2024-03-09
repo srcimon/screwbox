@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.World;
 
+import static io.github.srcimon.screwbox.core.graphics.CircleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
+
 public class GridRenderSystem implements EntitySystem {
 
     @Override
@@ -20,12 +23,12 @@ public class GridRenderSystem implements EntitySystem {
                 if (visibleArea.intersects(worldBounds)) {
                     final int neighbors = gridComponent.grid.blockedNeighbors(node).size();
                     final var color = colorByCountOf(neighbors, gridComponent);
-                    world.fillCircle(worldBounds.position(), (int) worldBounds.width(), color);
+                    world.drawCircle(worldBounds.position(), (int) worldBounds.width() / 2.0, filled(color));
                 }
             }
         }
         final Vector snappedMousePosition = gridComponent.grid.snap(engine.mouse().position());
-        world.fillCircle(snappedMousePosition, 2, Color.YELLOW);
+        world.drawCircle(snappedMousePosition, 1, filled(YELLOW));
     }
 
     private Color colorByCountOf(final int neighbors, final GridComponent gridComponent) {

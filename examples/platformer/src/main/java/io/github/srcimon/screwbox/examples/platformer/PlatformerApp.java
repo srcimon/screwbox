@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.platformer;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
 import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.PauseScene;
