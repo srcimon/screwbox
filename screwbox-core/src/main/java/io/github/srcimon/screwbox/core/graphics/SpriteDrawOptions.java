@@ -11,8 +11,19 @@ public class SpriteDrawOptions {
     private Rotation rotation = Rotation.none();
     private Flip flip = Flip.NONE;
 
-    public static SpriteDrawOptions options() {
-        return new SpriteDrawOptions();
+    public SpriteDrawOptions() {
+    }
+
+    private SpriteDrawOptions(final double scale) {
+        this.scale = scale;
+    }
+
+    public static SpriteDrawOptions originalSize() {
+        return scaled(1);
+    }
+
+    public static SpriteDrawOptions scaled(double scale) {
+        return new SpriteDrawOptions(scale);
     }
 
     //TODO validation

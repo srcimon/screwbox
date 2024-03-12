@@ -66,7 +66,12 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options) {
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
     }
 

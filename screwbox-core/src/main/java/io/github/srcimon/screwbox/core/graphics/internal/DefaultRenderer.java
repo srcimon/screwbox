@@ -198,7 +198,8 @@ public class DefaultRenderer implements Renderer {
        drawSprite(sprite.get(), origin, options);
     }
 
-    private void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         applyOpacityConfig(options.opacity());
 
         if (!options.rotation().isNone()) {

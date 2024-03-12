@@ -87,6 +87,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderer.drawSprite(sprite, origin, options);
+        return this;
+    }
+
+    @Override
     public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
@@ -98,7 +104,7 @@ public class DefaultScreen implements Screen {
         for (long x = 0; x <= countX + 1; x++) {
             for (long y = 0; y <= countY + 1; y++) {
                 final Offset thisOffset = Offset.at((double) x * spriteWidth + offsetX, (double) y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
+                drawSprite(sprite, thisOffset, SpriteDrawOptions.scaled(scale).opacity(opacity));
             }
         }
         return this;

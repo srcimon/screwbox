@@ -67,24 +67,10 @@ public interface Screen {
     //TODO javadoc and test
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
+    Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
+
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
-
-    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
-    }
-
-    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation) {
-        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin) {
-        return drawSprite(sprite, origin, Percent.max());
-    }
 
     Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clip);
