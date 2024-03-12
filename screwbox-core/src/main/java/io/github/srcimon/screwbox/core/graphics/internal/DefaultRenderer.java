@@ -112,12 +112,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                           Flip flip, ScreenBounds clip) {
-        drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clip);
-    }
-
-    @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         applyNewColor(options.color());
 
@@ -195,7 +189,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-       drawSprite(sprite.get(), origin, options);
+        drawSprite(sprite.get(), origin, options);
     }
 
     @Override

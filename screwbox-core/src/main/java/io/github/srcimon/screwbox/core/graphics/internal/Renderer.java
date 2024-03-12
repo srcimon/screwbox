@@ -18,9 +18,6 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                     Flip flip, ScreenBounds clip);
 
-    void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation, Flip flip,
-                    ScreenBounds clip);
-
     void drawText(Offset offset, String text, Font font, Color color);
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
