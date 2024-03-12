@@ -14,11 +14,8 @@ import java.util.List;
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class ReflectionRenderSystem implements EntitySystem {
 
-    private static final Archetype REFLECTING_AREAS = Archetype.of(
-            ReflectionComponent.class, TransformComponent.class);
-
-    private static final Archetype RELECTED_ENTITIES = Archetype.of(
-            TransformComponent.class, RenderComponent.class);
+    private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
+    private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
 
     private static final class ReflectionArea {
 
