@@ -64,6 +64,9 @@ public interface Screen {
      */
     Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
+    //TODO javadoc and test
+    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
+
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
                       Flip flip, ScreenBounds clipArea);
 

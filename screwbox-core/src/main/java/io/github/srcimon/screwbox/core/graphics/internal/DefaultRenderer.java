@@ -193,4 +193,26 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
+    @Override
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+       drawSprite(sprite.get(), origin, options);
+    }
+
+    private void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        applyOpacityConfig(options.opacity());
+
+        if (!options.rotation().isNone()) {
+            final double x = origin.x() + sprite.size().width() * options.scale() / 2.0;
+            final double y = origin.y() + sprite.size().height() * options.scale() / 2.0;
+            final double radians = options.rotation().radians();
+            graphics.rotate(radians, x, y);
+            drawSpriteInContext(sprite, origin, options.scale(), options.flip());
+            graphics.rotate(-radians, x, y);
+        } else {
+            drawSpriteInContext(sprite, origin, options.scale(), options.flip());
+        }
+
+        resetOpacityConfig(options.opacity());
+    }
+
 }

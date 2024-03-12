@@ -4,6 +4,7 @@ package io.github.srcimon.screwbox.core.graphics;
  * Returns the vertical and or horizontal flip (mirror) mode for an
  * {@link Sprite}.
  */
+//TODO only use in spriteDrawoptions?
 public enum Flip {
 
     /**

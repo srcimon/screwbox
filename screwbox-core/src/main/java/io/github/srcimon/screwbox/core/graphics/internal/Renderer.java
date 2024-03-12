@@ -30,4 +30,6 @@ public interface Renderer {
     void drawLine(Offset from, Offset to, LineDrawOptions options);
 
     void drawCircle(Offset offset, int radius, CircleDrawOptions options);
+
+    void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 }

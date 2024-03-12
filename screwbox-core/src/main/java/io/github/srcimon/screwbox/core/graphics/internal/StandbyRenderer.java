@@ -59,4 +59,9 @@ public class StandbyRenderer implements Renderer {
         // does nothing
     }
 
+    @Override
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        // does nothing
+    }
+
 }
