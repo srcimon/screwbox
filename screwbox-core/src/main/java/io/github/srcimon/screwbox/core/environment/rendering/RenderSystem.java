@@ -2,7 +2,11 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -37,10 +41,6 @@ public class RenderSystem implements EntitySystem {
                 spriteBatch.addEntry(render.sprite, spriteBounds.origin(), options, render.drawOrder);
             }
         }
-        final var world = engine.graphics().world();
-//TODO renderComponent.options?
-        for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
-            world.drawSprite(entry.sprite(), entry.position(), entry.options());
-        }
+        engine.graphics().world().drawSpriteBatch(spriteBatch);
     }
 }

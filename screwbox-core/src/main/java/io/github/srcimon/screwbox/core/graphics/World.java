@@ -56,4 +56,9 @@ public interface World {
      * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
      */
     World drawCircle(Vector position, double radius, CircleDrawOptions options);
+
+    //TODO: javadoc and test
+    World drawSpriteBatch(SpriteBatch spriteBatch);
+    //TODO: javadoc and test
+    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 }

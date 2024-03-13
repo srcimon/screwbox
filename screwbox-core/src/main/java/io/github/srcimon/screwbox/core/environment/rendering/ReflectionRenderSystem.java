@@ -78,10 +78,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final var area = new ReflectionArea(reflectionOnScreen.get(),
                         reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-                for(final var entry : batch.entriesInDrawOrder()) {
-                    world.drawSprite(entry.sprite(), entry.position(), SpriteDrawOptions.scaled(
-                            entry.options().scale()).opacity(entry.options().opacity()).rotation(entry.options().rotation()).flip(entry.options().flip()), reflectionOnScreen.get());
-                }
+                world.drawSpriteBatch(batch, reflectionOnScreen.get());
             }
         }
     }
