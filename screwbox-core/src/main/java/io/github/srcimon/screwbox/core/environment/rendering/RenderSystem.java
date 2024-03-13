@@ -16,6 +16,8 @@ public class RenderSystem implements EntitySystem {
 
     private final Archetype sprites = Archetype.of(RenderComponent.class, TransformComponent.class);
 
+    //TODO: RenderComponent.options
+    //TODO: CircleDrawOptions, Line und RectangleDrawOptions immutable
     @Override
     public void update(final Engine engine) {
         final SpriteBatch spriteBatch = new SpriteBatch();

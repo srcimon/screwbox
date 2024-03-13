@@ -58,7 +58,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                             .opacity(render.opacity.multiply(opacityModifier))
                             .rotation(render.rotation)
                             .flip(render.flip.invertVertical());
-
                     spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }

@@ -3,16 +3,23 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 
+//TODO: camerashakeoptions immutable
 //TODO javadoc and test
 public class SpriteDrawOptions {
 
-    private double scale;
-    private Percent opacity = Percent.max();
-    private Rotation rotation = Rotation.none();
-    private Flip flip = Flip.NONE;
+    private final double scale;
+    private final Percent opacity ;
+    private final Rotation rotation ;
+    private final  Flip flip;
 
-    private SpriteDrawOptions(final double scale) {
+    private SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, Flip flip) {
         this.scale = scale;
+        this.opacity = opacity;
+        this.rotation = rotation;
+        this.flip = flip;
+    }
+    private SpriteDrawOptions(final double scale) {
+        this(scale, Percent.max(), Rotation.none(), Flip.NONE);
     }
 
     public static SpriteDrawOptions originalSize() {
@@ -25,26 +32,22 @@ public class SpriteDrawOptions {
 
     //TODO validation
     public SpriteDrawOptions scale(final double scale) {
-        this.scale = scale;
-        return this;
+        return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions opacity(final Percent opacity) {
         //TODO validation
-        this.opacity = opacity;
-        return this;
+        return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions rotation(final Rotation rotation) {
         //TODO validation
-        this.rotation = rotation;
-        return this;
+        return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions flip(final Flip flip) {
         //TODO validation
-        this.flip = flip;
-        return this;
+        return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public double scale() {

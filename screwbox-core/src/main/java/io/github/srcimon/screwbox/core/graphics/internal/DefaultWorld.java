@@ -130,10 +130,8 @@ public class DefaultWorld implements World {
         final var offset = toOffset(origin);
         final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
         final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
-        final SpriteDrawOptions scaledOptions = SpriteDrawOptions
-                .scaled(options.scale() * zoom)
-                .opacity(options.opacity()).flip(options.flip())
-                .rotation(options.rotation());
+        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
+
 
         screen.drawSprite(sprite, Offset.at(x, y), scaledOptions, toScreen(clip));
         return this;
