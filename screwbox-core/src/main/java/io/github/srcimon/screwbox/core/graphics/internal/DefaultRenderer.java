@@ -196,6 +196,15 @@ public class DefaultRenderer implements Renderer {
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         applyOpacityConfig(options.opacity());
 
+        final var oldClip = graphics.getClip();
+        if (nonNull(options.clip())) {
+            graphics.setClip(
+                    options.clip().offset().x(),
+                    options.clip().offset().y(),
+                    options.clip().size().width(),
+                    options.clip().size().height());
+        }
+
         if (!options.rotation().isNone()) {
             final double x = origin.x() + sprite.size().width() * options.scale() / 2.0;
             final double y = origin.y() + sprite.size().height() * options.scale() / 2.0;
@@ -205,6 +214,10 @@ public class DefaultRenderer implements Renderer {
             graphics.rotate(-radians, x, y);
         } else {
             drawSpriteInContext(sprite, origin, options.scale(), options.flip());
+        }
+
+        if (nonNull(options.clip())) {
+            graphics.setClip(oldClip);
         }
 
         resetOpacityConfig(options.opacity());

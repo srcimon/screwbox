@@ -103,7 +103,8 @@ public class DefaultWorld implements World {
         final SpriteDrawOptions scaledOptions = SpriteDrawOptions
                 .scaled(options.scale() * zoom)
                 .opacity(options.opacity()).flip(options.flip())
-                .rotation(options.rotation());
+                .rotation(options.rotation())
+                        .clip(options.clip());
 
         screen.drawSprite(sprite, Offset.at(x, y), scaledOptions);
         return this;
@@ -114,7 +115,7 @@ public class DefaultWorld implements World {
         for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(),
                     entry.position(),
-                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip())
+                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip()).clip(toScreen(clip))
             );
             //TODO fix missing clip
         }
