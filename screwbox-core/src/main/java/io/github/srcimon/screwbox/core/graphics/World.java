@@ -15,10 +15,6 @@ public interface World {
 
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
-    default World drawSpriteBatch(final SpriteBatch spriteBatch) {
-        return drawSpriteBatch(spriteBatch, null);
-    }
-
     World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
                      Flip flip, Bounds clip);
 

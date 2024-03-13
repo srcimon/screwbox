@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
@@ -37,6 +38,13 @@ public class RenderSystem implements EntitySystem {
                         render.drawOrder);
             }
         }
-        engine.graphics().world().drawSpriteBatch(spriteBatch);
+        final var world = engine.graphics().world();
+
+        for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
+            world.drawSprite(entry.sprite(),
+                    entry.position(),
+                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip())
+            );
+        }
     }
 }
