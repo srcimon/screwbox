@@ -3,6 +3,9 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 
+//TODO rectangle immutable
+//TODO line immutable
+//TODO circle immutable
 //TODO: camerashakeoptions immutable
 //TODO javadoc and test
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, Flip flip) {
