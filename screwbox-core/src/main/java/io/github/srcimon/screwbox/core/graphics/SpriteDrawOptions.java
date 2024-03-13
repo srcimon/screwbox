@@ -27,7 +27,6 @@ public class SpriteDrawOptions {
         return new SpriteDrawOptions(scale);
     }
 
-    //TODO remove from options?
     public SpriteDrawOptions clip(final ScreenBounds clip) {
         this.clip = clip;
         return this;

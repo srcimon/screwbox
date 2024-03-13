@@ -28,23 +28,19 @@ public class RenderSystem implements EntitySystem {
                     spriteDimension.height() * render.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
-                spriteBatch.addEntry(
-                        render.sprite,
-                        spriteBounds.origin(),
-                        render.scale,
-                        render.opacity,
-                        render.rotation,
-                        render.flip,
-                        render.drawOrder);
+                final var options = SpriteDrawOptions
+                        .scaled(render.scale)
+                        .opacity(render.opacity)
+                        .opacity(render.opacity)
+                        .flip(render.flip);
+
+                spriteBatch.addEntry(render.sprite, spriteBounds.origin(), options, render.drawOrder);
             }
         }
         final var world = engine.graphics().world();
-
+//TODO renderComponent.options?
         for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
-            world.drawSprite(entry.sprite(),
-                    entry.position(),
-                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip())
-            );
+            world.drawSprite(entry.sprite(), entry.position(), entry.options());
         }
     }
 }

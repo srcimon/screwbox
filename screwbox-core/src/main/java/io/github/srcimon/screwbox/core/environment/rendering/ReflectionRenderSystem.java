@@ -52,15 +52,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final var effectOrigin = Vector.of(
                             spriteOrigin.x() + xDelta,
                             2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
-                    
-                    spriteBatch.addEntry(
-                            render.sprite,
-                            effectOrigin,
-                            render.scale,
-                            render.opacity.multiply(opacityModifier),
-                            render.rotation,
-                            render.flip.invertVertical(),
-                            render.drawOrder);
+
+                    final SpriteDrawOptions options = SpriteDrawOptions
+                            .scaled(render.scale)
+                            .opacity(render.opacity.multiply(opacityModifier))
+                            .rotation(render.rotation)
+                            .flip(render.flip.invertVertical());
+
+                    spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }
             return spriteBatch;
@@ -81,7 +80,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
                 ScreenBounds areaOnScreen = engine.graphics().toScreen(reflectionOnScreen.get());
                 for(final var entry : batch.entriesInDrawOrder()) {
-                    world.drawSprite(entry.sprite(), entry.position(), SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip()).clip(areaOnScreen));
+                    world.drawSprite(entry.sprite(), entry.position(), SpriteDrawOptions.scaled(
+                            entry.options().scale()).opacity(entry.options().opacity()).rotation(entry.options().rotation()).flip(entry.options().flip()).clip(areaOnScreen));
                 }
             }
         }
