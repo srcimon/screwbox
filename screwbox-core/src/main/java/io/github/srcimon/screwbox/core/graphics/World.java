@@ -6,7 +6,12 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 
+import java.util.function.Supplier;
+
 public interface World {
+
+    //TODO javadoc and test
+    World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
 
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
@@ -17,18 +22,6 @@ public interface World {
     World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
                      Flip flip, Bounds clip);
 
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
-                             final Rotation rotation, final Flip flip) {
-        return drawSprite(sprite, origin, 1, opacity, rotation, flip, null);
-    }
-
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity) {
-        return drawSprite(sprite, origin, opacity, Rotation.none(), Flip.NONE);
-    }
-
-    default World drawSprite(final Sprite sprite, final Vector origin) {
-        return drawSprite(sprite, origin, Percent.max());
-    }
 
     World drawText(Vector offset, String text, Font font, Color color);
 
@@ -53,8 +46,8 @@ public interface World {
 
     /**
      * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
-     * 
-     * @see #drawLine(Line, LineDrawOptions) 
+     *
+     * @see #drawLine(Line, LineDrawOptions)
      */
     World drawLine(Vector from, Vector to, LineDrawOptions options);
 

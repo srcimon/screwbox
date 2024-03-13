@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
 
+import java.util.function.Supplier;
+
 import static java.util.Objects.isNull;
 
 public class DefaultWorld implements World {
@@ -110,15 +112,27 @@ public class DefaultWorld implements World {
     }
 
     @Override
+    public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
+        final var offset = toOffset(origin);
+        final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
+        final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
+        final SpriteDrawOptions scaledOptions = SpriteDrawOptions
+                .scaled(options.scale() * zoom)
+                .opacity(options.opacity()).flip(options.flip())
+                .rotation(options.rotation());
+
+        screen.drawSprite(sprite, Offset.at(x, y), scaledOptions);
+        return this;
+    }
+
+    @Override
     public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
         for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(),
                     entry.position(),
-                    entry.scale(),
-                    entry.opacity(),
-                    entry.rotation(),
-                    entry.flip(),
-                    clip);
+                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip())
+                    );
+            //TODO fix missing clip
         }
         return this;
     }
