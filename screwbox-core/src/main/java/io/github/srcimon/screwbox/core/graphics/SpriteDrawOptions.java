@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 //TODO javadoc and test
 public class SpriteDrawOptions {
 
-    private double scale = 1;
+    private double scale;
     private Percent opacity = Percent.max();
     private Rotation rotation = Rotation.none();
     private Flip flip = Flip.NONE;
