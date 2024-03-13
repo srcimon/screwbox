@@ -70,17 +70,4 @@ class DefaultWorldTest {
 
         verify(screen).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
     }
-
-    @Test
-    void drawSprite_callsScreen() {
-        Sprite sprite = invisible();
-
-        world.updateCameraPosition($(4, 2));
-        world.updateZoom(1.5);
-
-        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Rotation.degrees(4), Flip.NONE, null);
-
-        verify(screen).drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Rotation.degrees(4), Flip.NONE,
-                null);
-    }
 }

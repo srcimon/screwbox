@@ -15,10 +15,6 @@ public interface World {
 
     World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
-                     Flip flip, Bounds clip);
-
-
     World drawText(Vector offset, String text, Font font, Color color);
 
     World drawTextCentered(Vector position, String text, Font font, Color color);

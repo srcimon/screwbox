@@ -2,13 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
-
-import java.util.function.Supplier;
-
-import static java.util.Objects.isNull;
 
 public class DefaultWorld implements World {
 
@@ -38,17 +33,6 @@ public class DefaultWorld implements World {
         visibleArea = Bounds.atPosition(cameraPosition,
                 screen.size().width() / zoom,
                 screen.size().height() / zoom);
-    }
-
-    @Override
-    public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
-                            final Rotation rotation, final Flip flip, final Bounds clip) {
-        final var offset = toOffset(origin);
-        final var windowClipArea = isNull(clip) ? null : toScreen(clip);
-        final var x = offset.x() - ((scale - 1) * sprite.size().width());
-        final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        screen.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
-        return this;
     }
 
     @Override
@@ -131,7 +115,7 @@ public class DefaultWorld implements World {
             drawSprite(entry.sprite(),
                     entry.position(),
                     SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip())
-                    );
+            );
             //TODO fix missing clip
         }
         return this;
