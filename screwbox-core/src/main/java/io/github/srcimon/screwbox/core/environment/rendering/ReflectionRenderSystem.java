@@ -5,7 +5,10 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.environment.*;
 
@@ -76,7 +79,10 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final var area = new ReflectionArea(reflectionOnScreen.get(),
                         reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-                world.drawSpriteBatch(batch, reflectionOnScreen.get());
+                ScreenBounds areaOnScreen = engine.graphics().toScreen(reflectionOnScreen.get());
+                for(final var entry : batch.entriesInDrawOrder()) {
+                    world.drawSprite(entry.sprite(), entry.position(), SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip()).clip(areaOnScreen));
+                }
             }
         }
     }

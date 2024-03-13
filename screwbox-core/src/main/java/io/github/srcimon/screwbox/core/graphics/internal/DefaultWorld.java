@@ -110,18 +110,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    @Override
-    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
-        for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
-            drawSprite(entry.sprite(),
-                    entry.position(),
-                    SpriteDrawOptions.scaled(entry.scale()).opacity(entry.opacity()).rotation(entry.rotation()).flip(entry.flip()).clip(toScreen(clip))
-            );
-            //TODO fix missing clip
-        }
-        return this;
-    }
-
     private Size toDimension(final Vector size) {
         final long x = Math.round(size.x() * zoom);
         final long y = Math.round(size.y() * zoom);

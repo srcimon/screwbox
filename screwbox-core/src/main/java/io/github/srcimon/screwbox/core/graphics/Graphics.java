@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.List;
@@ -44,6 +45,8 @@ public interface Graphics {
      */
     Vector toPosition(Offset offset);
 
+    //TODO javadoc and test
+    ScreenBounds toScreen(Bounds bounds);
     /**
      * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
      *
