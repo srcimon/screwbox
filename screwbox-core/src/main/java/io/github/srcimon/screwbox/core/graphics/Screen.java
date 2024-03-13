@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 
+import javax.sound.sampled.Clip;
 import java.util.function.Supplier;
 
 /**
@@ -70,8 +71,8 @@ public interface Screen {
     //TODO javadoc and test
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
-    Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                      Flip flip, ScreenBounds clip);
+    //TODO javadoc and test
+    Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 

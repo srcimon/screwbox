@@ -103,10 +103,23 @@ public class DefaultWorld implements World {
         final SpriteDrawOptions scaledOptions = SpriteDrawOptions
                 .scaled(options.scale() * zoom)
                 .opacity(options.opacity()).flip(options.flip())
-                .rotation(options.rotation())
-                        .clip(options.clip());
+                .rotation(options.rotation());
 
         screen.drawSprite(sprite, Offset.at(x, y), scaledOptions);
+        return this;
+    }
+
+    @Override
+    public World drawSprite(final Sprite sprite, final Vector origin,final  SpriteDrawOptions options, final Bounds clip) {
+        final var offset = toOffset(origin);
+        final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
+        final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
+        final SpriteDrawOptions scaledOptions = SpriteDrawOptions
+                .scaled(options.scale() * zoom)
+                .opacity(options.opacity()).flip(options.flip())
+                .rotation(options.rotation());
+
+        screen.drawSprite(sprite, Offset.at(x, y), scaledOptions, toScreen(clip));
         return this;
     }
 

@@ -94,6 +94,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderer.drawSprite(sprite, origin, options, clip);
+        return this;
+    }
+
+    @Override
     public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
@@ -135,13 +141,6 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         renderer.drawTextCentered(position, text, font, color);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                             final Rotation rotation, final Flip flip, final ScreenBounds clip) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip);
         return this;
     }
 

@@ -13,6 +13,8 @@ public interface World {
     //TODO javadoc and test
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
 
+    World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
+
     World drawText(Vector offset, String text, Font font, Color color);
 
     World drawTextCentered(Vector position, String text, Font font, Color color);

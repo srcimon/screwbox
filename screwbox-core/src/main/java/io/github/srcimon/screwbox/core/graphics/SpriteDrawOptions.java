@@ -10,7 +10,6 @@ public class SpriteDrawOptions {
     private Percent opacity = Percent.max();
     private Rotation rotation = Rotation.none();
     private Flip flip = Flip.NONE;
-    private ScreenBounds clip = null;
 
     public SpriteDrawOptions() {
     }
@@ -25,11 +24,6 @@ public class SpriteDrawOptions {
 
     public static SpriteDrawOptions scaled(double scale) {
         return new SpriteDrawOptions(scale);
-    }
-
-    public SpriteDrawOptions clip(final ScreenBounds clip) {
-        this.clip = clip;
-        return this;
     }
 
     //TODO validation
@@ -72,7 +66,4 @@ public class SpriteDrawOptions {
         return flip;
     }
 
-    public ScreenBounds clip() {
-        return clip;
-    }
 }
