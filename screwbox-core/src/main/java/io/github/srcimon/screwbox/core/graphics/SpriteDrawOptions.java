@@ -11,9 +11,6 @@ public class SpriteDrawOptions {
     private Rotation rotation = Rotation.none();
     private Flip flip = Flip.NONE;
 
-    public SpriteDrawOptions() {
-    }
-
     private SpriteDrawOptions(final double scale) {
         this.scale = scale;
     }
