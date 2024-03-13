@@ -45,7 +45,10 @@ public interface Graphics {
      */
     Vector toPosition(Offset offset);
 
-    //TODO javadoc and test
+    /**
+     * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
+     */
+    //TODO: test
     ScreenBounds toScreen(Bounds bounds);
     /**
      * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.

@@ -2,7 +2,8 @@
 
 - Optimized drawing of circles using `CircleDrawOptions` (#208)
 - Added new component and methods for adding light glow effects
-
+- Added `Graphics.toScreen(Bounds)`
+- 
 ### 🪛 Bug Fixes
 
 - ...
