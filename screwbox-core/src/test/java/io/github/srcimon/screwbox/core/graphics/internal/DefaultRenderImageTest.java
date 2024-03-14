@@ -1,10 +1,15 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -122,6 +127,29 @@ class DefaultRenderImageTest {
         renderer.drawCircle(Offset.at(40, 20), 20, CircleDrawOptions.filled(RED));
 
         verifyIsIdenticalWithReferenceImage("drawCircle_filled_paintsilledCircle.png");
+    }
+
+    @Test
+    void drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip() {
+        SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
+        renderer.drawSprite(Asset.asset(Sprite::dummy16x16), Offset.at(4, 12), options);
+
+        verifyIsIdenticalWithReferenceImage("drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
+    }
+
+    @Test
+    void drawSprite_useClip_drawsSpriteOnlyInClip() {
+        renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2), new ScreenBounds(4, 4, 16, 16));
+
+        verifyIsIdenticalWithReferenceImage("drawSprite_useClip_drawsSpriteOnlyInClip.png");
+    }
+
+    @Test
+    void drawSprite_scaled_drawsSprite() {
+        renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2));
+
+        verifyIsIdenticalWithReferenceImage("drawSprite_scaled_drawsSprite.png");
+
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {
