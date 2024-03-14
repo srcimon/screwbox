@@ -1,9 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 
-import javax.sound.sampled.Clip;
 import java.util.function.Supplier;
 
 /**
