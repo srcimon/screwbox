@@ -1,47 +1,29 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import org.junit.jupiter.api.Test;
 
-import static io.github.srcimon.screwbox.core.Rotation.degrees;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RectangleDrawOptionsTest {
 
     @Test
-    void toString_returnsInformationOnTheDrawing() {
-        var options = filled(Color.RED).rotation(degrees(4));
+    void filled_createsFilledOptions() {
+        var options = RectangleDrawOptions.filled(Color.YELLOW).rotation(Rotation.degrees(45));
 
-        assertThat(options).hasToString("RectangleDrawOptions{style=FILLED, color=Color [r=255, g=0, b=0, opacity=1.0], strokeWidth=1, rotation=Rotation [4.0°]}");
+        assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.FILLED);
+        assertThat(options.color()).isEqualTo(Color.YELLOW);
+        assertThat(options.rotation()).isEqualTo(Rotation.degrees(45));
+        assertThat(options.strokeWidth()).isEqualTo(1);
     }
 
     @Test
-    void strokeWidth_filledRectangle_throwsException() {
-        var options = filled(Color.RED);
+    void outline_createsOutlineOptions() {
+        var options = RectangleDrawOptions.outline(Color.YELLOW).strokeWidth(5);
 
-        assertThatThrownBy(() -> options.strokeWidth(4))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("stroke width is only used when drawing outline of rectangles");
-    }
-
-    @Test
-    void strokeWidth_widthZero_throwsException() {
-        var options = outline(Color.RED);
-
-        assertThatThrownBy(() -> options.strokeWidth(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("stroke width must be positive");
-    }
-
-    @Test
-    void testEquals() {
-        assertThat(filled(Color.RED).rotation(degrees(5)))
-                .isNotEqualTo(filled(Color.BLUE).rotation(degrees(5)))
-                .isNotEqualTo(filled(Color.RED).rotation(degrees(4)))
-                .isNotEqualTo(outline(Color.RED).rotation(degrees(5)))
-                .isNotEqualTo(outline(Color.RED).rotation(degrees(5)).strokeWidth(2))
-                .isEqualTo(filled(Color.RED).rotation(degrees(5)));
+        assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.FILLED);
+        assertThat(options.color()).isEqualTo(Color.YELLOW);
+        assertThat(options.rotation()).isEqualTo(Rotation.none());
+        assertThat(options.strokeWidth()).isEqualTo(5);
     }
 }

@@ -16,6 +16,7 @@
 - Replaced `LightOptions` builder pattern with simple variables for color and radius
 - Replaced `RectangleDrawOptions.isFilled()` with `.style()`
 - Replaced `Flip` with `SpriteDrawOptions`
+- Made `RectangleDrawOptions` immutable
 
 ### 📦 Dependency updates
 
