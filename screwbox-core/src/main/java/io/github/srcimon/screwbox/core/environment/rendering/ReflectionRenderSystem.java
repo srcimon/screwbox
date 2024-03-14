@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 import java.util.List;
 
@@ -54,7 +53,9 @@ public class ReflectionRenderSystem implements EntitySystem {
                             spriteOrigin.x() + xDelta,
                             2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
 
-                    final var options = new SpriteDrawOptions(render.scale, render.opacity.multiply(opacityModifier), render.rotation, render.flip.invertVertical());
+                    final var options = render.options
+                            .opacity(render.options.opacity().multiply(opacityModifier))
+                            .flip(render.options.flip().invertVertical());
                     spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }

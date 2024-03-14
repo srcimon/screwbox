@@ -62,7 +62,7 @@ public class DefaultRenderer implements Renderer {
         drawText(offset, text, font, color);
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale, final Flip flip) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale, final SpriteDrawOptions.Flip flip) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();

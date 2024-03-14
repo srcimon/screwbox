@@ -2,11 +2,8 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -29,7 +26,7 @@ class RotateSpriteSystemTest {
 
         environment.update();
 
-        var rotation = body.get(RenderComponent.class).rotation;
+        var rotation = body.get(RenderComponent.class).options.rotation();
         assertThat(rotation.degrees()).isEqualTo(135);
     }
 
@@ -45,7 +42,7 @@ class RotateSpriteSystemTest {
 
         environment.update();
 
-        var rotation = body.get(RenderComponent.class).rotation;
+        var rotation = body.get(RenderComponent.class).options.rotation();
         assertThat(rotation.isNone()).isTrue();
     }
 

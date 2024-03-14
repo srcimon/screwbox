@@ -26,6 +26,6 @@ class TweenOpacitySystemTest {
 
         environment.update();
 
-        assertThat(renderComponent.opacity).isEqualTo(Percent.half());
+        assertThat(renderComponent.options.opacity()).isEqualTo(Percent.half());
     }
 }

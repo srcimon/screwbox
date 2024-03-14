@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
@@ -28,12 +27,11 @@ public class RenderSystem implements EntitySystem {
             final var spriteBounds = Bounds.atOrigin(
                     entityPosition.x() - spriteDimension.width() / 2.0,
                     entityPosition.y() - spriteDimension.height() / 2.0,
-                    spriteDimension.width() * render.scale,
-                    spriteDimension.height() * render.scale);
+                    spriteDimension.width() * render.options.scale(),
+                    spriteDimension.height() * render.options.scale());
 
             if (spriteBounds.intersects(visibleArea)) {
-                final var options = new SpriteDrawOptions(render.scale,render.opacity, render.rotation, render.flip);
-                spriteBatch.addEntry(render.sprite, spriteBounds.origin(), options, render.drawOrder);
+                spriteBatch.addEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder);
             }
         }
         engine.graphics().world().drawSpriteBatch(spriteBatch);

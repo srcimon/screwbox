@@ -18,7 +18,8 @@ public class TweenOpacitySystem implements EntitySystem {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var opacityComponent = tweenEntity.get(TweenOpacityComponent.class);
             final var advance = (opacityComponent.to.value() - opacityComponent.from.value()) * tweenEntity.get(TweenComponent.class).value.value();
-            tweenEntity.get(RenderComponent.class).opacity = Percent.of(opacityComponent.from.value() + advance);
+            RenderComponent renderComponent = tweenEntity.get(RenderComponent.class);
+            renderComponent.options = renderComponent.options.opacity(Percent.of(opacityComponent.from.value() + advance));
         }
     }
 }
