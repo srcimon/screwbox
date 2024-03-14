@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.Rotation;
 //TODO line immutable
 //TODO circle immutable
 //TODO: camerashakeoptions immutable
-//TODO test
 
 /**
  * Customize the drawing of {@link Sprite}s.
