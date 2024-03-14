@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Optimized drawing of circles using `CircleDrawOptions` (#208)
+- Optimized drawing of sprites with `SpriteDrawOptions` (#200)
 - Added new component and methods for adding light glow effects
 - Added `Graphics.toScreen(Bounds)`
 - 

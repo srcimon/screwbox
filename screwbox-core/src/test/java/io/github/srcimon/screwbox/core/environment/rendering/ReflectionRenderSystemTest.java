@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
@@ -62,8 +63,7 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.getFirst();
-        assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
-        assertThat(spriteBatchEntry.opacity()).isEqualTo(Percent.of(0.25));
+        assertThat(spriteBatchEntry.options()).isEqualTo(SpriteDrawOptions.originalSize().flip(Flip.VERTICAL).opacity(Percent.of(0.25)));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.position()).isEqualTo($(-3, 7));
     }
@@ -118,9 +118,9 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.getFirst();
-        assertThat(spriteBatchEntry.flip()).isEqualTo(Flip.VERTICAL);
+        assertThat(spriteBatchEntry.options().flip()).isEqualTo(Flip.VERTICAL);
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
-        assertThat(spriteBatchEntry.opacity().value()).isEqualTo(0.48, offset(0.01));
+        assertThat(spriteBatchEntry.options().opacity().value()).isEqualTo(0.48, offset(0.01));
         assertThat(spriteBatchEntry.position().x()).isEqualTo(-1.55, offset(0.01));
         assertThat(spriteBatchEntry.position().y()).isEqualTo(8.68, offset(0.01));
     }
