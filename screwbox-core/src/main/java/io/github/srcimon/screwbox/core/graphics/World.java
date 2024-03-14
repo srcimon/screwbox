@@ -15,10 +15,7 @@ public interface World {
      * @see #drawSpriteBatch(SpriteBatch)
      * @see #drawSpriteBatch(SpriteBatch, Bounds)
      */
-    //TODO  test
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
-
-    //TODO test
 
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions} but only draws on

@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 import java.io.Serializable;
 
-//TODO rectangle immutable
 //TODO line immutable
 //TODO circle immutable
 //TODO: camerashakeoptions immutable

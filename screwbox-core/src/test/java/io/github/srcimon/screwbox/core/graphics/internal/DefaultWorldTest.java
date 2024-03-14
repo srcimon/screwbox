@@ -6,10 +6,15 @@ import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -17,6 +22,7 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.Vector.zero;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,5 +70,21 @@ class DefaultWorldTest {
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleDrawOptions.filled(RED));
 
         verify(screen).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
+    }
+
+    @Test
+    void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
+        Sprite second = Sprite.dummy16x16animated();
+        Sprite first = Sprite.dummy16x16();
+
+        var batch = new SpriteBatch();
+        batch.addEntry(second, Vector.$(10, 20), SpriteDrawOptions.scaled(2), 2);
+        batch.addEntry(first, Vector.$(41, 20), SpriteDrawOptions.originalSize(), 1);
+
+        world.drawSpriteBatch(batch, Bounds.$$(40, 40, 100, 200));
+        InOrder orderVerifier = inOrder(screen);
+
+        orderVerifier.verify(screen).drawSprite(first, Offset.at(553, 404), SpriteDrawOptions.originalSize(), new ScreenBounds(552, 424, 100, 200));
+        orderVerifier.verify(screen).drawSprite(second, Offset.at(506, 388), SpriteDrawOptions.scaled(2), new ScreenBounds(552, 424, 100, 200));
     }
 }
