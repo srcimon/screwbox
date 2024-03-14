@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO Javadoc
 public class SpriteBatch {
 
     private final List<SpriteBatchEntry> entries = new ArrayList<>();
