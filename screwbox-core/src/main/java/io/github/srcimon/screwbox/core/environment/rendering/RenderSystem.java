@@ -16,7 +16,6 @@ public class RenderSystem implements EntitySystem {
 
     private final Archetype sprites = Archetype.of(RenderComponent.class, TransformComponent.class);
 
-    //TODO: RenderComponent.options
     //TODO: CircleDrawOptions, Line und RectangleDrawOptions immutable
     @Override
     public void update(final Engine engine) {
@@ -34,12 +33,7 @@ public class RenderSystem implements EntitySystem {
                     spriteDimension.height() * render.scale);
 
             if (spriteBounds.intersects(visibleArea)) {
-                final var options = SpriteDrawOptions
-                        .scaled(render.scale)
-                        .opacity(render.opacity)
-                        .opacity(render.opacity)
-                        .flip(render.flip);
-
+                final var options = new SpriteDrawOptions(render.scale,render.opacity, render.rotation, render.flip);
                 spriteBatch.addEntry(render.sprite, spriteBounds.origin(), options, render.drawOrder);
             }
         }
