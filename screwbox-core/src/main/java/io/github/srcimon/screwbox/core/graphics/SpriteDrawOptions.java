@@ -22,23 +22,19 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale);
     }
 
-    //TODO validation
     public SpriteDrawOptions scale(final double scale) {
         return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions opacity(final Percent opacity) {
-        //TODO validation
         return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions rotation(final Rotation rotation) {
-        //TODO validation
         return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 
     public SpriteDrawOptions flip(final Flip flip) {
-        //TODO validation
         return new SpriteDrawOptions(scale, opacity, rotation, flip);
     }
 

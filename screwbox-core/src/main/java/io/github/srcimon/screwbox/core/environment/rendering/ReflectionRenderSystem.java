@@ -4,13 +4,15 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
-import io.github.srcimon.screwbox.core.environment.*;
 
 import java.util.List;
 
@@ -46,18 +48,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final RenderComponent render = reflectableEntity.get(RenderComponent.class);
                     final var spriteSize = render.sprite.size();
                     final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
-                    
+
                     final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
                     final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
                     final var effectOrigin = Vector.of(
                             spriteOrigin.x() + xDelta,
                             2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
 
-                    final SpriteDrawOptions options = SpriteDrawOptions
-                            .scaled(render.scale)
-                            .opacity(render.opacity.multiply(opacityModifier))
-                            .rotation(render.rotation)
-                            .flip(render.flip.invertVertical());
+                    final var options = new SpriteDrawOptions(render.scale, render.opacity.multiply(opacityModifier), render.rotation, render.flip.invertVertical());
                     spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }
