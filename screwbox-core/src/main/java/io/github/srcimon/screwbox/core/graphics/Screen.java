@@ -63,13 +63,28 @@ public interface Screen {
      */
     Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
-    //TODO javadoc and test
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
+     */
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
-    //TODO javadoc and test
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
+     */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
-    //TODO javadoc and test
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
+     */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
