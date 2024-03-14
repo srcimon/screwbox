@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -18,7 +18,7 @@ public class RotateSpriteSystem implements EntitySystem {
             final var physicsBody = entity.get(PhysicsComponent.class);
             final var sprite = entity.get(RenderComponent.class);
             if (!physicsBody.momentum.isZero()) {
-                sprite.rotation = Rotation.ofMovement(physicsBody.momentum);
+                sprite.options = sprite.options.rotation(Rotation.ofMovement(physicsBody.momentum));
             }
         }
 

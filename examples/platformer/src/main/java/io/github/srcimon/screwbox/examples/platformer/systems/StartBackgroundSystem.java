@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -13,6 +13,7 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.Percent.half;
+import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static io.github.srcimon.screwbox.tiled.Tileset.fromJson;
 
 public class StartBackgroundSystem implements EntitySystem {
@@ -47,7 +48,7 @@ public class StartBackgroundSystem implements EntitySystem {
         final double yCorrect = sprite.size().height() / 2.0 * scale;
 
         final Offset position = Offset.at(center.x() - xCorrect, center.y() - yCorrect);
-        engine.graphics().screen().drawSprite(sprite, position, scale, half(), rotation);
+        engine.graphics().screen().drawSprite(sprite, position, scaled(scale).opacity(half()).rotation(rotation));
     }
 
 }

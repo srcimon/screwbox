@@ -1,27 +1,28 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.Vector.zero;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
-import static io.github.srcimon.screwbox.core.graphics.Sprite.invisible;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,15 +73,18 @@ class DefaultWorldTest {
     }
 
     @Test
-    void drawSprite_callsScreen() {
-        Sprite sprite = invisible();
+    void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
+        Sprite second = Sprite.dummy16x16animated();
+        Sprite first = Sprite.dummy16x16();
 
-        world.updateCameraPosition($(4, 2));
-        world.updateZoom(1.5);
+        var batch = new SpriteBatch();
+        batch.addEntry(second, Vector.$(10, 20), SpriteDrawOptions.scaled(2), 2);
+        batch.addEntry(first, Vector.$(41, 20), SpriteDrawOptions.originalSize(), 1);
 
-        world.drawSprite(sprite, $(20, 4), 2, Percent.half(), Rotation.degrees(4), Flip.NONE, null);
+        world.drawSpriteBatch(batch, Bounds.$$(40, 40, 100, 200));
+        InOrder orderVerifier = inOrder(screen);
 
-        verify(screen).drawSprite(sprite, Offset.at(535, 386), 3, Percent.half(), Rotation.degrees(4), Flip.NONE,
-                null);
+        orderVerifier.verify(screen).drawSprite(first, Offset.at(553, 404), SpriteDrawOptions.originalSize(), new ScreenBounds(552, 424, 100, 200));
+        orderVerifier.verify(screen).drawSprite(second, Offset.at(506, 388), SpriteDrawOptions.scaled(2), new ScreenBounds(552, 424, 100, 200));
     }
 }

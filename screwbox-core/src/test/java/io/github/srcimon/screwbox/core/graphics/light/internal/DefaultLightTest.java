@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import org.junit.jupiter.api.AfterEach;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
@@ -31,7 +33,6 @@ import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,7 +75,7 @@ class DefaultLightTest {
 
         light.render();
 
-        verify(screen).drawSprite(spriteCaptor.capture(), any(Offset.class), anyDouble(), any(Percent.class));
+        verify(screen).drawSprite(spriteCaptor.capture(), any(Offset.class), any(SpriteDrawOptions.class));
 
         Frame resultImage = spriteCaptor.getValue().get().singleFrame();
 
@@ -93,14 +94,11 @@ class DefaultLightTest {
 
         light.render();
         var offset = ArgumentCaptor.forClass(Offset.class);
-        var resolution = ArgumentCaptor.forClass(Double.class);
-        var opacity = ArgumentCaptor.forClass(Percent.class);
 
         verify(screen).drawSprite(
                 spriteCaptor.capture(),
                 offset.capture(),
-                resolution.capture(),
-                opacity.capture());
+                Mockito.any(SpriteDrawOptions.class));
 
         Frame resultImage = spriteCaptor.getValue().get().singleFrame();
 
@@ -121,15 +119,11 @@ class DefaultLightTest {
         light.addSpotLight($(40, 80), 140, Color.RED);
 
         light.render();
-        var offset = ArgumentCaptor.forClass(Offset.class);
-        var resolution = ArgumentCaptor.forClass(Double.class);
-        var opacity = ArgumentCaptor.forClass(Percent.class);
 
         verify(screen).drawSprite(
                 spriteCaptor.capture(),
-                offset.capture(),
-                resolution.capture(),
-                opacity.capture());
+                any(Offset.class),
+                any(SpriteDrawOptions.class));
 
         Frame resultImage = spriteCaptor.getValue().get().singleFrame();
 

@@ -1,21 +1,20 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.graphics.Flip;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+
+import java.io.Serial;
 
 public class RenderComponent implements Component {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public Sprite sprite;
     public int drawOrder;
-    public Percent opacity;
-    public double scale = 1;
-    public Rotation rotation = Rotation.none();
-    public Flip flip = Flip.NONE;
+    public SpriteDrawOptions options;
 
     public RenderComponent() {
         this(0);
@@ -36,6 +35,6 @@ public class RenderComponent implements Component {
     public RenderComponent(final Sprite sprite, final int drawOrder, final Percent opacity) {
         this.sprite = sprite;
         this.drawOrder = drawOrder;
-        this.opacity = opacity;
+        this.options = SpriteDrawOptions.originalSize().opacity(opacity);
     }
 }

@@ -3,32 +3,28 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
 
-    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
+    /**
+     * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
+     * @see #drawSpriteBatch(SpriteBatch)
+     * @see #drawSpriteBatch(SpriteBatch, Bounds)
+     */
+    World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
 
-    default World drawSpriteBatch(final SpriteBatch spriteBatch) {
-        return drawSpriteBatch(spriteBatch, null);
-    }
-
-    World drawSprite(Sprite sprite, Vector origin, double scale, Percent opacity, Rotation rotation,
-                     Flip flip, Bounds clip);
-
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity,
-                             final Rotation rotation, final Flip flip) {
-        return drawSprite(sprite, origin, 1, opacity, rotation, flip, null);
-    }
-
-    default World drawSprite(final Sprite sprite, final Vector origin, final Percent opacity) {
-        return drawSprite(sprite, origin, opacity, Rotation.none(), Flip.NONE);
-    }
-
-    default World drawSprite(final Sprite sprite, final Vector origin) {
-        return drawSprite(sprite, origin, Percent.max());
-    }
+    /**
+     * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions} but only draws on
+     * the given {@link Bounds}. Can be used to apply effects.
+     *
+     * @see #drawSpriteBatch(SpriteBatch)
+     * @see #drawSpriteBatch(SpriteBatch, Bounds)
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions)
+     */
+    World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
     World drawText(Vector offset, String text, Font font, Color color);
 
@@ -53,8 +49,8 @@ public interface World {
 
     /**
      * Draw a {@link Line} on the {@link World} using {@link RectangleDrawOptions}.
-     * 
-     * @see #drawLine(Line, LineDrawOptions) 
+     *
+     * @see #drawLine(Line, LineDrawOptions)
      */
     World drawLine(Vector from, Vector to, LineDrawOptions options);
 
@@ -71,4 +67,23 @@ public interface World {
      * Draw a circle on the {@link World} using {@link CircleDrawOptions}.
      */
     World drawCircle(Vector position, double radius, CircleDrawOptions options);
+
+    /**
+     * Draws a {@link SpriteBatch} (multiple ordered {@link Sprite}s) on the {@link World}.
+     *
+     * @see #drawSpriteBatch(SpriteBatch, Bounds)
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
+     */
+    World drawSpriteBatch(SpriteBatch spriteBatch);
+
+    /**
+     * Draws a {@link SpriteBatch} (multiple ordered {@link Sprite}s) on the {@link World} but only draws on the
+     * given {@link Bounds}. Can be used to apply effects.
+     *
+     * @see #drawSpriteBatch(SpriteBatch)
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
+     */
+    World drawSpriteBatch(SpriteBatch spriteBatch, Bounds clip);
 }

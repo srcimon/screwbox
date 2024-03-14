@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -22,25 +20,12 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
-        // does nothing
-    }
-
-    @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         // does nothing
     }
 
     @Override
     public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        // does nothing
-    }
-
-    @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation,
-                           final Flip flip, final ScreenBounds clip) {
         // does nothing
     }
 
@@ -56,6 +41,21 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+        // does nothing
+    }
+
+    @Override
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        // does nothing
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        // does nothing
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 

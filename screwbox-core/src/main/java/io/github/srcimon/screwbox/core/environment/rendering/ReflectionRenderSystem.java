@@ -4,21 +4,21 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.World;
-import io.github.srcimon.screwbox.core.environment.*;
 
 import java.util.List;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class ReflectionRenderSystem implements EntitySystem {
 
-    private static final Archetype REFLECTING_AREAS = Archetype.of(
-            ReflectionComponent.class, TransformComponent.class);
-
-    private static final Archetype RELECTED_ENTITIES = Archetype.of(
-            TransformComponent.class, RenderComponent.class);
+    private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
+    private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
 
     private static final class ReflectionArea {
 
@@ -46,21 +46,17 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final RenderComponent render = reflectableEntity.get(RenderComponent.class);
                     final var spriteSize = render.sprite.size();
                     final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
-                    
+
                     final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
                     final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
                     final var effectOrigin = Vector.of(
                             spriteOrigin.x() + xDelta,
                             2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
-                    
-                    spriteBatch.addEntry(
-                            render.sprite,
-                            effectOrigin,
-                            render.scale,
-                            render.opacity.multiply(opacityModifier),
-                            render.rotation,
-                            render.flip.invertVertical(),
-                            render.drawOrder);
+
+                    final var options = render.options
+                            .opacity(render.options.opacity().multiply(opacityModifier))
+                            .flipVertical(!render.options.isFlipVertical());
+                    spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }
             return spriteBatch;
@@ -69,18 +65,15 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final World world = engine.graphics().world();
-        final Bounds visibleArea = world.visibleArea();
+        final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
-            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds
-                    .intersection(visibleArea);
-            if (reflectionOnScreen.isPresent()) {
-                final var area = new ReflectionArea(reflectionOnScreen.get(),
-                        reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
+            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
+            reflectionOnScreen.ifPresent(reflection -> {
+                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-                world.drawSpriteBatch(batch, reflectionOnScreen.get());
-            }
+                engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
+            });
         }
     }
 

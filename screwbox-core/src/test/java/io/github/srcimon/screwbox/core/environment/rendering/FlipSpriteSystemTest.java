@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.graphics.Flip;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,9 +36,9 @@ class FlipSpriteSystemTest {
 
         environment.update();
 
-        assertThat(movingRight.get(RenderComponent.class).flip).isEqualTo(Flip.NONE);
-        assertThat(movingLeftUp.get(RenderComponent.class).flip).isEqualTo(Flip.HORIZONTAL);
-        assertThat(movingDown.get(RenderComponent.class).flip).isEqualTo(Flip.NONE);
+        assertThat(movingRight.get(RenderComponent.class).options.isFlipHorizontal()).isFalse();
+        assertThat(movingLeftUp.get(RenderComponent.class).options.isFlipHorizontal()).isTrue();
+        assertThat(movingDown.get(RenderComponent.class).options.isFlipHorizontal()).isFalse();
     }
 
 }

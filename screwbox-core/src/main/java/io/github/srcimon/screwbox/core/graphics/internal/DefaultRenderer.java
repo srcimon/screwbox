@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
@@ -10,8 +9,6 @@ import io.github.srcimon.screwbox.core.graphics.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.function.Supplier;
-
-import static java.util.Objects.nonNull;
 
 public class DefaultRenderer implements Renderer {
 
@@ -65,42 +62,14 @@ public class DefaultRenderer implements Renderer {
         drawText(offset, text, font, color);
     }
 
-    @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
-        applyOpacityConfig(opacity);
-
-        final var oldClip = graphics.getClip();
-        if (nonNull(clip)) {
-            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.size().width(),
-                    clip.size().height());
-        }
-        if (!rotation.isNone()) {
-            final double x = origin.x() + sprite.size().width() * scale / 2.0;
-            final double y = origin.y() + sprite.size().height() * scale / 2.0;
-            final double radians = rotation.radians();
-            graphics.rotate(radians, x, y);
-            drawSpriteInContext(sprite, origin, scale, flip);
-            graphics.rotate(-radians, x, y);
-        } else {
-            drawSpriteInContext(sprite, origin, scale, flip);
-        }
-
-        if (nonNull(clip)) {
-            graphics.setClip(oldClip);
-        }
-
-        resetOpacityConfig(opacity);
-    }
-
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale, final Flip flip) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
-        final double xCorrect = flip.isHorizontal() ? scale * size.width() : 0;
-        final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
+        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
+        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
-        transform.scale(scale * (flip.isHorizontal() ? -1 : 1), scale * (flip.isVertical() ? -1 : 1));
+        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
 
@@ -109,12 +78,6 @@ public class DefaultRenderer implements Renderer {
             lastUsedColor = color;
             graphics.setColor(AwtMapper.toAwtColor(color));
         }
-    }
-
-    @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                           Flip flip, ScreenBounds clip) {
-        drawSprite(sprite.get(), origin, scale, opacity, rotation, flip, clip);
     }
 
     @Override
@@ -191,6 +154,45 @@ public class DefaultRenderer implements Renderer {
                 graphics.setStroke(oldStroke);
             }
         }
+    }
+
+    @Override
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        drawSprite(sprite.get(), origin, options);
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        applyOpacityConfig(options.opacity());
+
+        if (!options.rotation().isNone()) {
+            final double x = origin.x() + sprite.size().width() * options.scale() / 2.0;
+            final double y = origin.y() + sprite.size().height() * options.scale() / 2.0;
+            final double radians = options.rotation().radians();
+            graphics.rotate(radians, x, y);
+            drawSpriteInContext(sprite, origin, options);
+            graphics.rotate(-radians, x, y);
+        } else {
+            drawSpriteInContext(sprite, origin, options);
+        }
+
+        resetOpacityConfig(options.opacity());
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+
+        final var oldClip = graphics.getClip();
+        graphics.setClip(
+                clip.offset().x(),
+                clip.offset().y(),
+                clip.size().width(),
+                clip.size().height());
+
+        drawSprite(sprite, origin, options);
+
+        graphics.setClip(oldClip);
+
     }
 
 }

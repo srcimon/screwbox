@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 
 import java.util.function.Supplier;
 
@@ -64,43 +63,29 @@ public interface Screen {
      */
     Screen drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
-    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                      Flip flip, ScreenBounds clipArea);
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
+     */
+    Screen drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
-    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
-    }
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
+     */
+    Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
-    default Screen drawSprite(Supplier<Sprite> sprite, Offset origin, double scale, Percent opacity, Rotation rotation) {
-        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin) {
-        return drawSprite(sprite, origin, Percent.max());
-    }
-
-    Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation,
-                      Flip flip, ScreenBounds clip);
-
-    default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity) {
-        return drawSprite(sprite, origin, scale, opacity, Rotation.none(), Flip.NONE, null);
-    }
-
-    default Screen drawSprite(Sprite sprite, Offset origin, double scale, Percent opacity, Rotation rotation) {
-        return drawSprite(sprite, origin, scale, opacity, rotation, Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Sprite sprite, final Offset origin, final Percent opacity) {
-        return drawSprite(sprite, origin, 1, opacity, Rotation.none(), Flip.NONE, null);
-    }
-
-    default Screen drawSprite(final Sprite sprite, final Offset origin) {
-        return drawSprite(sprite, origin, Percent.max());
-    }
+    /**
+     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
+     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
+     */
+    Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 

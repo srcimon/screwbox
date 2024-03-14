@@ -2,11 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
-
-import static java.util.Objects.isNull;
 
 public class DefaultWorld implements World {
 
@@ -39,17 +36,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSprite(final Sprite sprite, final Vector origin, final double scale, final Percent opacity,
-                            final Rotation rotation, final Flip flip, final Bounds clip) {
-        final var offset = toOffset(origin);
-        final var windowClipArea = isNull(clip) ? null : toScreen(clip);
-        final var x = offset.x() - ((scale - 1) * sprite.size().width());
-        final var y = offset.y() - ((scale - 1) * sprite.size().height());
-        screen.drawSprite(sprite, Offset.at(x, y), scale * zoom, opacity, rotation, flip, windowClipArea);
-        return this;
-    }
-
-    @Override
     public Bounds visibleArea() {
         return visibleArea;
     }
@@ -71,6 +57,22 @@ public class DefaultWorld implements World {
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
         screen.drawCircle(toOffset(position), toDistance(radius), options);
+        return this;
+    }
+
+    @Override
+    public World drawSpriteBatch(final SpriteBatch spriteBatch) {
+        for(final var entry : spriteBatch.entriesInDrawOrder()) {
+            drawSprite(entry.sprite(), entry.position(), entry.options());
+        }
+        return this;
+    }
+
+    @Override
+    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
+        for(final var entry : spriteBatch.entriesInDrawOrder()) {
+            drawSprite(entry.sprite(), entry.position(), entry.options(), clip);
+        }
         return this;
     }
 
@@ -110,16 +112,23 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
-        for (final SpriteBatch.SpriteBatchEntry entry : spriteBatch.entriesInDrawOrder()) {
-            drawSprite(entry.sprite(),
-                    entry.position(),
-                    entry.scale(),
-                    entry.opacity(),
-                    entry.rotation(),
-                    entry.flip(),
-                    clip);
-        }
+    public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
+        final var offset = toOffset(origin);
+        final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
+        final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
+        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
+
+        screen.drawSprite(sprite, Offset.at(x, y), scaledOptions);
+        return this;
+    }
+
+    @Override
+    public World drawSprite(final Sprite sprite, final Vector origin,final  SpriteDrawOptions options, final Bounds clip) {
+        final var offset = toOffset(origin);
+        final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
+        final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
+        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
+        screen.drawSprite(sprite, Offset.at(x, y), scaledOptions, toScreen(clip));
         return this;
     }
 

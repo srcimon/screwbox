@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,9 @@ class DefaultGraphicsTest {
 
     @Mock
     GraphicsDevice graphicsDevice;
+
+    @Mock
+    DefaultWorld world;
 
     @Test
     void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {
@@ -48,6 +53,15 @@ class DefaultGraphicsTest {
         List<Size> supportedResolutions = graphics.supportedResolutions(WIDESCREEN);
 
         assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
+    }
+
+    @Test
+    void toScreen_returnsTranslatedBounds() {
+        when(world.toScreen(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
+
+        var result = graphics.toScreen(Bounds.$$(20, 20, 10, 2));
+
+        assertThat(result).isEqualTo(new ScreenBounds(4, 1, 10, 10));
     }
 
 }

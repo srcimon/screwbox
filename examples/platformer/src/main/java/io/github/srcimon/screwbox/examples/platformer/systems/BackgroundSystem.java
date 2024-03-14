@@ -28,7 +28,7 @@ public class BackgroundSystem implements EntitySystem {
             final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * background.parallaxX,
                     cameraPosition.y() * -1 * background.parallaxY);
-            engine.graphics().screen().fillWith(offset, sprite.sprite, background.zoom, sprite.opacity);
+            engine.graphics().screen().fillWith(offset, sprite.sprite, background.zoom, sprite.options.opacity());
         }
     }
 }

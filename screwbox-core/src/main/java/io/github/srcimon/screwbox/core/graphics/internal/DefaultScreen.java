@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -12,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
@@ -74,9 +74,27 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        if(radius > 0) {
+        if (radius > 0) {
             renderer.drawCircle(offset, radius, options);
         }
+        return this;
+    }
+
+    @Override
+    public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderer.drawSprite(sprite, origin, options);
+        return this;
+    }
+
+    @Override
+    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderer.drawSprite(sprite, origin, options);
+        return this;
+    }
+
+    @Override
+    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderer.drawSprite(sprite, origin, options, clip);
         return this;
     }
 
@@ -92,7 +110,7 @@ public class DefaultScreen implements Screen {
         for (long x = 0; x <= countX + 1; x++) {
             for (long y = 0; y <= countY + 1; y++) {
                 final Offset thisOffset = Offset.at((double) x * spriteWidth + offsetX, (double) y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
+                drawSprite(sprite, thisOffset, scaled(scale).opacity(opacity));
             }
         }
         return this;
@@ -122,13 +140,6 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         renderer.drawTextCentered(position, text, font, color);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                             final Rotation rotation, final Flip flip, final ScreenBounds clip) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip);
         return this;
     }
 
@@ -169,14 +180,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale,
-                             final Percent opacity, final Rotation rotation,
-                             final Flip flip, final ScreenBounds clipArea) {
-        renderer.drawSprite(sprite, origin, scale, opacity, rotation, flip, clipArea);
-        return this;
-    }
-
-    @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
@@ -187,7 +190,7 @@ public class DefaultScreen implements Screen {
                                  final Pixelfont font) {
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scale, opacity, Rotation.none(), Flip.NONE, null);
+            drawSprite(sprite, currentOffset, scaled(scale).opacity(opacity));
             currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
         }
     }

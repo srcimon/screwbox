@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -66,22 +64,24 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final double scale, final Percent opacity,
-                           final Rotation rotation, final Flip flip, final ScreenBounds clip) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
+    }
 
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
+    }
+
+    @Override
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         renderTasks.active().add(() -> next.drawText(offset, text, font, color));
 
-    }
-
-    @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final double scale, final Percent opacity, final Rotation rotation,
-                           final Flip flip, final ScreenBounds clip) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, scale, opacity, rotation, flip, clip));
     }
 
     private FutureTask<Void> finishRenderTasks() {

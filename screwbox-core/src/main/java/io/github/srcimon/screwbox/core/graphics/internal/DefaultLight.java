@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
+import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
@@ -162,7 +163,7 @@ public class DefaultLight implements Light {
             }
         });
 
-        screen.drawSprite(sprite, Offset.origin(), configuration.lightmapScale(), ambientLight.invert());
+        screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
