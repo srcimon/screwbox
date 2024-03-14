@@ -10,16 +10,17 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 /**
  * Customize the drawing of {@link Sprite}s.
- * @param scale the scale of the {@link Sprite}
- * @param opacity the opacity of the {@link Sprite}
+ *
+ * @param scale    the scale of the {@link Sprite}
+ * @param opacity  the opacity of the {@link Sprite}
  * @param rotation the {@link Rotation} of the {@link Sprite}
- * @param flip the {@link Flip} of the {@link Sprite}
- *             
+ * @param flip     the {@link Flip} of the {@link Sprite}
  * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, Flip flip) {
 
     //TODO Replace flip with flipHorizontal and flipVertical booleans
+
     /**
      * Returns the vertical and or horizontal flip (mirror) mode for an
      * {@link Sprite}.
