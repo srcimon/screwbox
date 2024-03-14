@@ -2,10 +2,13 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
 import java.util.Optional;
@@ -25,7 +28,7 @@ public class CameraShiftSystem implements EntitySystem {
         double delta = engine.loop().delta();
         Entity player = playerEntity.get();
         var configuration = engine.environment().fetchSingletonComponent(CameraTargetComponent.class);
-        if (SpriteDrawOptions.Flip.HORIZONTAL.equals(player.get(RenderComponent.class).options.flip())) {
+        if (player.get(RenderComponent.class).options.isFlipHorizontal()) {
             configuration.shift = Vector.of(
                     Math.max(-50,
                             configuration.shift.x() - configuration.followSpeed * delta * 100),

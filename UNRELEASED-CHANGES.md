@@ -15,7 +15,7 @@
 - Increased min fps from 10 to 30 to avoid issues with physics in very low fps situations
 - Replaced `LightOptions` builder pattern with simple variables for color and radius
 - Replaced `RectangleDrawOptions.isFilled()` with `.style()`
-- Moved `Flip` into `SpriteDrawOptions`
+- Replaced `Flip` with `SpriteDrawOptions`
 
 ### 📦 Dependency updates
 

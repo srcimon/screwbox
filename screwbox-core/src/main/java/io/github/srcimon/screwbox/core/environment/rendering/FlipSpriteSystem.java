@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 @Order(SystemOrder.PRESENTATION_PREPARE)
 public class FlipSpriteSystem implements EntitySystem {
@@ -20,9 +19,9 @@ public class FlipSpriteSystem implements EntitySystem {
             final var momentum = entity.get(PhysicsComponent.class).momentum;
             RenderComponent renderComponent = entity.get(RenderComponent.class);
             if (momentum.x() > 0) {
-                renderComponent.options = renderComponent.options.flip(SpriteDrawOptions.Flip.NONE);
+                renderComponent.options = renderComponent.options.flipHorizontal(false);
             } else if (momentum.x() < 0) {
-                renderComponent.options = renderComponent.options.flip(SpriteDrawOptions.Flip.HORIZONTAL);
+                renderComponent.options = renderComponent.options.flipHorizontal(true);
             }
         }
     }

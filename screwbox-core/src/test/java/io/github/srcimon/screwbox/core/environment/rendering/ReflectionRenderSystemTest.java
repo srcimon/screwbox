@@ -62,7 +62,7 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.getFirst();
-        assertThat(spriteBatchEntry.options()).isEqualTo(SpriteDrawOptions.originalSize().flip(SpriteDrawOptions.Flip.VERTICAL).opacity(Percent.of(0.25)));
+        assertThat(spriteBatchEntry.options()).isEqualTo(SpriteDrawOptions.originalSize().opacity(Percent.of(0.25)));
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.position()).isEqualTo($(-3, 7));
     }
@@ -117,7 +117,8 @@ class ReflectionRenderSystemTest {
         assertThat(restrictedArea.getValue()).isEqualTo($$(0, 10, 10, 10));
 
         var spriteBatchEntry = spriteBatchEntries.getFirst();
-        assertThat(spriteBatchEntry.options().flip()).isEqualTo(SpriteDrawOptions.Flip.VERTICAL);
+        assertThat(spriteBatchEntry.options().isFlipHorizontal()).isFalse();
+        assertThat(spriteBatchEntry.options().isFlipVertical()).isFalse();
         assertThat(spriteBatchEntry.sprite()).isEqualTo(SPRITE);
         assertThat(spriteBatchEntry.options().opacity().value()).isEqualTo(0.48, offset(0.01));
         assertThat(spriteBatchEntry.position().x()).isEqualTo(-1.55, offset(0.01));

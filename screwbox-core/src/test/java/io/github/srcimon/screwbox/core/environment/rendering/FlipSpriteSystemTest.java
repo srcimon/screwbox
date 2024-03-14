@@ -36,9 +36,9 @@ class FlipSpriteSystemTest {
 
         environment.update();
 
-        assertThat(movingRight.get(RenderComponent.class).options.flip()).isEqualTo(SpriteDrawOptions.Flip.NONE);
-        assertThat(movingLeftUp.get(RenderComponent.class).options.flip()).isEqualTo(SpriteDrawOptions.Flip.HORIZONTAL);
-        assertThat(movingDown.get(RenderComponent.class).options.flip()).isEqualTo(SpriteDrawOptions.Flip.NONE);
+        assertThat(movingRight.get(RenderComponent.class).options.isFlipHorizontal()).isFalse();
+        assertThat(movingLeftUp.get(RenderComponent.class).options.isFlipHorizontal()).isTrue();
+        assertThat(movingDown.get(RenderComponent.class).options.isFlipHorizontal()).isFalse();
     }
 
 }

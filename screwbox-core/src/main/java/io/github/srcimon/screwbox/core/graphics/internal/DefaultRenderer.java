@@ -62,14 +62,14 @@ public class DefaultRenderer implements Renderer {
         drawText(offset, text, font, color);
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final double scale, final SpriteDrawOptions.Flip flip) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
-        final double xCorrect = flip.isHorizontal() ? scale * size.width() : 0;
-        final double yCorrect = flip.isVertical() ? scale * size.height() : 0;
+        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
+        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
-        transform.scale(scale * (flip.isHorizontal() ? -1 : 1), scale * (flip.isVertical() ? -1 : 1));
+        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
 
@@ -170,10 +170,10 @@ public class DefaultRenderer implements Renderer {
             final double y = origin.y() + sprite.size().height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
-            drawSpriteInContext(sprite, origin, options.scale(), options.flip());
+            drawSpriteInContext(sprite, origin, options);
             graphics.rotate(-radians, x, y);
         } else {
-            drawSpriteInContext(sprite, origin, options.scale(), options.flip());
+            drawSpriteInContext(sprite, origin, options);
         }
 
         resetOpacityConfig(options.opacity());

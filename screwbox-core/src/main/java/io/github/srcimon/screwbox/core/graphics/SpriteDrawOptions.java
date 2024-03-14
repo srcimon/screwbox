@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 
+import java.io.Serializable;
+
 //TODO rectangle immutable
 //TODO line immutable
 //TODO circle immutable
@@ -11,74 +13,20 @@ import io.github.srcimon.screwbox.core.Rotation;
 /**
  * Customize the drawing of {@link Sprite}s.
  *
- * @param scale    the scale of the {@link Sprite}
- * @param opacity  the opacity of the {@link Sprite}
- * @param rotation the {@link Rotation} of the {@link Sprite}
- * @param flip     the {@link Flip} of the {@link Sprite}
+ * @param scale            the scale of the {@link Sprite}
+ * @param opacity          the opacity of the {@link Sprite}
+ * @param rotation         the {@link Rotation} of the {@link Sprite}
+ * @param isFlipHorizontal is the {@link Sprite} flipped horizontally
+ * @param isFlipVertical   is the {@link Sprite} flipped vertically
  * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, Flip flip) {
+public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
+                                boolean isFlipVertical) implements Serializable {
 
-    //TODO Replace flip with flipHorizontal and flipVertical booleans
-
-    /**
-     * Returns the vertical and or horizontal flip (mirror) mode for an
-     * {@link Sprite}.
-     */
-    public enum Flip {
-
-        /**
-         * flipped horizontally
-         */
-        HORIZONTAL(true, false),
-
-        /**
-         * flipped vertically
-         */
-        VERTICAL(false, true),
-
-        /**
-         * flipped horizontally and vertically
-         */
-        BOTH(true, true),
-
-        /**
-         * not flipped
-         */
-        NONE(false, false);
-
-        private final boolean horizontal;
-        private final boolean vertical;
-
-        Flip(final boolean horizontal, final boolean vertical) {
-            this.horizontal = horizontal;
-            this.vertical = vertical;
-        }
-
-        public boolean isHorizontal() {
-            return horizontal;
-        }
-
-        public boolean isVertical() {
-            return vertical;
-        }
-
-        /**
-         * Returns the {@link Flip} with inverted vertical component.
-         *
-         * @return the inverted {@link Flip}
-         */
-        public Flip invertVertical() {
-            if (isHorizontal()) {
-                return isVertical() ? HORIZONTAL : BOTH;
-            }
-
-            return isVertical() ? NONE : VERTICAL;
-        }
-    }
+    //TODO Replace flip with isFlipHorizontalisFlip and isFlipVertical booleans
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Rotation.none(), Flip.NONE);
+        this(scale, Percent.max(), Rotation.none(), false, false);
     }
 
     /**
@@ -99,27 +47,30 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #scale()}.
      */
     public SpriteDrawOptions scale(final double scale) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flip);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
     }
 
     /**
      * Creates a new instance with updated {@link #opacity()}.
      */
     public SpriteDrawOptions opacity(final Percent opacity) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flip);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
     }
 
     /**
      * Creates a new instance with updated {@link #rotation()}.
      */
     public SpriteDrawOptions rotation(final Rotation rotation) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flip);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
     }
 
-    /**
-     * Creates a new instance with updated {@link Flip}.
-     */
-    public SpriteDrawOptions flip(final Flip flip) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flip);
+    //TODO Doc
+    public SpriteDrawOptions flipHorizontal(boolean flipHorizontal) {
+        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical);
+    }
+
+    //TODO Doc
+    public SpriteDrawOptions flipVertical(boolean flipVertical) {
+        return new SpriteDrawOptions(scale, opacity, rotation, flipVertical, isFlipVertical);
     }
 }
