@@ -19,6 +19,7 @@ import io.github.srcimon.screwbox.core.Rotation;
  */
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, Flip flip) {
 
+    //TODO Replace flip with flipHorizontal and flipVertical booleans
     /**
      * Returns the vertical and or horizontal flip (mirror) mode for an
      * {@link Sprite}.
