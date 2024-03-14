@@ -10,6 +10,14 @@ import io.github.srcimon.screwbox.core.Vector;
  */
 public record CircleDrawOptions(Style style, Color color, int strokeWidth) {
 
+    public CircleDrawOptions {
+        if (style != Style.OUTLINE && strokeWidth != 1) {
+            throw new IllegalArgumentException("stroke width is only used when drawing circle outline");
+        }
+        if (strokeWidth < 1) {
+            throw new IllegalArgumentException("stroke width must be positive");
+        }
+    }
     /**
      * The style used to draw.
      */

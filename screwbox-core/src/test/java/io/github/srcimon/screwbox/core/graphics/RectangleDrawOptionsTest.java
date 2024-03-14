@@ -4,8 +4,27 @@ import io.github.srcimon.screwbox.core.Rotation;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class RectangleDrawOptionsTest {
+
+    @Test
+    void strokeWidth_filledRectangle_throwsException() {
+        var options = RectangleDrawOptions.filled(Color.RED);
+
+        assertThatThrownBy(() -> options.strokeWidth(4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("stroke width is only used when drawing outline of rectangles");
+    }
+
+    @Test
+    void strokeWidth_widthZero_throwsException() {
+        var options = RectangleDrawOptions.outline(Color.RED);
+
+        assertThatThrownBy(() -> options.strokeWidth(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("stroke width must be positive");
+    }
 
     @Test
     void filled_createsFilledOptions() {

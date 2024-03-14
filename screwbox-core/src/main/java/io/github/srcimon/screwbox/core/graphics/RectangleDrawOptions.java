@@ -28,6 +28,15 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Ro
         OUTLINE
     }
 
+    public RectangleDrawOptions {
+        if (Style.OUTLINE != style && strokeWidth != 1) {
+            throw new IllegalArgumentException("stroke width is only used when drawing outline of rectangles");
+        }
+        if (strokeWidth < 1) {
+            throw new IllegalArgumentException("stroke width must be positive");
+        }
+    }
+
     private RectangleDrawOptions(final Style style, final Color color) {
         this(style, color, 1, Rotation.none());
     }
