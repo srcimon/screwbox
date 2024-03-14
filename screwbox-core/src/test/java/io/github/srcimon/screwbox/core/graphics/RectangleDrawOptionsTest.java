@@ -21,7 +21,7 @@ class RectangleDrawOptionsTest {
     void outline_createsOutlineOptions() {
         var options = RectangleDrawOptions.outline(Color.YELLOW).strokeWidth(5);
 
-        assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.FILLED);
+        assertThat(options.style()).isEqualTo(RectangleDrawOptions.Style.OUTLINE);
         assertThat(options.color()).isEqualTo(Color.YELLOW);
         assertThat(options.rotation()).isEqualTo(Rotation.none());
         assertThat(options.strokeWidth()).isEqualTo(5);
