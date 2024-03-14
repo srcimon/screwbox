@@ -24,8 +24,6 @@ import java.io.Serializable;
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical) implements Serializable {
 
-    //TODO Replace flip with isFlipHorizontalisFlip and isFlipVertical booleans
-
     private SpriteDrawOptions(final double scale) {
         this(scale, Percent.max(), Rotation.none(), false, false);
     }

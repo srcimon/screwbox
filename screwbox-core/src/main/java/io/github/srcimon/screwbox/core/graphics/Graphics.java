@@ -48,7 +48,6 @@ public interface Graphics {
     /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
-    //TODO: test
     ScreenBounds toScreen(Bounds bounds);
     /**
      * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
