@@ -5,8 +5,6 @@ import io.github.srcimon.screwbox.core.Rotation;
 
 import java.io.Serializable;
 
-//TODO: camerashakeoptions immutable
-
 /**
  * Customize the drawing of {@link Sprite}s.
  *
