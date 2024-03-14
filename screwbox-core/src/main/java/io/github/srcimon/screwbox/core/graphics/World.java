@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
 
-
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
      *
@@ -69,7 +68,6 @@ public interface World {
      */
     World drawCircle(Vector position, double radius, CircleDrawOptions options);
 
-    //TODO test
     /**
      * Draws a {@link SpriteBatch} (multiple ordered {@link Sprite}s) on the {@link World}.
      *
@@ -79,7 +77,6 @@ public interface World {
      */
     World drawSpriteBatch(SpriteBatch spriteBatch);
 
-    //TODO test
     /**
      * Draws a {@link SpriteBatch} (multiple ordered {@link Sprite}s) on the {@link World} but only draws on the
      * given {@link Bounds}. Can be used to apply effects.
