@@ -55,7 +55,7 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     final var options = render.options
                             .opacity(render.options.opacity().multiply(opacityModifier))
-                            .flipVertical(render.options.isFlipVertical());
+                            .flipVertical(!render.options.isFlipVertical());
                     spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
                 }
             }

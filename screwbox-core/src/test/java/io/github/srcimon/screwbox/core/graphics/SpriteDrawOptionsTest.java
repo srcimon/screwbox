@@ -23,17 +23,18 @@ class SpriteDrawOptionsTest {
     void originalSize_returnsInstanceWithoutScale() {
         var options = SpriteDrawOptions.originalSize()
                 .flipHorizontal(true)
+                .flipVertical(true)
                 .rotation(Rotation.degrees(30));
 
         assertThat(options.scale()).isEqualTo(1);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Rotation.degrees(30));
         assertThat(options.isFlipHorizontal()).isTrue();
-        assertThat(options.isFlipVertical()).isFalse();
+        assertThat(options.isFlipVertical()).isTrue();
     }
 
     @Test
-    void scale_changesScale() {
+    void scaleA_changesScale() {
         var options = SpriteDrawOptions.originalSize().scale(4);
 
         assertThat(options.scale()).isEqualTo(4);

@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @param rotation         the {@link Rotation} of the {@link Sprite}
  * @param isFlipHorizontal is the {@link Sprite} flipped horizontally
  * @param isFlipVertical   is the {@link Sprite} flipped vertically
+ *
  * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
@@ -64,13 +65,17 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
     }
 
-    //TODO Doc
+    /**
+     * Creates a new instance with updated {@link #isFlipHorizontal()}.
+     */
     public SpriteDrawOptions flipHorizontal(boolean flipHorizontal) {
         return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical);
     }
 
-    //TODO Doc
+    /**
+     * Creates a new instance with updated {@link #isFlipVertical()}.
+     */
     public SpriteDrawOptions flipVertical(boolean flipVertical) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flipVertical, isFlipVertical);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical);
     }
 }
