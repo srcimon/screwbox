@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.World;
 
 import java.util.List;
 
@@ -65,18 +64,15 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final World world = engine.graphics().world();
-        final Bounds visibleArea = world.visibleArea();
+        final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
-            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds
-                    .intersection(visibleArea);
-            if (reflectionOnScreen.isPresent()) {
-                final var area = new ReflectionArea(reflectionOnScreen.get(),
-                        reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
+            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
+            reflectionOnScreen.ifPresent(reflection -> {
+                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-                world.drawSpriteBatch(batch, reflectionOnScreen.get());
-            }
+                engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
+            });
         }
     }
 
