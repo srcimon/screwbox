@@ -25,6 +25,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -295,9 +296,10 @@ class DefaultEnvironmentTest {
     void enableTweening_addsTweeningSystems() {
         environment.enableTweening();
 
-        assertThat(environment.systems()).hasSize(4)
+        assertThat(environment.systems()).hasSize(5)
                 .anyMatch(system -> system.getClass().equals(TweenSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
     }

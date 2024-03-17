@@ -20,6 +20,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -266,6 +267,7 @@ public interface Environment {
      * @see TweenDestroySystem
      * @see TweenPositionSystem
      * @see TweenOpacitySystem
+     * @see TweenLightSystem
      */
     Environment enableTweening();
 

@@ -20,6 +20,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
@@ -32,7 +33,8 @@ public enum Feature {
             new TweenSystem(),
             new TweenPositionSystem(),
             new TweenDestroySystem(),
-            new TweenOpacitySystem()
+            new TweenOpacitySystem(),
+            new TweenLightSystem()
     ),
 
     RENDERING(
