@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 import io.github.srcimon.screwbox.core.Percent;
 
 import java.util.function.UnaryOperator;
+import java.util.Map;
 
 /**
  * Configures the direction and the value change in a tween.
@@ -32,7 +33,24 @@ public enum TweenMode {
     /**
      * Sinus fade in and out again: 0 to 1 to 0
      */
-    SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0));
+    SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
+
+//TODO FIXUP
+    FLICKER(in -> {
+    String te = "mmmmmmmmmmaaammmmmmmammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmaaaccddmmmmmmmmmmcmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmcdfmmmmmmmmmmmmmffeedmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmfffmm";
+        var chara = te.charAt((int)(te.length() * in.value() % te.length()));
+        return Percent.of(Map.of(
+                'm', 1.0,
+                'a', 0.0,
+                'b', 0.1,
+                'c', 0.2,
+                'd', 0.3,
+                'e', 0.4,
+                'f', 0.5
+
+        ).get(chara));
+    });
+
 
     private final UnaryOperator<Percent> adjustment;
 
