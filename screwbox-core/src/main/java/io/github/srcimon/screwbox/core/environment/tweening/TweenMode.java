@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
-import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 import io.github.srcimon.screwbox.core.Percent;
 
 import java.util.Map;
@@ -37,15 +36,21 @@ public enum TweenMode {
     SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
     //TODO FIXUP
-    FLICKER(in -> Sequence.valueAt(Sequence.FLICKER_SLOW, in));
+    FLICKER(in -> Sequences.FLICKER.valueAt(in));
 
-    private static class Sequence {
-        private static String FLICKER_SLOW = "mmmmmmmmmmaaammmmmmmammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmaaaccddmmmmmmmmmmcmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmcdfmmmmmmmmmmmmmffeedmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmfffmm";
+    private enum Sequences {
+        FLICKER("__________aab_______a__________________________________________________________________________aaaccdd__________c___________________________________________________________________________________________________________cdf_____________ffeed_____________________________________fff__");
 
-         private static Percent valueAt(String sequence, Percent position) {
-            var charAt = sequence.charAt((int) (sequence.length() * position.value() % sequence.length()));
+        private final String sequenceValue;
+
+        Sequences(final String sequenceValue) {
+            this.sequenceValue = sequenceValue;
+
+        }
+         private Percent valueAt(final Percent position) {
+            var charAt = sequenceValue.charAt((int) (sequenceValue.length() * position.value() % sequenceValue.length()));
             return Percent.of(Map.of(
-                    'm', 1.0,
+                    '_', 1.0,
                     'a', 0.0,
                     'b', 0.1,
                     'c', 0.2,
