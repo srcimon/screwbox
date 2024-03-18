@@ -37,18 +37,22 @@ public enum TweenMode {
 
     /**
      * Flickering effect. Mostly 1 but sometimes 0.
+     *
+     * @see #SPARKLE
      */
     FLICKER(FlickerSequence.FLICKER::sequenceValue),
 
     /**
-     * Flickering effect. Mostly 0 but sometimes 1.
+     * Sparkling effect. Mostly 0 but sometimes 1.
+     *
+     * @see #FLICKER
      */
-    FLICKER_INVERT(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
+    SPARKLE(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
 
     private enum FlickerSequence {
         FLICKER("##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##");
 
-        private static final Map<Character, Percent> MOSTLY_ON = Map.of(
+        private static final Map<Character, Percent> TRANSLATION = Map.of(
                 '_', Percent.zero(),
                 '#', Percent.max(),
                 '1', Percent.of(0.1),
@@ -65,7 +69,7 @@ public enum TweenMode {
 
         private Percent sequenceValue(Percent progress) {
             final int sequencePosition = (int) (sequenceString.length() * progress.value() % sequenceString.length());
-            return MOSTLY_ON.get(sequenceString.charAt(sequencePosition));
+            return TRANSLATION.get(sequenceString.charAt(sequencePosition));
         }
     }
 
