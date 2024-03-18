@@ -11,15 +11,19 @@ import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * Updates the opacity of all light components of an {@link Entity}, that use tweening and have an {@link TweenLightComponent}.
+ */
 public class TweenLightSystem implements EntitySystem {
 
-    private static final Archetype TWEENS = Archetype.of(TweenLightOpacityComponent.class, TweenComponent.class);
+    private static final Archetype TWEENS = Archetype.of(TweenLightComponent.class, TweenComponent.class);
 
     @Override
     public void update(Engine engine) {
         for (final Entity tweenEntity : engine.environment().fetchAll(TWEENS)) {
-            final var opacity = tweenEntity.get(TweenLightOpacityComponent.class);
+            final var opacity = tweenEntity.get(TweenLightComponent.class);
             final var advance = (opacity.to.value() - opacity.from.value()) * tweenEntity.get(TweenComponent.class).value.value();
+
             var pointLight = tweenEntity.get(PointLightComponent.class);
             if (nonNull(pointLight)) {
                 pointLight.color = pointLight.color.opacity(advance);
