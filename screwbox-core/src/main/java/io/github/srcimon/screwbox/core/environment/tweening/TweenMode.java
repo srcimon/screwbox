@@ -40,18 +40,17 @@ public enum TweenMode {
      *
      * @see #SPARKLE
      */
-    FLICKER(FlickerSequence.FLICKER::sequenceValue),
+    FLICKER(in -> FLickerSupport.sequenceValue(in)),
 
     /**
      * Sparkling effect. Mostly 0 but sometimes 1.
      *
      * @see #FLICKER
      */
-    SPARKLE(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
+    SPARKLE(in -> FLickerSupport.sequenceValue(in).invert());
 
-    private enum FlickerSequence {
-        FLICKER("##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##");
-
+    private class FLickerSupport {
+        private static final String FLICKER = "##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##";
         private static final Map<Character, Percent> TRANSLATION = Map.of(
                 '_', Percent.zero(),
                 '#', Percent.max(),
@@ -61,15 +60,9 @@ public enum TweenMode {
                 '4', Percent.of(0.4),
                 '5', Percent.of(0.5));
 
-        private final String sequenceString;
-
-        FlickerSequence(final String sequenceString) {
-            this.sequenceString = sequenceString;
-        }
-
-        private Percent sequenceValue(Percent progress) {
-            final int sequencePosition = (int) (sequenceString.length() * progress.value() % sequenceString.length());
-            return TRANSLATION.get(sequenceString.charAt(sequencePosition));
+        private static Percent sequenceValue(Percent progress) {
+            final int sequencePosition = (int) (FLICKER.length() * progress.value() % FLICKER.length());
+            return TRANSLATION.get(FLICKER.charAt(sequencePosition));
         }
     }
 
