@@ -35,9 +35,15 @@ public enum TweenMode {
      */
     SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
-    //TODO FIXUP
-    FLICKER_MOSTLY_ON(in -> FlickerSequence.FLICKER.sequenceValue(in)),
-    FLICKER_MOSTLY_OFF(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
+    /**
+     * Flickering effect. Mostly 1 but sometimes 0.
+     */
+    FLICKER(FlickerSequence.FLICKER::sequenceValue),
+
+    /**
+     * Flickering effect. Mostly 0 but sometimes 1.
+     */
+    FLICKER_INVERT(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
 
     private enum FlickerSequence {
         FLICKER("##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##");
