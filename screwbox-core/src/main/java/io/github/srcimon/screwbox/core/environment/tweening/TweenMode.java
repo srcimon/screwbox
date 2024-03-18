@@ -36,29 +36,33 @@ public enum TweenMode {
     SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
     //TODO FIXUP
-    FLICKER(in -> Sequences.FLICKER.valueAt(in));
+    FLICKER_MOSTLY_ON(in -> FlickerSequence.FLICKER.sequenceValue(in)),
+    FLICKER_MOSTLY_OFF(in -> FlickerSequence.FLICKER.sequenceValue(in).invert());
 
-    private enum Sequences {
-        FLICKER("__________aab_______a__________________________________________________________________________aaaccdd__________c___________________________________________________________________________________________________________cdf_____________ffeed_____________________________________fff__");
+    private enum FlickerSequence {
+        FLICKER("##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##");
 
-        private final String sequenceValue;
+        private static final Map<Character, Percent> MOSTLY_ON = Map.of(
+                '_', Percent.zero(),
+                '#', Percent.max(),
+                '1', Percent.of(0.1),
+                '2', Percent.of(0.2),
+                '3', Percent.of(0.3),
+                '4', Percent.of(0.4),
+                '5', Percent.of(0.5));
 
-        Sequences(final String sequenceValue) {
-            this.sequenceValue = sequenceValue;
+        private final String sequenceString;
 
+        FlickerSequence(final String sequenceString) {
+            this.sequenceString = sequenceString;
         }
-         private Percent valueAt(final Percent position) {
-            var charAt = sequenceValue.charAt((int) (sequenceValue.length() * position.value() % sequenceValue.length()));
-            return Percent.of(Map.of(
-                    '_', 1.0,
-                    'a', 0.0,
-                    'b', 0.1,
-                    'c', 0.2,
-                    'd', 0.3,
-                    'e', 0.4,
-                    'f', 0.5).get(charAt));
+
+        private Percent sequenceValue(Percent progress) {
+            final int sequencePosition = (int) (sequenceString.length() * progress.value() % sequenceString.length());
+            return MOSTLY_ON.get(sequenceString.charAt(sequencePosition));
         }
     }
+
 
     private final UnaryOperator<Percent> adjustment;
 
