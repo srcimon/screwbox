@@ -2,9 +2,10 @@
 
 - Optimized drawing of circles using `CircleDrawOptions` (#208)
 - Optimized drawing of sprites with `SpriteDrawOptions` (#200)
+- Added `TweenLightComponent` and `System` to support tweening of lights (#237)
 - Added new component and methods for adding light glow effects
+- Added new tween modes `SPARKLE` and `FLICKER` (#237)
 - Added `Graphics.toScreen(Bounds)`
-- Added new tween modes `SPARKLE` and `FLICKER`
 
 ### 🪛 Bug Fixes
 
