@@ -40,7 +40,7 @@ public enum TweenMode {
      *
      * @see #SPARKLE
      */
-    FLICKER(in -> FLickerSupport.sequenceValue(in)),
+    FLICKER(FLickerSupport::sequenceValue),
 
     /**
      * Sparkling effect. Mostly 0 but sometimes 1.
@@ -49,7 +49,7 @@ public enum TweenMode {
      */
     SPARKLE(in -> FLickerSupport.sequenceValue(in).invert());
 
-    private class FLickerSupport {
+    private static class FLickerSupport {
         private static final String FLICKER = "##########__1#######_##########################################################################___2233##########2##################################################5########################################################235#############55443#####################################555##";
         private static final Map<Character, Percent> TRANSLATION = Map.of(
                 '_', Percent.zero(),
