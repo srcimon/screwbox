@@ -1,9 +1,10 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
+import com.fasterxml.jackson.databind.ext.SqlBlobSerializer;
 import io.github.srcimon.screwbox.core.Percent;
 
-import java.util.function.UnaryOperator;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 /**
  * Configures the direction and the value change in a tween.
@@ -35,22 +36,24 @@ public enum TweenMode {
      */
     SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
-//TODO FIXUP
-    FLICKER(in -> {
-    String te = "mmmmmmmmmmaaammmmmmmammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmaaaccddmmmmmmmmmmcmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmcdfmmmmmmmmmmmmmffeedmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmfffmm";
-        var chara = te.charAt((int)(te.length() * in.value() % te.length()));
-        return Percent.of(Map.of(
-                'm', 1.0,
-                'a', 0.0,
-                'b', 0.1,
-                'c', 0.2,
-                'd', 0.3,
-                'e', 0.4,
-                'f', 0.5
+    //TODO FIXUP
+    FLICKER(in -> Sequence.valueAt(Sequence.FLICKER_SLOW, in));
 
-        ).get(chara));
-    });
+    private static class Sequence {
+        private static String FLICKER_SLOW = "mmmmmmmmmmaaammmmmmmammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmaaaccddmmmmmmmmmmcmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmcdfmmmmmmmmmmmmmffeedmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmfffmm";
 
+         private static Percent valueAt(String sequence, Percent position) {
+            var charAt = sequence.charAt((int) (sequence.length() * position.value() % sequence.length()));
+            return Percent.of(Map.of(
+                    'm', 1.0,
+                    'a', 0.0,
+                    'b', 0.1,
+                    'c', 0.2,
+                    'd', 0.3,
+                    'e', 0.4,
+                    'f', 0.5).get(charAt));
+        }
+    }
 
     private final UnaryOperator<Percent> adjustment;
 
