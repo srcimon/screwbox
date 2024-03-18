@@ -22,6 +22,14 @@ class TweenModeTest {
             "SINE_IN_OUT,0.5,1",
             "SINE_IN_OUT,0.3,0.65",
             "SINE_IN_OUT,1,0",
+            "SPARKLE,0, 0",
+            "SPARKLE,1, 0",
+            "SPARKLE,0.34, 1",
+            "SPARKLE,0.04, 1",
+            "FLICKER,0.04, 0",
+            "FLICKER,0.34, 0",
+            "FLICKER,0, 1",
+            "FLICKER,1, 1",
     })
     void applyOn_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
