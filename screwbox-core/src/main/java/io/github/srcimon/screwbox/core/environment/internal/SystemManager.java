@@ -74,16 +74,16 @@ public class SystemManager {
     private void pickUpChanges() {
         delayChanges = false;
 
-        for (final var system : pendingSystemsToAdd) {
-            addSystem(system);
-        }
-        pendingSystemsToAdd.clear();
-
         for (final var systemType : pendingSystemsToRemove) {
             removeSystem(systemType);
         }
 
         pendingSystemsToRemove.clear();
+
+        for (final var system : pendingSystemsToAdd) {
+            addSystem(system);
+        }
+        pendingSystemsToAdd.clear();
     }
 
     public void removeSystem(final Class<? extends EntitySystem> systemType) {

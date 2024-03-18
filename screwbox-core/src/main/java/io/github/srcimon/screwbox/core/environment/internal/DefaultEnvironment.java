@@ -98,6 +98,7 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
     public Environment addOrReplaceSystem(final EntitySystem system) {
         verifySystemNotNull(system);
         final var systemClass = system.getClass();

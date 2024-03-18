@@ -9,7 +9,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed missing entity system after calling `Environment.addOrReplaceSystem()`
 
 ### 🧽 Cleanup & refactoring
 
