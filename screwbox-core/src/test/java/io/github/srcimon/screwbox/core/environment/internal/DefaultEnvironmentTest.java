@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
+import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
@@ -19,6 +19,7 @@ import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
@@ -29,6 +30,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
+import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +50,8 @@ import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultEnvironmentTest {
@@ -260,11 +264,27 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void addOrReplaceSystem_systemPresent_doesNothing() {
-        TweenOpacitySystem oldSystem = new TweenOpacitySystem();
-        TweenOpacitySystem newSystem = new TweenOpacitySystem();
+    void addOrReplaceSystem_systemPresent_replacesSystem() {
+        QuitOnKeySystem oldSystem = new QuitOnKeySystem();
+        QuitOnKeySystem newSystem = new QuitOnKeySystem();
 
         environment.addSystem(oldSystem);
+
+        environment.addOrReplaceSystem(newSystem);
+
+        assertThat(environment.systems()).containsExactly(newSystem);
+    }
+
+    @Test
+    void addOrReplaceSystem_systemPresentAndUpdatesBetween_replacesSystem() {
+        when(engine.keyboard()).thenReturn(mock(Keyboard.class));
+
+        QuitOnKeySystem oldSystem = new QuitOnKeySystem();
+        QuitOnKeySystem newSystem = new QuitOnKeySystem();
+
+        environment.addSystem(oldSystem);
+
+        environment.update();
 
         environment.addOrReplaceSystem(newSystem);
 
