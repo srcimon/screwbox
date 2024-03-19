@@ -86,7 +86,7 @@ BOM to manage all library dependencies.
 
 ### screwbox-core
 
-Adds the core functionality of the engine. Nothing more needed to make game.
+Adds the core functionality of the ScrewBox engine. Nothing more needed to make game.
 
 ``` xml
 <dependency>
