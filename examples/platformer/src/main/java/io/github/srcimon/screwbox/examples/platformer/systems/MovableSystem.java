@@ -24,7 +24,7 @@ public class MovableSystem implements EntitySystem {
     public void update(Engine engine) {
         Entity player = engine.environment().fetchSingleton(PLAYER);
         var playerMomentum = player.get(PhysicsComponent.class).momentum;
-        var playerPosition = player.get(TransformComponent.class).bounds.position();
+        var playerPosition = player.position();
 
         Optional<Entity> playerMovingBlock = engine.physics()
                 .raycastFrom(playerPosition)

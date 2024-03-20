@@ -29,7 +29,7 @@ class PhysicsSystemTest {
 
         environment.update();
 
-        Vector center = body.get(TransformComponent.class).bounds.position();
+        Vector center = body.position();
         assertThat(center).isEqualTo(Vector.of(2, 2));
     }
 
@@ -57,7 +57,7 @@ class PhysicsSystemTest {
 
         environment.updateTimes(6);
 
-        Vector ballPosition = ball.get(TransformComponent.class).bounds.position();
+        Vector ballPosition = ball.position();
         assertThat(ballPosition).isEqualTo(Vector.of(60, 190));
     }
 

@@ -26,9 +26,9 @@ public class EnemyMovementSystem implements EntitySystem {
     public void update(final Engine engine) {
         if (sheduler.isTick(engine.loop().lastUpdate())) {
             final Entity player = engine.environment().fetchSingleton(PLAYER);
-            final Vector playerPosition = player.get(TransformComponent.class).bounds.position();
+            final Vector playerPosition = player.position();
             for (final Entity enemy : engine.environment().fetchAll(ENEMIES)) {
-                final Vector enemyPosition = enemy.get(TransformComponent.class).bounds.position();
+                final Vector enemyPosition = enemy.position();
                 final var automovement = enemy.get(AutomovementComponent.class);
                 engine.async().runExclusive(automovement, () -> engine.physics().findPath(enemyPosition, playerPosition).ifPresent(value -> automovement.path = value));
             }

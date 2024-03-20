@@ -61,7 +61,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
 
         for (Entity vanishEntity : engine.environment().fetchAll(VANISHINGS)) {
             if (now.isAfter(vanishEntity.get(VanishingOnCollisionComponent.class).vanishTime)) {
-                Vector center = vanishEntity.get(TransformComponent.class).bounds.position();
+                Vector center = vanishEntity.position();
                 Vector targetPosition = center.addY(200);
                 vanishEntity
                         .add(new TweenComponent(ofMillis(400)))

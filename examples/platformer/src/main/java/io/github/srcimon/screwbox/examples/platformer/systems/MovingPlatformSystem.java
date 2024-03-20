@@ -30,7 +30,7 @@ public class MovingPlatformSystem implements EntitySystem {
 
         if (isNull(plattformComponent.targetPosition)) {
             Entity tartetEntity = engine.environment().fetchById(plattformComponent.waypoint);
-            plattformComponent.targetPosition = tartetEntity.get(TransformComponent.class).bounds.position();
+            plattformComponent.targetPosition = tartetEntity.position();
         }
 
         var transform = platform.get(TransformComponent.class);
@@ -40,7 +40,7 @@ public class MovingPlatformSystem implements EntitySystem {
             Entity currentTarget = engine.environment().fetchById(plattformComponent.waypoint);
             Entity nextTarget = engine.environment()
                     .fetchById(currentTarget.get(WaypointComponent.class).next);
-            plattformComponent.targetPosition = nextTarget.get(TransformComponent.class).bounds.position();
+            plattformComponent.targetPosition = nextTarget.position();
             plattformComponent.waypoint = nextTarget.id().orElseThrow();
         }
         double delta = engine.loop().delta();

@@ -87,7 +87,7 @@ class RaycastTest {
 
         var result = raycastBuilder
                 .checkingFor(physicsEntites)
-                .ignoringEntitiesMatching(e -> e.get(TransformComponent.class).bounds.position().x() == 12)
+                .ignoringEntitiesMatching(e -> e.position().x() == 12)
                 .ignoringEntitiesHaving(RenderComponent.class)
                 .ignoringEntitesNotIn(Bounds.atOrigin(0, 0, 200, 500))
                 .ignoringEntities(ignoredEntity)

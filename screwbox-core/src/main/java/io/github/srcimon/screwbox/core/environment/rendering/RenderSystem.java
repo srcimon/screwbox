@@ -21,7 +21,7 @@ public class RenderSystem implements EntitySystem {
         final Bounds visibleArea = engine.graphics().world().visibleArea();
 
         for (final Entity entity : engine.environment().fetchAll(sprites)) {
-            final var entityPosition = entity.get(TransformComponent.class).bounds.position();
+            final var entityPosition = entity.position();
             final RenderComponent render = entity.get(RenderComponent.class);
             final var spriteDimension = render.sprite.size();
             final var spriteBounds = Bounds.atOrigin(

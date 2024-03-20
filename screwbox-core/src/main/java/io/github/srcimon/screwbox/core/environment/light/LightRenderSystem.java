@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -29,25 +28,21 @@ public class LightRenderSystem implements EntitySystem {
 
         for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {
             final var coneLight = coneLightEntity.get(ConeLightComponent.class);
-            final Vector position = coneLightEntity.get(TransformComponent.class).bounds.position();
-            light.addConeLight(position, coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
+            light.addConeLight(coneLightEntity.position(), coneLight.direction, coneLight.cone, coneLight.radius, coneLight.color);
         }
         for (final Entity pointLightEntity : engine.environment().fetchAll(POINTLIGHTS)) {
             final var pointLight = pointLightEntity.get(PointLightComponent.class);
-            final Vector position = pointLightEntity.get(TransformComponent.class).bounds.position();
-            light.addPointLight(position, pointLight.radius, pointLight.color);
+            light.addPointLight(pointLightEntity.position(), pointLight.radius, pointLight.color);
         }
 
         for (final Entity spotLightEntity : engine.environment().fetchAll(SPOTLIGHTS)) {
             final var spotLight = spotLightEntity.get(SpotLightComponent.class);
-            final Vector position = spotLightEntity.get(TransformComponent.class).bounds.position();
-            light.addSpotLight(position, spotLight.radius, spotLight.color);
+            light.addSpotLight(spotLightEntity.position(), spotLight.radius, spotLight.color);
         }
 
         for (final Entity glowEmitter : engine.environment().fetchAll(GLOWS)) {
             final var glow = glowEmitter.get(GlowComponent.class);
-            final Vector position = glowEmitter.get(TransformComponent.class).bounds.position();
-            light.addGlow(position, glow.radius, glow.color);
+            light.addGlow(glowEmitter.position(), glow.radius, glow.color);
         }
         light.render();
     }
