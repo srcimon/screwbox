@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Environment.removeAllComponents(Class)`
 
 ### 🪛 Bug Fixes
 

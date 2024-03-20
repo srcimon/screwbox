@@ -10,16 +10,9 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
@@ -493,6 +486,19 @@ class DefaultEnvironmentTest {
         assertThatThrownBy(() -> environment.fetchSingletonComponent(ColliderComponent.class))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("singleton component has not been found: ColliderComponent");
+    }
+
+    @Test
+    void removeAllComponents_twoEntitiesWithGivenComponentAfterUpdate_componentNoLongerPresent() {
+        environment.addEntity(new CameraTargetComponent());
+        environment.addEntity(new CollisionDetectionComponent(), new PhysicsComponent());
+        environment.addEntity(new CollisionDetectionComponent());
+
+        environment.removeAllComponents(CollisionDetectionComponent.class);
+
+        environment.update();
+
+        assertThat(environment.fetchAllHaving(CollisionDetectionComponent.class)).isEmpty();
     }
 
     @AfterEach
