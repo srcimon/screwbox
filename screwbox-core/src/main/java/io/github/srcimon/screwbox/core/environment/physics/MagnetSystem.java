@@ -20,7 +20,7 @@ public class MagnetSystem implements EntitySystem {
         final var bodies = engine.environment().fetchAll(BODIES);
         double delta = engine.loop().delta();
         for (final var magnet : magnets) {
-            Vector magnetPosition = magnet.get(TransformComponent.class).bounds.position();
+            Vector magnetPosition = magnet.position();
             var magnetComponent = magnet.get(MagnetComponent.class);
             for (final var body : bodies) {
                 if (!magnet.equals(body)) {

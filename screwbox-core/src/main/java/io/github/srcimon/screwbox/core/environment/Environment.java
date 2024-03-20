@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment;
 
-import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -14,6 +13,7 @@ import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerfor
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
@@ -183,6 +183,13 @@ public interface Environment {
     Environment addEntities(Entity... entities);
 
     boolean isSystemPresent(Class<? extends EntitySystem> type);
+
+    /**
+     * Removes all {@link Component}s with the given type from all {@link #entities()}.
+     *
+     * @param componentType the type of the {@link Component} to remove
+     */
+    Environment removeAllComponents(Class<? extends Component> componentType);
 
     /**
      * Returns all {@link Entity}s currently attached.

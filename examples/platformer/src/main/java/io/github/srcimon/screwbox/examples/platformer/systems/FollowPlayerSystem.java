@@ -26,7 +26,7 @@ public class FollowPlayerSystem implements EntitySystem {
             return;
         }
         Entity player = playerEntity.get();
-        var playerPosition = player.get(TransformComponent.class).bounds.position();
+        var playerPosition = player.position();
 
         for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
             var followComponent = followEntity.get(FollowPlayerComponent.class);

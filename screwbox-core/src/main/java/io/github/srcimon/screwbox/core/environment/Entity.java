@@ -1,8 +1,17 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -15,6 +24,7 @@ public final class Entity implements Serializable {
     private final Integer id;
     private transient List<EntityListener> listeners;
     private String name;
+    private TransformComponent tranform;
 
     public Entity() {
         this.id = null;
@@ -59,7 +69,9 @@ public final class Entity implements Serializable {
             throw new IllegalArgumentException("component already present: " + componentClass.getSimpleName());
         }
         components.put(componentClass, component);
-
+        if (component instanceof TransformComponent transformComponent) {
+            tranform = transformComponent;
+        }
         final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
             listener.componentAdded(event);
@@ -107,6 +119,9 @@ public final class Entity implements Serializable {
 
     public void remove(final Class<? extends Component> componentClass) {
         components.remove(componentClass);
+        if (TransformComponent.class.equals(componentClass)) {
+            tranform = null;
+        }
         final var event = new EntityEvent(this);
         for (final var listener : getListeners()) {
             listener.componentRemoved(event);
@@ -135,4 +150,42 @@ public final class Entity implements Serializable {
         return listeners;
     }
 
+    /**
+     * Returns {@link Bounds#origin()} if {@link Entity} has {@link TransformComponent}.
+     *
+     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     */
+    public Vector origin() {
+        return bounds().origin();
+    }
+
+    /**
+     * Returns {@link Bounds#position()} if {@link Entity} has {@link TransformComponent}.
+     *
+     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     */
+    public Vector position() {
+        return bounds().position();
+    }
+
+    /**
+     * Returns {@link Bounds} if {@link Entity} has {@link TransformComponent}.
+     *
+     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     */
+    public Bounds bounds() {
+        if (isNull(tranform)) {
+            throw new IllegalStateException("entity has no TransformComponent");
+        }
+        return tranform.bounds;
+    }
+
+    /**
+     * Moves an {@link Entity} to the given {@link Bounds#position()}.
+     *
+     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     */
+    public void moveTo(final Vector position) {
+        tranform.bounds = bounds().moveTo(position);
+    }
 }

@@ -1,8 +1,11 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
@@ -15,9 +18,9 @@ public class DetectLineOfSightToPlayerSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         Entity player = engine.environment().fetchSingleton(PLAYER);
-        var playerPosition = player.get(TransformComponent.class).bounds.position();
+        var playerPosition = player.position();
         for (var detector : engine.environment().fetchAll(DETECTORS)) {
-            var detectorPosition = detector.get(TransformComponent.class).bounds.position();
+            var detectorPosition = detector.position();
             var detectorComponent = detector.get(DetectLineOfSightToPlayerComponent.class);
             detectorComponent.isInLineOfSight = detectorPosition
                     .distanceTo(playerPosition) < detectorComponent.maxDitance

@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -35,8 +34,8 @@ public class BombExplosionState implements EntityState {
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
         endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
-        engine.audio().playSound(EXPLOSION, entity.get(TransformComponent.class).bounds.position());
-        Bounds bounds = entity.get(TransformComponent.class).bounds.expand(8);
+        engine.audio().playSound(EXPLOSION, entity.position());
+        Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.physics()
                 .searchInRange(bounds)
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)

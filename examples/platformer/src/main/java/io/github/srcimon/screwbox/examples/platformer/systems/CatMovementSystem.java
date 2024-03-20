@@ -58,7 +58,7 @@ public class CatMovementSystem implements EntitySystem {
 
         Entity player = engine.environment().fetchSingleton(PLAYER);
         EntityState state = player.get(StateComponent.class).state;
-        Vector playerPosition = player.get(TransformComponent.class).bounds.position();
+        Vector playerPosition = player.position();
         var options = player.get(RenderComponent.class).options;
         Entity navpoint = new Entity().add(
                 new TransformComponent(Bounds.atPosition(playerPosition.addX(-10), 0, 0)),
@@ -74,7 +74,7 @@ public class CatMovementSystem implements EntitySystem {
         }
         Entity nextNavpoint = navpoints.getFirst();
         NavpointComponent navpointComponent = nextNavpoint.get(NavpointComponent.class);
-        Vector nextPosition = nextNavpoint.get(TransformComponent.class).bounds.position();
+        Vector nextPosition = nextNavpoint.position();
         Sprite nextSprite = SPRITES.get().get(navpointComponent.state);
         if (isNull(nextSprite)) {
             return;

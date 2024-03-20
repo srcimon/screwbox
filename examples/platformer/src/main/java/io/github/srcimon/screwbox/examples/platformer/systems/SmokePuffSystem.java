@@ -33,7 +33,7 @@ public class SmokePuffSystem implements EntitySystem {
         var player = playerEntity.get();
         var smokeEmitter = player.get(SmokeEmitterComponent.class);
         if (smokeEmitter.ticker.isTick(engine.loop().lastUpdate())) {
-            var playerCenter = player.get(TransformComponent.class).bounds.position();
+            var playerCenter = player.position();
             var order = player.get(RenderComponent.class).drawOrder;
             Bounds bounds = Bounds.atPosition(playerCenter, 16, 16);
             Entity smokePuff = new Entity().add(

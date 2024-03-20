@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -9,6 +10,8 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
+import static io.github.srcimon.screwbox.core.Bounds.$$;
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -157,5 +160,46 @@ class EntityTest {
 
         assertThat(new Entity())
                 .hasToString("Entity[components=none]");
+    }
+
+    @Test
+    void position_transformRemoved_throwsException() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+        entity.remove(TransformComponent.class);
+
+        assertThatThrownBy(() -> entity.position())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("entity has no TransformComponent");
+    }
+
+    @Test
+    void position_hasTransform_returnsPositon() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+
+        assertThat(entity.position()).isEqualTo($(10, 20));
+    }
+
+    @Test
+    void bounds_hasTransform_returnsBounds() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+
+        assertThat(entity.bounds()).isEqualTo($$(2, 12, 16, 16));
+    }
+
+    @Test
+    void origin_hasTransform_returnsOrigin() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+
+        assertThat(entity.origin()).isEqualTo($(2, 12));
+    }
+
+    @Test
+    void moveTo_hasTransform_movesToPosition() {
+        entity.add(new TransformComponent(10, 20, 16, 16));
+
+        entity.moveTo($(19, 30));
+
+        assertThat(entity.position()).isEqualTo($(19, 30));
+        assertThat(entity.bounds()).isEqualTo($$(11, 22, 16, 16));
     }
 }
