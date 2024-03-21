@@ -145,6 +145,16 @@ public class DefaultLight implements Light {
         }
 
         renderInProgress = true;
+        if (!ambientLight.isMax()) {
+            renderLightmap();
+        }
+        for (final var drawingTask : postDrawingTasks) {
+            drawingTask.run();
+        }
+        return this;
+    }
+
+    private void renderLightmap() {
         final var copiedLightmap = lightmap;
         for (final var task : tasks) {
             task.run();
@@ -162,12 +172,7 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite");
             }
         });
-
         screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
-        for (final var drawingTask : postDrawingTasks) {
-            drawingTask.run();
-        }
-        return this;
     }
 
     @Override

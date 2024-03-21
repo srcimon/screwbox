@@ -33,6 +33,7 @@ import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -135,6 +136,15 @@ class DefaultLightTest {
         assertThat(colorInLight.g()).isZero();
         assertThat(colorInLight.b()).isZero();
         assertThat(colorInLight.opacity().value()).isPositive();
+    }
+
+    @Test
+    void render_ambientLightIsMax_doenstRenderLightmap() {
+        light.setAmbientLight(Percent.max());
+
+        light.render();
+
+        verify(screen, never()).drawSprite(any(Sprite.class), any(), any());
     }
 
     @Test
