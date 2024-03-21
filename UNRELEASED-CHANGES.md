@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed wrong radius of light glows (#253)
 
 ### 🧽 Cleanup & refactoring
 

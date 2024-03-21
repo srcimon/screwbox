@@ -131,7 +131,7 @@ public class DefaultLight implements Light {
         if (radius != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
                 for (int i = 1; i < 4; i++) {
-                    world.drawCircle(position, i * radius / 2, options);
+                    world.drawCircle(position, i / 3.0 * radius, options);
                 }
             });
         }

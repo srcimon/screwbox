@@ -29,7 +29,7 @@ public class Cherries implements Converter<GameObject> {
                 new TweenOrbitPositionComponent(object.position(), 2),
                 new TweenComponent(ofSeconds(2), TweenMode.LINEAR_IN, true, false),
                 new PointLightComponent(20, Color.RED),
-                new GlowComponent(30, Color.RED.opacity(0.2)),
+                new GlowComponent(45, Color.RED.opacity(0.2)),
                 new TransformComponent(object.bounds()),
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new CollisionDetectionComponent(),

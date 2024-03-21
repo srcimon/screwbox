@@ -13,11 +13,6 @@ public class GlowComponent implements Component {
     public double radius;
     public Color color;
 
-
-    public GlowComponent(final double radius) {
-        this.radius = radius;
-        this.color = Color.WHITE.opacity(0.2);
-    }
     public GlowComponent(final double radius, final Color color) {
         this.radius = radius;
         this.color = color;
