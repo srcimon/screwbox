@@ -189,7 +189,7 @@ public interface Environment {
      *
      * @param componentType the type of the {@link Component} to remove
      */
-    Environment removeAllComponents(Class<? extends Component> componentType);
+    Environment removeAllComponentsOfType(Class<? extends Component> componentType);
 
     /**
      * Returns all {@link Entity}s currently attached.

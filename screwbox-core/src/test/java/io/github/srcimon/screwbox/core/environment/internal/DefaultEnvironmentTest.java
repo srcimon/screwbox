@@ -489,12 +489,12 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void removeAllComponents_twoEntitiesWithGivenComponentAfterUpdate_componentNoLongerPresent() {
+    void removeAllComponentsOfType_twoEntitiesWithGivenComponentAfterUpdate_componentNoLongerPresent() {
         environment.addEntity(new CameraTargetComponent());
         environment.addEntity(new CollisionDetectionComponent(), new PhysicsComponent());
         environment.addEntity(new CollisionDetectionComponent());
 
-        environment.removeAllComponents(CollisionDetectionComponent.class);
+        environment.removeAllComponentsOfType(CollisionDetectionComponent.class);
 
         environment.update();
 

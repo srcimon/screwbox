@@ -191,7 +191,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment removeAllComponents(final Class<? extends Component> componentType) {
+    public Environment removeAllComponentsOfType(final Class<? extends Component> componentType) {
         for (final var entity : fetchAllHaving(componentType)) {
             entity.remove(componentType);
         }
