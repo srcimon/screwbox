@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 
+import javax.sound.sampled.AudioFormat;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -14,6 +16,14 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  * Controls the audio playback of the {@link Engine} and gives information to the currently {@link #activePlaybacks()}.
  */
 public interface Audio {
+
+    Audio startInputMonitoring();
+
+    Percent microphoneLevel();
+
+    //TODO smoothedMicrophoneLevel()
+    //TODO stopInputMonitoring
+    boolean isInputMonitoringActive();
 
     /**
      * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and

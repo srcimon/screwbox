@@ -17,12 +17,14 @@ import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
@@ -34,6 +36,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
+    private InputMonitor inputMonitor;
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
         this.executor = executor;
@@ -59,6 +62,26 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
             });
         }
         return this;
+    }
+
+    @Override
+    public Audio startInputMonitoring() {
+        inputMonitor = new InputMonitor();
+        executor.submit(() -> inputMonitor.start());
+        return this;
+    }
+
+    @Override
+    public Percent microphoneLevel() {
+        if(!isInputMonitoringActive()) {
+            throw new IllegalStateException("must start input monitoring to get microphone level");
+        }
+        return inputMonitor.level();
+    }
+
+    @Override
+    public boolean isInputMonitoringActive() {
+        return nonNull(inputMonitor);
     }
 
     @Override
