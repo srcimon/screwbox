@@ -17,7 +17,6 @@ import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
@@ -36,7 +35,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
-    private InputMonitor inputMonitor;
+    private AudioRecorder audioRecorder;
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
         this.executor = executor;
@@ -65,31 +64,29 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
-    public Audio startInputMonitoring() {
-        inputMonitor = new InputMonitor();
-        executor.submit(() -> inputMonitor.start());
+    public Audio startRecording() {
+        audioRecorder = new AudioRecorder();
+        executor.submit(() -> audioRecorder.start());
         return this;
     }
 
     @Override
     public Percent microphoneLevel() {
-        if(!isInputMonitoringActive()) {
-            throw new IllegalStateException("must start input monitoring to get microphone level");
+        if(!isRecording()) {
+            throw new IllegalStateException("must start recording before getting microphone volume");
         }
-        return inputMonitor.level();
+        return audioRecorder.level();
     }
 
     @Override
-    public Percent smoothedMicrophoneLevel() {
-        if(!isInputMonitoringActive()) {
-            throw new IllegalStateException("must start input monitoring to get microphone level");
-        }
-        return inputMonitor.smoothedLevel();
+    public boolean isRecording() {
+        return nonNull(audioRecorder);
     }
 
     @Override
-    public boolean isInputMonitoringActive() {
-        return nonNull(inputMonitor);
+    public Audio stopRecording() {
+        audioRecorder.stop();
+        return this;
     }
 
     @Override
