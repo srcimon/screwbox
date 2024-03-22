@@ -80,6 +80,14 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
+    public Percent smoothedMicrophoneLevel() {
+        if(!isInputMonitoringActive()) {
+            throw new IllegalStateException("must start input monitoring to get microphone level");
+        }
+        return inputMonitor.smoothedLevel();
+    }
+
+    @Override
     public boolean isInputMonitoringActive() {
         return nonNull(inputMonitor);
     }

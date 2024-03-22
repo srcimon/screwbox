@@ -21,7 +21,7 @@ public interface Audio {
 
     Percent microphoneLevel();
 
-    //TODO smoothedMicrophoneLevel()
+    Percent smoothedMicrophoneLevel();
     //TODO stopInputMonitoring
     boolean isInputMonitoringActive();
 

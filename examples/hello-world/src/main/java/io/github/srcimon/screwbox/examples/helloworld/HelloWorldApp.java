@@ -9,11 +9,15 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-screwBox.audio().startInputMonitoring();
+        screwBox.graphics().configuration().setUseAntialiasing(true);
+
+        screwBox.audio().startInputMonitoring();
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
-            screen.drawCircle(screen.center(), (int) (engine.audio().microphoneLevel().value() * 50), CircleDrawOptions.filled(Color.RED));
-            screen.drawCircle(screen.center(), 50, CircleDrawOptions.outline(Color.WHITE));
+            screen.drawCircle(screen.center().addX(-100), (int) (engine.audio().microphoneLevel().value() * 50), CircleDrawOptions.filled(Color.RED));
+            screen.drawCircle(screen.center().addX(-100), 50, CircleDrawOptions.outline(Color.WHITE).strokeWidth(2));
+            screen.drawCircle(screen.center().addX(100), (int) (engine.audio().smoothedMicrophoneLevel().value() * 50), CircleDrawOptions.filled(Color.RED));
+            screen.drawCircle(screen.center().addX(100), 50, CircleDrawOptions.outline(Color.WHITE).strokeWidth(2));
         });
 
         screwBox.start();
