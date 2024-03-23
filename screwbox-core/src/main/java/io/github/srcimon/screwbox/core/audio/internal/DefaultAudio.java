@@ -64,6 +64,11 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
+    public boolean isMicrophoneActive() {
+        return volumeMonitor.isActive();
+    }
+
+    @Override
     public Audio playSound(final Sound sound, final Vector position) {
         requireNonNull(position, "position must not be null");
         final var distance = camera.position().distanceTo(position);

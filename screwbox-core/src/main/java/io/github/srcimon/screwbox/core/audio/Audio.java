@@ -19,6 +19,9 @@ public interface Audio {
     //TODO Test and javadoc
     Percent microphoneLevel();
 
+    //TODO Test and javadoc
+    boolean isMicrophoneActive();
+
     /**
      * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
      * direction between the given position and the {@link Camera#position()} ()}.

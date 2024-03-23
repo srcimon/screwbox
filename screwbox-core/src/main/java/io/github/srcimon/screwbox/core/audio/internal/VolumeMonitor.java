@@ -15,14 +15,14 @@ import java.util.concurrent.ExecutorService;
 
 public class VolumeMonitor {
 
+    private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
     private final Loop loop;
     private final Log log;
 
     private Percent level = Percent.zero();
-    private boolean mustStop = false;
-    private boolean canStop = false;
-    private boolean isRunning = false;
+    private boolean timeoutReached = false;
+    private boolean isActive = false;
     private Time timeout = Time.now();
 
     public VolumeMonitor(final ExecutorService executor, final Loop loop, final Log log) {
@@ -33,9 +33,9 @@ public class VolumeMonitor {
 
     public Percent level(final Duration timeout) {
         this.timeout = loop.lastUpdate().plus(timeout);
-        if (!isRunning) {
-            canStop = false;
-            isRunning = true;
+        if (!isActive) {
+            timeoutReached = false;
+            isActive = true;
             executor.execute(this::continuouslyMonitorMicrophoneLevel);
         }
         return level;
@@ -43,27 +43,29 @@ public class VolumeMonitor {
 
     private void continuouslyMonitorMicrophoneLevel() {
         log.debug("started monitoring microphone");
-        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-        try (TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info)) {
-            line.open(format);
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, AUDIO_FORMAT);
+        try (final var line = (TargetDataLine) AudioSystem.getLine(info)) {
+            line.open(AUDIO_FORMAT);
             line.start();
-            byte tempBuffer[] = new byte[10];
+            final byte[] tempBuffer = new byte[10];
 
-            while (!executor.isShutdown() && !canStop) {
+            while (!executor.isShutdown() && !timeoutReached) {
                 if (loop.lastUpdate().isAfter(timeout)) {
                     log.debug("microphone input no longer required");
-                    canStop = true;
+                    timeoutReached = true;
                 }
                 if (line.read(tempBuffer, 0, tempBuffer.length) > 0) {
                     this.level = AudioAdapter.calculateRMSLevel(tempBuffer);
-
                 }
             }
         } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("error listening to microphone", e);
         }
-        isRunning = false;
+        isActive = false;
         log.debug("stopped monitoring microphone");
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }
