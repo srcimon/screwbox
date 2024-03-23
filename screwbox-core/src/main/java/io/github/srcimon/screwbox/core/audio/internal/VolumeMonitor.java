@@ -45,7 +45,7 @@ public class VolumeMonitor {
                     lastUsed = Time.now();
                 }
 
-                if (line.read(buffer, 0, line.getBufferSize()) > 0) {
+                if(line.read(buffer, 0, line.getBufferSize()) > 0) {
                     this.level = calculateRMSLevel(buffer);
                 }
             }

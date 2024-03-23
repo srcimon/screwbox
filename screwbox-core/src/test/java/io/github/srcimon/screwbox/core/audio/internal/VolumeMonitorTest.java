@@ -21,6 +21,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,22 +73,16 @@ class VolumeMonitorTest {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(8);
         byte[] buffer = new byte[8];
-        Mockito.doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                buffer[0] = 20;
-                buffer[1] = 80;
-                buffer[2] = 20;
-                System.out.println("x");
-                return 1;
-            }
+        doAnswer(invocation -> {
+            var x =(byte[])invocation.getArgument(0);
+            x[0] = 127;
+            x[1] = 127;
+            x[2] = 127;
+            x[3] = 127;
+            return 8;
         }).when(targetDataLine).read(buffer, 0, 8);
 
-        await(() -> {
-            double value = volumeMonitor.level().value();
-            System.out.println(value);
-            return value > 0;
-        }, ofSeconds(1));
+        await(() -> volumeMonitor.level().value() > 0.6, ofSeconds(1));
     }
 
     @AfterEach
