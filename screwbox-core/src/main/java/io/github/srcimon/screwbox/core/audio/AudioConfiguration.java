@@ -37,13 +37,18 @@ public class AudioConfiguration {
         return this;
     }
 
-    //TODO test and javadoc
-    public AudioConfiguration setMicrophoneTimeout(final Duration timeout) {
+    /**
+     * Sets timeout for the microphone to turn off after no further reading via {@link Audio#microphoneLevel()}.
+     */
+    public AudioConfiguration setMicrophoneIdleTimeout(final Duration timeout) {
         microphoneTimeout = requireNonNull(timeout, "timeout must not be null");
         notifyListeners(ConfigurationProperty.MICROPHONE_TIMEOUT);
         return this;
     }
-    //TODO test and javadoc
+
+    /**
+     * Gets the timout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
+     */
     public Duration microphoneIdleTimeout() {
         return microphoneTimeout;
     }

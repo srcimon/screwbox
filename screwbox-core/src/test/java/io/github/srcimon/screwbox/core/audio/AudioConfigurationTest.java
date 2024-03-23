@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Percent.max;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.*;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MICROPHONE_TIMEOUT;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.SOUND_RANGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -26,6 +30,21 @@ class AudioConfigurationTest {
     void setUp() {
         configuration = new AudioConfiguration();
         configuration.addListener(listener);
+    }
+
+    @Test
+    void setMicrophoneIdleTimeout_timeoutNull_throwsException() {
+        assertThatThrownBy(() -> configuration.setMicrophoneIdleTimeout(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("timeout must not be null");
+    }
+
+    @Test
+    void setMicrophoneIdleTimeout_timeoutValid_setsTimeoutAndNotifiesListeners() {
+        configuration.setMicrophoneIdleTimeout(Duration.ofSeconds(2));
+
+        assertThat(configuration.microphoneIdleTimeout()).isEqualTo(Duration.ofSeconds(2));
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MICROPHONE_TIMEOUT)));
     }
 
     @Test

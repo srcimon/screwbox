@@ -59,7 +59,7 @@ class VolumeMonitorTest {
     @Test
     void isActive_afertIdleTimeoutReached_isFalse() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
-        configuration.setMicrophoneTimeout(Duration.ofMillis(40));
+        configuration.setMicrophoneIdleTimeout(Duration.ofMillis(40));
         volumeMonitor.level();
 
         await(() -> !volumeMonitor.isActive(), ofSeconds(1));

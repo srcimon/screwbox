@@ -15,7 +15,7 @@ public class VolumeMonitor {
     private final AudioConfiguration coniguration;
 
     private Percent level = Percent.zero();
-    private Boolean isActive = false;
+    private boolean isActive = false;
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
 
