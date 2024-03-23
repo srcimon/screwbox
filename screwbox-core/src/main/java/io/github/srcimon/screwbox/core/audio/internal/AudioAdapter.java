@@ -21,6 +21,18 @@ public class AudioAdapter {
         }
     }
 
+    public TargetDataLine getStartedTargetDataLine(final AudioFormat format) {
+        try {
+            final var info = new DataLine.Info(TargetDataLine.class, format);
+            TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+            return line;
+        } catch (final LineUnavailableException e) {
+            throw new IllegalStateException("error creating audio target line", e);
+        }
+    }
+
     void setVolume(final Clip clip, final Percent volume) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
@@ -57,4 +69,5 @@ public class AudioAdapter {
             throw new IllegalStateException("could not convert mono to stereo audio", e);
         }
     }
+
 }

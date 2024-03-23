@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added `Audio.microphoneLevel()` and `.isMicrophoneActive()` (#256)
 - Added `Environment.removeAllComponentsOfType(Class)`
 - Added utility methods for fast access transform information of entity: `.position()`, `.origin()`, `.bounds()` and `.moveTo()` (#202)
 

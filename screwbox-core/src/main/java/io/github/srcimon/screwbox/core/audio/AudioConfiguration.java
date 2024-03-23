@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
@@ -19,6 +20,7 @@ public class AudioConfiguration {
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
+    private Duration microphoneTimeout = Duration.ofSeconds(5);
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
@@ -33,6 +35,22 @@ public class AudioConfiguration {
         this.soundRange = soundRange;
         notifyListeners(ConfigurationProperty.SOUND_RANGE);
         return this;
+    }
+
+    /**
+     * Sets timeout for the microphone to turn off after no further reading via {@link Audio#microphoneLevel()}.
+     */
+    public AudioConfiguration setMicrophoneIdleTimeout(final Duration timeout) {
+        microphoneTimeout = requireNonNull(timeout, "timeout must not be null");
+        notifyListeners(ConfigurationProperty.MICROPHONE_TIMEOUT);
+        return this;
+    }
+
+    /**
+     * Gets the timout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
+     */
+    public Duration microphoneIdleTimeout() {
+        return microphoneTimeout;
     }
 
     /**
@@ -217,4 +235,5 @@ public class AudioConfiguration {
             listener.configurationChanged(audioConfigurationEvent);
         }
     }
+
 }

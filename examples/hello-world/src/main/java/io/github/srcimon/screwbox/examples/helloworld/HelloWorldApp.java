@@ -10,7 +10,7 @@ public class HelloWorldApp {
 
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
-            screen.drawTextCentered(screen.center(), "HELLO WORLD!", 2);
+            screen.drawTextCentered(screen.center(), "HELLO WORLD!", 4);
         });
 
         screwBox.start();

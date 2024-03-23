@@ -10,7 +10,12 @@ import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.internal.*;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultCamera;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.StandbyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
 import io.github.srcimon.screwbox.core.log.ConsoleLoggingAdapter;
@@ -99,8 +104,8 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
-        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         log = new DefaultLog(new ConsoleLoggingAdapter());
+        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
@@ -151,6 +156,7 @@ class DefaultEngine implements Engine {
         if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
+                audio.stopAllSounds();
                 ui.closeMenu();
                 loop.stop();
                 loop.awaitTermination();

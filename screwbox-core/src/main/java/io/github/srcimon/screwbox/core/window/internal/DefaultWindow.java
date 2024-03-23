@@ -106,7 +106,7 @@ public class DefaultWindow implements Window, Updatable {
                 frame.setLocationRelativeTo(null);
             }
         }
-        executor.submit(new InitializeFontDrawingTask());
+        executor.execute(new InitializeFontDrawingTask());
 
         frame.getCanvas().createBufferStrategy(2);
         final AsyncRenderer asyncRenderer = new AsyncRenderer(new DefaultRenderer(), executor);

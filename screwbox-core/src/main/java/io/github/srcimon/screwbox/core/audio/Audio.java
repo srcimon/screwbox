@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Camera;
@@ -14,6 +15,17 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  * Controls the audio playback of the {@link Engine} and gives information to the currently {@link #activePlaybacks()}.
  */
 public interface Audio {
+
+    /**
+     * Returns the current microphone input volume. Microphone will turn on automatically when calling this method. Will turn off after
+     * {@link AudioConfiguration#microphoneIdleTimeout()}
+     */
+    Percent microphoneLevel();
+
+    /**
+     * Returns {@code true} if the the microphone is currently active.
+     */
+    boolean isMicrophoneActive();
 
     /**
      * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
