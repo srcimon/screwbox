@@ -43,6 +43,25 @@ public class AudioAdapter {
         gainControl.setValue((float) balance);
     }
 
+    //TODO Refactor test and
+    public static Percent calculateRMSLevel(final byte[] audioData) {
+        long lSum = 0;
+        for (int i = 0; i < audioData.length; i++)
+            lSum = lSum + audioData[i];
+
+        double dAvg = lSum / audioData.length;
+        double sumMeanSquare = 0;
+
+        for (int j = 0; j < audioData.length; j++)
+            sumMeanSquare += Math.pow(audioData[j] - dAvg, 2d);
+
+        double averageMeanSquare = sumMeanSquare / audioData.length;
+
+
+        var x = (int) (Math.pow(averageMeanSquare, 0.5) + 0.5);
+        return Percent.of(x / 70.0);
+    }
+
     public static AudioInputStream getAudioInputStream(final byte[] content) {
         try (InputStream inputStream = new ByteArrayInputStream(content)) {
             return AudioSystem.getAudioInputStream(inputStream);

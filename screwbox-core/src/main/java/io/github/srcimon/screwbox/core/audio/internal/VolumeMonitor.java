@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
@@ -20,7 +19,7 @@ public class VolumeMonitor {
     private final Loop loop;
     private final Log log;
 
-    private double level = 0;
+    private Percent level = Percent.zero();
     private boolean mustStop = false;
     private boolean canStop = false;
     private boolean isRunning = false;
@@ -37,16 +36,16 @@ public class VolumeMonitor {
         if (!isRunning) {
             canStop = false;
             isRunning = true;
-            executor.execute(() -> start());
+            executor.execute(this::continuouslyMonitorMicrophoneLevel);
         }
-        return Percent.of(level);
+        return level;
     }
 
     public void stop() {
         mustStop = true;
     }
 
-    private void start() {
+    private void continuouslyMonitorMicrophoneLevel() {
         log.debug("started monitoring microphone");
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -61,8 +60,7 @@ public class VolumeMonitor {
                     canStop = true;
                 }
                 if (line.read(tempBuffer, 0, tempBuffer.length) > 0) {
-                    var level = calculateRMSLevel(tempBuffer);
-                    this.level = level / 70.0;
+                    this.level = AudioAdapter.calculateRMSLevel(tempBuffer);
 
                 }
             }
@@ -74,19 +72,4 @@ public class VolumeMonitor {
     }
 
 
-    private int calculateRMSLevel(final byte[] audioData) {
-        long lSum = 0;
-        for (int i = 0; i < audioData.length; i++)
-            lSum = lSum + audioData[i];
-
-        double dAvg = lSum / audioData.length;
-        double sumMeanSquare = 0;
-
-        for (int j = 0; j < audioData.length; j++)
-            sumMeanSquare += Math.pow(audioData[j] - dAvg, 2d);
-
-        double averageMeanSquare = sumMeanSquare / audioData.length;
-
-        return (int) (Math.pow(averageMeanSquare, 0.5) + 0.5);
-    }
 }
