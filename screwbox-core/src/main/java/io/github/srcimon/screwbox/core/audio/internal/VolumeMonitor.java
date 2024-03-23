@@ -41,10 +41,6 @@ public class VolumeMonitor {
         return level;
     }
 
-    public void stop() {
-        mustStop = true;
-    }
-
     private void continuouslyMonitorMicrophoneLevel() {
         log.debug("started monitoring microphone");
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
@@ -54,7 +50,7 @@ public class VolumeMonitor {
             line.start();
             byte tempBuffer[] = new byte[10];
 
-            while (!mustStop && !canStop) {
+            while (!executor.isShutdown() && !canStop) {
                 if (loop.lastUpdate().isAfter(timeout)) {
                     log.debug("microphone input no longer required");
                     canStop = true;
@@ -70,6 +66,4 @@ public class VolumeMonitor {
         isRunning = false;
         log.debug("stopped monitoring microphone");
     }
-
-
 }

@@ -153,7 +153,7 @@ class DefaultEngine implements Engine {
         if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
-                audio.shutdown();
+                audio.stopAllSounds();
                 ui.closeMenu();
                 loop.stop();
                 loop.awaitTermination();

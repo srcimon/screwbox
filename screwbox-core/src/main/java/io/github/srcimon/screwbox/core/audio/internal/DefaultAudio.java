@@ -43,11 +43,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.volumeMonitor = volumeMonitor;
     }
 
-    public void shutdown() {
-       stopAllSounds();
-       volumeMonitor.stop();
-    }
-
     @Override
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
