@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.DataLine;
@@ -15,26 +15,25 @@ public class VolumeMonitor {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
+    private final AudioConfiguration coniguration;
 
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
-    private Duration idleTimeout;
 
-    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter) {
+    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
+        this.coniguration = configuration;
         this.audioAdapter = audioAdapter;
-    }
-
-    public void start(final Duration idleTimeout) {
-        this.idleTimeout = idleTimeout;
-        isActive = true;
-        executor.execute(this::continuouslyMonitorMicrophoneLevel);
     }
 
     public Percent level() {
         isUsed = true;
+        if (!isActive) {
+            isActive = true;
+            executor.execute(this::continuouslyMonitorMicrophoneLevel);
+        }
         return level;
     }
 
@@ -82,7 +81,7 @@ public class VolumeMonitor {
     }
 
     private boolean isIdleForTooLong() {
-        return Time.now().isAfter(lastUsed.plus(idleTimeout));
+        return Time.now().isAfter(lastUsed.plus(coniguration.microphoneIdleTimeout()));
     }
 
 }

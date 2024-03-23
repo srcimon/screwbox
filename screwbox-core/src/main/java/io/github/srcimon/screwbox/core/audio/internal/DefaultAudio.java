@@ -40,7 +40,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
         this.camera = camera;
-        this.volumeMonitor = new VolumeMonitor(executor, audioAdapter);
+        this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
     }
 
     @Override
@@ -59,9 +59,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Percent microphoneLevel() {
-        if(!volumeMonitor.isActive()) {
-            volumeMonitor.start(configuration.microphoneIdleTimeout());
-        }
         return volumeMonitor.level();
     }
 

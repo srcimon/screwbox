@@ -90,7 +90,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound, $(30, 10));
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter).setVolume(clip, Percent.of(0.7277474054857758));
         verify(audioAdapter).setPan(clip, 0.2722525945142242d);
@@ -127,7 +127,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound, $(3000, 10));
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(sound);
     }
@@ -139,7 +139,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound, playOnce().volume(Percent.quater()));
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         audio.configuration().setEffectVolume(Percent.half());
 
@@ -155,7 +155,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound, playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         audio.configuration().setMusicVolume(Percent.half());
 
@@ -170,7 +170,7 @@ class DefaultAudioTest {
         audio.configuration().setEffectVolume(zero());
         audio.playSound(sound);
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -182,7 +182,7 @@ class DefaultAudioTest {
         audio.configuration().muteEffects();
         audio.playSound(sound, playLooped());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -194,7 +194,7 @@ class DefaultAudioTest {
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -206,7 +206,7 @@ class DefaultAudioTest {
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -226,7 +226,7 @@ class DefaultAudioTest {
         audio.playSound(sound, playOnce().asMusic());
         audio.playSound(sound, playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         assertThat(audio.isActive(sound)).isTrue();
     }
@@ -262,7 +262,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound);
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(clip).loop(0);
         verify(audioAdapter).setBalance(clip, 0);
@@ -279,7 +279,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound, playLooped().pan(-0.2).balance(0.1));
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(clip).loop(Integer.MAX_VALUE - 1);
         verify(audioAdapter).setBalance(clip, 0.1);
@@ -297,7 +297,7 @@ class DefaultAudioTest {
 
         audio.stopAllSounds();
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(clip).stop();
         assertThat(audio.activeCount()).isZero();
@@ -311,7 +311,7 @@ class DefaultAudioTest {
         audio.configuration().setEffectVolume(Percent.half());
         audio.playSound(sound, playOnce().volume(Percent.of(0.2)));
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter).setVolume(clip, Percent.of(0.1));
     }
@@ -324,7 +324,7 @@ class DefaultAudioTest {
         audio.configuration().setMusicVolume(Percent.of(0.7));
         audio.playSound(sound, playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter).setVolume(clip, Percent.of(0.7));
     }
@@ -335,7 +335,7 @@ class DefaultAudioTest {
 
         audio.playSound(Sound.dummyEffect());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -346,7 +346,7 @@ class DefaultAudioTest {
 
         audio.playSound(Sound.dummyEffect(), playOnce().asMusic());
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
 
         verify(audioAdapter, never()).createClip(any());
     }
@@ -361,7 +361,7 @@ class DefaultAudioTest {
 
         audio.stopSound(sound);
 
-        awaitShutdown();
+        TestUtil.shutdown(executor);
         verify(clip).stop();
     }
 
@@ -385,10 +385,7 @@ class DefaultAudioTest {
 
     @AfterEach
     void tearDown() {
-        awaitShutdown();
-    }
-
-    private void awaitShutdown() {
         TestUtil.shutdown(executor);
     }
+
 }
