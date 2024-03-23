@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -8,11 +9,14 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-public class AudioRecorder {
+public class VolumeMonitor {
     private double level = 0;
-    private boolean isRunning = true;
+    private boolean mustStop = false;
+    private boolean isRunning = false;
+    private Time lastAccess= Time.now();
 
     public void start() {
+        isRunning = true;
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
         try {
@@ -20,7 +24,7 @@ public class AudioRecorder {
             line.open(format);
             line.start();
             byte tempBuffer[] = new byte[10];
-            while (isRunning) {
+            while (!mustStop) {
                 if (line.read(tempBuffer, 0, tempBuffer.length) > 0) {
                     var level = calculateRMSLevel(tempBuffer);
                     this.level = level / 70.0;
@@ -30,6 +34,7 @@ public class AudioRecorder {
         } catch (LineUnavailableException e) {
             throw new RuntimeException(e);
         }
+        isRunning = false;
     }
 
     private int calculateRMSLevel(byte[] audioData) {
@@ -49,10 +54,19 @@ public class AudioRecorder {
     }
 
     public Percent level() {
+        lastAccess = Time.now();
         return Percent.of(level);
     }
 
     public void stop() {
-        isRunning = false;
+        mustStop = true;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public Time lastAccess() {
+        return lastAccess;
     }
 }

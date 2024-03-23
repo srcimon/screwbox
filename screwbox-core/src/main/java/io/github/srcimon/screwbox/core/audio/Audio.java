@@ -16,12 +16,7 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
-    Audio startRecording();
-
-    boolean isRecording();
-
-    Audio stopRecording();
-
+    //TODO Test and javadoc
     Percent microphoneLevel();
 
     /**

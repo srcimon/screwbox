@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutorService;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
@@ -35,18 +34,18 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
-    private AudioRecorder audioRecorder;
+    private VolumeMonitor volumeMonitor;
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera, final VolumeMonitor volumeMonitor) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
         this.camera = camera;
+        this.volumeMonitor = volumeMonitor;
     }
 
     public void shutdown() {
-        synchronized (this) {
-            executor.shutdown();
-        }
+       stopAllSounds();
+       volumeMonitor.stop();
     }
 
     @Override
@@ -63,30 +62,10 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    @Override
-    public Audio startRecording() {
-        audioRecorder = new AudioRecorder();
-        executor.submit(() -> audioRecorder.start());
-        return this;
-    }
 
     @Override
     public Percent microphoneLevel() {
-        if(!isRecording()) {
-            throw new IllegalStateException("must start recording before getting microphone volume");
-        }
-        return audioRecorder.level();
-    }
-
-    @Override
-    public boolean isRecording() {
-        return nonNull(audioRecorder);
-    }
-
-    @Override
-    public Audio stopRecording() {
-        audioRecorder.stop();
-        return this;
+        return volumeMonitor.level();
     }
 
     @Override
@@ -206,4 +185,5 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private Percent effectVolume() {
         return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
     }
+
 }

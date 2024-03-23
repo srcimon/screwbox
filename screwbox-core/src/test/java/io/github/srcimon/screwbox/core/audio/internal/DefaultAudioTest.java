@@ -47,12 +47,15 @@ class DefaultAudioTest {
     @Mock
     Camera camera;
 
+    @Mock
+    VolumeMonitor recorder;
+
     ExecutorService executor;
 
     @BeforeEach
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
-        audio = new DefaultAudio(executor, audioAdapter, camera);
+        audio = new DefaultAudio(executor, audioAdapter, camera, recorder);
     }
 
     @Test

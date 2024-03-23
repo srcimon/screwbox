@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
+import io.github.srcimon.screwbox.core.audio.internal.VolumeMonitor;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
@@ -99,7 +100,8 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
-        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
+        final VolumeMonitor volumeMonitor = new VolumeMonitor();
+        audio = new DefaultAudio(executor, new AudioAdapter(), camera, volumeMonitor);
         log = new DefaultLog(new ConsoleLoggingAdapter());
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
@@ -151,6 +153,7 @@ class DefaultEngine implements Engine {
         if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
+                audio.shutdown();
                 ui.closeMenu();
                 loop.stop();
                 loop.awaitTermination();
