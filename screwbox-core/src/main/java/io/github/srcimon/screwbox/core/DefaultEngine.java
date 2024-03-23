@@ -101,7 +101,7 @@ class DefaultEngine implements Engine {
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
         log = new DefaultLog(new ConsoleLoggingAdapter());
-        final VolumeMonitor volumeMonitor = new VolumeMonitor(loop, log, executor);
+        final VolumeMonitor volumeMonitor = new VolumeMonitor(executor, loop, log);
         audio = new DefaultAudio(executor, new AudioAdapter(), camera, volumeMonitor);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
