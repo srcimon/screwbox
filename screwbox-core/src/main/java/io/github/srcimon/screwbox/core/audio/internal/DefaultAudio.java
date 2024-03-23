@@ -34,13 +34,13 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
-    private VolumeMonitor volumeMonitor;
+    private final VolumeMonitor volumeMonitor;
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera, final VolumeMonitor volumeMonitor) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
         this.camera = camera;
-        this.volumeMonitor = volumeMonitor;
+        this.volumeMonitor = new VolumeMonitor(executor, configuration);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Percent microphoneLevel() {
-        return volumeMonitor.level(configuration.microphoneTimeout());
+        return volumeMonitor.level();
     }
 
     @Override
