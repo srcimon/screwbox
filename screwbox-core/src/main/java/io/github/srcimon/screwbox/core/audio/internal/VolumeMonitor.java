@@ -5,9 +5,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 import java.util.concurrent.ExecutorService;
 
 public class VolumeMonitor {
@@ -18,7 +15,7 @@ public class VolumeMonitor {
     private final AudioConfiguration coniguration;
 
     private Percent level = Percent.zero();
-    private boolean isActive = false;
+    private Boolean isActive = false;
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
 
@@ -38,25 +35,22 @@ public class VolumeMonitor {
     }
 
     private void continuouslyMonitorMicrophoneLevel() {
-        final var info = new DataLine.Info(TargetDataLine.class, AUDIO_FORMAT);
-        try (final var line = audioAdapter.getTargetDataLine(info)) {
-            line.open(AUDIO_FORMAT);
-            line.start();
-            final byte[] buffer = new byte[8];
+        try (final var line = audioAdapter.getStartedTargetDataLine(AUDIO_FORMAT)) {
+            lastUsed = Time.now();
+            final byte[] buffer = new byte[line.getBufferSize()];
 
             while (!executor.isShutdown() && !isIdleForTooLong()) {
                 if (isUsed) {
                     isUsed = false;
                     lastUsed = Time.now();
                 }
-                if (line.read(buffer, 0, buffer.length) > 0) {
+
+                if (line.read(buffer, 0, line.getBufferSize()) > 0) {
                     this.level = calculateRMSLevel(buffer);
                 }
             }
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException("error listening to microphone", e);
         }
-        isActive = false;
+        this.isActive = false;
     }
 
     private Percent calculateRMSLevel(final byte[] buffer) {
@@ -77,7 +71,9 @@ public class VolumeMonitor {
     }
 
     public boolean isActive() {
-        return isActive;
+        synchronized (isActive) {
+            return isActive;
+        }
     }
 
     private boolean isIdleForTooLong() {

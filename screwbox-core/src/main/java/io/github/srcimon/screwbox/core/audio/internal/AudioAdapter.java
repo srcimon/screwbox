@@ -21,8 +21,16 @@ public class AudioAdapter {
         }
     }
 
-    public TargetDataLine getTargetDataLine(DataLine.Info info) throws LineUnavailableException {
-        return (TargetDataLine) AudioSystem.getLine(info);
+    public TargetDataLine getStartedTargetDataLine(final AudioFormat format) {
+        try {
+            final var info = new DataLine.Info(TargetDataLine.class, format);
+            TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+            return line;
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException("error creating audio target line", e);
+        }
     }
 
     void setVolume(final Clip clip, final Percent volume) {
