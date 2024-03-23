@@ -16,14 +16,12 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
-    //TODO Test
     /**
      * Returns the current microphone input volume. Microphone will turn on automatically when calling this method. Will turn off after
      * {@link AudioConfiguration#microphoneIdleTimeout()}
      */
     Percent microphoneLevel();
 
-    //TODO Test
     /**
      * Returns {@code true} if the the microphone is currently active.
      */

@@ -45,7 +45,7 @@ public class VolumeMonitor {
                     lastUsed = Time.now();
                 }
 
-                if(line.read(buffer, 0, line.getBufferSize()) > 0) {
+                if (line.read(buffer, 0, line.getBufferSize()) > 0) {
                     this.level = calculateRMSLevel(buffer);
                 }
             }
@@ -54,7 +54,7 @@ public class VolumeMonitor {
     }
 
     private Percent calculateRMSLevel(final byte[] buffer) {
-        long sum = 0;
+        double sum = 0;
         for (final byte data : buffer) {
             sum = sum + data;
         }
@@ -71,7 +71,7 @@ public class VolumeMonitor {
     }
 
     public boolean isActive() {
-        synchronized (isActive) {
+        synchronized (this) {
             return isActive;
         }
     }
