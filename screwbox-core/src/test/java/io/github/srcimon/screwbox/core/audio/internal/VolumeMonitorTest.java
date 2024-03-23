@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.sound.sampled.TargetDataLine;
@@ -56,19 +57,26 @@ class VolumeMonitorTest {
     }
 
     @Test
-    void isActive_afertIdleTimeoutReached_isFalse() throws Exception {
+    void isActive_afertIdleTimeoutReached_isFalse() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         configuration.setMicrophoneTimeout(Duration.ofMillis(40));
         volumeMonitor.level();
 
-        await(() -> volumeMonitor.level().value() > 0, ofSeconds(1));
+        await(() -> !volumeMonitor.isActive(), ofSeconds(1));
     }
 
     @Test
-    void xxxx() throws Exception {
+    void xxxx() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
-        var x =  volumeMonitor.level();
-        System.out.println(x);
+        when(targetDataLine.getBufferSize()).thenReturn(8);
+        Mockito.doAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+
+            return null; // void method in a block-style lambda, so return null
+        }).when(targetDataLine).read(Mockito.any(), Mockito.any(), Mockito.any());
+        var x = volumeMonitor.level();
+
+        await(() -> volumeMonitor.level().value() > 0, ofSeconds(1));
     }
 
     @AfterEach
