@@ -2,29 +2,46 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.log.Log;
+import io.github.srcimon.screwbox.core.loop.Loop;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import java.util.concurrent.ExecutorService;
 
 public class VolumeMonitor {
+    private final Loop loop;
+    private final Log log;
+    private final ExecutorService executor;
     private double level = 0;
     private boolean mustStop = false;
+    private boolean canStop = false;
     private boolean isRunning = false;
-    private Time lastAccess= Time.now();
+    private Time timeout = Time.now();
 
-    public void start() {
-        isRunning = true;
+    public VolumeMonitor(final Loop loop, final Log log, final ExecutorService executor) {
+        this.loop = loop;
+        this.log = log;
+        this.executor = executor;
+    }
+
+    private void start() {
+        log.debug("listening to microphone started");
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-        try {
-            var line = (TargetDataLine) AudioSystem.getLine(info);
+        try(TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info)) {
             line.open(format);
             line.start();
             byte tempBuffer[] = new byte[10];
-            while (!mustStop) {
+
+            while (!mustStop && !canStop) {
+                if(loop.lastUpdate().isAfter(timeout)) {
+                    log.debug("microphone no longer required");
+                    canStop = true;
+                }
                 if (line.read(tempBuffer, 0, tempBuffer.length) > 0) {
                     var level = calculateRMSLevel(tempBuffer);
                     this.level = level / 70.0;
@@ -35,26 +52,16 @@ public class VolumeMonitor {
             throw new RuntimeException(e);
         }
         isRunning = false;
-    }
-
-    private int calculateRMSLevel(byte[] audioData) {
-        long lSum = 0;
-        for (int i = 0; i < audioData.length; i++)
-            lSum = lSum + audioData[i];
-
-        double dAvg = lSum / audioData.length;
-        double sumMeanSquare = 0d;
-
-        for (int j = 0; j < audioData.length; j++)
-            sumMeanSquare += Math.pow(audioData[j] - dAvg, 2d);
-
-        double averageMeanSquare = sumMeanSquare / audioData.length;
-
-        return (int) (Math.pow(averageMeanSquare, 0.5d) + 0.5);
+        log.debug("listening to microphone stopped");
     }
 
     public Percent level() {
-        lastAccess = Time.now();
+        timeout = loop.lastUpdate().plusSeconds(5);
+        if(!isRunning) {
+            canStop = false;
+            isRunning = true;
+           executor.submit(() -> start());
+        }
         return Percent.of(level);
     }
 
@@ -62,11 +69,20 @@ public class VolumeMonitor {
         mustStop = true;
     }
 
-    public boolean isRunning() {
-        return isRunning;
-    }
 
-    public Time lastAccess() {
-        return lastAccess;
+    private int calculateRMSLevel(final byte[] audioData) {
+        long lSum = 0;
+        for (int i = 0; i < audioData.length; i++)
+            lSum = lSum + audioData[i];
+
+        double dAvg = lSum / audioData.length;
+        double sumMeanSquare = 0;
+
+        for (int j = 0; j < audioData.length; j++)
+            sumMeanSquare += Math.pow(audioData[j] - dAvg, 2d);
+
+        double averageMeanSquare = sumMeanSquare / audioData.length;
+
+        return (int) (Math.pow(averageMeanSquare, 0.5) + 0.5);
     }
 }
