@@ -8,10 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import javax.sound.sampled.TargetDataLine;
 import java.util.concurrent.ExecutorService;
@@ -69,20 +66,27 @@ class VolumeMonitorTest {
     }
 
     @Test
-    void xxxx() {
+    void level_someMicrophoneInput_isNotZero() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
-        when(targetDataLine.getBufferSize()).thenReturn(8);
-        byte[] buffer = new byte[8];
+        when(targetDataLine.getBufferSize()).thenReturn(4);
+
+        // sorry children!
         doAnswer(invocation -> {
-            var x =(byte[])invocation.getArgument(0);
-            x[0] = 127;
-            x[1] = 127;
-            x[2] = 127;
-            x[3] = 127;
-            return 8;
-        }).when(targetDataLine).read(buffer, 0, 8);
+            var buffer = (byte[]) invocation.getArgument(0);
+            buffer[1] = 127;
+            buffer[2] = 127;
+            return 4;
+        }).when(targetDataLine).read(new byte[4], 0, 4);
 
         await(() -> volumeMonitor.level().value() > 0.6, ofSeconds(1));
+    }
+
+    @Test
+    void level_firstCall_isZero() {
+        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(targetDataLine.getBufferSize()).thenReturn(4);
+
+        assertThat(volumeMonitor.level().isZero()).isTrue();
     }
 
     @AfterEach
