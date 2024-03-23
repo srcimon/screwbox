@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.Configurati
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -45,7 +44,7 @@ public class AudioConfiguration {
         return this;
     }
     //TODO test and javadoc
-    public Duration microphoneTimeout() {
+    public Duration microphoneIdleTimeout() {
         return microphoneTimeout;
     }
 

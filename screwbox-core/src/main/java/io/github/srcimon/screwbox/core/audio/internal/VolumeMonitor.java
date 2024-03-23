@@ -37,19 +37,19 @@ public class VolumeMonitor {
     }
 
     private void continuouslyMonitorMicrophoneLevel() {
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, AUDIO_FORMAT);
+        final var info = new DataLine.Info(TargetDataLine.class, AUDIO_FORMAT);
         try (final var line = (TargetDataLine) AudioSystem.getLine(info)) {
             line.open(AUDIO_FORMAT);
             line.start();
-            final byte[] tempBuffer = new byte[8];
+            final byte[] buffer = new byte[8];
 
-            while (!executor.isShutdown() && !Time.now().isAfter(lastUsed.plus(configuration.microphoneTimeout()))) {
+            while (!executor.isShutdown() && !isIdleForTooLong()) {
                 if (isUsed) {
                     isUsed = false;
                     lastUsed = Time.now();
                 }
-                if (line.read(tempBuffer, 0, tempBuffer.length) > 0) {
-                    this.level = AudioAdapter.calculateRMSLevel(tempBuffer);
+                if (line.read(buffer, 0, buffer.length) > 0) {
+                    this.level = AudioAdapter.calculateRMSLevel(buffer);
                 }
             }
         } catch (LineUnavailableException e) {
@@ -60,5 +60,9 @@ public class VolumeMonitor {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    private boolean isIdleForTooLong() {
+        return Time.now().isAfter(lastUsed.plus(configuration.microphoneIdleTimeout()));
     }
 }
