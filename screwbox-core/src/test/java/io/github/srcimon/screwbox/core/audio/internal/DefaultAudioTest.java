@@ -389,7 +389,6 @@ class DefaultAudioTest {
     }
 
     private void awaitShutdown() {
-        audio.shutdown();
         TestUtil.shutdown(executor);
     }
 }

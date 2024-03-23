@@ -16,14 +16,16 @@ public class VolumeMonitor {
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
+    private final AudioAdapter audioAdapter;
 
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
 
-    public VolumeMonitor(final ExecutorService executor, final AudioConfiguration configuration) {
+    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
+        this.audioAdapter = audioAdapter;
         this.configuration = configuration;
     }
 
@@ -38,7 +40,7 @@ public class VolumeMonitor {
 
     private void continuouslyMonitorMicrophoneLevel() {
         final var info = new DataLine.Info(TargetDataLine.class, AUDIO_FORMAT);
-        try (final var line = (TargetDataLine) AudioSystem.getLine(info)) {
+        try (final var line = audioAdapter.getTargetDataLine(info)) {
             line.open(AUDIO_FORMAT);
             line.start();
             final byte[] buffer = new byte[8];
@@ -49,13 +51,30 @@ public class VolumeMonitor {
                     lastUsed = Time.now();
                 }
                 if (line.read(buffer, 0, buffer.length) > 0) {
-                    this.level = AudioAdapter.calculateRMSLevel(buffer);
+                    this.level = calculateRMSLevel(buffer);
                 }
             }
         } catch (LineUnavailableException e) {
             throw new RuntimeException("error listening to microphone", e);
         }
         isActive = false;
+    }
+
+    private Percent calculateRMSLevel(final byte[] audioData) {
+        long sum = 0;
+        for (byte audi : audioData) {
+            sum = sum + audi;
+        }
+
+        double average = sum / audioData.length;
+        double sumMeanSquare = 0;
+
+        for (byte audi : audioData) {
+            sumMeanSquare += Math.pow(audi - average, 2d);
+        }
+
+        double averageMeanSquare = sumMeanSquare / audioData.length;
+        return Percent.of((Math.pow(averageMeanSquare, 0.5) + 0.5) / 100.0);
     }
 
     public boolean isActive() {

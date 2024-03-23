@@ -3,14 +3,7 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +21,10 @@ public class AudioAdapter {
         }
     }
 
+    public TargetDataLine getTargetDataLine(DataLine.Info info) throws LineUnavailableException {
+        return (TargetDataLine) AudioSystem.getLine(info);
+    }
+
     void setVolume(final Clip clip, final Percent volume) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
@@ -41,24 +38,6 @@ public class AudioAdapter {
     void setBalance(final Clip clip, final double balance) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.BALANCE);
         gainControl.setValue((float) balance);
-    }
-
-    //TODO Refactor test and
-    public static Percent calculateRMSLevel(final byte[] audioData) {
-        long sum = 0;
-        for (byte audi : audioData) {
-            sum = sum + audi;
-        }
-
-        double average = sum / audioData.length;
-        double sumMeanSquare = 0;
-
-        for (byte audi : audioData) {
-            sumMeanSquare += Math.pow(audi - average, 2d);
-        }
-
-        double averageMeanSquare = sumMeanSquare / audioData.length;
-        return Percent.of((Math.pow(averageMeanSquare, 0.5) + 0.5) / 100.0);
     }
 
     public static AudioInputStream getAudioInputStream(final byte[] content) {

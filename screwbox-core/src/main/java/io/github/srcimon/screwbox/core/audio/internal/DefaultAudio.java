@@ -40,7 +40,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
         this.camera = camera;
-        this.volumeMonitor = new VolumeMonitor(executor, configuration);
+        this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
     }
 
     @Override
