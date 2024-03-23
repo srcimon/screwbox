@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
@@ -24,21 +25,19 @@ public class VolumeMonitor {
     private boolean canStop = false;
     private boolean isRunning = false;
     private Time timeout = Time.now();
-    private AudioConfiguration configuration;
 
-    public VolumeMonitor(final ExecutorService executor, final Loop loop, final Log log, AudioConfiguration configuration) {
+    public VolumeMonitor(final ExecutorService executor, final Loop loop, final Log log) {
         this.loop = loop;
         this.log = log;
         this.executor = executor;
-        this.configuration = configuration;
     }
 
-    public Percent level() {
-        timeout = loop.lastUpdate().plus(configuration.microphoneTimeout());
+    public Percent level(final Duration timeout) {
+        this.timeout = loop.lastUpdate().plus(timeout);
         if (!isRunning) {
             canStop = false;
             isRunning = true;
-            executor.submit(() -> start());
+            executor.execute(() -> start());
         }
         return Percent.of(level);
     }
@@ -66,7 +65,6 @@ public class VolumeMonitor {
                     this.level = level / 70.0;
 
                 }
-                throw new IllegalStateException("x");
             }
         } catch (LineUnavailableException e) {
             throw new RuntimeException(e);

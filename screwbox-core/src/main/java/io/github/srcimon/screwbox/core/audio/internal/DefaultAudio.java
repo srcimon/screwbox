@@ -65,7 +65,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Percent microphoneLevel() {
-        return volumeMonitor.level();
+        return volumeMonitor.level(configuration.microphoneTimeout());
     }
 
     @Override
