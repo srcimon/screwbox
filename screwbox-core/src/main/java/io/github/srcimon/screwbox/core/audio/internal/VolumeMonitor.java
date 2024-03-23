@@ -19,7 +19,6 @@ public class VolumeMonitor {
 
     private Percent level = Percent.zero();
     private boolean isActive = false;
-    private Time timeout = Time.now();
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
 
@@ -42,7 +41,7 @@ public class VolumeMonitor {
         try (final var line = (TargetDataLine) AudioSystem.getLine(info)) {
             line.open(AUDIO_FORMAT);
             line.start();
-            final byte[] tempBuffer = new byte[10];
+            final byte[] tempBuffer = new byte[8];
 
             while (!executor.isShutdown() && !Time.now().isAfter(lastUsed.plus(configuration.microphoneTimeout()))) {
                 if (isUsed) {
