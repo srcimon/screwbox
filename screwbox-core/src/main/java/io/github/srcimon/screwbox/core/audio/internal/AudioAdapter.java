@@ -45,21 +45,20 @@ public class AudioAdapter {
 
     //TODO Refactor test and
     public static Percent calculateRMSLevel(final byte[] audioData) {
-        long lSum = 0;
-        for (int i = 0; i < audioData.length; i++)
-            lSum = lSum + audioData[i];
+        long sum = 0;
+        for (byte audi : audioData) {
+            sum = sum + audi;
+        }
 
-        double dAvg = lSum / audioData.length;
+        double average = sum / audioData.length;
         double sumMeanSquare = 0;
 
-        for (int j = 0; j < audioData.length; j++)
-            sumMeanSquare += Math.pow(audioData[j] - dAvg, 2d);
+        for (byte audi : audioData) {
+            sumMeanSquare += Math.pow(audi - average, 2d);
+        }
 
         double averageMeanSquare = sumMeanSquare / audioData.length;
-
-
-        var x = (int) (Math.pow(averageMeanSquare, 0.5) + 0.5);
-        return Percent.of(x / 70.0);
+        return Percent.of((Math.pow(averageMeanSquare, 0.5) + 0.5) / 100.0);
     }
 
     public static AudioInputStream getAudioInputStream(final byte[] content) {
