@@ -28,8 +28,8 @@ public class AudioAdapter {
             line.open(format);
             line.start();
             return line;
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException("error creating audio target line", e);
+        } catch (final LineUnavailableException e) {
+            throw new IllegalStateException("error creating audio target line", e);
         }
     }
 
