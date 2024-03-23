@@ -67,7 +67,7 @@ public class VolumeMonitor {
         }
 
         double averageMeanSquare = sumMeanSquare / buffer.length;
-        return Percent.of((Math.pow(averageMeanSquare, 0.5) + 0.5) / 100.0);
+        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 100.0);
     }
 
     public boolean isActive() {

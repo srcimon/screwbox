@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import javax.sound.sampled.TargetDataLine;
 import java.util.concurrent.ExecutorService;
@@ -69,14 +71,23 @@ class VolumeMonitorTest {
     void xxxx() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(8);
-        Mockito.doAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
+        byte[] buffer = new byte[8];
+        Mockito.doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                buffer[0] = 20;
+                buffer[1] = 80;
+                buffer[2] = 20;
+                System.out.println("x");
+                return 1;
+            }
+        }).when(targetDataLine).read(buffer, 0, 8);
 
-            return null; // void method in a block-style lambda, so return null
-        }).when(targetDataLine).read(Mockito.any(), Mockito.any(), Mockito.any());
-        var x = volumeMonitor.level();
-
-        await(() -> volumeMonitor.level().value() > 0, ofSeconds(1));
+        await(() -> {
+            double value = volumeMonitor.level().value();
+            System.out.println(value);
+            return value > 0;
+        }, ofSeconds(1));
     }
 
     @AfterEach
