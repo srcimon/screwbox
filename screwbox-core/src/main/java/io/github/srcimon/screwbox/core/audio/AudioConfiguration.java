@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,6 +21,7 @@ public class AudioConfiguration {
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
+    private Duration microphoneTimeout = Duration.ofSeconds(5);
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
@@ -33,6 +36,17 @@ public class AudioConfiguration {
         this.soundRange = soundRange;
         notifyListeners(ConfigurationProperty.SOUND_RANGE);
         return this;
+    }
+
+    //TODO test and javadoc
+    public AudioConfiguration setMicrophoneTimeout(final Duration timeout) {
+        microphoneTimeout = requireNonNull(timeout, "timeout must not be null");
+        notifyListeners(ConfigurationProperty.MICROPHONE_TIMEOUT);
+        return this;
+    }
+    //TODO test and javadoc
+    public Duration microphoneTimeout() {
+        return microphoneTimeout;
     }
 
     /**
@@ -217,4 +231,5 @@ public class AudioConfiguration {
             listener.configurationChanged(audioConfigurationEvent);
         }
     }
+
 }
