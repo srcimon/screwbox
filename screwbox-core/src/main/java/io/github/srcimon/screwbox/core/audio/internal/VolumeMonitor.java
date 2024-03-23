@@ -1,11 +1,10 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
@@ -15,26 +14,27 @@ public class VolumeMonitor {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
-    private final AudioConfiguration configuration;
     private final AudioAdapter audioAdapter;
 
     private Percent level = Percent.zero();
     private boolean isActive = false;
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
+    private Duration idleTimeout;
 
-    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
+    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
-        this.configuration = configuration;
+    }
+
+    public void start(final Duration idleTimeout) {
+        this.idleTimeout = idleTimeout;
+        isActive = true;
+        executor.execute(this::continuouslyMonitorMicrophoneLevel);
     }
 
     public Percent level() {
         isUsed = true;
-        if (!isActive) {
-            isActive = true;
-            executor.execute(this::continuouslyMonitorMicrophoneLevel);
-        }
         return level;
     }
 
@@ -60,20 +60,20 @@ public class VolumeMonitor {
         isActive = false;
     }
 
-    private Percent calculateRMSLevel(final byte[] audioData) {
+    private Percent calculateRMSLevel(final byte[] buffer) {
         long sum = 0;
-        for (byte audi : audioData) {
-            sum = sum + audi;
+        for (final byte data : buffer) {
+            sum = sum + data;
         }
 
-        double average = sum / audioData.length;
+        final double average = sum / buffer.length;
         double sumMeanSquare = 0;
 
-        for (byte audi : audioData) {
-            sumMeanSquare += Math.pow(audi - average, 2d);
+        for (final byte data : buffer) {
+            sumMeanSquare += Math.pow(data - average, 2d);
         }
 
-        double averageMeanSquare = sumMeanSquare / audioData.length;
+        double averageMeanSquare = sumMeanSquare / buffer.length;
         return Percent.of((Math.pow(averageMeanSquare, 0.5) + 0.5) / 100.0);
     }
 
@@ -82,6 +82,7 @@ public class VolumeMonitor {
     }
 
     private boolean isIdleForTooLong() {
-        return Time.now().isAfter(lastUsed.plus(configuration.microphoneIdleTimeout()));
+        return Time.now().isAfter(lastUsed.plus(idleTimeout));
     }
+
 }
