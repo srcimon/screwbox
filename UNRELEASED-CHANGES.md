@@ -7,6 +7,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed wrong radius of light glows (#253)
+- Fixed renderer crash when drawing rectangles with width or height of zero
 
 ### 🧽 Cleanup & refactoring
 

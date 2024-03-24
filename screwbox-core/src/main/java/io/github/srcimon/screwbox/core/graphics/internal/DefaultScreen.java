@@ -62,7 +62,9 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        renderer.drawRectangle(origin, size, options);
+        if(size.width() > 0 && size.height() > 0) {
+            renderer.drawRectangle(origin, size, options);
+        }
         return this;
     }
 
