@@ -86,12 +86,12 @@ public class AsyncRenderer implements Renderer {
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
-            for (final var task : renderTasks.inactive()) {
-                try {
+            try {
+                for (final var task : renderTasks.inactive()) {
                     task.run();
-                } catch (final Exception e) {
-                    Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
                 }
+            } catch (final Exception e) {
+                Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
             }
             renderTasks.inactive().clear();
         }, null);
