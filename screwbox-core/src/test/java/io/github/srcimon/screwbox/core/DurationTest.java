@@ -8,6 +8,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DurationTest {
 
     @Test
+    void seconds_returnsSeconds() {
+        Duration seconds = Duration.ofSeconds(2);
+
+        assertThat(seconds.seconds()).isEqualTo(2);
+    }
+
+    @Test
     void none_returnsDurationOfNotEvenANanoSecond() {
         assertThat(Duration.none().nanos()).isZero();
     }

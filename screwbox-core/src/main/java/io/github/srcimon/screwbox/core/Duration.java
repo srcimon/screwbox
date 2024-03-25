@@ -77,6 +77,7 @@ public class Duration implements Serializable {
 
     /**
      * Creates a new instance with no duration at all.
+     *
      * @see #isNone()
      */
     public static Duration none() {
@@ -112,6 +113,9 @@ public class Duration implements Serializable {
 
     /**
      * Returns the total milliseconds of the {@link Duration}.
+     *
+     * @see #nanos()
+     * @see #seconds()
      */
     public long milliseconds() {
         return nanos / Time.NANOS_PER_MILLISECOND;
@@ -119,9 +123,22 @@ public class Duration implements Serializable {
 
     /**
      * Returns the total nanoseconds of the {@link Duration}.
+     *
+     * @see #milliseconds()
+     * @see #seconds()
      */
     public long nanos() {
         return nanos;
+    }
+
+    /**
+     * Returns the total seconds of the {@link Duration}.
+     *
+     * @see #nanos()
+     * @see #milliseconds()
+     */
+    public long seconds() {
+        return nanos / Time.NANOS_PER_SECOND;
     }
 
     /**
