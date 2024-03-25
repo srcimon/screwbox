@@ -213,29 +213,27 @@ public class Duration implements Serializable {
 
 
     }
-    public String humanReadable() {
-        //TODO CONSTANT TIme.NANOS_PER_MICROSECOND / add micros()
 
+    //TODO CONSTANT TIme.NANOS_PER_MICROSECOND / add micros()
+    public String humanReadable() {
         String result = null;
         long remaining = nanos;
-       for(final var unit : Unit.values()) {
+        for (final var unit : Unit.values()) {
             double unitFloor = Math.floor(remaining / unit.nanosPerPart);
-            if(result != null) {
-                if(unitFloor < 1) {
+            if (result != null) {
+                if (unitFloor < 1) {
                     return result;
                 }
                 return String.format("%s, %.0f%s", result, unitFloor, unit.shortName);
             }
-            if(unitFloor >= 1.0) {
+            if (unitFloor >= 1.0) {
                 result = String.format("%.0f%s", unitFloor, unit.shortName);
-                remaining = remaining - (long)(unitFloor * unit.nanosPerPart);
-                if(remaining == 0) {
+                remaining = remaining - (long) (unitFloor * unit.nanosPerPart);
+                if (remaining == 0) {
                     return result;
                 }
             }
-
         }
-
 
         double secondsFloor = Math.floor(nanos / Time.NANOS_PER_SECOND);
         if (secondsFloor >= 1) {
