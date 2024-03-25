@@ -96,7 +96,6 @@ public class Time implements Serializable {
      * instance.
      * 
      * @see #plusMillis(long)
-     * @see #plus(Duration)
      */
     public Time plusSeconds(final long seconds) {
         return new Time(nanos + NANOS_PER_SECOND * seconds);
@@ -107,7 +106,6 @@ public class Time implements Serializable {
      * instance.
      * 
      * @see #plusSeconds(long)
-     * @see #plus(Duration)
      */
     public Time plusMillis(final long milliseconds) {
         return new Time(nanos + NANOS_PER_MILLISECOND * milliseconds);
@@ -125,17 +123,6 @@ public class Time implements Serializable {
      */
     public boolean isBefore(final Time other) {
         return other.isSet() && nanos < other.nanos;
-    }
-
-    /**
-     * Returns a new instance of {@link Time} after the current {@link Time}
-     * instance.
-     * 
-     * @see #plusSeconds(long)
-     * @see #plusMillis(long)
-     */
-    public Time plus(final Duration duration) {
-        return new Time(nanos + duration.nanos());
     }
 
     @Override

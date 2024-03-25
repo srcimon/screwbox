@@ -33,7 +33,7 @@ public class BombExplosionState implements EntityState {
         engine.graphics().camera().shake(lastingForDuration(ofMillis(500)).strength(10));
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
-        endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
+        endOfAnimation = sprite.duration().addTo(engine.loop().lastUpdate());
         engine.audio().playSound(EXPLOSION, entity.position());
         Bounds bounds = entity.bounds().expand(8);
         List<Entity> entitiesInExplosionRange = engine.physics()

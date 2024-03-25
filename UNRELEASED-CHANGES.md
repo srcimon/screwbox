@@ -9,6 +9,7 @@
 
 - Fixed wrong radius of light glows (#253)
 - Fixed renderer crash when drawing rectangles using width or height of zero
+- Replaced `Time.plus(Duration)` with `Duration.addTo(Time)` to fix circular dependency (#260)
 
 ### 🧽 Cleanup & refactoring
 

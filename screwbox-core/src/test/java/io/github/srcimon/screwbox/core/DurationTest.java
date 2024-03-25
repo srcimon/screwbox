@@ -164,4 +164,13 @@ class DurationTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("duration must not be null");
     }
+
+    @Test
+    void addTo_validTime_returnsNewTime() {
+        Time time = Time.atNanos(1239192);
+
+        var result = Duration.ofSeconds(2).addTo(time);
+
+        assertThat(result).isEqualTo(Time.atNanos(2001239192));
+    }
 }

@@ -20,7 +20,7 @@ public class TimeoutCache<K, V> extends Cache<K, V> {
     @Override
     public void put(final K key, final V value) {
         super.put(key, value);
-        lifespans.put(key, Time.now().plus(lifetime));
+        lifespans.put(key, lifetime.addTo(Time.now()));
     }
 
     @Override

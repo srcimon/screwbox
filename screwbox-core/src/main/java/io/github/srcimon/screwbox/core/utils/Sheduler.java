@@ -46,14 +46,14 @@ public class Sheduler implements Serializable {
      * Checks if the timer is triggered at the given {@link Time}. If the timer is
      * then reseted. {@link Time} should be provided from outside to reduce CPU
      * load.
-     * 
+     *
      * @see #isTick()
      * @see Loop#lastUpdate()
      */
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
         if (isNow) {
-            nextTick = time.plus(duration);
+            nextTick = duration.addTo(time);
         }
         return isNow;
     }
@@ -61,7 +61,7 @@ public class Sheduler implements Serializable {
     /**
      * Checks if the timer is triggered now. This Method is much more CPU intensive
      * than {@link #isTick(Time)} because calculating nano time is CPU heavy.
-     * 
+     *
      * @see #isTick(Time)
      */
     public boolean isTick() {

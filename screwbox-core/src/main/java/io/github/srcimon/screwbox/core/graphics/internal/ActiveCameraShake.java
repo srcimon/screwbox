@@ -32,7 +32,7 @@ class ActiveCameraShake {
     }
 
     boolean hasEnded(final Time now) {
-        return !duration.isNone() && now.isAfter(start.plus(duration));
+        return !duration.isNone() && now.isAfter(duration.addTo(start));
     }
 
     private Percent calculateProgress(final Time now) {
@@ -40,7 +40,7 @@ class ActiveCameraShake {
             return Percent.zero();
         }
         final Duration elapsed = Duration.between(start, now);
-        final var end = start.plus(duration);
+        final var end = duration.addTo(start);
         return Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
     }
 }

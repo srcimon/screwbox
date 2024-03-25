@@ -39,7 +39,7 @@ public class Noise implements Serializable {
     public double value(final Time time) {
         if (isNull(intervalStart) || time.isAfter(intervalEnd)) {
             intervalStart = time;
-            intervalEnd = time.plus(calculateNextInterval());
+            intervalEnd = calculateNextInterval().addTo(time);
             lastValue = targetValue;
             targetValue = targetValue < 0 ? RANDOM.nextDouble(0, 1) : RANDOM.nextDouble(-1, 0);
         }

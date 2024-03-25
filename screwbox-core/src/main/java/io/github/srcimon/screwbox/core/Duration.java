@@ -187,4 +187,11 @@ public class Duration implements Serializable {
     public boolean isLessThan(final Duration other) {
         return !isAtLeast(other);
     }
+
+    /**
+     * Adds this {@link Duration} on the given {@link Time}.
+     */
+    public Time addTo(final Time time) {
+        return Time.atNanos(time.nanos() + nanos);
+    }
 }

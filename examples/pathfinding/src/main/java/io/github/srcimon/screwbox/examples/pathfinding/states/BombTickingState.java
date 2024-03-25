@@ -24,7 +24,7 @@ public class BombTickingState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         Sprite sprite = SPRITE.get().freshInstance();
         entity.get(RenderComponent.class).sprite = sprite;
-        endOfAnimation = engine.loop().lastUpdate().plus(sprite.duration());
+        endOfAnimation = sprite.duration().addTo(engine.loop().lastUpdate());
     }
 
     @Override

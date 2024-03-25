@@ -77,7 +77,8 @@ public class VolumeMonitor {
     }
 
     private boolean isIdleForTooLong() {
-        return Time.now().isAfter(lastUsed.plus(coniguration.microphoneIdleTimeout()));
+        final Time timeout = coniguration.microphoneIdleTimeout().addTo(lastUsed);
+        return Time.now().isAfter(timeout);
     }
 
 }

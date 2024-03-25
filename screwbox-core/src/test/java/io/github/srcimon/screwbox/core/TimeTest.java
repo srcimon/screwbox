@@ -88,12 +88,4 @@ class TimeTest {
 
         assertThat(time.isSet()).isTrue();
     }
-
-    @Test
-    void plus_addsDuration() {
-        Time evening = Time.atNanos(40_000);
-        Time later = evening.plus(Duration.ofMillis(20));
-
-        assertThat(later.nanos()).isEqualTo(20_040_000);
-    }
 }
