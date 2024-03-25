@@ -15,6 +15,32 @@ public class Time implements Serializable {
 
     private static final Time ZERO = atNanos(0);
 
+    //TODO JAVADOC
+    public enum Unit {
+        HOURS(3_600_000_000_000L, "h"),
+        MINUTES(60_000_000_000L, "m"),
+        SECONDS(1_000_000_000L, "s"),
+        MILLISECONDS(1_000_000L, "ms"),
+        MICROSECONDS(1_000L, "µs"),
+        NANOSECONDS(1L, "ns");
+
+        private final long nanos;
+        private final String shortName;
+
+        Unit(final long nanos, final String shortName) {
+            this.nanos = nanos;
+            this.shortName = shortName;
+        }
+
+        public long nanos() {
+            return nanos;
+        }
+
+        public String shortName() {
+            return shortName;
+        }
+    }
+
     /**
      * Count of nanoseconds per second.
      */
