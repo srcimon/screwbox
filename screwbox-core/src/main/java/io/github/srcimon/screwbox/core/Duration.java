@@ -195,20 +195,53 @@ public class Duration implements Serializable {
         return Time.atNanos(time.nanos() + nanos);
     }
 
+    private enum Unit {
+        SECONDS(Time.NANOS_PER_SECOND, "s"),
+        MILLISECONDS(Time.NANOS_PER_MILLISECOND, "ms"),
+        MICROSECONDS(1_000, "µs"),
+        NANOSECONDS(1, "ns");
+
+        private final long nanosPerPart;
+        private final String shortName;
+
+        Unit(long nanosPerPart, String shortName) {
+            this.nanosPerPart = nanosPerPart;
+            this.shortName = shortName;
+        }
+
+
+    }
     public String humanReadable() {
         //TODO CONSTANT TIme.NANOS_PER_MICROSECOND / add micros()
 
+        String result = null;
+        long remaining = nanos;
+       for(final var unit : Unit.values()) {
+            double unitFloor = Math.floor(remaining / unit.nanosPerPart);
+            if(result != null) {
+                return String.format("%s, %.0f%s", result, unitFloor, unit.shortName);
+            }
+            if(unitFloor >= 1.0) {
+                result = String.format("%.0f%s", unitFloor, unit.shortName);
+                remaining = remaining - (long)(unitFloor * unit.nanosPerPart);
+                if(remaining == 0) {
+                    return result;
+                }
+            }
+
+        }
+
 
         double secondsFloor = Math.floor(nanos / Time.NANOS_PER_SECOND);
-        double millisFloor = Math.floor(nanos / Time.NANOS_PER_MILLISECOND);
-        var microsFloor = Math.floor(nanos / 1_000);
-
         if (secondsFloor >= 1) {
             return String.format("%.0fs", secondsFloor);
         }
+        double millisFloor = Math.floor(nanos / Time.NANOS_PER_MILLISECOND);
         if (millisFloor >= 1) {
             return String.format("%.0fms", millisFloor);
         }
+
+        var microsFloor = Math.floor(nanos / 1_000);
         if (microsFloor > 1) {
             return String.format("%.0fµs", microsFloor);
         }
