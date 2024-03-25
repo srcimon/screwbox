@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -172,5 +174,19 @@ class DurationTest {
         var result = Duration.ofSeconds(2).addTo(time);
 
         assertThat(result).isEqualTo(Time.atNanos(2001239192));
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = ';', value = {
+            "0; 0ns",
+            "20; 20ns",
+            "21_000; 21µs",
+            "92_921; 92µs, 921ns",
+            "1_000_000; 1ms",
+            "34_000_000_000; 34s"
+    })
+    void humanReadable_isZero_isZeroSeconds(long nanos, String humanFormat) {
+       assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
+
     }
 }

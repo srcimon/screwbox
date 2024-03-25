@@ -194,4 +194,24 @@ public class Duration implements Serializable {
     public Time addTo(final Time time) {
         return Time.atNanos(time.nanos() + nanos);
     }
+
+    public String humanReadable() {
+        //TODO CONSTANT TIme.NANOS_PER_MICROSECOND / add micros()
+
+
+        double secondsFloor = Math.floor(nanos / Time.NANOS_PER_SECOND);
+        double millisFloor = Math.floor(nanos / Time.NANOS_PER_MILLISECOND);
+        var microsFloor = Math.floor(nanos / 1_000);
+
+        if (secondsFloor >= 1) {
+            return String.format("%.0fs", secondsFloor);
+        }
+        if (millisFloor >= 1) {
+            return String.format("%.0fms", millisFloor);
+        }
+        if (microsFloor > 1) {
+            return String.format("%.0fµs", microsFloor);
+        }
+        return nanos + "ns";
+    }
 }
