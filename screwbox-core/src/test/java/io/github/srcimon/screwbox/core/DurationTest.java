@@ -183,10 +183,11 @@ class DurationTest {
             "21_000; 21µs",
             "92_921; 92µs, 921ns",
             "1_000_000; 1ms",
-            "34_000_000_000; 34s"
+            "34_000_000_000; 34s",
+            "7_200_000_000_000; 2h",
+            "7_200_000_000_999; 2h"
     })
     void humanReadable_isZero_isZeroSeconds(long nanos, String humanFormat) {
        assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
-
     }
 }

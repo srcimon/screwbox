@@ -196,6 +196,8 @@ public class Duration implements Serializable {
     }
 
     private enum Unit {
+        HOURS(60 * 60 * Time.NANOS_PER_SECOND, "h"),
+        MINUTES(60 * Time.NANOS_PER_SECOND, "m"),
         SECONDS(Time.NANOS_PER_SECOND, "s"),
         MILLISECONDS(Time.NANOS_PER_MILLISECOND, "ms"),
         MICROSECONDS(1_000, "µs"),
@@ -219,6 +221,9 @@ public class Duration implements Serializable {
        for(final var unit : Unit.values()) {
             double unitFloor = Math.floor(remaining / unit.nanosPerPart);
             if(result != null) {
+                if(unitFloor < 1) {
+                    return result;
+                }
                 return String.format("%s, %.0f%s", result, unitFloor, unit.shortName);
             }
             if(unitFloor >= 1.0) {
