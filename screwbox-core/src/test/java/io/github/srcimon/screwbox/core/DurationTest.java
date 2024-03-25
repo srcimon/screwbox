@@ -34,19 +34,19 @@ class DurationTest {
     void ofMillis_returnsNewInstance() {
         Duration duration = Duration.ofMillis(10);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_MILLISECOND);
+        assertThat(duration.nanos()).isEqualTo(10 * Time.Unit.MILLISECONDS.nanos());
     }
 
     @Test
     void ofMicros_returnsNewInstance() {
         Duration duration = Duration.ofMicros(10);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_MICROSECOND);
+        assertThat(duration.nanos()).isEqualTo(10 * Time.Unit.MICROSECONDS.nanos());
     }
 
     @Test
     void ofNanos_returnsNewInstance() {
-        Duration duration = Duration.ofNanos(5 * Time.NANOS_PER_MILLISECOND);
+        Duration duration = Duration.ofNanos(5 * Time.Unit.MILLISECONDS.nanos());
 
         assertThat(duration.milliseconds()).isEqualTo(5);
     }
@@ -101,9 +101,9 @@ class DurationTest {
 
     @Test
     void ofSeconds_returnsNewInstance() {
-        Duration duration = Duration.ofSeconds(10);
+        Duration duration = Duration.ofSeconds(12);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_SECOND);
+        assertThat(duration.nanos()).isEqualTo(12_000_000_000L);
     }
 
     @Test
@@ -191,7 +191,12 @@ class DurationTest {
             "7_200_000_000_000; 2h",
             "7_200_000_000_999; 2h"
     })
-    void humanReadable_isZero_isZeroSeconds(long nanos, String humanFormat) {
+    void humanReadable_validInput_returnsReadableString(long nanos, String humanFormat) {
        assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
+    }
+
+    @Test
+    void toString_isHumanReadable() {
+        assertThat(Duration.ofNanos(8_100_000_000_000L)).hasToString("Duration [2h, 15m]");
     }
 }

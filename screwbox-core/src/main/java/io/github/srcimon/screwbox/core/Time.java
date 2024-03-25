@@ -1,16 +1,18 @@
 package io.github.srcimon.screwbox.core;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * Represents a specific {@link Time} after starting the {@link Engine}. Can
  * only be used to measure {@link Duration}s relative to other {@link Time}
  * instances. Loses meaning when shutting down the JVM.
- * 
+ *
  * @see Duration
  */
 public class Time implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Time ZERO = atNanos(0);
@@ -40,21 +42,6 @@ public class Time implements Serializable {
             return shortName;
         }
     }
-
-    /**
-     * Count of nanoseconds per second.
-     */
-    public static final long NANOS_PER_SECOND = 1_000_000_000;
-
-    /**
-     * Count of nanoseconds per millisecond.
-     */
-    public static final long NANOS_PER_MILLISECOND = 1_000_000;
-
-    /**
-     * Count of nanoseconds per microsecond.
-     */
-    public static final long NANOS_PER_MICROSECOND = 1_000;
 
     private final long nanos;
 
@@ -95,7 +82,7 @@ public class Time implements Serializable {
      * The seconds value that represents the current {@link Time}.
      */
     public long milliseconds() {
-        return nanos / NANOS_PER_MILLISECOND;
+        return nanos / Unit.MILLISECONDS.nanos();
     }
 
     @Override
@@ -117,24 +104,29 @@ public class Time implements Serializable {
         return nanos == other.nanos;
     }
 
-    /**
-     * Returns a new instance of {@link Time} after the current {@link Time}
-     * instance.
-     * 
-     * @see #addMillis(long)
-     */
-    public Time addSeconds(final long seconds) {
-        return new Time(nanos + NANOS_PER_SECOND * seconds);
+    //TODO javadoc and test
+    public Time add(final long value, final Unit unit) {
+        return new Time(nanos + unit.nanos * value);
     }
 
     /**
      * Returns a new instance of {@link Time} after the current {@link Time}
      * instance.
-     * 
+     *
+     * @see #addMillis(long)
+     */
+    public Time addSeconds(final long seconds) {
+        return add(seconds, Unit.SECONDS);
+    }
+
+    /**
+     * Returns a new instance of {@link Time} after the current {@link Time}
+     * instance.
+     *
      * @see #addSeconds(long)
      */
     public Time addMillis(final long milliseconds) {
-        return new Time(nanos + NANOS_PER_MILLISECOND * milliseconds);
+        return add(milliseconds, Unit.MILLISECONDS);
     }
 
     /**
@@ -158,7 +150,7 @@ public class Time implements Serializable {
 
     /**
      * Returns {@code true} if this instance is unset.
-     * 
+     *
      * @see #unset()
      */
     public boolean isUnset() {
@@ -167,7 +159,7 @@ public class Time implements Serializable {
 
     /**
      * Returns {@code true} if this instance is not unset.
-     * 
+     *
      * @see #unset()
      */
     public boolean isSet() {

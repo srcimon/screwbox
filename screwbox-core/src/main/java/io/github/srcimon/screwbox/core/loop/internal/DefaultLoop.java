@@ -109,7 +109,7 @@ public class DefaultLoop implements Loop {
     }
 
     private boolean needsUpdate() {
-        final double targetNanosPerUpdate = Time.NANOS_PER_SECOND * 1.0 / targetFps;
+        final double targetNanosPerUpdate = Time.Unit.SECONDS.nanos() * 1.0 / targetFps;
         final double nanosSinceLastUpdate = Duration.since(lastUpdate).nanos();
         return nanosSinceLastUpdate > targetNanosPerUpdate - (updateDuration.nanos() * 1.5);
     }
@@ -126,9 +126,9 @@ public class DefaultLoop implements Loop {
         final Time now = Time.now();
         final Duration timeBetweenUpdates = Duration.between(now, lastUpdate);
         lastUpdate = now;
-        fps = (int) (Time.NANOS_PER_SECOND / timeBetweenUpdates.nanos());
+        fps = (int) (Time.Unit.SECONDS.nanos() / timeBetweenUpdates.nanos());
         final double maxUpdateFactor = fps <= CRITICAL_FPS_COUNT ? 0 : 1.0 / fps;
-        delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.NANOS_PER_SECOND, maxUpdateFactor);
+        delta = Math.min(timeBetweenUpdates.nanos() * 1.0 / Time.Unit.SECONDS.nanos(), maxUpdateFactor);
         updateDuration = Duration.between(now, beforeUpdate);
         runningTime = Duration.between(startTime, lastUpdate);
         frameNumber++;

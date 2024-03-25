@@ -17,7 +17,7 @@ class TimeTest {
 
     @Test
     void atNanos_returnsSpecificTime() {
-        Time time = Time.atNanos(50 * Time.NANOS_PER_MILLISECOND);
+        Time time = Time.atNanos(50 * Time.Unit.MILLISECONDS.nanos());
 
         assertThat(time.milliseconds()).isEqualTo(50);
     }
