@@ -52,7 +52,7 @@ public class PlayerDeathState implements EntityState {
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofSeconds(3)));
         entity.add(new TextComponent("GAME OVER", ""));
-        entity.add(new ResetSceneComponent(Time.now().plusSeconds(3)));
+        entity.add(new ResetSceneComponent(Time.now().addSeconds(3)));
     }
 
     @Override

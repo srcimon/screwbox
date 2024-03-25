@@ -23,19 +23,19 @@ class TimeTest {
     }
 
     @Test
-    void plusSeconds_addsSecondsToGivenTime() {
+    void addSeconds_addsSecondsToGivenTime() {
         Time time = Time.atNanos(20_000);
 
-        Time later = time.plusSeconds(2);
+        Time later = time.addSeconds(2);
 
         assertThat(later.nanos()).isEqualTo(2_000_020_000);
     }
 
     @Test
-    void plusMillis_addsMillisecondsToGivenTime() {
+    void addMillis_addsMillisecondsToGivenTime() {
         Time time = Time.atNanos(20_000);
 
-        Time later = time.plusMillis(50);
+        Time later = time.addMillis(50);
 
         assertThat(later.nanos()).isEqualTo(50_020_000);
     }

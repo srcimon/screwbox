@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.debug;
 
-import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;
@@ -19,9 +18,9 @@ class LogFpsSystemTest {
     void update_updatesPositionOfPhysicItems(DefaultEnvironment environment, Loop loop, Log log) {
         when(loop.fps()).thenReturn(50, 30, 10);
         when(loop.lastUpdate()).thenReturn(
-                now().plusSeconds(-10), // no logging yet
-                now().plusSeconds(-5), // no logging yet
-                now().plusSeconds(20)); // log now
+                now().addSeconds(-10), // no logging yet
+                now().addSeconds(-5), // no logging yet
+                now().addSeconds(20)); // log now
 
         environment.addSystem(new LogFpsSystem());
 

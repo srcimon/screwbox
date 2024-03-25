@@ -25,7 +25,7 @@ class ShedulerTest {
 
     @Test
     void isTick_later_isTrueAndResetsTimer() {
-        Time later = Time.now().plusSeconds(20);
+        Time later = Time.now().addSeconds(20);
 
         assertThat(sheduler.isTick(later)).isTrue();
         assertThat(sheduler.isTick(later)).isFalse();

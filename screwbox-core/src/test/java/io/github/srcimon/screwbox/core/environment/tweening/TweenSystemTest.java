@@ -32,7 +32,7 @@ class TweenSystemTest {
 
     @Test
     void update_progressionMax_entityRemoved(DefaultEnvironment environment, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(Time.now().plusSeconds(4));
+        when(loop.lastUpdate()).thenReturn(Time.now().addSeconds(4));
 
         Entity smoke = new Entity().add(new TweenComponent(ofMillis(200)));
 
@@ -47,7 +47,7 @@ class TweenSystemTest {
 
     @Test
     void update_loopedInterval_entityNotRemoved(DefaultEnvironment environment, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(Time.now().plusSeconds(4));
+        when(loop.lastUpdate()).thenReturn(Time.now().addSeconds(4));
 
         Entity smoke = new Entity().add(new TweenComponent(ofMillis(200), TweenMode.LINEAR_IN, true));
 

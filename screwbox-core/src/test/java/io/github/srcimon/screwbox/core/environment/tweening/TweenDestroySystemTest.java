@@ -17,7 +17,7 @@ class TweenDestroySystemTest {
 
     @Test
     void update_removesEntitiesWithElapsedTweens(DefaultEnvironment environment, Loop loop) {
-        when(loop.lastUpdate()).thenReturn(Time.now().plusSeconds(-1));
+        when(loop.lastUpdate()).thenReturn(Time.now().addSeconds(-1));
 
         environment
                 .addEntity(1, new TweenComponent(ofMillis(200)), new TweenDestroyComponent())

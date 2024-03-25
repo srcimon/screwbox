@@ -95,9 +95,9 @@ public class Time implements Serializable {
      * Returns a new instance of {@link Time} after the current {@link Time}
      * instance.
      * 
-     * @see #plusMillis(long)
+     * @see #addMillis(long)
      */
-    public Time plusSeconds(final long seconds) {
+    public Time addSeconds(final long seconds) {
         return new Time(nanos + NANOS_PER_SECOND * seconds);
     }
 
@@ -105,9 +105,9 @@ public class Time implements Serializable {
      * Returns a new instance of {@link Time} after the current {@link Time}
      * instance.
      * 
-     * @see #plusSeconds(long)
+     * @see #addSeconds(long)
      */
-    public Time plusMillis(final long milliseconds) {
+    public Time addMillis(final long milliseconds) {
         return new Time(nanos + NANOS_PER_MILLISECOND * milliseconds);
     }
 

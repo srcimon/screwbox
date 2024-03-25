@@ -14,6 +14,7 @@
 ### 🧽 Cleanup & refactoring
 
 - No more uneccessary drawing of lightmap when ambient light is on full brightness
+- Renamed `Time.addSeconds`, `.addMillis`
 
 ### 📦 Dependency updates
 
