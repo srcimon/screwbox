@@ -7,6 +7,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TimeTest {
 
     @Test
+    void add_unitMinutes_addsMinutes() {
+        var time = Time.atNanos(400);
+
+        var result = time.add(1, Time.Unit.MINUTES);
+
+        assertThat(result.nanos()).isEqualTo(60000000400L);
+    }
+
+    @Test
     void now_returnsTimeOfNow() {
         long before = System.nanoTime();
         Time now = Time.now();
@@ -17,7 +26,7 @@ class TimeTest {
 
     @Test
     void atNanos_returnsSpecificTime() {
-        Time time = Time.atNanos(50 * Time.NANOS_PER_MILLISECOND);
+        Time time = Time.atNanos(50 * Time.Unit.MILLISECONDS.nanos());
 
         assertThat(time.milliseconds()).isEqualTo(50);
     }

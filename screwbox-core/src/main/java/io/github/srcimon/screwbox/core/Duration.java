@@ -41,7 +41,7 @@ public class Duration implements Serializable {
      * @see #ofNanos(long)
      */
     public static Duration ofMicros(final long micros) {
-        return new Duration(micros * Time.NANOS_PER_MICROSECOND);
+        return new Duration(micros * Time.Unit.MICROSECONDS.nanos());
     }
 
     /**
@@ -52,7 +52,7 @@ public class Duration implements Serializable {
      * @see #ofMicros(long)
      */
     public static Duration ofMillis(final long millis) {
-        return new Duration(millis * Time.NANOS_PER_MILLISECOND);
+        return new Duration(millis * Time.Unit.MILLISECONDS.nanos());
     }
 
     /**
@@ -63,7 +63,7 @@ public class Duration implements Serializable {
      * @see #ofMicros(long)
      */
     public static Duration ofSeconds(final long seconds) {
-        return new Duration(seconds * Time.NANOS_PER_SECOND);
+        return new Duration(seconds * Time.Unit.SECONDS.nanos());
     }
 
     /**
@@ -118,7 +118,7 @@ public class Duration implements Serializable {
      * @see #seconds()
      */
     public long milliseconds() {
-        return nanos / Time.NANOS_PER_MILLISECOND;
+        return nanos / Time.Unit.MILLISECONDS.nanos();
     }
 
     /**
@@ -138,7 +138,7 @@ public class Duration implements Serializable {
      * @see #milliseconds()
      */
     public long seconds() {
-        return nanos / Time.NANOS_PER_SECOND;
+        return nanos / Time.Unit.SECONDS.nanos();
     }
 
     /**
@@ -154,7 +154,7 @@ public class Duration implements Serializable {
 
     @Override
     public String toString() {
-        return "Duration [nanos=" + nanos + "]";
+        return "Duration [" + humanReadable() + "]";
     }
 
     @Override
@@ -193,5 +193,30 @@ public class Duration implements Serializable {
      */
     public Time addTo(final Time time) {
         return Time.atNanos(time.nanos() + nanos);
+    }
+
+    /**
+     * Returns a human readable {@link String} of the {@link Duration}.
+     */
+    public String humanReadable() {
+        String result = null;
+        long remaining = nanos;
+        for (final var unit : Time.Unit.values()) {
+            double unitFloor = Math.floor(1.0 * remaining / unit.nanos());
+            if (result != null) {
+                if (unitFloor < 1) {
+                    return result;
+                }
+                return String.format("%s, %.0f%s", result, unitFloor, unit.shortName());
+            }
+            if (unitFloor >= 1.0) {
+                result = String.format("%.0f%s", unitFloor, unit.shortName());
+                remaining = remaining - (long) (unitFloor * unit.nanos());
+                if (remaining == 0) {
+                    return result;
+                }
+            }
+        }
+        return nanos + "ns";
     }
 }

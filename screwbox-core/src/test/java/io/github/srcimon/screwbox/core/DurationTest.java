@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,19 +34,19 @@ class DurationTest {
     void ofMillis_returnsNewInstance() {
         Duration duration = Duration.ofMillis(10);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_MILLISECOND);
+        assertThat(duration.nanos()).isEqualTo(10 * Time.Unit.MILLISECONDS.nanos());
     }
 
     @Test
     void ofMicros_returnsNewInstance() {
         Duration duration = Duration.ofMicros(10);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_MICROSECOND);
+        assertThat(duration.nanos()).isEqualTo(10 * Time.Unit.MICROSECONDS.nanos());
     }
 
     @Test
     void ofNanos_returnsNewInstance() {
-        Duration duration = Duration.ofNanos(5 * Time.NANOS_PER_MILLISECOND);
+        Duration duration = Duration.ofNanos(5 * Time.Unit.MILLISECONDS.nanos());
 
         assertThat(duration.milliseconds()).isEqualTo(5);
     }
@@ -99,9 +101,9 @@ class DurationTest {
 
     @Test
     void ofSeconds_returnsNewInstance() {
-        Duration duration = Duration.ofSeconds(10);
+        Duration duration = Duration.ofSeconds(12);
 
-        assertThat(duration.nanos()).isEqualTo(10 * Time.NANOS_PER_SECOND);
+        assertThat(duration.nanos()).isEqualTo(12_000_000_000L);
     }
 
     @Test
@@ -172,5 +174,29 @@ class DurationTest {
         var result = Duration.ofSeconds(2).addTo(time);
 
         assertThat(result).isEqualTo(Time.atNanos(2001239192));
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = ';', value = {
+            "0; 0ns",
+            "20; 20ns",
+            "21_000; 21µs",
+            "92_921; 92µs, 921ns",
+            "1_000_000; 1ms",
+            "1_000_500; 1ms",
+            "1_100_500; 1ms, 100µs",
+            "34_000_000_000; 34s",
+            "8_100_000_000_000; 2h, 15m",
+            "8_100_777_666_555; 2h, 15m",
+            "7_200_000_000_000; 2h",
+            "7_200_000_000_999; 2h"
+    })
+    void humanReadable_validInput_returnsReadableString(long nanos, String humanFormat) {
+       assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
+    }
+
+    @Test
+    void toString_isHumanReadable() {
+        assertThat(Duration.ofNanos(8_100_000_000_000L)).hasToString("Duration [2h, 15m]");
     }
 }

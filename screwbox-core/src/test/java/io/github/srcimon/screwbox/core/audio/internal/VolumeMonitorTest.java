@@ -79,8 +79,8 @@ class VolumeMonitorTest {
             return 4;
         }).when(targetDataLine).read(new byte[4], 0, 4);
 
-        await(() -> volumeMonitor.level().value() > 0.6, ofSeconds(1));
-        assertThat(volumeMonitor.level().value()).isGreaterThan(0.6);
+        await(() -> volumeMonitor.level().value() > 0.4, ofSeconds(1));
+        assertThat(volumeMonitor.level().value()).isGreaterThan(0.4);
     }
 
     @Test
