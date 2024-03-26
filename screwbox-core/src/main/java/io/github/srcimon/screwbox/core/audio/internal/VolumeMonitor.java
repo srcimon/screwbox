@@ -46,14 +46,14 @@ public class VolumeMonitor {
                 }
 
                 if (line.read(buffer, 0, line.getBufferSize()) > 0) {
-                    this.level = calculateRMSLevel(buffer);
+                    this.level = calculadeLoudness(buffer);
                 }
             }
         }
         this.isActive = false;
     }
 
-    private Percent calculateRMSLevel(final byte[] buffer) {
+    private Percent calculadeLoudness(final byte[] buffer) {
         double sum = 0;
         for (final byte data : buffer) {
             sum = sum + data;
@@ -67,7 +67,7 @@ public class VolumeMonitor {
         }
 
         double averageMeanSquare = sumMeanSquare / buffer.length;
-        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 100.0);
+        return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
     }
 
     public boolean isActive() {
