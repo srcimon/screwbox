@@ -13,6 +13,7 @@ public interface Renderer {
 
     void fillWith(Color color);
 
+    void drawText(Offset offset, String text, TextDrawOptions options);
     void drawText(Offset offset, String text, Font font, Color color);
 
     void drawTextCentered(Offset position, String text, Font font, Color color);
