@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
 
+    //TODO javadoc and test
+    World drawText(Vector position, String text, TextDrawOptions options);
+
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
      *
