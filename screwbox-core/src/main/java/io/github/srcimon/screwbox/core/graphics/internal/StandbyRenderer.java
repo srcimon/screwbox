@@ -20,6 +20,11 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        // does nothing
+    }
+
+    @Override
     public void drawText(final Offset offset, final String text, final Font font, final Color color) {
         // does nothing
     }

@@ -8,11 +8,18 @@ import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
+    private static final Map<TextDrawOptions.Style, Integer> STYLES = Map.of(
+            TextDrawOptions.Style.NORMAL, java.awt.Font.ROMAN_BASELINE,
+            TextDrawOptions.Style.BOLD, java.awt.Font.BOLD,
+            TextDrawOptions.Style.ITALIC, java.awt.Font.ITALIC,
+            TextDrawOptions.Style.ITALIC_BOLD, java.awt.Font.ITALIC + java.awt.Font.BOLD);
+
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
@@ -33,6 +40,28 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Color color) {
         applyNewColor(color);
         graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
+    }
+
+    @Override
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        applyNewColor(options.color());
+        final var font = toAwtFont(options);
+        graphics.setFont(font);
+        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+            graphics.drawString(text, offset.x(), offset.y());
+        } else {
+            final int textWidth = graphics.getFontMetrics(font).stringWidth(text);
+
+            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment())
+                    ? textWidth / 2
+                    : textWidth;
+            graphics.drawString(text, offset.x() - xDelta, offset.y());
+        }
+    }
+
+    private java.awt.Font toAwtFont(final TextDrawOptions options) {
+        final int style = STYLES.get(options.style());
+        return new java.awt.Font(options.fontName(), style, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {

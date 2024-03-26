@@ -14,8 +14,11 @@ public interface Renderer {
     void fillWith(Color color);
 
     void drawText(Offset offset, String text, TextDrawOptions options);
+
+    @Deprecated
     void drawText(Offset offset, String text, Font font, Color color);
 
+    @Deprecated
     void drawTextCentered(Offset position, String text, Font font, Color color);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
