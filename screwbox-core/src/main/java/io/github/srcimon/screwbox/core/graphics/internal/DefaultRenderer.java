@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
@@ -68,21 +67,6 @@ public class DefaultRenderer implements Renderer {
         if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
-    }
-
-    @Override
-    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        applyNewColor(color);
-        graphics.setFont(AwtMapper.toAwtFont(font));
-
-        graphics.drawString(text, offset.x(), offset.y());
-    }
-
-    @Override
-    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        final int textWidth = graphics.getFontMetrics(AwtMapper.toAwtFont(font)).stringWidth(text);
-        final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
-        drawText(offset, text, font, color);
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {

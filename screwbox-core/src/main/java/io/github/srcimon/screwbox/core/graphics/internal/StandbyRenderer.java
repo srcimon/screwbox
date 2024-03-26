@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
@@ -21,16 +20,6 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        // does nothing
-    }
-
-    @Override
-    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        // does nothing
-    }
-
-    @Override
-    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
         // does nothing
     }
 
