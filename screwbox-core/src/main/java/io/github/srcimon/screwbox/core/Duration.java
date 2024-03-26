@@ -195,7 +195,9 @@ public class Duration implements Serializable {
         return Time.atNanos(time.nanos() + nanos);
     }
 
-    //TODO CONSTANT TIme.NANOS_PER_MICROSECOND / add micros()
+    /**
+     * Returns a human readable {@link String} of the {@link Duration}.
+     */
     public String humanReadable() {
         String result = null;
         long remaining = nanos;

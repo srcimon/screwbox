@@ -17,7 +17,9 @@ public class Time implements Serializable {
 
     private static final Time ZERO = atNanos(0);
 
-    //TODO JAVADOC
+    /**
+     * Different time units.
+     */
     public enum Unit {
         HOURS(3_600_000_000_000L, "h"),
         MINUTES(60_000_000_000L, "m"),
@@ -34,10 +36,16 @@ public class Time implements Serializable {
             this.shortName = shortName;
         }
 
+        /**
+         * Count of nanoseconds per time unit.
+         */
         public long nanos() {
             return nanos;
         }
 
+        /**
+         * Short name of the time unit.
+         */
         public String shortName() {
             return shortName;
         }
@@ -104,7 +112,10 @@ public class Time implements Serializable {
         return nanos == other.nanos;
     }
 
-    //TODO javadoc and test
+
+    /**
+     * Add the given value measured as {@link Unit}.
+     */
     public Time add(final long value, final Unit unit) {
         return new Time(nanos + unit.nanos * value);
     }
