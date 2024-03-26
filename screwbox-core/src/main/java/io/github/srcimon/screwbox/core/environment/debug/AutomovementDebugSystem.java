@@ -10,12 +10,10 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.GREEN;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
-import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
@@ -26,7 +24,7 @@ import static java.util.Objects.nonNull;
 @Order(SystemOrder.PRESENTATION_OVERLAY)
 public class AutomovementDebugSystem implements EntitySystem {
 
-    private static final TextDrawOptions DRAW_OPTIONS = font("Arial", 11).alignment(CENTER).styleBold();
+    private static final TextDrawOptions DRAW_OPTIONS = font("Arial", 11).alignment(CENTER).bold();
     private static final Archetype PATH_CONTAINING = Archetype.of(AutomovementComponent.class);
 
     @Override

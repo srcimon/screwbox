@@ -20,7 +20,7 @@ public class SidebarRenderer implements UiRenderer {
         this.opacity = opacity;
     }
 
-    private static final TextDrawOptions OPTIONS = font("Arial", 18).styleBold();
+    private static final TextDrawOptions OPTIONS = font("Arial", 18).bold();
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Screen screen) {

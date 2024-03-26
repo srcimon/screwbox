@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -137,18 +136,6 @@ public class DefaultScreen implements Screen {
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final Font font, final Color color) {
-        renderer.drawText(offset, text, font, color);
-        return this;
-    }
-
-    @Override
-    public Screen drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        renderer.drawTextCentered(position, text, font, color);
-        return this;
     }
 
     @Override

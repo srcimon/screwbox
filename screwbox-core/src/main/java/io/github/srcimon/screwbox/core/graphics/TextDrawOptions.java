@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import static java.util.Objects.requireNonNull;
 
 //TODO javadoc and test
-public record TextDrawOptions(String fontName, int size, boolean bold, boolean italic, Color color,
+public record TextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
                               Alignment alignment) {
 
     public enum Alignment {
@@ -30,22 +30,22 @@ public record TextDrawOptions(String fontName, int size, boolean bold, boolean i
     }
 
     public TextDrawOptions alignment(final Alignment alignment) {
-        return new TextDrawOptions(fontName, size, bold, italic, color, alignment);
+        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 
     public TextDrawOptions color(final Color color) {
-        return new TextDrawOptions(fontName, size, bold, italic, color, alignment);
+        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 
-    public TextDrawOptions styleBold() {
-        return new TextDrawOptions(fontName, size, true, italic, color, alignment);
+    public TextDrawOptions bold() {
+        return new TextDrawOptions(fontName, size, true, isItalic, color, alignment);
     }
 
-    public TextDrawOptions styleItalic() {
-        return new TextDrawOptions(fontName, size, bold, true, color, alignment);
+    public TextDrawOptions italic() {
+        return new TextDrawOptions(fontName, size, isBold, true, color, alignment);
     }
 
     public TextDrawOptions size(final int size) {
-        return new TextDrawOptions(fontName, size, bold, italic, color, alignment);
+        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 }

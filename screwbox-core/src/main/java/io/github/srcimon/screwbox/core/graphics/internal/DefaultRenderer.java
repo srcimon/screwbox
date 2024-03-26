@@ -53,8 +53,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     private java.awt.Font toAwtFont(final TextDrawOptions options) {
-        final int value = options.bold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
-        final int realValue = options.italic() ? value + java.awt.Font.ITALIC : value;
+        final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
+        final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
         return new java.awt.Font(options.fontName(), realValue, options.size());
     }
 
