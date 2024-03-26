@@ -87,6 +87,9 @@ public interface Screen {
      */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
+    //TODO javadoc and test
+    Screen drawText(Offset offset, String text, TextDrawOptions options);
+
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {

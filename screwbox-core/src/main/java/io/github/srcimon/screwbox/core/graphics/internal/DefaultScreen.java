@@ -62,7 +62,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        if(size.width() > 0 && size.height() > 0) {
+        if (size.width() > 0 && size.height() > 0) {
             renderer.drawRectangle(origin, size, options);
         }
         return this;
@@ -97,6 +97,12 @@ public class DefaultScreen implements Screen {
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         renderer.drawSprite(sprite, origin, options, clip);
+        return this;
+    }
+
+    @Override
+    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        renderer.drawText(offset, text, options);
         return this;
     }
 

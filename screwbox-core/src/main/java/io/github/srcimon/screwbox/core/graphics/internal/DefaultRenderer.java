@@ -8,17 +8,11 @@ import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
-    private static final Map<TextDrawOptions.Style, Integer> STYLES = Map.of(
-            TextDrawOptions.Style.NORMAL, java.awt.Font.ROMAN_BASELINE,
-            TextDrawOptions.Style.BOLD, java.awt.Font.BOLD,
-            TextDrawOptions.Style.ITALIC, java.awt.Font.ITALIC,
-            TextDrawOptions.Style.ITALIC_BOLD, java.awt.Font.ITALIC + java.awt.Font.BOLD);
 
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
@@ -46,22 +40,22 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyNewColor(options.color());
         final var font = toAwtFont(options);
+        final var fontMetrics = graphics.getFontMetrics(font);
+        final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
         graphics.setFont(font);
         if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
-            graphics.drawString(text, offset.x(), offset.y());
+            graphics.drawString(text, offset.x(), y);
         } else {
-            final int textWidth = graphics.getFontMetrics(font).stringWidth(text);
-
-            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment())
-                    ? textWidth / 2
-                    : textWidth;
-            graphics.drawString(text, offset.x() - xDelta, offset.y());
+            final int textWidth = fontMetrics.stringWidth(text);
+            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
+            graphics.drawString(text, offset.x() - xDelta, y);
         }
     }
 
     private java.awt.Font toAwtFont(final TextDrawOptions options) {
-        final int style = STYLES.get(options.style());
-        return new java.awt.Font(options.fontName(), style, options.size());
+        final int value = options.bold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
+        final int realValue = options.italic() ? value + java.awt.Font.ITALIC : value;
+        return new java.awt.Font(options.fontName(), realValue, options.size());
     }
 
     private void applyOpacityConfig(final Percent opacity) {
