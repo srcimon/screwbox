@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import static java.util.Objects.requireNonNull;
 
+@Deprecated
 public final class Font {
 
     public enum Style {
