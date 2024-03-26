@@ -90,20 +90,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawText(final Vector offset, final String text, final Font font, final Color color) {
-        final Offset windowOffset = toOffset(offset);
-        screen.drawText(windowOffset, text, font, color);
-        return this;
-    }
-
-    @Override
-    public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
-        final Offset offset = toOffset(position);
-        screen.drawTextCentered(offset, text, font, color);
-        return this;
-    }
-
-    @Override
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
                                   final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);

@@ -29,16 +29,7 @@ public interface World {
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
-    World drawText(Vector offset, String text, Font font, Color color);
-
-    World drawTextCentered(Vector position, String text, Font font, Color color);
-
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
-
-    default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-                                   final Percent opacity) {
-        return drawTextCentered(position, text, font, opacity, 1);
-    }
 
     /**
      * Returns the area currently visible on the {@link Screen}.
