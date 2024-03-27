@@ -15,7 +15,7 @@ public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
     private static final Offset TEXT_POSITION = Offset.at(50, 50);
-    private static final TextDrawOptions OPTIONS = TextDrawOptions.font("Futura", 14);
+    private static final TextDrawOptions OPTIONS = TextDrawOptions.systemFont("Futura", 14);
 
     @Override
     public void update(Engine engine) {

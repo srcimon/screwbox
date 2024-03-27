@@ -82,8 +82,8 @@ class DefaultWorldTest {
 
     @Test
     void drawText_callsScreen() {
-        world.drawText($(20, 19), "Hello World", TextDrawOptions.font("Arial").bold());
+        world.drawText($(20, 19), "Hello World", TextDrawOptions.systemFont("Arial").bold());
 
-        verify(screen).drawText(Offset.at(532, 403), "Hello World", TextDrawOptions.font("Arial").bold());
+        verify(screen).drawText(Offset.at(532, 403), "Hello World", TextDrawOptions.systemFont("Arial").bold());
     }
 }

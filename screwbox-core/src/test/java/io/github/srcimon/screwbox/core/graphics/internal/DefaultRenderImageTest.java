@@ -154,7 +154,7 @@ class DefaultRenderImageTest {
 
     @Test
     void demoTest() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.font("Arial").bold().size(20));
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").bold().size(20));
         //TODO implement check
     }
 

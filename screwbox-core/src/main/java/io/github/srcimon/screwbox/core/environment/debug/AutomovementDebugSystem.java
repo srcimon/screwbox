@@ -18,13 +18,13 @@ import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.Alignment.CENTER;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.systemFont;
 import static java.util.Objects.nonNull;
 
 @Order(SystemOrder.PRESENTATION_OVERLAY)
 public class AutomovementDebugSystem implements EntitySystem {
 
-    private static final TextDrawOptions DRAW_OPTIONS = font("Arial", 11).alignment(CENTER).bold();
+    private static final TextDrawOptions DRAW_OPTIONS = TextDrawOptions.systemFont("Arial", 11).alignment(CENTER).bold();
     private static final Archetype PATH_CONTAINING = Archetype.of(AutomovementComponent.class);
 
     @Override

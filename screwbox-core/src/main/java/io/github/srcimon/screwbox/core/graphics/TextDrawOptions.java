@@ -21,11 +21,11 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
         }
     }
 
-    public static TextDrawOptions font(final String fontName) {
-        return font(fontName, 10);
+    public static TextDrawOptions systemFont(final String fontName) {
+        return systemFont(fontName, 10);
     }
 
-    public static TextDrawOptions font(final String fontName, final int size) {
+    public static TextDrawOptions systemFont(final String fontName, final int size) {
         return new TextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
     }
 

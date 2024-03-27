@@ -10,7 +10,7 @@ import static io.github.srcimon.screwbox.core.graphics.Color.GREY;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Offset.at;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.systemFont;
 
 public class SidebarRenderer implements UiRenderer {
 
@@ -20,7 +20,7 @@ public class SidebarRenderer implements UiRenderer {
         this.opacity = opacity;
     }
 
-    private static final TextDrawOptions OPTIONS = font("Arial", 18).bold();
+    private static final TextDrawOptions OPTIONS = TextDrawOptions.systemFont("Arial", 18).bold();
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Screen screen) {
