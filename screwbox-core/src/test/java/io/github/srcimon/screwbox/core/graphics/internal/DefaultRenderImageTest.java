@@ -153,9 +153,31 @@ class DefaultRenderImageTest {
     }
 
     @Test
-    void demoTest() {
+    void drawText_boldAlignedLeft_drawsText() {
         renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").bold().size(20));
-        //TODO implement check
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldAlignedLeft_drawsText.png");
+    }
+
+    @Test
+    void drawText_italicAlignedRight_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.RIGHT).italic().size(10).color(RED.opacity(0.8)));
+
+        verifyIsIdenticalWithReferenceImage("drawText_italicAlignedRight_drawsText.png");
+    }
+
+    @Test
+    void drawText_italicBoldAlignedCenter_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
+
+        verifyIsIdenticalWithReferenceImage("drawText_italicBoldAlignedCenter_drawsText.png");
+    }
+
+    @Test
+    void drawText_normal_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial"));
+
+        verifyIsIdenticalWithReferenceImage("drawText_normal_drawsText.png");
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {
