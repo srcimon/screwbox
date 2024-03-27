@@ -87,6 +87,12 @@ public interface Screen {
      */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
+    /**
+     * Draws text on the {@link Screen} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * drawing text is kind of slow.
+     */
+    Screen drawText(Offset offset, String text, TextDrawOptions options);
+
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {
@@ -97,16 +103,8 @@ public interface Screen {
         return drawText(offset, text, font, Percent.max());
     }
 
-    default Screen drawText(Offset offset, String text) {
-        return drawText(offset, text, Pixelfont.defaultFont(), Percent.max());
-    }
-
     default Screen drawText(Offset offset, String text, Pixelfont font, double scale) {
         return drawText(offset, text, font, Percent.max(), scale);
-    }
-
-    default Screen drawText(Offset offset, String text, double scale) {
-        return drawText(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
     Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
@@ -130,11 +128,6 @@ public interface Screen {
     default Screen drawTextCentered(Offset offset, String text, double scale) {
         return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
-
-    Screen drawText(Offset offset, String text, Font font, Color color);
-
-
-    Screen drawTextCentered(final Offset position, final String text, final Font font, final Color color);
 
     Screen fillWith(Offset offset, Sprite sprite, double scale, Percent opacity);
 

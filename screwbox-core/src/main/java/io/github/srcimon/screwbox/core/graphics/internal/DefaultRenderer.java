@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
@@ -13,6 +12,7 @@ import java.util.function.Supplier;
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
+
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
@@ -35,6 +35,28 @@ public class DefaultRenderer implements Renderer {
         graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
     }
 
+    @Override
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        applyNewColor(options.color());
+        final var font = toAwtFont(options);
+        final var fontMetrics = graphics.getFontMetrics(font);
+        final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
+        graphics.setFont(font);
+        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+            graphics.drawString(text, offset.x(), y);
+        } else {
+            final int textWidth = fontMetrics.stringWidth(text);
+            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
+            graphics.drawString(text, offset.x() - xDelta, y);
+        }
+    }
+
+    private java.awt.Font toAwtFont(final TextDrawOptions options) {
+        final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
+        final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
+        return new java.awt.Font(options.fontName(), realValue, options.size());
+    }
+
     private void applyOpacityConfig(final Percent opacity) {
         if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity.value()));
@@ -45,21 +67,6 @@ public class DefaultRenderer implements Renderer {
         if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
-    }
-
-    @Override
-    public void drawText(final Offset offset, final String text, final Font font, final Color color) {
-        applyNewColor(color);
-        graphics.setFont(AwtMapper.toAwtFont(font));
-
-        graphics.drawString(text, offset.x(), offset.y());
-    }
-
-    @Override
-    public void drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        final int textWidth = graphics.getFontMetrics(AwtMapper.toAwtFont(font)).stringWidth(text);
-        final var offset = Offset.at(position.x() - textWidth / 2.0, position.y());
-        drawText(offset, text, font, color);
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {

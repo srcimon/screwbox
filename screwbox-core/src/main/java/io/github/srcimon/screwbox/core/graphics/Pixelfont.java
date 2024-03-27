@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Character.*;
+import static java.lang.Character.isSpaceChar;
+import static java.lang.Character.isUpperCase;
+import static java.lang.Character.toLowerCase;
+import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -37,7 +40,7 @@ public class Pixelfont implements Serializable {
     private int height = 0;
 
     /**
-     * Creates a monospace {@link Font}, containing a restricted set of characters,
+     * Creates a monospace {@link Pixelfont}, containing a restricted set of characters,
      * numbers and symbols. First call for every {@link Color} is quite slow.
      */
     public static Pixelfont defaultFont(final Color color) {
@@ -46,7 +49,7 @@ public class Pixelfont implements Serializable {
     }
 
     /**
-     * Creates a white monospace {@link Font}, containing a restricted set of characters,
+     * Creates a white monospace {@link Pixelfont}, containing a restricted set of characters,
      * numbers and symbols.
      */
     public static Pixelfont defaultFont() {

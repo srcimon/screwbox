@@ -1,8 +1,9 @@
 ### 🚀 Features & improvements
 
+- Optimized drawing of texts using TextDrawOptions (#207)
+- Added utility methods for fast access transform information of entity: `.position()`, `.origin()`, `.bounds()` and `.moveTo()` (#202)
 - Added `Audio.microphoneLevel()` and `.isMicrophoneActive()` (#256)
 - Added `Environment.removeAllComponentsOfType(Class)`
-- Added utility methods for fast access transform information of entity: `.position()`, `.origin()`, `.bounds()` and `.moveTo()` (#202)
 - Added `Duration.seconds()`
 - Added `Time.add(Long, Unit)`
 - Added `Duration.humanReadable(#261)`
@@ -18,6 +19,7 @@
 - No more uneccessary drawing of lightmap when ambient light is on full brightness
 - Renamed `Time.addSeconds`, `.addMillis`
 - Replaced `Time` constants with enum `Time.Unit`
+- Removed `Font`
 
 ### 📦 Dependency updates
 

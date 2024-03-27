@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -62,7 +61,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        if(size.width() > 0 && size.height() > 0) {
+        if (size.width() > 0 && size.height() > 0) {
             renderer.drawRectangle(origin, size, options);
         }
         return this;
@@ -101,6 +100,12 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        renderer.drawText(offset, text, options);
+        return this;
+    }
+
+    @Override
     public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
         final long spriteWidth = round(sprite.size().width() * scale);
         final long spriteHeight = round(sprite.size().height() * scale);
@@ -131,18 +136,6 @@ public class DefaultScreen implements Screen {
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         return Sprite.fromImage(screenCapture);
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final Font font, final Color color) {
-        renderer.drawText(offset, text, font, color);
-        return this;
-    }
-
-    @Override
-    public Screen drawTextCentered(final Offset position, final String text, final Font font, final Color color) {
-        renderer.drawTextCentered(position, text, font, color);
-        return this;
     }
 
     @Override

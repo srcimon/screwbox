@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Font;
 import io.github.srcimon.screwbox.core.graphics.*;
 
 import java.awt.*;
@@ -13,9 +12,7 @@ public interface Renderer {
 
     void fillWith(Color color);
 
-    void drawText(Offset offset, String text, Font font, Color color);
-
-    void drawTextCentered(Offset position, String text, Font font, Color color);
+    void drawText(Offset offset, String text, TextDrawOptions options);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
 

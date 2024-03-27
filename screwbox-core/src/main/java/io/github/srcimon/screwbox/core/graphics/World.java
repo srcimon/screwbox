@@ -8,6 +8,12 @@ import io.github.srcimon.screwbox.core.Vector;
 public interface World {
 
     /**
+     * Draws text on the {@link World} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * drawing text is kind of slow.
+     */
+    World drawText(Vector position, String text, TextDrawOptions options);
+
+    /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
      *
      * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
@@ -26,16 +32,7 @@ public interface World {
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
-    World drawText(Vector offset, String text, Font font, Color color);
-
-    World drawTextCentered(Vector position, String text, Font font, Color color);
-
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
-
-    default World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-                                   final Percent opacity) {
-        return drawTextCentered(position, text, font, opacity, 1);
-    }
 
     /**
      * Returns the area currently visible on the {@link Screen}.

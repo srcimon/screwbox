@@ -62,7 +62,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSpriteBatch(final SpriteBatch spriteBatch) {
-        for(final var entry : spriteBatch.entriesInDrawOrder()) {
+        for (final var entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(), entry.position(), entry.options());
         }
         return this;
@@ -70,7 +70,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
-        for(final var entry : spriteBatch.entriesInDrawOrder()) {
+        for (final var entry : spriteBatch.entriesInDrawOrder()) {
             drawSprite(entry.sprite(), entry.position(), entry.options(), clip);
         }
         return this;
@@ -90,24 +90,17 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawText(final Vector offset, final String text, final Font font, final Color color) {
-        final Offset windowOffset = toOffset(offset);
-        screen.drawText(windowOffset, text, font, color);
-        return this;
-    }
-
-    @Override
-    public World drawTextCentered(final Vector position, final String text, final Font font, final Color color) {
-        final Offset offset = toOffset(position);
-        screen.drawTextCentered(offset, text, font, color);
-        return this;
-    }
-
-    @Override
     public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
                                   final Percent opacity, final double scale) {
         final Offset offset = toOffset(position);
         screen.drawTextCentered(offset, text, font, opacity, scale * zoom);
+        return this;
+    }
+
+    @Override
+    public World drawText(final Vector position, final String text, final TextDrawOptions options) {
+        final Offset windowOffset = toOffset(position);
+        screen.drawText(windowOffset, text, options);
         return this;
     }
 
@@ -123,7 +116,7 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawSprite(final Sprite sprite, final Vector origin,final  SpriteDrawOptions options, final Bounds clip) {
+    public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options, final Bounds clip) {
         final var offset = toOffset(origin);
         final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
         final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());

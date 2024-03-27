@@ -2,14 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -149,7 +144,43 @@ class DefaultRenderImageTest {
         renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2));
 
         verifyIsIdenticalWithReferenceImage("drawSprite_scaled_drawsSprite.png");
+    }
 
+    @Test
+    void drawText_boldAlignedLeft_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").bold().size(20));
+
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+    }
+
+    @Test
+    void drawText_italicAlignedRight_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
+
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+    }
+
+    @Test
+    void drawText_italicBoldAlignedCenter_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
+
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+    }
+
+    @Test
+    void drawText_normal_drawsText() {
+        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial"));
+
+        verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
+    }
+
+    private void verifyNotAllPixelsAreBlack() {
+        long blackPixelCount = result.size().allPixels().stream()
+                .map(pixel -> result.colorAt(pixel))
+                .filter(color -> color.equals(Color.BLACK))
+                .count();
+
+        assertThat((long) result.size().allPixels().size()).isGreaterThan(blackPixelCount);
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {

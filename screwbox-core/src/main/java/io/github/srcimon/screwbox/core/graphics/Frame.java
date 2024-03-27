@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
@@ -122,7 +122,8 @@ public final class Frame implements Serializable {
         final BufferedImage bufferedImage = ImageUtil.toBufferedImage(image);
         final int rgb = bufferedImage.getRGB(x, y);
         final java.awt.Color awtColor = new java.awt.Color(rgb, true);
-        return AwtMapper.toColor(awtColor);
+        final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
+        return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);
     }
 
     /**
