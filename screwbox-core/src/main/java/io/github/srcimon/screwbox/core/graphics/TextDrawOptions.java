@@ -49,10 +49,17 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
     }
 
     /**
-     * Creates a new instance with given {@link Alignment}.
+     * Creates a new instance with {@link Alignment#RIGHT}.
      */
-    public TextDrawOptions alignment(final Alignment alignment) {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+    public TextDrawOptions alignRight() {
+        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT);
+    }
+
+    /**
+     * Creates a new instance with {@link Alignment#CENTER}.
+     */
+    public TextDrawOptions alignCenter() {
+        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER);
     }
 
     /**

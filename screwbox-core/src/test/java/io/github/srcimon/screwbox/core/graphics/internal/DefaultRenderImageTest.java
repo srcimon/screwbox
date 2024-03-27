@@ -155,14 +155,14 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.RIGHT).italic().size(10).color(RED.opacity(0.8)));
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }

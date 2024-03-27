@@ -35,7 +35,7 @@ class TextDrawOptionsTest {
         var options = TextDrawOptions.systemFont("Arial")
                 .bold()
                 .color(Color.RED)
-                .alignment(TextDrawOptions.Alignment.CENTER)
+                .alignCenter()
                 .size(20);
 
         assertThat(options.fontName()).isEqualTo("Arial");
