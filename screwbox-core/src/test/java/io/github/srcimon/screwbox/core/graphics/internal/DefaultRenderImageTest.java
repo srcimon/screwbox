@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -149,7 +150,12 @@ class DefaultRenderImageTest {
         renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2));
 
         verifyIsIdenticalWithReferenceImage("drawSprite_scaled_drawsSprite.png");
+    }
 
+    @Test
+    void demoTest() {
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.font("Arial").bold().size(20));
+        //TODO implement check
     }
 
     private void verifyIsIdenticalWithReferenceImage(String fileName) {

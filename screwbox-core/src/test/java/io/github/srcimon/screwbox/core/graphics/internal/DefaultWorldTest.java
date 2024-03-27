@@ -2,15 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,13 +70,20 @@ class DefaultWorldTest {
         Sprite first = Sprite.dummy16x16();
 
         var batch = new SpriteBatch();
-        batch.addEntry(second, Vector.$(10, 20), SpriteDrawOptions.scaled(2), 2);
-        batch.addEntry(first, Vector.$(41, 20), SpriteDrawOptions.originalSize(), 1);
+        batch.addEntry(second, $(10, 20), SpriteDrawOptions.scaled(2), 2);
+        batch.addEntry(first, $(41, 20), SpriteDrawOptions.originalSize(), 1);
 
         world.drawSpriteBatch(batch, Bounds.$$(40, 40, 100, 200));
         InOrder orderVerifier = inOrder(screen);
 
         orderVerifier.verify(screen).drawSprite(first, Offset.at(553, 404), SpriteDrawOptions.originalSize(), new ScreenBounds(552, 424, 100, 200));
         orderVerifier.verify(screen).drawSprite(second, Offset.at(506, 388), SpriteDrawOptions.scaled(2), new ScreenBounds(552, 424, 100, 200));
+    }
+
+    @Test
+    void drawText_callsScreen() {
+        world.drawText($(20, 19), "Hello World", TextDrawOptions.font("Arial").bold());
+
+        verify(screen).drawText(Offset.at(532, 403), "Hello World", TextDrawOptions.font("Arial").bold());
     }
 }
