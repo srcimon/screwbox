@@ -2,8 +2,6 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO javadoc and test
-
 /**
  * Customize the drawing of texts with system fonts.
  *
@@ -18,6 +16,9 @@ import static java.util.Objects.requireNonNull;
 public record TextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
                               Alignment alignment) {
 
+    /**
+     * Alignment of the text.
+     */
     public enum Alignment {
         LEFT,
         CENTER,
@@ -33,30 +34,51 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
         }
     }
 
+    /**
+     * Creates a new instance with given {@link #fontName()} and {@link #size()} 10.
+     */
     public static TextDrawOptions systemFont(final String fontName) {
         return systemFont(fontName, 10);
     }
 
+    /**
+     * Creates a new instance with given {@link #fontName()} and given {@link #size()}.
+     */
     public static TextDrawOptions systemFont(final String fontName, final int size) {
         return new TextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
     }
 
+    /**
+     * Creates a new instance with given {@link Alignment}.
+     */
     public TextDrawOptions alignment(final Alignment alignment) {
         return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 
+    /**
+     * Creates a new instance with given {@link Color}.
+     */
     public TextDrawOptions color(final Color color) {
         return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 
+    /**
+     * Creates a new instance with bold font.
+     */
     public TextDrawOptions bold() {
         return new TextDrawOptions(fontName, size, true, isItalic, color, alignment);
     }
 
+    /**
+     * Creates a new instance with italic font.
+     */
     public TextDrawOptions italic() {
         return new TextDrawOptions(fontName, size, isBold, true, color, alignment);
     }
 
+    /**
+     * Creates a new instance with given {@link #size()}.
+     */
     public TextDrawOptions size(final int size) {
         return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
