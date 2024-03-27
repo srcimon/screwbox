@@ -7,13 +7,11 @@ import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import static io.github.srcimon.screwbox.core.Percent.half;
 import static io.github.srcimon.screwbox.core.Rotation.degrees;
@@ -164,27 +162,19 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Lato Black").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
 
         assertNotAllPixelsAreBlack();
     }
 
     @Test
     void drawText_normal_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial"));
+        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Lato"));
 
-        assertNotAllPixelsAreBlack();
+        verifyIsIdenticalWithReferenceImage("drawText_normal_drawsText.png");
+        assertNotAllPixelsAreBlack(); // CI Tests d
     }
 
-    @Test
-    void fail() {
-        assertThat(Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()).map(f -> f.getFontName()))
-                .containsExactly("NONE");
-    }
-
-    /**
-     * Used for tests that may crash on ci when comparin pixel perfect images.
-     */
     private void assertNotAllPixelsAreBlack() {
         long blackPixelCount = result.size().allPixels().stream()
                 .map(pixel -> result.colorAt(pixel))
