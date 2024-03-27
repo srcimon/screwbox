@@ -3,6 +3,18 @@ package io.github.srcimon.screwbox.core.graphics;
 import static java.util.Objects.requireNonNull;
 
 //TODO javadoc and test
+
+/**
+ * Customize the drawing of texts with system fonts.
+ *
+ * @param fontName  the font name used to draw the text
+ * @param size      the font size used to draw the text
+ * @param isBold    draw bold text
+ * @param isItalic  draw italic text
+ * @param color     the {@link Color} used to draw the text
+ * @param alignment the direction to draw from given offset
+ * @see Screen#drawText(Offset, String, TextDrawOptions)
+ */
 public record TextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
                               Alignment alignment) {
 
