@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TextDrawOptionsTest {
@@ -27,5 +28,20 @@ class TextDrawOptionsTest {
         assertThatThrownBy(() -> options.color(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("color must not be null");
+    }
+
+    @Test
+    void newInstance_validOptions_createsNewInstance() {
+        var options = TextDrawOptions.systemFont("Arial")
+                .bold()
+                .color(Color.RED)
+                .alignment(TextDrawOptions.Alignment.CENTER)
+                .size(20);
+
+        assertThat(options.fontName()).isEqualTo("Arial");
+        assertThat(options.isBold()).isTrue();
+        assertThat(options.isItalic()).isFalse();
+        assertThat(options.size()).isEqualTo(20);
+        assertThat(options.color()).isEqualTo(Color.RED);
     }
 }
