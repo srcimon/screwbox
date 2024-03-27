@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Optimized drawing of texts using TextDrawOptions (#207)
+- Optimized drawing of texts using `TextDrawOptions` (#207)
 - Added utility methods for fast access transform information of entity: `.position()`, `.origin()`, `.bounds()` and `.moveTo()` (#202)
 - Added `Audio.microphoneLevel()` and `.isMicrophoneActive()` (#256)
 - Added `Environment.removeAllComponentsOfType(Class)`
