@@ -10,7 +10,6 @@ import static io.github.srcimon.screwbox.core.graphics.Color.GREY;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Offset.at;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.systemFont;
 
 public class SidebarRenderer implements UiRenderer {
 

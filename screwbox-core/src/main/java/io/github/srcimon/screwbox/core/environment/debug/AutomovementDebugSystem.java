@@ -18,7 +18,6 @@ import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.Alignment.CENTER;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.systemFont;
 import static java.util.Objects.nonNull;
 
 @Order(SystemOrder.PRESENTATION_OVERLAY)

@@ -7,7 +7,10 @@ import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
 
-    //TODO javadoc and test
+    /**
+     * Draws text on the {@link World} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * drawing text is kind of slow.
+     */
     World drawText(Vector position, String text, TextDrawOptions options);
 
     /**

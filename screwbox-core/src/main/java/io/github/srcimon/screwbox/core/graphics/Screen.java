@@ -87,7 +87,10 @@ public interface Screen {
      */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
-    //TODO javadoc and test
+    /**
+     * Draws text on the {@link Screen} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * drawing text is kind of slow.
+     */
     Screen drawText(Offset offset, String text, TextDrawOptions options);
 
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
