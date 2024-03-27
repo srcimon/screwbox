@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -162,17 +163,17 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Lato Black").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
+        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignment(TextDrawOptions.Alignment.CENTER).italic().bold().size(10).color(BLUE));
 
         assertNotAllPixelsAreBlack();
     }
 
     @Test
     void drawText_normal_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Lato"));
+        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Lato Black"));
 
         verifyIsIdenticalWithReferenceImage("drawText_normal_drawsText.png");
-        assertNotAllPixelsAreBlack(); // CI Tests d
+        assertNotAllPixelsAreBlack(); // CI tests run with
     }
 
     private void assertNotAllPixelsAreBlack() {
