@@ -16,7 +16,7 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         if (radius < 1 || radius > 6) {
             throw new IllegalArgumentException("radius must be in range 1 to 6");
         }
-        this.radius = radius;
+        this.radius = radius + 1;
         final float weight = 1f / (radius * radius);
         final float[] data = new float[radius * radius];
 
