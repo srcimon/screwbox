@@ -3,7 +3,8 @@
 - ...
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed `BlurImageFilter` unwanted scaling
+
 ### 🧽 Cleanup & refactoring
 
 - ...

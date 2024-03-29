@@ -31,6 +31,7 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         var newImage = new BufferedImage(image.getWidth() + radius * 2, image.getHeight() + radius * 2, image.getType());
         var graphics = (Graphics2D) newImage.getGraphics();
         graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
+        graphics.drawImage(image, radius, radius, image.getWidth(), image.getHeight(), null);
         graphics.dispose();
         final BufferedImage blurred = convolveOperation.filter(newImage, null);
         return blurred.getSubimage(radius, radius, image.getWidth(), image.getHeight());
