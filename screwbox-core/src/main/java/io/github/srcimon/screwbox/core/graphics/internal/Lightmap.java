@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageMinOpacityFilter;
 import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import java.awt.*;
@@ -98,7 +99,7 @@ class Lightmap {
             addFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
-        return ImageUtil.applyFilter(image, new InvertLightmapImageWithMinOpacityFilter());
+        return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {

@@ -1,9 +1,9 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
 import java.awt.*;
 import java.awt.image.RGBImageFilter;
 
-class InvertLightmapImageWithMinOpacityFilter extends RGBImageFilter {
+public class InvertImageMinOpacityFilter extends RGBImageFilter {
 
     @Override
     public int filterRGB(final int x, final int y, final int rgb) {
