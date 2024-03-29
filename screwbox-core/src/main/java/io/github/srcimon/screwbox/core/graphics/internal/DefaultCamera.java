@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
@@ -61,7 +60,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public double setZoom(final double zoom) {
-        this.requestedZoom = MathUtil.clamp(minZoom, zoom, maxZoom);
+        this.requestedZoom = Math.clamp(zoom, minZoom, maxZoom);
         this.zoom = pixelPerfectValue(requestedZoom);
         world.updateZoom(this.zoom);
         return this.zoom;
@@ -73,15 +72,9 @@ public class DefaultCamera implements Camera, Updatable {
                 Math.max(1, bounds.width() - world.visibleArea().width()),
                 Math.max(1, bounds.height() - world.visibleArea().height()));
 
-        final double movementX = MathUtil.clamp(
-                legalPostionArea.minX() - position().x(),
-                delta.x(),
-                legalPostionArea.maxX() - position().x());
+        final double movementX = Math.clamp(delta.x(), legalPostionArea.minX() - position().x(), legalPostionArea.maxX() - position().x());
 
-        final double movementY = MathUtil.clamp(
-                legalPostionArea.minY() - position().y(),
-                delta.y(),
-                legalPostionArea.maxY() - position().y());
+        final double movementY = Math.clamp(delta.y(), legalPostionArea.minY() - position().y(), legalPostionArea.maxY() - position().y());
 
         move($(movementX, movementY));
         return position();

@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.physics.Borders;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ShadowComponent;
 import io.github.srcimon.screwbox.tiled.Tileset;
@@ -59,7 +58,7 @@ public class ShadowSystem implements EntitySystem {
                     TransformComponent transformComponent = shadow.get(TransformComponent.class);
                     transformComponent.bounds = transformComponent.bounds.moveTo(shadowPosition);
                     final double length = linkedBounds.position().distanceTo(position.get());
-                    final double calculatedOpacity = MathUtil.clamp(0, (64 - length) / 100, 1);
+                    final double calculatedOpacity = Math.clamp((64 - length) / 100, 0, 1);
                     renderComponent.options = renderComponent.options.opacity(Percent.of(calculatedOpacity));
                 }
             } else {

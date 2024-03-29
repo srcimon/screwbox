@@ -8,8 +8,6 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
-
 @Order(SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
 
@@ -35,7 +33,8 @@ public class CameraSystem implements EntitySystem {
                     .substract(targetBounds.position())
                     .substract(target.shift);
 
-            final Vector cameraMovement = distance.multiply(clamp(-1, engine.loop().delta(-1 * target.followSpeed), 1));
+            final double value = engine.loop().delta(-1 * target.followSpeed);
+            final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
 
             if (configuration.isPresent()) {
                 engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.get().cameraBounds);

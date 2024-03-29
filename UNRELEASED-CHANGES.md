@@ -7,6 +7,7 @@
 - Added `Duration.seconds()`
 - Added `Time.add(Long, Unit)`
 - Added `Duration.humanReadable(#261)`
+- Added seperate options for x- and y-strength to `CameraShakeOptions`
 
 ### 🪛 Bug Fixes
 
@@ -22,6 +23,8 @@
 - Renamed `Time.addSeconds`, `.addMillis`
 - Replaced `Time` constants with enum `Time.Unit`
 - Removed `Font`
+- Added JavaDoc to `CameraShakeOptions`.
+- Replaced `MathUtil.clamp` with Java 21 `Math.clamp`
 
 ### 📦 Dependency updates
 
