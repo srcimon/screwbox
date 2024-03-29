@@ -16,6 +16,7 @@
 - Fixed invalid lightmap blur configuration
 - Fixed lightmap has no more ugly corners
 - Replaced `Time.plus(Duration)` with `Duration.addTo(Time)` to fix circular dependency (#260)
+- Removed Thread.sleep before fullscreen changes on MacOs because  the workaround is no longer needed in Sonoma 14.4
 
 ### 🧽 Cleanup & refactoring
 
