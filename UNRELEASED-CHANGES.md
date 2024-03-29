@@ -7,12 +7,16 @@
 - Added `Duration.seconds()`
 - Added `Time.add(Long, Unit)`
 - Added `Duration.humanReadable(#261)`
+- Added seperate options for x- and y-strength to `CameraShakeOptions`
 
 ### 🪛 Bug Fixes
 
 - Fixed wrong radius of light glows (#253)
 - Fixed renderer crash when drawing rectangles using width or height of zero
+- Fixed invalid lightmap blur configuration
+- Fixed lightmap has no more ugly corners
 - Replaced `Time.plus(Duration)` with `Duration.addTo(Time)` to fix circular dependency (#260)
+- Removed Thread.sleep before fullscreen changes on MacOs because  the workaround is no longer needed in Sonoma 14.4
 
 ### 🧽 Cleanup & refactoring
 
@@ -20,6 +24,8 @@
 - Renamed `Time.addSeconds`, `.addMillis`
 - Replaced `Time` constants with enum `Time.Unit`
 - Removed `Font`
+- Added JavaDoc to `CameraShakeOptions`.
+- Replaced `MathUtil.clamp` with Java 21 `Math.clamp`
 
 ### 📦 Dependency updates
 

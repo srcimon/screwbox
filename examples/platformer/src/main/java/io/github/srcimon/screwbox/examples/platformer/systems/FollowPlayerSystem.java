@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
 import io.github.srcimon.screwbox.examples.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
@@ -34,13 +33,9 @@ public class FollowPlayerSystem implements EntitySystem {
 
             Line lineBetweenFollowerAndPlayer = Line.between(followTransform.bounds.position(),
                     playerPosition);
-            double x = MathUtil.clamp(followComponent.speed * -1,
-                    lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(),
-                    followComponent.speed);
+            double x = Math.clamp(lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(), followComponent.speed * -1, followComponent.speed);
 
-            double y = MathUtil.clamp(followComponent.speed * -1,
-                    lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(),
-                    followComponent.speed);
+            double y = Math.clamp(lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(), followComponent.speed * -1, followComponent.speed);
 
             Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
             followTransform.bounds = followTransform.bounds.moveBy(movement);

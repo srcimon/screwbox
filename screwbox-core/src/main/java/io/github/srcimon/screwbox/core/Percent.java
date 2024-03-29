@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.utils.MathUtil;
-
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -24,7 +22,7 @@ public class Percent implements Serializable {
     private final double value;
 
     private Percent(final double value) {
-        this.value = MathUtil.clamp(MIN_VALUE, value, MAX_VALUE);
+        this.value = Math.clamp(value, MIN_VALUE, MAX_VALUE);
     }
 
     /**

@@ -15,20 +15,22 @@ class ActiveCameraShake {
     private final Noise noiseY;
     private final Time start = Time.now();
     private final Duration duration;
-    private final double strength;
+    private final double xStrength;
+    private final double yStrength;
 
     public ActiveCameraShake(final CameraShakeOptions options) {
         noiseX = Noise.variableInterval(options.interval());
         noiseY = Noise.variableInterval(options.interval());
         duration = options.duration();
-        strength = options.strength();
+        xStrength = options.xStrength();
+        yStrength = options.yStrength();
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {
         final var progress = calculateProgress(now);
 
-        return $(noiseX.value(now), noiseY.value(now))
-                .multiply(strength * progress.invert().value() / zoom);
+        return $(noiseX.value(now) * xStrength * progress.invert().value() / zoom,
+                noiseY.value(now) * yStrength * progress.invert().value() / zoom);
     }
 
     boolean hasEnded(final Time now) {

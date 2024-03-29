@@ -1,10 +1,11 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.image.RGBImageFilter;
 
-class ReplaceColorFilter extends RGBImageFilter {
+public class ReplaceColorFilter extends RGBImageFilter {
 
     private final int oldColorAwt;
     private final int newColorAwt;

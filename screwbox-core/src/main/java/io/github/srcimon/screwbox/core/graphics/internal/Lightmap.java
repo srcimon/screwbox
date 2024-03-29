@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.utils.MathUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.InvertImageMinOpacityFilter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -39,7 +39,8 @@ class Lightmap {
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
-        final float falloffValue = (float) MathUtil.clamp(0.1f, lightFade.invert().value(), 0.99f);
+        final double value = lightFade.invert().value();
+        final float falloffValue = (float) Math.clamp(value, 0.1f, 0.99f);
         this.fractions = new float[]{falloffValue, 1f};
     }
 
@@ -98,7 +99,7 @@ class Lightmap {
             addFullBrightnessArea(fullBrigthnessArea);
         }
         graphics.dispose();
-        return ImageUtil.applyFilter(image, new InvertLightmapImageWithMinOpacityFilter());
+        return ImageUtil.applyFilter(image, new InvertImageMinOpacityFilter());
     }
 
     private void applyOpacityConfig(final io.github.srcimon.screwbox.core.graphics.Color color) {

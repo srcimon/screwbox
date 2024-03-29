@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
@@ -17,24 +16,35 @@ class CameraShakeOptionsTest {
                 .interval(ofMillis(10));
 
         assertThat(options.duration().isNone()).isTrue();
-        assertThat(options.strength()).isEqualTo(30);
+        assertThat(options.xStrength()).isEqualTo(30);
+        assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
     }
 
     @Test
     void lastingForDuration_buildsOptionsWithDuration() {
-        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2)).xStrength(20).yStrength(5);
 
         assertThat(options.duration()).isEqualTo(ofSeconds(2));
-        assertThat(options.strength()).isEqualTo(10);
+        assertThat(options.xStrength()).isEqualTo(20);
+        assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
     }
 
     @Test
-    void strength_zeroStrength_throwsException() {
+    void strength_xStrengthZero_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
-        assertThatThrownBy(() -> options.strength(0))
+        assertThatThrownBy(() -> options.xStrength(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("strength must be positive");
+    }
+
+    @Test
+    void strength_yStrengthZero_throwsException() {
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
+
+        assertThatThrownBy(() -> options.yStrength(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
     }

@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.MovingPlatformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.WaypointComponent;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -44,15 +43,9 @@ public class MovingPlatformSystem implements EntitySystem {
             plattformComponent.waypoint = nextTarget.id().orElseThrow();
         }
         double delta = engine.loop().delta();
-        double xSpeed = clamp(
-                delta * -1 * plattformComponent.speed,
-                -1 * distance.x(),
-                delta * plattformComponent.speed);
+        double xSpeed = Math.clamp(-1 * distance.x(), delta * -1 * plattformComponent.speed, delta * plattformComponent.speed);
 
-        double ySpeed = clamp(
-                delta * -1 * plattformComponent.speed,
-                -1 * distance.y(),
-                delta * plattformComponent.speed);
+        double ySpeed = Math.clamp(-1 * distance.y(), delta * -1 * plattformComponent.speed, delta * plattformComponent.speed);
 
         Vector movement = Vector.of(xSpeed, ySpeed);
 

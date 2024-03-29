@@ -46,7 +46,8 @@ public class Noise implements Serializable {
 
         final var percent = Percent.of(1.0 * (time.nanos() - intervalStart.nanos()) / (intervalEnd.nanos() - intervalStart.nanos()));
         final var dist = lastValue - targetValue;
-        final var speedAtDist = MathUtil.clamp(0, Math.sin(percent.value() * Math.PI) + 1, 1);
+        final double value = Math.sin(percent.value() * Math.PI) + 1;
+        final var speedAtDist = Math.clamp(value, 0, 1);
         return (dist * percent.value() * speedAtDist) - lastValue;
     }
 

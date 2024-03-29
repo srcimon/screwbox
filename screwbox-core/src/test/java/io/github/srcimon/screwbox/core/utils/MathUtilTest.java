@@ -7,27 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MathUtilTest {
 
     @Test
-    void clamp_valueIsBelowMin_returnsMin() {
-        double clamp = MathUtil.clamp(1, -4, 5);
-
-        assertThat(clamp).isEqualTo(1);
-    }
-
-    @Test
-    void clamp_valueIsAboveMax_returnsMax() {
-        double clamp = MathUtil.clamp(1, 6, 5);
-
-        assertThat(clamp).isEqualTo(5);
-    }
-
-    @Test
-    void clamp_valueIsInRange_returnsValue() {
-        double clamp = MathUtil.clamp(1, 2, 5);
-
-        assertThat(clamp).isEqualTo(2);
-    }
-
-    @Test
     void sameSign_negativeAndPositive_returnsFalse() {
         assertThat(MathUtil.sameSign(1, -1)).isFalse();
         assertThat(MathUtil.sameSign(-1, 5)).isFalse();

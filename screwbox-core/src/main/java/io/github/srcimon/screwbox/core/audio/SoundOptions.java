@@ -4,8 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 
 import java.util.Objects;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.clamp;
-
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
@@ -86,7 +84,7 @@ public class SoundOptions {
      * Sets the pan of the playback. Allowed range is -1 to 1. Auto crops values out of this range.
      */
     public SoundOptions pan(final double pan) {
-        this.pan = clamp(-1, pan, 1);
+        this.pan = Math.clamp(pan, -1, 1);
         return this;
     }
 
@@ -101,7 +99,7 @@ public class SoundOptions {
      * Sets the balance of the playback. Allowed range is -1 to 1. Auto crops values out of this range.
      */
     public SoundOptions balance(final double balance) {
-        this.balance = clamp(-1, balance, 1);
+        this.balance = Math.clamp(balance, -1, 1);
         return this;
     }
 

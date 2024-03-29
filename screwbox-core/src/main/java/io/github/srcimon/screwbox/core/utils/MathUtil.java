@@ -9,13 +9,6 @@ public final class MathUtil {
     }
 
     /**
-     * Returns value but never a value below min and never a value exceeding max.
-     */
-    public static double clamp(final double min, final double value, final double max) {
-        return Math.min(Math.max(value, min), max);
-    }
-
-    /**
      * Returns {@code true} if both values have the same sign.
      */
     public static boolean sameSign(final double value, final double other) {
