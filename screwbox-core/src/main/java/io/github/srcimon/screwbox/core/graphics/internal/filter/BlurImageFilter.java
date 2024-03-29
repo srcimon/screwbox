@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
