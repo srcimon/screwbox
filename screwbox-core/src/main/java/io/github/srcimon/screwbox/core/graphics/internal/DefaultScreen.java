@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+import static java.awt.RenderingHints.*;
 import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
@@ -38,7 +35,10 @@ public class DefaultScreen implements Screen {
                 lastGraphics.dispose();
             }
             final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-
+            graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
+            graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
+            graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
+            graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
             if (antialiased) {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
