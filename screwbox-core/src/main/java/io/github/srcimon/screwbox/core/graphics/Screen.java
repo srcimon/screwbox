@@ -129,7 +129,7 @@ public interface Screen {
         return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
-    Screen fillWith(Sprite sprite, SpriteFillOptions options);
+    Screen drawSprites(Sprite sprite, SpriteFillOptions options);
     Screen fillWith(Offset offset, Sprite sprite, double scale, Percent opacity);
 
     default Screen fillWith(final Sprite sprite, final double scale) {
