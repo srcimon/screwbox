@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.awt.RenderingHints.*;
-import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
 public class DefaultScreen implements Screen {
@@ -139,7 +138,7 @@ public class DefaultScreen implements Screen {
                 options.offset().y() % spriteHeight);
         for (long x = 0; x <= Math.round(frame.getWidth() / spriteWidth); x++) {
             for (long y = 0; y <= Math.round(frame.getHeight() / spriteHeight); y++) {
-                final Offset thisOffset = offset.add((int)(x * spriteWidth), (int)(y * spriteHeight));
+                final Offset thisOffset = offset.add((int) (x * spriteWidth), (int) (y * spriteHeight));
                 drawSprite(sprite, thisOffset, spriteDrawOptions);
             }
         }
