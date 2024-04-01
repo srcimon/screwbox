@@ -129,7 +129,7 @@ public interface Screen {
         return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
-    Screen drawSpriteFill(Sprite sprite, SpriteFillOptions options);
+    Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**
      * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.
