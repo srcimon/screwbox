@@ -132,14 +132,11 @@ public class DefaultScreen implements Screen {
     public Screen drawSpriteFill(final Sprite sprite, final SpriteFillOptions options) {
         final double spriteWidth = sprite.size().width() * options.scale();
         final double spriteHeight = sprite.size().height() * options.scale();
-        final long countX = Math.round(frame.getWidth() / spriteWidth) + 1;
-        final long countY = Math.round(frame.getHeight() / spriteHeight) + 1;
-        final long offsetX =Math.round( options.offset().x() % spriteWidth - spriteWidth);
-        System.out.println(offsetX);
-        final long offsetY = Math.round(options.offset().y() % spriteHeight - spriteHeight);
+        final long offsetX = Math.round(options.offset().x() % spriteWidth);
+        final long offsetY = Math.round(options.offset().y() % spriteHeight);
         final var spriteDrawOptions = scaled(options.scale()).opacity(options.opacity());
-        for (long x = 1; x <= countX; x++) {
-            for (long y = 1; y <= countY; y++) {
+        for (long x = 0; x <= Math.round(frame.getWidth() / spriteWidth); x++) {
+            for (long y = 0; y <= Math.round(frame.getHeight() / spriteHeight); y++) {
                 final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
                 drawSprite(sprite, thisOffset, spriteDrawOptions);
             }
