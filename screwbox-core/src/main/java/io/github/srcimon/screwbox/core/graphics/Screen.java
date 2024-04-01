@@ -129,24 +129,7 @@ public interface Screen {
         return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
-    Screen drawSprites(Sprite sprite, SpriteFillOptions options);
-    Screen fillWith(Offset offset, Sprite sprite, double scale, Percent opacity);
-
-    default Screen fillWith(final Sprite sprite, final double scale) {
-        return fillWith(Offset.origin(), sprite, scale, Percent.max());
-    }
-
-    default Screen fillWith(final Offset offset, final Sprite sprite, final double scale) {
-        return fillWith(offset, sprite, scale, Percent.max());
-    }
-
-    default Screen fillWith(final Offset offset, final Sprite sprite) {
-        return fillWith(offset, sprite, 1);
-    }
-
-    default Screen fillWith(final Sprite sprite) {
-        return fillWith(sprite, 1);
-    }
+    Screen drawSpriteFill(Sprite sprite, SpriteFillOptions options);
 
     /**
      * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.

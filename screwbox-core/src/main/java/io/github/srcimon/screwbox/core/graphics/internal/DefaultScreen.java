@@ -106,23 +106,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
-        final double spriteWidth = sprite.size().width() * scale;
-        final double spriteHeight = sprite.size().height() * scale;
-        final long countX = Math.round(frame.getWidth() / spriteWidth) + 1;
-        final long countY = Math.round(frame.getHeight() / spriteHeight) + 1;
-        final long offsetX =Math.round( offset.x() % spriteWidth - spriteWidth);
-        final long offsetY = Math.round(offset.y() % spriteHeight - spriteHeight);
-        for (long x = 1; x <= countX; x++) {
-            for (long y = 1; y <= countY; y++) {
-                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scaled(scale).opacity(opacity));
-            }
-        }
-        return this;
-    }
-
-    @Override
     public Sprite takeScreenshot() {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opend first to create screenshot");
@@ -146,8 +129,22 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawSprites(Sprite sprite, SpriteFillOptions options) {
-        return null;
+    public Screen drawSpriteFill(final Sprite sprite, final SpriteFillOptions options) {
+        final double spriteWidth = sprite.size().width() * options.scale();
+        final double spriteHeight = sprite.size().height() * options.scale();
+        final long countX = Math.round(frame.getWidth() / spriteWidth) + 1;
+        final long countY = Math.round(frame.getHeight() / spriteHeight) + 1;
+        final long offsetX =Math.round( options.offset().x() % spriteWidth - spriteWidth);
+        System.out.println(offsetX);
+        final long offsetY = Math.round(options.offset().y() % spriteHeight - spriteHeight);
+        final var spriteDrawOptions = scaled(options.scale()).opacity(options.opacity());
+        for (long x = 1; x <= countX; x++) {
+            for (long y = 1; y <= countY; y++) {
+                final Offset thisOffset = Offset.at(x * spriteWidth + offsetX, y * spriteHeight + offsetY);
+                drawSprite(sprite, thisOffset, spriteDrawOptions);
+            }
+        }
+        return this;
     }
 
     @Override
