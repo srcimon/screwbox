@@ -19,6 +19,11 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
+    public void fillWith(Sprite sprite, SpriteFillOptions options) {
+        // does nothing
+    }
+
+    @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         // does nothing
     }

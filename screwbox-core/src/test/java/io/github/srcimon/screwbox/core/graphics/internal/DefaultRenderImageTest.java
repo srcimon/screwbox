@@ -174,6 +174,27 @@ class DefaultRenderImageTest {
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
+    @Test
+    void fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage() {
+        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(2).opacity(Percent.half()));
+
+        verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage.png");
+    }
+
+    @Test
+    void fillWith_spriteFillWithOffset_fillsWholeImage() {
+        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()));
+
+        verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithOffset_fillsWholeImage.png");
+    }
+
+    @Test
+    void fillWith_spriteFillWithDifferentOffset_fillsWholeImage() {
+        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()));
+
+        verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
+    }
+
     private void verifyNotAllPixelsAreBlack() {
         long blackPixelCount = result.size().allPixels().stream()
                 .map(pixel -> result.colorAt(pixel))

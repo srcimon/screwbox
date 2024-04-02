@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.awt.RenderingHints.*;
-import static java.lang.Math.round;
 import static java.util.Objects.nonNull;
 
 public class DefaultScreen implements Screen {
@@ -106,24 +105,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillWith(final Offset offset, final Sprite sprite, final double scale, final Percent opacity) {
-        final long spriteWidth = round(sprite.size().width() * scale);
-        final long spriteHeight = round(sprite.size().height() * scale);
-        final long countX = frame.getWidth() / spriteWidth + 1;
-        final long countY = frame.getHeight() / spriteHeight + 1;
-        final long offsetX = offset.x() % spriteWidth - spriteWidth;
-        final long offsetY = offset.y() % spriteHeight - spriteHeight;
-
-        for (long x = 0; x <= countX + 1; x++) {
-            for (long y = 0; y <= countY + 1; y++) {
-                final Offset thisOffset = Offset.at((double) x * spriteWidth + offsetX, (double) y * spriteHeight + offsetY);
-                drawSprite(sprite, thisOffset, scaled(scale).opacity(opacity));
-            }
-        }
-        return this;
-    }
-
-    @Override
     public Sprite takeScreenshot() {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opend first to create screenshot");
@@ -143,6 +124,14 @@ public class DefaultScreen implements Screen {
                                    final Percent opacity, final double scale) {
         final int totalWidth = (int) (font.widthOf(text) * scale);
         drawTextSprites(offset.addX(totalWidth / -2), opacity, scale, font.spritesFor(text), font);
+        return this;
+    }
+
+    @Override
+    public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
+        if (!options.opacity().isZero()) {
+            renderer.fillWith(sprite, options);
+        }
         return this;
     }
 

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
 import io.github.srcimon.screwbox.examples.platformer.components.BackgroundComponent;
 
 import java.util.Comparator;
@@ -25,10 +26,11 @@ public class BackgroundSystem implements EntitySystem {
             final var background = entity.get(BackgroundComponent.class);
             final var sprite = entity.get(RenderComponent.class);
 
+            final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom).opacity(sprite.options.opacity());
             final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * background.parallaxX,
                     cameraPosition.y() * -1 * background.parallaxY);
-            engine.graphics().screen().fillWith(offset, sprite.sprite, background.zoom, sprite.options.opacity());
+            engine.graphics().screen().fillWith(sprite.sprite, options.offset(offset));
         }
     }
 }
