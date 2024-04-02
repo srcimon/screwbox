@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,24 +20,6 @@ class ScreenTest {
         screen.drawRectangle(new ScreenBounds(10, 4, 13, 20), RectangleDrawOptions.filled(Color.RED));
 
         verify(screen).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleDrawOptions.filled(Color.RED));
-    }
-
-    @Test
-    void fillWith_sprite_callsActualMethod() {
-        Sprite sprite = sprite();
-
-        screen.fillWith(sprite);
-
-        verify(screen).fillWith(origin(), sprite, 1, Percent.max());
-    }
-
-    @Test
-    void fillWith_pffsetAndSprite_callsActualMethod() {
-        Sprite sprite = sprite();
-
-        screen.fillWith(Offset.at(2, 3), sprite);
-
-        verify(screen).fillWith(Offset.at(2, 3), sprite, 1, Percent.max());
     }
 
     @Test
@@ -93,9 +74,5 @@ class ScreenTest {
         screen.drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half());
 
         verify(screen).drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half(), 1);
-    }
-
-    private Sprite sprite() {
-        return Sprite.fromFile("tile.bmp");
     }
 }

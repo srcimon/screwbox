@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Slightly improved rendering performance due to performance optimized rendering hints
+- Major performance improvement on drawing image fill
 
 ### 🪛 Bug Fixes
 
