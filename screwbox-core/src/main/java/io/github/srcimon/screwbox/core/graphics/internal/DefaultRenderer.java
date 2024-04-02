@@ -36,6 +36,28 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
+        applyOpacityConfig(options.opacity());
+
+        final double spriteWidth = sprite.size().width() * options.scale();
+        final double spriteHeight = sprite.size().height() * options.scale();
+        final Offset offset = Offset.at(
+                options.offset().x() % spriteWidth,
+                options.offset().y() % spriteHeight);
+
+        for (long x = 0; x <= Math.round(canvasSize.width() / spriteWidth); x++) {
+            for (long y = 0; y <= Math.round(canvasSize.height() / spriteHeight); y++) {
+                final Offset thisOffset = offset.add((int) (x * spriteWidth), (int) (y * spriteHeight));
+                final AffineTransform transform = new AffineTransform();
+                transform.translate(thisOffset.x(), thisOffset.y());
+                transform.scale(options.scale(), options.scale());
+                graphics.drawImage(sprite.image(lastUpdateTime), transform, null);
+            }
+        }
+        resetOpacityConfig(options.opacity());
+    }
+
+    @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyNewColor(options.color());
         final var font = toAwtFont(options);

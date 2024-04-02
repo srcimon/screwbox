@@ -129,19 +129,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        final var spriteDrawOptions = scaled(options.scale()).opacity(options.opacity());
-
-        final double spriteWidth = sprite.size().width() * options.scale();
-        final double spriteHeight = sprite.size().height() * options.scale();
-        final Offset offset = Offset.at(
-                options.offset().x() % spriteWidth,
-                options.offset().y() % spriteHeight);
-        for (long x = 0; x <= Math.round(frame.getWidth() / spriteWidth); x++) {
-            for (long y = 0; y <= Math.round(frame.getHeight() / spriteHeight); y++) {
-                final Offset thisOffset = offset.add((int) (x * spriteWidth), (int) (y * spriteHeight));
-                drawSprite(sprite, thisOffset, spriteDrawOptions);
-            }
-        }
+        renderer.fillWith(sprite, options);
         return this;
     }
 

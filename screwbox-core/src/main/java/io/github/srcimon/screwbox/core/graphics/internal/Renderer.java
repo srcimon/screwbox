@@ -12,6 +12,8 @@ public interface Renderer {
 
     void fillWith(Color color);
 
+    void fillWith(Sprite sprite, SpriteFillOptions options);
+
     void drawText(Offset offset, String text, TextDrawOptions options);
 
     void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
