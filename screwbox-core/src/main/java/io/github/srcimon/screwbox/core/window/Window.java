@@ -1,6 +1,10 @@
 package io.github.srcimon.screwbox.core.window;
 
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.MouseCursor;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
 
@@ -21,8 +25,20 @@ public interface Window {
      */
     boolean hasFocus();
 
+    /**
+     * Opens the {@link Window}. Does nothing when {@link Window} is already open.
+     *
+     * @see #isOpen()
+     * @see #close()
+     */
     Window open();
 
+    /**
+     * Closes the {@link Window}. Does nothing when {@link Window} is already closed.
+     *
+     * @see #isOpen()
+     * @see #open()
+     */
     Window close();
 
     /**
@@ -43,6 +59,7 @@ public interface Window {
      * Returns all {@link java.io.File}s droped on the {@link Window} at the current frame.
      */
     Optional<FilesDropedOnWindow> filesDropedOnWindow();
+
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
      * fullscreen and window mode.
@@ -153,6 +170,16 @@ public interface Window {
 
     /**
      * Returns {@code true} if the {@link Window} is currently open.
+     * @see #isClosed()
      */
     boolean isOpen();
+
+    /**
+     * Returns {@code false} if the {@link Window} is currently open.
+     *
+     * @see #isOpen()
+     */
+    default boolean isClosed() {
+        return !isOpen();
+    }
 }

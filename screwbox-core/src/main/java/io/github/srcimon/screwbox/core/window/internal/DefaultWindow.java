@@ -81,6 +81,9 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window open() {
+        if(isOpen()) {
+            return this;
+        }
         final int width = configuration.resolution().width();
         final int height = configuration.resolution().height();
 
@@ -117,6 +120,9 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
+        if(isClosed()) {
+            return this;
+        }
         screen.setRenderer(new StandbyRenderer());
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
