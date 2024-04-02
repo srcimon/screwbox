@@ -14,8 +14,10 @@ import static java.util.Objects.requireNonNull;
  */
 public record SpriteFillOptions(Offset offset, double scale, Percent opacity) {
 
-    //TODO test
     public SpriteFillOptions {
+        if(scale <= 0) {
+            throw new IllegalArgumentException("scale must be positive");
+        }
         requireNonNull(offset, "offset must not be null");
         requireNonNull(opacity, "opacity must not be null");
     }
