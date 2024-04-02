@@ -15,14 +15,17 @@ class SpriteFillOptionsTest {
 
     @Test
     void newInstance_opacityNull_throwsException() {
-        assertThatThrownBy(() -> SpriteFillOptions.scale(1).opacity(null))
+        final var options = SpriteFillOptions.scale(1);
+        assertThatThrownBy(() -> options.opacity(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("opacity must not be null");
     }
 
     @Test
     void newInstance_offsetNull_throwsException() {
-        assertThatThrownBy(() -> SpriteFillOptions.scale(1).offset(null))
+        final var options = SpriteFillOptions.scale(1);
+
+        assertThatThrownBy(() -> options.offset(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("offset must not be null");
     }

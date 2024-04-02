@@ -129,7 +129,9 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.fillWith(sprite, options);
+        if (!options.opacity().isZero()) {
+            renderer.fillWith(sprite, options);
+        }
         return this;
     }
 
