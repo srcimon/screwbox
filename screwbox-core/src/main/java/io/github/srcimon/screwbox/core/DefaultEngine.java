@@ -47,6 +47,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
 
@@ -64,13 +65,14 @@ class DefaultEngine implements Engine {
     private final DefaultWindow window;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
+    private final WindowFrame frame;
     private final String name;
 
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final WindowFrame frame = MacOsSupport.isMacOs()
+        frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
                 : new WindowFrame(configuration.resolution());
 
@@ -164,6 +166,10 @@ class DefaultEngine implements Engine {
                 log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
                 executor.shutdown();
             });
+            window.close();
+            if (nonNull(frame)) {
+                frame.dispose();
+            }
         }
     }
 
