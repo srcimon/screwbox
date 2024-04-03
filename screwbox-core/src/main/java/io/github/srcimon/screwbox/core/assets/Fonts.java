@@ -20,7 +20,7 @@ public class Fonts {
             ',', ':', '!', '?', '-'));
 
     public static final Asset<Pixelfont> SKINNY_SANS_BLACK = asset(() -> loadFont("assets/pixelfonts/skinny_sans.png", Size.square(8),
-            'A', 'a', 'B', 'b'));
+            'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h'));
 
     public static final Asset<Pixelfont> SKINNY_SANS_WHITE = asset(() -> SKINNY_SANS_BLACK.get().replaceBlack(Color.WHITE));
 
