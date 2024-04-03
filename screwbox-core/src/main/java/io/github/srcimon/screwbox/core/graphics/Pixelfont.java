@@ -194,7 +194,8 @@ public class Pixelfont implements Serializable {
         return Size.of(widthOf(text), height);
     }
 
-    private Pixelfont replaceBlack(final Color newColor) {
+    //TODO made public???
+    public Pixelfont replaceBlack(final Color newColor) {
         final Pixelfont newFont = new Pixelfont();
 
         for (final var character : characters.entrySet()) {
