@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
  * To make this preloading work {@link Asset}s have to be static class fields.
  * It's recommended to make them {@code private static final}.
  */
-public class Asset<T> implements Supplier<T> {
+public class  Asset<T> implements Supplier<T> {
 
     private final Supplier<T> supplier;
     private T value;
