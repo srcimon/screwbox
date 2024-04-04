@@ -10,8 +10,7 @@ import java.util.Arrays;
 import static io.github.srcimon.screwbox.core.assets.Asset.asset;
 
 
-//TODO move into Assets?
-public class AssetBundle {
+public class FontBundle {
 
     //TODO rename resource
     public static final Asset<Pixelfont> SCREWBOX = asset(() -> loadFont("assets/pixelfonts/default_font.png", Size.square(8),
@@ -21,7 +20,7 @@ public class AssetBundle {
 
     public static final Asset<Pixelfont> SKINNY_SANS_BLACK = asset(() -> loadFont("assets/pixelfonts/skinny_sans.png", Size.square(8),
             'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q'
-            , 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',  ' ', '.', ',', ':', '!', '?', '-'));
+            , 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.', ',', ':', '!', '?', '-'));
 
     public static final Asset<Pixelfont> SKINNY_SANS_WHITE = asset(() -> SKINNY_SANS_BLACK.get().replaceColor(Color.BLACK, Color.WHITE));
 
@@ -31,7 +30,6 @@ public class AssetBundle {
         font.addCharacters(Arrays.asList(characters), sprites.stream().map(s -> s.cropHorizontal()).toList());
         return font;
     }
-
 
 
 }
