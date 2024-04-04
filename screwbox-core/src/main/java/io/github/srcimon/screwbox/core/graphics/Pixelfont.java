@@ -194,12 +194,17 @@ public class Pixelfont implements Serializable {
         return Size.of(widthOf(text), height);
     }
 
-    //TODO made public???
-    public Pixelfont replaceBlack(final Color newColor) {
+    @Deprecated
+    private Pixelfont replaceBlack(final Color newColor) {
+        return replaceColor(Color.BLACK, newColor);
+    }
+
+    //TODO javadoc and test
+    public Pixelfont replaceColor(final Color originalColor, final Color newColor) {
         final Pixelfont newFont = new Pixelfont();
 
         for (final var character : characters.entrySet()) {
-            final Sprite recoloredSprite = character.getValue().replaceColor(Color.BLACK, newColor);
+            final Sprite recoloredSprite = character.getValue().replaceColor(originalColor, newColor);
             newFont.addCharacter(character.getKey(), recoloredSprite);
         }
         newFont.setPadding(padding);
