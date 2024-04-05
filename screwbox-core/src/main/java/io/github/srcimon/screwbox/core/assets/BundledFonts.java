@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
+//TODO Test and Javadoc
 public enum BundledFonts {
 
     SCREWBOX(() -> loadFont("assets/pixelfonts/default_font.png", Size.square(8),
