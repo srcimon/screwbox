@@ -47,7 +47,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
-import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
 
@@ -68,6 +67,7 @@ class DefaultEngine implements Engine {
     private final WindowFrame frame;
     private final String name;
 
+    private Boolean errorState = false;
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
@@ -146,8 +146,13 @@ class DefaultEngine implements Engine {
         }
         log.info(format("engine with name '%s' started", name));
         try {
-            window.open();
-            loop.start();
+            synchronized (errorState) {
+                if (!errorState) {
+                    window.open();
+                    loop.start();
+                }
+            }
+
         } catch (final RuntimeException e) {
             exceptionHandler(e);
         }
@@ -167,9 +172,6 @@ class DefaultEngine implements Engine {
                 executor.shutdown();
             });
             window.close();
-            if (nonNull(frame)) {
-                frame.dispose();
-            }
         }
     }
 
@@ -249,6 +251,9 @@ class DefaultEngine implements Engine {
     }
 
     private void exceptionHandler(final Throwable throwable) {
+        synchronized (errorState) {
+            errorState = true;
+        }
         stop();
         log().error(throwable);
     }
