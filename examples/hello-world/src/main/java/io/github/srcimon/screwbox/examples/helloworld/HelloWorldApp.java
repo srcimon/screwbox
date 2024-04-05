@@ -2,21 +2,26 @@ package io.github.srcimon.screwbox.examples.helloworld;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.assets.Fonts;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.BundledFonts;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldApp {
 
+    private static final Asset<Pixelfont> FONT = Asset.asset(() -> BundledFonts.SCREWBOX.white());
+    private static final Asset<Pixelfont> FONT_RED = Asset.asset(() -> BundledFonts.SCREWBOX.customColor(Color.RED));
+
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-
+        screwBox.assets().enableLogging().prepareClassPackageAsync(HelloWorldApp.class);
 
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
-            screen.drawTextCentered(screen.center(), "The quick: brown fox jumps over the lazy dog. Jinxed wizards pluck ivy from the big quilt.", Fonts.SCREWBOX.white(), 2);
-            screen.drawTextCentered(screen.center().addY(20), "Jaded, zombies acted quaintly but kept driving their dizzy oxen forward.", Fonts.SCREWBOX.white(), 2);
-            screen.drawTextCentered(screen.center().addY(40), "We promptly judged antique ivory buckles for the next prize.", Fonts.SCREWBOX.white(), 2);
-            screen.drawTextCentered(screen.center().addY(80), "Current Engine Runtime: " + engine.loop().runningTime().humanReadable(), Fonts.SCREWBOX.customColor(Color.RED), 4);
+            screen.drawTextCentered(screen.center(), "The quick: brown fox jumps over the lazy dog. Jinxed wizards pluck ivy from the big quilt.", FONT.get(), 2);
+            screen.drawTextCentered(screen.center().addY(20), "Jaded, zombies acted quaintly but kept driving their dizzy oxen forward.", FONT.get(), 2);
+            screen.drawTextCentered(screen.center().addY(40), "We promptly judged antique ivory buckles for the next prize.", FONT.get(), 2);
+            screen.drawTextCentered(screen.center().addY(80), "Current Engine Runtime: " + engine.loop().runningTime().humanReadable(), FONT_RED.get(), 4);
         });
         screwBox.start();
     }
