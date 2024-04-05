@@ -13,7 +13,7 @@ import static java.lang.reflect.Modifier.isStatic;
  */
 public class AssetLocation {
 
-    private final Field sourceField;
+    private final String id;
     private final Asset<?> asset;
 
     private Duration loadingDuration;
@@ -36,7 +36,7 @@ public class AssetLocation {
     }
 
     private AssetLocation(final Field sourceField) {
-        this.sourceField = sourceField;
+        this.id = sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
         try {
             this.asset = (Asset<?>) sourceField.get(Asset.class);
         } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -74,7 +74,7 @@ public class AssetLocation {
      * Returns a unique id of the {@link AssetLocation}.
      */
     public String id() {
-        return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
+        return id;
     }
 
     @Override
