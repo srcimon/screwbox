@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static io.github.srcimon.screwbox.core.assets.BundledFonts.SCREWBOX;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,7 +25,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawText(Offset.at(2, 4), "Test", font);
 
@@ -33,7 +34,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawText(Offset.at(2, 4), "Test", font, 4);
 
@@ -42,7 +43,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawText(Offset.at(2, 4), "Test", font, Percent.half());
 
@@ -51,7 +52,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font);
 
@@ -60,7 +61,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font, 4);
 
@@ -69,7 +70,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
+        Pixelfont font = SCREWBOX.white();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half());
 

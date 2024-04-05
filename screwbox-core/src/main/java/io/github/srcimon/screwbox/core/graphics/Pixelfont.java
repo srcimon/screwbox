@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.assets.BundledFonts;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,10 +18,10 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A font made of {@link Sprite}s (even animated ones) for system independent
- * rendering.
+ * A font made of {@link Sprite}s (even animated ones) for system independent rendering. Have a look at {@link BundledFonts}
+ * if you want some inspiration.
  *
- * @see #defaultFont(Color)
+ * @see BundledFonts
  */
 public class Pixelfont implements Serializable {
 
@@ -149,6 +151,15 @@ public class Pixelfont implements Serializable {
         }
 
         return totalWith;
+    }
+
+    /**
+     * Returns the {@link Size} of a given text in this {@link Pixelfont}. Width will be 0 if there is no character jet.
+     *
+     * @see #widthOf(String)
+     */
+    public Size sizeOf(final String text) {
+        return Size.of(widthOf(text), height);
     }
 
     //TODO javadoc and test
