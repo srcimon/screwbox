@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.lang.String.format;
-
 public class DefaultAssets implements Assets {
 
     private final Cache<String, List<AssetLocation>> cache = new Cache<>();
@@ -41,9 +39,8 @@ public class DefaultAssets implements Assets {
                 loadedAssets.add(asset);
             }
         }
-        final var durationMs = Duration.since(before).milliseconds();
         if (logEnabled) {
-            log.debug(format("loaded %s assets in %,d ms", loadedAssets.size(), durationMs));
+            log.debug("loaded %s assets in %s".formatted(loadedAssets.size(), Duration.since(before).humanReadable()));
         }
 
         if (loadedAssets.isEmpty()) {
