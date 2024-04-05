@@ -76,10 +76,6 @@ public interface Assets {
      * Disables logging of loading results. Logging is disabled by default.
      */
     Assets disableLogging();
-
-    //TODO: Test and javadoc
-    Assets preloadsBundledAssets();
-
     /**
      * Returns {@code true} if preparing is currently in progress.
      *

@@ -45,6 +45,11 @@ public class AssetLocation {
         }
     }
 
+    public AssetLocation(final BundledAsset<?> bundledAsset) {
+        this.id = bundledAsset.getClass().getPackageName() + "." + bundledAsset.getClass().getName();
+        this.asset = bundledAsset.asset();
+    }
+
     /**
      * Loads the {@link Asset}.
      */
@@ -63,7 +68,7 @@ public class AssetLocation {
      * Returns the {@link Duration} it took to load the {@link Asset}. Is empty when
      * there is no information on the loading {@link Duration} or when {@link Asset}
      * has not been loaded yet.
-     * 
+     *
      * @see #isLoaded()
      */
     public Optional<Duration> loadingDuration() {

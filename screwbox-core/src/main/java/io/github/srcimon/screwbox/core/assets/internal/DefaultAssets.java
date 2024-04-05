@@ -44,6 +44,8 @@ public class DefaultAssets implements Assets {
                 loadedAssets.add(asset);
             }
         }
+
+        //TODO hier auch BundledAssets mit betrachten
         if (logEnabled) {
             log.debug("loaded %s assets in %s".formatted(loadedAssets.size(), Duration.since(before).humanReadable()));
         }
@@ -61,12 +63,25 @@ public class DefaultAssets implements Assets {
     }
 
     private List<AssetLocation> fetchAssetInPackage(final String packageName) {
-        return Reflections.findClassesInPackage(packageName).stream()
+        List<AssetLocation> bundledAssetLocations = Reflections.findClassesInPackage(packageName).stream()
+                .filter(BundledAsset.class::isAssignableFrom)
+                .filter(clazz -> nonNull(clazz.getEnumConstants()))
+                .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
+                .map(BundledAsset.class::cast)
+                .map(AssetLocation::new)
+                .toList();
+
+        List<AssetLocation> assetLocations = Reflections.findClassesInPackage(packageName).stream()
                 .flatMap(clazz -> Stream.of(clazz.getDeclaredFields()))
                 .map(AssetLocation::tryToCreateAt)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
+
+        List<AssetLocation> combi = new ArrayList<>();
+        combi.addAll(assetLocations);
+        combi.addAll(bundledAssetLocations);
+        return combi;
     }
 
     @Override
@@ -84,25 +99,6 @@ public class DefaultAssets implements Assets {
     @Override
     public Assets disableLogging() {
         logEnabled = false;
-        return this;
-    }
-
-    @Override
-    public Assets preloadsBundledAssets() {
-        final Time before = Time.now();
-
-        List<BundledAsset> bundledAssets = Reflections.findClassesInPackage(ScrewBox.class.getPackageName()).stream()
-                .filter(BundledAsset.class::isAssignableFrom)
-                .filter(clazz -> nonNull(clazz.getEnumConstants()))
-                .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
-                .map(BundledAsset.class::cast)
-                .toList();
-
-        bundledAssets.forEach(BundledAsset::get);
-
-        if (logEnabled) {
-            log.debug("loaded %s bundled assets in %s".formatted(bundledAssets.size(), Duration.since(before).humanReadable()));
-        }
         return this;
     }
 
