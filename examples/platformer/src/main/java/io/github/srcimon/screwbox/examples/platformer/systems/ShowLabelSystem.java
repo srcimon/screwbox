@@ -4,13 +4,15 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
+import io.github.srcimon.screwbox.core.assets.BundledFonts;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
-
-import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
@@ -25,7 +27,7 @@ public class ShowLabelSystem implements EntitySystem {
                 Bounds bounds = entity.get(TransformComponent.class).bounds;
 
                 Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawTextCentered(position, labelComponent.label, defaultFont(WHITE),
+                engine.graphics().world().drawTextCentered(position, labelComponent.label, BundledFonts.SCREWBOX.white(),
                         Percent.max(),
                         labelComponent.size / 15.0);
             }

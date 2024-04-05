@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.utils.Cache;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,43 +23,12 @@ import static java.util.Objects.requireNonNull;
  */
 public class Pixelfont implements Serializable {
 
-    private static final List<Character> DEFAULT_CHARACTER_SET = List.of(
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-            'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.',
-            ',', ':', '!', '?', '-');
-    private static final Pixelfont DEFAULT_FONT = defaultFontBlack();
-
     @Serial
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
-    private static final Cache<Color, Pixelfont> FONT_CACHE = new Cache<>();
     private int padding = 2;
     private int height = 0;
-
-    /**
-     * Creates a monospace {@link Pixelfont}, containing a restricted set of characters,
-     * numbers and symbols. First call for every {@link Color} is quite slow.
-     */
-    public static Pixelfont defaultFont(final Color color) {
-        final Color newColor = requireNonNull(color, "Color must not be null.");
-        return FONT_CACHE.getOrElse(newColor, () -> DEFAULT_FONT.replaceBlack(newColor));
-    }
-
-    /**
-     * Creates a white monospace {@link Pixelfont}, containing a restricted set of characters,
-     * numbers and symbols.
-     */
-    public static Pixelfont defaultFont() {
-        return defaultFont(Color.WHITE);
-    }
-
-    private static Pixelfont defaultFontBlack() {
-        final Pixelfont font = new Pixelfont();
-        final var sprites = Sprite.multipleFromFile("assets/pixelfonts/default_font.png", Size.square(8));
-        font.addCharacters(DEFAULT_CHARACTER_SET, sprites);
-        return font;
-    }
 
     /**
      * The space between characters of this font.
@@ -182,21 +149,6 @@ public class Pixelfont implements Serializable {
         }
 
         return totalWith;
-    }
-
-
-    /**
-     * Returns the {@link Size} of a given text in this {@link Pixelfont}. Width will be 0 if there is no character jet.
-     *
-     * @see #widthOf(String)
-     */
-    public Size sizeOf(final String text) {
-        return Size.of(widthOf(text), height);
-    }
-
-    @Deprecated
-    private Pixelfont replaceBlack(final Color newColor) {
-        return replaceColor(Color.BLACK, newColor);
     }
 
     //TODO javadoc and test

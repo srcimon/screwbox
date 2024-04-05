@@ -9,8 +9,6 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.assets.Asset.asset;
-
 //TODO Test and Javadoc
 public enum BundledFonts {
 

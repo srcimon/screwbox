@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.BundledFonts;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
@@ -12,6 +13,8 @@ import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.examples.platformer.components.TextComponent;
 
+import static io.github.srcimon.screwbox.core.assets.BundledFonts.SCREWBOX;
+
 @Order(SystemOrder.PRESENTATION_UI)
 public class PrintSystem implements EntitySystem {
 
@@ -19,13 +22,12 @@ public class PrintSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        final Pixelfont font = Pixelfont.defaultFont(Color.WHITE);
         for (var entity : engine.environment().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Screen screen = engine.graphics().screen();
-            screen.drawTextCentered(screen.center(), textComponent.text, font, Percent.max(), 7);
+            screen.drawTextCentered(screen.center(), textComponent.text, SCREWBOX.white(), Percent.max(), 7);
             Offset subtextOffset = Offset.at(screen.center().x(), screen.center().y() + 80);
-            screen.drawTextCentered(subtextOffset, textComponent.subtext, font, Percent.max(), 4);
+            screen.drawTextCentered(subtextOffset, textComponent.subtext, SCREWBOX.white(), Percent.max(), 4);
         }
     }
 }
