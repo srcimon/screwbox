@@ -167,6 +167,7 @@ class DefaultEngine implements Engine {
             });
             window.close();
         }
+        System.exit(0);
     }
 
     @Override
@@ -245,9 +246,8 @@ class DefaultEngine implements Engine {
     }
 
     private void exceptionHandler(final Throwable throwable) {
-        stop();
         log().error(throwable);
-        System.exit(0);
+        stop();
     }
 
     private Robot createRobot() {
