@@ -33,6 +33,7 @@ public interface Assets {
         return preparePackage(getPackageName(clazz));
     }
 
+    //TODO Javadoc and test 
     default Assets prepareEngineAssets() {
         return prepareClassPackageAsync(ScrewBox.class);
     }
