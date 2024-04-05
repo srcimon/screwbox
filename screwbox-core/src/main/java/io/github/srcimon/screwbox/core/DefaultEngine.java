@@ -67,7 +67,6 @@ class DefaultEngine implements Engine {
     private final WindowFrame frame;
     private final String name;
 
-    private Boolean errorState = false;
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
@@ -146,13 +145,8 @@ class DefaultEngine implements Engine {
         }
         log.info(format("engine with name '%s' started", name));
         try {
-            synchronized (errorState) {
-                if (!errorState) {
-                    window.open();
-                    loop.start();
-                }
-            }
-
+            window.open();
+            loop.start();
         } catch (final RuntimeException e) {
             exceptionHandler(e);
         }
@@ -251,11 +245,9 @@ class DefaultEngine implements Engine {
     }
 
     private void exceptionHandler(final Throwable throwable) {
-        synchronized (errorState) {
-            errorState = true;
-        }
         stop();
         log().error(throwable);
+        System.exit(0);
     }
 
     private Robot createRobot() {
