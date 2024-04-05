@@ -2,21 +2,21 @@ package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.audio.Sound;
 
-import java.util.function.Supplier;
+//TODO javadoc and test
+//TODO REMOVE Sound.dummy()
+//TODO autoload all bundled assets on startup
+public enum BundledSounds implements BundledAsset<Sound> {
 
-public enum BundledSounds implements Supplier<Sound> {
+    PHASER(Asset.asset(() -> Sound.fromFile("assets/sounds/dummy_effect.wav"))); //TODO: RENAME FILE
 
-    PHASER(() -> Sound.fromFile("assets/sounds/dummy_effect.wav")) //TODO: RENAME FILE ; ;
+    private final Asset<Sound> sound;
 
-    private final Supplier<Sound> sound;
-
-    BundledSounds(final Supplier<Sound> sound) {
+    BundledSounds(final Asset<Sound> sound) {
         this.sound = sound;
     }
 
     @Override
-    public Sound get() {
-        return sound.get();
+    public Asset<Sound> asset() {
+        return sound;
     }
-
 }
