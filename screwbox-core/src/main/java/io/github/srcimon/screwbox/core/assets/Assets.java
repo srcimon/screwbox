@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.assets;
 
+import io.github.srcimon.screwbox.core.ScrewBox;
+
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -29,6 +31,10 @@ public interface Assets {
      */
     default List<AssetLocation> prepareClassPackage(final Class<?> clazz) {
         return preparePackage(getPackageName(clazz));
+    }
+
+    default Assets prepareEngineAssets() {
+        return prepareClassPackageAsync(ScrewBox.class);
     }
 
     /**
