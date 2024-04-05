@@ -9,6 +9,8 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.assets.Asset.asset;
+
 //TODO Test and Javadoc
 public enum BundledFonts {
 
@@ -18,23 +20,23 @@ public enum BundledFonts {
     SKINNY_SANS(() -> loadFont("assets/pixelfonts/skinny_sans.png", Size.square(8),
             'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', 's', 'T', 't', 'U', 'u', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.', ',', ':', '!', '?', '-'));
 
-    private final Cache<Color, Asset<Pixelfont>> cache = new Cache<>();
+    private final Cache<Color, Pixelfont> cache = new Cache<>();
     private final Supplier<Pixelfont> supplier;
 
     BundledFonts(final Supplier<Pixelfont> asset) {
         this.supplier = asset;
     }
 
-    public Asset<Pixelfont> black() {
+    public Pixelfont black() {
         return customColor(Color.BLACK);
     }
 
-    public Asset<Pixelfont> white() {
+    public Pixelfont white() {
         return customColor(Color.WHITE);
     }
 
-    public Asset<Pixelfont> customColor(final Color color) {
-        return cache.getOrElse(color, () -> Asset.asset(() ->  supplier.get().replaceColor(Color.BLACK, color)));
+    public Pixelfont customColor(final Color color) {
+        return cache.getOrElse(color, () -> supplier.get().replaceColor(Color.BLACK, color));
     }
 
     private static Pixelfont loadFont(String resouce, Size size, Character... characters) {

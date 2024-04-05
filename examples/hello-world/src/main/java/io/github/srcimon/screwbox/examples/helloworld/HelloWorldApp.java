@@ -7,10 +7,12 @@ import io.github.srcimon.screwbox.core.assets.BundledFonts;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
+import static io.github.srcimon.screwbox.core.assets.Asset.asset;
+
 public class HelloWorldApp {
 
-    private static final Asset<Pixelfont> FONT = BundledFonts.SCREWBOX.white();
-    private static final Asset<Pixelfont> FONT_RED = BundledFonts.SCREWBOX.customColor(Color.RED);
+    private static final Asset<Pixelfont> FONT = asset(() -> BundledFonts.SCREWBOX.white());
+    private static final Pixelfont FONT_RED = BundledFonts.SCREWBOX.customColor(Color.RED);
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
@@ -21,7 +23,7 @@ public class HelloWorldApp {
             screen.drawTextCentered(screen.center(), "The quick: brown fox jumps over the lazy dog. Jinxed wizards pluck ivy from the big quilt.", FONT.get(), 2);
             screen.drawTextCentered(screen.center().addY(20), "Jaded, zombies acted quaintly but kept driving their dizzy oxen forward.", FONT.get(), 2);
             screen.drawTextCentered(screen.center().addY(40), "We promptly judged antique ivory buckles for the next prize.", FONT.get(), 2);
-            screen.drawTextCentered(screen.center().addY(80), "Current Engine Runtime: " + engine.loop().runningTime().humanReadable(), FONT_RED.get(), 4);
+            screen.drawTextCentered(screen.center().addY(80), "Current Engine Runtime: " + engine.loop().runningTime().humanReadable(), FONT_RED, 4);
         });
         screwBox.start();
     }
