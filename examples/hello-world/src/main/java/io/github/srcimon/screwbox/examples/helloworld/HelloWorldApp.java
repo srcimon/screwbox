@@ -9,8 +9,8 @@ import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
 public class HelloWorldApp {
 
-    private static final Asset<Pixelfont> FONT = Asset.asset(() -> BundledFonts.SCREWBOX.white());
-    private static final Asset<Pixelfont> FONT_RED = Asset.asset(() -> BundledFonts.SCREWBOX.customColor(Color.RED));
+    private static final Asset<Pixelfont> FONT = BundledFonts.SCREWBOX.white();
+    private static final Asset<Pixelfont> FONT_RED = BundledFonts.SCREWBOX.customColor(Color.RED);
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
