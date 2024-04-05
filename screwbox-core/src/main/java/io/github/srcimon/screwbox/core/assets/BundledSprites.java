@@ -15,7 +15,7 @@ public enum BundledSprites implements Supplier<Sprite> {
 
     private final Asset<Sprite> asset;
 
-    BundledSprites(Asset<Sprite> asset) {
+    BundledSprites(final Asset<Sprite> asset) {
         this.asset = asset;
     }
 
