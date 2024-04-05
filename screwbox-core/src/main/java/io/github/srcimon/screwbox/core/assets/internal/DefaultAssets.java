@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.core.assets.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.AssetLocation;
 import io.github.srcimon.screwbox.core.assets.Assets;
+import io.github.srcimon.screwbox.core.assets.BundledAsset;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.utils.Cache;
@@ -11,8 +13,11 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Objects.nonNull;
 
 public class DefaultAssets implements Assets {
 
@@ -79,6 +84,25 @@ public class DefaultAssets implements Assets {
     @Override
     public Assets disableLogging() {
         logEnabled = false;
+        return this;
+    }
+
+    @Override
+    public Assets preloadsBundledAssets() {
+        final Time before = Time.now();
+
+        List<BundledAsset> bundledAssets = Reflections.findClassesInPackage(ScrewBox.class.getPackageName()).stream()
+                .filter(BundledAsset.class::isAssignableFrom)
+                .filter(clazz -> nonNull(clazz.getEnumConstants()))
+                .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
+                .map(BundledAsset.class::cast)
+                .toList();
+
+        bundledAssets.forEach(BundledAsset::get);
+
+        if (logEnabled) {
+            log.debug("loaded %s bundled assets in %s".formatted(bundledAssets.size(), Duration.since(before).humanReadable()));
+        }
         return this;
     }
 

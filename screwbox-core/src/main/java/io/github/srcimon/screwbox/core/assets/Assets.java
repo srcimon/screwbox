@@ -77,6 +77,9 @@ public interface Assets {
      */
     Assets disableLogging();
 
+    //TODO: Test and javadoc
+    Assets preloadsBundledAssets();
+
     /**
      * Returns {@code true} if preparing is currently in progress.
      *
