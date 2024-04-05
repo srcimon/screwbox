@@ -23,8 +23,8 @@ public enum BundledFonts {
     private final Cache<Color, Pixelfont> cache = new Cache<>();
     private final Supplier<Pixelfont> supplier;
 
-    BundledFonts(final Supplier<Pixelfont> asset) {
-        this.supplier = asset;
+    BundledFonts(final Supplier<Pixelfont> supplier) {
+        this.supplier = supplier;
     }
 
     public Pixelfont black() {
@@ -39,7 +39,7 @@ public enum BundledFonts {
         return cache.getOrElse(color, () -> supplier.get().replaceColor(Color.BLACK, color));
     }
 
-    private static Pixelfont loadFont(String resouce, Size size, Character... characters) {
+    private static Pixelfont loadFont(final String resouce, final Size size, final Character... characters) {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile(resouce, size);
         font.addCharacters(Arrays.asList(characters), sprites.stream().map(Sprite::cropHorizontal).toList());

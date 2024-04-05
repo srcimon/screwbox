@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.BundledSprites;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -26,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultRenderImageTest {
+
+    private static final Sprite SPRITE = BundledSprites.MOON_SURFACE_16.get();
 
     Frame result;
     Renderer renderer;
@@ -127,21 +130,21 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip() {
         SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
-        renderer.drawSprite(Asset.asset(Sprite::dummy16x16), Offset.at(4, 12), options);
+        renderer.drawSprite(BundledSprites.MOON_SURFACE_16, Offset.at(4, 12), options);
 
         verifyIsIdenticalWithReferenceImage("drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
     }
 
     @Test
     void drawSprite_useClip_drawsSpriteOnlyInClip() {
-        renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2), new ScreenBounds(4, 4, 16, 16));
+        renderer.drawSprite(SPRITE, Offset.at(4, 12), SpriteDrawOptions.scaled(2), new ScreenBounds(4, 4, 16, 16));
 
         verifyIsIdenticalWithReferenceImage("drawSprite_useClip_drawsSpriteOnlyInClip.png");
     }
 
     @Test
     void drawSprite_scaled_drawsSprite() {
-        renderer.drawSprite(Sprite.dummy16x16(), Offset.at(4, 12), SpriteDrawOptions.scaled(2));
+        renderer.drawSprite(SPRITE, Offset.at(4, 12), SpriteDrawOptions.scaled(2));
 
         verifyIsIdenticalWithReferenceImage("drawSprite_scaled_drawsSprite.png");
     }
@@ -176,21 +179,21 @@ class DefaultRenderImageTest {
 
     @Test
     void fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage() {
-        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(2).opacity(Percent.half()));
+        renderer.fillWith(SPRITE, SpriteFillOptions.scale(2).opacity(Percent.half()));
 
         verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDoubleSizeAndHalfOpacity_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithOffset_fillsWholeImage() {
-        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()));
+        renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(3, 5)).opacity(Percent.half()));
 
         verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithOffset_fillsWholeImage.png");
     }
 
     @Test
     void fillWith_spriteFillWithDifferentOffset_fillsWholeImage() {
-        renderer.fillWith(Sprite.dummy16x16(), SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()));
+        renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()));
 
         verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
     }
