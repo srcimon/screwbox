@@ -64,14 +64,13 @@ class DefaultEngine implements Engine {
     private final DefaultWindow window;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
-    private final WindowFrame frame;
     private final String name;
 
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        frame = MacOsSupport.isMacOs()
+        WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
                 : new WindowFrame(configuration.resolution());
 
@@ -162,12 +161,12 @@ class DefaultEngine implements Engine {
                 loop.stop();
                 loop.awaitTermination();
                 window.close();
-                log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
                 executor.shutdown();
             });
             window.close();
+            log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
+            System.exit(0);
         }
-        System.exit(0);
     }
 
     @Override
