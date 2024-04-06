@@ -33,12 +33,22 @@ public interface Assets {
         return preparePackage(getPackageName(clazz));
     }
 
-    //TODO Javadoc and test 
+    /**
+     * Prepares all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended when using
+     * {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     *
+     * @see #prepareEngineAssetsAsync()
+     */
     default List<AssetLocation> prepareEngineAssets() {
         return prepareClassPackage(ScrewBox.class);
     }
 
-    //TODO Javadoc and test 
+    /**
+     * Start asynchronous loading of all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended
+     * when using {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     *
+     * @see #prepareEngineAssets()
+     */
     default Assets prepareEngineAssetsAsync() {
         return prepareClassPackageAsync(ScrewBox.class);
     }
@@ -88,6 +98,7 @@ public interface Assets {
      * Disables logging of loading results. Logging is disabled by default.
      */
     Assets disableLogging();
+
     /**
      * Returns {@code true} if preparing is currently in progress.
      *

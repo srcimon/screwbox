@@ -17,7 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -41,6 +43,14 @@ class DefaultAssetsTest {
         executor = Executors.newSingleThreadExecutor();
         Async async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
+    }
+
+    @Test
+    void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
+        var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
+
+        assertThat(locations).hasSize(13)
+                .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundsBundle.STEAM"));
     }
 
     @Test
