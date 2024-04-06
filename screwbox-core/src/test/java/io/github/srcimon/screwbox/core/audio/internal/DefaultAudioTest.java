@@ -57,7 +57,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionIsNull_throwsException() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         assertThatThrownBy(() -> audio.playSound(sound, (Vector) null))
                 .isInstanceOf(NullPointerException.class)
@@ -73,7 +73,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_optionsIsNull_throwsException() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         assertThatThrownBy(() -> audio.playSound(sound, (SoundOptions) null))
                 .isInstanceOf(NullPointerException.class)
@@ -82,7 +82,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionInRange_appliesPanAndVolume() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
@@ -99,7 +99,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionInRange_addsPlaybackWithPosition() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
@@ -119,7 +119,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionOutOfRange_doesntPlaySound() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         audio.configuration().setSoundRange(1024);
 
@@ -134,7 +134,7 @@ class DefaultAudioTest {
 
     @Test
     void changeEffectsVolume_afterEffectWasPlayed_changesEffectVolume() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playOnce().volume(Percent.quater()));
@@ -149,7 +149,7 @@ class DefaultAudioTest {
 
     @Test
     void changeMusicVolume_afterMusicWasPlayed_changesMusicVolume() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
 
@@ -165,7 +165,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_effectVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         audio.configuration().setEffectVolume(zero());
         audio.playSound(sound);
@@ -177,7 +177,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_effectLoopedButVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         audio.configuration().muteEffects();
         audio.playSound(sound, playLooped());
@@ -189,7 +189,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_musicVolumeZero_doesntPlayMusic() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
@@ -201,7 +201,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_musicLoopedVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
@@ -213,14 +213,14 @@ class DefaultAudioTest {
 
     @Test
     void isActive_noInstanceActive_isFalse() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         assertThat(audio.isActive(sound)).isFalse();
     }
 
     @Test
     void isActive_twoInstanceActive_isTrue() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playOnce().asMusic());
@@ -238,26 +238,26 @@ class DefaultAudioTest {
 
     @Test
     void activeCount_noInstanceActive_isZero() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         assertThat(audio.activeCount(sound)).isZero();
     }
 
     @Test
     void activeCount_onlyAnotherSoundIsActive_isZero() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound);
 
-        Sound secondSound = Sound.dummyEffect();
+        Sound secondSound = Sound.fromFile("assets/sounds/dummy_effect.wav");
 
         assertThat(audio.activeCount(secondSound)).isZero();
     }
 
     @Test
     void playSound_invokesMethodsOnClipAndIncreasesActiveCount() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound);
@@ -274,7 +274,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playLooped().pan(-0.2).balance(0.1));
@@ -291,7 +291,7 @@ class DefaultAudioTest {
 
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound, playOnce().asMusic());
 
@@ -305,7 +305,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_volumeHalfAndSoundPlayedAt20Percent_playsEffectOnTenPercent() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setEffectVolume(Percent.half());
@@ -318,7 +318,7 @@ class DefaultAudioTest {
 
     @Test
     void playSound_volumeSeventyPercent_playsMusicAtSeventyPercent() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setMusicVolume(Percent.of(0.7));
@@ -333,7 +333,7 @@ class DefaultAudioTest {
     void playSound_effectsMuted_doesntPlayAnySound() {
         audio.configuration().muteEffects();
 
-        audio.playSound(Sound.dummyEffect());
+        audio.playSound(Sound.fromFile("assets/sounds/dummy_effect.wav"));
 
         TestUtil.shutdown(executor);
 
@@ -344,7 +344,7 @@ class DefaultAudioTest {
     void playSound_musicMuted_doesntPlayAnySound() {
         audio.configuration().muteMusic();
 
-        audio.playSound(Sound.dummyEffect(), playOnce().asMusic());
+        audio.playSound(Sound.fromFile("assets/sounds/dummy_effect.wav"), playOnce().asMusic());
 
         TestUtil.shutdown(executor);
 
@@ -353,7 +353,7 @@ class DefaultAudioTest {
 
     @Test
     void stopSound_soundIsPlaying_stopsSound() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound);
 
@@ -372,7 +372,7 @@ class DefaultAudioTest {
 
     @Test
     void activePlaybacks_onePlayback_containsPlayback() {
-        Sound sound = Sound.dummyEffect();
+        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound, playOnce().asMusic());
 
