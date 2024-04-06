@@ -18,6 +18,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added utility method `Window.isClosed()`
+- Made `Pixelfont.replaceColor(Color, Color)` public
 
 ### 📦 Dependency updates
 

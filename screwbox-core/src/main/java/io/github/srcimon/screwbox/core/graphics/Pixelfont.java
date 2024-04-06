@@ -169,7 +169,9 @@ public class Pixelfont implements Serializable {
         final Pixelfont newFont = new Pixelfont();
 
         for (final var character : characters.entrySet()) {
-            final Sprite recoloredSprite = character.getValue().replaceColor(originalColor, newColor);
+            final Sprite recoloredSprite = originalColor.equals(newColor)
+                    ? character.getValue()
+                    : character.getValue().replaceColor(originalColor, newColor);
             newFont.addCharacter(character.getKey(), recoloredSprite);
         }
         newFont.setPadding(padding);
