@@ -1,9 +1,12 @@
 package io.github.srcimon.screwbox.core.assets;
 
+import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.audio.Sound;
 
-//TODO javadoc and test
-//TODO autoload all bundled assets on startup
+
+/**
+ * An {@link AssetBundle} for {@link Sound}s shipped with the {@link ScrewBox} game engine.
+ */
 public enum SoundsBundle implements AssetBundle<Sound> {
 
     PHASER,

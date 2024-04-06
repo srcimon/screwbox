@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.assets;
 
+import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -10,7 +11,10 @@ import java.util.Arrays;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
 
-//TODO Test and Javadoc
+
+/**
+ * An {@link AssetBundle} for {@link Pixelfont}s shipped with the {@link ScrewBox} game engine.
+ */
 public enum FontsBundle implements AssetBundle<Pixelfont> {
 
     BOLDZILLA(Asset.asset(() -> loadFont("assets/pixelfonts/BOLDZILLA.png", Size.square(8),
@@ -26,18 +30,30 @@ public enum FontsBundle implements AssetBundle<Pixelfont> {
         this.asset = supplier;
     }
 
+    /**
+     * Returns the white {@link Asset} version of the {@link Pixelfont}.
+     */
     public Asset<Pixelfont> white() {
         return customColor(Color.WHITE);
     }
 
+    /**
+     * Returns a colored {@link Asset} version of the {@link Pixelfont}.
+     */
     public Asset<Pixelfont> customColor(final Color color) {
         return cache.getOrElse(color, () -> Asset.asset(() -> asset.get().replaceColor(BLACK, color)));
     }
 
+    /**
+     * Returns the white version of the {@link Pixelfont}.
+     */
     public Pixelfont getWhite() {
         return getCustomColor(Color.WHITE);
     }
 
+    /**
+     * Returns a colored version of the {@link Pixelfont}.
+     */
     public Pixelfont getCustomColor(final Color color) {
         return customColor(color).get();
     }

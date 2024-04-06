@@ -1,9 +1,13 @@
 package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
+/**
+ * An {@link AssetBundle} for {@link Sprite}s shipped with the {@link ScrewBox} game engine.
+ */
 public enum SpritesBundle implements AssetBundle<Sprite> {
 
     MOON_SURFACE_16(Asset.asset(() -> Sprite.fromFile("assets/sprites/MOON_SURFACE_16.png"))),
