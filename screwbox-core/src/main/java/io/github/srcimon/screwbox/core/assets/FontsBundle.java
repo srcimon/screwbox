@@ -36,16 +36,15 @@ public enum FontsBundle implements AssetBundle<Pixelfont> {
         return cache.getOrElse(color, () -> asset.get().replaceColor(BLACK, color));
     }
 
+    @Override
+    public Asset<Pixelfont> asset() {
+        return asset;
+    }
+
     private static Pixelfont loadFont(final String resouce, final Size size, final Character... characters) {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile(resouce, size);
         font.addCharacters(Arrays.asList(characters), sprites.stream().map(Sprite::cropHorizontal).toList());
         return font;
-    }
-
-
-    @Override
-    public Asset<Pixelfont> asset() {
-        return asset;
     }
 }

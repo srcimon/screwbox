@@ -34,7 +34,12 @@ public interface Assets {
     }
 
     //TODO Javadoc and test 
-    default Assets prepareEngineAssets() {
+    default List<AssetLocation> prepareEngineAssets() {
+        return prepareClassPackage(ScrewBox.class);
+    }
+
+    //TODO Javadoc and test 
+    default Assets prepareEngineAssetsAsync() {
         return prepareClassPackageAsync(ScrewBox.class);
     }
 
