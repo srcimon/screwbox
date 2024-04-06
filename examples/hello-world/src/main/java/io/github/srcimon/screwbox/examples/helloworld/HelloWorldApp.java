@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.assets.FontsBundle;
 
-//TODO FIX EXAMPLE APP IN README
 public class HelloWorldApp {
 
     public static void main(String[] args) {

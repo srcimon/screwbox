@@ -162,7 +162,9 @@ public class Pixelfont implements Serializable {
         return Size.of(widthOf(text), height);
     }
 
-    //TODO javadoc and test
+    /**
+     * Replaces the {@link Color} in all {@link Frame}s of all {@link Sprite}s of the {@link Pixelfont}.
+     */
     public Pixelfont replaceColor(final Color originalColor, final Color newColor) {
         final Pixelfont newFont = new Pixelfont();
 
