@@ -10,9 +10,9 @@ import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 
 public class SimpleUiRenderer implements UiRenderer {
 
-    private static final Pixelfont NOT_SELECTED = FontsBundle.BOLDZILLA.white();
-    private static final Pixelfont SELECTED = FontsBundle.BOLDZILLA.customColor(YELLOW);
-    private static final Pixelfont INACTIVE = FontsBundle.BOLDZILLA.customColor(WHITE.opacity(0.2));
+    private static final Pixelfont NOT_SELECTED = FontsBundle.BOLDZILLA.getWhite();
+    private static final Pixelfont SELECTED = FontsBundle.BOLDZILLA.getCustomColor(YELLOW);
+    private static final Pixelfont INACTIVE = FontsBundle.BOLDZILLA.getCustomColor(WHITE.opacity(0.2));
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Screen screen) {

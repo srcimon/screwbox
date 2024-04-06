@@ -7,12 +7,10 @@ import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
-import static io.github.srcimon.screwbox.core.assets.Asset.asset;
-
 public class HelloWorldApp {
 
-    private static final Asset<Pixelfont> FONT = asset(FontsBundle.BOLDZILLA::white);
-    private static final Asset<Pixelfont> FONT_RED = asset(() -> FontsBundle.BOLDZILLA.customColor(Color.RED));
+    private static final Asset<Pixelfont> FONT = FontsBundle.BOLDZILLA.white();
+    private static final Asset<Pixelfont> FONT_RED = FontsBundle.SKINNY_SANS.customColor(Color.RED);
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");

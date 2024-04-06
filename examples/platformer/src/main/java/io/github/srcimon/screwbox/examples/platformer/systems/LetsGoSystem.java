@@ -57,7 +57,7 @@ public class LetsGoSystem implements EntitySystem {
                     .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FontsBundle.BOLDZILLA.white(),
+            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FontsBundle.BOLDZILLA.getWhite(),
                     letsGoComponent.visibility, 0.5);
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);

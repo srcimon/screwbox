@@ -25,7 +25,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawText(Offset.at(2, 4), "Test", font);
 
@@ -34,7 +34,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawText(Offset.at(2, 4), "Test", font, 4);
 
@@ -43,7 +43,7 @@ class ScreenTest {
 
     @Test
     void drawText_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawText(Offset.at(2, 4), "Test", font, Percent.half());
 
@@ -52,7 +52,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font);
 
@@ -61,7 +61,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font, 4);
 
@@ -70,7 +70,7 @@ class ScreenTest {
 
     @Test
     void drawTextCentered_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.white();
+        Pixelfont font = BOLDZILLA.getWhite();
 
         screen.drawTextCentered(Offset.at(2, 4), "Test", font, Percent.half());
 

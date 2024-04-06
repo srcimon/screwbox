@@ -22,9 +22,9 @@ public class PrintSystem implements EntitySystem {
         for (var entity : engine.environment().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Screen screen = engine.graphics().screen();
-            screen.drawTextCentered(screen.center(), textComponent.text, BOLDZILLA.white(), Percent.max(), 7);
+            screen.drawTextCentered(screen.center(), textComponent.text, BOLDZILLA.getWhite(), Percent.max(), 7);
             Offset subtextOffset = Offset.at(screen.center().x(), screen.center().y() + 80);
-            screen.drawTextCentered(subtextOffset, textComponent.subtext, BOLDZILLA.white(), Percent.max(), 4);
+            screen.drawTextCentered(subtextOffset, textComponent.subtext, BOLDZILLA.getWhite(), Percent.max(), 4);
         }
     }
 }

@@ -101,21 +101,21 @@ class PixelfontTest {
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = FontsBundle.BOLDZILLA.white();
+        var font = FontsBundle.BOLDZILLA.getWhite();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = FontsBundle.BOLDZILLA.white();
+        var font = FontsBundle.BOLDZILLA.getWhite();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = FontsBundle.BOLDZILLA.white();
+        var font = FontsBundle.BOLDZILLA.getWhite();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }
@@ -157,11 +157,11 @@ class PixelfontTest {
 
     @Test
     void widthOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.white().widthOf("This is a test")).isEqualTo(97);
+        assertThat(FontsBundle.BOLDZILLA.getWhite().widthOf("This is a test")).isEqualTo(97);
     }
 
     @Test
     void sizeOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.white().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
+        assertThat(FontsBundle.BOLDZILLA.getWhite().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
     }
 }

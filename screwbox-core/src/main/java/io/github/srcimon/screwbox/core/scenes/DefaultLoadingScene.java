@@ -29,7 +29,7 @@ public class DefaultLoadingScene implements Scene {
             x += distance;
             final int size = (int) (Math.abs(Math.sin(x * 2 + timeSeed)) * 10);
             final Offset position = screen.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0) + yOffset);
-            screen.drawTextCentered(position, character, FontsBundle.BOLDZILLA.customColor(color), size / 4.0);
+            screen.drawTextCentered(position, character, FontsBundle.BOLDZILLA.getCustomColor(color), size / 4.0);
         }
     }
 }
