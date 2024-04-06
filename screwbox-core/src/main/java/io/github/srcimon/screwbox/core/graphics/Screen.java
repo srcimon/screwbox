@@ -117,16 +117,8 @@ public interface Screen {
         return drawTextCentered(offset, text, font, Percent.max());
     }
 
-    default Screen drawTextCentered(Offset offset, String text) {
-        return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max());
-    }
-
     default Screen drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
         return drawTextCentered(offset, text, font, Percent.max(), scale);
-    }
-
-    default Screen drawTextCentered(Offset offset, String text, double scale) {
-        return drawTextCentered(offset, text, Pixelfont.defaultFont(), Percent.max(), scale);
     }
 
     Screen fillWith(Sprite sprite, SpriteFillOptions options);

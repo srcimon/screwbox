@@ -13,7 +13,7 @@ import static java.lang.reflect.Modifier.isStatic;
  */
 public class AssetLocation {
 
-    private final Field sourceField;
+    private final String id;
     private final Asset<?> asset;
 
     private Duration loadingDuration;
@@ -36,13 +36,18 @@ public class AssetLocation {
     }
 
     private AssetLocation(final Field sourceField) {
-        this.sourceField = sourceField;
+        this.id = sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
         try {
             this.asset = (Asset<?>) sourceField.get(Asset.class);
         } catch (IllegalArgumentException | IllegalAccessException e) {
             final String packageName = sourceField.getClass().getPackageName();
             throw new IllegalStateException("error fetching assets from " + packageName, e);
         }
+    }
+
+    public AssetLocation(final AssetBundle<?> assetBundle) {
+        this.id = assetBundle.getClass().getName() + "." + assetBundle;
+        this.asset = assetBundle.asset();
     }
 
     /**
@@ -63,7 +68,7 @@ public class AssetLocation {
      * Returns the {@link Duration} it took to load the {@link Asset}. Is empty when
      * there is no information on the loading {@link Duration} or when {@link Asset}
      * has not been loaded yet.
-     * 
+     *
      * @see #isLoaded()
      */
     public Optional<Duration> loadingDuration() {
@@ -74,7 +79,7 @@ public class AssetLocation {
      * Returns a unique id of the {@link AssetLocation}.
      */
     public String id() {
-        return sourceField.getDeclaringClass().getName() + "." + sourceField.getName();
+        return id;
     }
 
     @Override

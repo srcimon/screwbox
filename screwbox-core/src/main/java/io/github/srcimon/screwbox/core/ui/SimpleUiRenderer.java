@@ -1,15 +1,18 @@
 package io.github.srcimon.screwbox.core.ui;
 
-import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 
+import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
+import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
+
 public class SimpleUiRenderer implements UiRenderer {
 
-    private static final Pixelfont NOT_SELECTED = Pixelfont.defaultFont(Color.WHITE);
-    private static final Pixelfont SELECTED = Pixelfont.defaultFont(Color.YELLOW);
-    private static final Pixelfont INACTIVE = Pixelfont.defaultFont(Color.WHITE.opacity(0.2));
+    private static final Pixelfont NOT_SELECTED = FontsBundle.BOLDZILLA.getWhite();
+    private static final Pixelfont SELECTED = FontsBundle.BOLDZILLA.getCustomColor(YELLOW);
+    private static final Pixelfont INACTIVE = FontsBundle.BOLDZILLA.getCustomColor(WHITE.opacity(0.2));
 
     @Override
     public void renderSelectableItem(String label, ScreenBounds bounds, Screen screen) {

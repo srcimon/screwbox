@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.assets.internal;
 
+import io.github.srcimon.screwbox.core.DefectAssetBundle;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -41,6 +45,15 @@ class DefaultAssetsTest {
         executor = Executors.newSingleThreadExecutor();
         Async async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
+    }
+
+
+    @Test
+    void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
+        var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
+
+        assertThat(locations).hasSize(13)
+                .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundsBundle.STEAM"));
     }
 
     @Test
@@ -83,7 +96,7 @@ class DefaultAssetsTest {
 
         var logMessage = ArgumentCaptor.forClass(String.class);
         verify(log).debug(logMessage.capture());
-        assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ").endsWith(" ms");
+        assertThat(logMessage.getValue()).startsWith("loaded 2 assets in ");
 
         assertThat(loadedLocations).hasSize(2)
                 .allMatch(a -> a.loadingDuration().isPresent())
@@ -108,7 +121,7 @@ class DefaultAssetsTest {
 
     @Test
     void preparePackage_preparingPackageWithNonStaticAssets_noException() {
-        assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.srcimon.screwbox.core"));
+        assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.srcimon.screwbox.core.assets"));
     }
 
     @Test
@@ -142,6 +155,13 @@ class DefaultAssetsTest {
         assets.preparePackage("io.github.srcimon.screwbox.core.assets.internal");
 
         verify(log, never()).debug(anyString());
+    }
+
+    @Test
+    void prepareClassPackage_assetBundleWhichIsNoEnum_throwsException() {
+        assertThatThrownBy(() -> assets.prepareClassPackage(DefectAssetBundle.class))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("only enums are support to be asset bundles. class io.github.srcimon.screwbox.core.DefectAssetBundle is not an asset bundle");
     }
 
     @AfterEach

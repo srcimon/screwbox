@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -21,8 +22,6 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
-import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.Pixelfont.defaultFont;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
@@ -58,7 +57,7 @@ public class LetsGoSystem implements EntitySystem {
                     .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().drawTextCentered(postion, "LET'S GO", defaultFont(WHITE),
+            engine.graphics().world().drawTextCentered(postion, "LET'S GO", FontsBundle.BOLDZILLA.getWhite(),
                     letsGoComponent.visibility, 0.5);
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);

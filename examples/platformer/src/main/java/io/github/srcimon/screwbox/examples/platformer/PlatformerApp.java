@@ -16,6 +16,7 @@ public class PlatformerApp {
 
         engine.assets()
                 .enableLogging()
+                .prepareEngineAssetsAsync()
                 .prepareClassPackageAsync(PlatformerApp.class);
 
         engine.scenes()

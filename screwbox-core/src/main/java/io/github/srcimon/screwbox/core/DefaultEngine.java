@@ -70,7 +70,7 @@ class DefaultEngine implements Engine {
 
     DefaultEngine(final String name) {
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        final WindowFrame frame = MacOsSupport.isMacOs()
+        WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
                 : new WindowFrame(configuration.resolution());
 
@@ -161,9 +161,11 @@ class DefaultEngine implements Engine {
                 loop.stop();
                 loop.awaitTermination();
                 window.close();
-                log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
                 executor.shutdown();
             });
+            window.close();
+            log.info(String.format("engine stopped (%,d frames total)", loop().frameNumber()));
+            System.exit(0);
         }
     }
 
@@ -243,8 +245,8 @@ class DefaultEngine implements Engine {
     }
 
     private void exceptionHandler(final Throwable throwable) {
-        stop();
         log().error(throwable);
+        stop();
     }
 
     private Robot createRobot() {

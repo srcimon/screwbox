@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.assets;
 
+import io.github.srcimon.screwbox.core.ScrewBox;
+
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -29,6 +31,26 @@ public interface Assets {
      */
     default List<AssetLocation> prepareClassPackage(final Class<?> clazz) {
         return preparePackage(getPackageName(clazz));
+    }
+
+    /**
+     * Prepares all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended when using
+     * {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     *
+     * @see #prepareEngineAssetsAsync()
+     */
+    default List<AssetLocation> prepareEngineAssets() {
+        return prepareClassPackage(ScrewBox.class);
+    }
+
+    /**
+     * Start asynchronous loading of all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended
+     * when using {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     *
+     * @see #prepareEngineAssets()
+     */
+    default Assets prepareEngineAssetsAsync() {
+        return prepareClassPackageAsync(ScrewBox.class);
     }
 
     /**

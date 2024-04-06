@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -21,7 +22,7 @@ class SpriteTest {
 
     @Test
     void dummy16x16animated_returnsAnimatedDummySprite() {
-        var sprite = Sprite.dummy16x16animated();
+        var sprite = SpritesBundle.BLOB_ANIMATED_16.get();
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(3);
@@ -29,7 +30,7 @@ class SpriteTest {
 
     @Test
     void dummy16x16_returnsDummySprite() {
-        var sprite = Sprite.dummy16x16();
+        var sprite = SpritesBundle.MOON_SURFACE_16.get();
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(1);
@@ -232,7 +233,7 @@ class SpriteTest {
         var frames = List.of(Frame.fromFile("tile.bmp"), Frame.fromFile("transparent.png"));
         Sprite animatedSprite = new Sprite(frames);
 
-        assertThatThrownBy(() -> animatedSprite.cropHorizontal())
+        assertThatThrownBy(animatedSprite::cropHorizontal)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot add frame with different dimension to sprite");
     }
