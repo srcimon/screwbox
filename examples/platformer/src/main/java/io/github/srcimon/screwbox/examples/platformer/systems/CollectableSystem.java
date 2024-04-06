@@ -1,17 +1,13 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.SoundsBundle;
-import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.CollectableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
-
-import static io.github.srcimon.screwbox.core.audio.Sound.assetFromFile;
 
 public class CollectableSystem implements EntitySystem {
 
