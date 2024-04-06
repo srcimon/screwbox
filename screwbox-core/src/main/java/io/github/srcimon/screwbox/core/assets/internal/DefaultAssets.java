@@ -63,7 +63,7 @@ public class DefaultAssets implements Assets {
     private List<AssetLocation> fetchAssetInPackage(final String packageName) {
         List<AssetLocation> bundledAssetLocations = Reflections.findClassesInPackage(packageName).stream()
                 .filter(AssetBundle.class::isAssignableFrom)
-                .filter(clazz -> nonNull(clazz.getEnumConstants()))
+                .filter(clazz -> nonNull(clazz.getEnumConstants()))//TODO throw error when not an enum
                 .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
                 .map(AssetBundle.class::cast)
                 .map(AssetLocation::new)
