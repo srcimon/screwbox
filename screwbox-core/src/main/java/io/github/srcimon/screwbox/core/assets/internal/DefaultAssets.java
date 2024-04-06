@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.assets.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.assets.AssetLocation;
 import io.github.srcimon.screwbox.core.assets.Assets;
-import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.utils.Cache;
@@ -12,12 +12,10 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class DefaultAssets implements Assets {
 
