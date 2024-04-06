@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FontsBundleTest {
+class FontsBundleTest {
 
     @ParameterizedTest
     @EnumSource(FontsBundle.class)
