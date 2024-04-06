@@ -10,8 +10,6 @@ import java.util.Arrays;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
 
-//TODO implement rest of #191 BundledSounds
-//TODO implement rest of #191 BundledSprites
 //TODO Test and Javadoc
 public enum FontsBundle implements AssetBundle<Pixelfont> {
 
