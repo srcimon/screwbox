@@ -49,16 +49,17 @@ class DefaultAudioTest {
 
     ExecutorService executor;
 
+    Sound sound;
+
     @BeforeEach
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter, camera);
+        sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
     }
 
     @Test
     void playSound_positionIsNull_throwsException() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         assertThatThrownBy(() -> audio.playSound(sound, (Vector) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("position must not be null");
@@ -73,8 +74,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_optionsIsNull_throwsException() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         assertThatThrownBy(() -> audio.playSound(sound, (SoundOptions) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
@@ -82,7 +81,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionInRange_appliesPanAndVolume() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
@@ -99,7 +97,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionInRange_addsPlaybackWithPosition() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.configuration().setSoundRange(1024);
 
@@ -119,8 +116,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_positionOutOfRange_doesntPlaySound() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         audio.configuration().setSoundRange(1024);
 
         when(camera.position()).thenReturn($(-129, 239));
@@ -134,7 +129,6 @@ class DefaultAudioTest {
 
     @Test
     void changeEffectsVolume_afterEffectWasPlayed_changesEffectVolume() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playOnce().volume(Percent.quater()));
@@ -149,9 +143,7 @@ class DefaultAudioTest {
 
     @Test
     void changeMusicVolume_afterMusicWasPlayed_changesMusicVolume() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
-
 
         audio.playSound(sound, playOnce().asMusic());
 
@@ -165,8 +157,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_effectVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         audio.configuration().setEffectVolume(zero());
         audio.playSound(sound);
 
@@ -177,8 +167,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_effectLoopedButVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         audio.configuration().muteEffects();
         audio.playSound(sound, playLooped());
 
@@ -189,8 +177,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_musicVolumeZero_doesntPlayMusic() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
 
@@ -201,8 +187,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_musicLoopedVolumeZero_doesntPlayEffect() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         audio.configuration().muteMusic();
         audio.playSound(sound, playOnce().asMusic());
 
@@ -213,14 +197,11 @@ class DefaultAudioTest {
 
     @Test
     void isActive_noInstanceActive_isFalse() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         assertThat(audio.isActive(sound)).isFalse();
     }
 
     @Test
     void isActive_twoInstanceActive_isTrue() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playOnce().asMusic());
@@ -238,14 +219,11 @@ class DefaultAudioTest {
 
     @Test
     void activeCount_noInstanceActive_isZero() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
-
         assertThat(audio.activeCount(sound)).isZero();
     }
 
     @Test
     void activeCount_onlyAnotherSoundIsActive_isZero() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound);
@@ -257,7 +235,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_invokesMethodsOnClipAndIncreasesActiveCount() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound);
@@ -274,7 +251,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.playSound(sound, playLooped().pan(-0.2).balance(0.1));
@@ -291,7 +267,6 @@ class DefaultAudioTest {
 
     @Test
     void stopAllSounds_clipIsActive_clipIsStopped() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound, playOnce().asMusic());
 
@@ -305,7 +280,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_volumeHalfAndSoundPlayedAt20Percent_playsEffectOnTenPercent() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setEffectVolume(Percent.half());
@@ -318,7 +292,6 @@ class DefaultAudioTest {
 
     @Test
     void playSound_volumeSeventyPercent_playsMusicAtSeventyPercent() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
         audio.configuration().setMusicVolume(Percent.of(0.7));
@@ -353,7 +326,6 @@ class DefaultAudioTest {
 
     @Test
     void stopSound_soundIsPlaying_stopsSound() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound);
 
@@ -372,7 +344,6 @@ class DefaultAudioTest {
 
     @Test
     void activePlaybacks_onePlayback_containsPlayback() {
-        Sound sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound, playOnce().asMusic());
 
