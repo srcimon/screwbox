@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.assets.Assets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.utils.Cache;
+import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ public class DefaultAssets implements Assets {
             }
         }
 
-        //TODO hier auch BundledAssets mit betrachten
         if (logEnabled) {
             log.debug("loaded %s assets in %s".formatted(loadedAssets.size(), Duration.since(before).humanReadable()));
         }
@@ -61,11 +61,17 @@ public class DefaultAssets implements Assets {
     }
 
     private List<AssetLocation> fetchAssetInPackage(final String packageName) {
-        List<AssetLocation> bundledAssetLocations = Reflections.findClassesInPackage(packageName).stream()
+        return ListUtil.merge(
+                fetchAssetsFromPackage(packageName),
+                fetchAssetBundlesFromPackage(packageName));
+    }
+
+    private List<AssetLocation> fetchAssetBundlesFromPackage(String packageName) {
+        return Reflections.findClassesInPackage(packageName).stream()
                 .filter(AssetBundle.class::isAssignableFrom)
                 .filter(clazz -> !clazz.equals(AssetBundle.class))
                 .map(clazz -> {
-                    if(isNull(clazz.getEnumConstants())) {
+                    if (isNull(clazz.getEnumConstants())) {
                         throw new IllegalArgumentException("only enums are support to be asset bundles. %s is not an asset bundle".formatted(clazz));
                     }
                     return clazz;
@@ -74,18 +80,15 @@ public class DefaultAssets implements Assets {
                 .map(AssetBundle.class::cast)
                 .map(AssetLocation::new)
                 .toList();
+    }
 
-        List<AssetLocation> assetLocations = Reflections.findClassesInPackage(packageName).stream()
+    private List<AssetLocation> fetchAssetsFromPackage(final String packageName) {
+        return Reflections.findClassesInPackage(packageName).stream()
                 .flatMap(clazz -> Stream.of(clazz.getDeclaredFields()))
                 .map(AssetLocation::tryToCreateAt)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
-
-        List<AssetLocation> combi = new ArrayList<>();
-        combi.addAll(assetLocations);
-        combi.addAll(bundledAssetLocations);
-        return combi;
     }
 
     @Override
