@@ -12,9 +12,11 @@ import io.github.srcimon.screwbox.core.utils.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DefaultAssets implements Assets {
@@ -63,7 +65,13 @@ public class DefaultAssets implements Assets {
     private List<AssetLocation> fetchAssetInPackage(final String packageName) {
         List<AssetLocation> bundledAssetLocations = Reflections.findClassesInPackage(packageName).stream()
                 .filter(AssetBundle.class::isAssignableFrom)
-                .filter(clazz -> nonNull(clazz.getEnumConstants()))//TODO throw error when not an enum
+                .filter(clazz -> !clazz.equals(AssetBundle.class))
+                .map(clazz -> {
+                    if(isNull(clazz.getEnumConstants())) {
+                        throw new IllegalArgumentException("only enums are support to be asset bundles. %s is not an asset bundle".formatted(clazz));
+                    }
+                    return clazz;
+                })
                 .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
                 .map(AssetBundle.class::cast)
                 .map(AssetLocation::new)

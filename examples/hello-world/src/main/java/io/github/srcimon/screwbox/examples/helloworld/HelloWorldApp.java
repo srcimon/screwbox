@@ -7,6 +7,8 @@ import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
+//TODO FIX UP
+//TODO FIX EXAMPLE APP IN README
 public class HelloWorldApp {
 
     private static final Asset<Pixelfont> FONT = FontsBundle.BOLDZILLA.white();
@@ -14,7 +16,10 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-        screwBox.assets().enableLogging().prepareClassPackageAsync(HelloWorldApp.class).prepareEngineAssetsAsync();
+        var assets = screwBox.assets().enableLogging().prepareEngineAssets();
+        assets.forEach(e -> {
+            System.out.println(e.id());
+        });
         screwBox.environment().addSystem(engine -> {
             var screen = screwBox.graphics().screen();
             screen.drawTextCentered(screen.center(), "The quick: brown fox jumps over the lazy dog. Jinxed wizards pluck ivy from the big quilt.", FONT.get(), 2);

@@ -45,9 +45,9 @@ public class AssetLocation {
         }
     }
 
-    public AssetLocation(final AssetBundle<?> bundledAsset) {
-        this.id = bundledAsset.getClass().getPackageName() + "." + bundledAsset.getClass().getName();
-        this.asset = bundledAsset.asset();
+    public AssetLocation(final AssetBundle<?> assetBundle) {
+        this.id = assetBundle.getClass().getName() + "." + assetBundle;
+        this.asset = assetBundle.asset();
     }
 
     /**
