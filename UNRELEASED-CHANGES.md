@@ -19,6 +19,7 @@
 
 - Added utility method `Window.isClosed()`
 - Made `Pixelfont.replaceColor(Color, Color)` public
+- Changed release mode to auto release via action
 
 ### 📦 Dependency updates
 
