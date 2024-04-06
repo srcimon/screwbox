@@ -45,7 +45,7 @@ public class AssetLocation {
         }
     }
 
-    public AssetLocation(final BundledAsset<?> bundledAsset) {
+    public AssetLocation(final AssetBundle<?> bundledAsset) {
         this.id = bundledAsset.getClass().getPackageName() + "." + bundledAsset.getClass().getName();
         this.asset = bundledAsset.asset();
     }

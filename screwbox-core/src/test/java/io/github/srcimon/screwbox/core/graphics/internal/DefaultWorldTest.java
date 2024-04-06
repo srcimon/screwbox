@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.BundledSprites;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,8 +67,8 @@ class DefaultWorldTest {
 
     @Test
     void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
-        Sprite second = BundledSprites.BLOB_MOVING_16.get();
-        Sprite first = BundledSprites.MOON_SURFACE_16.get();
+        Sprite second = SpritesBundle.BLOB_MOVING_16.get();
+        Sprite first = SpritesBundle.MOON_SURFACE_16.get();
 
         var batch = new SpriteBatch();
         batch.addEntry(second, $(10, 20), SpriteDrawOptions.scaled(2), 2);

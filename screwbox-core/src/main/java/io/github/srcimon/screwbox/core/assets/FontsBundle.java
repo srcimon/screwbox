@@ -13,9 +13,9 @@ import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
 //TODO implement rest of #191 BundledSounds
 //TODO implement rest of #191 BundledSprites
 //TODO Test and Javadoc
-public enum BundledFonts implements BundledAsset<Pixelfont> {
+public enum FontsBundle implements AssetBundle<Pixelfont> {
 
-    SCREWBOX(Asset.asset(() -> loadFont("assets/pixelfonts/default_font.png", Size.square(8),
+    BOLDZILLA(Asset.asset(() -> loadFont("assets/pixelfonts/default_font.png", Size.square(8),
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.', ',', ':', '!', '?', '-'))),
 
     SKINNY_SANS(Asset.asset(() -> loadFont("assets/pixelfonts/skinny_sans.png", Size.square(8),
@@ -24,7 +24,7 @@ public enum BundledFonts implements BundledAsset<Pixelfont> {
     private final Cache<Color, Pixelfont> cache = new Cache<>();
     private final Asset<Pixelfont> asset;
 
-    BundledFonts(final Asset<Pixelfont> supplier) {
+    FontsBundle(final Asset<Pixelfont> supplier) {
         this.asset = supplier;
     }
 

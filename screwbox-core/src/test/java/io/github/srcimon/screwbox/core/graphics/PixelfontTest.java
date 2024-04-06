@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.assets.BundledFonts;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -101,21 +101,21 @@ class PixelfontTest {
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = BundledFonts.SCREWBOX.white();
+        var font = FontsBundle.BOLDZILLA.white();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = BundledFonts.SCREWBOX.white();
+        var font = FontsBundle.BOLDZILLA.white();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = BundledFonts.SCREWBOX.white();
+        var font = FontsBundle.BOLDZILLA.white();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }
@@ -157,11 +157,11 @@ class PixelfontTest {
 
     @Test
     void widthOf_someCharacters_isCorrect() {
-        assertThat(BundledFonts.SCREWBOX.white().widthOf("This is a test")).isEqualTo(97);
+        assertThat(FontsBundle.BOLDZILLA.white().widthOf("This is a test")).isEqualTo(97);
     }
 
     @Test
     void sizeOf_someCharacters_isCorrect() {
-        assertThat(BundledFonts.SCREWBOX.white().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
+        assertThat(FontsBundle.BOLDZILLA.white().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
     }
 }

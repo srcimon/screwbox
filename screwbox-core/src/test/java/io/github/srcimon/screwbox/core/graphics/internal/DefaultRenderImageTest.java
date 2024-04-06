@@ -1,8 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.BundledSprites;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -28,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class DefaultRenderImageTest {
 
-    private static final Sprite SPRITE = BundledSprites.MOON_SURFACE_16.get();
+    private static final Sprite SPRITE = SpritesBundle.MOON_SURFACE_16.get();
 
     Frame result;
     Renderer renderer;
@@ -130,7 +129,7 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip() {
         SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
-        renderer.drawSprite(BundledSprites.MOON_SURFACE_16, Offset.at(4, 12), options);
+        renderer.drawSprite(SpritesBundle.MOON_SURFACE_16, Offset.at(4, 12), options);
 
         verifyIsIdenticalWithReferenceImage("drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
     }

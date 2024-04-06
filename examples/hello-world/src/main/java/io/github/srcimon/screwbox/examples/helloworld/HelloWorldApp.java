@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.helloworld;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.BundledFonts;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 
@@ -11,8 +11,8 @@ import static io.github.srcimon.screwbox.core.assets.Asset.asset;
 
 public class HelloWorldApp {
 
-    private static final Asset<Pixelfont> FONT = asset(() -> BundledFonts.SCREWBOX.white());
-    private static final Pixelfont FONT_RED = BundledFonts.SCREWBOX.customColor(Color.RED);
+    private static final Asset<Pixelfont> FONT = asset(() -> FontsBundle.BOLDZILLA.white());
+    private static final Pixelfont FONT_RED = FontsBundle.BOLDZILLA.customColor(Color.RED);
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
