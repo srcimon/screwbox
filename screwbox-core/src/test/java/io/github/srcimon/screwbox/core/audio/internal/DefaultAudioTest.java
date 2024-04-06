@@ -55,7 +55,7 @@ class DefaultAudioTest {
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
         audio = new DefaultAudio(executor, audioAdapter, camera);
-        sound = Sound.fromFile("assets/sounds/dummy_effect.wav");
+        sound = Sound.fromFile("assets/sounds/PHASER.wav");
     }
 
     @Test
@@ -228,7 +228,7 @@ class DefaultAudioTest {
 
         audio.playSound(sound);
 
-        Sound secondSound = Sound.fromFile("assets/sounds/dummy_effect.wav");
+        Sound secondSound = Sound.fromFile("assets/sounds/PHASER.wav");
 
         assertThat(audio.activeCount(secondSound)).isZero();
     }
@@ -306,7 +306,7 @@ class DefaultAudioTest {
     void playSound_effectsMuted_doesntPlayAnySound() {
         audio.configuration().muteEffects();
 
-        audio.playSound(Sound.fromFile("assets/sounds/dummy_effect.wav"));
+        audio.playSound(Sound.fromFile("assets/sounds/PHASER.wav"));
 
         TestUtil.shutdown(executor);
 
@@ -317,7 +317,7 @@ class DefaultAudioTest {
     void playSound_musicMuted_doesntPlayAnySound() {
         audio.configuration().muteMusic();
 
-        audio.playSound(Sound.fromFile("assets/sounds/dummy_effect.wav"), playOnce().asMusic());
+        audio.playSound(Sound.fromFile("assets/sounds/PHASER.wav"), playOnce().asMusic());
 
         TestUtil.shutdown(executor);
 

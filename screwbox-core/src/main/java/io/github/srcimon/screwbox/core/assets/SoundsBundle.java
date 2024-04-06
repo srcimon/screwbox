@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 //TODO autoload all bundled assets on startup
 public enum SoundsBundle implements AssetBundle<Sound> {
 
-    PHASER(Asset.asset(() -> Sound.fromFile("assets/sounds/dummy_effect.wav"))); //TODO: RENAME FILE
+    PHASER(Asset.asset(() -> Sound.fromFile("assets/sounds/PHASER.wav")));
 
     private final Asset<Sound> sound;
 

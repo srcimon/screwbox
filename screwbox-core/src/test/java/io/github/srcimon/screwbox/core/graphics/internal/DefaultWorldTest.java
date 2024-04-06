@@ -67,7 +67,7 @@ class DefaultWorldTest {
 
     @Test
     void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
-        Sprite second = SpritesBundle.BLOB_MOVING_16.get();
+        Sprite second = SpritesBundle.BLOB_ANIMATED_16.get();
         Sprite first = SpritesBundle.MOON_SURFACE_16.get();
 
         var batch = new SpriteBatch();

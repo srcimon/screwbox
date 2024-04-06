@@ -22,7 +22,7 @@ class SpriteTest {
 
     @Test
     void dummy16x16animated_returnsAnimatedDummySprite() {
-        var sprite = SpritesBundle.BLOB_MOVING_16.get();
+        var sprite = SpritesBundle.BLOB_ANIMATED_16.get();
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(3);
