@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.assets.internal;
 
+import io.github.srcimon.screwbox.core.DefectAssetBundle;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,7 @@ class DefaultAssetsTest {
         Async async = new DefaultAsync(executor);
         assets = new DefaultAssets(async, log);
     }
+
 
     @Test
     void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
@@ -118,7 +121,7 @@ class DefaultAssetsTest {
 
     @Test
     void preparePackage_preparingPackageWithNonStaticAssets_noException() {
-        assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.srcimon.screwbox.core"));
+        assertThatNoException().isThrownBy(() -> assets.preparePackage("io.github.srcimon.screwbox.core.assets"));
     }
 
     @Test
@@ -152,6 +155,13 @@ class DefaultAssetsTest {
         assets.preparePackage("io.github.srcimon.screwbox.core.assets.internal");
 
         verify(log, never()).debug(anyString());
+    }
+
+    @Test
+    void prepareClassPackage_assetBundleWhichIsNoEnum_throwsException() {
+        assertThatThrownBy(() -> assets.prepareClassPackage(DefectAssetBundle.class))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("only enums are support to be asset bundles. class io.github.srcimon.screwbox.core.DefectAssetBundle is not an asset bundle");
     }
 
     @AfterEach
