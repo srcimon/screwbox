@@ -12,8 +12,6 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
-
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
@@ -227,16 +225,20 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        applyOpacityConfig(options.opacity());
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
-        SpriteDrawOptions spriteOptions = scaled(options.scale()).opacity(options.opacity());
-        //TODO avoid subcall to drawSprite
-        Offset currentOffset = offset.addX(calculateXoffset(options, allSprites));
+        double x = offset.x() + calculateXoffset(options, allSprites);
 
         for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, spriteOptions);
-            int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
-            currentOffset = currentOffset.addX(distanceX);
+            final Image image = sprite.image(lastUpdateTime);
+            final AffineTransform transform = new AffineTransform();
+            transform.translate(x, offset.y());
+            transform.scale(options.scale(), options.scale());
+            graphics.drawImage(image, transform, null);
+            final int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
+            x += distanceX;
         }
+        resetOpacityConfig(options.opacity());
     }
 
     private int calculateXoffset(final TextDrawOptions options, final List<Sprite> allSprites) {
