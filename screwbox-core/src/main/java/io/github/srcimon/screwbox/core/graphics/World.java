@@ -31,7 +31,9 @@ public interface World {
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
-    //TODO test and javadoc
+    /**
+     * Draws text using a {@link Pixelfont} on the {@link World} using the given {@link TextDrawOptions}.
+     */
     World drawText(Vector position, String text, TextDrawOptions options);
 
     /**
