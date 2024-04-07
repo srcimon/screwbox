@@ -99,8 +99,7 @@ public interface Screen {
     //TODO remove and replace old methods
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
-    Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
-    
+    //TODO javadoc
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**

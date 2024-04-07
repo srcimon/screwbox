@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
 
@@ -87,14 +86,6 @@ public class DefaultWorld implements World {
         final double y = (offset.y() - (screen.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
-    }
-
-    @Override
-    public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-                                  final Percent opacity, final double scale) {
-        final Offset offset = toOffset(position);
-        screen.drawTextCentered(offset, text, font, opacity, scale * zoom);
-        return this;
     }
 
     @Override

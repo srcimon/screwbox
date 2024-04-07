@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
@@ -31,8 +30,6 @@ public interface World {
      * @see #drawSprite(Sprite, Vector, SpriteDrawOptions)
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
-
-    World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
     //TODO test and javadoc
     World drawText(Vector position, String text, TextDrawOptions options);

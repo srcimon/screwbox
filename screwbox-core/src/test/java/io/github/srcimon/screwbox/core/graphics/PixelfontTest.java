@@ -157,11 +157,11 @@ class PixelfontTest {
 
     @Test
     void widthOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().widthOf("This is a test")).isEqualTo(97);
+        assertThat(FontsBundle.BOLDZILLA.getWhite().widthOf("This is a test")).isEqualTo(118);
     }
 
     @Test
     void sizeOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
+        assertThat(FontsBundle.BOLDZILLA.getWhite().sizeOf("This is a test")).isEqualTo(Size.of(118, 8));
     }
 }
