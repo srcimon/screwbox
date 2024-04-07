@@ -51,17 +51,23 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
     
-    public class HelloWorld {
+    import static io.github.srcimon.screwbox.core.assets.FontsBundle.BOLDZILLA;
+    import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
     
-        public static void main(String[] args) {
-            Engine screwBox = ScrewBox.createEngine("Hello World Example");
-    
-            screwBox.environment().addSystem(engine ->
-              engine.graphics().screen().drawTextCentered(screen.center(), "Hello world", FontsBundle.BOLDZILLA.white().get(), 4);
-    
-            screwBox.start();
-        }
+    public class HelloWorldApp {
+
+    public static void main(String[] args) {
+        Engine screwBox = ScrewBox.createEngine();
+
+        screwBox.environment().addSystem(engine -> {
+            var screen = engine.graphics().screen();
+            var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
+            screen.drawText(screen.center(), "Hello world!", drawOptions);
+        });
+
+        screwBox.start();
     }
+}
     ```
 
 ## Modules

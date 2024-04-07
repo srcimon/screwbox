@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.ScrewBox;
 import static io.github.srcimon.screwbox.core.assets.FontsBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
-//TODO fixup readme.md example
 public class HelloWorldApp {
 
     public static void main(String[] args) {
