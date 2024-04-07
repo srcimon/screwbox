@@ -68,6 +68,7 @@ class VolumeMonitorTest {
 
     @Test
     void level_someMicrophoneInput_isNotZero() {
+        System.out.println("level_someMicrophoneInput_isNotZero!!!!!");
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
@@ -85,6 +86,7 @@ class VolumeMonitorTest {
 
     @Test
     void level_firstCall_isZero() {
+        System.out.println("level_firstCall_isZero!!!!!");
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
