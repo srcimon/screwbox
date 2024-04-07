@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
@@ -196,6 +197,27 @@ class DefaultRenderImageTest {
         renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()));
 
         verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
+    }
+
+    @Test
+    void drawText_boldzillaFontScaledWithPaddingUsingUppercaseChars_drawsText() {
+        renderer.drawText(Offset.at(10, 10), "hi there", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(1).padding(1).uppercase());
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaFontScaledWithPaddingUsingUppercaseChars_drawsText.png");
+    }
+
+    @Test
+    void drawText_boldzillaFontCenteredWithOpacity_drawsText() {
+        renderer.drawText(Offset.at(10, 10), "test", TextDrawOptions.font(FontsBundle.BOLDZILLA).alignCenter().opacity(Percent.half()));
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaFontCenteredWithOpacity_drawsText.png");
+    }
+
+    @Test
+    void drawText_boldzillaAlignedRight_drawsText() {
+        renderer.drawText(Offset.at(60, 10), "TEST", TextDrawOptions.font(FontsBundle.BOLDZILLA).alignRight());
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaAlignedRight_drawsText.png");
     }
 
     private void verifyNotAllPixelsAreBlack() {
