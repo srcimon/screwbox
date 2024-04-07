@@ -98,4 +98,22 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     public TextDrawOptions opacity(final Percent opacity) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
     }
+
+    /**
+     * Returns the width of the given text renderd with this {@link TextDrawOptions}.
+     */
+    public int widthOf(final String text) {
+        int totalWidth = 0;
+        for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
+            totalWidth += (int) ((sprite.size().width() + padding) * scale);
+        }
+        return totalWidth;
+    }
+
+    /**
+     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
+     */
+    public Size sizeOf(final String text) {
+        return Size.of(widthOf(text), font.height());
+    }
 }

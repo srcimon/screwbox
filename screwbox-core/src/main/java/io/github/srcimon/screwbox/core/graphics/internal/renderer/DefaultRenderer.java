@@ -227,7 +227,11 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
-        int x = offset.x() + calculateXoffset(options, allSprites);
+        int x = offset.x() + switch (options.alignment()) {
+            case LEFT -> 0;
+            case CENTER -> -options.widthOf(text) / 2;
+            case RIGHT -> -options.widthOf(text);
+        };
 
         for (final var sprite : allSprites) {
             final Image image = sprite.image(lastUpdateTime);
@@ -239,20 +243,6 @@ public class DefaultRenderer implements Renderer {
             x += distanceX;
         }
         resetOpacityConfig(options.opacity());
-    }
-
-    private int calculateXoffset(final TextDrawOptions options, final List<Sprite> allSprites) {
-        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
-            return 0;
-        }
-        int totalWidth = 0;
-        for (final var sprite : allSprites) {
-            totalWidth += (int) ((sprite.size().width() + options.padding()) * options.scale());
-        }
-
-        return TextDrawOptions.Alignment.CENTER.equals(options.alignment())
-                ? -totalWidth / 2
-                : -totalWidth;
     }
 
 }

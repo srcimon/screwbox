@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TextDrawOptionsTest {
@@ -22,4 +24,17 @@ class TextDrawOptionsTest {
                 .hasMessage("opacity must not be null");
     }
 
+    @Test
+    void sizeOf_uppercaseText_returnsSizeOfText() {
+        var options = TextDrawOptions.font(FontsBundle.SKINNY_SANS).scale(2).uppercase();
+
+        assertThat(options.sizeOf("Some kind of lane text")).isEqualTo(Size.of(238, 8));
+    }
+
+    @Test
+    void widthOf_text_returnsSizeOfText() {
+        var options = TextDrawOptions.font(FontsBundle.SKINNY_SANS).scale(2);
+
+        assertThat(options.widthOf("Some kind of lane text")).isEqualTo(224);
+    }
 }
