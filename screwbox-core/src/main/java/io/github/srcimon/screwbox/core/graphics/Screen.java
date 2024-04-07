@@ -93,7 +93,10 @@ public interface Screen {
      */
     Screen drawText(Offset offset, String text, SystemTextDrawOptions options);
 
-    //TODO Screen drawText(Offset offset, String text, TextDrawOptions options);
+    //TODO javadoc
+    Screen drawText(Offset offset, String text, TextDrawOptions options);
+
+    //TODO remove and replace old methods
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {

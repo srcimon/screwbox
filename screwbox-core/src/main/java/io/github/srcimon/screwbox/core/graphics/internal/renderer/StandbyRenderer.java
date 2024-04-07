@@ -1,7 +1,8 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -55,6 +56,11 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        // does nothing
+    }
+
+    @Override
+    public void drawText(Offset offset, String text, TextDrawOptions options) {
         // does nothing
     }
 

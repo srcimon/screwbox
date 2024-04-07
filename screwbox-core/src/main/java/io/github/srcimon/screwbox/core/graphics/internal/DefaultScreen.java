@@ -105,6 +105,13 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Screen drawText(final Offset offset,final String text, final TextDrawOptions options) {
+        //TODO no render on opacity.isNone()
+        renderer.drawText(offset, text, options);
+        return this;
+    }
+
+    @Override
     public Sprite takeScreenshot() {
         if (!frame.isVisible()) {
             throw new IllegalStateException("window must be opend first to create screenshot");

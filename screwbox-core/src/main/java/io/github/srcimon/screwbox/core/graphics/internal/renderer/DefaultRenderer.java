@@ -1,9 +1,11 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -207,7 +209,6 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-
         final var oldClip = graphics.getClip();
         graphics.setClip(
                 clip.offset().x(),
@@ -219,6 +220,11 @@ public class DefaultRenderer implements Renderer {
 
         graphics.setClip(oldClip);
 
+    }
+
+    @Override
+    public void drawText(Offset offset, String text, TextDrawOptions options) {
+        //TODO DRAW PIXELFONT
     }
 
 }
