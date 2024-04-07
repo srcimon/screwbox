@@ -96,9 +96,6 @@ public interface Screen {
     //TODO javadoc
     Screen drawText(Offset offset, String text, TextDrawOptions options);
 
-    //TODO remove and replace old methods
-    Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
-
     //TODO javadoc
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 

@@ -1,16 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 
@@ -136,14 +133,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawText(final Offset offset, final String text, final Pixelfont font, final Percent opacity,
-                           final double scale) {
-        final List<Sprite> allSprites = font.spritesFor(text);
-        drawTextSprites(offset, opacity, scale, allSprites, font);
-        return this;
-    }
-
-    @Override
     public Offset center() {
         return size().center();
     }
@@ -167,16 +156,6 @@ public class DefaultScreen implements Screen {
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
-    }
-
-    private void drawTextSprites(final Offset offset, final Percent opacity, final double scale,
-                                 final List<Sprite> allSprites,
-                                 final Pixelfont font) {
-        Offset currentOffset = offset;
-        for (final var sprite : allSprites) {
-            drawSprite(sprite, currentOffset, scaled(scale).opacity(opacity));
-            currentOffset = currentOffset.addX((int) ((sprite.size().width() + font.padding()) * scale));
-        }
     }
 
     private ScreenBounds screenBounds() {

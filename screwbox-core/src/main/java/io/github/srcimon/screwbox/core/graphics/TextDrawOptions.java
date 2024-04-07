@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO align
+//TODO javadoc and test
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment) {
 
@@ -19,7 +19,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         RIGHT
     }
 
-
     public TextDrawOptions {
         requireNonNull(font, "font must not be null");
         requireNonNull(opacity, "opacity must not be null");
@@ -31,7 +30,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 1, 1, false, Percent.max(), Alignment.LEFT);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT);
     }
 
     public TextDrawOptions alignRight() {

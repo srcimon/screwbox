@@ -29,25 +29,7 @@ public class Pixelfont implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Character, Sprite> characters = new HashMap<>();
-    private int padding = 2;
     private int height = 0;
-
-    /**
-     * The space between characters of this font.
-     */
-    public int padding() {
-        return padding;
-    }
-
-    /**
-     * Sets the space between characters of this font.
-     */
-    public void setPadding(final int padding) {
-        if (padding <= 0) {
-            throw new IllegalArgumentException("Padding must have positive value");
-        }
-        this.padding = padding;
-    }
 
     /**
      * Adds new characters with corresponding {@link Sprite}s to the
@@ -139,31 +121,6 @@ public class Pixelfont implements Serializable {
     }
 
     /**
-     * Returns the width of a given text in this {@link Pixelfont}.  Will be 0 if there is no character jet.
-     *
-     * @see #sizeOf(String)
-     */
-    public int widthOf(final String text) {
-        int totalWith = 0;
-        for (final var sprite : spritesFor(text)) {
-            totalWith += sprite.size().width();
-            totalWith += padding();
-        }
-
-        return totalWith;
-    }
-
-    /**
-     * Returns the {@link Size} of a given text in this {@link Pixelfont}. Width will be 0 if there is no character jet.
-     *
-     * @see #widthOf(String)
-     */
-    public Size sizeOf(final String text) {
-        return Size.of(widthOf(text), height);
-    }
-//TODO remove size methods / replace with options?
-    //TODO remove padding
-    /**
      * Replaces the {@link Color} in all {@link Frame}s of all {@link Sprite}s of the {@link Pixelfont}.
      */
     public Pixelfont replaceColor(final Color originalColor, final Color newColor) {
@@ -175,7 +132,6 @@ public class Pixelfont implements Serializable {
                     : character.getValue().replaceColor(originalColor, newColor);
             newFont.addCharacter(character.getKey(), recoloredSprite);
         }
-        newFont.setPadding(padding);
         return newFont;
     }
 }

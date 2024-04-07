@@ -142,26 +142,4 @@ class PixelfontTest {
 
         assertThat(pixelfont.spriteFor('B')).isNull();
     }
-
-    @Test
-    void setPadding_paddingZero_throwsException() {
-        assertThatThrownBy(() -> pixelfont.setPadding(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Padding must have positive value");
-    }
-
-    @Test
-    void widthOf_noCharacters_isZero() {
-        assertThat(pixelfont.widthOf("bla")).isZero();
-    }
-
-    @Test
-    void widthOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().widthOf("This is a test")).isEqualTo(118);
-    }
-
-    @Test
-    void sizeOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().sizeOf("This is a test")).isEqualTo(Size.of(118, 8));
-    }
 }
