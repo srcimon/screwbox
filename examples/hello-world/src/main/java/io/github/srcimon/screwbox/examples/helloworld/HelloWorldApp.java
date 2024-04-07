@@ -17,6 +17,7 @@ public class HelloWorldApp {
             var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
             screen.drawText(screen.center(), "Hello world!", drawOptions);
         });
+
         screwBox.start();
     }
 }
