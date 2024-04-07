@@ -28,5 +28,6 @@ public interface Renderer {
 
     void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
+    //TODO part of renderer or handled in screen?
     void drawText(Offset offset, String text, TextDrawOptions options);
 }
