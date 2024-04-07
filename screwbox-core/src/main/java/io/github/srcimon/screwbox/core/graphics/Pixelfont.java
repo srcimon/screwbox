@@ -161,7 +161,8 @@ public class Pixelfont implements Serializable {
     public Size sizeOf(final String text) {
         return Size.of(widthOf(text), height);
     }
-
+//TODO remove size methods / replace with options?
+    //TODO remove padding
     /**
      * Replaces the {@link Color} in all {@link Frame}s of all {@link Sprite}s of the {@link Pixelfont}.
      */

@@ -9,7 +9,10 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 import java.util.function.Supplier;
+
+import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 
 public class DefaultRenderer implements Renderer {
 
@@ -223,8 +226,13 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(Offset offset, String text, TextDrawOptions options) {
-        //TODO DRAW PIXELFONT
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
+        Offset currentOffset = offset;
+        for (final var sprite : allSprites) {
+            drawSprite(sprite, currentOffset, SpriteDrawOptions.scaled(options.scale()));
+            currentOffset = currentOffset.addX((int)((sprite.size().width()  + options.padding()) * options.scale()));
+        }
     }
 
 }
