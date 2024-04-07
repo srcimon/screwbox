@@ -20,7 +20,7 @@ public interface World {
      * @see #drawSpriteBatch(SpriteBatch, Bounds)
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
-
+//TODO World drawSprite(Supplier<Sprite> sprite, Vector origin, SpriteDrawOptions options);
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions} but only draws on
      * the given {@link Bounds}. Can be used to apply effects.
