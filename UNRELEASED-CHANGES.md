@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed some rather bizare issue with sprite origins when drawing a `SpriteBatch`. Fixed while drunk so no better explanation will be given.
 
 ### 🧽 Cleanup & refactoring
 
