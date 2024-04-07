@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
-import java.awt.Font;
 import java.util.List;
 import java.util.stream.Stream;
 

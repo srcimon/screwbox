@@ -17,7 +17,6 @@ public interface AssetBundle<T> extends Supplier<T> {
 
     /**
      * Getter to get the {@link Asset} content directly.
-     * @return
      */
     @Override
     default T get() {

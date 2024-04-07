@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Percent;
-
 import java.util.function.Supplier;
 
 /**

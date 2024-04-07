@@ -70,11 +70,10 @@ public class DefaultAssets implements Assets {
         return Reflections.findClassesInPackage(packageName).stream()
                 .filter(AssetBundle.class::isAssignableFrom)
                 .filter(clazz -> !clazz.equals(AssetBundle.class))
-                .map(clazz -> {
+                .peek(clazz -> {
                     if (isNull(clazz.getEnumConstants())) {
                         throw new IllegalArgumentException("only enums are support to be asset bundles. %s is not an asset bundle".formatted(clazz));
                     }
-                    return clazz;
                 })
                 .flatMap(clazz -> Stream.of(clazz.getEnumConstants()))
                 .map(AssetBundle.class::cast)

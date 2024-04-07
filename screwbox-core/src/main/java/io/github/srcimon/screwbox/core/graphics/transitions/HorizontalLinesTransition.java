@@ -5,12 +5,16 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Size;
 
+import java.io.Serial;
+
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 
 public class HorizontalLinesTransition implements ScreenTransition {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+    
     private final int lineCount;
 
     public HorizontalLinesTransition(final int lineCount) {
