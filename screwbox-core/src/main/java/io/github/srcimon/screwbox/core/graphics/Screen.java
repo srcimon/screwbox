@@ -99,18 +99,6 @@ public interface Screen {
     //TODO remove and replace old methods
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
-    default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {
-        return drawText(offset, text, font, opacity, 1);
-    }
-
-    default Screen drawText(Offset offset, String text, Pixelfont font) {
-        return drawText(offset, text, font, Percent.max());
-    }
-
-    default Screen drawText(Offset offset, String text, Pixelfont font, double scale) {
-        return drawText(offset, text, font, Percent.max(), scale);
-    }
-
     Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     default Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity) {

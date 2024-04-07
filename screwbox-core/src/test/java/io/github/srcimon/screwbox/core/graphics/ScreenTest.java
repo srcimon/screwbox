@@ -23,32 +23,6 @@ class ScreenTest {
         verify(screen).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleDrawOptions.filled(Color.RED));
     }
 
-    @Test
-    void drawText_offsetTextAndFont_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.getWhite();
-
-        screen.drawText(Offset.at(2, 4), "Test", font);
-
-        verify(screen).drawText(Offset.at(2, 4), "Test", font, Percent.max(), 1);
-    }
-
-    @Test
-    void drawText_offsetTextFontAndScale_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.getWhite();
-
-        screen.drawText(Offset.at(2, 4), "Test", font, 4);
-
-        verify(screen).drawText(Offset.at(2, 4), "Test", font, Percent.max(), 4);
-    }
-
-    @Test
-    void drawText_offsetTextFontAndOpacity_callsActualMethod() {
-        Pixelfont font = BOLDZILLA.getWhite();
-
-        screen.drawText(Offset.at(2, 4), "Test", font, Percent.half());
-
-        verify(screen).drawText(Offset.at(2, 4), "Test", font, Percent.half(), 1);
-    }
 
     @Test
     void drawTextCentered_offsetTextAndFont_callsActualMethod() {
