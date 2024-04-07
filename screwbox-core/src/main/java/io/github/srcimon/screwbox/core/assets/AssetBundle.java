@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.assets;
 import java.util.function.Supplier;
 
 /**
- * Marks enums (e.g. {@link FontsBundle}) to serve as container for {@link Assets}.
+ * Marks enums ({@link FontsBundle}) to serve as container for {@link Assets}.
  * Marking non enums with this interface will result in {@link IllegalStateException}.
  * 
  * @see Assets#prepareClassPackage(Class) 
