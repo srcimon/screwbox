@@ -1,19 +1,22 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Percent;
+
+import java.util.function.Supplier;
+
 import static java.util.Objects.requireNonNull;
 
 /**
- * Customize the drawing of texts with system fonts.
+ * Customize the drawing of texts using a {@link Pixelfont}.
  *
- * @param fontName  the font name used to draw the text
- * @param size      the font size used to draw the text
- * @param isBold    draw bold text
- * @param isItalic  draw italic text
- * @param color     the {@link Color} used to draw the text
- * @param alignment the direction to draw from given offset
- * @see Screen#drawText(Offset, String, TextDrawOptions)
+ * @param font        the {@link Pixelfont} used for drawing
+ * @param padding     the padding between characters
+ * @param scale       the scale of the {@link Sprite}
+ * @param isUppercase if used, changes all characters to uppercase characters
+ * @param opacity     the opacity used for drawing
+ * @param alignment   the direction to draw from given offset
  */
-public record TextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
+public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
                               Alignment alignment) {
 
     /**
@@ -26,67 +29,73 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
     }
 
     public TextDrawOptions {
-        requireNonNull(fontName, "font name must not be null");
-        requireNonNull(color, "color must not be null");
+        requireNonNull(font, "font must not be null");
+        requireNonNull(opacity, "opacity must not be null");
+        requireNonNull(alignment, "alignment must not be null");
+    }
 
-        if (size < 4) {
-            throw new IllegalArgumentException("font size must be at least 4");
-        }
+    private TextDrawOptions(final Pixelfont font) {
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT);
+    }
+
+
+    /**
+     * Creates a new instance with the given {@link Pixelfont}.
+     *
+     * @see #font(Pixelfont)
+     */
+    public static TextDrawOptions font(final Supplier<Pixelfont> font) {
+        return font(font.get());
     }
 
     /**
-     * Creates a new instance with given {@link #fontName()} and {@link #size()} 10.
+     * Creates a new instance with the given {@link Pixelfont}.
+     *
+     * @see #font(Supplier)
      */
-    public static TextDrawOptions systemFont(final String fontName) {
-        return systemFont(fontName, 10);
-    }
-
-    /**
-     * Creates a new instance with given {@link #fontName()} and given {@link #size()}.
-     */
-    public static TextDrawOptions systemFont(final String fontName, final int size) {
-        return new TextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
+    public static TextDrawOptions font(final Pixelfont font) {
+        return new TextDrawOptions(font);
     }
 
     /**
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER);
     }
 
     /**
-     * Creates a new instance with given {@link Color}.
+     * Creates a new instance with given padding.
      */
-    public TextDrawOptions color(final Color color) {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+    public TextDrawOptions padding(final int padding) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
     }
 
     /**
-     * Creates a new instance with bold font.
+     * Creates a new instance with given scale.
      */
-    public TextDrawOptions bold() {
-        return new TextDrawOptions(fontName, size, true, isItalic, color, alignment);
+    public TextDrawOptions scale(final double scale) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
     }
 
     /**
-     * Creates a new instance with italic font.
+     * Creates a new instance with all uppercase characters.
      */
-    public TextDrawOptions italic() {
-        return new TextDrawOptions(fontName, size, isBold, true, color, alignment);
+    public TextDrawOptions uppercase() {
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment);
     }
 
     /**
-     * Creates a new instance with given {@link #size()}.
+     * Creates a new instance with given opacity.
      */
-    public TextDrawOptions size(final int size) {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+    public TextDrawOptions opacity(final Percent opacity) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
     }
 }

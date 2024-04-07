@@ -101,21 +101,21 @@ class PixelfontTest {
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }
@@ -141,27 +141,5 @@ class PixelfontTest {
         pixelfont.addCharacter('A', Sprite.invisible());
 
         assertThat(pixelfont.spriteFor('B')).isNull();
-    }
-
-    @Test
-    void setPadding_paddingZero_throwsException() {
-        assertThatThrownBy(() -> pixelfont.setPadding(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Padding must have positive value");
-    }
-
-    @Test
-    void widthOf_noCharacters_isZero() {
-        assertThat(pixelfont.widthOf("bla")).isZero();
-    }
-
-    @Test
-    void widthOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().widthOf("This is a test")).isEqualTo(97);
-    }
-
-    @Test
-    void sizeOf_someCharacters_isCorrect() {
-        assertThat(FontsBundle.BOLDZILLA.getWhite().sizeOf("This is a test")).isEqualTo(Size.of(97, 8));
     }
 }

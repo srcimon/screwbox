@@ -2,16 +2,15 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 
 public interface World {
 
     /**
-     * Draws text on the {@link World} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
-     * drawing text is kind of slow.
+     * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
+     * drawing text is kind of slow. Text size does not change with {@link Camera#zoom()}.
      */
-    World drawText(Vector position, String text, TextDrawOptions options);
+    World drawText(Vector position, String text, SystemTextDrawOptions options);
 
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
@@ -32,7 +31,11 @@ public interface World {
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
-    World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
+    /**
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link World} using the given {@link TextDrawOptions}.
+     * Text size changes with {@link Camera#zoom()}.
+     */
+    World drawText(Vector position, String text, TextDrawOptions options);
 
     /**
      * Returns the area currently visible on the {@link Screen}.

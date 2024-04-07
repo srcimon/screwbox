@@ -15,7 +15,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
-import io.github.srcimon.screwbox.core.graphics.internal.StandbyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
 import io.github.srcimon.screwbox.core.log.ConsoleLoggingAdapter;

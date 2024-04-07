@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,9 +83,17 @@ class DefaultWorldTest {
     }
 
     @Test
-    void drawText_callsScreen() {
-        world.drawText($(20, 19), "Hello World", TextDrawOptions.systemFont("Arial").bold());
+    void drawText_systemText_callsScreen() {
+        world.drawText($(20, 19), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
 
-        verify(screen).drawText(Offset.at(532, 403), "Hello World", TextDrawOptions.systemFont("Arial").bold());
+        verify(screen).drawText(Offset.at(532, 403), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
+    }
+
+    @Test
+    void drawText_pixelfont_callsScreen() {
+        world.updateZoom(2);
+        world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(4));
+
+        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(8));
     }
 }

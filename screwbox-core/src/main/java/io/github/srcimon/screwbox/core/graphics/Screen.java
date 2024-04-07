@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Percent;
-
 import java.util.function.Supplier;
 
 /**
@@ -88,39 +86,19 @@ public interface Screen {
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     /**
-     * Draws text on the {@link Screen} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * Draws text on the {@link Screen} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
      * drawing text is kind of slow.
+     */
+    Screen drawText(Offset offset, String text, SystemTextDrawOptions options);
+
+    /**
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link Screen} using the given {@link TextDrawOptions}.
      */
     Screen drawText(Offset offset, String text, TextDrawOptions options);
 
-    Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
-
-    default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {
-        return drawText(offset, text, font, opacity, 1);
-    }
-
-    default Screen drawText(Offset offset, String text, Pixelfont font) {
-        return drawText(offset, text, font, Percent.max());
-    }
-
-    default Screen drawText(Offset offset, String text, Pixelfont font, double scale) {
-        return drawText(offset, text, font, Percent.max(), scale);
-    }
-
-    Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity) {
-        return drawTextCentered(offset, text, font, opacity, 1);
-    }
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font) {
-        return drawTextCentered(offset, text, font, Percent.max());
-    }
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
-        return drawTextCentered(offset, text, font, Percent.max(), scale);
-    }
-
+    /**
+     * Fills the {@link Screen} with a repeated {@link Sprite} using the given {@link SpriteFillOptions}.
+     */
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**

@@ -2,7 +2,9 @@ package io.github.srcimon.screwbox.examples.helloworld;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+
+import static io.github.srcimon.screwbox.core.assets.FontsBundle.BOLDZILLA;
+import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 public class HelloWorldApp {
 
@@ -10,9 +12,11 @@ public class HelloWorldApp {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
         screwBox.environment().addSystem(engine -> {
-            var screen = screwBox.graphics().screen();
-            screen.drawTextCentered(screen.center(), "Hello world", FontsBundle.BOLDZILLA.white().get(), 4);
+            var screen = engine.graphics().screen();
+            var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
+            screen.drawText(screen.center(), "Hello world!", drawOptions);
         });
+
         screwBox.start();
     }
 }

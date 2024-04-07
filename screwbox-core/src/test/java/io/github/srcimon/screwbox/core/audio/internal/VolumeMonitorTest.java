@@ -46,6 +46,7 @@ class VolumeMonitorTest {
 
     @Test
     void isActive_afterCallingLevel_isTrue() {
+        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         volumeMonitor.level();
 
         assertThat(volumeMonitor.isActive()).isTrue();

@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.*;
 
@@ -90,17 +89,15 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public World drawTextCentered(final Vector position, final String text, final Pixelfont font,
-                                  final Percent opacity, final double scale) {
-        final Offset offset = toOffset(position);
-        screen.drawTextCentered(offset, text, font, opacity, scale * zoom);
+    public World drawText(final Vector position, final String text, final TextDrawOptions options) {
+        screen.drawText(toOffset(position), text, options.scale(options.scale() * zoom));
         return this;
     }
 
     @Override
-    public World drawText(final Vector position, final String text, final TextDrawOptions options) {
+    public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
         final Offset windowOffset = toOffset(position);
-        screen.drawText(windowOffset, text, options);
+        screen.drawText(windowOffset, text, options.size(options.size()));
         return this;
     }
 

@@ -1,12 +1,15 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class DefaultRenderer implements Renderer {
@@ -55,22 +58,22 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         applyNewColor(options.color());
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
         final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
         graphics.setFont(font);
-        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+        if (SystemTextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
             graphics.drawString(text, offset.x(), y);
         } else {
             final int textWidth = fontMetrics.stringWidth(text);
-            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
+            final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
     }
 
-    private java.awt.Font toAwtFont(final TextDrawOptions options) {
+    private java.awt.Font toAwtFont(final SystemTextDrawOptions options) {
         final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
         final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
         return new java.awt.Font(options.fontName(), realValue, options.size());
@@ -207,7 +210,6 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-
         final var oldClip = graphics.getClip();
         graphics.setClip(
                 clip.offset().x(),
@@ -219,6 +221,38 @@ public class DefaultRenderer implements Renderer {
 
         graphics.setClip(oldClip);
 
+    }
+
+    @Override
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        applyOpacityConfig(options.opacity());
+        final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
+        int x = offset.x() + calculateXoffset(options, allSprites);
+
+        for (final var sprite : allSprites) {
+            final Image image = sprite.image(lastUpdateTime);
+            final AffineTransform transform = new AffineTransform();
+            transform.translate(x, offset.y());
+            transform.scale(options.scale(), options.scale());
+            graphics.drawImage(image, transform, null);
+            final int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
+            x += distanceX;
+        }
+        resetOpacityConfig(options.opacity());
+    }
+
+    private int calculateXoffset(final TextDrawOptions options, final List<Sprite> allSprites) {
+        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+            return 0;
+        }
+        int totalWidth = 0;
+        for (final var sprite : allSprites) {
+            totalWidth += (int) ((sprite.size().width() + options.padding()) * options.scale());
+        }
+
+        return TextDrawOptions.Alignment.CENTER.equals(options.alignment())
+                ? -totalWidth / 2
+                : -totalWidth;
     }
 
 }

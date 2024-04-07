@@ -1,7 +1,8 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.awt.*;
@@ -48,7 +49,7 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         renderTasks.active().add(() -> next.drawText(offset, text, options));
     }
 
@@ -80,6 +81,11 @@ public class AsyncRenderer implements Renderer {
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         renderTasks.active().add(() -> next.drawSprite(sprite, origin, options, clip));
+    }
+
+    @Override
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        renderTasks.active().add(() -> next.drawText(offset, text, options));
     }
 
     private FutureTask<Void> finishRenderTasks() {

@@ -1,10 +1,12 @@
-package io.github.srcimon.screwbox.core.graphics.internal;
+package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -150,28 +152,28 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_boldAlignedLeft_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").bold().size(20));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").bold().size(20));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_normal_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial"));
+        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
@@ -195,6 +197,27 @@ class DefaultRenderImageTest {
         renderer.fillWith(SPRITE, SpriteFillOptions.scale(1).offset(Offset.at(-13, -9000)).opacity(Percent.half()));
 
         verifyIsIdenticalWithReferenceImage("fillWith_spriteFillWithDifferentOffset_fillsWholeImage.png");
+    }
+
+    @Test
+    void drawText_boldzillaFontScaledWithPaddingUsingUppercaseChars_drawsText() {
+        renderer.drawText(Offset.at(10, 10), "hi there", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(1).padding(1).uppercase());
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaFontScaledWithPaddingUsingUppercaseChars_drawsText.png");
+    }
+
+    @Test
+    void drawText_boldzillaFontCenteredWithOpacity_drawsText() {
+        renderer.drawText(Offset.at(10, 10), "test", TextDrawOptions.font(FontsBundle.BOLDZILLA).alignCenter().opacity(Percent.half()));
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaFontCenteredWithOpacity_drawsText.png");
+    }
+
+    @Test
+    void drawText_boldzillaAlignedRight_drawsText() {
+        renderer.drawText(Offset.at(60, 10), "TEST", TextDrawOptions.font(FontsBundle.BOLDZILLA).alignRight());
+
+        verifyIsIdenticalWithReferenceImage("drawText_boldzillaAlignedRight_drawsText.png");
     }
 
     private void verifyNotAllPixelsAreBlack() {
