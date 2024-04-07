@@ -227,8 +227,10 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        //TODO apply alignment
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
         SpriteDrawOptions spriteOptions = scaled(options.scale()).opacity(options.opacity());
+        //TODO avoid subcall to drawSprite
         Offset currentOffset = offset;
         for (final var sprite : allSprites) {
             drawSprite(sprite, currentOffset, spriteOptions);
