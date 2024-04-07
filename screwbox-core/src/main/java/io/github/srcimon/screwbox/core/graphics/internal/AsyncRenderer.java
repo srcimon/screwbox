@@ -48,7 +48,7 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         renderTasks.active().add(() -> next.drawText(offset, text, options));
     }
 

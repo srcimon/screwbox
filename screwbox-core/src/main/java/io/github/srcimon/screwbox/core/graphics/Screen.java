@@ -88,11 +88,12 @@ public interface Screen {
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     /**
-     * Draws text on the {@link Screen} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * Draws text on the {@link Screen} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
      * drawing text is kind of slow.
      */
-    Screen drawText(Offset offset, String text, TextDrawOptions options);
+    Screen drawText(Offset offset, String text, SystemTextDrawOptions options);
 
+    //TODO Screen drawText(Offset offset, String text, TextDrawOptions options);
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     default Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity) {

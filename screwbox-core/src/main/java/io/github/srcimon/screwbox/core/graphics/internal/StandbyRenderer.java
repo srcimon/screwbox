@@ -24,7 +24,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         // does nothing
     }
 

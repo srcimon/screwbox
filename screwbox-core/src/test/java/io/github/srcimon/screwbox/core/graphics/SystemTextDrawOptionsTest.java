@@ -5,25 +5,25 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class TextDrawOptionsTest {
+class SystemTextDrawOptionsTest {
 
     @Test
     void newInstance_fontSizeTooSmall_throwsException() {
-        assertThatThrownBy(() -> TextDrawOptions.systemFont("Arial", 2))
+        assertThatThrownBy(() -> SystemTextDrawOptions.systemFont("Arial", 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("font size must be at least 4");
     }
 
     @Test
     void newInstance_fontNameNull_throwsException() {
-        assertThatThrownBy(() -> TextDrawOptions.systemFont(null))
+        assertThatThrownBy(() -> SystemTextDrawOptions.systemFont(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("font name must not be null");
     }
 
     @Test
     void newInstance_colorNull_throwsException() {
-        var options = TextDrawOptions.systemFont("Arial");
+        var options = SystemTextDrawOptions.systemFont("Arial");
 
         assertThatThrownBy(() -> options.color(null))
                 .isInstanceOf(NullPointerException.class)
@@ -32,7 +32,7 @@ class TextDrawOptionsTest {
 
     @Test
     void newInstance_validOptions_createsNewInstance() {
-        var options = TextDrawOptions.systemFont("Arial")
+        var options = SystemTextDrawOptions.systemFont("Arial")
                 .bold()
                 .color(Color.RED)
                 .alignCenter()

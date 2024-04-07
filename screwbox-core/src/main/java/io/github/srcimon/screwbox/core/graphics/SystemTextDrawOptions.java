@@ -11,10 +11,10 @@ import static java.util.Objects.requireNonNull;
  * @param isItalic  draw italic text
  * @param color     the {@link Color} used to draw the text
  * @param alignment the direction to draw from given offset
- * @see Screen#drawText(Offset, String, TextDrawOptions)
+ * @see Screen#drawText(Offset, String, SystemTextDrawOptions)
  */
-public record TextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
-                              Alignment alignment) {
+public record SystemTextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
+                                    Alignment alignment) {
 
     /**
      * Alignment of the text.
@@ -25,7 +25,7 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
         RIGHT
     }
 
-    public TextDrawOptions {
+    public SystemTextDrawOptions {
         requireNonNull(fontName, "font name must not be null");
         requireNonNull(color, "color must not be null");
 
@@ -37,56 +37,56 @@ public record TextDrawOptions(String fontName, int size, boolean isBold, boolean
     /**
      * Creates a new instance with given {@link #fontName()} and {@link #size()} 10.
      */
-    public static TextDrawOptions systemFont(final String fontName) {
+    public static SystemTextDrawOptions systemFont(final String fontName) {
         return systemFont(fontName, 10);
     }
 
     /**
      * Creates a new instance with given {@link #fontName()} and given {@link #size()}.
      */
-    public static TextDrawOptions systemFont(final String fontName, final int size) {
-        return new TextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
+    public static SystemTextDrawOptions systemFont(final String fontName, final int size) {
+        return new SystemTextDrawOptions(fontName, size, false, false, Color.WHITE, Alignment.LEFT);
     }
 
     /**
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
-    public TextDrawOptions alignRight() {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT);
+    public SystemTextDrawOptions alignRight() {
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.RIGHT);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
-    public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER);
+    public SystemTextDrawOptions alignCenter() {
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, Alignment.CENTER);
     }
 
     /**
      * Creates a new instance with given {@link Color}.
      */
-    public TextDrawOptions color(final Color color) {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+    public SystemTextDrawOptions color(final Color color) {
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 
     /**
      * Creates a new instance with bold font.
      */
-    public TextDrawOptions bold() {
-        return new TextDrawOptions(fontName, size, true, isItalic, color, alignment);
+    public SystemTextDrawOptions bold() {
+        return new SystemTextDrawOptions(fontName, size, true, isItalic, color, alignment);
     }
 
     /**
      * Creates a new instance with italic font.
      */
-    public TextDrawOptions italic() {
-        return new TextDrawOptions(fontName, size, isBold, true, color, alignment);
+    public SystemTextDrawOptions italic() {
+        return new SystemTextDrawOptions(fontName, size, isBold, true, color, alignment);
     }
 
     /**
      * Creates a new instance with given {@link #size()}.
      */
-    public TextDrawOptions size(final int size) {
-        return new TextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
+    public SystemTextDrawOptions size(final int size) {
+        return new SystemTextDrawOptions(fontName, size, isBold, isItalic, color, alignment);
     }
 }

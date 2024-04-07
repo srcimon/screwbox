@@ -150,28 +150,28 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_boldAlignedLeft_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").bold().size(20));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").bold().size(20));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_italicAlignedRight_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight().italic().size(10).color(RED.opacity(0.8)));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_italicBoldAlignedCenter_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "Test", TextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
+        renderer.drawText(Offset.at(20, 10), "Test", SystemTextDrawOptions.systemFont("Arial").alignCenter().italic().bold().size(10).color(BLUE));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }
 
     @Test
     void drawText_normal_drawsText() {
-        renderer.drawText(Offset.at(20, 10), "XXX", TextDrawOptions.systemFont("Arial"));
+        renderer.drawText(Offset.at(20, 10), "XXX", SystemTextDrawOptions.systemFont("Arial"));
 
         verifyNotAllPixelsAreBlack(); // fonts are system specific so pixelperfect compare is not applicable here
     }

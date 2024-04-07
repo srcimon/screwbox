@@ -8,10 +8,10 @@ import io.github.srcimon.screwbox.core.Vector;
 public interface World {
 
     /**
-     * Draws text on the {@link World} using {@link TextDrawOptions}. Be warned: The used fonts are system specific and
+     * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
      * drawing text is kind of slow.
      */
-    World drawText(Vector position, String text, TextDrawOptions options);
+    World drawText(Vector position, String text, SystemTextDrawOptions options);
 
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.

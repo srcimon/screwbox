@@ -55,22 +55,22 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         applyNewColor(options.color());
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
         final int y = (int) (offset.y() + fontMetrics.getHeight() / 2.0);
         graphics.setFont(font);
-        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+        if (SystemTextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
             graphics.drawString(text, offset.x(), y);
         } else {
             final int textWidth = fontMetrics.stringWidth(text);
-            final int xDelta = TextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
+            final int xDelta = SystemTextDrawOptions.Alignment.CENTER.equals(options.alignment()) ? textWidth / 2 : textWidth;
             graphics.drawString(text, offset.x() - xDelta, y);
         }
     }
 
-    private java.awt.Font toAwtFont(final TextDrawOptions options) {
+    private java.awt.Font toAwtFont(final SystemTextDrawOptions options) {
         final int value = options.isBold() ? java.awt.Font.BOLD : java.awt.Font.ROMAN_BASELINE;
         final int realValue = options.isItalic() ? value + java.awt.Font.ITALIC : value;
         return new java.awt.Font(options.fontName(), realValue, options.size());

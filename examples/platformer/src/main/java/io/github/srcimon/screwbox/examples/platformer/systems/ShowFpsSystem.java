@@ -8,14 +8,14 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
 
 @Order(SystemOrder.PRESENTATION_UI_FOREGROUND)
 public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
     private static final Offset TEXT_POSITION = Offset.at(50, 50);
-    private static final TextDrawOptions OPTIONS = TextDrawOptions.systemFont("Futura", 14);
+    private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Futura", 14);
 
     @Override
     public void update(Engine engine) {

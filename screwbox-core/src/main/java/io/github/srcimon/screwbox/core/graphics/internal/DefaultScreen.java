@@ -99,7 +99,7 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         renderer.drawText(offset, text, options);
         return this;
     }
