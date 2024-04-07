@@ -43,7 +43,7 @@ public class HelloWorldApp {
                     }
                 })
                 .addSystem(new ParticleSystem())
-                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
+//                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
 //                    for (Entity entity : engine.environment().fetchAllHaving(RenderComponent.class)) {
 //                        var render = entity.get(RenderComponent.class);
@@ -54,8 +54,8 @@ public class HelloWorldApp {
                 })
 
                 .addEntity(1,
-                        new TransformComponent(0, 0, 64, 64),
-                        new ParticleEmitterComponent(withInterval(ofMillis(10))));
+                        new TransformComponent(0, 0, screwBox.graphics().screen().size().width(),screwBox.graphics().screen().size().height()),
+                        new ParticleEmitterComponent(withInterval(ofMillis(250))));
 
         screwBox.start();
     }

@@ -5,11 +5,13 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
@@ -18,6 +20,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 import java.util.Random;
@@ -30,7 +33,7 @@ public class ParticleSystem implements EntitySystem {
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class, TransformComponent.class);
 
     private static final Random RANDOM = new Random();
-    Sprite sprite = Sprite.fromFile("Sprite-0001.png");
+    Sprite sprite = Sprite.fromFile("spark.png");
 
     @Override
     public void update(Engine engine) {
@@ -40,15 +43,25 @@ public class ParticleSystem implements EntitySystem {
             var spawnPoint = emitter.useArea
                         ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
                     : particleEmitter.position();
-            double scale = 4;
+            double scale = 2;
 
+            //SMOKE
+//                engine.environment().addEntity(
+//                        new PhysicsComponent(Vector.y(-200 + RANDOM.nextDouble(-20, 20)).addX(RANDOM.nextDouble(-30, 30))),
+//                        new TransformComponent(spawnPoint, 1, 1),
+//                        new RenderComponent(sprite, SpriteDrawOptions.scaled(scale).rotation(Rotation.degrees(RANDOM.nextDouble() * 360))),
+//                        new TweenDestroyComponent(),
+//                        new TweenComponent(Duration.ofSeconds(1), TweenMode.SINE_IN_OUT),
+//                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.2))
+//                );
                 engine.environment().addEntity(
-                        new PhysicsComponent(Vector.y(-150 + RANDOM.nextDouble(-20, 20)).addX(RANDOM.nextDouble(-30, 30))),
+                        new PhysicsComponent(),
+                        new ChaoticMovementComponent(10, Duration.ofMillis(1500)),
                         new TransformComponent(spawnPoint, 1, 1),
                         new RenderComponent(sprite, SpriteDrawOptions.scaled(scale).rotation(Rotation.degrees(RANDOM.nextDouble() * 360))),
                         new TweenDestroyComponent(),
-                        new TweenComponent(Duration.ofSeconds(1), TweenMode.SINE_IN_OUT),
-                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.4))
+                        new TweenComponent(Duration.ofSeconds(20), TweenMode.SINE_IN_OUT),
+                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.9))
                 );
         }
         }
