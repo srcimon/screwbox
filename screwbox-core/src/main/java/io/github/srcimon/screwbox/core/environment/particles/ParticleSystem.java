@@ -2,24 +2,35 @@ package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 import java.util.Random;
 
 import static io.github.srcimon.screwbox.core.assets.SpritesBundle.BLOB_ANIMATED_16;
 
+@Order(SystemOrder.SIMULATION_BEGIN)
 public class ParticleSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class, TransformComponent.class);
 
     private static final Random RANDOM = new Random();
+    Sprite sprite = Sprite.fromFile("Sprite-0001.png");
 
     @Override
     public void update(Engine engine) {
@@ -27,16 +38,18 @@ public class ParticleSystem implements EntitySystem {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             if (emitter.sheduler.isTick()) {
             var spawnPoint = emitter.useArea
-                    ? particleEmitter.position()
-//                        ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
+                        ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
                     : particleEmitter.position();
-            double scale = 2;
+            double scale = 4;
+
                 engine.environment().addEntity(
-                        new TransformComponent(spawnPoint, BLOB_ANIMATED_16.get().size().width() * scale, BLOB_ANIMATED_16.get().size().height()* scale),
-                        new RenderComponent(BLOB_ANIMATED_16, SpriteDrawOptions.scaled(scale)),
+                        new PhysicsComponent(Vector.y(-150 + RANDOM.nextDouble(-20, 20)).addX(RANDOM.nextDouble(-30, 30))),
+                        new TransformComponent(spawnPoint, 1, 1),
+                        new RenderComponent(sprite, SpriteDrawOptions.scaled(scale).rotation(Rotation.degrees(RANDOM.nextDouble() * 360))),
                         new TweenDestroyComponent(),
-                        new TweenComponent(Duration.ofSeconds(2)),
-                        new TweenOpacityComponent());
+                        new TweenComponent(Duration.ofSeconds(1), TweenMode.SINE_IN_OUT),
+                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.4))
+                );
         }
         }
     }

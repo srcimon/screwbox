@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -17,33 +18,41 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
+
+import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.assets.SpritesBundle.BLOB_ANIMATED_16;
 import static io.github.srcimon.screwbox.core.assets.SpritesBundle.MOON_SURFACE_16;
 import static io.github.srcimon.screwbox.core.utils.Sheduler.withInterval;
 //TODO fixup example
+//TODO MAKE SMOKE SPRITE PART O BOUNDLE
 public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-
-        double scale = 8;
         screwBox.environment()
                 .enablePhysics()
                 .enableRendering()
                 .enableTweening()
-//                .addSystem(new ParticleSystem())
-                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
-                    for (Entity entity : engine.environment().fetchAllHaving(TransformComponent.class)) {
-                        engine.graphics().world().drawRectangle(entity.bounds(), RectangleDrawOptions.outline(Color.RED));
+                    if(engine.keyboard().isPressed(Key.ENTER)) {
+                        engine.graphics().configuration().toggleFullscreen();
                     }
                 })
-        .addEntity(
-                new TransformComponent(0, 0, MOON_SURFACE_16.get().size().width() * scale, MOON_SURFACE_16.get().size().height()* scale),
-                new RenderComponent(MOON_SURFACE_16, SpriteDrawOptions.scaled(scale)))
+                .addSystem(new ParticleSystem())
+                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
+                .addSystem(engine -> {
+//                    for (Entity entity : engine.environment().fetchAllHaving(RenderComponent.class)) {
+//                        var render = entity.get(RenderComponent.class);
+//                        engine.graphics().world().drawRectangle(entity.bounds().expand(render.sprite.size().width() * 4), RectangleDrawOptions
+//                                .outline(Color.RED).
+//                                rotation(render.options.rotation()));
+//                    }
+                })
+
                 .addEntity(1,
                         new TransformComponent(0, 0, 64, 64),
                         new ParticleEmitterComponent(withInterval(ofMillis(10))));
