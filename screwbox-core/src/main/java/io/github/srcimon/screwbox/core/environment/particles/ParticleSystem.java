@@ -33,7 +33,7 @@ public class ParticleSystem implements EntitySystem {
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class, TransformComponent.class);
 
     private static final Random RANDOM = new Random();
-    Sprite sprite = Sprite.fromFile("spark.png");
+    Sprite sprite = Sprite.fromFile("sprite-0001.png");
 
     @Override
     public void update(Engine engine) {
@@ -43,7 +43,7 @@ public class ParticleSystem implements EntitySystem {
             var spawnPoint = emitter.useArea
                         ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
                     : particleEmitter.position();
-            double scale = 2;
+            double scale = 5;
 
             //SMOKE
 //                engine.environment().addEntity(
@@ -54,14 +54,15 @@ public class ParticleSystem implements EntitySystem {
 //                        new TweenComponent(Duration.ofSeconds(1), TweenMode.SINE_IN_OUT),
 //                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.2))
 //                );
+                ChaoticMovementComponent chaoticMovementComponent = new ChaoticMovementComponent(60, Duration.ofMillis(1500), Vector.y(-100));
                 engine.environment().addEntity(
                         new PhysicsComponent(),
-                        new ChaoticMovementComponent(10, Duration.ofMillis(1500)),
+                        chaoticMovementComponent,
                         new TransformComponent(spawnPoint, 1, 1),
                         new RenderComponent(sprite, SpriteDrawOptions.scaled(scale).rotation(Rotation.degrees(RANDOM.nextDouble() * 360))),
                         new TweenDestroyComponent(),
-                        new TweenComponent(Duration.ofSeconds(20), TweenMode.SINE_IN_OUT),
-                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.9))
+                        new TweenComponent(Duration.ofSeconds(4), TweenMode.SINE_IN_OUT),
+                        new TweenOpacityComponent(Percent.zero(), Percent.of(0.2))
                 );
         }
         }

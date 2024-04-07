@@ -33,7 +33,9 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
+
         screwBox.environment()
+                .addSystem(new LogFpsSystem())
                 .enablePhysics()
                 .enableRendering()
                 .enableTweening()
@@ -43,7 +45,7 @@ public class HelloWorldApp {
                     }
                 })
                 .addSystem(new ParticleSystem())
-//                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
+                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
 //                    for (Entity entity : engine.environment().fetchAllHaving(RenderComponent.class)) {
 //                        var render = entity.get(RenderComponent.class);
@@ -54,8 +56,8 @@ public class HelloWorldApp {
                 })
 
                 .addEntity(1,
-                        new TransformComponent(0, 0, screwBox.graphics().screen().size().width(),screwBox.graphics().screen().size().height()),
-                        new ParticleEmitterComponent(withInterval(ofMillis(250))));
+                        new TransformComponent(0, 0, 64, 64),
+                        new ParticleEmitterComponent(withInterval(ofMillis(15))));
 
         screwBox.start();
     }
