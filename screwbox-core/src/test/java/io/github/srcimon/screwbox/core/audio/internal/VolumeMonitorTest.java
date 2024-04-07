@@ -46,6 +46,7 @@ class VolumeMonitorTest {
 
     @Test
     void isActive_afterCallingLevel_isTrue() {
+        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         volumeMonitor.level();
 
         assertThat(volumeMonitor.isActive()).isTrue();
@@ -81,6 +82,14 @@ class VolumeMonitorTest {
 
         await(() -> volumeMonitor.level().value() > 0.4, ofSeconds(1));
         assertThat(volumeMonitor.level().value()).isGreaterThan(0.4);
+    }
+
+    @Test
+    void level_firstCall_isZero() {
+        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(targetDataLine.getBufferSize()).thenReturn(4);
+
+        assertThat(volumeMonitor.level().isZero()).isTrue();
     }
 
     @AfterEach

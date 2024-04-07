@@ -227,7 +227,7 @@ public class DefaultRenderer implements Renderer {
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
-        double x = offset.x() + calculateXoffset(options, allSprites);
+        int x = offset.x() + calculateXoffset(options, allSprites);
 
         for (final var sprite : allSprites) {
             final Image image = sprite.image(lastUpdateTime);
