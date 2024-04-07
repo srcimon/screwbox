@@ -100,19 +100,7 @@ public interface Screen {
     Screen drawText(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
 
     Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity, double scale);
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font, Percent opacity) {
-        return drawTextCentered(offset, text, font, opacity, 1);
-    }
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font) {
-        return drawTextCentered(offset, text, font, Percent.max());
-    }
-
-    default Screen drawTextCentered(Offset offset, String text, Pixelfont font, double scale) {
-        return drawTextCentered(offset, text, font, Percent.max(), scale);
-    }
-
+    
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**
