@@ -101,21 +101,21 @@ class PixelfontTest {
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = FontsBundle.BOLDZILLA.getWhite();
+        var font = FontsBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }

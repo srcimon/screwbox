@@ -28,7 +28,7 @@ public class ShowLabelSystem implements EntitySystem {
                 Bounds bounds = entity.get(TransformComponent.class).bounds;
 
                 Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawText(position, labelComponent.label, font(FontsBundle.BOLDZILLA.white()).scale(labelComponent.size / 15.0));
+                engine.graphics().world().drawText(position, labelComponent.label, font(FontsBundle.BOLDZILLA).scale(labelComponent.size / 15.0));
             }
         }
 

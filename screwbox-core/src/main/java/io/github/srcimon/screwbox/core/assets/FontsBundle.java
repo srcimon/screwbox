@@ -10,10 +10,12 @@ import io.github.srcimon.screwbox.core.utils.Cache;
 import java.util.Arrays;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
+import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 
 
 /**
- * An {@link AssetBundle} for {@link Pixelfont}s shipped with the {@link ScrewBox} game engine.
+ * An {@link AssetBundle} for {@link Pixelfont}s shipped with the {@link ScrewBox} game engine. Default {@link Color}
+ * is {@link Color#WHITE}.
  */
 public enum FontsBundle implements AssetBundle<Pixelfont> {
 
@@ -31,24 +33,10 @@ public enum FontsBundle implements AssetBundle<Pixelfont> {
     }
 
     /**
-     * Returns the white {@link Asset} version of the {@link Pixelfont}.
-     */
-    public Asset<Pixelfont> white() {
-        return customColor(Color.WHITE);
-    }
-
-    /**
      * Returns a colored {@link Asset} version of the {@link Pixelfont}.
      */
     public Asset<Pixelfont> customColor(final Color color) {
-        return cache.getOrElse(color, () -> Asset.asset(() -> asset.get().replaceColor(BLACK, color)));
-    }
-
-    /**
-     * Returns the white version of the {@link Pixelfont}.
-     */
-    public Pixelfont getWhite() {
-        return getCustomColor(Color.WHITE);
+        return cache.getOrElse(color, () -> Asset.asset(() -> asset.get().replaceColor(WHITE, color)));
     }
 
     /**
@@ -67,12 +55,13 @@ public enum FontsBundle implements AssetBundle<Pixelfont> {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile(resouce, size);
         font.addCharacters(Arrays.asList(characters), sprites);
-        return font;
+        return font.replaceColor(BLACK, WHITE);
     }
+
     private static Pixelfont loadFontCropped(final String resouce, final Size size, final Character... characters) {
         final Pixelfont font = new Pixelfont();
         final var sprites = Sprite.multipleFromFile(resouce, size);
         font.addCharacters(Arrays.asList(characters), sprites.stream().map(Sprite::cropHorizontal).toList());
-        return font;
+        return font.replaceColor(BLACK, WHITE);
     }
 }

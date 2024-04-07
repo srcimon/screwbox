@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.examples.platformer.components.LetsGoComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
@@ -23,6 +22,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
@@ -58,7 +58,7 @@ public class LetsGoSystem implements EntitySystem {
                     .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().drawText(postion, "LET'S GO", TextDrawOptions.font(FontsBundle.BOLDZILLA.white()).opacity(letsGoComponent.visibility).scale(0.5));
+            engine.graphics().world().drawText(postion, "LET'S GO", font(FontsBundle.BOLDZILLA).opacity(letsGoComponent.visibility).scale(0.5));
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);
         }

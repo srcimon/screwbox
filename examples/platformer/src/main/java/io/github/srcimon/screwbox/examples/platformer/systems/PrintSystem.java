@@ -21,8 +21,8 @@ public class PrintSystem implements EntitySystem {
         for (var entity : engine.environment().fetchAll(TEXTS)) {
             TextComponent textComponent = entity.get(TextComponent.class);
             Screen screen = engine.graphics().screen();
-            screen.drawText(screen.center(), textComponent.text, font(BOLDZILLA.white()).alignCenter().scale(7));
-            screen.drawText(screen.center().addY(80), textComponent.subtext, font(BOLDZILLA.white()).alignCenter().scale(4));
+            screen.drawText(screen.center(), textComponent.text, font(BOLDZILLA).alignCenter().scale(7));
+            screen.drawText(screen.center().addY(80), textComponent.subtext, font(BOLDZILLA).alignCenter().scale(4));
         }
     }
 }

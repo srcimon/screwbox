@@ -11,7 +11,7 @@ import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 public class SimpleUiRenderer implements UiRenderer {
 
-    private static final TextDrawOptions SELECTABLE = font(BOLDZILLA.white()).scale(2).alignCenter();
+    private static final TextDrawOptions SELECTABLE = font(BOLDZILLA).scale(2).alignCenter();
     private static final TextDrawOptions SELECTED = font(BOLDZILLA.customColor(YELLOW)).scale(2.5).alignCenter();
     private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColor(WHITE.opacity(0.2))).scale(2).alignCenter();
 
