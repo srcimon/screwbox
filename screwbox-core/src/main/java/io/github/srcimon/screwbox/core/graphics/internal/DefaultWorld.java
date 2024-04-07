@@ -98,6 +98,12 @@ public class DefaultWorld implements World {
     }
 
     @Override
+    public World drawText(final Vector position, final String text, final TextDrawOptions options) {
+        screen.drawText(toOffset(position), text, options.scale(options.scale() * zoom));
+        return this;
+    }
+
+    @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
         final Offset windowOffset = toOffset(position);
         screen.drawText(windowOffset, text, options);

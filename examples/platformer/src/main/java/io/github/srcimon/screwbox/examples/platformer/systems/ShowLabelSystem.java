@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.FontsBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -13,6 +12,8 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
+
+import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 @Order(SystemOrder.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
@@ -27,9 +28,7 @@ public class ShowLabelSystem implements EntitySystem {
                 Bounds bounds = entity.get(TransformComponent.class).bounds;
 
                 Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawTextCentered(position, labelComponent.label, FontsBundle.BOLDZILLA.getWhite(),
-                        Percent.max(),
-                        labelComponent.size / 15.0);
+                engine.graphics().world().drawText(position, labelComponent.label, font(FontsBundle.BOLDZILLA.white()).scale(labelComponent.size / 15.0));
             }
         }
 

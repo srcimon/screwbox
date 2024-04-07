@@ -34,6 +34,9 @@ public interface World {
 
     World drawTextCentered(Vector position, String text, Pixelfont font, Percent opacity, double scale);
 
+    //TODO test and javadoc
+    World drawText(Vector position, String text, TextDrawOptions options);
+
     /**
      * Returns the area currently visible on the {@link Screen}.
      */
