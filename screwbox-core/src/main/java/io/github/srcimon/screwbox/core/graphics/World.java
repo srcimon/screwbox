@@ -8,7 +8,7 @@ public interface World {
 
     /**
      * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
-     * drawing text is kind of slow.
+     * drawing text is kind of slow. Text size does not change with {@link Camera#zoom()}.
      */
     World drawText(Vector position, String text, SystemTextDrawOptions options);
 
@@ -32,7 +32,8 @@ public interface World {
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
     /**
-     * Draws text using a {@link Pixelfont} on the {@link World} using the given {@link TextDrawOptions}.
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link World} using the given {@link TextDrawOptions}.
+     * Text size changes with {@link Camera#zoom()}.
      */
     World drawText(Vector position, String text, TextDrawOptions options);
 

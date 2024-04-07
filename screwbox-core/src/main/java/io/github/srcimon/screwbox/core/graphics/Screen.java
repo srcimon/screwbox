@@ -91,10 +91,14 @@ public interface Screen {
      */
     Screen drawText(Offset offset, String text, SystemTextDrawOptions options);
 
-    //TODO javadoc
+    /**
+     * Draws a sprite based text ({@link Pixelfont}) on the {@link Screen} using the given {@link TextDrawOptions}.
+     */
     Screen drawText(Offset offset, String text, TextDrawOptions options);
 
-    //TODO javadoc
+    /**
+     * Fills the {@link Screen} with a repeated {@link Sprite} using the given {@link SpriteFillOptions}.
+     */
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**
