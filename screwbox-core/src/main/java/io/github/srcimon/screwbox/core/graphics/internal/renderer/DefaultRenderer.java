@@ -231,11 +231,27 @@ public class DefaultRenderer implements Renderer {
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
         SpriteDrawOptions spriteOptions = scaled(options.scale()).opacity(options.opacity());
         //TODO avoid subcall to drawSprite
-        Offset currentOffset = offset;
+        Offset currentOffset = offset.addX(calculateXoffset(options, allSprites));
+
         for (final var sprite : allSprites) {
             drawSprite(sprite, currentOffset, spriteOptions);
-            currentOffset = currentOffset.addX((int)((sprite.size().width()  + options.padding()) * options.scale()));
+            int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
+            currentOffset = currentOffset.addX(distanceX);
         }
+    }
+
+    private int calculateXoffset(final TextDrawOptions options, final List<Sprite> allSprites) {
+        if (TextDrawOptions.Alignment.LEFT.equals(options.alignment())) {
+            return 0;
+        }
+        int totalWidth = 0;
+        for (final var sprite : allSprites) {
+            totalWidth += (int) ((sprite.size().width() + options.padding()) * options.scale());
+        }
+
+        return TextDrawOptions.Alignment.CENTER.equals(options.alignment())
+                ? -totalWidth / 2
+                : -totalWidth;
     }
 
 }

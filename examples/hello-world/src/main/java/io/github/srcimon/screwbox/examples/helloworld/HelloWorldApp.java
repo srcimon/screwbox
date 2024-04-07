@@ -15,7 +15,7 @@ public class HelloWorldApp {
 
         screwBox.environment().addSystem(engine -> {
             var screen = screwBox.graphics().screen();
-            screen.drawText(screen.center(), "Hello world", font(SKINNY_SANS.white()).padding(1).scale(4).uppercase());
+            screen.drawText(screen.center(), "Hello world", font(SKINNY_SANS.white()).padding(1).scale(4).uppercase().alignRight());
         });
         screwBox.start();
     }
