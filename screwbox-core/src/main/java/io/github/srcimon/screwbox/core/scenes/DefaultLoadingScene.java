@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
@@ -29,7 +30,7 @@ public class DefaultLoadingScene implements Scene {
             x += distance;
             final int size = (int) (Math.abs(Math.sin(x * 2 + timeSeed)) * 10);
             final Offset position = screen.center().add((int) (-size / 2.0) + x, (int) (-size / 2.0) + yOffset);
-            screen.drawTextCentered(position, character, FontsBundle.BOLDZILLA.getCustomColor(color), size / 4.0);
+            screen.drawText(position, character, TextDrawOptions.font(FontsBundle.BOLDZILLA.getCustomColor(color)).scale(size / 4.0));
         }
     }
 }

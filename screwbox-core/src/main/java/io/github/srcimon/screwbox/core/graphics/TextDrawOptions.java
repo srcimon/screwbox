@@ -28,9 +28,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         if (padding < 0) {
             throw new IllegalArgumentException("padding must be positive");
         }
-        if (scale <= 0) {
-            throw new IllegalArgumentException("padding must be positive");
-        }
     }
 
     private TextDrawOptions(final Pixelfont font) {

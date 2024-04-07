@@ -105,9 +105,10 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawText(final Offset offset,final String text, final TextDrawOptions options) {
-        //TODO no render on opacity.isNone()
-        renderer.drawText(offset, text, options);
+    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
+        if (!options.opacity().isZero() && options.scale() > 0) {
+            renderer.drawText(offset, text, options);
+        }
         return this;
     }
 

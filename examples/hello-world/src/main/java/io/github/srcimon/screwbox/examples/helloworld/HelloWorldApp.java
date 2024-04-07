@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.examples.helloworld;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 
 import static io.github.srcimon.screwbox.core.assets.FontsBundle.SKINNY_SANS;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
@@ -17,6 +18,7 @@ public class HelloWorldApp {
             var screen = screwBox.graphics().screen();
             screen.drawText(screen.center(), "Hello world", font(SKINNY_SANS.white()).padding(1).scale(4).uppercase().alignRight());
         });
+        screwBox.scenes().add(new DefaultLoadingScene()).switchTo(DefaultLoadingScene.class);
         screwBox.start();
     }
 }
