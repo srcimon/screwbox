@@ -2,13 +2,16 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Pixelfont;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
 class DefaultLoadingSceneTest {
@@ -20,6 +23,6 @@ class DefaultLoadingSceneTest {
 
         environment.update();
 
-        verify(screen, times(15)).drawTextCentered(any(), any(), any(Pixelfont.class), any(Double.class));
+        verify(screen, times(15)).drawText(any(), any(), any(TextDrawOptions.class));
     }
 }
