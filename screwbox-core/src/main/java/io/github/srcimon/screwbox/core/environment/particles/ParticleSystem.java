@@ -30,9 +30,10 @@ public class ParticleSystem implements EntitySystem {
                     ? particleEmitter.position()
 //                        ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
                     : particleEmitter.position();
+            double scale = 2;
                 engine.environment().addEntity(
-                        new TransformComponent(spawnPoint, 1, 1),
-                        new RenderComponent(BLOB_ANIMATED_16, SpriteDrawOptions.scaled(2)),
+                        new TransformComponent(spawnPoint, BLOB_ANIMATED_16.get().size().width() * scale, BLOB_ANIMATED_16.get().size().height()* scale),
+                        new RenderComponent(BLOB_ANIMATED_16, SpriteDrawOptions.scaled(scale)),
                         new TweenDestroyComponent(),
                         new TweenComponent(Duration.ofSeconds(2)),
                         new TweenOpacityComponent());

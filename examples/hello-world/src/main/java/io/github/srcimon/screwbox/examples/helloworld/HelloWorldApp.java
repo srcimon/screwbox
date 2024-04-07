@@ -31,7 +31,7 @@ public class HelloWorldApp {
                     }
                 })
                 .addEntity(1,
-                        new TransformComponent(0, 0, 40, 40),
+                        new TransformComponent(0, 0, 64, 64),
                         new ParticleEmitterComponent(withInterval(ofMillis(10))));
 
         screwBox.start();

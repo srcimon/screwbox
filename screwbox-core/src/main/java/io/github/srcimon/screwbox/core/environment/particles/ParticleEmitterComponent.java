@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;
 
+//TODO environment().enableParticles()
 public class ParticleEmitterComponent implements Component {
 
     @Serial
