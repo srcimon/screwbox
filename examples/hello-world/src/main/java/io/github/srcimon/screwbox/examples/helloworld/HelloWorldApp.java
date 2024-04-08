@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -23,6 +24,7 @@ import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.util.Optional;
 
+import static io.github.srcimon.screwbox.core.Duration.between;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.assets.SpritesBundle.BLOB_ANIMATED_16;
 import static io.github.srcimon.screwbox.core.assets.SpritesBundle.MOON_SURFACE_16;
@@ -46,6 +48,11 @@ public class HelloWorldApp {
                 })
                 .addSystem(new ParticleSystem())
                 .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
+                .addSystem(engine -> {
+                    if(engine.mouse().isPressedLeft()) {
+                        engine.environment().toggleSystem(new ParticleDebugSystem());
+                    }
+                })
                 .addSystem(engine -> {
 //                    for (Entity entity : engine.environment().fetchAllHaving(RenderComponent.class)) {
 //                        var render = entity.get(RenderComponent.class);

@@ -34,12 +34,13 @@ public class ParticleSystem implements EntitySystem {
     public void update(Engine engine) {
         for (var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
-            if (emitter.sheduler.isTick()) {
+            if (emitter.isActive && emitter.sheduler.isTick()) {
                 var spawnPoint = emitter.useArea
                         ? particleEmitter.position().add(RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(), RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height())
                         : particleEmitter.position();
                 ChaoticMovementComponent chaoticMovementComponent = new ChaoticMovementComponent(60, Duration.ofMillis(1500), Vector.y(-100));
                 engine.environment().addEntity(
+                        new ParticleComponent(),
                         new PhysicsComponent(),
                         chaoticMovementComponent,
                         new TransformComponent(spawnPoint, 1, 1),
