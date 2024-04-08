@@ -17,7 +17,7 @@ public class ChaoticMovementComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final double speed;
-    public Vector baseSpeed; //TODO add to test
+    public Vector baseSpeed;
     public final Noise xModifier;
     public final Noise yModifier;
 
