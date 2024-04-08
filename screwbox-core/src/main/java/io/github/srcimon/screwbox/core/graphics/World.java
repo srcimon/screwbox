@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 
+import java.util.function.Supplier;
+
 public interface World {
 
     /**
@@ -20,7 +22,18 @@ public interface World {
      * @see #drawSpriteBatch(SpriteBatch, Bounds)
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
-//TODO World drawSprite(Supplier<Sprite> sprite, Vector origin, SpriteDrawOptions options);
+
+    /**
+     * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
+     *
+     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
+     * @see #drawSpriteBatch(SpriteBatch)
+     * @see #drawSpriteBatch(SpriteBatch, Bounds)
+     */
+    default World drawSprite(Supplier<Sprite> sprite, Vector origin, SpriteDrawOptions options) {
+        return drawSprite(sprite.get(), origin, options);
+    }
+
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions} but only draws on
      * the given {@link Bounds}. Can be used to apply effects.
