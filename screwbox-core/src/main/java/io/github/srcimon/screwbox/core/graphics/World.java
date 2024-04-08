@@ -30,7 +30,7 @@ public interface World {
      * @see #drawSpriteBatch(SpriteBatch)
      * @see #drawSpriteBatch(SpriteBatch, Bounds)
      */
-    default World drawSprite(Supplier<Sprite> sprite, Vector origin, SpriteDrawOptions options) {
+    default World drawSprite(final Supplier<Sprite> sprite, final Vector origin, final SpriteDrawOptions options) {
         return drawSprite(sprite.get(), origin, options);
     }
 
