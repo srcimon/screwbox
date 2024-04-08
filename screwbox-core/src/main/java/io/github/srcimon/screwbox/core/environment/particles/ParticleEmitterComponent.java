@@ -12,7 +12,7 @@ public class ParticleEmitterComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public boolean isActive = true;
-    public boolean useArea = true;//TODO replace with enum
+    public boolean useAreaSpawn = true;
     public Sheduler sheduler;
 
     public ParticleEmitterComponent(final Sheduler sheduler) {
