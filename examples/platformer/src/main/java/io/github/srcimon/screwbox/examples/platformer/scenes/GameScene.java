@@ -4,8 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboB;
@@ -13,7 +11,6 @@ import io.github.srcimon.screwbox.examples.platformer.collectables.DeboD;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboE;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboO;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
 import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
@@ -45,7 +42,6 @@ import io.github.srcimon.screwbox.tiled.Layer;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.tiled.Tile;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -82,19 +78,6 @@ public class GameScene implements Scene {
                 .enableTweening()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
-                .addSystem(engine -> {
-                    //TODO REMOVE
-                    if(engine.mouse().isDown(MouseButton.LEFT)) {
-                        var p = engine.environment().tryFetchSingleton(PlayerControlComponent.class).get();
-                        var render = p.get(RenderComponent.class);
-                        render.options = render.options.scale(render.options.scale() + engine.loop().delta());
-                    }
-                    if(engine.mouse().isDown(MouseButton.RIGHT)) {
-                        var p = engine.environment().tryFetchSingleton(PlayerControlComponent.class).get();
-                        var render = p.get(RenderComponent.class);
-                        render.options = render.options.scale(render.options.scale() - engine.loop().delta());
-                    }
-                })
                 .addSystem(new CollectableSystem())
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
