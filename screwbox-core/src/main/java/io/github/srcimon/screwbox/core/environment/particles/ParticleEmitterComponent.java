@@ -14,8 +14,10 @@ public class ParticleEmitterComponent implements Component {
     public boolean isActive = true;
     public boolean useAreaSpawn = true;
     public Sheduler sheduler;
+    public ParticleFactory particleFactory;
 
-    public ParticleEmitterComponent(final Sheduler sheduler) {
+    public ParticleEmitterComponent(final Sheduler sheduler, final ParticleFactory particleFactory) {
         this.sheduler = sheduler;
+        this.particleFactory = particleFactory;
     }
 }
