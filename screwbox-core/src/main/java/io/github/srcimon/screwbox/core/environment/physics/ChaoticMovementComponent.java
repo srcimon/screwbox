@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.utils.Noise;
@@ -16,12 +17,18 @@ public class ChaoticMovementComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final double speed;
+    public Vector baseSpeed; //TODO add to test
     public final Noise xModifier;
     public final Noise yModifier;
 
     public ChaoticMovementComponent(final double speed, final Duration interval) {
+        this(speed, interval, Vector.zero());
+    }
+
+    public ChaoticMovementComponent(final double speed, final Duration interval, final Vector baseSpeed) {
         this.speed = speed;
         xModifier = Noise.variableInterval(interval);
         yModifier = Noise.variableInterval(interval);
+        this.baseSpeed = baseSpeed;
     }
 }

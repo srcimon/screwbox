@@ -5,7 +5,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed scaling bug when rendering Sprites via `SpriteBatch`
 
 ### 🧽 Cleanup & refactoring
 
