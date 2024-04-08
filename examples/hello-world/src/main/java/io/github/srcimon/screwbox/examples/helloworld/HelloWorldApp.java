@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
@@ -31,8 +32,8 @@ public class HelloWorldApp {
                 .useRandomStartRotation()
                 .scale(5)
                 .maxAge(Duration.ofSeconds(5))
-                .addCustomizer(entity -> entity.add(new ChaoticMovementComponent(60, Duration.ofMillis(1500), Vector.y(-100))))
-                .addCustomizer(entity -> entity.add(new TweenOpacityComponent(Percent.zero(), Percent.of(0.2))));
+                .addCustomizer(() -> new ChaoticMovementComponent(60, Duration.ofMillis(1500), Vector.y(-100)))
+                .addCustomizer(() -> new TweenOpacityComponent(Percent.zero(), Percent.of(0.2)));
 
 
         screwBox.environment()
@@ -42,11 +43,16 @@ public class HelloWorldApp {
                 .enableTweening()
                 .addSystem(engine -> {
                     if (engine.keyboard().isPressed(Key.ENTER)) {
-                        engine.graphics().configuration().toggleFullscreen();
+                        engine.environment().createSavegame("X");
                     }
                 })
                 .addSystem(new ParticleSystem())
-                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
+                .addSystem(engine -> {
+                    Entity emitter = engine.environment().fetchById(1);
+                    var transform = emitter.get(TransformComponent.class);
+                    transform.bounds = transform.bounds.expand(engine.mouse().unitsScrolled() * 4);
+                    emitter.moveTo(engine.mouse().position());
+                })
                 .addSystem(engine -> {
                     if (engine.mouse().isPressedLeft()) {
                         engine.environment().toggleSystem(new ParticleDebugSystem());

@@ -12,9 +12,9 @@ public class ParticleEmitterComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public boolean isActive = true;
-    public boolean useAreaSpawn = true;
+    public boolean useAreaSpawn = true;//TODO ENUM
     public Sheduler sheduler;
-    public ParticleFactory particleFactory;
+    public ParticleFactory particleFactory;//TODO IMPORTANT!!!!!!!! MOVE INTO engine().particles()
 
     public ParticleEmitterComponent(final Sheduler sheduler, final ParticleFactory particleFactory) {
         this.sheduler = sheduler;

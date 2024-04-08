@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.particles;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -13,16 +14,17 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.randomFrom;
 
 //TODO ParticleFactoryBundle
 
-public class ParticleFactory {
+public class ParticleFactory implements Serializable {
 
     private static final Random RANDOM = new Random();
 
@@ -32,7 +34,7 @@ public class ParticleFactory {
     private boolean useRandomStartRotation = false;
     private Duration maxAge = Duration.ofSeconds(5);
 
-    private List<Consumer<Entity>> particleCustomizers = new ArrayList<>();
+    private final List<Supplier<Component>> particleCustomizers = new ArrayList<>();
 
     public static ParticleFactory template(final Sprite sprite) {
         return templates(List.of(sprite));
@@ -46,8 +48,8 @@ public class ParticleFactory {
         this.sprites = sprites;
     }
 //TODO: passt die signatur?
-    public ParticleFactory addCustomizer(Consumer<Entity> customizer) {
-        particleCustomizers.add(customizer);
+    public ParticleFactory addCustomizer(Supplier<Component> componentSupplier) {
+        particleCustomizers.add(componentSupplier);
         return this;
     }
     public Entity createParticle(final Vector position) {
@@ -70,7 +72,7 @@ public class ParticleFactory {
                 .add(new RenderComponent(randomFrom(sprites), options));
 
         for(var customizer : particleCustomizers) {
-            customizer.accept(particle);
+           particle.add(customizer.get());
         }
         return particle;
     }
