@@ -20,7 +20,7 @@ public class ParticleDebugSystem implements EntitySystem {
                     outline(emitter.isEnabled ? Color.GREEN : Color.RED)
                     .strokeWidth(2));
             engine.graphics().world().drawText(particleEmitter.bounds().position().addY(particleEmitter.bounds().height() / 2.0 + 10),
-                    (emitter.isEnabled ? "active" : "disabled") + " emitter",
+                    "spawn entities every " + emitter.sheduler.interval().humanReadable(),
                     SystemTextDrawOptions.systemFont("Arial", 10).alignCenter().bold());
         }
     }

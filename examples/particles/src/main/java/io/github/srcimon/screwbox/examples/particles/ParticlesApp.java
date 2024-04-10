@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static io.github.srcimon.screwbox.core.utils.Sheduler.withInterval;
+
 public class ParticlesApp {
 
     public static void main(String[] args) {
@@ -15,7 +18,7 @@ public class ParticlesApp {
         engine.environment()
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
-                        new ParticleEmitterComponent())
+                        new ParticleEmitterComponent(withInterval(ofMillis(20))))
                 .addSystem(new ParticleDebugSystem())
                 .enableParticles();
 

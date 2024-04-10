@@ -13,6 +13,7 @@
 
 - Renamed `TextDrawOptions` to `SystemTextDrawOptions`
 - Changed default color of `FontsBundle`  fonts to white
+- Added `Sheduler.interval()`
 
 ### 📦 Dependency updates
 

@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.utils;
 
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Time;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +14,11 @@ class ShedulerTest {
     @BeforeEach
     void beforeEach() {
         sheduler = Sheduler.withInterval(Duration.ofSeconds(5));
+    }
+
+    @Test
+    void interval_returnsConfiguredInterval() {
+        assertThat(sheduler.interval()).isEqualTo(Duration.ofSeconds(5));
     }
 
     @Test

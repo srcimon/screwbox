@@ -13,19 +13,19 @@ public class Sheduler implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Duration duration;
+    private final Duration interval;
     private Time nextTick;
 
-    private Sheduler(final Duration duration) {
-        this.duration = duration;
+    private Sheduler(final Duration interval) {
+        this.interval = interval;
         this.nextTick = Time.unset();
     }
 
     /**
      * Creates a new {@link Sheduler} with the given interval.
      */
-    public static Sheduler withInterval(final Duration duration) {
-        return new Sheduler(duration);
+    public static Sheduler withInterval(final Duration interval) {
+        return new Sheduler(interval);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Sheduler implements Serializable {
     public boolean isTick(final Time time) {
         final boolean isNow = nextTick.isUnset() || time.isAfter(nextTick);
         if (isNow) {
-            nextTick = duration.addTo(time);
+            nextTick = interval.addTo(time);
         }
         return isNow;
     }
@@ -66,5 +66,12 @@ public class Sheduler implements Serializable {
      */
     public boolean isTick() {
         return isTick(Time.now());
+    }
+
+    /**
+     * Returns the interval the {@link Sheduler} is using.
+     */
+    public Duration interval() {
+        return interval;
     }
 }
