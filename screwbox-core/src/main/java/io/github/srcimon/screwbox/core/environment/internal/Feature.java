@@ -6,7 +6,9 @@ import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanc
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleCreateSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleRenderConfigSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleSpawnSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleTimeToLiveConfigSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -71,6 +73,8 @@ public enum Feature {
 
     PARTICLES(
             new ParticleCreateSystem(),
+            new ParticleRenderConfigSystem(),
+            new ParticleTimeToLiveConfigSystem(),
             new ParticleSpawnSystem()
     );
 
