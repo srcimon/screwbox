@@ -12,9 +12,8 @@ public class ParticleEmitterComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public boolean isEnabled = true;
-    public Entity particleInPreparation;
-
-    Sheduler sheduler;
+    public Sheduler sheduler;
+    public Entity particle;
 
     public ParticleEmitterComponent(final Sheduler sheduler) {
         this.sheduler = sheduler;
