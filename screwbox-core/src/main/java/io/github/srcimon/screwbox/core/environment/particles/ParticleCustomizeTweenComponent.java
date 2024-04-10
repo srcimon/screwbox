@@ -14,15 +14,19 @@ public class ParticleCustomizeTweenComponent implements Component {
 
     public final Duration timeToLive;
     public final Percent abrevation;
-    public final TweenMode mode = TweenMode.LINEAR_IN; //TODO add to constructor
+    public final TweenMode mode;
 
-    public ParticleCustomizeTweenComponent(final Duration timeToLive) {
-        this.timeToLive = timeToLive;
-        this.abrevation = Percent.zero();
+    public ParticleCustomizeTweenComponent(final Duration duration, final TweenMode mode) {
+        this(duration, Percent.zero(), mode);
     }
 
-    public ParticleCustomizeTweenComponent(final Duration timeToLive, final Percent abrevation) {
-        this.timeToLive = timeToLive;
-        this.abrevation = abrevation;
+    public ParticleCustomizeTweenComponent(final Duration duration, final Percent durationAbrevation) {
+        this(duration, durationAbrevation, TweenMode.LINEAR_IN);
+    }
+
+    public ParticleCustomizeTweenComponent(final Duration duration, final Percent durationAbrevation, final TweenMode mode) {
+        this.timeToLive = duration;
+        this.abrevation = durationAbrevation;
+        this.mode = mode;
     }
 }

@@ -14,6 +14,7 @@
 - Renamed `TextDrawOptions` to `SystemTextDrawOptions`
 - Changed default color of `FontsBundle`  fonts to white
 - Added `Sheduler.interval()`
+- Added new asset `SpritesBundle.SMOKE_16`
 
 ### 📦 Dependency updates
 

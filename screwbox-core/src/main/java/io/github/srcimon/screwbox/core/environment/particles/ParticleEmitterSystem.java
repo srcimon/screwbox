@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.particles;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -7,6 +8,9 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 
 import java.util.Random;
 
@@ -38,6 +42,8 @@ public class ParticleEmitterSystem implements EntitySystem {
 
         emitter.particle = new Entity()
                 .add(physicsComponent)
+                .add(new TweenComponent(Duration.ofSeconds(4), TweenMode.LINEAR_IN))
+                .add(new TweenDestroyComponent())
                 .add(new ParticleComponent(particleEmitter.id().orElse(null)))
                 .add(new TransformComponent(spawnPoint, 1, 1));
     }
