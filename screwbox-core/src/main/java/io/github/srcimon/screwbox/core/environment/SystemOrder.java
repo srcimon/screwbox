@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment;
 public enum SystemOrder {
     OPTIMIZATION,
     PREPARATION,
-    PARTICLES_PREPARE,
+    PARTICLES_CREATE,
     PARTICLES_CUSTOMIZE,
     PARTICLES_SPAWN,
     SIMULATION_BEGIN,
