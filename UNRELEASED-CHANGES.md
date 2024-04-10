@@ -3,6 +3,7 @@
 - Optimized drawing of text with pixelfonts via `TextDrawOptions` (#266)
 - Added new characters to `SKINNY_SANS`: `(`, `)`,`[`,`]`
 - Added `environment().enableParticles()`
+- Added new example showing particle capabilities (#280)
 
 ### 🪛 Bug Fixes
 

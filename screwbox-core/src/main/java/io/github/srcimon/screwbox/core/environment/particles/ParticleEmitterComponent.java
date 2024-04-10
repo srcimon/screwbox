@@ -9,4 +9,5 @@ public class ParticleEmitterComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public boolean isEnabled = true;
 }
