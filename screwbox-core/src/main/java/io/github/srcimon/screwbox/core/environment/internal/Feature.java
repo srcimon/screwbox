@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -65,6 +66,10 @@ public enum Feature {
     LIGHT(
             new LightRenderSystem(),
             new OptimizeLightPerformanceSystem()
+    ),
+
+    PARTICLES(
+            new ParticleSystem()
     );
 
     final List<EntitySystem> systems;
