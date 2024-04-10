@@ -5,14 +5,14 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 import java.util.Random;
 
-@Order(SystemOrder.PARTICLES_CREATE)
-public class ParticleCreateSystem implements EntitySystem {
+import static java.util.Objects.nonNull;
+
+public class ParticleEmitterSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class);
     private static final Random RANDOM = new Random();
@@ -21,13 +21,25 @@ public class ParticleCreateSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
+            if (nonNull(emitter.particle)) {
+                engine.environment().addEntity(emitter.particle);
+                emitter.particle = null;
+            }
             if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
-                final var spawnPoint = getSpawnPoint(particleEmitter, emitter);
-                emitter.particle = new Entity()
-                        .add(new ParticleComponent(particleEmitter.id().orElse(null)))
-                        .add(new TransformComponent(spawnPoint, 1, 1));
+                initializeParticle(particleEmitter, emitter);
             }
         }
+    }
+
+    private void initializeParticle(final Entity particleEmitter, final ParticleEmitterComponent emitter) {
+        final var spawnPoint = getSpawnPoint(particleEmitter, emitter);
+        var physicsComponent = new PhysicsComponent();
+        physicsComponent.ignoreCollisions = true;
+
+        emitter.particle = new Entity()
+                .add(physicsComponent)
+                .add(new ParticleComponent(particleEmitter.id().orElse(null)))
+                .add(new TransformComponent(spawnPoint, 1, 1));
     }
 
     private Vector getSpawnPoint(final Entity particleEmitter, final ParticleEmitterComponent emitter) {

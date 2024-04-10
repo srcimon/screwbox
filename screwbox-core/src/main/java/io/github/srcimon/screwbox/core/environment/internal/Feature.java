@@ -5,10 +5,10 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleCreateSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleRenderCustomizeSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleSpawnSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleTimeToLiveConfigSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeChaoticMovementSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeRenderSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeTweenSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -72,10 +72,10 @@ public enum Feature {
     ),
 
     PARTICLES(
-            new ParticleCreateSystem(),
-            new ParticleRenderCustomizeSystem(),
-            new ParticleTimeToLiveConfigSystem(),
-            new ParticleSpawnSystem()
+            new ParticleEmitterSystem(),
+            new ParticleCustomizeRenderSystem(),
+            new ParticleCustomizeChaoticMovementSystem(),
+            new ParticleCustomizeTweenSystem()
     );
 
     final List<EntitySystem> systems;
