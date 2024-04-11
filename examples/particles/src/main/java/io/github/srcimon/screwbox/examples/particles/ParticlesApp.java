@@ -28,10 +28,11 @@ public class ParticlesApp {
                                 .useTemplate(SpritesBundle.SMOKE_16)
                                 .tweenMode(TweenMode.SINE_IN_OUT)
                                 .startScale(4)
-                               /* .animateOpacity(Percent.zero(), Percent.of(0.1))
+                                .randomStartScale(3, 5)
+                                .animateOpacity(Percent.zero(), Percent.of(0.1))
 
 
-                                .drawOrder(2)
+                                .drawOrder(2)/*
                                 .randomStartRotation())
                                 .baseMovement(Vector.y(-100))
                                 .chaoticMovement(50, Duration.ofSeconds(1))
