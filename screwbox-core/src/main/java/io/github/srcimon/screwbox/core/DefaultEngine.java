@@ -122,11 +122,10 @@ class DefaultEngine implements Engine {
     }
 
     private void validateJvmOptions() {
-        final List<String> jvmOptions = ManagementFactory.getRuntimeMXBean().getInputArguments();
-        if (!jvmOptions.contains("-Dsun.java2d.opengl=true")) {
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
             log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
         }
-        if (MacOsSupport.isMacOs() && !jvmOptions.contains(MacOsSupport.FULLSCREEN_JVM_OPTION)) {
+        if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
             log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
     }

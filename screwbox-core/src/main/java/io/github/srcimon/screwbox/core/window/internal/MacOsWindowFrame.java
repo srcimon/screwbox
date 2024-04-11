@@ -13,6 +13,7 @@ public class MacOsWindowFrame extends WindowFrame {
 
     public MacOsWindowFrame(Size initialSize) {
         super(initialSize);
+
     }
 
     @Override
