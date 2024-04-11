@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.assets.Assets;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
@@ -118,16 +119,15 @@ class DefaultEngine implements Engine {
         }
         this.name = name;
         window.setTitle(name);
-        validateJvmOptions();
-    }
-
-    private void validateJvmOptions() {
-        final List<String> jvmOptions = ManagementFactory.getRuntimeMXBean().getInputArguments();
-        if (!jvmOptions.contains("-Dsun.java2d.opengl=true")) {
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
             log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
         }
-        if (MacOsSupport.isMacOs() && !jvmOptions.contains(MacOsSupport.FULLSCREEN_JVM_OPTION)) {
-            log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+        if (MacOsSupport.isMacOs()) {
+            if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
+                MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
+            } else {
+                log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+            }
         }
     }
 
