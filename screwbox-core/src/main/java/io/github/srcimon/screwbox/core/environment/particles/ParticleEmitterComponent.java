@@ -19,15 +19,16 @@ public class ParticleEmitterComponent implements Component {
     public boolean isEnabled = true;
     public SpawnMode spawnMode;
     public Sheduler sheduler;
-    public Entity particle;
+    public ParticleDesigner designer;
 
 
-    public ParticleEmitterComponent(final Sheduler sheduler) {
-        this(sheduler, SpawnMode.AREA);
+    public ParticleEmitterComponent(final Sheduler sheduler, final ParticleDesigner designer) {
+        this(sheduler, SpawnMode.AREA, designer);
     }
 
-    public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode) {
+    public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode, final ParticleDesigner designer) {
         this.sheduler = sheduler;
         this.spawnMode = spawnMode;
+        this.designer = designer;
     }
 }

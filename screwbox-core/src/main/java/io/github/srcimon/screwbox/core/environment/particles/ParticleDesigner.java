@@ -18,17 +18,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class ParticleDesigner implements Serializable {
-
-    private static final Random RANDOM = new Random();
-
-    private final List<Sprite> templates;
-
-    private Duration lifeTimeMin = Duration.ofSeconds(1);
-    private Duration lifeTimeMax = Duration.ofSeconds(1);
-    private TweenMode tweenMode = TweenMode.LINEAR_IN;
-    private int drawOrder = 0;
-    private double startScale = 1;
+public record ParticleDesigner(
+        List<Sprite> templates,
+        Duration lifetime,
+        TweenMode tweenMode,
+        int drawOrder,
+        double startScale
+) implements Serializable {
 
     public static ParticleDesigner useTemplate(final Sprite template) {
         return useTemplates(List.of(template));
@@ -43,13 +39,12 @@ public class ParticleDesigner implements Serializable {
     }
 
     private ParticleDesigner(final List<Sprite> templates) {
-        this.templates = templates;
+        this(templates, Duration.ofSeconds(2), TweenMode.LINEAR_IN, 0, 1);
     }
 
     public Entity createEntity(final Vector position) {
         var physicsComponent = new PhysicsComponent();
         physicsComponent.ignoreCollisions = true;
-        Duration lifetime = Duration.ofNanos(RANDOM.nextLong(lifeTimeMin.nanos(), lifeTimeMax.nanos()));
         Sprite sprite = ListUtil.randomFrom(templates);
         return new Entity()
                 .add(new TweenComponent(lifetime, tweenMode))
@@ -58,5 +53,13 @@ public class ParticleDesigner implements Serializable {
                 .add(new TransformComponent(position, 1, 1))
                 .add(new RenderComponent(sprite, drawOrder, SpriteDrawOptions.scaled(startScale)));
 
+    }
+
+    public ParticleDesigner tweenMode(final TweenMode tweenMode) {
+        return new ParticleDesigner(templates, lifetime, tweenMode, drawOrder, startScale);
+    }
+
+    public ParticleDesigner startScale(final double startScale) {
+        return new ParticleDesigner(templates, lifetime, tweenMode, drawOrder, startScale);
     }
 }

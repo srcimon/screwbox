@@ -5,10 +5,6 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleAnimateOpacitySystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeRenderSystem;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeTweenSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
@@ -73,11 +69,7 @@ public enum Feature {
     ),
 
     PARTICLES(
-            new ParticleEmitterSystem(),
-            new ParticleCustomizeRenderSystem(),
-            new ParticleCustomizeChaoticMovementSystem(),
-            new ParticleAnimateOpacitySystem(),
-            new ParticleCustomizeTweenSystem()
+            new ParticleEmitterSystem()
     );
 
     final List<EntitySystem> systems;

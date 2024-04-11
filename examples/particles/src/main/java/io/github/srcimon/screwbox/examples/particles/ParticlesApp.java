@@ -26,15 +26,17 @@ public class ParticlesApp {
                         new TransformComponent(Vector.zero(), 128, 128),
                         new ParticleEmitterComponent(withInterval(ofMillis(10)), ParticleDesigner
                                 .useTemplate(SpritesBundle.SMOKE_16)
-                                .animateOpacity(Percent.zero(), Percent.of(0.1))
                                 .tweenMode(TweenMode.SINE_IN_OUT)
                                 .startScale(4)
+                               /* .animateOpacity(Percent.zero(), Percent.of(0.1))
+
+
                                 .drawOrder(2)
                                 .randomStartRotation())
                                 .baseMovement(Vector.y(-100))
                                 .chaoticMovement(50, Duration.ofSeconds(1))
                                 .lifetimeSeconds(2)
-                                .randomLifetimeMillis(500))
+                                .randomLifetimeMillis(500)*/))
                 .addSystem(new ParticleDebugSystem())
                 .addSystem(new LogFpsSystem())
                 .enableRendering()
