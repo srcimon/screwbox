@@ -70,6 +70,18 @@ class DefaultEngine implements Engine {
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
+        log = new DefaultLog(new ConsoleLoggingAdapter());
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
+            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
+        }
+        if (MacOsSupport.isMacOs()) {
+            if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
+                MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
+            } else {
+                log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+            }
+        }
+
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
@@ -105,7 +117,6 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
-        log = new DefaultLog(new ConsoleLoggingAdapter());
         audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
@@ -119,16 +130,6 @@ class DefaultEngine implements Engine {
         }
         this.name = name;
         window.setTitle(name);
-        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
-            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
-        }
-        if (MacOsSupport.isMacOs()) {
-            if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
-                MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
-            } else {
-                log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
-            }
-        }
     }
 
     @Override
