@@ -4,6 +4,8 @@
 - Added new characters to `SKINNY_SANS`: `(`, `)`,`[`,`]`
 - Added `environment().enableParticles()`
 - Added new example showing particle capabilities (#280)
+- Added new asset `SpritesBundle.SMOKE_16`, `BOX_STRIPED_32`
+- Added task bar icon
 
 ### 🪛 Bug Fixes
 
@@ -14,7 +16,6 @@
 - Renamed `TextDrawOptions` to `SystemTextDrawOptions`
 - Changed default color of `FontsBundle`  fonts to white
 - Added `Sheduler.interval()`
-- Added new asset `SpritesBundle.SMOKE_16`
 
 ### 📦 Dependency updates
 
