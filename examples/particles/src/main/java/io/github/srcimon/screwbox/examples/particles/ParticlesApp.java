@@ -8,8 +8,8 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleAnimateOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeChaoticMovementComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeOpacityTweenComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeRenderComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleCustomizeTweenComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
@@ -28,7 +28,7 @@ public class ParticlesApp {
         screwBox.environment()
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
-                        new ParticleCustomizeOpacityTweenComponent(Percent.zero(), Percent.of(0.1)),
+                        new ParticleAnimateOpacityComponent(Percent.zero(), Percent.of(0.1)),
                         new ParticleCustomizeRenderComponent(SpritesBundle.SMOKE_16, SpriteDrawOptions.scaled(4)),
                         new ParticleCustomizeChaoticMovementComponent(50, Duration.ofSeconds(1), Vector.y(-100)),
                         new ParticleCustomizeTweenComponent(Duration.ofSeconds(2), Percent.half(), TweenMode.SINE_IN_OUT),
