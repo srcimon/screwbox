@@ -6,6 +6,7 @@
 - Added new example showing particle capabilities (#280)
 - Added new asset `SpritesBundle.SMOKE_16`, `BOX_STRIPED_32`
 - Added task bar icon (#283)
+- Added `Rotation.random()`
 
 ### 🪛 Bug Fixes
 

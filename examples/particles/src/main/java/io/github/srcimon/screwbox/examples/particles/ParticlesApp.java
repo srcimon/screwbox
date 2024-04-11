@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.examples.particles;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
@@ -28,8 +29,8 @@ public class ParticlesApp {
         screwBox.environment()
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
-                        new ParticleAnimateOpacityComponent(Percent.zero(), Percent.of(0.1)),
-                        new ParticleCustomizeRenderComponent(SpritesBundle.SMOKE_16, SpriteDrawOptions.scaled(4)),
+                        new ParticleAnimateOpacityComponent(Percent.zero(), Percent.of(0.6)),
+                        new ParticleCustomizeRenderComponent(SpritesBundle.SMOKE_16, SpriteDrawOptions.scaled(4).rotation(Rotation.random())),
                         new ParticleCustomizeChaoticMovementComponent(50, Duration.ofSeconds(1), Vector.y(-100)),
                         new ParticleCustomizeTweenComponent(Duration.ofSeconds(2), Percent.half(), TweenMode.SINE_IN_OUT),
                         new ParticleEmitterComponent(withInterval(ofMillis(10))))
