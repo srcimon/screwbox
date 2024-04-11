@@ -30,7 +30,7 @@ public class ParticlesApp {
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
                         new ParticleAnimateOpacityComponent(Percent.zero(), Percent.of(0.6)),
-                        new ParticleCustomizeRenderComponent(SpritesBundle.SMOKE_16, SpriteDrawOptions.scaled(4).rotation(Rotation.random())),
+                        new ParticleCustomizeRenderComponent(SpritesBundle.SMOKE_16, SpriteDrawOptions.scaled(4)),
                         new ParticleCustomizeChaoticMovementComponent(50, Duration.ofSeconds(1), Vector.y(-100)),
                         new ParticleCustomizeTweenComponent(Duration.ofSeconds(2), Percent.half(), TweenMode.SINE_IN_OUT),
                         new ParticleEmitterComponent(withInterval(ofMillis(10))))
