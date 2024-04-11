@@ -22,6 +22,7 @@ public class ParticlesApp {
         Engine screwBox = ScrewBox.createEngine("Particles");
 
         screwBox.environment()
+//                .addSystem(e -> e.environment().createSavegame("test-serialization.sav"))
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
                         new ParticleEmitterComponent(withInterval(ofMillis(10)), ParticleDesigner
@@ -30,11 +31,11 @@ public class ParticlesApp {
                                 .startScale(4)
                                 .randomStartScale(3, 5)
                                 .animateOpacity(Percent.zero(), Percent.of(0.1))
-
-
+                                .startMovement(Vector.y(-100))
+                                .chaoticMovement(50, Duration.ofSeconds(1), Vector.y(-100))
                                 .drawOrder(2)/*
                                 .randomStartRotation())
-                                .baseMovement(Vector.y(-100))
+
                                 .chaoticMovement(50, Duration.ofSeconds(1))
                                 .lifetimeSeconds(2)
                                 .randomLifetimeMillis(500)*/))

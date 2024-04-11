@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
@@ -21,7 +22,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
+
+import static java.util.Objects.nonNull;
 
 public class ParticleDesigner implements Serializable {
 
@@ -60,6 +62,7 @@ public class ParticleDesigner implements Serializable {
         entity.add(new ParticleComponent());
         entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));
         entity.add(new TweenDestroyComponent());
+        entity.add(physicsComponent);
         entity.add(new TransformComponent(position, 1, 1));
         entity.add(new RenderComponent(sprite, 0, SpriteDrawOptions.originalSize()));
         for (final var entityCustomizer : entityCustomizers) {
@@ -99,6 +102,16 @@ public class ParticleDesigner implements Serializable {
 
     public ParticleDesigner drawOrder(final int drawOrder) {
         entityCustomizers.add(entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
+        return this;
+    }
+
+    public ParticleDesigner startMovement(final Vector speed) {
+        entityCustomizers.add(entity -> entity.get(PhysicsComponent.class).momentum = speed);
+        return this;
+    }
+
+    public ParticleDesigner chaoticMovement(final int speed, final Duration interval, final Vector baseSpeed) {
+        entityCustomizers.add(entity ->entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed)));
         return this;
     }
 }
