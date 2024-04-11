@@ -29,6 +29,7 @@ public class ParticlesApp {
                                 .animateOpacity(Percent.zero(), Percent.of(0.1))
                                 .tweenMode(TweenMode.SINE_IN_OUT)
                                 .startScale(4)
+                                .drawOrder(2)
                                 .randomStartRotation())
                                 .baseMovement(Vector.y(-100))
                                 .chaoticMovement(50, Duration.ofSeconds(1))
