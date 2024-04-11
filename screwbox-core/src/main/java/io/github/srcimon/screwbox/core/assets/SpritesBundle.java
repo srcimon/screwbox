@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
  */
 public enum SpritesBundle implements AssetBundle<Sprite> {
 
+    BOX_STRIPED_32(Asset.asset(() -> Sprite.fromFile("assets/sprites/BOX_STRIPED_32.png"))),
     MOON_SURFACE_16(Asset.asset(() -> Sprite.fromFile("assets/sprites/MOON_SURFACE_16.png"))),
     BLOB_ANIMATED_16(Asset.asset(() -> Sprite.animatedFromFile("assets/sprites/BLOB_ANIMATED_16.png", Size.square(16), Duration.ofMillis(150))));
 
