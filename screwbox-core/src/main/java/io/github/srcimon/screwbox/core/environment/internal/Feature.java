@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanc
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterTimeoutSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -71,7 +72,8 @@ public enum Feature {
     ),
 
     PARTICLES(
-            new ParticleEmitterSystem()
+            new ParticleEmitterSystem(),
+            new ParticleEmitterTimeoutSystem()
             //TODO Remove outofscope particles
             //TODO autoshutdownparticleemitters
             //TODO burst mode for particles

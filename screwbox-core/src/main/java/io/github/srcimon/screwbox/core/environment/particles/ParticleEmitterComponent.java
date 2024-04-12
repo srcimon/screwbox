@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.environment.Component;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;
