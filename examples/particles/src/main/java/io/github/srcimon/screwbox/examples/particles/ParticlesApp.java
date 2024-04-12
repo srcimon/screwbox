@@ -42,6 +42,7 @@ public class ParticlesApp {
                     }
                 })
                 //TODO disable by distance
+                //TODO DRAW ORDER AUTOMATICALLY BY ENTITY ORDER!
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
                         new ParticleEmitterTimeoutComponent(Duration.ofMillis(2500)),//TODO oppositte - auto activate after
