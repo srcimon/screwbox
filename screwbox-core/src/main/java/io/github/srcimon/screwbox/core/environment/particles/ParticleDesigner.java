@@ -18,9 +18,11 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -29,29 +31,16 @@ import java.util.function.Supplier;
 import static java.util.Objects.nonNull;
 
 //TODO addMethod seal()
-//TODO ParticleBundle.SMOKE
 public class ParticleDesigner implements Serializable {
 
     private static final Random RANDOM = new Random();
-
-    private boolean isSealed = false;
-    public ParticleDesigner seal() {
-        isSealed = true;
-        return this;
-    }
 
     @FunctionalInterface
     public interface ParticleCustomizer extends Consumer<Entity>, Serializable {
 
     }
 
-    public boolean isSealed() {
-        return isSealed;
-    }
     public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
-        if(isSealed) {
-            throw new IllegalStateException("particle desinger was sealed so it cannot be customized anymore");
-        }
         customizers.put(identifier, customizer);
         return this;
     }
@@ -62,6 +51,15 @@ public class ParticleDesigner implements Serializable {
 
     public ParticleDesigner sprite(final Sprite sprite) {
         customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return this;
+    }
+
+    public ParticleDesigner sprites(Sprite... sprites) {
+        customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
+        return this;
+    }
+    public ParticleDesigner sprites(Supplier<Sprite>... sprites) {
+        customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
         return this;
     }
 
@@ -77,7 +75,7 @@ public class ParticleDesigner implements Serializable {
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(SpritesBundle.PARTICLE_16, 0, SpriteDrawOptions.originalSize());
+        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, 0, SpriteDrawOptions.originalSize());
         final var entity = new Entity();
         entity.add(new ParticleComponent());
         entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));

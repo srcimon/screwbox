@@ -5,7 +5,7 @@
 - Added `environment().enableParticles()`
 - Added `TweenScaleComponent` / `System`
 - Added new example showing particle capabilities (#280)
-- Added new assets to `SpritesBundle`: `SMOKE_16`, `BOX_STRIPED_32`, `PARTICLE_16`
+- Added new assets to `SpritesBundle`: `SMOKE_16`, `BOX_STRIPED_32`, `DOT_BLUE_16`, `DOT_YELLOW_16`, `DOT_RED_16`
 - Added task bar icon (#283)
 - Added `Rotation.random()`
 - Added `TweenMode.SIN_IN_OUT_TWICE`
