@@ -27,7 +27,7 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
             .randomLifeTimeSeconds(6, 7)
-            .animateOpacity());
+            .animateOpacity(Percent.max(), Percent.zero()));
 
     private final ParticleDesigner particleDesigner;
 
