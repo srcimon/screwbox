@@ -40,13 +40,6 @@ public class ParticleDesigner implements Serializable {
 
     }
 
-    public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
-        customizers.put(identifier, customizer);
-        return this;
-    }
-
-    //TODO replace with entitycustomizer
-
     private final Map<String, ParticleCustomizer> customizers = new HashMap<>();
 
     public ParticleDesigner sprite(final Sprite sprite) {
@@ -89,6 +82,11 @@ public class ParticleDesigner implements Serializable {
         transfrom.bounds = Bounds.atPosition(position, render.sprite.size().width() * render.options.scale(), render.sprite.size().height() * render.options.scale());
         return entity;
 
+    }
+
+    public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
+        customizers.put(identifier, customizer);
+        return this;
     }
 
     public ParticleDesigner tweenMode(final TweenMode tweenMode) {

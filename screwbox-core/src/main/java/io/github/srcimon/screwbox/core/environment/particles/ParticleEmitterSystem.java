@@ -19,8 +19,13 @@ public class ParticleEmitterSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
+
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
-            if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
+            final boolean distanceOkay = engine.graphics().world().visibleArea().expand(emitter.suspensionDistance).contains(particleEmitter.position());
+            if (emitter.isEnabled
+                    && emitter.sheduler.isTick(engine.loop().lastUpdate())
+                    && distanceOkay
+            ) {
                 final var render = particleEmitter.get(RenderComponent.class);
                 final int order = Objects.nonNull(render) ? render.drawOrder : 0;
                 final var spawnPoint = getSpawnPoint(particleEmitter, emitter);

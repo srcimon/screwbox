@@ -9,10 +9,10 @@ import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
@@ -32,7 +32,7 @@ public class ParticlesApp {
                 })
 //                .addSystem(e -> e.environment().createSavegame("test-serialization.sav"))
                 .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
+                    if (engine.mouse().isPressedLeft()) {
                         engine.physics().searchAtPosition(engine.mouse().position())
                                 .checkingFor(Archetype.of(TransformComponent.class, ParticleEmitterComponent.class))
                                 .selectAny().ifPresent(e -> {

@@ -21,6 +21,7 @@ public class ParticleEmitterComponent implements Component {
     public SpawnMode spawnMode;
     public Sheduler sheduler;
     public ParticleDesigner designer;
+    public double suspensionDistance = 1000;
 
     public ParticleEmitterComponent(final Duration interval, final Supplier<ParticleDesigner> designer) {
         this(interval, SpawnMode.AREA, designer.get());
@@ -29,7 +30,6 @@ public class ParticleEmitterComponent implements Component {
     public ParticleEmitterComponent(final Duration interval, final ParticleDesigner designer) {
         this(interval, SpawnMode.AREA, designer);
     }
-
 
     public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final Supplier<ParticleDesigner> designer) {
         this(interval, spawnMode, designer.get());
