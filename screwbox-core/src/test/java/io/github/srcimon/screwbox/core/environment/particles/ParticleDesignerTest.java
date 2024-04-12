@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,30 +54,51 @@ class ParticleDesignerTest {
 
     @Test
     void customizerIdentifiers_addedCustomization_containsIdentifiers() {
-        var result = particleDesigner
+        var particle = particleDesigner
                 .animateOpacity()
                 .customize("my-identifier", entity -> entity.add(new TweenScaleComponent(10, 20)));
 
-        assertThat(result.customizerIdentifiers()).containsExactly("default-animateOpacity", "my-identifier");
+        assertThat(particle.customizerIdentifiers()).containsExactly("default-render-opacity", "my-identifier");
     }
 
     @Test
-    void sprite_setsSpriteUsedForCreatedEntities() {
-        var entity = particleDesigner
+    void createParticle_multipleCustomizersWithSameIdentifier_onlyLastAddedCustomizerIsUsed() {
+        var particle = particleDesigner
+                .sprite(SpritesBundle.MOON_SURFACE_16)
+                .sprite(SpritesBundle.MOON_SURFACE_16.get())
+                .sprite(SpritesBundle.BLOB_ANIMATED_16)
+                .sprites(SpritesBundle.DOT_BLUE_16)
+                .sprites(SpritesBundle.DOT_BLUE_16.get())
+                .createParticle(Vector.zero(), 3);
+
+        assertThat(particle.get(RenderComponent.class).sprite).isEqualTo(SpritesBundle.DOT_BLUE_16.get());
+    }
+
+    @Test
+    void sprite_setsSpriteUsedForParticleCreation() {
+        var particle = particleDesigner
                 .sprite(SpritesBundle.MOON_SURFACE_16)
                 .createParticle(Vector.zero(), 3);
 
-        assertThat(entity.get(RenderComponent.class).sprite).isEqualTo(SpritesBundle.MOON_SURFACE_16.get());
+        assertThat(particle.get(RenderComponent.class).sprite).isEqualTo(SpritesBundle.MOON_SURFACE_16.get());
     }
 
     @Test
-    void sprites_setsSpritesUsedForCreatedEntities() {
-        var entity = particleDesigner
+    void sprites_setsSpritesUsedForParticleCreation() {
+        var particle = particleDesigner
                 .sprites(SpritesBundle.MOON_SURFACE_16, SpritesBundle.DOT_YELLOW_16)
                 .createParticle(Vector.zero(), 3);
 
         assertThat(List.of(SpritesBundle.MOON_SURFACE_16.get(), SpritesBundle.DOT_YELLOW_16.get()))
-                .contains(entity.get(RenderComponent.class).sprite);
+                .contains(particle.get(RenderComponent.class).sprite);
     }
 
+    @Test
+    void tweenMode_setsTweenModeUsedForParticleCreation() {
+        var particle = particleDesigner
+                .tweenMode(TweenMode.SINE_IN_OUT)
+                .createParticle(Vector.zero(), 3);
+
+        assertThat(particle.get(TweenComponent.class).mode).isEqualTo(TweenMode.SINE_IN_OUT);
+    }
 }

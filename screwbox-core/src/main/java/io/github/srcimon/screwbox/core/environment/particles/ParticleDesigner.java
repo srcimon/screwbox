@@ -70,21 +70,21 @@ public class ParticleDesigner implements Serializable {
      * Sets the {@link Sprite} that is used for particle entities.
      */
     public ParticleDesigner sprite(final Sprite sprite) {
-        return customize(PREFIX + "sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
     }
 
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleDesigner sprites(Sprite... sprites) {
-        return customize(PREFIX + "sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
+        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
     }
 
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleDesigner sprites(Supplier<Sprite>... sprites) {
-        return customize(PREFIX + "sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
+        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
     }
 
     /**
@@ -94,8 +94,6 @@ public class ParticleDesigner implements Serializable {
         return sprite(sprite.get());
     }
 
-
-    //TODO use intelligent names for the replaced settings _______________
 
     public Entity createParticle(final Vector position, final int drawOrder) {
         var physicsComponent = new PhysicsComponent();
@@ -120,18 +118,18 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner tweenMode(final TweenMode tweenMode) {
-        return customize(PREFIX + "tweenMode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
+        return customize(PREFIX + "tween-tweenmode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
     }
 
     public ParticleDesigner startScale(final double scale) {
-        return customize(PREFIX + "startScale", entity -> {
+        return customize(PREFIX + "render-scale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(scale);
         });
     }
 
     public ParticleDesigner randomStartScale(final double from, final double to) {
-        return customize(PREFIX + "randomStartScale", entity -> {
+        return customize(PREFIX + "render-scale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(RANDOM.nextDouble(from, to));
         });
@@ -142,17 +140,17 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner animateOpacity(final Percent from, final Percent to) {
-        return customize(PREFIX + "animateOpacity",
+        return customize(PREFIX + "render-opacity",
                 entity -> entity.add(new TweenOpacityComponent(from, to)));
     }
 
     public ParticleDesigner drawOrder(final int drawOrder) {
-        return customize(PREFIX + "drawOrder",
+        return customize(PREFIX + "render-draworder",
                 entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
     }
 
     public ParticleDesigner baseMovement(final Vector speed) {
-        return customize(PREFIX + "baseMovement", entity -> {
+        return customize(PREFIX + "physics-movement", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
@@ -162,25 +160,25 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner chaoticMovement(final int speed, final Duration interval) {
-        return customize(PREFIX + "chaoticMovement", entity -> {
+        return customize(PREFIX + "chaoticmovement", entity -> {
             final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
             entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
     }
 
     public ParticleDesigner randomStartRotation() {
-        return customize(PREFIX + "randomStartRotation", entity -> {
+        return customize(PREFIX + "render-rotation", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.rotation(Rotation.random());
         });
     }
 
     public ParticleDesigner lifetimeSeconds(final long seconds) {
-        return customize(PREFIX + "lifetimeSeconds", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+        return customize(PREFIX + "lifetime", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
     }
 
     public ParticleDesigner randomLifeTimeSeconds(final long from, final long to) {
-        return customize(PREFIX + "randomLifeTimeSeconds", entity -> {
+        return customize(PREFIX + "lifetime", entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
@@ -189,7 +187,7 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner animateScale(final double from, final double to) {
-        return customize(PREFIX + "animateScale", entity -> entity.add(new TweenScaleComponent(from, to)));
+        return customize(PREFIX + "render-scale", entity -> entity.add(new TweenScaleComponent(from, to)));
     }
 
     /**
