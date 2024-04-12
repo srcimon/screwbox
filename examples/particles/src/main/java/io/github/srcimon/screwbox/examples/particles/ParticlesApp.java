@@ -34,6 +34,7 @@ public class ParticlesApp {
                                 });
                     }
                 })
+                //TODO nicer engine logo
                 //TODO disable by distance
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
