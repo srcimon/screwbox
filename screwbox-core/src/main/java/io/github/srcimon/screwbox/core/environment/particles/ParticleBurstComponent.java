@@ -13,11 +13,9 @@ public class ParticleBurstComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final Duration burstInterval;
-    public final Duration idleInterval;
-    public Time lastStateChange = Time.unset();
+    public Time activeSince = Time.unset();
 
-    public ParticleBurstComponent(final Duration burstInterval, final Duration idleInterval) {
+    public ParticleBurstComponent(final Duration burstInterval) {
         this.burstInterval = burstInterval;
-        this.idleInterval = idleInterval;
     }
 }
