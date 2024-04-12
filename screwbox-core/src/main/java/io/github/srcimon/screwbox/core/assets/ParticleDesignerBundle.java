@@ -6,14 +6,11 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 
-import java.util.function.Supplier;
-
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
 //TODO JAVADOC AND TEST
 public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
-
-    SMOKE(() -> new ParticleDesigner()
+    SMOKE(new ParticleDesigner()
             .sprite(SpritesBundle.SMOKE_16)
             .baseMovement(Vector.y(-100))
             .tweenMode(TweenMode.SINE_IN_OUT)
@@ -24,7 +21,7 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .drawOrder(2)
             .randomStartRotation()
             .lifetimeSeconds(2)),
-    CONFETTI(() -> new ParticleDesigner()
+    CONFETTI(new ParticleDesigner()
             .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
             .chaoticMovement(100, Duration.ofSeconds(1))
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
@@ -32,14 +29,14 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .randomLifeTimeSeconds(6, 7)
             .animateOpacity());
 
-    private final Supplier<ParticleDesigner> particleDesigner;
+    private final ParticleDesigner particleDesigner;
 
-    ParticleDesignerBundle(final Supplier<ParticleDesigner> particleDesigner) {
+    ParticleDesignerBundle(final ParticleDesigner particleDesigner) {
         this.particleDesigner = particleDesigner;
     }
 
     @Override
     public Asset<ParticleDesigner> asset() {
-        return Asset.asset(particleDesigner); // wrap designer again so any acces returns a new designer to be customized
+        return Asset.asset(() -> particleDesigner);
     }
 }
