@@ -21,7 +21,9 @@ import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -39,14 +41,14 @@ public class ParticleDesigner implements Serializable {
 
     }
 
-    public ParticleDesigner customize(final ParticleCustomizer customizer) {
-        customizers.add(customizer);
+    public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
+        customizers.put(identifier, customizer);
         return this;
     }
 
     //TODO replace with entitycustomizer
 
-    private final List<ParticleCustomizer> customizers = new ArrayList<>();
+    private final Map<String, ParticleCustomizer> customizers = new HashMap<>();
 
     private final List<Sprite> templates;
 
@@ -79,7 +81,7 @@ public class ParticleDesigner implements Serializable {
         entity.add(physicsComponent);
         entity.add(transfrom);
         entity.add(render);
-        for (final var entityCustomizer : customizers) {
+        for (final var entityCustomizer : customizers.values()) {
             entityCustomizer.accept(entity);
         }
         transfrom.bounds = Bounds.atPosition(position, render.sprite.size().width() * render.options.scale(), render.sprite.size().height() * render.options.scale());
@@ -88,12 +90,12 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner tweenMode(final TweenMode tweenMode) {
-        customize(entity -> entity.get(TweenComponent.class).mode = tweenMode);
+        customize("default-tweenMode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
         return this;
     }
 
     public ParticleDesigner startScale(final double scale) {
-        customize(entity -> {
+        customize("default-startScale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(scale);
         });
@@ -102,7 +104,7 @@ public class ParticleDesigner implements Serializable {
 
     public ParticleDesigner randomStartScale(final double from, final double to) {
         //TODO validate from to size
-        customize(entity -> {
+        customize("default-randomStartScale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(RANDOM.nextDouble(from, to));
         });
@@ -111,17 +113,19 @@ public class ParticleDesigner implements Serializable {
 
     public ParticleDesigner animateOpacity(final Percent from, final Percent to) {
         //TODO validate from to size
-        customize(entity -> entity.add(new TweenOpacityComponent(from, to)));
+        customize("default-animateOpacity",
+                entity -> entity.add(new TweenOpacityComponent(from, to)));
         return this;
     }
 
     public ParticleDesigner drawOrder(final int drawOrder) {
-        customize(entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
+        customize("default-drawOrder",
+                entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
         return this;
     }
 
     public ParticleDesigner baseMovement(final Vector speed) {
-        customize(entity -> {
+        customize("default-XXXX", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
@@ -132,7 +136,7 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner chaoticMovement(final int speed, final Duration interval) {
-        customize(entity -> {
+        customize("default-chaoticMovement", entity -> {
             final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
             entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
@@ -140,7 +144,7 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner randomStartRotation() {
-        customize(entity -> {
+        customize("default-randomStartRotation", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.rotation(Rotation.random());
         });
@@ -148,12 +152,12 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner lifetimeSeconds(final long seconds) {
-        customize(entity ->  entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+        customize("default-lifetimeSeconds", entity ->  entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
         return this;
     }
 
     public ParticleDesigner randomLifeTimeSeconds(final long from, final long to) {
-        customize(entity ->  {
+        customize("default-randomLifeTimeSeconds", entity ->  {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
             final  long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
