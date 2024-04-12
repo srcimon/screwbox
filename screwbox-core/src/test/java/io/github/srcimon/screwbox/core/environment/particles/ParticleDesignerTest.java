@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -55,6 +56,15 @@ class ParticleDesignerTest {
                 .customize("my-identifier", entity -> entity.add(new TweenScaleComponent(10, 20)));
 
         assertThat(result.customizerIdentifiers()).containsExactly("default-animateOpacity", "my-identifier");
+    }
+
+    @Test
+    void sprite_setsSpriteForCreatedEntities() {
+        var entity = particleDesigner
+                .sprite(SpritesBundle.MOON_SURFACE_16)
+                .createEntity(Vector.zero(), 3);
+
+        assertThat(entity.get(RenderComponent.class).sprite).isEqualTo(SpritesBundle.MOON_SURFACE_16.get());
     }
 
 }
