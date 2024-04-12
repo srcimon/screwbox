@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -22,7 +23,6 @@ import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -30,11 +30,21 @@ import java.util.function.Supplier;
 
 import static java.util.Objects.nonNull;
 
-//TODO addMethod seal()
+/**
+ * Is used by the {@link ParticleEmitterComponent} to create {@link Environment#entities()} that are used for particle effects.
+ *
+ * @see Environment#enableParticles()
+ */
 public class ParticleDesigner implements Serializable {
 
     private static final Random RANDOM = new Random();
 
+    /**
+     * Used to add special customization to the particles that is not already available via {@link ParticleDesigner}
+     * methods.
+     *
+     * @see #customize(String, ParticleCustomizer)
+     */
     @FunctionalInterface
     public interface ParticleCustomizer extends Consumer<Entity>, Serializable {
 
@@ -51,6 +61,7 @@ public class ParticleDesigner implements Serializable {
         customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
         return this;
     }
+
     public ParticleDesigner sprites(Supplier<Sprite>... sprites) {
         customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
         return this;
@@ -59,8 +70,6 @@ public class ParticleDesigner implements Serializable {
     public ParticleDesigner sprite(final Supplier<Sprite> sprite) {
         return sprite(sprite.get());
     }
-
-    //TODO: multipleSpriteSupport
 
     public Entity createEntity(final Vector position, final int drawOrder) {
         var physicsComponent = new PhysicsComponent();
@@ -156,15 +165,15 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner lifetimeSeconds(final long seconds) {
-        customize("default-lifetimeSeconds", entity ->  entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+        customize("default-lifetimeSeconds", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
         return this;
     }
 
     public ParticleDesigner randomLifeTimeSeconds(final long from, final long to) {
-        customize("default-randomLifeTimeSeconds", entity ->  {
+        customize("default-randomLifeTimeSeconds", entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
-            final  long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
+            final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
             entity.get(TweenComponent.class).duration = Duration.ofNanos(actualNanos);
         });
         return this;
