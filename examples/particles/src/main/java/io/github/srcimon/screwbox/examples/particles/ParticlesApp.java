@@ -42,11 +42,10 @@ public class ParticlesApp {
                     }
                 })
                 //TODO disable by distance
-                //TODO DRAW ORDER AUTOMATICALLY BY ENTITY ORDER!
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
                         new ParticleEmitterTimeoutComponent(Duration.ofMillis(2500)),//TODO oppositte - auto activate after
-                        new ParticleEmitterComponent(withInterval(ofMillis(50)), ParticleEmitterComponent.SpawnMode.POSITION, new ParticleDesigner()
+                        new ParticleEmitterComponent(ofMillis(50), ParticleEmitterComponent.SpawnMode.POSITION, new ParticleDesigner()
                                 .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
                                 .chaoticMovement(100, Duration.ofSeconds(1))
                                 .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
@@ -55,10 +54,10 @@ public class ParticlesApp {
                                 .animateOpacity()))
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
-                        new ParticleEmitterComponent(withInterval(ofMillis(50)), ParticleDesignerBundle.SMOKE))
+                        new ParticleEmitterComponent(ofMillis(50), ParticleDesignerBundle.SMOKE))
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(200), 128, 128),
-                        new ParticleEmitterComponent(withInterval(ofMillis(50)), ParticleDesignerBundle.SMOKE.get()
+                        new ParticleEmitterComponent(ofMillis(50), ParticleDesignerBundle.SMOKE.get()
                                 .startScale(2)
                                 .chaoticMovement(5, Duration.ofMillis(20))))
                 .addSystem(new LogFpsSystem())

@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.particles;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
@@ -21,21 +22,21 @@ public class ParticleEmitterComponent implements Component {
     public Sheduler sheduler;
     public ParticleDesigner designer;
 
-    public ParticleEmitterComponent(final Sheduler sheduler, final Supplier<ParticleDesigner> designer) {
-        this(sheduler, SpawnMode.AREA, designer.get());
+    public ParticleEmitterComponent(final Duration interval, final Supplier<ParticleDesigner> designer) {
+        this(interval, SpawnMode.AREA, designer.get());
     }
 
-    public ParticleEmitterComponent(final Sheduler sheduler, final ParticleDesigner designer) {
-        this(sheduler, SpawnMode.AREA, designer);
+    public ParticleEmitterComponent(final Duration interval, final ParticleDesigner designer) {
+        this(interval, SpawnMode.AREA, designer);
     }
 
 
-    public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode, final Supplier<ParticleDesigner> designer) {
-        this(sheduler, spawnMode, designer.get());
+    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final Supplier<ParticleDesigner> designer) {
+        this(interval, spawnMode, designer.get());
     }
 
-    public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode, final ParticleDesigner designer) {
-        this.sheduler = sheduler;
+    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final ParticleDesigner designer) {
+        this.sheduler = Sheduler.withInterval(interval);
         this.spawnMode = spawnMode;
         this.designer = designer;
     }

@@ -69,13 +69,13 @@ public class ParticleDesigner implements Serializable {
 
     //TODO: multipleSpriteSupport
 
-    public Entity createEntity(final Vector position) {
+    public Entity createEntity(final Vector position, final int order) {
         var physicsComponent = new PhysicsComponent(Vector.y(-100));
         physicsComponent.ignoreCollisions = true;
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, 0, SpriteDrawOptions.originalSize());
+        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, order, SpriteDrawOptions.originalSize());
         final var entity = new Entity();
         entity.add(new ParticleComponent());
         entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));
