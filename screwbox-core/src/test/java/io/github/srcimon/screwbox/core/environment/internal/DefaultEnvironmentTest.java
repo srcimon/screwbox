@@ -10,6 +10,8 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -22,6 +24,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import org.junit.jupiter.api.AfterEach;
@@ -309,9 +312,10 @@ class DefaultEnvironmentTest {
     void enableTweening_addsTweeningSystems() {
         environment.enableTweening();
 
-        assertThat(environment.systems()).hasSize(5)
+        assertThat(environment.systems()).hasSize(6)
                 .anyMatch(system -> system.getClass().equals(TweenSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenOpacitySystem.class));
@@ -324,6 +328,15 @@ class DefaultEnvironmentTest {
         assertThat(environment.systems()).hasSize(2)
                 .anyMatch(system -> system.getClass().equals(AreaTriggerSystem.class))
                 .anyMatch(system -> system.getClass().equals(StateSystem.class));
+    }
+
+    @Test
+    void enableParticles_addsParticleSystems() {
+        environment.enableParticles();
+
+        assertThat(environment.systems()).hasSize(2)
+                .anyMatch(system -> system.getClass().equals(ParticleEmitterSystem.class))
+                .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
 

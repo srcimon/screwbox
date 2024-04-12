@@ -74,9 +74,6 @@ public enum Feature {
     PARTICLES(
             new ParticleEmitterSystem(),
             new ParticleBurstSystem()
-            //TODO Remove outofscope particles
-            //TODO autoshutdownparticleemitters
-            //TODO burst mode for particles
     );
 
     final List<EntitySystem> systems;

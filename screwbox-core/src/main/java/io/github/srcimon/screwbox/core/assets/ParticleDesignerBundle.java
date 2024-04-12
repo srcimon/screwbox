@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.assets;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
@@ -21,7 +22,15 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .chaoticMovement(50, ofSeconds(1))
             .drawOrder(2)
             .randomStartRotation()
-            .lifetimeSeconds(2));
+            .lifetimeSeconds(2)),
+    CONFETTI(() -> new ParticleDesigner()
+            .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
+            .baseMovement(Vector.zero())
+            .chaoticMovement(100, Duration.ofSeconds(1))
+            .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
+            .animateScale(2, 1)
+            .randomLifeTimeSeconds(6, 7)
+            .animateOpacity());
 
     private final Supplier<ParticleDesigner> particleDesigner;
 
