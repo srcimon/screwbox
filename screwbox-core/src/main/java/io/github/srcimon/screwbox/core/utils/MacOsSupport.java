@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.awt.*;
 import java.lang.management.ManagementFactory;
-import java.util.List;
 
 /**
  * Gives support for MacOs specific features.
