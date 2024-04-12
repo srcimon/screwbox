@@ -28,7 +28,7 @@ public class ParticleEmitterSystem implements EntitySystem {
                 final var render = particleEmitter.get(RenderComponent.class);
                 final int order = Objects.nonNull(render) ? render.drawOrder : 0;
                 final var spawnPoint = getSpawnPoint(particleEmitter, emitter);
-                final var entity = emitter.designer.createEntity(spawnPoint, order);
+                final var entity = emitter.designer.createParticle(spawnPoint, order);
                 engine.environment().addEntity(entity);
             }
         }

@@ -97,7 +97,7 @@ public class ParticleDesigner implements Serializable {
 
     //TODO use intelligent names for the replaced settings _______________
 
-    public Entity createEntity(final Vector position, final int drawOrder) {
+    public Entity createParticle(final Vector position, final int drawOrder) {
         var physicsComponent = new PhysicsComponent();
         physicsComponent.ignoreCollisions = true;
         physicsComponent.gravityModifier = 0;

@@ -12,6 +12,8 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ParticleDesignerTest {
@@ -25,7 +27,7 @@ class ParticleDesignerTest {
 
     @Test
     void createEntity_noCustomizersAdded_createsBasicParticle() {
-        var entity = particleDesigner.createEntity(Vector.$(10, 20), 12);
+        var entity = particleDesigner.createParticle(Vector.$(10, 20), 12);
 
         assertThat(entity.hasComponent(ParticleComponent.class)).isTrue();
         assertThat(entity.hasComponent(PhysicsComponent.class)).isTrue();
@@ -59,12 +61,22 @@ class ParticleDesignerTest {
     }
 
     @Test
-    void sprite_setsSpriteForCreatedEntities() {
+    void sprite_setsSpriteUsedForCreatedEntities() {
         var entity = particleDesigner
                 .sprite(SpritesBundle.MOON_SURFACE_16)
-                .createEntity(Vector.zero(), 3);
+                .createParticle(Vector.zero(), 3);
 
         assertThat(entity.get(RenderComponent.class).sprite).isEqualTo(SpritesBundle.MOON_SURFACE_16.get());
+    }
+
+    @Test
+    void sprites_setsSpritesUsedForCreatedEntities() {
+        var entity = particleDesigner
+                .sprites(SpritesBundle.MOON_SURFACE_16, SpritesBundle.DOT_YELLOW_16)
+                .createParticle(Vector.zero(), 3);
+
+        assertThat(List.of(SpritesBundle.MOON_SURFACE_16.get(), SpritesBundle.DOT_YELLOW_16.get()))
+                .contains(entity.get(RenderComponent.class).sprite);
     }
 
 }
