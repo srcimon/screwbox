@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,4 +42,19 @@ class ParticleDesignerTest {
         assertThat(physicsComponent.magnetModifier).isZero();
         assertThat(physicsComponent.ignoreCollisions).isTrue();
     }
+
+    @Test
+    void customizerIdentifiers_noCustomization_isEmpty() {
+        assertThat(particleDesigner.customizerIdentifiers()).isEmpty();
+    }
+
+    @Test
+    void customizerIdentifiers_addedCustomization_containsIdentifiers() {
+        var result = particleDesigner
+                .animateOpacity()
+                .customize("my-identifier", entity -> entity.add(new TweenScaleComponent(10, 20)));
+
+        assertThat(result.customizerIdentifiers()).containsExactly("default-animateOpacity", "my-identifier");
+    }
+
 }

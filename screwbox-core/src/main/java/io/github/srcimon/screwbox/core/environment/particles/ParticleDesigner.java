@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -38,6 +39,7 @@ import static java.util.Objects.nonNull;
  */
 public class ParticleDesigner implements Serializable {
 
+    //TODO use intelligent names for the replaced settings
     private static final Random RANDOM = new Random();
 
     /**
@@ -67,7 +69,7 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner sprite(final Sprite sprite) {
-       return customize("default-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return customize("default-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
     }
 
     public ParticleDesigner sprites(Sprite... sprites) {
@@ -104,26 +106,19 @@ public class ParticleDesigner implements Serializable {
 
     }
 
-    public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
-        Map<String, ParticleCustomizer> newCustomizers = new HashMap<>();
-        newCustomizers.putAll(customizers);
-        newCustomizers.put(identifier, customizer);
-        return new ParticleDesigner(newCustomizers);
-    }
-
     public ParticleDesigner tweenMode(final TweenMode tweenMode) {
         return customize("default-tweenMode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
     }
 
     public ParticleDesigner startScale(final double scale) {
-        return  customize("default-startScale", entity -> {
+        return customize("default-startScale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(scale);
         });
     }
 
     public ParticleDesigner randomStartScale(final double from, final double to) {
-        return  customize("default-randomStartScale", entity -> {
+        return customize("default-randomStartScale", entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(RANDOM.nextDouble(from, to));
         });
@@ -134,7 +129,6 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner animateOpacity(final Percent from, final Percent to) {
-        //TODO validate from to size
         return customize("default-animateOpacity",
                 entity -> entity.add(new TweenOpacityComponent(from, to)));
     }
@@ -183,5 +177,26 @@ public class ParticleDesigner implements Serializable {
 
     public ParticleDesigner animateScale(final double from, final double to) {
         return customize("default-animateScale", entity -> entity.add(new TweenScaleComponent(from, to)));
+    }
+
+    /**
+     * Add special customization to the {@link ParticleDesigner} that is not already available via
+     * {@link ParticleDesigner} methods.
+     */
+    public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
+        final Map<String, ParticleCustomizer> nextCustomizers = new HashMap<>();
+        nextCustomizers.putAll(customizers);
+        nextCustomizers.put(identifier, customizer);
+        return new ParticleDesigner(nextCustomizers);
+    }
+
+    /**
+     * Returns a set of all registered customizer identifiers. These identifiers are used to replace
+     * {@link ParticleCustomizer}s already added to the {@link ParticleCustomizer} instead of adding a duplicate
+     * {@link ParticleCustomizer} with different settings. Identifiers added via {@link ParticleDesigner} methods
+     * start with 'default-' suffix.
+     */
+    public Set<String> customizerIdentifiers() {
+        return customizers.keySet();
     }
 }
