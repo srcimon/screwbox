@@ -12,6 +12,11 @@ import static org.assertj.core.data.Percentage.withPercentage;
 class RotationTest {
 
     @Test
+    void random_returnsRandomRotation() {
+        assertThat(Rotation.random()).isNotEqualTo(Rotation.random());
+    }
+
+    @Test
     void of_segmentIsNull_throwsException() {
         assertThatThrownBy(() -> Rotation.of(null))
                 .isInstanceOf(NullPointerException.class)
