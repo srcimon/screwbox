@@ -136,7 +136,7 @@ public class ParticleDesigner implements Serializable {
     }
 
     public ParticleDesigner animateOpacity() {
-        return animateOpacity(Percent.max(), Percent.zero());
+        return animateOpacity(Percent.zero(), Percent.max());
     }
 
     public ParticleDesigner animateOpacity(final Percent from, final Percent to) {
