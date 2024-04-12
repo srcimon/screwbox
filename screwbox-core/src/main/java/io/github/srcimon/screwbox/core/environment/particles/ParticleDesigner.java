@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -19,12 +18,9 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -78,6 +74,8 @@ public class ParticleDesigner implements Serializable {
     public Entity createEntity(final Vector position) {
         var physicsComponent = new PhysicsComponent(Vector.y(-100));
         physicsComponent.ignoreCollisions = true;
+        physicsComponent.gravityModifier = 0;
+        physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
         RenderComponent render = new RenderComponent(SpritesBundle.PARTICLE_16, 0, SpriteDrawOptions.originalSize());
         final var entity = new Entity();
