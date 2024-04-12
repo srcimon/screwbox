@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;
+import java.util.function.Supplier;
 
 public class ParticleEmitterComponent implements Component {
 
@@ -21,9 +22,17 @@ public class ParticleEmitterComponent implements Component {
     public Sheduler sheduler;
     public ParticleDesigner designer;
 
+    public ParticleEmitterComponent(final Sheduler sheduler, final Supplier<ParticleDesigner> designer) {
+        this(sheduler, SpawnMode.AREA, designer.get());
+    }
 
     public ParticleEmitterComponent(final Sheduler sheduler, final ParticleDesigner designer) {
         this(sheduler, SpawnMode.AREA, designer);
+    }
+
+
+    public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode, final Supplier<ParticleDesigner> designer) {
+        this(sheduler, spawnMode, designer.get());
     }
 
     public ParticleEmitterComponent(final Sheduler sheduler, final SpawnMode spawnMode, final ParticleDesigner designer) {

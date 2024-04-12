@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
@@ -36,12 +37,24 @@ public class ParticleDesigner implements Serializable {
 
     private static final Random RANDOM = new Random();
 
+    private boolean isSealed = false;
+    public ParticleDesigner seal() {
+        isSealed = true;
+        return this;
+    }
+
     @FunctionalInterface
     public interface ParticleCustomizer extends Consumer<Entity>, Serializable {
 
     }
 
+    public boolean isSealed() {
+        return isSealed;
+    }
     public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
+        if(isSealed) {
+            throw new IllegalStateException("particle desinger was sealed so it cannot be customized anymore");
+        }
         customizers.put(identifier, customizer);
         return this;
     }
@@ -50,30 +63,22 @@ public class ParticleDesigner implements Serializable {
 
     private final Map<String, ParticleCustomizer> customizers = new HashMap<>();
 
-    private final List<Sprite> templates;
-
-    public static ParticleDesigner useTemplate(final Sprite template) {
-        return useTemplates(List.of(template));
+    public ParticleDesigner sprite(final Sprite sprite) {
+        customizers.put("default-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return this;
     }
 
-    public static ParticleDesigner useTemplate(final Supplier<Sprite> template) {
-        return useTemplate(template.get());
+    public ParticleDesigner sprite(final Supplier<Sprite> sprite) {
+        return sprite(sprite.get());
     }
 
-    public static ParticleDesigner useTemplates(final List<Sprite> templates) {
-        return new ParticleDesigner(templates);
-    }
-
-    private ParticleDesigner(final List<Sprite> templates) {
-        this.templates = templates;
-    }
+    //TODO: multipleSpriteSupport
 
     public Entity createEntity(final Vector position) {
-        var physicsComponent = new PhysicsComponent();
+        var physicsComponent = new PhysicsComponent(Vector.y(-100));
         physicsComponent.ignoreCollisions = true;
-        Sprite sprite = ListUtil.randomFrom(templates);
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(sprite, 0, SpriteDrawOptions.originalSize());
+        RenderComponent render = new RenderComponent(SpritesBundle.PARTICLE_16, 0, SpriteDrawOptions.originalSize());
         final var entity = new Entity();
         entity.add(new ParticleComponent());
         entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));
