@@ -24,6 +24,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public enum Feature {
             new TweenSystem(),
             new TweenPositionSystem(),
             new TweenDestroySystem(),
+            new TweenScaleSystem(),
             new TweenOpacitySystem(),
             new TweenLightSystem()
     ),
@@ -70,6 +72,9 @@ public enum Feature {
 
     PARTICLES(
             new ParticleEmitterSystem()
+            //TODO Remove outofscope particles
+            //TODO autoshutdownparticleemitters
+            //TODO burst mode for particles
     );
 
     final List<EntitySystem> systems;

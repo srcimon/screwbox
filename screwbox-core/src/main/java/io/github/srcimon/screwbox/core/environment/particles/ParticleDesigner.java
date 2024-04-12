@@ -16,6 +16,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
@@ -172,6 +173,11 @@ public class ParticleDesigner implements Serializable {
             final  long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
             entity.get(TweenComponent.class).duration = Duration.ofNanos(actualNanos);
         });
+        return this;
+    }
+
+    public ParticleDesigner animateScale(final double from, final double to) {
+        customizers.put("default-animateScale", entity -> entity.add(new TweenScaleComponent(from, to)));
         return this;
     }
 }
