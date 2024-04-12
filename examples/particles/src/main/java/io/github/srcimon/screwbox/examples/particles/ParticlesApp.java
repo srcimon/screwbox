@@ -22,7 +22,6 @@ public class ParticlesApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Particles");
-//       screwBox.loop().unlockFps();
 
         screwBox.environment()
                 .addSystem(engine -> {
@@ -30,7 +29,6 @@ public class ParticlesApp {
                         engine.environment().toggleSystem(new ParticleDebugSystem());
                     }
                 })
-//                .addSystem(e -> e.environment().createSavegame("test-serialization.sav"))
                 .addSystem(engine -> {
                     if (engine.mouse().isPressedLeft()) {
                         engine.physics().searchAtPosition(engine.mouse().position())
@@ -43,9 +41,10 @@ public class ParticlesApp {
                 //TODO disable by distance
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
-                        new ParticleBurstComponent(Duration.ofMillis(1000)),//TODO oppositte - auto activate after
-                        new ParticleEmitterComponent(ofMillis(1), ParticleEmitterComponent.SpawnMode.POSITION, new ParticleDesigner()
-                                .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
+                        new ParticleBurstComponent(Duration.ofMillis(1000)),
+                        new ParticleEmitterComponent(ofMillis(40), ParticleEmitterComponent.SpawnMode.POSITION, new ParticleDesigner()
+                                .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16)
+                                .baseMovement(Vector.zero())
                                 .chaoticMovement(100, Duration.ofSeconds(1))
                                 .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
                                 .animateScale(2, 1)
