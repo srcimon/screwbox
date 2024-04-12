@@ -1,10 +1,14 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -47,8 +51,14 @@ public class DiggableSystem implements EntitySystem {
 
             Entity entity = hitEntity.get();
             if (!entity.hasComponent(TweenComponent.class)) {
+                entity.add(new TweenOpacityComponent(Percent.max(), Percent.zero()));
                 entity.add(new TweenDestroyComponent());
-                entity.add(new TweenOpacityComponent());
+                entity.add(new ParticleEmitterComponent(Duration.ofMillis(30), new ParticleDesigner()
+                        .sprite(entity.get(RenderComponent.class).sprite)
+                        .chaoticMovement(10, Duration.ofMillis(10000))
+                        .randomStartRotation()
+                        .animateScale(0.5, 0))
+                );
                 entity.add(new TweenComponent(ofMillis(300), TweenMode.SINE_OUT));
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);

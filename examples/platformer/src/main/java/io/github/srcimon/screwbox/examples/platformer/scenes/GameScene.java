@@ -76,6 +76,7 @@ public class GameScene implements Scene {
                 .enableLight()
                 .enableLogic()
                 .enableTweening()
+                .enableParticles()
                 .addSystem(new LogFpsSystem())
                 .addSystem(new MovingPlatformSystem())
                 .addSystem(new CollectableSystem())
