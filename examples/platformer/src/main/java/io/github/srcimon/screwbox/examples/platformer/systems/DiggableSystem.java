@@ -17,6 +17,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggableComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggingComponent;
@@ -51,6 +52,7 @@ public class DiggableSystem implements EntitySystem {
 
             Entity entity = hitEntity.get();
             if (!entity.hasComponent(TweenComponent.class)) {
+                engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.ofSeconds(1)).strength(5));
                 entity.add(new TweenOpacityComponent(Percent.max(), Percent.zero()));
                 entity.add(new TweenDestroyComponent());
                 entity.add(new ParticleEmitterComponent(Duration.ofMillis(30), new ParticleDesigner()
