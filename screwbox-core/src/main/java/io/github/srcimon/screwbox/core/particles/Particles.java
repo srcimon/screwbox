@@ -1,10 +1,15 @@
 package io.github.srcimon.screwbox.core.particles;
 
+import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
+
 //TODO javadoc
 //TODO package info
 public interface Particles {
 
     int particleCount();
+
+    Particles spawn(Vector position, ParticleOptions options);
 
 //     engine.particles()
 //             .particleCount()

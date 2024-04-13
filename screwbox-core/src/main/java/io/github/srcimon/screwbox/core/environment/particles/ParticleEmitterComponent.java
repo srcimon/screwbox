@@ -20,24 +20,23 @@ public class ParticleEmitterComponent implements Component {
     public boolean isEnabled = true;
     public SpawnMode spawnMode;
     public Sheduler sheduler;
-    public ParticleDesigner designer;
-    public double renderDistance = 1000;
+    public ParticleOptions particleOptions;
 
-    public ParticleEmitterComponent(final Duration interval, final Supplier<ParticleDesigner> designer) {
-        this(interval, SpawnMode.AREA, designer.get());
+    public ParticleEmitterComponent(final Duration interval, final Supplier<ParticleOptions> particleConfiguration) {
+        this(interval, SpawnMode.AREA, particleConfiguration.get());
     }
 
-    public ParticleEmitterComponent(final Duration interval, final ParticleDesigner designer) {
-        this(interval, SpawnMode.AREA, designer);
+    public ParticleEmitterComponent(final Duration interval, final ParticleOptions particleOptions) {
+        this(interval, SpawnMode.AREA, particleOptions);
     }
 
-    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final Supplier<ParticleDesigner> designer) {
-        this(interval, spawnMode, designer.get());
+    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final Supplier<ParticleOptions> particleConfiguration) {
+        this(interval, spawnMode, particleConfiguration.get());
     }
 
-    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final ParticleDesigner designer) {
+    public ParticleEmitterComponent(final Duration interval, final SpawnMode spawnMode, final ParticleOptions particleOptions) {
         this.sheduler = Sheduler.withInterval(interval);
         this.spawnMode = spawnMode;
-        this.designer = designer;
+        this.particleOptions = particleOptions;
     }
 }

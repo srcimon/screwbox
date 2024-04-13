@@ -19,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ParticleDesignerTest {
 
-    private ParticleDesigner particleDesigner;
+    private ParticleOptions particleDesigner;
 
     @BeforeEach
     void setUp() {
-        particleDesigner = new ParticleDesigner();
+        particleDesigner = new ParticleOptions();
     }
 
     @Test

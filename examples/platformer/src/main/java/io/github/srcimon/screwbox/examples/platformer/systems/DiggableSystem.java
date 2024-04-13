@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -55,7 +55,7 @@ public class DiggableSystem implements EntitySystem {
                 engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.ofSeconds(1)).strength(5));
                 entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
                 entity.add(new TweenDestroyComponent());
-                entity.add(new ParticleEmitterComponent(Duration.ofMillis(30), new ParticleDesigner()
+                entity.add(new ParticleEmitterComponent(Duration.ofMillis(30), new ParticleOptions()
                         .sprite(entity.get(RenderComponent.class).sprite)
                         .chaoticMovement(40, Duration.ofMillis(10000))
                         .baseMovement(Vector.y(30))

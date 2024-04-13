@@ -3,14 +3,14 @@ package io.github.srcimon.screwbox.core.assets;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleDesigner;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
 //TODO JAVADOC AND TEST
-public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
-    SMOKE(new ParticleDesigner()
+public enum ParticleDesignerBundle implements AssetBundle<ParticleOptions> {
+    SMOKE(new ParticleOptions()
             .sprite(SpritesBundle.SMOKE_16)
             .baseMovement(Vector.y(-100))
             .tweenMode(TweenMode.SINE_IN_OUT)
@@ -21,7 +21,7 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .drawOrder(2)
             .randomStartRotation()
             .lifetimeSeconds(2)),
-    CONFETTI(new ParticleDesigner()
+    CONFETTI(new ParticleOptions()
             .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
             .chaoticMovement(100, Duration.ofSeconds(1))
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
@@ -29,14 +29,14 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleDesigner> {
             .randomLifeTimeSeconds(6, 7)
             .animateOpacity());
 
-    private final ParticleDesigner particleDesigner;
+    private final ParticleOptions particleDesigner;
 
-    ParticleDesignerBundle(final ParticleDesigner particleDesigner) {
+    ParticleDesignerBundle(final ParticleOptions particleDesigner) {
         this.particleDesigner = particleDesigner;
     }
 
     @Override
-    public Asset<ParticleDesigner> asset() {
+    public Asset<ParticleOptions> asset() {
         return Asset.asset(() -> particleDesigner);
     }
 }
