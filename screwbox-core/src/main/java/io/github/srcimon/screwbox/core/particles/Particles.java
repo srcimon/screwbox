@@ -3,13 +3,12 @@ package io.github.srcimon.screwbox.core.particles;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 
 import java.util.function.Supplier;
 
-//TODO javadoc
-//TODO package info
 /**
- * Add particle effects to create some nice visuals.
+ * Add particle effects to create some nice visuals. Can be automated by using {@link ParticleEmitterComponent}.
  */
 public interface Particles {
 
@@ -53,26 +52,50 @@ public interface Particles {
      */
     double spawnDistance();
 
+    /**
+     * Spawns a new particle into the {@link Environment} using the given position.
+     */
     Particles spawn(Vector position, ParticleOptions options);
 
+    /**
+     * Spawns a new particle into the {@link Environment} using the given position.
+     */
     default Particles spawn(final Vector position, final Supplier<ParticleOptions> options) {
         return spawn(position, options.get());
     }
 
+    /**
+     * Spawns multiple new particles into the {@link Environment} using the given position.
+     */
     Particles spawnMultiple(int count, Vector position, ParticleOptions options);
 
+    /**
+     * Spawns multiple new particles into the {@link Environment} using the given position.
+     */
     default Particles spawnMultiple(final int count, final Vector position, final Supplier<ParticleOptions> options) {
         return spawnMultiple(count, position, options.get());
     }
 
+    /**
+     * Spawns a new particles into the {@link Environment} using a random position within the given {@link Bounds}.
+     */
     Particles spawn(Bounds bounds, ParticleOptions options);
 
+    /**
+     * Spawns a new particles into the {@link Environment} using a random position within the given {@link Bounds}.
+     */
     default Particles spawn(final Bounds bounds, final Supplier<ParticleOptions> options) {
         return spawn(bounds, options.get());
     }
 
+    /**
+     * Spawns multiple new particles into the {@link Environment} using a random position within the given {@link Bounds}.
+     */
     Particles spawnMultiple(int count, Bounds bounds, ParticleOptions options);
 
+    /**
+     * Spawns multiple new particles into the {@link Environment} using a random position within the given {@link Bounds}.
+     */
     default Particles spawnMultiple(final int count, final Bounds bounds, final Supplier<ParticleOptions> options) {
         return spawnMultiple(count, bounds, options.get());
     }
