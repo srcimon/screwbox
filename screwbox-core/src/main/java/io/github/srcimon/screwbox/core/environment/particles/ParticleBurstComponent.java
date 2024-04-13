@@ -6,8 +6,13 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
+/**
+ * Used to automatically shutdown particle emitters after some time.
+ *
+ * @see ParticleBurstSystem
+ * @see ParticleEmitterComponent
+ */
 public class ParticleBurstComponent implements Component {
-
 
     @Serial
     private static final long serialVersionUID = 1L;

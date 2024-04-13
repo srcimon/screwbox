@@ -5,15 +5,22 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
 
+/**
+ * Can be used to mark particles and particle emitters on the {@link Screen}.
+ */
+@Order(SystemOrder.PRESENTATION_OVERLAY)
 public class ParticleDebugSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(TransformComponent.class, ParticleEmitterComponent.class);
