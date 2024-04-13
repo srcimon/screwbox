@@ -2,14 +2,18 @@ package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
-//TODO JAVADOC AND TEST
-public enum ParticleDesignerBundle implements AssetBundle<ParticleOptions> {
+/**
+ * An {@link AssetBundle} for {@link ParticleOptions}s shipped with the {@link ScrewBox} game engine.
+ */
+public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     SMOKE(new ParticleOptions()
             .sprite(SpritesBundle.SMOKE_16)
             .baseMovement(Vector.y(-100))
@@ -31,7 +35,7 @@ public enum ParticleDesignerBundle implements AssetBundle<ParticleOptions> {
 
     private final ParticleOptions particleDesigner;
 
-    ParticleDesignerBundle(final ParticleOptions particleDesigner) {
+    ParticleOptionsBundle(final ParticleOptions particleDesigner) {
         this.particleDesigner = particleDesigner;
     }
 
