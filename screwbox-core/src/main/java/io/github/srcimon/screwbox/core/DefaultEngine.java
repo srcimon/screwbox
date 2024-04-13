@@ -114,7 +114,7 @@ class DefaultEngine implements Engine {
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
-        particles = new DefaultParticles(this);
+        particles = new DefaultParticles(this, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
         scenes = new DefaultScenes(this, executor);
         ui = new DefaultUi(this, scenes);

@@ -9,7 +9,8 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
@@ -27,12 +28,16 @@ public class DefaultParticles implements Particles, Updatable {
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
 
     private final Engine engine;
+    private final World world;
 
     private int particleCount = 0;
+    private int particleLimit = 10000;
+    private double renderDistance = 2000;
     private long particleSpawnCount = 0;
 
-    public DefaultParticles(final Engine engine) {
+    public DefaultParticles(final Engine engine, final World world) {
         this.engine = engine;
+        this.world = world;
     }
 
     @Override
@@ -51,11 +56,43 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
+    public int limit() {
+        return particleLimit;
+    }
+
+    @Override
+    public Particles setRenderDistance(final double renderDistance) {
+        this.renderDistance = renderDistance;
+        return this;
+    }
+
+    @Override
+    public double renderDistance() {
+        return renderDistance;
+    }
+
+    @Override
+    public Particles setLimit(final int limit) {
+        if(limit < 0) {
+            throw new IllegalArgumentException("limit must be positive");
+        }
+        particleLimit = limit;
+        return this;
+    }
+
+    @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
         final var particle = createParticle(position, options);
-        particleSpawnCount++;
-        engine.environment().addEntity(particle);
+        if(particleLimit > particleCount && positionIsInRenderDistance(position)) {
+            particleSpawnCount++;
+            particleCount++;
+            engine.environment().addEntity(particle);
+        }
         return this;
+    }
+
+    private boolean positionIsInRenderDistance(final Vector position) {
+        return world.visibleArea().expand(renderDistance).contains(position);
     }
 
     @Override

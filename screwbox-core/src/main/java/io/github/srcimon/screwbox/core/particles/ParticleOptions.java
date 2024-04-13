@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.particles;
+package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -37,6 +38,10 @@ public class ParticleOptions implements Serializable {
     //TODO name, origin?
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
+
+    public static ParticleOptions particleSource(final Entity source) {
+        return new ParticleOptions(source);
+    }
 
     /**
      * Used to add special customization to the particles that is not already available via {@link ParticleOptions}

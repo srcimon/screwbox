@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.assets;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;

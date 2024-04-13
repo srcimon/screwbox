@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import java.io.Serial;

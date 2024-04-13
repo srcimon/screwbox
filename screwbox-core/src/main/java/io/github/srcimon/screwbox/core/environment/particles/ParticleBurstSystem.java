@@ -19,9 +19,6 @@ public class ParticleBurstSystem implements EntitySystem {
         for (final var particleEmitter : engine.environment().fetchAll(EMITTERS_WITH_TIMEOUT)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             final var burst = particleEmitter.get(ParticleBurstComponent.class);
-
-
-
             if(emitter.isEnabled ) {
                 if (burst.activeSince.isUnset()) {
                     burst.activeSince = engine.loop().lastUpdate();

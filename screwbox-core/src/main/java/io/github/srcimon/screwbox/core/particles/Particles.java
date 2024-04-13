@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.environment.Environment;
 
 import java.util.function.Supplier;
 
@@ -10,9 +10,20 @@ import java.util.function.Supplier;
 //TODO package info
 public interface Particles {
 
+    /**
+     * Returns the current count of particles in the {@link Environment#entities()}.
+     */
     int particleCount();
 
     long particlesSpawnCount();
+
+    int limit();
+
+    Particles setRenderDistance(double renderDistance);
+
+    double renderDistance();
+
+    Particles setLimit(int limit);
 
     Particles spawn(Vector position, ParticleOptions options);
 
@@ -37,13 +48,4 @@ public interface Particles {
     default Particles spawnMultiple(final int count, final Bounds bounds, final Supplier<ParticleOptions> options) {
         return spawnMultiple(count, bounds, options.get());
     }
-
-//     engine.particles()
-//             .particleCount()
-//                        .particlesSpawnedCount()
-//                        .setRenderDistance(600)
-//                        .setLimit(1000)
-//                        .spawn(spawnPoint, designer) // ParticleDesigner -> ParticleConfiguration (creation is done by particles.spawn())!!!
-//                        .spawn(renderArea, designer)
-//                        .spawnMultiple(20, area, designer);
 }
