@@ -93,7 +93,7 @@ class DefaultParticlesTest {
     }
 
     @Test
-    void spawn_nothingPreventingSpawnWithSource_spawnsParticleUsingOptions() {
+    void spawn_withSourceEntity_spawnsParticleUsingOptions() {
         when(engine.environment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
@@ -106,6 +106,7 @@ class DefaultParticlesTest {
 
         assertThat(particles.particleCount()).isOne();
         assertThat(particles.particlesSpawnCount()).isOne();
+
         Entity particle = particleCaptor.getValue();
         assertThat(particle.name()).contains("particle-1");
         assertThat(particle.hasComponent(TweenDestroyComponent.class)).isTrue();
@@ -120,8 +121,34 @@ class DefaultParticlesTest {
         assertThat(physicsComponent.gravityModifier).isZero();
         assertThat(physicsComponent.magnetModifier).isZero();
 
-        assertThat(particle.bounds()).isEqualTo($$(72,92,16,16));
+        RenderComponent renderComponent = particle.get(RenderComponent.class);
+        assertThat(renderComponent.sprite).isNotNull();
+        assertThat(renderComponent.drawOrder).isEqualTo(20);
+
+        assertThat(particle.bounds()).isEqualTo($$(72, 92, 16, 16));
     }
+
+    @Test
+    void spawn_noSourceEntity_spawnsParticleUsingOptions() {
+        when(engine.environment()).thenReturn(environment);
+        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+
+        particles.spawn($$(80, 100, 100, 100), new ParticleOptions().drawOrder(50));
+
+        var particleCaptor = ArgumentCaptor.forClass(Entity.class);
+        verify(environment).addEntity(particleCaptor.capture());
+
+        assertThat(particles.particleCount()).isOne();
+        assertThat(particles.particlesSpawnCount()).isOne();
+
+        Entity particle = particleCaptor.getValue();
+
+        RenderComponent renderComponent = particle.get(RenderComponent.class);
+        assertThat(renderComponent.drawOrder).isEqualTo(50);
+
+        assertThat($$(80, 100, 100, 100).contains(particle.position())).isTrue();
+    }
+
 
     @Test
     void spawnArea_returnsCurrentSpawnArea() {
