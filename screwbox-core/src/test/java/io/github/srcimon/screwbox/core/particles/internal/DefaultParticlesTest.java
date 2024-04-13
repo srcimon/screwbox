@@ -174,4 +174,11 @@ class DefaultParticlesTest {
         assertThat(particles.particleCount()).isEqualTo(5);
         assertThat(particles.particlesSpawnCount()).isEqualTo(5);
     }
+
+    @Test
+    void setSpawnDistance_setsSpawnDistance() {
+        particles.setSpawnDistance(40);
+
+        assertThat(particles.spawnDistance()).isEqualTo(40);
+    }
 }
