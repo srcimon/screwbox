@@ -32,13 +32,10 @@ public class ParticlesApp {
                     if (engine.mouse().isPressedLeft()) {
                         engine.physics().searchAtPosition(engine.mouse().position())
                                 .checkingFor(Archetype.of(TransformComponent.class, ParticleEmitterComponent.class))
-                                .selectAny().ifPresent(e -> {
-                                    e.get(ParticleEmitterComponent.class).isEnabled = !e.get(ParticleEmitterComponent.class).isEnabled;
-                                });
+                                .selectAny().ifPresent(e -> e.get(ParticleEmitterComponent.class).isEnabled = !e.get(ParticleEmitterComponent.class).isEnabled);
                     }
                 })
                 //TODO nicer engine logo
-                //TODO disable by distance
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
                         new ParticleEmitterComponent(ofMillis(40), ParticleEmitterComponent.SpawnMode.POSITION, ParticleDesignerBundle.CONFETTI))

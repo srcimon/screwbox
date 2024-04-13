@@ -41,11 +41,6 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public void update() {
-        particleCount = engine.environment().fetchAll(PARTICLES).size();
-    }
-
-    @Override
     public int particleCount() {
         return particleCount;
     }
@@ -104,7 +99,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public Particles spawn(Bounds bounds, ParticleOptions options) {
+    public Particles spawn(final Bounds bounds, final ParticleOptions options) {
         final Vector spawnPosition = bounds.position().add(
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.width(),
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.height());
@@ -118,6 +113,12 @@ public class DefaultParticles implements Particles, Updatable {
         }
         return this;
     }
+
+    @Override
+    public void update() {
+        particleCount = engine.environment().fetchAll(PARTICLES).size();
+    }
+
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
         var physicsComponent = new PhysicsComponent();
