@@ -9,22 +9,18 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleComponent;
-import io.github.srcimon.screwbox.core.graphics.World;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.particles.Particles;
 
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
-
-import static java.util.Objects.nonNull;
 
 public class DefaultParticles implements Particles, Updatable {
 
@@ -131,7 +127,6 @@ public class DefaultParticles implements Particles, Updatable {
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
         RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
-        //TODO add source name or id
         final var entity = new Entity()
                 .name("particle-" + particleSpawnCount)
                 .add(new ParticleComponent())

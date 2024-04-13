@@ -39,6 +39,9 @@ public class ParticleOptions implements Serializable {
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
 
+    /**
+     * Creates a new instance. Sets {@link #source()}.
+     */
     public static ParticleOptions particleSource(final Entity source) {
         return new ParticleOptions(source);
     }
@@ -58,10 +61,16 @@ public class ParticleOptions implements Serializable {
 
     private final Entity source;
 
+    /**
+     * Creates a new instance without {@link #source()}.
+     */
     public ParticleOptions() {
         this(null);
     }
 
+    /**
+     * Creates a new instance with {@link #source()}.
+     */
     public ParticleOptions(Entity source) {
         this(source, new HashMap<>());
     }
@@ -88,7 +97,8 @@ public class ParticleOptions implements Serializable {
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
-    public ParticleOptions sprites(Supplier<Sprite>... sprites) {
+    @SafeVarargs
+    public final ParticleOptions sprites(Supplier<Sprite>... sprites) {
         return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
     }
 
@@ -99,15 +109,23 @@ public class ParticleOptions implements Serializable {
         return sprite(sprite.get());
     }
 
-    //TODO ParticleModifiers?
+    /**
+     * Returns all modifiers used for particle entities.
+     */
     public Collection<ParticleModifiers> modifiers() {
         return modifiers.values();
     }
 
+    /**
+     * Sets the {@link TweenMode} for animation.
+     */
     public ParticleOptions tweenMode(final TweenMode tweenMode) {
         return customize(PREFIX + "tween-tweenmode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
     }
 
+    /**
+     * Sets the initial scale of the particle.
+     */
     public ParticleOptions startScale(final double scale) {
         return customize(PREFIX + "render-scale", entity -> {
             final var render = entity.get(RenderComponent.class);
@@ -115,6 +133,9 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Sets the initial scale of the particle to a random number in the given range.
+     */
     public ParticleOptions randomStartScale(final double from, final double to) {
         return customize(PREFIX + "render-scale", entity -> {
             final var render = entity.get(RenderComponent.class);
@@ -122,20 +143,33 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Adds an {@link TweenOpacityComponent} to the particle to animate opacity.
+     */
     public ParticleOptions animateOpacity() {
         return animateOpacity(Percent.zero(), Percent.max());
     }
 
+    /**
+     * Adds an {@link TweenOpacityComponent} to the particle to animate opacity.
+     */
     public ParticleOptions animateOpacity(final Percent from, final Percent to) {
         return customize(PREFIX + "render-opacity",
                 entity -> entity.add(new TweenOpacityComponent(from, to)));
     }
 
+    /**
+     * Sets the draw order of the particle when drawn. If not set the order of the {@link #source()} will be used
+     * if present.
+     */
     public ParticleOptions drawOrder(final int drawOrder) {
         return customize(PREFIX + "render-draworder",
                 entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
     }
 
+    /**
+     * Adds an initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     */
     public ParticleOptions baseMovement(final Vector speed) {
         return customize(PREFIX + "physics-movement", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
@@ -146,6 +180,9 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Adds chaotic movement to the particle.
+     */
     public ParticleOptions chaoticMovement(final int speed, final Duration interval) {
         return customize(PREFIX + "chaoticmovement", entity -> {
             final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
@@ -153,6 +190,9 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Sets the initial {@link Rotation} of a particle to a random value.
+     */
     public ParticleOptions randomStartRotation() {
         return customize(PREFIX + "render-rotation", entity -> {
             final var render = entity.get(RenderComponent.class);
@@ -160,10 +200,16 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Sets the particle lifetime in seconds.
+     */
     public ParticleOptions lifetimeSeconds(final long seconds) {
         return customize(PREFIX + "lifetime", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
     }
 
+    /**
+     * Sets the particle lifetime to a random amount of seconts in the given range.
+     */
     public ParticleOptions randomLifeTimeSeconds(final long from, final long to) {
         return customize(PREFIX + "lifetime", entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
@@ -173,6 +219,9 @@ public class ParticleOptions implements Serializable {
         });
     }
 
+    /**
+     * Adds a {@link TweenScaleComponent} to a particle to animate the scale of the particle.
+     */
     public ParticleOptions animateScale(final double from, final double to) {
         return customize(PREFIX + "render-scale", entity -> entity.add(new TweenScaleComponent(from, to)));
     }
@@ -184,7 +233,7 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions customize(final String identifier, final ParticleModifiers modifier) {
         final Map<String, ParticleModifiers> nextCustomizers = new HashMap<>(modifiers);
         nextCustomizers.put(identifier, modifier);
-        if(nextCustomizers.size() > 100) {
+        if (nextCustomizers.size() > 100) {
             throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
         }
         return new ParticleOptions(source, nextCustomizers);
@@ -200,10 +249,16 @@ public class ParticleOptions implements Serializable {
         return modifiers.keySet();
     }
 
+    /**
+     * Sets the source {@link Entity} of the particle. The source will be used to add draw order if not set manully.
+     */
     public ParticleOptions source(final Entity source) {
         return new ParticleOptions(source, modifiers);
     }
 
+    /**
+     * Returns the source {@link Entity} of this particle.
+     */
     public Entity source() {
         return source;
     }
