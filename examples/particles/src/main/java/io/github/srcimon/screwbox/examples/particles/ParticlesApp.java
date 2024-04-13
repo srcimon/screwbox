@@ -54,8 +54,7 @@ public class ParticlesApp {
                 .enableRendering()
                 .enablePhysics()
                 .enableTweening()
-                .enableParticles()
-        ;
+                .enableParticles();
 
         screwBox.start();
     }

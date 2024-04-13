@@ -133,7 +133,7 @@ public class DefaultParticles implements Particles, Updatable {
         entity.add(physicsComponent);
         entity.add(transfrom);
         entity.add(render);
-        for (final var entityCustomizer : options.customizers()) {
+        for (final var entityCustomizer : options.modifiers()) {
             entityCustomizer.accept(entity);
         }
         if (render.drawOrder == -1) {

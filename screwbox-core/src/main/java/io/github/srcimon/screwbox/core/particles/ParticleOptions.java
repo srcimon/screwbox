@@ -47,14 +47,14 @@ public class ParticleOptions implements Serializable {
      * Used to add special customization to the particles that is not already available via {@link ParticleOptions}
      * methods.
      *
-     * @see #customize(String, ParticleCustomizer)
+     * @see #customize(String, ParticleModifiers)
      */
     @FunctionalInterface
-    public interface ParticleCustomizer extends Consumer<Entity>, Serializable {
+    public interface ParticleModifiers extends Consumer<Entity>, Serializable {
 
     }
 
-    private final Map<String, ParticleCustomizer> customizers;
+    private final Map<String, ParticleModifiers> modifiers;
 
     private final Entity source;
 
@@ -66,9 +66,9 @@ public class ParticleOptions implements Serializable {
         this(source, new HashMap<>());
     }
 
-    private ParticleOptions(final Entity source, final Map<String, ParticleCustomizer> customizers) {
+    private ParticleOptions(final Entity source, final Map<String, ParticleModifiers> modifiers) {
         this.source = source;
-        this.customizers = Collections.unmodifiableMap(customizers);
+        this.modifiers = Collections.unmodifiableMap(modifiers);
     }
 
     /**
@@ -100,8 +100,8 @@ public class ParticleOptions implements Serializable {
     }
 
     //TODO ParticleModifiers?
-    public Collection<ParticleCustomizer> customizers() {
-        return customizers.values();
+    public Collection<ParticleModifiers> modifiers() {
+        return modifiers.values();
     }
 
     public ParticleOptions tweenMode(final TweenMode tweenMode) {
@@ -181,26 +181,25 @@ public class ParticleOptions implements Serializable {
      * Add special customization to the {@link ParticleOptions} that is not already available via
      * {@link ParticleOptions} methods.
      */
-    public ParticleOptions customize(final String identifier, final ParticleCustomizer customizer) {
+    public ParticleOptions customize(final String identifier, final ParticleModifiers modifier) {
         //TODO check if > 100 - is likely to be a programming error
-        final Map<String, ParticleCustomizer> nextCustomizers = new HashMap<>();
-        nextCustomizers.putAll(customizers);
-        nextCustomizers.put(identifier, customizer);
+        final Map<String, ParticleModifiers> nextCustomizers = new HashMap<>(modifiers);
+        nextCustomizers.put(identifier, modifier);
         return new ParticleOptions(source, nextCustomizers);
     }
 
     /**
      * Returns a set of all registered customizer identifiers. These identifiers are used to replace
-     * {@link ParticleCustomizer}s already added to the {@link ParticleCustomizer} instead of adding a duplicate
-     * {@link ParticleCustomizer} with different settings. Identifiers added via {@link ParticleOptions} methods
+     * {@link ParticleModifiers}s already added to the {@link ParticleModifiers} instead of adding a duplicate
+     * {@link ParticleModifiers} with different settings. Identifiers added via {@link ParticleOptions} methods
      * start with 'default-' suffix.
      */
     public Set<String> customizerIdentifiers() {
-        return customizers.keySet();
+        return modifiers.keySet();
     }
 
     public ParticleOptions source(final Entity source) {
-        return new ParticleOptions(source, customizers);
+        return new ParticleOptions(source, modifiers);
     }
 
     public Entity source() {
