@@ -6,17 +6,20 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.examples.platformer.components.DiggableComponent;
@@ -55,15 +58,13 @@ public class DiggableSystem implements EntitySystem {
                 engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.ofSeconds(1)).strength(5));
                 entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
                 entity.add(new TweenDestroyComponent());
-                //TODO optimize with new api
-                entity.add(new ParticleEmitterComponent(Duration.ofMillis(30), new ParticleOptions()
+                engine.particles().spawnMultiple(10, entity.bounds(), new ParticleOptions(entity)
                         .sprite(entity.get(RenderComponent.class).sprite)
                         .chaoticMovement(40, Duration.ofMillis(10000))
                         .baseMovement(Vector.y(30))
                         .randomStartRotation()
-                        .animateScale(0.5, 0))
-                );
-                entity.add(new TweenComponent(ofMillis(300), TweenMode.SINE_OUT));
+                        .animateScale(0.5, 0));
+                entity.add(new TweenComponent(ofMillis(50), TweenMode.SINE_OUT));
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
                 rigidBodyComponent.momentum = Vector.of(rigidBodyComponent.momentum.x(), -150);

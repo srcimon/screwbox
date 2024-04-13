@@ -68,7 +68,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public Particles spawnMutliple(final int count, final Bounds bounds, final ParticleOptions options) {
+    public Particles spawnMultiple(final int count, final Bounds bounds, final ParticleOptions options) {
         for (int i = 0; i < count; i++) {
             spawn(bounds, options);
         }
