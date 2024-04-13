@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ParticleOptionsTest {
 
@@ -40,5 +41,17 @@ class ParticleOptionsTest {
                 .sprites(SpritesBundle.DOT_BLUE_16.get());
 
         assertThat(particle.modifiers()).hasSize(1);
+    }
+
+    @Test
+    void customize_addTooManyModifiers_throwsException() {
+        var result = options;
+        for (int i = 0; i < 100; i++) {
+            result = result.customize("modifier-nr-" + i, entity -> entity.name("some name"));
+        }
+        final var noMoreCustomizable = result;
+        assertThatThrownBy(() -> noMoreCustomizable.customize("modifier-nr-", entity -> entity.name("some name")))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("added more than 100 modifiers");
     }
 }

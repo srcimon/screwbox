@@ -182,11 +182,11 @@ public class ParticleOptions implements Serializable {
      * {@link ParticleOptions} methods.
      */
     public ParticleOptions customize(final String identifier, final ParticleModifiers modifier) {
-        if(modifiers.size() > 100) {
-            throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
-        }
         final Map<String, ParticleModifiers> nextCustomizers = new HashMap<>(modifiers);
         nextCustomizers.put(identifier, modifier);
+        if(nextCustomizers.size() > 100) {
+            throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
+        }
         return new ParticleOptions(source, nextCustomizers);
     }
 
