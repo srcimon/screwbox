@@ -12,7 +12,11 @@ public interface Particles {
 
     Particles spawn(Vector position, ParticleOptions options);
 
+    Particles spawnMultiple(int count, Vector position, ParticleOptions options);
+
     Particles spawn(Bounds bounds, ParticleOptions options);
+
+    Particles spawnMutliple(int count, Bounds bounds, ParticleOptions options);
 
 //     engine.particles()
 //             .particleCount()

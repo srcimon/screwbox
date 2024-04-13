@@ -179,7 +179,7 @@ public class ParticleOptions implements Serializable {
      * {@link ParticleOptions} methods.
      */
     public ParticleOptions customize(final String identifier, final ParticleCustomizer customizer) {
-        //TODO if identifier already present dont copy
+        //TODO check if > 100 - is likely to be a programming error
         final Map<String, ParticleCustomizer> nextCustomizers = new HashMap<>();
         nextCustomizers.putAll(customizers);
         nextCustomizers.put(identifier, customizer);

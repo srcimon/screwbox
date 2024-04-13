@@ -52,11 +52,27 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
+    public Particles spawnMultiple(final int count, final Vector position, final ParticleOptions options) {
+        for(int i = 0; i < count; i++) {
+            spawn(position, options);
+        }
+       return this;
+    }
+
+    @Override
     public Particles spawn(Bounds bounds, ParticleOptions options) {
         final Vector spawnPosition = bounds.position().add(
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.width(),
                 RANDOM.nextDouble(-0.5, 0.5) * bounds.height());
         return spawn(spawnPosition, options);
+    }
+
+    @Override
+    public Particles spawnMutliple(final int count, final Bounds bounds, final ParticleOptions options) {
+        for(int i = 0; i < count; i++) {
+            spawn(bounds, options);
+        }
+        return this;
     }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {

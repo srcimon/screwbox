@@ -14,11 +14,9 @@ public class ParticleEmitterSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class);
 
-
     @Override
     public void update(final Engine engine) {
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
-
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
                 final var render = particleEmitter.get(RenderComponent.class);
