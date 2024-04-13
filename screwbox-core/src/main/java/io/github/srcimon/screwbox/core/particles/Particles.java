@@ -15,15 +15,31 @@ public interface Particles {
      */
     int particleCount();
 
+    /**
+     * Returns the count of particles spawned within the runtime of the engine.
+     */
     long particlesSpawnCount();
 
-    int limit();
+    /**
+     * Returns the current limit of particles. If the limit is reached no particle is spawned until an existing
+     * particle times out.
+     *
+     * @see #setParticleLimit(int)
+     */
+    int particleLimit();
+
+    /**
+     * Sets the limit of particles. If the limit is reached no particle is spawned until an existing particle times out.
+     * Can be used to enhance performance.
+     *
+     * @see #particleLimit()
+     */
+    Particles setParticleLimit(int limit);
 
     Particles setSpawnDistance(double spawnDistance);
 
     double spawnDistance();
 
-    Particles setLimit(int limit);
 
     Particles spawn(Vector position, ParticleOptions options);
 

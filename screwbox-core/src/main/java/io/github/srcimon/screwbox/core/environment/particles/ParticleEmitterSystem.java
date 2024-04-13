@@ -1,14 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
-import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-
-import java.util.Objects;
-import java.util.Random;
 
 public class ParticleEmitterSystem implements EntitySystem {
 
@@ -19,7 +13,7 @@ public class ParticleEmitterSystem implements EntitySystem {
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
-                final var particleOptions =emitter.particleOptions.source(particleEmitter);
+                final var particleOptions = emitter.particleOptions.source(particleEmitter);
 
                 switch (emitter.spawnMode) {
                     case POSITION ->  engine.particles().spawn(particleEmitter.position(), particleOptions);

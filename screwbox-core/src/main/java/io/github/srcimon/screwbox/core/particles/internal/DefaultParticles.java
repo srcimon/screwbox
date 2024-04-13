@@ -56,7 +56,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public int limit() {
+    public int particleLimit() {
         return particleLimit;
     }
 
@@ -72,7 +72,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public Particles setLimit(final int limit) {
+    public Particles setParticleLimit(final int limit) {
         if(limit < 0) {
             throw new IllegalArgumentException("limit must be positive");
         }

@@ -41,7 +41,7 @@ public class ParticlesApp {
                 //TODO disable by distance
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
-                        new ParticleEmitterComponent(ofMillis(40), ParticleEmitterComponent.SpawnMode.POSITION, ParticleDesignerBundle.CONFETTI.get()))
+                        new ParticleEmitterComponent(ofMillis(40), ParticleEmitterComponent.SpawnMode.POSITION, ParticleDesignerBundle.CONFETTI))
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero(), 128, 128),
                         new ParticleEmitterComponent(ofMillis(50), ParticleDesignerBundle.SMOKE))
