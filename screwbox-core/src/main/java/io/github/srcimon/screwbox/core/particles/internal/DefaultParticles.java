@@ -29,6 +29,7 @@ public class DefaultParticles implements Particles, Updatable {
     private final Engine engine;
 
     private int particleCount = 0;
+    private long particleSpawnCount = 0;
 
     public DefaultParticles(final Engine engine) {
         this.engine = engine;
@@ -45,8 +46,14 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
+    public long particlesSpawnCount() {
+        return particleSpawnCount;
+    }
+
+    @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
         final var particle = createParticle(position, options);
+        particleSpawnCount++;
         engine.environment().addEntity(particle);
         return this;
     }
@@ -84,7 +91,7 @@ public class DefaultParticles implements Particles, Updatable {
         RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
         final var entity = new Entity("particle");//TODO add source name or id
         entity.add(new ParticleComponent());
-        entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));
+        entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_OUT));
         entity.add(new TweenDestroyComponent());
         entity.add(physicsComponent);
         entity.add(transfrom);

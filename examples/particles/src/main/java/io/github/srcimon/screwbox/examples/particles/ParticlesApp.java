@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.debug.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleDebugSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
@@ -20,7 +21,7 @@ public class ParticlesApp {
         Engine screwBox = ScrewBox.createEngine("Particles");
 
         screwBox.environment()
-                .addSystem(engine -> engine.window().setTitle("Particles: " + engine.particles().particleCount()))
+                .addSystem(engine -> engine.window().setTitle("Particles: " + engine.particles().particleCount() + " / " + engine.particles().particlesSpawnCount()))
                 .addSystem(engine -> {
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         engine.environment().toggleSystem(new ParticleDebugSystem());
