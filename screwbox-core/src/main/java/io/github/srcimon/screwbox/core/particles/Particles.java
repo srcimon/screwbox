@@ -13,6 +13,11 @@ import java.util.function.Supplier;
 public interface Particles {
 
     /**
+     * Returns the area within particles are spawned.
+     */
+    Bounds spawnArea();
+
+    /**
      * Returns the current count of particles in the {@link Environment#entities()}.
      */
     int particleCount();

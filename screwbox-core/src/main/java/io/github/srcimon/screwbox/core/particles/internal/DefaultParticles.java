@@ -41,6 +41,11 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
+    public Bounds spawnArea() {
+        return world.visibleArea().expand(spawnDistance);
+    }
+
+    @Override
     public int particleCount() {
         return particleCount;
     }
@@ -69,7 +74,7 @@ public class DefaultParticles implements Particles, Updatable {
     @Override
     public Particles setParticleLimit(final int limit) {
         if (limit < 0) {
-            throw new IllegalArgumentException("limit must be positive");
+            throw new IllegalArgumentException("particle limit must be positive");
         }
         particleLimit = limit;
         return this;
@@ -87,7 +92,7 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     private boolean isInSpawnDistance(final Vector position) {
-        return world.visibleArea().expand(spawnDistance).contains(position);
+        return spawnArea().contains(position);
     }
 
     @Override
@@ -128,7 +133,7 @@ public class DefaultParticles implements Particles, Updatable {
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
         RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
         final var entity = new Entity()
-                .name("particle-" + particleSpawnCount)
+                .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
                 .add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_OUT))
                 .add(new TweenDestroyComponent())
