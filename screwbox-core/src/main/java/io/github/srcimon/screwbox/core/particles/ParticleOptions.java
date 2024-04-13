@@ -182,19 +182,21 @@ public class ParticleOptions implements Serializable {
      * {@link ParticleOptions} methods.
      */
     public ParticleOptions customize(final String identifier, final ParticleModifiers modifier) {
-        //TODO check if > 100 - is likely to be a programming error
+        if(modifiers.size() > 100) {
+            throw new IllegalStateException("added more than 100 modifiers. This is most likely a programming error. use identifiers to overwrite existing modifiers");
+        }
         final Map<String, ParticleModifiers> nextCustomizers = new HashMap<>(modifiers);
         nextCustomizers.put(identifier, modifier);
         return new ParticleOptions(source, nextCustomizers);
     }
 
     /**
-     * Returns a set of all registered customizer identifiers. These identifiers are used to replace
+     * Returns a set of all registered modifier identifiers. These identifiers are used to replace
      * {@link ParticleModifiers}s already added to the {@link ParticleModifiers} instead of adding a duplicate
      * {@link ParticleModifiers} with different settings. Identifiers added via {@link ParticleOptions} methods
      * start with 'default-' suffix.
      */
-    public Set<String> customizerIdentifiers() {
+    public Set<String> modifierIds() {
         return modifiers.keySet();
     }
 

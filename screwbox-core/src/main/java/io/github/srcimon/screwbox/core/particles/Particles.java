@@ -36,10 +36,19 @@ public interface Particles {
      */
     Particles setParticleLimit(int limit);
 
+    /**
+     * Sets the max distance that particles will be spawened outside the fiel of vision.
+     *
+     * @see #spawnDistance()
+     */
     Particles setSpawnDistance(double spawnDistance);
 
+    /**
+     * Returns the current distance that particles will be spawened outside the fiel of vision.
+     *
+     * @see #setSpawnDistance(double)
+     */
     double spawnDistance();
-
 
     Particles spawn(Vector position, ParticleOptions options);
 
