@@ -195,6 +195,7 @@ public class ParticleDesigner implements Serializable {
      * {@link ParticleDesigner} methods.
      */
     public ParticleDesigner customize(final String identifier, final ParticleCustomizer customizer) {
+        //TODO if identifier already present dont copy
         final Map<String, ParticleCustomizer> nextCustomizers = new HashMap<>();
         nextCustomizers.putAll(customizers);
         nextCustomizers.put(identifier, customizer);
