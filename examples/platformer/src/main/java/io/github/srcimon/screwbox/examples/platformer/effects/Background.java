@@ -7,6 +7,8 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.BackgroundComponent;
 import io.github.srcimon.screwbox.tiled.Layer;
 
+import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.originalSize;
+
 public class Background implements Converter<Layer> {
 
     @Override
@@ -17,7 +19,7 @@ public class Background implements Converter<Layer> {
                 layer.parallaxX(), layer.parallaxY(),
                 layer.properties().getDouble("zoom"));
 
-        var renderComponent = new RenderComponent(image, layer.order(), layer.opacity());
+        var renderComponent = new RenderComponent(image, layer.order(), originalSize().opacity(layer.opacity()));
         return new Entity().add(backgroundComponent, renderComponent);
     }
 

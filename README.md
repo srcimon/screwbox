@@ -24,6 +24,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
   effects.
 - **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
+- **Particle Effects** Add particle effects to create some nice visuals.
 - **Asset Management** Load game assets without interrupting the game.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
@@ -129,12 +130,12 @@ Map map = Map.fromJson("underworld_map.json");
 
 ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
 
-| Example                                     | Description                                                                                                          |
-|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
-| **[hello-world](./examples/hello-world)**   | Very simple hello world application. Shows how to get started.                                                       |
-| **[pathfinding](./examples/pathfinding)**   | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
-| **[game-of-life](./examples/game-of-life)** | An interactive game of life implementation.                                                                          |
-| **[platformer](./examples/platformer)**     | A much more complex example showing how to make a platformer.                                                        |
+| Example                                       | Description                                                                                                          |
+|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
+| **[hello-world](./examples/hello-world)**     | Very simple hello world application. Shows how to get started.                                                       |
+| **[pathfinding](./examples/pathfinding)**     | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
+| **[game-of-life](./examples/game-of-life)**   | An interactive game of life implementation.                                                                          |
+| **[platformer](./examples/platformer)**       | A much more complex example showing how to make a platformer.                                                        |
 
 ## Libraries used
 

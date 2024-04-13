@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.debug;
+package io.github.srcimon.screwbox.core.environment.core;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;

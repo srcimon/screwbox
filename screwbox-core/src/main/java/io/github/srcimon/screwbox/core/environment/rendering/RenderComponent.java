@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -26,11 +25,13 @@ public class RenderComponent implements Component {
     }
 
     public RenderComponent(final Supplier<Sprite> sprite, final int drawOrder) {
-        this(sprite.get(), drawOrder, Percent.max());
+        this(sprite.get(), drawOrder);
     }
 
     public RenderComponent(final Sprite sprite, final int drawOrder) {
-        this(sprite, drawOrder, Percent.max());
+        this.sprite = sprite;
+        this.drawOrder = drawOrder;
+        this.options = SpriteDrawOptions.originalSize();
     }
 
     public RenderComponent(final Supplier<Sprite> sprite) {
@@ -39,13 +40,6 @@ public class RenderComponent implements Component {
 
     public RenderComponent(final Sprite sprite) {
         this(sprite, 0);
-    }
-
-    //TODO remove
-    public RenderComponent(final Sprite sprite, final int drawOrder, final Percent opacity) {
-        this.sprite = sprite;
-        this.drawOrder = drawOrder;
-        this.options = SpriteDrawOptions.originalSize().opacity(opacity);
     }
 
     public RenderComponent(final Supplier<Sprite> sprite, final SpriteDrawOptions options) {

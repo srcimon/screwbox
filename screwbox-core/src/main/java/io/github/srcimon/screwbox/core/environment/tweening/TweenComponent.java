@@ -22,7 +22,7 @@ public class TweenComponent implements Component {
 
     public Duration duration;
     public boolean isLooped;
-    public final TweenMode mode;
+    public TweenMode mode;
     public boolean usePingPong;
 
     public TweenComponent(final Duration duration) {

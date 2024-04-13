@@ -30,7 +30,7 @@
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6</sonar.issue.ignore.multicriteria>
 
         <!-- public accessibility in components by intention -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -56,6 +56,11 @@
         <sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
         <sonar.issue.ignore.multicriteria.e5.resourceKey>**/Bounds.java
         </sonar.issue.ignore.multicriteria.e5.resourceKey>
+
+        <!-- disable false-positive security sensitive usages of Random -->
+        <sonar.issue.ignore.multicriteria.e6.ruleKey>java:S2245</sonar.issue.ignore.multicriteria.e6.ruleKey>
+        <sonar.issue.ignore.multicriteria.e6.resourceKey>**.java
+        </sonar.issue.ignore.multicriteria.e6.resourceKey>
     </properties>
     <dependencyManagement>
         <dependencies>

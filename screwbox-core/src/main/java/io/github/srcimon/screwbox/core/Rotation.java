@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Random;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -12,6 +13,8 @@ import static java.util.Objects.requireNonNull;
  * Represents the {@link Rotation} between two {@link Line}s.
  */
 public final class Rotation implements Serializable, Comparable<Rotation> {
+
+    private static final Random RANDOM = new Random();
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -37,7 +40,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * Returns the {@link Rotation}-value of an objects momentum. This value equals the
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
-     * 
+     *
      * @see #ofMovement(Vector)
      */
     public static Rotation ofMomentum(final double x, final double y) {
@@ -63,6 +66,13 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      */
     public static Rotation none() {
         return NONE;
+    }
+
+    /**
+     * Creates a new random {@link Rotation}.
+     */
+    public static Rotation random() {
+        return Rotation.degrees(RANDOM.nextInt(0, 360));
     }
 
     /**
@@ -111,7 +121,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     /**
      * Returns the {@link Rotation} between a given {@link Line} and a vertical line
      * from the {@link Line#from()}.
-     * 
+     *
      * @param line the {@link Line} that is used to calculate the {@link Rotation}
      */
     public static Rotation of(final Line line) {
@@ -122,7 +132,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     /**
      * Rotates the given {@link Line} by the given {@link Rotation} around
      * {@link Line#from()}.
-     * 
+     *
      * @param line the {@link Line} to be rotated
      * @return the rotated {@link Line}
      */

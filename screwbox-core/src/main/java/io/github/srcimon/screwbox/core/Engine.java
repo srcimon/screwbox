@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.log.LoggingAdapter;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
+import io.github.srcimon.screwbox.core.particles.Particles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
@@ -74,15 +75,16 @@ public interface Engine {
 
     /**
      * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
-     *
-     * @see Physics
      */
     Physics physics();
 
     /**
-     * Subsystem for getting Information on the Mouse.
-     *
-     * @see Mouse
+     * Add particle effects to create some nice visuals.
+     */
+    Particles particles();
+
+    /**
+     * Subsystem for getting Information on the {@link Mouse}.
      */
     Mouse mouse();
 

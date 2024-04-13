@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -293,4 +295,12 @@ public interface Environment {
      * @see OptimizeLightPerformanceSystem
      */
     Environment enableLight();
+
+    /**
+     * Adds systems for particle effects.
+     *
+     * @see ParticleEmitterSystem
+     * @see ParticleBurstSystem
+     */
+    Environment enableParticles();
 }

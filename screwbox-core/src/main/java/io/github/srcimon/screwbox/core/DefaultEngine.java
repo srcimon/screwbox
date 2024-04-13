@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.assets.Assets;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
@@ -25,6 +26,8 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.loop.internal.DefaultLoop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.internal.DefaultMouse;
+import io.github.srcimon.screwbox.core.particles.Particles;
+import io.github.srcimon.screwbox.core.particles.internal.DefaultParticles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -62,6 +65,7 @@ class DefaultEngine implements Engine {
     private final DefaultAsync async;
     private final DefaultAssets assets;
     private final DefaultWindow window;
+    private final DefaultParticles particles;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
@@ -69,6 +73,18 @@ class DefaultEngine implements Engine {
     private boolean stopCalled = false;
 
     DefaultEngine(final String name) {
+        log = new DefaultLog(new ConsoleLoggingAdapter());
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
+            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
+        }
+        if (MacOsSupport.isMacOs()) {
+            if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
+                MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
+            } else {
+                log.warn("Please run application with the following JVM Option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+            }
+        }
+
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
@@ -98,13 +114,13 @@ class DefaultEngine implements Engine {
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
+        particles = new DefaultParticles(this, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
         scenes = new DefaultScenes(this, executor);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
-        log = new DefaultLog(new ConsoleLoggingAdapter());
+        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera, particles));
         audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
@@ -118,17 +134,6 @@ class DefaultEngine implements Engine {
         }
         this.name = name;
         window.setTitle(name);
-        validateJvmOptions();
-    }
-
-    private void validateJvmOptions() {
-        final List<String> jvmOptions = ManagementFactory.getRuntimeMXBean().getInputArguments();
-        if (!jvmOptions.contains("-Dsun.java2d.opengl=true")) {
-            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
-        }
-        if (MacOsSupport.isMacOs() && !jvmOptions.contains(MacOsSupport.FULLSCREEN_JVM_OPTION)) {
-            log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
-        }
     }
 
     @Override
@@ -202,6 +207,11 @@ class DefaultEngine implements Engine {
     @Override
     public Physics physics() {
         return physics;
+    }
+
+    @Override
+    public Particles particles() {
+        return particles;
     }
 
     @Override

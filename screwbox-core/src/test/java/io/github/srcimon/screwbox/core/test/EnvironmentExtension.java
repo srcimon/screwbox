@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.particles.Particles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.window.Window;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -36,6 +37,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var log = Mockito.mock(Log.class);
         final var physics = Mockito.mock(Physics.class);
         final var keyboard = Mockito.mock(Keyboard.class);
+        final var particles = Mockito.mock(Particles.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
@@ -51,6 +53,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(engine.loop()).thenReturn(gameLoop);
         when(engine.keyboard()).thenReturn(keyboard);
         when(engine.window()).thenReturn(window);
+        when(engine.particles()).thenReturn(particles);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
         when(graphics.camera()).thenReturn(camera);
@@ -66,6 +69,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Physics.class, physics);
         parameters.put(Keyboard.class, keyboard);
         parameters.put(Engine.class, engine);
+        parameters.put(Particles.class, particles);
         parameters.put(DefaultEnvironment.class, entities);
     }
 

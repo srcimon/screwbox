@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
@@ -23,6 +25,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 
 import java.util.List;
@@ -33,6 +36,7 @@ public enum Feature {
             new TweenSystem(),
             new TweenPositionSystem(),
             new TweenDestroySystem(),
+            new TweenScaleSystem(),
             new TweenOpacitySystem(),
             new TweenLightSystem()
     ),
@@ -65,6 +69,11 @@ public enum Feature {
     LIGHT(
             new LightRenderSystem(),
             new OptimizeLightPerformanceSystem()
+    ),
+
+    PARTICLES(
+            new ParticleEmitterSystem(),
+            new ParticleBurstSystem()
     );
 
     final List<EntitySystem> systems;

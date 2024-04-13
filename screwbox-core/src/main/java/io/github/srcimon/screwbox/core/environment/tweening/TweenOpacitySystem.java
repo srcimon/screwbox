@@ -4,9 +4,10 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 /**
- * Updates the opacity of all {@link Entity}s that use tweening and have an {@link TweenOpacityComponent}.
+ * Updates the {@link SpriteDrawOptions#opacity()} of all {@link Entity}s that use tweening and have an {@link TweenOpacityComponent}.
  */
 @Order(SystemOrder.PRESENTATION_PREPARE)
 public class TweenOpacitySystem implements EntitySystem {

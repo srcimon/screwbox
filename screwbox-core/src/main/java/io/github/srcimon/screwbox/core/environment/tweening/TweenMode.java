@@ -36,6 +36,11 @@ public enum TweenMode {
     SINE_IN_OUT(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 2.0) - 1.0) / 2.0)),
 
     /**
+     * Sinus fade in and out again twice: 0 to 1 to 0 to 1 to 0
+     */
+    SIN_IN_OUT_TWICE(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 4.0) - 1.0) / 2.0)),
+
+    /**
      * Flickering effect. Mostly 1 but sometimes 0.
      *
      * @see #SPARKLE

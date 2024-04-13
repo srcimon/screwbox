@@ -310,6 +310,12 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment enableParticles() {
+        enableFeature(Feature.PARTICLES);
+        return this;
+    }
+
     private void enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
             addOrReplaceSystem(system);

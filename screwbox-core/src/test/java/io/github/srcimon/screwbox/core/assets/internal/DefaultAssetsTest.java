@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.test.TestUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +51,7 @@ class DefaultAssetsTest {
     void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
         var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
 
-        assertThat(locations).hasSize(13)
+        assertThat(locations).hasSize(20)
                 .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundsBundle.STEAM"));
     }
 

@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.debug;
+package io.github.srcimon.screwbox.core.environment.core;
 
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.log.Log;
