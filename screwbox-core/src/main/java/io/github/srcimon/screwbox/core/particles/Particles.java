@@ -19,9 +19,9 @@ public interface Particles {
 
     int limit();
 
-    Particles setRenderDistance(double renderDistance);
+    Particles setSpawnDistance(double spawnDistance);
 
-    double renderDistance();
+    double spawnDistance();
 
     Particles setLimit(int limit);
 

@@ -32,7 +32,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     private int particleCount = 0;
     private int particleLimit = 10000;
-    private double renderDistance = 2000;
+    private double spawnDistance = 2000;
     private long particleSpawnCount = 0;
 
     public DefaultParticles(final Engine engine, final World world) {
@@ -61,14 +61,14 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public Particles setRenderDistance(final double renderDistance) {
-        this.renderDistance = renderDistance;
+    public Particles setSpawnDistance(final double spawnDistance) {
+        this.spawnDistance = spawnDistance;
         return this;
     }
 
     @Override
-    public double renderDistance() {
-        return renderDistance;
+    public double spawnDistance() {
+        return spawnDistance;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DefaultParticles implements Particles, Updatable {
     @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
         final var particle = createParticle(position, options);
-        if(particleLimit > particleCount && positionIsInRenderDistance(position)) {
+        if(particleLimit > particleCount && isInSpawnDistance(position)) {
             particleSpawnCount++;
             particleCount++;
             engine.environment().addEntity(particle);
@@ -91,8 +91,8 @@ public class DefaultParticles implements Particles, Updatable {
         return this;
     }
 
-    private boolean positionIsInRenderDistance(final Vector position) {
-        return world.visibleArea().expand(renderDistance).contains(position);
+    private boolean isInSpawnDistance(final Vector position) {
+        return world.visibleArea().expand(spawnDistance).contains(position);
     }
 
     @Override
