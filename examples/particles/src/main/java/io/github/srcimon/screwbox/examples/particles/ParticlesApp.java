@@ -35,7 +35,6 @@ public class ParticlesApp {
                                 .selectAny().ifPresent(e -> e.get(ParticleEmitterComponent.class).isEnabled = !e.get(ParticleEmitterComponent.class).isEnabled);
                     }
                 })
-                //TODO nicer engine logo
                 .addEntity("particle emitter",
                         new TransformComponent(Vector.zero().addX(-200), 128, 128),
                         new ParticleEmitterComponent(ofMillis(40), ParticleEmitterComponent.SpawnMode.POSITION, ParticleDesignerBundle.CONFETTI))

@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.environment.particles;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode;
 
 public class ParticleEmitterSystem implements EntitySystem {
 
@@ -14,11 +15,11 @@ public class ParticleEmitterSystem implements EntitySystem {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
                 final var particleOptions = emitter.particleOptions.source(particleEmitter);
-
-                switch (emitter.spawnMode) {
-                    case POSITION ->  engine.particles().spawn(particleEmitter.position(), particleOptions);
-                    case AREA -> engine.particles().spawn(particleEmitter.bounds(), particleOptions);
-                };
+                if (SpawnMode.AREA.equals(emitter.spawnMode)) {
+                    engine.particles().spawn(particleEmitter.bounds(), particleOptions);
+                } else {
+                    engine.particles().spawn(particleEmitter.position(), particleOptions);
+                }
             }
         }
     }
