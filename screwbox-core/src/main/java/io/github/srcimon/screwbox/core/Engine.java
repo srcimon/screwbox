@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.log.LoggingAdapter;
 import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
+import io.github.srcimon.screwbox.core.particles.Particles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
@@ -78,6 +79,9 @@ public interface Engine {
      * @see Physics
      */
     Physics physics();
+
+    //TODO JAVADOC
+    Particles particles();
 
     /**
      * Subsystem for getting Information on the Mouse.

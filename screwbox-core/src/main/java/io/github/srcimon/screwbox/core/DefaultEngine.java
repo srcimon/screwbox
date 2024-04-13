@@ -26,6 +26,8 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.loop.internal.DefaultLoop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.internal.DefaultMouse;
+import io.github.srcimon.screwbox.core.particles.Particles;
+import io.github.srcimon.screwbox.core.particles.internal.DefaultParticles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -63,6 +65,7 @@ class DefaultEngine implements Engine {
     private final DefaultAsync async;
     private final DefaultAssets assets;
     private final DefaultWindow window;
+    private final DefaultParticles particles;
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
@@ -111,12 +114,13 @@ class DefaultEngine implements Engine {
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
+        particles = new DefaultParticles(this);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
         scenes = new DefaultScenes(this, executor);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera));
+        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera, particles));
         audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
@@ -203,6 +207,11 @@ class DefaultEngine implements Engine {
     @Override
     public Physics physics() {
         return physics;
+    }
+
+    @Override
+    public Particles particles() {
+        return particles;
     }
 
     @Override

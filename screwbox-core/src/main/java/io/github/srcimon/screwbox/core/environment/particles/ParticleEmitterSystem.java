@@ -31,14 +31,6 @@ public class ParticleEmitterSystem implements EntitySystem {
                 final var entity = emitter.designer.createParticle(spawnPoint, order);
                 engine.environment().addEntity(entity);
                 final var designer = emitter.designer.drawOrder(1);
-                engine.particles()
-                        .particleCount()
-                        .particlesSpawnedCount()
-                        .setRenderDistance(600)
-                        .setLimit(1000)
-                        .spawn(spawnPoint, designer) // ParticleDesigner -> ParticleConfiguration (creation is done by particles.spawn())!!!
-                        .spawn(renderArea, designer)
-                        .spawnMultiple(20, area, designer);
             }
         }
     }

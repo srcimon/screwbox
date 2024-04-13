@@ -20,6 +20,7 @@ public class ParticlesApp {
         Engine screwBox = ScrewBox.createEngine("Particles");
 
         screwBox.environment()
+                .addSystem(engine -> engine.window().setTitle("Particles: " + engine.particles().particleCount()))
                 .addSystem(engine -> {
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         engine.environment().toggleSystem(new ParticleDebugSystem());
