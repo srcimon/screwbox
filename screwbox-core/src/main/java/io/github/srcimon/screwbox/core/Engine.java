@@ -75,18 +75,16 @@ public interface Engine {
 
     /**
      * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
-     *
-     * @see Physics
      */
     Physics physics();
 
-    //TODO JAVADOC
+    /**
+     * Add particle effects to create some nice visuals.
+     */
     Particles particles();
 
     /**
-     * Subsystem for getting Information on the Mouse.
-     *
-     * @see Mouse
+     * Subsystem for getting Information on the {@link Mouse}.
      */
     Mouse mouse();
 

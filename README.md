@@ -24,6 +24,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
   effects.
 - **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
+- **Particle Effects** Add particle effects to create some nice visuals.
 - **Asset Management** Load game assets without interrupting the game.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.

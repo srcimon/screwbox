@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ParticleOptionsTest {
-
+class ParticleOptionsTest {
 
     private ParticleOptions options;
-
 
     @BeforeEach
     void setUp() {
@@ -31,7 +29,6 @@ public class ParticleOptionsTest {
 
         assertThat(result.modifierIds()).containsExactly("default-render-opacity", "my-identifier");
     }
-
 
     @Test
     void modifiers_multipleModifiersOfSameTypeAdded_onlyContainsLastModifier() {

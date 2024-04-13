@@ -8,6 +8,9 @@ import java.util.function.Supplier;
 
 //TODO javadoc
 //TODO package info
+/**
+ * Add particle effects to create some nice visuals.
+ */
 public interface Particles {
 
     /**
