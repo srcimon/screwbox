@@ -199,7 +199,6 @@
                 <module>examples/hello-world</module>
                 <module>examples/pathfinding</module>
                 <module>examples/game-of-life</module>
-                <module>examples/particles</module>
                 <module>examples/platformer</module>
             </modules>
             <build>
