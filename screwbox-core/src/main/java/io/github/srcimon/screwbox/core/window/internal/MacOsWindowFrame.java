@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.utils.MacOsSupport;
+import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 
 import java.awt.*;
 import java.io.Serial;

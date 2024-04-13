@@ -19,6 +19,7 @@ This is a huge content update.
 
 - Renamed `TextDrawOptions` to `SystemTextDrawOptions`
 - Changed default color of `FontsBundle`  fonts to white
+- Moved `MacOsSupport` to internal package
 - Added `Sheduler.interval()`
 
 ### 📦 Dependency updates
