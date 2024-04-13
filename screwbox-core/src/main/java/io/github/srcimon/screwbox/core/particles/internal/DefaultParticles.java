@@ -20,7 +20,11 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.Particles;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
+
+import static java.util.Objects.nonNull;
 
 public class DefaultParticles implements Particles, Updatable {
 
@@ -68,7 +72,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles setParticleLimit(final int limit) {
-        if(limit < 0) {
+        if (limit < 0) {
             throw new IllegalArgumentException("limit must be positive");
         }
         particleLimit = limit;
@@ -78,7 +82,7 @@ public class DefaultParticles implements Particles, Updatable {
     @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
         final var particle = createParticle(position, options);
-        if(particleLimit > particleCount && isInSpawnDistance(position)) {
+        if (particleLimit > particleCount && isInSpawnDistance(position)) {
             particleSpawnCount++;
             particleCount++;
             engine.environment().addEntity(particle);
@@ -127,20 +131,22 @@ public class DefaultParticles implements Particles, Updatable {
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
         RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
-        final var entity = new Entity("particle");//TODO add source name or id
-        entity.add(new ParticleComponent());
-        entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_OUT));
-        entity.add(new TweenDestroyComponent());
-        entity.add(physicsComponent);
-        entity.add(transfrom);
-        entity.add(render);
+        //TODO add source name or id
+        final var entity = new Entity()
+                .name("particle-" + particleSpawnCount)
+                .add(new ParticleComponent())
+                .add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_OUT))
+                .add(new TweenDestroyComponent())
+                .add(physicsComponent)
+                .add(transfrom)
+                .add(render);
         for (final var entityCustomizer : options.modifiers()) {
             entityCustomizer.accept(entity);
         }
         if (render.drawOrder == -1) {
             if (options.source() != null) {
                 var originalRender = options.source().get(RenderComponent.class);
-                if(originalRender != null) {
+                if (originalRender != null) {
                     render.drawOrder = originalRender.drawOrder;
                 }
             } else {
