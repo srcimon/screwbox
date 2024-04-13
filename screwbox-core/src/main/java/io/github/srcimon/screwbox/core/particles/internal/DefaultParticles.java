@@ -53,10 +53,10 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles spawnMultiple(final int count, final Vector position, final ParticleOptions options) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             spawn(position, options);
         }
-       return this;
+        return this;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles spawnMutliple(final int count, final Bounds bounds, final ParticleOptions options) {
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             spawn(bounds, options);
         }
         return this;
@@ -81,8 +81,8 @@ public class DefaultParticles implements Particles, Updatable {
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, 0, SpriteDrawOptions.originalSize());
-        final var entity = new Entity("particle");
+        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
+        final var entity = new Entity("particle");//TODO add source name or id
         entity.add(new ParticleComponent());
         entity.add(new TweenComponent(Duration.ofSeconds(1), TweenMode.LINEAR_IN));
         entity.add(new TweenDestroyComponent());
@@ -91,6 +91,16 @@ public class DefaultParticles implements Particles, Updatable {
         entity.add(render);
         for (final var entityCustomizer : options.customizers()) {
             entityCustomizer.accept(entity);
+        }
+        if (render.drawOrder == -1) {
+            if (options.source() != null) {
+                var originalRender = options.source().get(RenderComponent.class);
+                if(originalRender != null) {
+                    render.drawOrder = originalRender.drawOrder;
+                }
+            } else {
+                render.drawOrder = 0;
+            }
         }
         transfrom.bounds = Bounds.atPosition(position, render.sprite.size().width() * render.options.scale(), render.sprite.size().height() * render.options.scale());
         return entity;

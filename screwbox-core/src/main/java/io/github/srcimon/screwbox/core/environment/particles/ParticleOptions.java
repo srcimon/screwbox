@@ -51,14 +51,18 @@ public class ParticleOptions implements Serializable {
 
     private final Map<String, ParticleCustomizer> customizers;
 
-    /**
-     * Creates a new instance.
-     */
+    private final Entity source;
+
     public ParticleOptions() {
-        this(new HashMap<>());
+        this(null);
     }
 
-    private ParticleOptions(final Map<String, ParticleCustomizer> customizers) {
+    public ParticleOptions(Entity source) {
+        this(source, new HashMap<>());
+    }
+
+    private ParticleOptions(final Entity source, final Map<String, ParticleCustomizer> customizers) {
+        this.source = source;
         this.customizers = Collections.unmodifiableMap(customizers);
     }
 
@@ -122,12 +126,6 @@ public class ParticleOptions implements Serializable {
                 entity -> entity.add(new TweenOpacityComponent(from, to)));
     }
 
-    public ParticleOptions drawOrderIfMissing(final int drawOrder) {
-        return customizers.containsKey(PREFIX + "render-draworder")
-                ? this
-                : drawOrder(drawOrder);
-    }
-
     public ParticleOptions drawOrder(final int drawOrder) {
         return customize(PREFIX + "render-draworder",
                 entity -> entity.get(RenderComponent.class).drawOrder = drawOrder);
@@ -183,7 +181,7 @@ public class ParticleOptions implements Serializable {
         final Map<String, ParticleCustomizer> nextCustomizers = new HashMap<>();
         nextCustomizers.putAll(customizers);
         nextCustomizers.put(identifier, customizer);
-        return new ParticleOptions(nextCustomizers);
+        return new ParticleOptions(source, nextCustomizers);
     }
 
     /**
@@ -194,5 +192,13 @@ public class ParticleOptions implements Serializable {
      */
     public Set<String> customizerIdentifiers() {
         return customizers.keySet();
+    }
+
+    public ParticleOptions source(final Entity source) {
+        return new ParticleOptions(source, customizers);
+    }
+
+    public Entity source() {
+        return source;
     }
 }
