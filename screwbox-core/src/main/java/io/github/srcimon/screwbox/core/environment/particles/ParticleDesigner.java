@@ -95,7 +95,7 @@ public class ParticleDesigner implements Serializable {
     }
 
 
-    public Entity createParticle(final Vector position, final int drawOrder) {
+    public Entity createParticle(final Vector position, final int drawOrder) { // TODO fix order can also be set via customizer
         var physicsComponent = new PhysicsComponent();
         physicsComponent.ignoreCollisions = true;
         physicsComponent.gravityModifier = 0;
