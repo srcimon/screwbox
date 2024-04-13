@@ -38,6 +38,8 @@ public class ParticleOptions implements Serializable {
 
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
+    private static final String SCALE_PREFIX = PREFIX + "render-scale";
+    private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
 
     /**
      * Creates a new instance. Sets {@link #source()}.
@@ -84,14 +86,14 @@ public class ParticleOptions implements Serializable {
      * Sets the {@link Sprite} that is used for particle entities.
      */
     public ParticleOptions sprite(final Sprite sprite) {
-        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = sprite);
     }
 
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleOptions sprites(Sprite... sprites) {
-        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
     }
 
     /**
@@ -99,7 +101,7 @@ public class ParticleOptions implements Serializable {
      */
     @SafeVarargs
     public final ParticleOptions sprites(Supplier<Sprite>... sprites) {
-        return customize(PREFIX + "render-sprite", entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).get());
     }
 
     /**
@@ -127,7 +129,7 @@ public class ParticleOptions implements Serializable {
      * Sets the initial scale of the particle.
      */
     public ParticleOptions startScale(final double scale) {
-        return customize(PREFIX + "render-scale", entity -> {
+        return customize(SCALE_PREFIX, entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(scale);
         });
@@ -137,7 +139,7 @@ public class ParticleOptions implements Serializable {
      * Sets the initial scale of the particle to a random number in the given range.
      */
     public ParticleOptions randomStartScale(final double from, final double to) {
-        return customize(PREFIX + "render-scale", entity -> {
+        return customize(SCALE_PREFIX, entity -> {
             final var render = entity.get(RenderComponent.class);
             render.options = render.options.scale(RANDOM.nextDouble(from, to));
         });
@@ -223,7 +225,7 @@ public class ParticleOptions implements Serializable {
      * Adds a {@link TweenScaleComponent} to a particle to animate the scale of the particle.
      */
     public ParticleOptions animateScale(final double from, final double to) {
-        return customize(PREFIX + "render-scale", entity -> entity.add(new TweenScaleComponent(from, to)));
+        return customize(SCALE_PREFIX, entity -> entity.add(new TweenScaleComponent(from, to)));
     }
 
     /**

@@ -4,9 +4,8 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
