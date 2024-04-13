@@ -38,8 +38,6 @@ public enum TweenMode {
     /**
      * Sinus fade in and out again twice: 0 to 1 to 0 to 1 to 0
      */
-    //TODO TEST
-            //TODO implement 0 to 1 to 0.5 to 1 to 0
     SIN_IN_OUT_TWICE(in -> Percent.of(-(Math.cos(Math.PI * in.value() * 4.0) - 1.0) / 2.0)),
 
     /**
