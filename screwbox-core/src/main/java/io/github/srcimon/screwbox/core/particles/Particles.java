@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.particles;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleOptions;
 
@@ -10,6 +11,8 @@ public interface Particles {
     int particleCount();
 
     Particles spawn(Vector position, ParticleOptions options);
+
+    Particles spawn(Bounds bounds, ParticleOptions options);
 
 //     engine.particles()
 //             .particleCount()

@@ -13,7 +13,7 @@ import java.util.Random;
 public class ParticleEmitterSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(ParticleEmitterComponent.class);
-    private static final Random RANDOM = new Random();
+
 
     @Override
     public void update(final Engine engine) {
@@ -22,22 +22,15 @@ public class ParticleEmitterSystem implements EntitySystem {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
             if (emitter.isEnabled && emitter.sheduler.isTick(engine.loop().lastUpdate())) {
                 final var render = particleEmitter.get(RenderComponent.class);
-                final var spawnPoint = getSpawnPoint(particleEmitter, emitter);
-                final var actualOptions = Objects.nonNull(render)
+                final var particleOptions = Objects.nonNull(render)
                         ? emitter.particleOptions.drawOrderIfMissing(render.drawOrder)
                         : emitter.particleOptions;
-                engine.particles().spawn(spawnPoint, actualOptions);
+
+                switch (emitter.spawnMode) {
+                    case POSITION ->  engine.particles().spawn(particleEmitter.position(), particleOptions);
+                    case AREA -> engine.particles().spawn(particleEmitter.bounds(), particleOptions);
+                };
             }
         }
-    }
-
-    //TODO move into particles
-    private Vector getSpawnPoint(final Entity particleEmitter, final ParticleEmitterComponent emitter) {
-        return switch (emitter.spawnMode) {
-            case POSITION -> particleEmitter.position();
-            case AREA -> particleEmitter.position().add(
-                    RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().width(),
-                    RANDOM.nextDouble(-0.5, 0.5) * particleEmitter.bounds().height());
-        };
     }
 }

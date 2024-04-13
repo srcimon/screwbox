@@ -19,9 +19,13 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.Particles;
 
+import java.util.Random;
+
 public class DefaultParticles implements Particles, Updatable {
 
+    private static final Random RANDOM = new Random();
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
+
     private final Engine engine;
 
     private int particleCount = 0;
@@ -37,7 +41,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public int particleCount() {
-       return particleCount;
+        return particleCount;
     }
 
     @Override
@@ -45,6 +49,14 @@ public class DefaultParticles implements Particles, Updatable {
         final var particle = createParticle(position, options);
         engine.environment().addEntity(particle);
         return this;
+    }
+
+    @Override
+    public Particles spawn(Bounds bounds, ParticleOptions options) {
+        final Vector spawnPosition = bounds.position().add(
+                RANDOM.nextDouble(-0.5, 0.5) * bounds.width(),
+                RANDOM.nextDouble(-0.5, 0.5) * bounds.height());
+        return spawn(spawnPosition, options);
     }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
