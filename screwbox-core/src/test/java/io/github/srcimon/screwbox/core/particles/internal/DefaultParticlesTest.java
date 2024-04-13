@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.particles.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -133,7 +136,7 @@ class DefaultParticlesTest {
         when(engine.environment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
-        particles.spawn($$(80, 100, 100, 100), new ParticleOptions().drawOrder(50));
+        particles.spawn($$(80, 100, 100, 100), new ParticleOptions().drawOrder(50).startScale(4));
 
         var particleCaptor = ArgumentCaptor.forClass(Entity.class);
         verify(environment).addEntity(particleCaptor.capture());
@@ -145,10 +148,10 @@ class DefaultParticlesTest {
 
         RenderComponent renderComponent = particle.get(RenderComponent.class);
         assertThat(renderComponent.drawOrder).isEqualTo(50);
+        assertThat(renderComponent.options.scale()).isEqualTo(4);
 
         assertThat($$(80, 100, 100, 100).contains(particle.position())).isTrue();
     }
-
 
     @Test
     void spawnArea_returnsCurrentSpawnArea() {
@@ -156,5 +159,19 @@ class DefaultParticlesTest {
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         assertThat(particles.spawnArea()).isEqualTo($$(5, -5, 129, 129));
+    }
+
+    @Test
+    void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
+        when(engine.environment()).thenReturn(environment);
+        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+
+        particles.setParticleLimit(5);
+
+        particles.spawnMultiple(10, Vector.zero(), new ParticleOptions());
+
+        verify(environment, times(5)).addEntity(Mockito.any(Entity.class));
+        assertThat(particles.particleCount()).isEqualTo(5);
+        assertThat(particles.particlesSpawnCount()).isEqualTo(5);
     }
 }
