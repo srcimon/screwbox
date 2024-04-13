@@ -35,7 +35,7 @@ import static java.util.Objects.nonNull;
  * @see Environment#enableParticles()
  */
 public class ParticleOptions implements Serializable {
-    //TODO name, origin?
+
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
 

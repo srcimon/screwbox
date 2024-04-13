@@ -63,7 +63,7 @@ public class DiggableSystem implements EntitySystem {
                         .chaoticMovement(40, Duration.ofMillis(10000))
                         .baseMovement(Vector.y(30))
                         .randomStartRotation()
-                        .animateScale(0.5, 0));
+                        .animateScale(0, 0.5));
                 entity.add(new TweenComponent(ofMillis(50), TweenMode.SINE_OUT));
                 entity.remove(ColliderComponent.class);
                 PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
