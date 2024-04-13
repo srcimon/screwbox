@@ -81,7 +81,7 @@ class DefaultEngine implements Engine {
             if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
                 MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
             } else {
-                log.warn("Please run application with the following JVM Option to support fullscreen on MacOS: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
+                log.warn("Please run application with the following JVM Option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
             }
         }
 

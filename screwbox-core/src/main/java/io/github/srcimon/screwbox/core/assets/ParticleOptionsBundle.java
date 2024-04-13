@@ -15,11 +15,11 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     SMOKE(new ParticleOptions()
             .sprite(SpritesBundle.SMOKE_16)
-            .baseMovement(Vector.y(-100))
+            .baseSpeed(Vector.y(-100))
             .tweenMode(TweenMode.SINE_IN_OUT)
             .randomStartScale(6, 8)
             .animateOpacity(Percent.zero(), Percent.of(0.1))
-            .baseMovement(Vector.$(0, -100))
+            .baseSpeed(Vector.$(0, -100))
             .chaoticMovement(50, ofSeconds(1))
             .drawOrder(2)
             .randomStartRotation()

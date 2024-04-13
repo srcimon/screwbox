@@ -4,12 +4,15 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -71,7 +74,7 @@ class ParticleOptionsTest {
     void randomLifeTimeSeconds_validRange_setsTweenModeDurationOnRandomValueInRange() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomLifeTimeSeconds(4, 20));
 
-        assertThat(particle.get(TweenComponent.class).duration.seconds()).isBetween(4l, 20l);
+        assertThat(particle.get(TweenComponent.class).duration.seconds()).isBetween(4L, 20L);
     }
 
     @Test
@@ -83,8 +86,33 @@ class ParticleOptionsTest {
         assertThat(particle.get(TweenOpacityComponent.class).to).isEqualTo(Percent.max());
     }
 
+    @Test
+    void baseSpeed_noChaoticSpeed_setsMomentum() {
+        Entity particle = applyOptionsOnTemplateParticle(options.baseSpeed($(20, 0)));
+
+        assertThat(particle.get(PhysicsComponent.class).momentum).isEqualTo($(20, 0));
+    }
+
+    @Test
+    void baseSpeed_hasChaoticMovement_setsBaseSpeedOfChaoticSpeed() {
+        Entity particle = applyOptionsOnTemplateParticle(options.baseSpeed($(20, 0)), templateParticle().add(new ChaoticMovementComponent(20, Duration.ofMillis(20))));
+
+        assertThat(particle.get(PhysicsComponent.class).momentum).isEqualTo($(20, 0));
+        assertThat(particle.get(ChaoticMovementComponent.class).baseSpeed).isEqualTo($(20, 0));
+    }
+
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {
-        Entity particle = new Entity().add(new TweenComponent(Duration.ofSeconds(100)));
+        Entity particle = templateParticle();
+        return applyOptionsOnTemplateParticle(result, particle);
+    }
+
+    private Entity templateParticle() {
+        return new Entity()
+                .add(new TweenComponent(Duration.ofSeconds(100)))
+                .add(new PhysicsComponent());
+    }
+
+    private Entity applyOptionsOnTemplateParticle(ParticleOptions result, Entity particle) {
         result.modifiers().forEach(modifier -> modifier.accept(particle));
         return particle;
     }

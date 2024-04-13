@@ -172,7 +172,7 @@ public class ParticleOptions implements Serializable {
     /**
      * Adds an initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
      */
-    public ParticleOptions baseMovement(final Vector speed) {
+    public ParticleOptions baseSpeed(final Vector speed) {
         return customize(PREFIX + "physics-movement", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);

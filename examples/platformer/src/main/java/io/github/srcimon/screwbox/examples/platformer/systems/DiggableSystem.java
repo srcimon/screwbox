@@ -61,7 +61,7 @@ public class DiggableSystem implements EntitySystem {
                 engine.particles().spawnMultiple(10, entity.bounds(), ParticleOptions.particleSource(entity)
                         .sprite(entity.get(RenderComponent.class).sprite)
                         .chaoticMovement(40, Duration.ofMillis(10000))
-                        .baseMovement(Vector.y(30))
+                        .baseSpeed(Vector.y(30))
                         .randomStartRotation()
                         .animateScale(0, 0.5));
                 entity.add(new TweenComponent(ofMillis(50), TweenMode.SINE_OUT));

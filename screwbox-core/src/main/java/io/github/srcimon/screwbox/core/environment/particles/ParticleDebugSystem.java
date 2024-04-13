@@ -25,6 +25,7 @@ public class ParticleDebugSystem implements EntitySystem {
 
     private static final Archetype PARTICLE_EMITTERS = Archetype.of(TransformComponent.class, ParticleEmitterComponent.class);
     private static final Archetype PARTICLES = Archetype.of(TransformComponent.class, RenderComponent.class, ParticleComponent.class);
+
     private static final LineDrawOptions PARTICLE_DRAW_OPTIONS = LineDrawOptions.color(Color.hex("#86dae6"));
 
     @Override
@@ -32,9 +33,10 @@ public class ParticleDebugSystem implements EntitySystem {
         final World world = engine.graphics().world();
         for (final var particleEmitter : engine.environment().fetchAll(PARTICLE_EMITTERS)) {
             final var emitter = particleEmitter.get(ParticleEmitterComponent.class);
-            world.drawRectangle(particleEmitter.bounds(),
-                            outline(emitter.isEnabled ? Color.GREEN : Color.RED).strokeWidth(2))
-                    .drawText(particleEmitter.bounds().position().addY(particleEmitter.bounds().height() / 2.0 + 10),
+            world.drawRectangle(particleEmitter.bounds(), outline(emitter.isEnabled ? Color.GREEN : Color.RED)
+                    .strokeWidth(2));
+
+            world.drawText(particleEmitter.bounds().position().addY(particleEmitter.bounds().height() / 2.0 + 10),
                             emitter.isEnabled ? "enabled: " + emitter.sheduler.interval().humanReadable() : "disabled",
                             SystemTextDrawOptions.systemFont("Arial", 10).alignCenter().bold());
         }
