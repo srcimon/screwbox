@@ -158,6 +158,12 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
+    public Window setApplicationIcon(final Sprite icon) {
+        frame.setIcon(icon);
+        return this;
+    }
+
+    @Override
     public Window setWindowCursor(final MouseCursor cursor) {
         windowCursor = cursorFrom(cursor);
         return this;

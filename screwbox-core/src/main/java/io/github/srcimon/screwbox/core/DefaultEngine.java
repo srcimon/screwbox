@@ -82,7 +82,7 @@ class DefaultEngine implements Engine {
         //TODO add icon change on startup
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        WindowFrame frame = MacOsSupport.isMacOs()
+        final WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
                 : new WindowFrame(configuration.resolution());
 
