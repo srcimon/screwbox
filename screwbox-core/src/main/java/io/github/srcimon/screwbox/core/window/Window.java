@@ -156,9 +156,11 @@ public interface Window {
      */
     Window setWindowCursor(Frame cursor);
 
-    //TODO replace macos jvm option warning at startup with app icon change message?
-    //TODO javadoc
+    /**
+     * Sets the application icon. Does not support animated {@link Sprite}s.
+     */
     Window setApplicationIcon(Sprite icon);
+
     /**
      * Returns the title of the {@link Window}.
      *
