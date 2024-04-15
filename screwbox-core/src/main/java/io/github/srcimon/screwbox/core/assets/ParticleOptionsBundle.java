@@ -13,7 +13,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
  * An {@link AssetBundle} for {@link ParticleOptions}s shipped with the {@link ScrewBox} game engine.
  */
 public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
-    SMOKE(new ParticleOptions()
+    SMOKE(ParticleOptions.unknownSource()
             .sprite(SpritesBundle.SMOKE_16)
             .baseSpeed(Vector.y(-100))
             .tweenMode(TweenMode.SINE_IN_OUT)
@@ -24,13 +24,15 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .drawOrder(2)
             .randomStartRotation()
             .lifetimeSeconds(2)),
-    CONFETTI(new ParticleOptions()
+    CONFETTI(ParticleOptions.unknownSource()
             .sprites(SpritesBundle.DOT_BLUE_16, SpritesBundle.DOT_RED_16, SpritesBundle.DOT_YELLOW_16)
             .chaoticMovement(100, Duration.ofSeconds(1))
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
             .randomLifeTimeSeconds(6, 7)
-            .animateOpacity());
+            .animateOpacity()
+
+    );
 
     private final ParticleOptions particleDesigner;
 

@@ -25,12 +25,12 @@ class ParticleDebugSystemTest {
 
     @Test
     void update_drawsEmitterAndParticles(DefaultEnvironment environment, World world) {
-        var disabledParticleEmitter = new ParticleEmitterComponent(Duration.ofMillis(50), new ParticleOptions());
+        var disabledParticleEmitter = new ParticleEmitterComponent(Duration.ofMillis(50), ParticleOptions.unknownSource());
         disabledParticleEmitter.isEnabled = false;
 
         environment
                 .addSystem(new ParticleDebugSystem())
-                .addEntity(new TransformComponent(Vector.$(20, 20), 40, 40), new ParticleEmitterComponent(Duration.ofMillis(50), new ParticleOptions()))
+                .addEntity(new TransformComponent(Vector.$(20, 20), 40, 40), new ParticleEmitterComponent(Duration.ofMillis(50), ParticleOptions.unknownSource()))
                 .addEntity(new TransformComponent(Vector.$(50, 20), 40, 40), disabledParticleEmitter)
                 .addEntity(new TransformComponent(Vector.$(120, 30)), new ParticleComponent(), new RenderComponent());
 

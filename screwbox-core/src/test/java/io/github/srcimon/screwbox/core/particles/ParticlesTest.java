@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
     @Test
     void spawn_supplierForOptionsUsed_callsSpawnWithOptions() {
-        var options =  new ParticleOptions();
+        var options =  ParticleOptions.unknownSource();
         particles.spawn($(20, 10), () -> options);
 
         verify(particles).spawn($(20,10), options);
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 
     @Test
     void spawnMultiple_supplierForOptionsUsed_callsspawnMultipleWithOptions() {
-        var options =  new ParticleOptions();
+        var options =  ParticleOptions.unknownSource();
         particles.spawnMultiple(5, $(20, 10), () -> options);
 
         verify(particles).spawnMultiple(5, $(20,10), options);

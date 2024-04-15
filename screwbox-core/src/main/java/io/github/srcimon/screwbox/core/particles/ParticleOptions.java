@@ -42,6 +42,12 @@ public class ParticleOptions implements Serializable {
     private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
 
     /**
+     * Creates a new instance without {@link #source()}.
+     */
+    public static ParticleOptions unknownSource() {
+        return new ParticleOptions();
+    }
+    /**
      * Creates a new instance. Sets {@link #source()}.
      */
     public static ParticleOptions particleSource(final Entity source) {
@@ -63,17 +69,14 @@ public class ParticleOptions implements Serializable {
 
     private final Entity source;
 
-    /**
-     * Creates a new instance without {@link #source()}.
-     */
-    public ParticleOptions() {
+    private ParticleOptions() {
         this(null);
     }
 
     /**
      * Creates a new instance with {@link #source()}.
      */
-    public ParticleOptions(Entity source) {
+    private ParticleOptions(Entity source) {
         this(source, new HashMap<>());
     }
 
