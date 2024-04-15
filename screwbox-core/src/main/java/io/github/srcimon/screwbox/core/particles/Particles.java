@@ -44,7 +44,7 @@ public interface Particles {
     Particles setParticleLimit(int limit);
 
     /**
-     * Sets the max distance that particles will be spawened outside the fiel of vision.
+     * Sets the max distance that particles will be spawened outside the field of vision.
      *
      * @see #spawnDistance()
      */
