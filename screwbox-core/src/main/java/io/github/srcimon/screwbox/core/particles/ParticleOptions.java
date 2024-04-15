@@ -38,8 +38,16 @@ public class ParticleOptions implements Serializable {
 
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
+    private static final String LIFETIME_PREFIX = PREFIX + "tween-duration";
     private static final String SCALE_PREFIX = PREFIX + "render-scale";
     private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
+
+    /**
+     * Creates a new instance without {@link #source()}.
+     */
+    public static ParticleOptions unknownSource() {
+        return new ParticleOptions();
+    }
 
     /**
      * Creates a new instance. Sets {@link #source()}.
@@ -63,17 +71,14 @@ public class ParticleOptions implements Serializable {
 
     private final Entity source;
 
-    /**
-     * Creates a new instance without {@link #source()}.
-     */
-    public ParticleOptions() {
+    private ParticleOptions() {
         this(null);
     }
 
     /**
      * Creates a new instance with {@link #source()}.
      */
-    public ParticleOptions(Entity source) {
+    private ParticleOptions(Entity source) {
         this(source, new HashMap<>());
     }
 
@@ -86,14 +91,14 @@ public class ParticleOptions implements Serializable {
      * Sets the {@link Sprite} that is used for particle entities.
      */
     public ParticleOptions sprite(final Sprite sprite) {
-        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = sprite);
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = sprite.freshInstance());
     }
 
     /**
      * Sets multiple {@link Sprite}s that are randomly used for particle entities.
      */
     public ParticleOptions sprites(Sprite... sprites) {
-        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites));
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).freshInstance());
     }
 
     /**
@@ -183,6 +188,20 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
+     * Adds an random initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     */
+    public ParticleOptions randomBaseSpeed(final double from, final double to) {
+        return customize(PREFIX + "physics-movement", entity -> {
+            final Vector speed = Vector.random(RANDOM.nextDouble(from, to));
+            entity.get(PhysicsComponent.class).momentum = speed;
+            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
+            if (nonNull(chaoticMovement)) {
+                chaoticMovement.baseSpeed = speed;
+            }
+        });
+    }
+
+    /**
      * Adds chaotic movement to the particle.
      */
     public ParticleOptions chaoticMovement(final int speed, final Duration interval) {
@@ -206,14 +225,32 @@ public class ParticleOptions implements Serializable {
      * Sets the particle lifetime in seconds.
      */
     public ParticleOptions lifetimeSeconds(final long seconds) {
-        return customize(PREFIX + "lifetime", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+    }
+
+    /**
+     * Sets the particle lifetime in milliseconds.
+     */
+    public ParticleOptions lifetimeMilliseconds(final long milliseconds) {
+        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofMillis(milliseconds));
     }
 
     /**
      * Sets the particle lifetime to a random amount of seconts in the given range.
      */
+    public ParticleOptions randomLifeTimeMilliseconds(final long from, final long to) {
+        return customize(LIFETIME_PREFIX, entity -> {
+            final long minNanos = Duration.ofMillis(from).nanos();
+            final long maxNanos = Duration.ofMillis(to).nanos();
+            final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
+            entity.get(TweenComponent.class).duration = Duration.ofNanos(actualNanos);
+        });
+    }
+    /**
+     * Sets the particle lifetime to a random amount of seconts in the given range.
+     */
     public ParticleOptions randomLifeTimeSeconds(final long from, final long to) {
-        return customize(PREFIX + "lifetime", entity -> {
+        return customize(LIFETIME_PREFIX, entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);

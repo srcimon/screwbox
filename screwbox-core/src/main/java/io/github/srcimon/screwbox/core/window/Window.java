@@ -157,6 +157,11 @@ public interface Window {
     Window setWindowCursor(Frame cursor);
 
     /**
+     * Sets the application icon. Does not support animated {@link Sprite}s.
+     */
+    Window setApplicationIcon(Sprite icon);
+
+    /**
      * Returns the title of the {@link Window}.
      *
      * @see #setTitle(String) ()

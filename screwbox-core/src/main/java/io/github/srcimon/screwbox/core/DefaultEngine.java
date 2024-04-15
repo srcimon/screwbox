@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.assets.Assets;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
@@ -35,7 +34,7 @@ import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
-import io.github.srcimon.screwbox.core.utils.MacOsSupport;
+import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 import io.github.srcimon.screwbox.core.window.Window;
 import io.github.srcimon.screwbox.core.window.internal.DefaultWindow;
 import io.github.srcimon.screwbox.core.window.internal.MacOsWindowFrame;
@@ -75,18 +74,14 @@ class DefaultEngine implements Engine {
     DefaultEngine(final String name) {
         log = new DefaultLog(new ConsoleLoggingAdapter());
         if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-Dsun.java2d.opengl=true")) {
-            log.warn("Please run application with the following JVM Option to avoid massive fps drop: -Dsun.java2d.opengl=true");
+            log.warn("Please run application with the following JVM option to avoid massive fps drop: -Dsun.java2d.opengl=true");
         }
-        if (MacOsSupport.isMacOs()) {
-            if (MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
-                MacOsSupport.setDockImage(SpritesBundle.BOX_STRIPED_32.get());
-            } else {
-                log.warn("Please run application with the following JVM Option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
-            }
+        if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
+            log.warn("Please run application with the following JVM option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
-        WindowFrame frame = MacOsSupport.isMacOs()
+        final WindowFrame frame = MacOsSupport.isMacOs()
                 ? new MacOsWindowFrame(configuration.resolution())
                 : new WindowFrame(configuration.resolution());
 

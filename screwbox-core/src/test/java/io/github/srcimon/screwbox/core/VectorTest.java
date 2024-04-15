@@ -8,9 +8,20 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 import static org.assertj.core.data.Percentage.withPercentage;
 
 class VectorTest {
+
+    @Test
+    void random_twoCalls_returnsDifferentVectors() {
+        assertThat(Vector.random(20)).isNotEqualTo(Vector.random(20));
+    }
+
+    @Test
+    void random_length40_hasLength40() {
+        assertThat(Vector.random(40).length()).isEqualTo(40, offset(0.01));
+    }
 
     @Test
     void isZero_noLength_isTrue() {

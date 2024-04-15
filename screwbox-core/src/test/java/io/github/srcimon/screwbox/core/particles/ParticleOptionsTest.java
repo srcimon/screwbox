@@ -22,7 +22,7 @@ class ParticleOptionsTest {
 
     @BeforeEach
     void setUp() {
-        options = new ParticleOptions();
+        options = ParticleOptions.unknownSource();
     }
 
     @Test

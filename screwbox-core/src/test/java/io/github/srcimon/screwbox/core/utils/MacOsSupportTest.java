@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
+import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

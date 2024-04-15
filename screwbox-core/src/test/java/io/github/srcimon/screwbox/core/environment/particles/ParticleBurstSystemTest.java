@@ -17,7 +17,7 @@ class ParticleBurstSystemTest {
 
     @Test
     void update_emitterIsActiveForTooLong_disablesEmitter(DefaultEnvironment environment, Loop loop) {
-        var emitter = new ParticleEmitterComponent(Duration.ofMillis(50), new ParticleOptions());
+        var emitter = new ParticleEmitterComponent(Duration.ofMillis(50), ParticleOptions.unknownSource());
 
         environment.addSystem(new ParticleBurstSystem())
                 .addEntity(emitter, new ParticleBurstComponent(Duration.ofMillis(100)));
@@ -33,7 +33,7 @@ class ParticleBurstSystemTest {
 
     @Test
     void update_emitterIsActiveForShortTime_doesntDisableEmitter(DefaultEnvironment environment, Loop loop) {
-        var emitter = new ParticleEmitterComponent(Duration.ofMillis(50), new ParticleOptions());
+        var emitter = new ParticleEmitterComponent(Duration.ofMillis(50), ParticleOptions.unknownSource());
 
         environment.addSystem(new ParticleBurstSystem())
                 .addEntity(emitter, new ParticleBurstComponent(Duration.ofMillis(100)));

@@ -35,7 +35,7 @@ class ParticleEmitterSystemTest {
                         new ParticleEmitterComponent(
                                 Duration.ofSeconds(1),
                                 ParticleEmitterComponent.SpawnMode.POSITION,
-                                new ParticleOptions().sprite(Sprite.invisible())),
+                                ParticleOptions.unknownSource().sprite(Sprite.invisible())),
                         new TransformComponent($(120, 10), 20, 20));
 
         environment.update();
@@ -57,7 +57,7 @@ class ParticleEmitterSystemTest {
                         new ParticleEmitterComponent(
                                 Duration.ofSeconds(1),
                                 ParticleEmitterComponent.SpawnMode.AREA,
-                                new ParticleOptions()),
+                                ParticleOptions.unknownSource()),
                         new TransformComponent($(120, 10), 20, 20));
 
         environment.update();
@@ -77,7 +77,7 @@ class ParticleEmitterSystemTest {
         ParticleEmitterComponent particleEmitterComponent = new ParticleEmitterComponent(
                 Duration.ofSeconds(1),
                 ParticleEmitterComponent.SpawnMode.AREA,
-                new ParticleOptions());
+                ParticleOptions.unknownSource());
         particleEmitterComponent.isEnabled = false;
 
         environment.addSystem(new ParticleEmitterSystem())

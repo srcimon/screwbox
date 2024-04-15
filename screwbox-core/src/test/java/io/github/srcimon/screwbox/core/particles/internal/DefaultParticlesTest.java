@@ -55,7 +55,7 @@ class DefaultParticlesTest {
         when(world.visibleArea()).thenReturn($$(0, 0, 100, 100));
 
         particles.update();
-        particles.spawn($(20, 10), new ParticleOptions());
+        particles.spawn($(20, 10), ParticleOptions.unknownSource());
 
         assertThat(particles.particleCount()).isEqualTo(3);
     }
@@ -78,7 +78,7 @@ class DefaultParticlesTest {
     void spawn_particleLimitReached_doesntSpawnParticle() {
         particles.setParticleLimit(0);
 
-        particles.spawn($(20, 20), new ParticleOptions());
+        particles.spawn($(20, 20), ParticleOptions.unknownSource());
 
         verifyNoInteractions(world);
         verifyNoInteractions(environment);
@@ -88,7 +88,7 @@ class DefaultParticlesTest {
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
-        particles.spawn($(20000, 20), new ParticleOptions());
+        particles.spawn($(20000, 20), ParticleOptions.unknownSource());
 
         verifyNoInteractions(environment);
         assertThat(particles.particleCount()).isZero();
@@ -136,7 +136,7 @@ class DefaultParticlesTest {
         when(engine.environment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
-        particles.spawn($$(80, 100, 100, 100), new ParticleOptions().drawOrder(50).startScale(4));
+        particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
 
         var particleCaptor = ArgumentCaptor.forClass(Entity.class);
         verify(environment).addEntity(particleCaptor.capture());
@@ -168,7 +168,7 @@ class DefaultParticlesTest {
 
         particles.setParticleLimit(5);
 
-        particles.spawnMultiple(10, Vector.zero(), new ParticleOptions());
+        particles.spawnMultiple(10, Vector.zero(), ParticleOptions.unknownSource());
 
         verify(environment, times(5)).addEntity(Mockito.any(Entity.class));
         assertThat(particles.particleCount()).isEqualTo(5);

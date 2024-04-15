@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.utils;
+package io.github.srcimon.screwbox.core.utils.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 

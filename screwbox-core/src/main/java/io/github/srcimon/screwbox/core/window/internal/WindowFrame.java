@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,6 +57,10 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public void makeFullscreen(GraphicsDevice graphicsDevice) {
         graphicsDevice.setFullScreenWindow(this);
+    }
+
+    public void setIcon(final Sprite sprite) {
+        setIconImage(sprite.singleFrame().image());
     }
 
     public Size getCanvasSize() {
