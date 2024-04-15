@@ -38,6 +38,7 @@ public class ParticleOptions implements Serializable {
 
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
+    private static final String LIFETIME_PREFIX = PREFIX + "tween-duration";
     private static final String SCALE_PREFIX = PREFIX + "render-scale";
     private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
 
@@ -224,21 +225,21 @@ public class ParticleOptions implements Serializable {
      * Sets the particle lifetime in seconds.
      */
     public ParticleOptions lifetimeSeconds(final long seconds) {
-        return customize(PREFIX + "lifetime", entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
+        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofSeconds(seconds));
     }
 
     /**
      * Sets the particle lifetime in milliseconds.
      */
     public ParticleOptions lifetimeMilliseconds(final long milliseconds) {
-        return customize(PREFIX + "lifetime", entity -> entity.get(TweenComponent.class).duration = Duration.ofMillis(milliseconds));
+        return customize(LIFETIME_PREFIX, entity -> entity.get(TweenComponent.class).duration = Duration.ofMillis(milliseconds));
     }
 
     /**
      * Sets the particle lifetime to a random amount of seconts in the given range.
      */
     public ParticleOptions randomLifeTimeMilliseconds(final long from, final long to) {
-        return customize(PREFIX + "lifetime", entity -> {
+        return customize(LIFETIME_PREFIX, entity -> {
             final long minNanos = Duration.ofMillis(from).nanos();
             final long maxNanos = Duration.ofMillis(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
@@ -249,7 +250,7 @@ public class ParticleOptions implements Serializable {
      * Sets the particle lifetime to a random amount of seconts in the given range.
      */
     public ParticleOptions randomLifeTimeSeconds(final long from, final long to) {
-        return customize(PREFIX + "lifetime", entity -> {
+        return customize(LIFETIME_PREFIX, entity -> {
             final long minNanos = Duration.ofSeconds(from).nanos();
             final long maxNanos = Duration.ofSeconds(to).nanos();
             final long actualNanos = RANDOM.nextLong(minNanos, maxNanos);
