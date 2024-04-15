@@ -15,12 +15,7 @@ public interface Ui {
      */
     Ui openMenu(UiMenu menu);
 
-    default Ui openMenu(Consumer<UiMenu> menu) {
-        UiMenu t = new UiMenu();
-        menu.accept(t);
-        openMenu(t);
-        return this;
-    }
+    Ui openMenu(Consumer<UiMenu> menu);
 
     /**
      * Opens the previous {@link UiMenu}. Used to navigate back from sub menus.

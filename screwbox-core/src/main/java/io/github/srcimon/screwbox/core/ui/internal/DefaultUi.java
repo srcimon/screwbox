@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -33,6 +34,14 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui openMenu(final UiMenu menu) {
         openMenu = new OpenMenu(menu, openMenu);
+        return this;
+    }
+
+    @Override
+    public Ui openMenu(final Consumer<UiMenu> menu) {
+        UiMenu newMenu = new UiMenu();
+        menu.accept(newMenu);
+        openMenu(newMenu);
         return this;
     }
 
