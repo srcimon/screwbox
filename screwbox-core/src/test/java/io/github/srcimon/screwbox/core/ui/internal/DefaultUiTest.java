@@ -132,4 +132,15 @@ class DefaultUiTest {
 
         assertThat(ui.currentMenu()).contains(optionsMenu);
     }
+
+    @Test
+    void openMenu_menuConsumerGiven_addsCustomizedMenu() {
+        ui.openMenu(menu -> {
+            menu.addItem("test1");
+            menu.addItem("test2");
+        });
+
+        assertThat(ui.currentMenu()).isPresent();
+        assertThat(ui.currentMenu().get().itemCount()).isEqualTo(2);
+    }
 }

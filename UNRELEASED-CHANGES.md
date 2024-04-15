@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `ui.openMenu(Consumer<UiMenu>)` to allow one line definition of menus (#286)
 
 ### 🪛 Bug Fixes
 
