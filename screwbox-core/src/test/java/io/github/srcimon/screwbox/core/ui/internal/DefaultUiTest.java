@@ -143,4 +143,5 @@ class DefaultUiTest {
         assertThat(ui.currentMenu()).isPresent();
         assertThat(ui.currentMenu().get().itemCount()).isEqualTo(2);
     }
+
 }
