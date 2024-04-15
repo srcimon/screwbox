@@ -34,11 +34,32 @@ public final class UiMenuItem {
         onActivate.accept(engine);
     }
 
+    /**
+     * Marks {@link UiMenuItem} als always disabled.
+     *
+     * @see #activeCondition(Predicate)
+     */
+    public UiMenuItem disabled() {
+        activeCondition(engine -> false);
+        return this;
+    }
+
+    /**
+     * Sets the condition that determins if the {@link UiMenuItem} will be shown as active.
+     *
+     * @see #disabled()
+     * @since 1.8.0
+     */
     public UiMenuItem activeCondition(final Predicate<Engine> condition) {
         activeCondition = condition;
         return this;
     }
 
+    /**
+     * Returns true if the {@link UiMenuItem} is active. {@link Engine} is used to calculate that state.
+     *
+     * @see #activeCondition(Predicate)
+     */
     public boolean isActive(final Engine engine) {
         return activeCondition.test(engine);
     }

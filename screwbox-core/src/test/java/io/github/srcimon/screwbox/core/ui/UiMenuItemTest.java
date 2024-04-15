@@ -20,7 +20,7 @@ class UiMenuItemTest {
     @Test
     void label_dynamicLabel_returnsDynamicValue() {
         when(engine.name()).thenReturn("dynamic label demo");
-        var menuItem = new UiMenuItem(engine -> engine.name());
+        var menuItem = new UiMenuItem(Engine::name);
         assertThat(menuItem.label(engine)).isEqualTo("dynamic label demo");
     }
 
@@ -36,6 +36,12 @@ class UiMenuItemTest {
         assertThat(menuItem.isActive(engine)).isTrue();
     }
 
+    @Test
+    void disabled_setsActiveConditionToNever() {
+        var menuItem = new UiMenuItem("never active").disabled();
+
+        assertThat(menuItem.isActive(engine)).isFalse();
+    }
     @Test
     void isActive_activeConditionMet_true() {
         when(engine.name()).thenReturn("active");

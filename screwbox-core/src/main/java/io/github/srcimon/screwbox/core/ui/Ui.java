@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.ui;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Create simple ingame menus.
@@ -13,6 +14,8 @@ public interface Ui {
      * @see #closeMenu() 
      */
     Ui openMenu(UiMenu menu);
+
+    Ui openMenu(Consumer<UiMenu> menu);
 
     /**
      * Opens the previous {@link UiMenu}. Used to navigate back from sub menus.
