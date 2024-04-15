@@ -51,7 +51,7 @@ class DefaultAssetsTest {
     void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
         var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
 
-        assertThat(locations).hasSize(20)
+        assertThat(locations).hasSize(21)
                 .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundsBundle.STEAM"));
     }
 
