@@ -57,18 +57,18 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     
     public class HelloWorldApp {
 
-    public static void main(String[] args) {
-        Engine screwBox = ScrewBox.createEngine();
+        public static void main(String[] args) {
+            Engine screwBox = ScrewBox.createEngine();
 
-        screwBox.environment().addSystem(engine -> {
-            var screen = engine.graphics().screen();
-            var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
-            screen.drawText(screen.center(), "Hello world!", drawOptions);
-        });
+            screwBox.environment().addSystem(engine -> {
+                var screen = engine.graphics().screen();
+                var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
+                screen.drawText(screen.center(), "Hello world!", drawOptions);
+            });
 
-        screwBox.start();
+            screwBox.start();
+        }
     }
-}
     ```
 
 ## Modules
