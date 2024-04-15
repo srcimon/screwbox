@@ -51,7 +51,7 @@ public interface Particles {
     Particles setSpawnDistance(double spawnDistance);
 
     /**
-     * Returns the current distance that particles will be spawened outside the fiel of vision.
+     * Returns the current distance that particles will be spawened outside the field of vision.
      *
      * @see #setSpawnDistance(double)
      */
