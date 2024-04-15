@@ -34,6 +34,11 @@ public final class UiMenuItem {
         onActivate.accept(engine);
     }
 
+    public UiMenuItem disabled() {
+        activeCondition(engine -> false);
+        return this;
+    }
+
     public UiMenuItem activeCondition(final Predicate<Engine> condition) {
         activeCondition = condition;
         return this;
