@@ -30,8 +30,13 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
             .randomLifeTimeSeconds(6, 7)
+            .animateOpacity()),
+    EXPLOSION(ParticleOptions.unknownSource()
+            .sprites(SpritesBundle.DOT_YELLOW_16, SpritesBundle.DOT_RED_16)
             .animateOpacity()
-
+            .animateScale(3, 1)
+            .randomLifeTimeMilliseconds(800, 1500)
+            .randomBaseSpeed(100, 400)
     );
 
     private final ParticleOptions particleDesigner;
