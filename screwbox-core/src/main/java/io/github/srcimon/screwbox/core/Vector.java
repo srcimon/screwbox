@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * The {@link Vector} represents a position or a distance in the 2d world. The
@@ -11,6 +12,7 @@ import java.util.Locale;
  */
 public final class Vector implements Serializable {
 
+    private static final Random RANDOM = new Random();
     private static final Vector ZERO = new Vector(0, 0);
 
     @Serial
@@ -204,6 +206,15 @@ public final class Vector implements Serializable {
         }
         double factor = length / length();
         return Vector.of(x * factor, y * factor);
+    }
+
+    //TODO ParticleOptions.randomBaseSpeed()
+
+    /**
+     * Returns a new {@link Vector} with random direction an the given length.
+     */
+    public static Vector random(final double length) {
+        return  Vector.of(RANDOM.nextDouble(), RANDOM.nextDouble()).length(length);
     }
 
     /**

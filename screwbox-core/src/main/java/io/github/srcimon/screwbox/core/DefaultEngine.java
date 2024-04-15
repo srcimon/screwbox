@@ -79,7 +79,6 @@ class DefaultEngine implements Engine {
         if (MacOsSupport.isMacOs() && !MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
             log.warn("Please run application with the following JVM option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
-        //TODO add icon change on startup
 
         final GraphicsConfiguration configuration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs()
