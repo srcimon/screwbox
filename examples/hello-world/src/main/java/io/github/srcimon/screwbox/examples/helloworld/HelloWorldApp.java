@@ -35,7 +35,6 @@ public class HelloWorldApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     e.environment().fetchAllHaving(ParticleInteractionComponent.class).forEach(
-//                            entity -> entity.get(PhysicsComponent.class).momentum = e.keyboard().wsadMovement(500));
                             entity -> entity.moveTo(e.mouse().position()));
                 })
                 .addSystem(new ParticleInteractionSystem())

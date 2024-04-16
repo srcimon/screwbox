@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Reworked `ChaoticMovementSystem`: system doesn't change `PhysicsComponent.momentum` anymore
+- Reworked `ChaoticMovementSystem` so it doesn't enforce physics momentum to a strict value
 
 ### 📦 Dependency updates
 

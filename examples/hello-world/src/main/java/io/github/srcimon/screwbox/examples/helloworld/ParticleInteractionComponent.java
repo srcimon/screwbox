@@ -16,7 +16,7 @@ public class ParticleInteractionComponent implements Component {
     public Vector lastPos;
 
     public ParticleInteractionComponent(final double range) {
-        this(range, Percent.max());
+        this(range, Percent.half());
     }
 
     public ParticleInteractionComponent(final double range, final Percent modifier) {
