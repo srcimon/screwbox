@@ -51,7 +51,6 @@ public class HelloWorldApp {
         screwBox.environment().addSystem(engine -> {
             if(spawn.isTick()) {
                 engine.particles().spawnMultiple(6, engine.graphics().world().visibleArea(), ParticleOptionsBundle.CONFETTI.get()
-//                                .customize("x", entity -> entity.remove(ChaoticMovementComponent.class))
                         .sprites(SpritesBundle.DOT_BLUE_16));
             }
         });

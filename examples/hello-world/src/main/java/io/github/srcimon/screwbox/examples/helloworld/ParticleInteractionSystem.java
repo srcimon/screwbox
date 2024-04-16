@@ -18,20 +18,17 @@ public class ParticleInteractionSystem implements EntitySystem {
         for(final var interactor : engine.environment().fetchAll(INTERACTORS)) {
             var momentum = interactor.get(PhysicsComponent.class).momentum;
             if(!momentum.isZero()) {
+                final var interaction = interactor.get(ParticleInteractionComponent.class);
                 final var particlesInRange = engine.physics()
-                        .searchInRange(interactor.bounds().expand(interactor.get(ParticleInteractionComponent.class).range))
+                        .searchInRange(interactor.bounds().expand(interaction.range))
                         .checkingFor(PARTICLES)
                         .selectAll();
 
                 for(final var particle : particlesInRange) {
                     var physics = particle.get(PhysicsComponent.class);
-                    if (physics.momentum.length() < momentum.multiply(0.5).length()) {
+                    if (physics.momentum.length() < momentum.multiply(interaction.modifier.value()).length()) {
                         physics.momentum = physics.momentum.add(momentum.multiply(engine.loop().delta()));
                     }
-//                    var chaotic = particle.get(ChaoticMovementComponent.class);
-//                    if (chaotic != null && chaotic.baseSpeed.multiply(0.5).length() < momentum.length()) {
-//                        chaotic.baseSpeed = chaotic.baseSpeed.add(momentum.multiply(engine.loop().delta()));
-//                    }
                 }
             }
         }

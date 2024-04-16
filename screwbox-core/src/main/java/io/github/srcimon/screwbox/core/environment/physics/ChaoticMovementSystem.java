@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 
@@ -16,7 +17,7 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 @Order(SystemOrder.PREPARATION)
 public class ChaoticMovementSystem implements EntitySystem {
 
-    private static final Archetype MOVING_ENTITIES = Archetype.of(PhysicsComponent.class, ChaoticMovementComponent.class);
+    private static final Archetype MOVING_ENTITIES = Archetype.of(PhysicsComponent.class, ChaoticMovementComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {

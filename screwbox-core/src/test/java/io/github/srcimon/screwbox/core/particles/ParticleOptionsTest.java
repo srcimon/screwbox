@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
@@ -87,18 +86,10 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void baseSpeed_noChaoticSpeed_setsMomentum() {
+    void baseSpeed_setsMomentum() {
         Entity particle = applyOptionsOnTemplateParticle(options.baseSpeed($(20, 0)));
 
         assertThat(particle.get(PhysicsComponent.class).momentum).isEqualTo($(20, 0));
-    }
-
-    @Test
-    void baseSpeed_hasChaoticMovement_setsBaseSpeedOfChaoticSpeed() {
-        Entity particle = applyOptionsOnTemplateParticle(options.baseSpeed($(20, 0)), templateParticle().add(new ChaoticMovementComponent(20, Duration.ofMillis(20))));
-
-        assertThat(particle.get(PhysicsComponent.class).momentum).isEqualTo($(20, 0));
-        assertThat(particle.get(ChaoticMovementComponent.class).baseSpeed).isEqualTo($(20, 0));
     }
 
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {

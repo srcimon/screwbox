@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Reworked `ChaoticMovementSystem`: system doesn't change `PhysicsComponent.momentum` anymore
 
 ### 📦 Dependency updates
 
