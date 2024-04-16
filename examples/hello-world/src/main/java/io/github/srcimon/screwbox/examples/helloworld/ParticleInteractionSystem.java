@@ -28,10 +28,10 @@ public class ParticleInteractionSystem implements EntitySystem {
                     if (physics.momentum.length() < momentum.multiply(0.5).length()) {
                         physics.momentum = physics.momentum.add(momentum.multiply(engine.loop().delta()));
                     }
-                    var chaotic = particle.get(ChaoticMovementComponent.class);
-                    if (chaotic != null && chaotic.baseSpeed.multiply(0.5).length() < momentum.length()) {
-                        chaotic.baseSpeed = chaotic.baseSpeed.add(momentum.multiply(engine.loop().delta()));
-                    }
+//                    var chaotic = particle.get(ChaoticMovementComponent.class);
+//                    if (chaotic != null && chaotic.baseSpeed.multiply(0.5).length() < momentum.length()) {
+//                        chaotic.baseSpeed = chaotic.baseSpeed.add(momentum.multiply(engine.loop().delta()));
+//                    }
                 }
             }
         }

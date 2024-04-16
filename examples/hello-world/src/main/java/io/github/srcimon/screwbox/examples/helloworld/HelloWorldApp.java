@@ -35,7 +35,7 @@ public class HelloWorldApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     e.environment().fetchAllHaving(ParticleInteractionComponent.class).forEach(
-                            en -> en.get(PhysicsComponent.class).momentum = e.mouse().position().substract(en.position()).length(350));
+                            en -> en.get(PhysicsComponent.class).momentum = e.keyboard().wsadMovement(300));
                 })
                 .addSystem(new ParticleInteractionSystem())
                 .enableRendering()
@@ -50,8 +50,8 @@ public class HelloWorldApp {
 
         screwBox.environment().addSystem(engine -> {
             if(spawn.isTick()) {
-                engine.particles().spawnMultiple(8, engine.graphics().world().visibleArea(), ParticleOptionsBundle.CONFETTI.get()
-                                .customize("x", entity -> entity.remove(ChaoticMovementComponent.class))
+                engine.particles().spawnMultiple(6, engine.graphics().world().visibleArea(), ParticleOptionsBundle.CONFETTI.get()
+//                                .customize("x", entity -> entity.remove(ChaoticMovementComponent.class))
                         .sprites(SpritesBundle.DOT_BLUE_16));
             }
         });

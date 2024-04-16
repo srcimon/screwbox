@@ -17,18 +17,12 @@ public class ChaoticMovementComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public final double speed;
-    public Vector baseSpeed;
     public final Noise xModifier;
     public final Noise yModifier;
 
     public ChaoticMovementComponent(final double speed, final Duration interval) {
-        this(speed, interval, Vector.zero());
-    }
-
-    public ChaoticMovementComponent(final double speed, final Duration interval, final Vector baseSpeed) {
         this.speed = speed;
         xModifier = Noise.variableInterval(interval);
         yModifier = Noise.variableInterval(interval);
-        this.baseSpeed = baseSpeed;
     }
 }

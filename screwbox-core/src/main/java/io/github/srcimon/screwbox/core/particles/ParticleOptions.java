@@ -175,43 +175,31 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds an initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an initial movement to the particle.
      */
     public ParticleOptions baseSpeed(final Vector speed) {
         return customize(PREFIX + "physics-movement", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
-            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
-            if (nonNull(chaoticMovement)) {
-                chaoticMovement.baseSpeed = speed;
-            }
         });
     }
 
     /**
-     * Adds an random initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double speed) {
         return customize(PREFIX + "physics-movement", entity -> {
             final Vector speedVector = Vector.random(speed);
             entity.get(PhysicsComponent.class).momentum = speedVector;
-            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
-            if (nonNull(chaoticMovement)) {
-                chaoticMovement.baseSpeed = speedVector;
-            }
         });
     }
 
     /**
-     * Adds an random initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double from, final double to) {
         return customize(PREFIX + "physics-movement", entity -> {
             final Vector speed = Vector.random(RANDOM.nextDouble(from, to));
             entity.get(PhysicsComponent.class).momentum = speed;
-            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
-            if (nonNull(chaoticMovement)) {
-                chaoticMovement.baseSpeed = speed;
-            }
         });
     }
 
@@ -220,8 +208,7 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval) {
         return customize(PREFIX + "chaoticmovement", entity -> {
-            final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
-            entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
+            entity.add(new ChaoticMovementComponent(speed, interval));
         });
     }
 
