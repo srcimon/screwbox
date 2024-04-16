@@ -12,4 +12,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump ghaction-import-gpg to v6.1.0
