@@ -5,28 +5,25 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.utils.Sheduler;
 
 import static io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle.CONFETTI;
+import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.AREA;
 
 public class ParticalsApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Particles");
 
-        final Sheduler particleSpawnSheduler = Sheduler.withInterval(Duration.ofMillis(20));
-
         screwBox.environment()
                 .enableTweening()
                 .enableParticles()
                 .enablePhysics()
-                .addSystem(engine -> {
-                    if (particleSpawnSheduler.isTick()) {
-                        engine.particles().spawn(engine.graphics().world().visibleArea(), CONFETTI);
-                    }
-                })
+                .addEntity("particle spawner",
+                        new TransformComponent(screwBox.graphics().world().visibleArea()),
+                        new ParticleEmitterComponent(Duration.ofMillis(10), AREA, CONFETTI))
                 .addSystem(new LogFpsSystem())
                 .addEntity(1, "particle interactor",
                         new PhysicsComponent(),
