@@ -33,35 +33,25 @@ public class HelloWorldApp {
         screwBox.environment()
                 .enableTweening()
                 .addSystem(new LogFpsSystem())
+                .addSystem(e -> {
+                    e.environment().fetchAllHaving(ParticleInteractionComponent.class).forEach(
+                            en -> en.get(PhysicsComponent.class).momentum = e.mouse().position().substract(en.position()).length(350));
+                })
+                .addSystem(new ParticleInteractionSystem())
                 .enableRendering()
-                .addEntity(new PhysicsComponent(), new RenderComponent(SpritesBundle.DOT_YELLOW_16), new TransformComponent(-60, -60, 120, 120),
-                        new ChaoticMovementComponent(100, Duration.ofSeconds(2)))
+                .addEntity(new PhysicsComponent(),
+                        new RenderComponent(SpritesBundle.DOT_YELLOW_16),
+                        new TransformComponent(-60, -60, 120, 120),
+                        new ParticleInteractionComponent(40))
                 .addSystem(engine -> engine.window().setTitle(""+engine.particles().particleCount()))
                 .enablePhysics()
                         .addSystem(engine -> {
-                            if(x.isTick()) {
-                                engine.environment().fetchAllHaving(ChaoticMovementComponent.class).forEach(e -> {
-                                    ChaoticMovementComponent chaoticMovementComponent = e.get(ChaoticMovementComponent.class);
-                                    chaoticMovementComponent.baseSpeed = chaoticMovementComponent.baseSpeed.multiply(0.98);
-                                });
-                            }
-                            if(!engine.mouse().drag().isZero()) {
-                                Vector multiply = engine.mouse().drag().multiply(-4);
-                                engine.environment().fetchAllHaving(ChaoticMovementComponent.class).forEach(e -> {
-                                    if(e.position().distanceTo(engine.mouse().position()) < 80) {
-                                        ChaoticMovementComponent chaoticMovementComponent = e.get(ChaoticMovementComponent.class);
-                                        if (chaoticMovementComponent.baseSpeed.length() < multiply.length()) {
-                                            chaoticMovementComponent.baseSpeed = chaoticMovementComponent.baseSpeed.add(multiply);
-                                        }
-                                    }
-
-                                });
-                            }
                         });
 
         screwBox.environment().addSystem(engine -> {
             if(spawn.isTick()) {
                 engine.particles().spawnMultiple(8, engine.graphics().world().visibleArea(), ParticleOptionsBundle.CONFETTI.get()
+                                .customize("x", entity -> entity.remove(ChaoticMovementComponent.class))
                         .sprites(SpritesBundle.DOT_BLUE_16));
             }
         });
