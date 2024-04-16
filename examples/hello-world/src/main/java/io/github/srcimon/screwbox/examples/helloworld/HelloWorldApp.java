@@ -7,7 +7,8 @@ import io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
@@ -17,8 +18,6 @@ public class HelloWorldApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
         Sheduler spawn = Sheduler.withInterval(Duration.ofMillis(50));
-        screwBox.loop().unlockFps();
-
         screwBox.environment()
                 .enableTweening()
                 .addSystem(new LogFpsSystem())

@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.examples.helloworld;
+package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;

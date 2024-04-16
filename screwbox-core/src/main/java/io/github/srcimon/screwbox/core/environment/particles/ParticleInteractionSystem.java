@@ -1,11 +1,9 @@
-package io.github.srcimon.screwbox.examples.helloworld;
+package io.github.srcimon.screwbox.core.environment.particles;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 public class ParticleInteractionSystem implements EntitySystem {
