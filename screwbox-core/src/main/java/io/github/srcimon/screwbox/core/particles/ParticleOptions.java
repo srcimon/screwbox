@@ -175,7 +175,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds an initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an initial movement to the particle.
      */
     public ParticleOptions baseSpeed(final Vector speed) {
         return customize(PREFIX + "physics-movement", entity -> {
@@ -188,7 +188,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds an random initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double speed) {
         return customize(PREFIX + "physics-movement", entity -> {
@@ -202,7 +202,7 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds an random initial movement to the particle. Also affects {@link ChaoticMovementComponent}, if present.
+     * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double from, final double to) {
         return customize(PREFIX + "physics-movement", entity -> {
@@ -223,6 +223,13 @@ public class ParticleOptions implements Serializable {
             final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
             entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
+    }
+
+    /**
+     * Adds chaotic movement to the particle.
+     */
+    public ParticleOptions chaoticMovement(final double speed, final Duration interval, final Vector baseSpeed) {
+        return customize(PREFIX + "chaoticmovement", entity -> entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed)));
     }
 
     /**
@@ -260,6 +267,7 @@ public class ParticleOptions implements Serializable {
             entity.get(TweenComponent.class).duration = Duration.ofNanos(actualNanos);
         });
     }
+
     /**
      * Sets the particle lifetime to a random amount of seconts in the given range.
      */

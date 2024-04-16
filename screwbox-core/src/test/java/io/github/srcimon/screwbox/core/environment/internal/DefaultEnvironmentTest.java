@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
 import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
@@ -334,8 +335,9 @@ class DefaultEnvironmentTest {
     void enableParticles_addsParticleSystems() {
         environment.enableParticles();
 
-        assertThat(environment.systems()).hasSize(2)
+        assertThat(environment.systems()).hasSize(3)
                 .anyMatch(system -> system.getClass().equals(ParticleEmitterSystem.class))
+                .anyMatch(system -> system.getClass().equals(ParticleInteractionSystem.class))
                 .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
