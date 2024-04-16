@@ -35,14 +35,15 @@ public class HelloWorldApp {
                 .addSystem(new LogFpsSystem())
                 .addSystem(e -> {
                     e.environment().fetchAllHaving(ParticleInteractionComponent.class).forEach(
-                            en -> en.get(PhysicsComponent.class).momentum = e.keyboard().wsadMovement(300));
+//                            entity -> entity.get(PhysicsComponent.class).momentum = e.keyboard().wsadMovement(500));
+                            entity -> entity.moveTo(e.mouse().position()));
                 })
                 .addSystem(new ParticleInteractionSystem())
                 .enableRendering()
                 .addEntity(new PhysicsComponent(),
                         new RenderComponent(SpritesBundle.DOT_YELLOW_16),
                         new TransformComponent(-60, -60, 120, 120),
-                        new ParticleInteractionComponent(40))
+                        new ParticleInteractionComponent(80))
                 .addSystem(engine -> engine.window().setTitle(""+engine.particles().particleCount()))
                 .enablePhysics()
                         .addSystem(engine -> {

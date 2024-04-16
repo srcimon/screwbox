@@ -16,9 +16,14 @@ public class ParticleInteractionSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for(final var interactor : engine.environment().fetchAll(INTERACTORS)) {
-            var momentum = interactor.get(PhysicsComponent.class).momentum;
+            final var interaction = interactor.get(ParticleInteractionComponent.class);
+            if(interaction.lastPos == null) {
+                interaction.lastPos = interactor.position();
+            }
+            var momentum = interactor.position().substract(interaction.lastPos).multiply(1 / engine.loop().delta())
+                    .multiply(interaction.modifier.value());
+            interaction.lastPos = interactor.position();
             if(!momentum.isZero()) {
-                final var interaction = interactor.get(ParticleInteractionComponent.class);
                 final var particlesInRange = engine.physics()
                         .searchInRange(interactor.bounds().expand(interaction.range))
                         .checkingFor(PARTICLES)
@@ -26,7 +31,7 @@ public class ParticleInteractionSystem implements EntitySystem {
 
                 for(final var particle : particlesInRange) {
                     var physics = particle.get(PhysicsComponent.class);
-                    if (physics.momentum.length() < momentum.multiply(interaction.modifier.value()).length()) {
+                    if (physics.momentum.length() < momentum.length()) {
                         physics.momentum = physics.momentum.add(momentum.multiply(engine.loop().delta()));
                     }
                 }
