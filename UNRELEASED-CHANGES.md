@@ -1,7 +1,9 @@
 ### 🚀 Features & improvements
 
+- Added `ParticleInteractionComponent` / `System` (#294)
 - Added `ui.openMenu(Consumer<UiMenu>)` to allow one line definition of menus (#286)
 - Added `UiMenuItem.disabled()`
+- Added new particles example application
 
 ### 🪛 Bug Fixes
 
