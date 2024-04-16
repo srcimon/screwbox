@@ -229,9 +229,7 @@ public class ParticleOptions implements Serializable {
      * Adds chaotic movement to the particle.
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval, final Vector baseSpeed) {
-        return customize(PREFIX + "chaoticmovement", entity -> {
-            entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
-        });
+        return customize(PREFIX + "chaoticmovement", entity -> entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed)));
     }
 
     /**
