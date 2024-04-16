@@ -8,8 +8,8 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
 public class ParticleInteractionSystem implements EntitySystem {
 
-    private final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class, PhysicsComponent.class);
-    private final Archetype PARTICLES = Archetype.of(ParticleComponent.class, TransformComponent.class, PhysicsComponent.class);
+    private static final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class, PhysicsComponent.class);
+    private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class, TransformComponent.class, PhysicsComponent.class);
 
     @Override
     public void update(Engine engine) {
