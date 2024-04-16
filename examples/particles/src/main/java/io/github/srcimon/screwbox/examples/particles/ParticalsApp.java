@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.examples.particles;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;

@@ -180,6 +180,10 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions baseSpeed(final Vector speed) {
         return customize(PREFIX + "physics-movement", entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
+            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
+            if (nonNull(chaoticMovement)) {
+                chaoticMovement.baseSpeed = speed;
+            }
         });
     }
 
@@ -190,6 +194,10 @@ public class ParticleOptions implements Serializable {
         return customize(PREFIX + "physics-movement", entity -> {
             final Vector speedVector = Vector.random(speed);
             entity.get(PhysicsComponent.class).momentum = speedVector;
+            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
+            if (nonNull(chaoticMovement)) {
+                chaoticMovement.baseSpeed = speedVector;
+            }
         });
     }
 
@@ -200,6 +208,10 @@ public class ParticleOptions implements Serializable {
         return customize(PREFIX + "physics-movement", entity -> {
             final Vector speed = Vector.random(RANDOM.nextDouble(from, to));
             entity.get(PhysicsComponent.class).momentum = speed;
+            final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
+            if (nonNull(chaoticMovement)) {
+                chaoticMovement.baseSpeed = speed;
+            }
         });
     }
 
@@ -208,7 +220,17 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions chaoticMovement(final double speed, final Duration interval) {
         return customize(PREFIX + "chaoticmovement", entity -> {
-            entity.add(new ChaoticMovementComponent(speed, interval));
+            final var baseSpeed = entity.get(PhysicsComponent.class).momentum;
+            entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
+        });
+    }
+
+    /**
+     * Adds chaotic movement to the particle.
+     */
+    public ParticleOptions chaoticMovement(final double speed, final Duration interval, final Vector baseSpeed) {
+        return customize(PREFIX + "chaoticmovement", entity -> {
+            entity.add(new ChaoticMovementComponent(speed, interval, baseSpeed));
         });
     }
 
@@ -247,6 +269,7 @@ public class ParticleOptions implements Serializable {
             entity.get(TweenComponent.class).duration = Duration.ofNanos(actualNanos);
         });
     }
+
     /**
      * Sets the particle lifetime to a random amount of seconts in the given range.
      */
