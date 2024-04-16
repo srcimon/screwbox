@@ -25,7 +25,7 @@ public class ChaoticMovementSystem implements EntitySystem {
                     .multiply(movement.speed).add(movement.baseSpeed);
             final var physicsComponent = entity.get(PhysicsComponent.class);
             final Vector deltaMovement = targetMovement.substract(physicsComponent.momentum)
-                    .multiply(engine.loop().delta());
+                    .multiply(engine.loop().delta() * 1000.0 / movement.interval.milliseconds());
 
             physicsComponent.momentum =  physicsComponent.momentum.add(deltaMovement);
 

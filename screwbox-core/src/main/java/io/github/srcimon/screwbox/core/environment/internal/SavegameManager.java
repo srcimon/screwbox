@@ -3,19 +3,24 @@ package io.github.srcimon.screwbox.core.environment.internal;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.utils.TimeoutCache;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static java.util.Objects.requireNonNull;
 
 public class SavegameManager {
 
-    private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache<>(ofSeconds(1));
+    private final TimeoutCache<String, Boolean> savegameCache = new TimeoutCache<>(oneSecond());
 
     public void createSavegame(List<Entity> entities, final String name) {
         requireNonNull(name, "name must not be null");

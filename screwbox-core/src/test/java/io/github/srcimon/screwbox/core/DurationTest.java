@@ -107,6 +107,13 @@ class DurationTest {
     }
 
     @Test
+    void oneSecond_returnsNewInstance() {
+        Duration duration = Duration.oneSecond();
+
+        assertThat(duration.nanos()).isEqualTo(1_000_000_000L);
+    }
+
+    @Test
     void hashcode_calculatesHashCode() {
         Duration aDuration = Duration.ofMillis(10);
         Duration anotherDuration = Duration.ofMillis(15);

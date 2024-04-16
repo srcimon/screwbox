@@ -55,7 +55,7 @@ public class DiggableSystem implements EntitySystem {
 
             Entity entity = hitEntity.get();
             if (!entity.hasComponent(TweenComponent.class)) {
-                engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.ofSeconds(1)).strength(5));
+                engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(5));
                 entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
                 entity.add(new TweenDestroyComponent());
                 engine.particles().spawnMultiple(10, entity.bounds(), ParticleOptions.particleSource(entity)

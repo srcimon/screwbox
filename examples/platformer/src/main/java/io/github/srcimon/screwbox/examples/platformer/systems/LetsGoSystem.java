@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
@@ -34,7 +35,7 @@ public class LetsGoSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.Q)) {
-            engine.graphics().camera().shake(lastingForDuration(ofSeconds(1)).strength(10).interval(ofMillis(100)));
+            engine.graphics().camera().shake(lastingForDuration(oneSecond()).strength(10).interval(ofMillis(100)));
 
             var playerCenter = engine.environment().fetchSingleton(PLAYER).get(TransformComponent.class).bounds
                     .position();

@@ -19,6 +19,7 @@ public class ChaoticMovementComponent implements Component {
     public final double speed;
     public final Noise xModifier;
     public final Noise yModifier;
+    public final Duration interval;
     public Vector baseSpeed;
 
     public ChaoticMovementComponent(final double speed, final Duration interval) {
@@ -29,6 +30,7 @@ public class ChaoticMovementComponent implements Component {
         this.speed = speed;
         xModifier = Noise.variableInterval(interval);
         yModifier = Noise.variableInterval(interval);
+        this.interval = interval;
         this.baseSpeed = baseSpeed;
     }
 }

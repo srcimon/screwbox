@@ -58,12 +58,25 @@ public class Duration implements Serializable {
     /**
      * Creates a new instance with the duration of the given value of seconds.
      *
+     * @see #oneSecond()
      * @see #ofMillis(long)
      * @see #ofNanos(long)
      * @see #ofMicros(long)
      */
     public static Duration ofSeconds(final long seconds) {
         return new Duration(seconds * Time.Unit.SECONDS.nanos());
+    }
+
+
+    /**
+     * Creates a new instance with the duration of one second.
+     *
+     * @see #ofMillis(long)
+     * @see #ofNanos(long)
+     * @see #ofMicros(long)
+     */
+    public static Duration oneSecond() {
+        return ofSeconds(1);
     }
 
     /**
