@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementCompon
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
@@ -33,6 +34,8 @@ public class HelloWorldApp {
                 .enableTweening()
                 .addSystem(new LogFpsSystem())
                 .enableRendering()
+                .addEntity(new PhysicsComponent(), new RenderComponent(SpritesBundle.DOT_YELLOW_16), new TransformComponent(-60, -60, 120, 120),
+                        new ChaoticMovementComponent(100, Duration.ofSeconds(2)))
                 .addSystem(engine -> engine.window().setTitle(""+engine.particles().particleCount()))
                 .enablePhysics()
                         .addSystem(engine -> {
