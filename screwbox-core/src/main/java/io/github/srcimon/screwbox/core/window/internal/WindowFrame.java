@@ -21,7 +21,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     private final Size initialSize;
 
     public WindowFrame(final Size initialSize) {
-        setIconImage(SpritesBundle.BOX_STRIPED_32.get().singleFrame().image());
+        setIconImage(SpritesBundle.LOGO_512.get().singleFrame().image());
         this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();
