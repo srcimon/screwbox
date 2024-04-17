@@ -6,6 +6,8 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
+import static java.util.Objects.isNull;
+
 public class ParticleInteractionSystem implements EntitySystem {
 
     private static final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class, PhysicsComponent.class);
@@ -13,24 +15,31 @@ public class ParticleInteractionSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for(final var interactor : engine.environment().fetchAll(INTERACTORS)) {
+        final var interactors = engine.environment().fetchAll(INTERACTORS);
+        if (interactors.isEmpty()) {
+            return;
+        }
+        final var particles = engine.environment().fetchAll(PARTICLES);
+        for (final var interactor : interactors) {
             final var interaction = interactor.get(ParticleInteractionComponent.class);
-            if(interaction.lastPos == null) {
+            if (isNull(interaction.lastPos)) {
                 interaction.lastPos = interactor.position();
             }
-            var momentum = interactor.position().substract(interaction.lastPos).multiply(1 / engine.loop().delta())
-                    .multiply(interaction.modifier.value());
-            interaction.lastPos = interactor.position();
-            if(!momentum.isZero()) {
-                final var particlesInRange = engine.physics()
-                        .searchInRange(interactor.bounds().expand(interaction.range))
-                        .checkingFor(PARTICLES)
-                        .selectAll();
+            final var momentum = interactor.position()
+                    .substract(interaction.lastPos)
+                    .multiply(1 / engine.loop().delta() * interaction.modifier.value());
 
-                for(final var particle : particlesInRange) {
-                    var physics = particle.get(PhysicsComponent.class);
-                    if (physics.momentum.length() < momentum.length()) {
-                        physics.momentum = physics.momentum.add(momentum.multiply(engine.loop().delta()));
+            interaction.lastPos = interactor.position();
+            if (!momentum.isZero()) {
+                final double momentumLength = momentum.length();
+                final var interactionBounds = interactor.bounds().expand(interaction.range);
+
+                for (final var particle : particles) {
+                    if (particle.bounds().intersects(interactionBounds)) {
+                        var physics = particle.get(PhysicsComponent.class);
+                        if (physics.momentum.length() < momentumLength) {
+                            physics.momentum = physics.momentum.add(momentum.multiply(engine.loop().delta()));
+                        }
                     }
                 }
             }
