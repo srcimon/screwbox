@@ -9,6 +9,7 @@
 	<artifactId>platformer</artifactId>
 	<properties>
 		<sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions><!-- no test coverage on examples -->
+		<maven.javadoc.skip>true</maven.javadoc.skip><!-- no JavaDoc for examples -->
 	</properties>
 	<dependencies>
 		<dependency>

@@ -38,6 +38,7 @@ public class ParticleOptions implements Serializable {
 
     private static final Random RANDOM = new Random();
     private static final String PREFIX = "default-";
+    private static final String MOVEMENT_PREFIX = PREFIX + "physics-movement";
     private static final String LIFETIME_PREFIX = PREFIX + "tween-duration";
     private static final String SCALE_PREFIX = PREFIX + "render-scale";
     private static final String SPRITE_PREFIX = PREFIX + "render-sprite";
@@ -178,7 +179,7 @@ public class ParticleOptions implements Serializable {
      * Adds an initial movement to the particle.
      */
     public ParticleOptions baseSpeed(final Vector speed) {
-        return customize(PREFIX + "physics-movement", entity -> {
+        return customize(MOVEMENT_PREFIX, entity -> {
             entity.get(PhysicsComponent.class).momentum = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
             if (nonNull(chaoticMovement)) {
@@ -191,7 +192,7 @@ public class ParticleOptions implements Serializable {
      * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double speed) {
-        return customize(PREFIX + "physics-movement", entity -> {
+        return customize(MOVEMENT_PREFIX, entity -> {
             final Vector speedVector = Vector.random(speed);
             entity.get(PhysicsComponent.class).momentum = speedVector;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
@@ -205,7 +206,7 @@ public class ParticleOptions implements Serializable {
      * Adds an random initial movement to the particle.
      */
     public ParticleOptions randomBaseSpeed(final double from, final double to) {
-        return customize(PREFIX + "physics-movement", entity -> {
+        return customize(MOVEMENT_PREFIX, entity -> {
             final Vector speed = Vector.random(RANDOM.nextDouble(from, to));
             entity.get(PhysicsComponent.class).momentum = speed;
             final var chaoticMovement = entity.get(ChaoticMovementComponent.class);
