@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed generation of JavaDoc for internal packages (#296)
 
 ### 🧽 Cleanup & refactoring
 
