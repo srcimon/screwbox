@@ -9,7 +9,6 @@ Minimalist 2D Java game engine. Result of covid lockdown.
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=srcimon_screwbox&metric=coverage)](https://sonarcloud.io/summary/new_code?id=srcimon_screwbox)
 
 ## About
-![LOGO_512.png](screwbox-core/src/main/resources/assets/sprites/LOGO_512.png)
 
 ScrewBox is a small pure Java 2D game engine.
 I started developing ScrewBox in february 2021 right during too much time at hand because of covid lockdown.
@@ -34,6 +33,8 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
   playing. Thats it. Only the basics.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
+
+<p align="center"><img alt="super hero and cat standing next to each other" src="screwbox-core/src/main/resources/assets/sprites/LOGO_512.png" style="width:20%;"></p>
 
 ## Getting started
 
