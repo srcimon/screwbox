@@ -214,7 +214,7 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-                                    <excludePackageNames>*.internal,*.internal.*</excludePackageNames>
+                                    <excludePackageNames>*.internal</excludePackageNames>
                                 </configuration>
                             </execution>
                         </executions>
@@ -236,7 +236,7 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-                                    <excludePackageNames>**.internal</excludePackageNames>
+                                    <excludePackageNames>*.internal</excludePackageNames>
                                 </configuration>
                             </execution>
                         </executions>
