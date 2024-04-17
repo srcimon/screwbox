@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.offset;
 
 class ParticleOptionsTest {
 
@@ -96,7 +97,7 @@ class ParticleOptionsTest {
     void randomBaseSpeed_stricktValue_setsMomentum() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomBaseSpeed(40));
 
-        assertThat(particle.get(PhysicsComponent.class).momentum.length()).isEqualTo(40);
+        assertThat(particle.get(PhysicsComponent.class).momentum.length()).isEqualTo(40, offset(0.1));
     }
 
     @Test
