@@ -16,7 +16,7 @@ public class MacOsWindowFrame extends WindowFrame {
     public MacOsWindowFrame(final Size initialSize) {
         super(initialSize);
         if(MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
-            setIcon(SpritesBundle.BOX_STRIPED_32.get());
+            setIcon(SpritesBundle.LOGO_512.get());
         }
     }
 
