@@ -34,8 +34,6 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
 
-<p align="center"><img alt="super hero and cat standing next to each other" src="screwbox-core/src/main/resources/assets/sprites/LOGO_512.png" style="width:20%;"></p>
-
 ## Getting started
 
 1. Create a new Maven project and add `screwbox-core` dependency (Java 21 required):
@@ -127,6 +125,8 @@ the [pathfinding example](./examples/pathfinding).
 // loading a map made with Tiled Editor
 Map map = Map.fromJson("underworld_map.json");
 ```
+
+<p align="center"><img alt="super hero and cat standing next to each other" src="screwbox-core/src/main/resources/assets/sprites/LOGO_512.png" style="width:20%;"></p>
 
 ## Documentation
 
