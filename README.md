@@ -126,8 +126,6 @@ the [pathfinding example](./examples/pathfinding).
 Map map = Map.fromJson("underworld_map.json");
 ```
 
-<p align="center"><img alt="super hero and cat standing next to each other" src="screwbox-core/src/main/resources/assets/sprites/LOGO_512.png" style="width:20%;"></p>
-
 ## Documentation
 
 ScrewBox packs some examples. You can inspect these examples to learn how to use the engine.
