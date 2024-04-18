@@ -22,8 +22,7 @@ public class TweenLightSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final Entity tweenEntity : engine.environment().fetchAll(TWEENS)) {
             final var opacity = tweenEntity.get(TweenLightComponent.class);
-            final var advance = (opacity.to.value() - opacity.from.value()) * tweenEntity.get(TweenComponent.class).value.value();
-
+            final var advance = opacity.from.value() + (opacity.to.value() - opacity.from.value()) * tweenEntity.get(TweenComponent.class).value.value();
             var pointLight = tweenEntity.get(PointLightComponent.class);
             if (nonNull(pointLight)) {
                 pointLight.color = pointLight.color.opacity(advance);

@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed generation of JavaDoc for internal packages (#296)
+- Fixed wrong offset in `TweenLightSystem`
 
 ### 🧽 Cleanup & refactoring
 
