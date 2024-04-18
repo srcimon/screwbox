@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 
 import java.awt.*;
@@ -15,15 +13,6 @@ public class MacOsWindowFrame extends WindowFrame {
 
     public MacOsWindowFrame(final Size initialSize) {
         super(initialSize);
-        if(MacOsSupport.jvmCanAccessMacOsSpecificCode()) {
-            setIcon(SpritesBundle.LOGO_512.get());
-        }
-    }
-
-    @Override
-    public void setIcon(final Sprite sprite) {
-        super.setIcon(sprite);
-        MacOsSupport.setDockImage(sprite);
     }
 
     @Override
