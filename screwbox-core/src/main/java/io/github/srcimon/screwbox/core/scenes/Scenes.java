@@ -69,6 +69,6 @@ public interface Scenes {
      * Returns a screenshot of the last scene right before {@link Scenes} were switched. Is empty when no scene change
      * happend yet.
      */
-   Optional<Sprite> lastSceneScreenshot();
+    Optional<Sprite> lastSceneScreenshot();
 }
 

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.ui.Ui;
@@ -18,7 +19,10 @@ import java.util.concurrent.Executors;
 import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +34,9 @@ class DefaultScenesTest {
     @Mock
     Ui ui;
 
+    @Mock
+    Screen screen;
+
     ExecutorService executor;
 
     DefaultScenes scenes;
@@ -37,7 +44,7 @@ class DefaultScenesTest {
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        scenes = new DefaultScenes(engine, executor);
+        scenes = new DefaultScenes(engine, screen, executor);
         scenes.setLoadingScene(new Scene() {
         });
     }
@@ -127,6 +134,7 @@ class DefaultScenesTest {
         shutdown(executor);
         verify(firstScene).populate(any());
         verify(firstScene).onEnter(engine);
+        verify(screen).takeScreenshot();
     }
 
     @AfterEach
