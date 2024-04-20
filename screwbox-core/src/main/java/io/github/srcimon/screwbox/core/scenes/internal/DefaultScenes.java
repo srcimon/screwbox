@@ -1,14 +1,12 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
@@ -16,7 +14,6 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
@@ -46,8 +43,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
 
-    private SheduledTransition sheduledTransition;
-
     public DefaultScenes(final Engine engine, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
@@ -63,14 +58,6 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
         nextActiveScene = scenes.get(sceneClass);
-        return this;
-    }
-
-    @Override
-    public Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition) {
-        ensureSceneExists(sceneClass);
-        final Time activationTime = transition.duration().addTo(Time.now());
-        sheduledTransition = new SheduledTransition(scenes.get(sceneClass), activationTime);
         return this;
     }
 
@@ -148,10 +135,6 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        if(nonNull(sheduledTransition) && Time.now().isAfter(sheduledTransition.activationTime())) {
-            nextActiveScene = sheduledTransition.sceneContainer();
-            sheduledTransition = null;
-        }
         applySceneChanges();
 
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
@@ -167,7 +150,7 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
-    private Scenes add(final Scene scene) {
+    private void add(final Scene scene) {
         final SceneContainer sceneContainer = new SceneContainer(scene);
         executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
@@ -176,7 +159,6 @@ public class DefaultScenes implements Scenes, Updatable {
             nextActiveScene = sceneContainer;
             activeScene = sceneContainer;
         }
-        return this;
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {

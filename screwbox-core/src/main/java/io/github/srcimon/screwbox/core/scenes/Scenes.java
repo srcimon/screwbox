@@ -27,9 +27,6 @@ public interface Scenes {
     //TODO add JavaDoc
     Scenes switchTo(Class<? extends Scene> sceneClass);
 
-    //TODO: implement (#231)
-    Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition);
-
     //TODO add JavaDoc
     Scenes remove(Class<? extends Scene> sceneClass);
 
