@@ -134,6 +134,11 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
+    @Override
+    public Sprite lastSceneScreen() {
+        return lastSceneScreen;
+    }
+
     public boolean isShowingLoading() {
         return !engine.isWarmedUp() || !activeScene.isInitialized;
     }
