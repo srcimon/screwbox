@@ -1,12 +1,14 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
@@ -42,6 +44,8 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
 
+    private SheduledTransition sheduledTransition;
+
     public DefaultScenes(final Engine engine, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
@@ -58,6 +62,13 @@ public class DefaultScenes implements Scenes, Updatable {
         ensureSceneExists(sceneClass);
         nextActiveScene = scenes.get(sceneClass);
         return this;
+    }
+
+    @Override
+    public Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition) {
+        ensureSceneExists(sceneClass);
+        final Time activationTime = transition.duration().addTo(Time.now());
+        sheduledTransition = new SheduledTransition(sceneClass, activationTime);
     }
 
     public DefaultEnvironment activeEnvironment() {

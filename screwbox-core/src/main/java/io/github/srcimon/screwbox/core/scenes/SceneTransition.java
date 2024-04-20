@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 //TODO just prototyping / rename everything
 public record SceneTransition(TransitionAnimation in, Duration inDuration, TransitionAnimation out, Duration outDuration) {
 
-    private static final TransitionAnimation NO_ANMIATION = (screen, progress) -> {
+    public static final TransitionAnimation NO_ANMIATION = (screen, progress) -> {
     };
 
     @FunctionalInterface
@@ -23,4 +23,7 @@ public record SceneTransition(TransitionAnimation in, Duration inDuration, Trans
         return new SceneTransition(NO_ANMIATION, Duration.none(), out, Duration.ofMillis(1500));
     }
 
+    public Duration duration() {
+        return inDuration().add(outDuration());
+    }
 }

@@ -28,7 +28,7 @@ public interface Scenes {
     Scenes switchTo(Class<? extends Scene> sceneClass);
 
     //TODO: implement (#231)
-    //Scenes switchToUsingTransition(Class<? extends Scene> sceneClass, SceneTransition.in(Fading).inDurationMillis(40).out();
+    Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition);
 
     //TODO add JavaDoc
     Scenes remove(Class<? extends Scene> sceneClass);
