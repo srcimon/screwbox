@@ -15,12 +15,16 @@ public record SceneTransition(TransitionAnimation in, Duration inDuration, Trans
         void draw(Screen screen, Percent progress);
     }
 
-    public static SceneTransition in(TransitionAnimation in) {
+    public static SceneTransition inAnimation(TransitionAnimation in) {
         return new SceneTransition(in, Duration.ofMillis(1500), NO_ANMIATION, Duration.none());
     }
 
-    public static SceneTransition out(TransitionAnimation out) {
+    public static SceneTransition outAnimation(TransitionAnimation out) {
         return new SceneTransition(NO_ANMIATION, Duration.none(), out, Duration.ofMillis(1500));
+    }
+
+    public SceneTransition inDurationSeconds(int seconds) {
+        return new SceneTransition(in, Duration.ofSeconds(seconds), out, outDuration);
     }
 
     public Duration duration() {

@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
 //TODO: rework all transitions to SheduledTransitions
-public record SheduledTransition(Class<? extends Scene> sceneClass, Time activationTime) {
-
+public record SheduledTransition(DefaultScenes.SceneContainer sceneContainer, Time activationTime) {
 
 }

@@ -16,10 +16,12 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private class SceneContainer {
+    //TODO rework as internal record
+    public class SceneContainer {
         private final Scene scene;
         private final DefaultEnvironment environment;
         boolean isInitialized;
@@ -68,7 +70,8 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition) {
         ensureSceneExists(sceneClass);
         final Time activationTime = transition.duration().addTo(Time.now());
-        sheduledTransition = new SheduledTransition(sceneClass, activationTime);
+        sheduledTransition = new SheduledTransition(scenes.get(sceneClass), activationTime);
+        return this;
     }
 
     public DefaultEnvironment activeEnvironment() {
@@ -145,6 +148,10 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
+        if(nonNull(sheduledTransition) && Time.now().isAfter(sheduledTransition.activationTime())) {
+            nextActiveScene = sheduledTransition.sceneContainer();
+            sheduledTransition = null;
+        }
         applySceneChanges();
 
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
