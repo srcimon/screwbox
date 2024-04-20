@@ -10,8 +10,6 @@ import io.github.srcimon.screwbox.examples.platformer.collectables.DeboB;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboD;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboE;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboO;
-import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.ScreenshotComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
 import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
 import io.github.srcimon.screwbox.examples.platformer.enemies.MovingSpikes;
@@ -107,8 +105,6 @@ public class GameScene implements Scene {
     }
 
     void importEntities(final Environment environment) {
-        environment.addEntity(new ScreenshotComponent(), new CurrentLevelComponent(mapName));
-
         final Map map = Map.fromJson(mapName);
 
         environment.importSource(map)

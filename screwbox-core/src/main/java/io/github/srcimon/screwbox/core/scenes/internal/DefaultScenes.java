@@ -135,7 +135,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Sprite lastSceneScreen() {
+    public Sprite lastSceneScreenshot() {
         return lastSceneScreen;
     }
 

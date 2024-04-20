@@ -62,6 +62,6 @@ public interface Scenes {
     Scenes setLoadingScene(Scene loadingScene);
 
     //TODO Javadoc and test
-    Sprite lastSceneScreen();
+    Sprite lastSceneScreenshot();
 }
 
