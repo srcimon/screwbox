@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
@@ -135,8 +136,8 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Sprite lastSceneScreenshot() {
-        return lastSceneScreen;
+    public Optional<Sprite> lastSceneScreenshot() {
+        return Optional.ofNullable(lastSceneScreen);
     }
 
     public boolean isShowingLoading() {

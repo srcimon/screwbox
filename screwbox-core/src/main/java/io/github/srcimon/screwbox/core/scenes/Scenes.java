@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
+import java.util.Optional;
+
 /**
  * Manage different game situations like pause or options in different {@link Scenes}.
  * <p/>
@@ -61,7 +63,12 @@ public interface Scenes {
      */
     Scenes setLoadingScene(Scene loadingScene);
 
-    //TODO Javadoc and test
-    Sprite lastSceneScreenshot();
+    //TODO test
+
+    /**
+     * Returns a screenshot of the last scene right before {@link Scenes} were switched. Is empty when no scene change
+     * happend yet.
+     */
+   Optional<Sprite> lastSceneScreenshot();
 }
 
