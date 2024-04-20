@@ -20,23 +20,6 @@ import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    //TODO rework as internal record
-    public class SceneContainer {
-        private final Scene scene;
-        private final DefaultEnvironment environment;
-        boolean isInitialized;
-
-        SceneContainer(Scene scene) {
-            this.scene = scene;
-            this.environment = new DefaultEnvironment(engine);
-        }
-
-        void initialize() {
-            scene.populate(environment);
-            isInitialized = true;
-        }
-    }
-
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
 
     private final Executor executor;
@@ -52,7 +35,7 @@ public class DefaultScenes implements Scenes, Updatable {
         this.engine = engine;
         this.executor = executor;
         this.screen = screen;
-        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
+        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene(), engine);
         defaultSceneContainer.isInitialized = true;
         scenes.put(DefaultScene.class, defaultSceneContainer);
         this.activeScene = defaultSceneContainer;
@@ -68,7 +51,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public DefaultEnvironment activeEnvironment() {
-        return activeScene.environment;
+        return activeScene.environment();
     }
 
     @Override
@@ -76,7 +59,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
-        if (activeScene.scene.getClass().equals(sceneClass) || nextActiveScene.scene.getClass().equals(sceneClass)) {
+        if (activeScene.sameSceneAs(sceneClass) || nextActiveScene.sameSceneAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
         scenes.remove(sceneClass);
@@ -114,7 +97,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Class<? extends Scene> activeScene() {
-        return activeScene.scene.getClass();
+        return activeScene.scene().getClass();
     }
 
     @Override
@@ -125,12 +108,12 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Environment environmentOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).environment;
+        return scenes.get(sceneClass).environment();
     }
 
     @Override
-    public Scenes setLoadingScene(Scene loadingScene) {
-        this.loadingScene = new SceneContainer(loadingScene);
+    public Scenes setLoadingScene(final Scene loadingScene) {
+        this.loadingScene = new SceneContainer(loadingScene, engine);
         this.loadingScene.initialize();
         return this;
     }
@@ -148,21 +131,21 @@ public class DefaultScenes implements Scenes, Updatable {
     public void update() {
         applySceneChanges();
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
-        sceneToUpdate.environment.update();
+        sceneToUpdate.environment().update();
     }
 
     private void applySceneChanges() {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
             lastSceneScreen = screen.takeScreenshot();
-            activeScene.scene.onExit(engine);
+            activeScene.scene().onExit(engine);
             activeScene = nextActiveScene;
-            nextActiveScene.scene.onEnter(engine);
+            nextActiveScene.scene().onEnter(engine);
         }
     }
 
     private void add(final Scene scene) {
-        final SceneContainer sceneContainer = new SceneContainer(scene);
+        final SceneContainer sceneContainer = new SceneContainer(scene, engine);
         executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
