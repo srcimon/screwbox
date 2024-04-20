@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
  */
 public interface Scenes {
 
+    //TODO add JavaDoc
     Scenes addOrReplace(Scene scene);
 
     /**
@@ -17,19 +18,31 @@ public interface Scenes {
      */
     boolean contains(Class<? extends Scene> sceneClass);
 
+    //TODO add JavaDoc
     Scenes add(Scene... scenes);
 
+    //TODO add JavaDoc
     Scenes switchTo(Class<? extends Scene> sceneClass);
 
+    //TODO: implement (#231)
+    //Scenes switchToUsingTransition(Class<? extends Scene> sceneClass, SceneTransition.inAndOut(fadeout, swipein));
+
+    //TODO add JavaDoc
     Scenes remove(Class<? extends Scene> sceneClass);
 
+    //TODO add JavaDoc
     boolean isActive(Class<? extends Scene> sceneClass);
 
+    //TODO add JavaDoc
     Class<? extends Scene> activeScene();
 
+    //TODO add JavaDoc
     int sceneCount();
 
+    //TODO add JavaDoc
     Environment environmentOf(Class<? extends Scene> sceneClass);
 
+    //TODO add JavaDoc
     Scenes setLoadingScene(Scene loadingScene);
 }
+
