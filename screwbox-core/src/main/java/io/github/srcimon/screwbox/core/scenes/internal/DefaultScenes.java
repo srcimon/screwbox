@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
@@ -38,14 +40,17 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private final Executor executor;
     private final Engine engine;
+    private final Screen screen;
+    private Sprite lastSceneScreen;
 
     private SceneContainer nextActiveScene;
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
 
-    public DefaultScenes(final Engine engine, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
+        this.screen = screen;
         SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
         defaultSceneContainer.isInitialized = true;
         scenes.put(DefaultScene.class, defaultSceneContainer);
@@ -143,6 +148,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private void applySceneChanges() {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
+            lastSceneScreen = screen.takeScreenshot();
             activeScene.scene.onExit(engine);
             activeScene = nextActiveScene;
             nextActiveScene.scene.onEnter(engine);

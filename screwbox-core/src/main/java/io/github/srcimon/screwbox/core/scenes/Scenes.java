@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 /**
  * Manage different game situations like pause or options in different {@link Scenes}.
@@ -26,6 +27,12 @@ public interface Scenes {
 
     //TODO add JavaDoc
     Scenes switchTo(Class<? extends Scene> sceneClass);
+
+    //TODO: implement (#231)
+//    Scenes switchToAnimateInOut(Class<? extends Scene> sceneClass, OUT_ANIMATION, IN_ANIMATION);
+//    Scenes switchToAnimateOut(Class<? extends Scene> sceneClass, OUT_ANIMATION, IN_ANIMATION);
+//    Scenes switchToAnimateIn(Class<? extends Scene> sceneClass, OUT_ANIMATION, IN_ANIMATION);
+//    Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition.animateIn(anim).animateOut(anim).inSecs(2).outSecs(2));
 
     //TODO add JavaDoc
     Scenes remove(Class<? extends Scene> sceneClass);
@@ -53,5 +60,8 @@ public interface Scenes {
      * @see Engine#isWarmedUp()
      */
     Scenes setLoadingScene(Scene loadingScene);
+
+    //TODO Javadoc and test
+    Sprite lastSceneScreen();
 }
 
