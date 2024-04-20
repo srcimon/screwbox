@@ -136,7 +136,6 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public void update() {
         applySceneChanges();
-
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
         sceneToUpdate.environment.update();
     }
