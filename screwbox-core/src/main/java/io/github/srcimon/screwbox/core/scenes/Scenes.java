@@ -13,7 +13,9 @@ import java.util.Optional;
  */
 public interface Scenes {
 
-    //TODO add JavaDoc
+    /**
+     * Adds a {@link Scene}. If the {@link Scene} is already present the {@link Scene} will be replaced.
+     */
     Scenes addOrReplace(Scene scene);
 
     /**
@@ -24,28 +26,43 @@ public interface Scenes {
      */
     boolean contains(Class<? extends Scene> sceneClass);
 
-    //TODO add JavaDoc
+    /**
+     * Adds one ore multiple {@link Scene scenes}. These {@link Scene scenes} are than available to switch into.
+     *
+     * @see #switchTo(Class)
+     */
     Scenes add(Scene... scenes);
 
-    //TODO add JavaDoc
+    /**
+     * Switches to an existing {@link Scene} that has previously been added.
+     *
+     * @see #add(Scene...)
+     */
     Scenes switchTo(Class<? extends Scene> sceneClass);
 
-    //TODO add JavaDoc
+    /**
+     * Removes a previously added {@link Scene}. Throws an {@link IllegalArgumentException} if the specified {@link Scene }
+     * is not present. Also you cannot remove the currently active {@link Scene}.
+     */
     Scenes remove(Class<? extends Scene> sceneClass);
 
-    //TODO add JavaDoc
+    /**
+     * Returns {@code true} if the specified {@link Scene} is currently active.
+     */
     boolean isActive(Class<? extends Scene> sceneClass);
 
-    //TODO add JavaDoc
+    /**
+     * Returns the class of the current {@link Scene}.
+     */
     Class<? extends Scene> activeScene();
 
-    //TODO add JavaDoc
+    /**
+     * Returns the current scene count.
+     */
     int sceneCount();
 
     //TODO add JavaDoc
     Environment environmentOf(Class<? extends Scene> sceneClass);
-
-    //TODO add JavaDoc
 
     /**
      * Specify the {@link Scene} that is used when loading another {@link Scene} or when while the {@link Engine} is warming up.
@@ -56,8 +73,6 @@ public interface Scenes {
      * @see Engine#isWarmedUp()
      */
     Scenes setLoadingScene(Scene loadingScene);
-
-    //TODO test
 
     /**
      * Returns a screenshot of the last scene right before {@link Scenes} were switched. Is empty when no scene change

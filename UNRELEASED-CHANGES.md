@@ -14,6 +14,7 @@
 - `ChaoticMovementSystem` uses interval to apply new speed instead of fixed duration of one second
 - Disabled JavaDoc generation for example apps (#297)
 - Simplified setting taskbar image on MacOs
+- Added JavaDoc to `Scenes`
 
 ### 📦 Dependency updates
 
