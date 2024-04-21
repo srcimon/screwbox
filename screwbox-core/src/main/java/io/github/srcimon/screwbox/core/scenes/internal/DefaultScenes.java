@@ -119,7 +119,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Optional<Sprite> lastSceneScreenshot() {
+    public Optional<Sprite> previousSceneScreenshot() {
         return Optional.ofNullable(lastSceneScreen);
     }
 

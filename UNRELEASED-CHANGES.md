@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Duration.oneSecond()`
-- Added `Scenes.lastSceneScreenshot()`
+- Added `Scenes.previousSceneScreenshot()`
 - Replaced engine logo asset
 
 ### 🪛 Bug Fixes

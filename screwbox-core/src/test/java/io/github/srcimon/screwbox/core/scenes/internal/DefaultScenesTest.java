@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.ui.Ui;
@@ -135,6 +136,23 @@ class DefaultScenesTest {
         verify(firstScene).populate(any());
         verify(firstScene).onEnter(engine);
         verify(screen).takeScreenshot();
+    }
+
+    @Test
+    void previousSceneScreenshot_noSceneChange_isEmpty() {
+        assertThat(scenes.previousSceneScreenshot()).isEmpty();
+    }
+
+    @Test
+    void previousSceneScreenshot_sceneChanged_containsScreenshot() {
+        when(screen.takeScreenshot()).thenReturn(Sprite.invisible());
+        var firstScene = mock(Scene.class);
+        scenes.add(firstScene);
+
+        scenes.switchTo(firstScene.getClass());
+        scenes.update();
+
+        assertThat(scenes.previousSceneScreenshot()).contains(Sprite.invisible());
     }
 
     @AfterEach
