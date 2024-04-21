@@ -111,11 +111,11 @@ class DefaultEngine implements Engine {
         final DefaultCamera camera = new DefaultCamera(world);
         particles = new DefaultParticles(this, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
-        scenes = new DefaultScenes(this, executor);
+        scenes = new DefaultScenes(this, screen, executor);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        loop = new DefaultLoop(List.of(ui, graphics, scenes, keyboard, mouse, window, camera, particles));
+        loop = new DefaultLoop(List.of(ui, graphics, keyboard, mouse, window, camera, particles, scenes));
         audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

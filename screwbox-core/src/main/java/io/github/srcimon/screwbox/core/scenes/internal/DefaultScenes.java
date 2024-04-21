@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
@@ -11,41 +13,29 @@ import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private class SceneContainer {
-        private final Scene scene;
-        private final DefaultEnvironment environment;
-        boolean isInitialized;
-
-        SceneContainer(Scene scene) {
-            this.scene = scene;
-            this.environment = new DefaultEnvironment(engine);
-        }
-
-        void initialize() {
-            scene.populate(environment);
-            isInitialized = true;
-        }
-    }
-
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
 
     private final Executor executor;
     private final Engine engine;
+    private final Screen screen;
+    private Sprite lastSceneScreen;
 
     private SceneContainer nextActiveScene;
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
 
-    public DefaultScenes(final Engine engine, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
-        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene());
+        this.screen = screen;
+        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene(), engine);
         defaultSceneContainer.isInitialized = true;
         scenes.put(DefaultScene.class, defaultSceneContainer);
         this.activeScene = defaultSceneContainer;
@@ -61,7 +51,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public DefaultEnvironment activeEnvironment() {
-        return activeScene.environment;
+        return activeScene.environment();
     }
 
     @Override
@@ -69,7 +59,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
-        if (activeScene.scene.getClass().equals(sceneClass) || nextActiveScene.scene.getClass().equals(sceneClass)) {
+        if (activeScene.sameSceneAs(sceneClass) || nextActiveScene.sameSceneAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
         scenes.remove(sceneClass);
@@ -107,7 +97,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Class<? extends Scene> activeScene() {
-        return activeScene.scene.getClass();
+        return activeScene.scene().getClass();
     }
 
     @Override
@@ -118,14 +108,19 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Environment environmentOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).environment;
+        return scenes.get(sceneClass).environment();
     }
 
     @Override
-    public Scenes setLoadingScene(Scene loadingScene) {
-        this.loadingScene = new SceneContainer(loadingScene);
+    public Scenes setLoadingScene(final Scene loadingScene) {
+        this.loadingScene = new SceneContainer(loadingScene, engine);
         this.loadingScene.initialize();
         return this;
+    }
+
+    @Override
+    public Optional<Sprite> previousSceneScreenshot() {
+        return Optional.ofNullable(lastSceneScreen);
     }
 
     public boolean isShowingLoading() {
@@ -135,22 +130,22 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public void update() {
         applySceneChanges();
-
         final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
-        sceneToUpdate.environment.update();
+        sceneToUpdate.environment().update();
     }
 
     private void applySceneChanges() {
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
-            activeScene.scene.onExit(engine);
+            lastSceneScreen = screen.takeScreenshot();
+            activeScene.scene().onExit(engine);
             activeScene = nextActiveScene;
-            nextActiveScene.scene.onEnter(engine);
+            nextActiveScene.scene().onEnter(engine);
         }
     }
 
-    private Scenes add(final Scene scene) {
-        final SceneContainer sceneContainer = new SceneContainer(scene);
+    private void add(final Scene scene) {
+        final SceneContainer sceneContainer = new SceneContainer(scene, engine);
         executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
 
@@ -158,7 +153,6 @@ public class DefaultScenes implements Scenes, Updatable {
             nextActiveScene = sceneContainer;
             activeScene = sceneContainer;
         }
-        return this;
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
