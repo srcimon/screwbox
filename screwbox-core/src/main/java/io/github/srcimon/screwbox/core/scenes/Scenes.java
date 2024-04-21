@@ -61,7 +61,10 @@ public interface Scenes {
      */
     int sceneCount();
 
-    //TODO add JavaDoc
+    /**
+     * Returns the {@link Environment} of the specified {@link Scene}. Every {@link Scene} uses it's own {@link Environment}.
+     * The {@link Environment} cannot be shared between {@link Scene Scenes}.
+     */
     Environment environmentOf(Class<? extends Scene> sceneClass);
 
     /**
