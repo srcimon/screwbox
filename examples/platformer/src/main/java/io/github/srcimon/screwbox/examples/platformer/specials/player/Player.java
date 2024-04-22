@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -32,29 +33,29 @@ public class Player implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
-        ParticleEmitterComponent smokeParticleEmitter = new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
-                .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
-                .lifetimeMilliseconds(300)
-                .animateOpacity());
-        smokeParticleEmitter.isEnabled = false;
-        return new Entity(object.id(), "Player").add(
-                new CameraTargetComponent(),
-                smokeParticleEmitter,
-                new GlowComponent(45, Color.WHITE.opacity(0.1)),
-                new PointLightComponent(64, Color.BLACK),
-                new SpotLightComponent(64, Color.BLACK.opacity(0.4)),
-                new StateComponent(new PlayerStandingState()),
-                new PhysicsComponent(),
-                new GroundDetectorComponent(),
-                new ColliderComponent(),
-                new PlayerMarkerComponent(),
-                new RenderComponent(object.layer().order()),
-                new CastShadowComponent(),
-                new PlayerControlComponent(),
-                new SignalComponent(),
-                new CollisionDetectionComponent(),
-                new FlipSpriteComponent(),
-                new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));
+        return new Entity(object.id(), "Player")
+                .addCustomized(new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
+                                .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
+                                .baseSpeed(Vector.y(-5))
+                                .lifetimeMilliseconds(300)
+                                .animateOpacity()),
+                        emitter -> emitter.isEnabled = false)
+                .add(new CameraTargetComponent(),
+                        new GlowComponent(45, Color.WHITE.opacity(0.1)),
+                        new PointLightComponent(64, Color.BLACK),
+                        new SpotLightComponent(64, Color.BLACK.opacity(0.4)),
+                        new StateComponent(new PlayerStandingState()),
+                        new PhysicsComponent(),
+                        new GroundDetectorComponent(),
+                        new ColliderComponent(),
+                        new PlayerMarkerComponent(),
+                        new RenderComponent(object.layer().order()),
+                        new CastShadowComponent(),
+                        new PlayerControlComponent(),
+                        new SignalComponent(),
+                        new CollisionDetectionComponent(),
+                        new FlipSpriteComponent(),
+                        new TransformComponent(Bounds.atPosition(object.position(), 10, 24)));
     }
 
 }

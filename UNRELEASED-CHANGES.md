@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added `Entity.addCustomized(Component, Customizing)`
 - Added `ParticleOptions.sprites(List<Sprite>)`
 
 ### 🪛 Bug Fixes
