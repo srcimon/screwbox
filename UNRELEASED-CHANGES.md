@@ -5,6 +5,7 @@
 
 ### 🪛 Bug Fixes
 
+- Fixed `ConcurrentModificationException` while scene is loading
 - Fixed crash of platformer example app when player dies
 
 ### 🧽 Cleanup & refactoring
