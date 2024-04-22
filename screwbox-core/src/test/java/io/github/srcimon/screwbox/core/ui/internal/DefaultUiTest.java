@@ -58,7 +58,7 @@ class DefaultUiTest {
 
     @Test
     void update_interactorDisablesCurrentSelection_switchesToNextMenuItem() {
-        when(scenes.isShowingLoading()).thenReturn(false);
+        when(scenes.isShowingLoadingScene()).thenReturn(false);
         var activated = Latch.of(false, true);
 
         Graphics graphics = mock(Graphics.class);
@@ -83,7 +83,7 @@ class DefaultUiTest {
 
     @Test
     void update_menuPresent_interactsAndRendersMenu() {
-        when(scenes.isShowingLoading()).thenReturn(false);
+        when(scenes.isShowingLoadingScene()).thenReturn(false);
         Graphics graphics = mock(Graphics.class);
         Screen screen = mock(Screen.class);
         when(graphics.screen()).thenReturn(screen);

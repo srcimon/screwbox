@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.particles.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -19,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.particles.Particles;
+import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 
 import java.util.Random;
 
@@ -27,7 +27,7 @@ public class DefaultParticles implements Particles, Updatable {
     private static final Random RANDOM = new Random();
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
 
-    private final Engine engine;
+    private final DefaultScenes scenes;
     private final World world;
 
     private int particleCount = 0;
@@ -35,8 +35,8 @@ public class DefaultParticles implements Particles, Updatable {
     private double spawnDistance = 2000;
     private long particleSpawnCount = 0;
 
-    public DefaultParticles(final Engine engine, final World world) {
-        this.engine = engine;
+    public DefaultParticles(final DefaultScenes scenes, final World world) {
+        this.scenes = scenes;
         this.world = world;
     }
 
@@ -86,7 +86,7 @@ public class DefaultParticles implements Particles, Updatable {
         if (particleLimit > particleCount && isInSpawnDistance(position)) {
             particleSpawnCount++;
             particleCount++;
-            engine.environment().addEntity(particle);
+            scenes.activeEnvironment().addEntity(particle);
         }
         return this;
     }
@@ -121,7 +121,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public void update() {
-        particleCount = engine.environment().fetchAll(PARTICLES).size();
+        particleCount = scenes.visibleEnvironment().fetchAll(PARTICLES).size();
     }
 
 

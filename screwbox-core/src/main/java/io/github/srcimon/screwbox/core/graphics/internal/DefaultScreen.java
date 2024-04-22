@@ -27,10 +27,10 @@ public class DefaultScreen implements Screen {
     public void updateScreen(final boolean antialiased) {
         final Supplier<Graphics2D> graphicsSupplier = () -> {
             frame.getCanvas().getBufferStrategy().show();
+            final Graphics2D graphics = getDrawGraphics();
             if (nonNull(lastGraphics)) {
                 lastGraphics.dispose();
             }
-            final Graphics2D graphics = (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
             graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
             graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
             graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
@@ -43,6 +43,15 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+    }
+
+    private Graphics2D getDrawGraphics() {
+        try {
+            return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+            // avoid Component must have a valid peer while closing the Window
+        } catch (IllegalStateException ignored) {
+            return lastGraphics;
+        }
     }
 
     public void setRenderer(final Renderer renderer) {

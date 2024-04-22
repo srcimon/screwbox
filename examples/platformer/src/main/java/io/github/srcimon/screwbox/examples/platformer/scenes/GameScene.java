@@ -91,7 +91,6 @@ public class GameScene implements Scene {
                 .addSystem(new DiggableSystem())
                 .addSystem(new FollowPlayerSystem())
                 .addSystem(new PlayerControlSystem())
-                .addSystem(new SmokePuffSystem())
                 .addSystem(new ShowLabelSystem())
                 .addSystem(new LetsGoSystem())
                 .addSystem(new PrintSystem())

@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -93,6 +94,13 @@ public class ParticleOptions implements Serializable {
      */
     public ParticleOptions sprite(final Sprite sprite) {
         return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = sprite.freshInstance());
+    }
+
+    /**
+     * Sets multiple {@link Sprite}s that are randomly used for particle entities.
+     */
+    public ParticleOptions sprites(List<Sprite> sprites) {
+        return customize(SPRITE_PREFIX, entity -> entity.get(RenderComponent.class).sprite = ListUtil.randomFrom(sprites).freshInstance());
     }
 
     /**

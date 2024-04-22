@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
 
@@ -61,6 +62,11 @@ public final class Entity implements Serializable {
             add(component);
         }
         return this;
+    }
+
+    public <T extends Component> Entity addCustomized(T component, Consumer<T> customizing) {
+        customizing.accept(component);
+        return add(component);
     }
 
     public Entity add(final Component component) {

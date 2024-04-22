@@ -57,7 +57,7 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public void update() {
         final var menu = openMenu.menu;
-        if (nonNull(menu) && !scenes.isShowingLoading()) {
+        if (nonNull(menu) && !scenes.isShowingLoadingScene()) {
             interactor.interactWith(menu, layouter, engine);
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);

@@ -1,11 +1,10 @@
 package io.github.srcimon.screwbox.core.particles.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -14,6 +13,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -37,10 +37,10 @@ import static org.mockito.Mockito.when;
 class DefaultParticlesTest {
 
     @Mock
-    Engine engine;
+    DefaultEnvironment environment;
 
     @Mock
-    Environment environment;
+    DefaultScenes scenes;
 
     @Mock
     World world;
@@ -50,7 +50,8 @@ class DefaultParticlesTest {
 
     @Test
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
-        when(engine.environment()).thenReturn(environment);
+        when(scenes.visibleEnvironment()).thenReturn(environment);
+        when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.fetchAll(Archetype.of(ParticleComponent.class))).thenReturn(List.of(new Entity(), new Entity()));
         when(world.visibleArea()).thenReturn($$(0, 0, 100, 100));
 
@@ -97,7 +98,7 @@ class DefaultParticlesTest {
 
     @Test
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
-        when(engine.environment()).thenReturn(environment);
+        when(scenes.activeEnvironment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         Entity source = new Entity().add(new RenderComponent(20));
@@ -133,7 +134,7 @@ class DefaultParticlesTest {
 
     @Test
     void spawn_noSourceEntity_spawnsParticleUsingOptions() {
-        when(engine.environment()).thenReturn(environment);
+        when(scenes.activeEnvironment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
@@ -163,7 +164,7 @@ class DefaultParticlesTest {
 
     @Test
     void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
-        when(engine.environment()).thenReturn(environment);
+        when(scenes.activeEnvironment()).thenReturn(environment);
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         particles.setParticleLimit(5);
