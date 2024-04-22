@@ -50,6 +50,12 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
+    public DefaultEnvironment visibleEnvironment() {
+        return isShowingLoadingScene()
+                ? loadingScene.environment()
+                : activeScene.environment();
+    }
+
     public DefaultEnvironment activeEnvironment() {
         return activeScene.environment();
     }
@@ -123,7 +129,6 @@ public class DefaultScenes implements Scenes, Updatable {
         return Optional.ofNullable(lastSceneScreen);
     }
 
-    @Override
     public boolean isShowingLoadingScene() {
         return !engine.isWarmedUp() || !activeScene.isInitialized;
     }

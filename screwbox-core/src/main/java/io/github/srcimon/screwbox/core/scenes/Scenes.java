@@ -82,7 +82,5 @@ public interface Scenes {
      * happend yet.
      */
     Optional<Sprite> previousSceneScreenshot();
-
-    boolean isShowingLoadingScene();
 }
 

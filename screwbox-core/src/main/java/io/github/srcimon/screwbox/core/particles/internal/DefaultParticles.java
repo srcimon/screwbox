@@ -121,9 +121,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public void update() {
-        particleCount = scenes.isShowingLoadingScene()
-                ? 0
-                : scenes.activeEnvironment().fetchAll(PARTICLES).size();
+        particleCount = scenes.visibleEnvironment().fetchAll(PARTICLES).size();
     }
 
 
