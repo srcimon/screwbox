@@ -6,7 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed `ConcurrentModificationException` in particle system
-- Fixed rarely occuring `java.lang.IllegalStateException: Component must have a valid peer` when closing the game 
+- Fixed rarely occurring `java.lang.IllegalStateException: Component must have a valid peer` when closing the game 
 - Fixed crash of platformer example app when player dies
 
 ### 🧽 Cleanup & refactoring
