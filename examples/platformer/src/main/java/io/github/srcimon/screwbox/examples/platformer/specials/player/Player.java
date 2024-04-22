@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -9,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -21,13 +23,23 @@ import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorC
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
+import io.github.srcimon.screwbox.tiled.Tileset;
+
+import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.POSITION;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptions.unknownSource;
 
 public class Player implements Converter<GameObject> {
 
     @Override
     public Entity convert(final GameObject object) {
+        ParticleEmitterComponent smokeParticleEmitter = new ParticleEmitterComponent(Duration.ofMillis(220), POSITION, unknownSource()
+                .sprites(Tileset.fromJson("tilesets/effects/smokes.json").all())
+                .lifetimeMilliseconds(300)
+                .animateOpacity());
+        smokeParticleEmitter.isEnabled = false;
         return new Entity(object.id(), "Player").add(
                 new CameraTargetComponent(),
+                smokeParticleEmitter,
                 new GlowComponent(45, Color.WHITE.opacity(0.1)),
                 new PointLightComponent(64, Color.BLACK),
                 new SpotLightComponent(64, Color.BLACK.opacity(0.4)),

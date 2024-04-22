@@ -4,18 +4,21 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.SmokeEmitterComponent;
+
+import java.io.Serial;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerRunningState implements EntityState {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/specials/player.json", "running");
@@ -23,7 +26,7 @@ public class PlayerRunningState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(RenderComponent.class).sprite = SPRITE.get();
-        entity.add(new SmokeEmitterComponent());
+        entity.get(ParticleEmitterComponent.class).isEnabled = true;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class PlayerRunningState implements EntityState {
 
     @Override
     public void exit(Entity entity, Engine engine) {
-        entity.remove(SmokeEmitterComponent.class);
+        entity.get(ParticleEmitterComponent.class).isEnabled = false;
     }
 
 }
