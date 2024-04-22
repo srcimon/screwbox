@@ -123,14 +123,15 @@ public class DefaultScenes implements Scenes, Updatable {
         return Optional.ofNullable(lastSceneScreen);
     }
 
-    public boolean isShowingLoading() {
+    @Override
+    public boolean isShowingLoadingScene() {
         return !engine.isWarmedUp() || !activeScene.isInitialized;
     }
 
     @Override
     public void update() {
         applySceneChanges();
-        final var sceneToUpdate = isShowingLoading() ? loadingScene : activeScene;
+        final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
     }
 

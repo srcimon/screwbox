@@ -5,6 +5,7 @@
 
 ### 🪛 Bug Fixes
 
+- Fixed `ConcurrentModificationException` in particle system
 - Fixed crash of platformer example app when player dies
 
 ### 🧽 Cleanup & refactoring
