@@ -5,11 +5,15 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,6 +53,16 @@ class ParticleOptionsTest {
                 .sprites(SpritesBundle.DOT_BLUE_16.get());
 
         assertThat(particle.modifiers()).hasSize(1);
+    }
+
+    @Test
+    void sprites_listOfSprites_setsSpritesToUse() {
+        List<Sprite> sprites = List.of(SpritesBundle.DOT_BLUE_16.get(), SpritesBundle.DOT_YELLOW_16.get());
+
+        Entity particle = applyOptionsOnTemplateParticle(options.sprites(sprites));
+
+        assertThat(sprites.stream().map(Sprite::singleFrame).toList())
+                .contains(particle.get(RenderComponent.class).sprite.singleFrame());
     }
 
     @Test
@@ -114,6 +128,7 @@ class ParticleOptionsTest {
 
     private Entity templateParticle() {
         return new Entity()
+                .add(new RenderComponent())
                 .add(new TweenComponent(Duration.ofSeconds(100)))
                 .add(new PhysicsComponent());
     }
