@@ -64,7 +64,6 @@ public final class Entity implements Serializable {
         return this;
     }
 
-    //TODO javadoc and test
     public <T extends Component> Entity addCustomized(T component, Consumer<T> customizing) {
         customizing.accept(component);
         return add(component);

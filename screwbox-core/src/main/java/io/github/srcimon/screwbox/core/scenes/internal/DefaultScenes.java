@@ -50,12 +50,20 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
+    /**
+     * {@link Environment} that is visible. Maybe this is the {@link Environment} of the loading scene. Used to make
+     * queries for entities when operating in a separate thread.
+     */
     public DefaultEnvironment visibleEnvironment() {
         return isShowingLoadingScene()
                 ? loadingScene.environment()
                 : activeScene.environment();
     }
 
+    /**
+     * {@link Environment} that is currently active. Maybe the active {@link Environment} is another than the currently
+     * shown loading scene.
+     */
     public DefaultEnvironment activeEnvironment() {
         return activeScene.environment();
     }
