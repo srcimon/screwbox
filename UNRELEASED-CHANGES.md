@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed crash of platformer example app when player dies
 
 ### 🧽 Cleanup & refactoring
 
