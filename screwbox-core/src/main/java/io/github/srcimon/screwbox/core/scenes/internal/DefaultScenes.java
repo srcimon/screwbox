@@ -51,9 +51,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public DefaultEnvironment activeEnvironment() {
-        return isShowingLoading() ?
-                loadingScene.environment()
-                : activeScene.environment();
+        return activeScene.environment();
     }
 
     @Override
