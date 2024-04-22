@@ -46,7 +46,8 @@ class DefaultScenesTest {
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
         scenes = new DefaultScenes(engine, screen, executor);
-        scenes.setLoadingScene(new Scene() {
+        scenes.setLoadingScene(environment -> {
+
         });
     }
 
