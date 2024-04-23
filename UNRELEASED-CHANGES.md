@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Particle count is only calculated when needed
 
 ### 📦 Dependency updates
 

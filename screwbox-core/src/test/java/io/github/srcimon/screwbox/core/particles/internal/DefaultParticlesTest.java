@@ -50,7 +50,6 @@ class DefaultParticlesTest {
 
     @Test
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
-        when(scenes.visibleEnvironment()).thenReturn(environment);
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.fetchAll(Archetype.of(ParticleComponent.class))).thenReturn(List.of(new Entity(), new Entity()));
         when(world.visibleArea()).thenReturn($$(0, 0, 100, 100));
@@ -78,20 +77,20 @@ class DefaultParticlesTest {
     @Test
     void spawn_particleLimitReached_doesntSpawnParticle() {
         particles.setParticleLimit(0);
+        when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20, 20), ParticleOptions.unknownSource());
 
         verifyNoInteractions(world);
-        verifyNoInteractions(environment);
     }
 
     @Test
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
         when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20000, 20), ParticleOptions.unknownSource());
 
-        verifyNoInteractions(environment);
         assertThat(particles.particleCount()).isZero();
         assertThat(particles.particlesSpawnCount()).isZero();
     }

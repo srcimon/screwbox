@@ -30,6 +30,7 @@ public class DefaultParticles implements Particles, Updatable {
     private final DefaultScenes scenes;
     private final World world;
 
+    private boolean particleCountRefreshed = false;
     private int particleCount = 0;
     private int particleLimit = 10000;
     private double spawnDistance = 2000;
@@ -47,6 +48,11 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public int particleCount() {
+        if (particleCountRefreshed) {
+            return particleCount;
+        }
+        particleCountRefreshed = true;
+        particleCount = scenes.activeEnvironment().fetchAll(PARTICLES).size();
         return particleCount;
     }
 
@@ -83,7 +89,7 @@ public class DefaultParticles implements Particles, Updatable {
     @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
         final var particle = createParticle(position, options);
-        if (particleLimit > particleCount && isInSpawnDistance(position)) {
+        if (particleLimit > particleCount() && isInSpawnDistance(position)) {
             particleSpawnCount++;
             particleCount++;
             scenes.activeEnvironment().addEntity(particle);
@@ -121,7 +127,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public void update() {
-        particleCount = scenes.visibleEnvironment().fetchAll(PARTICLES).size();
+        particleCountRefreshed = false;
     }
 
 
