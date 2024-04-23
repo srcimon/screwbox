@@ -60,7 +60,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     }
 
     public void setIcon(final Sprite sprite) {
-        Taskbar.getTaskbar().setIconImage(sprite.singleFrame().image());
+        setIconImage(sprite.singleFrame().image());
     }
 
     public Size getCanvasSize() {
