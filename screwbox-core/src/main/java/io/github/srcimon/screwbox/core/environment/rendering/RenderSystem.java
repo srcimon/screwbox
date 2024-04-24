@@ -13,23 +13,18 @@ import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
-    private final Archetype sprites = Archetype.of(RenderComponent.class, TransformComponent.class);
+    private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Bounds visibleArea = engine.graphics().world().visibleArea();
 
-        for (final Entity entity : engine.environment().fetchAll(sprites)) {
-            final var entityPosition = entity.position();
+        for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
             final RenderComponent render = entity.get(RenderComponent.class);
             final double width = render.sprite.size().width() * render.options.scale();
             final double height = render.sprite.size().height() * render.options.scale();
-            final var spriteBounds = Bounds.atPosition(
-                    entityPosition.x(),
-                    entityPosition.y(),
-                    width,
-                    height);
+            final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
 
             if (spriteBounds.intersects(visibleArea)) {
                 spriteBatch.addEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder);
