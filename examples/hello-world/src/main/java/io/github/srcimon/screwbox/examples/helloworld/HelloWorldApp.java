@@ -10,7 +10,6 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-
         screwBox.environment().addSystem(engine -> {
             var screen = engine.graphics().screen();
             var drawOptions = font(BOLDZILLA).scale(4).alignCenter();

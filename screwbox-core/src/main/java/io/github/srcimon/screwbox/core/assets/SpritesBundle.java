@@ -10,7 +10,8 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
  */
 public enum SpritesBundle implements AssetBundle<Sprite> {
 
-    LOGO_512(Asset.asset(() -> Sprite.fromFile("assets/sprites/LOGO_512.png"))),
+    ICON_32(Asset.asset(() -> Sprite.fromFile("assets/sprites/ICON_32.png"))),
+    ICON_512(Asset.asset(() -> Sprite.fromFile("assets/sprites/ICON_512.png"))),
     BOX_STRIPED_32(Asset.asset(() -> Sprite.fromFile("assets/sprites/BOX_STRIPED_32.png"))),
     DOT_BLUE_16(Asset.asset(() -> Sprite.fromFile("assets/sprites/DOT_BLUE_16.png"))),
     DOT_YELLOW_16(Asset.asset(() -> Sprite.fromFile("assets/sprites/DOT_YELLOW_16.png"))),
