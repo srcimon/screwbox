@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fix taskbar icon on MacOs
 
 ### 🧽 Cleanup & refactoring
 
