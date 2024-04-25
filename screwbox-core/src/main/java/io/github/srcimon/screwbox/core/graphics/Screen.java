@@ -111,4 +111,6 @@ public interface Screen {
      */
     boolean isVisible(Offset offset);
 
+    //TODO javadoc
+    ScreenBounds bounds();
 }
