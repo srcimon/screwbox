@@ -23,37 +23,25 @@ import java.util.List;
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
-    public class Batch {
+    public record BatchEntry(Sprite sprite, Vector position, SpriteDrawOptions options, int drawOrder)
+            implements Comparable<BatchEntry> {
 
-        private final List<BatchEntry> entries = new ArrayList<>();
-
-        public record BatchEntry(Sprite sprite, Vector position, SpriteDrawOptions options, int drawOrder)
-                implements Comparable<BatchEntry> {
-
-            @Override
-            public int compareTo(final BatchEntry o) {
-                return Integer.compare(drawOrder, o.drawOrder);
-            }
+        @Override
+        public int compareTo(final BatchEntry o) {
+            return Integer.compare(drawOrder, o.drawOrder);
         }
-
-        public void addEntry(final Sprite sprite, final Vector position, SpriteDrawOptions options, final int drawOrder) {
-            this.entries.add(new BatchEntry(sprite, position, options, drawOrder));
-        }
-
-        public List<BatchEntry> entriesInDrawOrder() {
-            Collections.sort(entries);
-            return entries;
-        }
-
     }
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        final Batch batch = new Batch();
+        final List<BatchEntry> entries = new ArrayList<>();
         final World world = engine.graphics().world();
         final Bounds visibleArea = world.visibleArea();
+        Screen screen = engine.graphics().screen();
+        double zoom = engine.graphics().camera().zoom();
+        Vector cameraPosition = engine.graphics().camera().position();
 
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
             final RenderComponent render = entity.get(RenderComponent.class);
@@ -62,14 +50,12 @@ public class RenderSystem implements EntitySystem {
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
 
             if (spriteBounds.intersects(visibleArea)) {
-                batch.addEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder);
+                entries.add(new BatchEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder));
             }
         }
-        Screen screen = engine.graphics().screen();
-        double zoom = engine.graphics().camera().zoom();
-        Vector cameraPosition = engine.graphics().camera().position();
 
-        for (final var entry : batch.entriesInDrawOrder()) {
+        Collections.sort(entries);
+        for (final var entry : entries) {
             final SpriteDrawOptions scaledOptions = entry.options().scale(entry.options().scale() * zoom);
             screen.drawSprite(entry.sprite, toOffset(entry.position, zoom, cameraPosition, screen.size()), scaledOptions);
         }
