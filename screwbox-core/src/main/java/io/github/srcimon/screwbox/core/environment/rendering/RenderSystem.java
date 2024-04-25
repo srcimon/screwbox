@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -13,14 +12,15 @@ import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+//TODO Changelog Tiled.offset of layer for sprites in changelog
+//TODO Changelog Tiled.offset of objects
 
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
@@ -35,8 +35,7 @@ public class RenderSystem implements EntitySystem {
     }
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
-    //TODO Changelog Tiled.offset of layer for sprites in changelog
-//TODO Changelog Tiled.offset of objects
+
     @Override
     public void update(final Engine engine) {
         final List<BatchEntry> entries = new ArrayList<>();
@@ -52,14 +51,13 @@ public class RenderSystem implements EntitySystem {
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
             final var entityScreenBounds = graphics.toScreen(spriteBounds, render.parallax);
             if (screenBounds.intersects(entityScreenBounds)) {
-                entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options, render.drawOrder));
+                entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder));
             }
         }
 
         Collections.sort(entries);
         for (final var entry : entries) {
-            final SpriteDrawOptions scaledOptions = entry.options().scale(entry.options().scale() * zoom);
-            screen.drawSprite(entry.sprite, entry.offset, scaledOptions);
+            screen.drawSprite(entry.sprite, entry.offset, entry.options);
         }
     }
 }
