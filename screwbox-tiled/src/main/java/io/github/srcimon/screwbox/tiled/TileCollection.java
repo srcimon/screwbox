@@ -29,8 +29,8 @@ class TileCollection {
                     if (tileId != 0) {
                         final double width = map.getTilewidth();
                         final double height = map.getTileheight();
-                        final double offsetX = x * width;
-                        final double offsetY = y * height;
+                        final double offsetX = x * width + layerEntity.offsetx();
+                        final double offsetY = y * height + layerEntity.offsety();
                         final Bounds bounds = Bounds.atOrigin(offsetX, offsetY, width, height);
                         final Sprite sprite = tileset.findById(tileId);
                         final Layer layer = new Layer(layerEntity, order);

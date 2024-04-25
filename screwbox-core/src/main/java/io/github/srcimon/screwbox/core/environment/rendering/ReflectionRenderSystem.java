@@ -44,19 +44,21 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
                     final RenderComponent render = reflectableEntity.get(RenderComponent.class);
-                    final var spriteSize = render.sprite.size();
-                    final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
+                    if (render.parallax.equals(Vector.of(1, 1))) {
+                        final var spriteSize = render.sprite.size();
+                        final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
 
-                    final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
-                    final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
-                    final var effectOrigin = Vector.of(
-                            spriteOrigin.x() + xDelta,
-                            2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
+                        final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
+                        final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
+                        final var effectOrigin = Vector.of(
+                                spriteOrigin.x() + xDelta,
+                                2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
 
-                    final var options = render.options
-                            .opacity(render.options.opacity().multiply(opacityModifier))
-                            .flipVertical(!render.options.isFlipVertical());
-                    spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
+                        final var options = render.options
+                                .opacity(render.options.opacity().multiply(opacityModifier))
+                                .flipVertical(!render.options.isFlipVertical());
+                        spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
+                    }
                 }
             }
             return spriteBatch;

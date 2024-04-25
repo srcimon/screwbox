@@ -25,7 +25,7 @@ import java.util.List;
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
-    public record BatchEntry(Sprite sprite, Vector position, SpriteDrawOptions options, int drawOrder)
+    public record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
             implements Comparable<BatchEntry> {
 
         @Override
@@ -35,7 +35,8 @@ public class RenderSystem implements EntitySystem {
     }
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
-
+    //TODO Changelog Tiled.offset of layer for sprites in changelog
+//TODO Changelog Tiled.offset of objects
     @Override
     public void update(final Engine engine) {
         final List<BatchEntry> entries = new ArrayList<>();
@@ -49,18 +50,16 @@ public class RenderSystem implements EntitySystem {
             final double width = render.sprite.size().width() * render.options.scale();
             final double height = render.sprite.size().height() * render.options.scale();
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
-            final var entityScreenBounds = graphics.toScreen(spriteBounds);
-
+            final var entityScreenBounds = graphics.toScreen(spriteBounds, render.parallax);
             if (screenBounds.intersects(entityScreenBounds)) {
-                entries.add(new BatchEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder));
+                entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options, render.drawOrder));
             }
         }
 
         Collections.sort(entries);
         for (final var entry : entries) {
             final SpriteDrawOptions scaledOptions = entry.options().scale(entry.options().scale() * zoom);
-            Offset offset = graphics.toOffset(entry.position);
-            screen.drawSprite(entry.sprite, offset, scaledOptions);
+            screen.drawSprite(entry.sprite, entry.offset, scaledOptions);
         }
     }
 }

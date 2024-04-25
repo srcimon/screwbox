@@ -49,6 +49,10 @@ public interface Graphics {
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
     ScreenBounds toScreen(Bounds bounds);
+
+    //TODO javadoc
+    ScreenBounds toScreen(Bounds bounds, Vector parallax);
+
     /**
      * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
      *
