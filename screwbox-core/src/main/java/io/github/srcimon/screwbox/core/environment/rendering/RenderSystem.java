@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -41,7 +42,6 @@ public class RenderSystem implements EntitySystem {
         final Bounds visibleArea = world.visibleArea();
         Screen screen = engine.graphics().screen();
         double zoom = engine.graphics().camera().zoom();
-        Vector cameraPosition = engine.graphics().camera().position();
 
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
             final RenderComponent render = entity.get(RenderComponent.class);
@@ -57,13 +57,8 @@ public class RenderSystem implements EntitySystem {
         Collections.sort(entries);
         for (final var entry : entries) {
             final SpriteDrawOptions scaledOptions = entry.options().scale(entry.options().scale() * zoom);
-            screen.drawSprite(entry.sprite, toOffset(entry.position, zoom, cameraPosition, screen.size()), scaledOptions);
+            Offset offset = engine.graphics().toOffset(entry.position);
+            screen.drawSprite(entry.sprite, offset, scaledOptions);
         }
-    }
-
-    private Offset toOffset(final Vector position, final  double zoom, final Vector cameraPosition, Size screenSize) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (screenSize.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (screenSize.height() / 2.0);
-        return Offset.at(x, y);
     }
 }
