@@ -9,6 +9,9 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -62,8 +65,19 @@ public class RenderSystem implements EntitySystem {
                 batch.addEntry(render.sprite, spriteBounds.origin(), render.options, render.drawOrder);
             }
         }
+        Screen screen = engine.graphics().screen();
+        double zoom = engine.graphics().camera().zoom();
+        Vector cameraPosition = engine.graphics().camera().position();
+
         for (final var entry : batch.entriesInDrawOrder()) {
-            world.drawSprite(entry.sprite(), entry.position(), entry.options());
+            final SpriteDrawOptions scaledOptions = entry.options().scale(entry.options().scale() * zoom);
+            screen.drawSprite(entry.sprite, toOffset(entry.position, zoom, cameraPosition, screen.size()), scaledOptions);
         }
+    }
+
+    private Offset toOffset(final Vector position, final  double zoom, final Vector cameraPosition, Size screenSize) {
+        final double x = (position.x() - cameraPosition.x()) * zoom + (screenSize.width() / 2.0);
+        final double y = (position.y() - cameraPosition.y()) * zoom + (screenSize.height() / 2.0);
+        return Offset.at(x, y);
     }
 }
