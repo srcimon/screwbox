@@ -25,7 +25,7 @@ class RenderSystemTest {
     ArgumentCaptor<SpriteBatch> spriteBatch;
 
     @Test
-    void bla(DefaultEnvironment environment, World world) {
+    void update_rendersSprites(DefaultEnvironment environment, World world) {
         Sprite visibleBackgroundSprite = Sprite.invisible();
         Sprite visibleForegroundsSprite = Sprite.invisible();
         Sprite outOfBoundsSprite = Sprite.invisible();
