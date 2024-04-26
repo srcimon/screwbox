@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- Individual app icons for MacOs and Windows / Linux
+- Added individual app icons for MacOs and Windows / Linux
+- Tiled layers now uses offset when calculating sprite positions 
 
 ### 🪛 Bug Fixes
 

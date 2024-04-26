@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO Changelog Tiled.offset of layer for sprites in changelog
-//TODO Changelog Tiled.offset of objects
-
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
