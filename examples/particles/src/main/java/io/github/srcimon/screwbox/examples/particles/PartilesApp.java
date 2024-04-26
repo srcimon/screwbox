@@ -16,6 +16,7 @@ public class PartilesApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Particles");
+
         screwBox.environment()
                 .enableTweening()
                 .enableParticles()

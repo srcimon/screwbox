@@ -33,16 +33,16 @@ class DefaultCameraTest {
     void changeZoomBy_changeIsPixelperfectValue_changesZoom() {
         var result = camera.changeZoomBy(1);
 
-        assertThat(camera.zoom()).isEqualTo(3.0);
-        assertThat(result).isEqualTo(3.0);
+        assertThat(camera.zoom()).isEqualTo(2.0);
+        assertThat(result).isEqualTo(2.0);
     }
 
     @Test
     void changeZoomBy_changeIsNotPixelperfectValue_changesZoomByPixelperfectValue() {
         var result = camera.changeZoomBy(0.2);
 
-        assertThat(camera.zoom()).isEqualTo(2.1875);
-        assertThat(result).isEqualTo(2.1875);
+        assertThat(camera.zoom()).isEqualTo(1.1875);
+        assertThat(result).isEqualTo(1.1875);
     }
 
     @Test
@@ -151,7 +151,7 @@ class DefaultCameraTest {
 
         camera.update();
 
-        assertThat(camera.focus().distanceTo(camera.position())).isLessThan(4);
+        assertThat(camera.focus().distanceTo(camera.position())).isLessThan(5);
         assertThat(camera.focus()).isNotEqualTo(camera.position());
     }
 

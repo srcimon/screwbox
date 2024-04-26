@@ -11,7 +11,10 @@ public class PlatformerApp {
 
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer");
-        engine.graphics().camera().setZoom(3.0);
+        engine.graphics().camera()
+                .setZoomRestriction(2, 5)
+                .setZoom(3.0);
+
         engine.ui().setLayouter(new WobblyUiLayouter());
 
         engine.assets()

@@ -35,4 +35,14 @@ class LayerTest {
     void isImageLayer_tilelayer_isFalse() {
         assertThat(layer.isImageLayer()).isFalse();
     }
+
+    @Test
+    void parallaxX_parallaxIsZero_isOne() {
+        assertThat(layer.parallaxX()).isOne();
+    }
+
+    @Test
+    void parallaxY_parallaxIsZero_isOne() {
+        assertThat(layer.parallaxY()).isOne();
+    }
 }

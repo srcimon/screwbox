@@ -162,6 +162,11 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public ScreenBounds bounds() {
+        return new ScreenBounds(Offset.origin(), size());
+    }
+
+    @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);

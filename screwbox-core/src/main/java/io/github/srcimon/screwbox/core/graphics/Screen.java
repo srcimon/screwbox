@@ -111,4 +111,8 @@ public interface Screen {
      */
     boolean isVisible(Offset offset);
 
+    /**
+     * Returns the current {@link ScreenBounds}.
+     */
+    ScreenBounds bounds();
 }

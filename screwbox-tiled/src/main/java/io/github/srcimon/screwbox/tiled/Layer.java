@@ -48,10 +48,10 @@ public class Layer {
     }
 
     public double parallaxX() {
-        return layerEntity.parallaxx();
+        return layerEntity.parallaxx() == 0 ? 1 : layerEntity.parallaxx();
     }
 
     public double parallaxY() {
-        return layerEntity.parallaxy();
+        return layerEntity.parallaxy() == 0 ? 1 : layerEntity.parallaxy();
     }
 }

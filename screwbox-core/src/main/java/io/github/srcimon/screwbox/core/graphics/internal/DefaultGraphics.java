@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
@@ -60,6 +60,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public ScreenBounds toScreen(final Bounds bounds) {
         return world.toScreen(bounds);
+    }
+
+    @Override
+    public ScreenBounds toScreenUsingParallax(final Bounds bounds, final double parallaxX, final double parallaxY) {
+        return world.toScreen(bounds, parallaxX, parallaxY);
     }
 
     @Override

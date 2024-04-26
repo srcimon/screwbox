@@ -49,6 +49,12 @@ public interface Graphics {
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
     ScreenBounds toScreen(Bounds bounds);
+
+    /**
+     * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.
+     */
+    ScreenBounds toScreenUsingParallax(Bounds bounds, double parallaxX, double parallaxY);
+
     /**
      * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
      *

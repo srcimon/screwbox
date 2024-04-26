@@ -16,9 +16,9 @@ public class DefaultCamera implements Camera, Updatable {
     private final DefaultWorld world;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
-    private double zoom = 2;
+    private double zoom = 1;
     private double requestedZoom = zoom;
-    private double minZoom = 2;
+    private double minZoom = 1;
     private double maxZoom = 5;
 
     private ActiveCameraShake activeShake;

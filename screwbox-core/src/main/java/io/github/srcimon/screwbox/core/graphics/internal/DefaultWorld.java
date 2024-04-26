@@ -130,8 +130,16 @@ public class DefaultWorld implements World {
         return new ScreenBounds(offset, size);
     }
 
-    public int toDistance(double distance) {
+    public int toDistance(final double distance) {
         return (int) Math.round(distance * zoom);
     }
 
+    public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
+        final Vector position = bounds.origin();
+        final var offset = Offset.at(
+                (position.x() - parallaxX * cameraPosition.x()) * zoom + (screen.size().width() / 2.0),
+                (position.y() - parallaxY * cameraPosition.y()) * zoom + (screen.size().height() / 2.0));
+        final var size = toDimension(bounds.size());
+        return new ScreenBounds(offset, size);
+    }
 }
