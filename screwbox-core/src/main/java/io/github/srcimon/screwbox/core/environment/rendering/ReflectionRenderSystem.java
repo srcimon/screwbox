@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -14,6 +16,7 @@ import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
@@ -24,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@Order(SystemOrder.PRESENTATION_BACKGROUND)//TODO FIX
+@Order(SystemOrder.PRESENTATION_PREPARE)//TODO FIX
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
@@ -80,10 +83,15 @@ public class ReflectionRenderSystem implements EntitySystem {
         final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
         engine.environment().remove(oldReflections);
+        var reflectedEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
             final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
             visibleReflection.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
+
+                var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
+
+
 
                 int width = (int) (reflectionOnScreen.size().width() / engine.graphics().camera().zoom());
                 int height = (int) (reflectionOnScreen.size().height() / engine.graphics().camera().zoom());
@@ -97,10 +105,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
                     renderer.fillWith(Color.RED);
 
-                    //   renderer.fillWith(SpritesBundle.MOON_SURFACE_16.get(), SpriteFillOptions.scale(2));
 //                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
-//                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-//                engine.graphics().world().drawSpriteBatch(batch, visibleReflection.get());
                     graphics.dispose();
                     Sprite reflectionSprite = Sprite.fromImage(image);
                     RenderComponent renderComponent = new RenderComponent(
