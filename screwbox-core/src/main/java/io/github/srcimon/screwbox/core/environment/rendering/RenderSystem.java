@@ -37,8 +37,7 @@ public class RenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<BatchEntry> entries = new ArrayList<>();
         final Graphics graphics = engine.graphics();
-        final ScreenBounds screenBounds = graphics.screen().bounds();
-        Screen screen = graphics.screen();
+        final ScreenBounds visibleBounds = graphics.screen().bounds();
         double zoom = graphics.camera().zoom();
 
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
@@ -47,12 +46,13 @@ public class RenderSystem implements EntitySystem {
             final double height = render.sprite.size().height() * render.options.scale();
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
             final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);
-            if (screenBounds.intersects(entityScreenBounds)) {
+            if (visibleBounds.intersects(entityScreenBounds)) {
                 entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder));
             }
         }
 
         Collections.sort(entries);
+        final Screen screen = graphics.screen();
         for (final var entry : entries) {
             screen.drawSprite(entry.sprite, entry.offset, entry.options);
         }
