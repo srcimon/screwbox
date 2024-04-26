@@ -20,7 +20,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
 
-    private static final class ReflectionArea {
+   /* private static final class ReflectionArea {
 
         private final double opacityModifier;
         private final Bounds area;
@@ -63,11 +63,11 @@ public class ReflectionRenderSystem implements EntitySystem {
             }
             return spriteBatch;
         }
-    }
+    }*/
 
     @Override
     public void update(final Engine engine) {
-        final Bounds visibleArea = engine.graphics().world().visibleArea();
+      /*  final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
             final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
@@ -76,7 +76,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
                 engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
             });
-        }
+        }*/
+
     }
 
 }
