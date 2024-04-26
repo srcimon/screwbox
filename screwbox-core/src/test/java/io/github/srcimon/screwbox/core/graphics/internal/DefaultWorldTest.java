@@ -32,7 +32,6 @@ class DefaultWorldTest {
     void setUp() {
         when(screen.size()).thenReturn(Size.of(1024, 768));
         world = new DefaultWorld(screen);
-        world.updateZoom(1);
     }
 
     @Test
