@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -88,12 +89,18 @@ public class ReflectionRenderSystem implements EntitySystem {
             final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
             visibleReflection.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
-                if(reflectionOnScreen.size().height() > 0 && reflectionOnScreen.size().width() > 0) {
+
                     engine.graphics().screen().drawRectangle(reflectionOnScreen, RectangleDrawOptions.outline(Color.RED).strokeWidth(8));
-                    var image = new BufferedImage(reflectionOnScreen.size().width(), reflectionOnScreen.size().height(), BufferedImage.TYPE_INT_ARGB);
+                    int width = (int) (reflectionOnScreen.size().width() / engine.graphics().camera().zoom());
+                    int height = (int) (reflectionOnScreen.size().height() / engine.graphics().camera().zoom());
+
+                if(width > 0 && height > 0) {
+                    var image = new BufferedImage(
+                            width,
+                            height, BufferedImage.TYPE_INT_ARGB);
                     var graphics = (Graphics2D) image.getGraphics();
                     var renderer = new DefaultRenderer();
-                    renderer.updateGraphicsContext(() -> graphics, reflectionOnScreen.size());
+                    renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
                     renderer.fillWith(Color.RED);
 
                     //   renderer.fillWith(SpritesBundle.MOON_SURFACE_16.get(), SpriteFillOptions.scale(2));
@@ -109,6 +116,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     );
                     engine.environment().addEntity(
                             new TransformComponent(reflection),
+                            renderComponent,
                             new ReflectionImageComponent()
                     );
                 }
