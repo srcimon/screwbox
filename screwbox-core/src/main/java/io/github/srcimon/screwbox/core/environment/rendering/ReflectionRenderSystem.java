@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@Order(SystemOrder.PRESENTATION_PREPARE)//TODO FIX
+@Order(SystemOrder.PRESENTATION_BACKGROUND)//TODO FIX
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
@@ -83,14 +83,13 @@ public class ReflectionRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
       final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> xxx = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
-        System.out.println(xxx.size());
         engine.environment().remove(xxx);
-        final List<Entity> reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
             final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
             visibleReflection.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
                 if(reflectionOnScreen.size().height() > 0 && reflectionOnScreen.size().width() > 0) {
+                    engine.graphics().screen().drawRectangle(reflectionOnScreen, RectangleDrawOptions.outline(Color.RED).strokeWidth(8));
                     var image = new BufferedImage(reflectionOnScreen.size().width(), reflectionOnScreen.size().height(), BufferedImage.TYPE_INT_ARGB);
                     var graphics = (Graphics2D) image.getGraphics();
                     var renderer = new DefaultRenderer();
@@ -103,14 +102,15 @@ public class ReflectionRenderSystem implements EntitySystem {
 //                engine.graphics().world().drawSpriteBatch(batch, visibleReflection.get());
                     graphics.dispose();
                     Sprite reflectionSprite = Sprite.fromImage(image);
-                    engine.environment().addEntity(
-                            new TransformComponent(reflection),
-                            new ReflectionImageComponent(),
-                            new RenderComponent(
+                    RenderComponent renderComponent = new RenderComponent(
                             reflectionSprite,
                             reflectionEntity.get(ReflectionComponent.class).drawOrder,
                             SpriteDrawOptions.originalSize().opacity(reflectionEntity.get(ReflectionComponent.class).opacityModifier)
-                    ));
+                    );
+                    engine.environment().addEntity(
+                            new TransformComponent(reflection),
+                            new ReflectionImageComponent()
+                    );
                 }
             });
 
