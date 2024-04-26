@@ -4,17 +4,31 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-@Order(SystemOrder.PRESENTATION_EFFECTS)
+@Order(SystemOrder.PRESENTATION_PREPARE)//TODO FIX
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
@@ -67,17 +81,49 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-      /*  final Bounds visibleArea = engine.graphics().world().visibleArea();
+      final Bounds visibleArea = engine.graphics().world().visibleArea();
+        final List<Entity> xxx = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
+        System.out.println(xxx.size());
+        engine.environment().remove(xxx);
         final List<Entity> reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
-            final var reflectionOnScreen = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
-            reflectionOnScreen.ifPresent(reflection -> {
-                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
-                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
-                engine.graphics().world().drawSpriteBatch(batch, reflectionOnScreen.get());
-            });
-        }*/
+            final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
+            visibleReflection.ifPresent(reflection -> {
+                var reflectionOnScreen = engine.graphics().toScreen(reflection);
+                if(reflectionOnScreen.size().height() > 0 && reflectionOnScreen.size().width() > 0) {
+                    var image = new BufferedImage(reflectionOnScreen.size().width(), reflectionOnScreen.size().height(), BufferedImage.TYPE_INT_ARGB);
+                    var graphics = (Graphics2D) image.getGraphics();
+                    var renderer = new DefaultRenderer();
+                    renderer.updateGraphicsContext(() -> graphics, reflectionOnScreen.size());
+                    renderer.fillWith(Color.RED);
 
+                    //   renderer.fillWith(SpritesBundle.MOON_SURFACE_16.get(), SpriteFillOptions.scale(2));
+//                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
+//                final SpriteBatch batch = area.createRenderBatchFor(reflectableEntities);
+//                engine.graphics().world().drawSpriteBatch(batch, visibleReflection.get());
+                    graphics.dispose();
+                    Sprite reflectionSprite = Sprite.fromImage(image);
+                    engine.environment().addEntity(
+                            new TransformComponent(reflection),
+                            new ReflectionImageComponent(),
+                            new RenderComponent(
+                            reflectionSprite,
+                            reflectionEntity.get(ReflectionComponent.class).drawOrder,
+                            SpriteDrawOptions.originalSize().opacity(reflectionEntity.get(ReflectionComponent.class).opacityModifier)
+                    ));
+                }
+            });
+
+        }
+
+    }
+
+    public static void exportPng(final Frame frame, final String fileName) {
+        try {
+            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
+        } catch (IOException e) {
+            throw new IllegalStateException("could not export png", e);
+        }
     }
 
 }
