@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -16,7 +15,8 @@ public class RenderComponent implements Component {
     public Sprite sprite;
     public int drawOrder;
     public SpriteDrawOptions options;
-    public Vector parallax = Vector.of(1, 1);
+    public double parallaxX = 1;
+    public double parallaxY = 1;
 
     public RenderComponent() {
         this(0);

@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.tiled.internal.LayerEntity;
 
 import java.util.Optional;
@@ -54,9 +53,5 @@ public class Layer {
 
     public double parallaxY() {
         return layerEntity.parallaxy() == 0 ? 1 : layerEntity.parallaxy();
-    }
-
-    public Vector parallax() {
-        return Vector.of(parallaxX(), parallaxY());
     }
 }

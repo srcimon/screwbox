@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@ExtendWith({ EnvironmentExtension.class, MockitoExtension.class })
+@ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
 class RenderSystemTest {
 
     @Captor
@@ -42,7 +42,7 @@ class RenderSystemTest {
                 .add(new RenderComponent(outOfBoundsSprite))
                 .add(new TransformComponent($$(400, 100, 32, 32))));
 
-        Mockito.when(world.visibleArea()).thenReturn($$(0, 0, 200, 200));
+        when(world.visibleArea()).thenReturn($$(0, 0, 200, 200));
         environment.addSystem(new RenderSystem());
 
         environment.update();

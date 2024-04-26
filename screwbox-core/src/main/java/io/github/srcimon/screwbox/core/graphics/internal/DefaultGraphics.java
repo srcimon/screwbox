@@ -63,8 +63,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public ScreenBounds toScreen(Bounds bounds, Vector parallax) {
-        return world.toScreen(bounds, parallax);
+    public ScreenBounds toScreenUsingParallax(final Bounds bounds, final double parallaxX, final double parallaxY) {
+        return world.toScreen(bounds, parallaxX, parallaxY);
     }
 
     @Override

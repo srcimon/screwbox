@@ -44,7 +44,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                 final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
                 if (reflectableBounds.intersects(reflectedArea)) {
                     final RenderComponent render = reflectableEntity.get(RenderComponent.class);
-                    if (render.parallax.equals(Vector.of(1, 1))) {
+                    if (render.parallaxX == 1 && render.parallaxY == 1) {
                         final var spriteSize = render.sprite.size();
                         final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
 

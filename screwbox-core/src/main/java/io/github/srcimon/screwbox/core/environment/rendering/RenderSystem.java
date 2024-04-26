@@ -46,7 +46,7 @@ public class RenderSystem implements EntitySystem {
             final double width = render.sprite.size().width() * render.options.scale();
             final double height = render.sprite.size().height() * render.options.scale();
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
-            final var entityScreenBounds = graphics.toScreen(spriteBounds, render.parallax);
+            final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);
             if (screenBounds.intersects(entityScreenBounds)) {
                 entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder));
             }
