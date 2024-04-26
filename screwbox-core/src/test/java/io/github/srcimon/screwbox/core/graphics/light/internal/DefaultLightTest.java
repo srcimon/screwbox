@@ -57,6 +57,7 @@ class DefaultLightTest {
     void beforeEach() {
         when(screen.size()).thenReturn(Size.of(640, 480));
         world = new DefaultWorld(screen);
+        world.updateZoom(1);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
         light = new DefaultLight(screen, world, configuration, executor);
