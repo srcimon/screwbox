@@ -9,7 +9,7 @@ public class DefaultWorld implements World {
     private final Screen screen;
 
     private Vector cameraPosition = Vector.zero();
-    private double zoom = 1;
+    private double zoom = 2;
 
     private Bounds visibleArea;
 

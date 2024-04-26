@@ -36,8 +36,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .animateOpacity()
             .animateScale(3, 1)
             .randomLifeTimeMilliseconds(800, 1500)
-            .randomBaseSpeed(100, 400)
-    );
+            .randomBaseSpeed(100, 400));
 
     private final ParticleOptions particleDesigner;
 
