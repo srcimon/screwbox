@@ -3,12 +3,7 @@ package io.github.srcimon.screwbox.examples.platformer.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionImageComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.examples.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboB;
@@ -97,11 +92,6 @@ public class GameScene implements Scene {
                 .addSystem(new FollowPlayerSystem())
                 .addSystem(new PlayerControlSystem())
                 .addSystem(new ShowLabelSystem())
-                .addSystem(SystemOrder.PRESENTATION_OVERLAY, engine -> {
-                    engine.environment().fetchAllHaving(TransformComponent.class, ReflectionImageComponent.class).forEach(e -> {
-                        engine.graphics().world().drawRectangle(e.bounds(), RectangleDrawOptions.outline(Color.BLUE).strokeWidth(4));
-                    });
-                })
                 .addSystem(new LetsGoSystem())
                 .addSystem(new PrintSystem())
                 .addSystem(new ChangeMapSystem())

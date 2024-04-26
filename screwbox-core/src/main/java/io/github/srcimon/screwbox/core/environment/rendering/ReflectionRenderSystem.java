@@ -2,9 +2,6 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -16,9 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
@@ -82,19 +77,18 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-      final Bounds visibleArea = engine.graphics().world().visibleArea();
-        final List<Entity> xxx = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
-        engine.environment().remove(xxx);
+        final Bounds visibleArea = engine.graphics().world().visibleArea();
+        final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
+        engine.environment().remove(oldReflections);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
             final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
             visibleReflection.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
 
-                    engine.graphics().screen().drawRectangle(reflectionOnScreen, RectangleDrawOptions.outline(Color.RED).strokeWidth(8));
-                    int width = (int) (reflectionOnScreen.size().width() / engine.graphics().camera().zoom());
-                    int height = (int) (reflectionOnScreen.size().height() / engine.graphics().camera().zoom());
+                int width = (int) (reflectionOnScreen.size().width() / engine.graphics().camera().zoom());
+                int height = (int) (reflectionOnScreen.size().height() / engine.graphics().camera().zoom());
 
-                if(width > 0 && height > 0) {
+                if (width > 0 && height > 0) {
                     var image = new BufferedImage(
                             width,
                             height, BufferedImage.TYPE_INT_ARGB);
