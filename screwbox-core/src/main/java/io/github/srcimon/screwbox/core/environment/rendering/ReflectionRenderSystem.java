@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -83,7 +84,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
         engine.environment().remove(oldReflections);
-        var reflectedEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
+        var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
             final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
             visibleReflection.ifPresent(reflection -> {
@@ -92,20 +93,30 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
 
-
-                int width = (int) (reflectionOnScreen.size().width() / engine.graphics().camera().zoom());
-                int height = (int) (reflectionOnScreen.size().height() / engine.graphics().camera().zoom());
+                var reflectionOrigin = reflection.origin();
+                int width =  (int)(Math.ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()));
+                int height = (int)(Math.ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
 
                 if (width > 0 && height > 0) {
                     var image = new BufferedImage(
                             width,
                             height, BufferedImage.TYPE_INT_ARGB);
                     var graphics = (Graphics2D) image.getGraphics();
+
                     var renderer = new DefaultRenderer();
                     renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
-                    renderer.fillWith(Color.RED);
+                    renderer.fillWith(Color.WHITE);
+                    for(var entity : reflectableEntities) {
+                        if(entity.bounds().intersects(reflectedArea)) {
+                            var render = entity.get(RenderComponent.class);
+                            if(render.parallaxX == 1 && render.parallaxY == 1) {
+                                var normal = entity.position().substract(reflectionOrigin);
+                            }
 
-//                final var area = new ReflectionArea(reflection, reflectionEntity.get(ReflectionComponent.class), engine.loop().lastUpdate());
+                        }
+
+                    }
+
                     graphics.dispose();
                     Sprite reflectionSprite = Sprite.fromImage(image);
                     RenderComponent renderComponent = new RenderComponent(
