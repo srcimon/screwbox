@@ -29,7 +29,6 @@ public class DefaultRenderer implements Renderer {
         this.canvasSize = canvasSize;
         this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        fillWith(Color.BLACK);
     }
 
     @Override

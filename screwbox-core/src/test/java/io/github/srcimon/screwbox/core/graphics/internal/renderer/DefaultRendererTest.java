@@ -32,7 +32,7 @@ class DefaultRendererTest {
         renderer.fillWith(Color.RED);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
-        verify(graphics, times(2)).fillRect(0, 0, 640, 480);
+        verify(graphics, times(1)).fillRect(0, 0, 640, 480);
     }
 
     @Test
@@ -41,7 +41,7 @@ class DefaultRendererTest {
         renderer.fillWith(Color.RED);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
-        verify(graphics, times(3)).fillRect(0, 0, 640, 480);
+        verify(graphics, times(2)).fillRect(0, 0, 640, 480);
     }
 
 }

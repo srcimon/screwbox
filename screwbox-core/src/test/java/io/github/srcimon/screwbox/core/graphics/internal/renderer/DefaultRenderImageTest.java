@@ -42,6 +42,7 @@ class DefaultRenderImageTest {
 
         renderer = new DefaultRenderer();
         renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40));
+        renderer.fillWith(Color.BLACK);
     }
 
     @Test
