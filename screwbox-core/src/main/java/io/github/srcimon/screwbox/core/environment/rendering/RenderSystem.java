@@ -22,7 +22,7 @@ import java.util.List;
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
-    public record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
+    private record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
             implements Comparable<BatchEntry> {
 
         @Override

@@ -9,9 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -21,6 +19,8 @@ import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRendere
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Order(SystemOrder.PRESENTATION_OVERLAY)
@@ -73,11 +73,13 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     var renderer = new DefaultRenderer();
                     renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
+
+                    List<BatchEntry> entries = new ArrayList<>();
                     for (var entity : reflectableEntities) {
                         var render = entity.get(RenderComponent.class);
 
                         Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                                reflectionEntity.bounds().width() * render.options.scale() ,
+                                reflectionEntity.bounds().width() * render.options.scale(),
                                 reflectionEntity.bounds().height() * render.options.scale());
 
                         ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
@@ -85,18 +87,21 @@ public class ReflectionRenderSystem implements EntitySystem {
                         if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
 
                             if (render.drawOrder <= reflectionComponent.drawOrder) {
-                                var eos = screenUsingParallax;
-                                var ldist = eos.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+                                var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
                                 var ldistOffset = Offset.at(
                                         ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
                                         height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
                                 );
 
-                                renderer.drawSprite(render.sprite, ldistOffset, render.options.invertVerticalFlip());
+                                entries.add(new BatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
                             }
                         }
 
 
+                    }
+                    Collections.sort(entries);
+                    for (var entry : entries) {
+                        renderer.drawSprite(entry.sprite, entry.offset, entry.options);
                     }
 
                     graphics.dispose();
@@ -109,6 +114,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                             reflectionComponent.drawOrder,
                             SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
                     );
+
+
                     engine.environment().addEntity(
                             new TransformComponent(reflection),
                             renderComponent,
@@ -118,6 +125,15 @@ public class ReflectionRenderSystem implements EntitySystem {
             });
         }
 
+    }
+
+    private record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
+            implements Comparable<BatchEntry> {
+
+        @Override
+        public int compareTo(final BatchEntry o) {
+            return Integer.compare(drawOrder, o.drawOrder);
+        }
     }
 
 }
