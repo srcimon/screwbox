@@ -1,12 +1,19 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SpriteBatch {
+
+    public record SpriteBatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
+            implements Comparable<SpriteBatchEntry> {
+
+        @Override
+        public int compareTo(final SpriteBatchEntry other) {
+            return Integer.compare(drawOrder, other.drawOrder);
+        }
+    }
 
     private final List<SpriteBatchEntry> entries = new ArrayList<>();
 

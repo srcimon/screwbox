@@ -9,14 +9,8 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
