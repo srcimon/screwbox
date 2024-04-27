@@ -236,7 +236,7 @@ public final class Bounds implements Serializable {
 
     @Override
     public String toString() {
-        return "Bounds [position=" + position + ", size=" + size() + "]";
+        return "Bounds [x=" + minX() + ", y=" + minY() + ", width=" + width() + ", height=" + height() + "]";
     }
 
     public Vector position() {

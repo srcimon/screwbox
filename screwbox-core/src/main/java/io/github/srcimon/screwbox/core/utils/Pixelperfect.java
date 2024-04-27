@@ -20,11 +20,10 @@ public final class Pixelperfect {
     }
 
     public static Bounds bounds(final Bounds bounds) {
-        final double x = floor(bounds.origin().x() / 2) * 2;
-        final double y = floor(bounds.origin().y() / 2) * 2;
+        final double x = floor(bounds.origin().x() / 2.0) * 2.0;
+        final double y = floor(bounds.origin().y() / 2.0) * 2.0;
         return Bounds.atOrigin(x, y,
-                ceil((bounds.width() + bounds.origin().x() - x) / 2) * 2,
-                ceil((bounds.height() + bounds.origin().y() - y) / 2) * 2);
+                ceil((bounds.width() + bounds.origin().x() - x) / 2.0) * 2.0,
+                ceil((bounds.height() + bounds.origin().y() - y) / 2.0) * 2.0);
     }
-
 }
