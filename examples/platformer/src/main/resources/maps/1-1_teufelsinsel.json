@@ -1008,7 +1008,7 @@
                         {
                          "name":"opacityModifier",
                          "type":"float",
-                         "value":0.4
+                         "value":0.2
                         }, 
                         {
                          "name":"useWaveEffect",
@@ -1018,7 +1018,7 @@
                  "template":"..\/templates\/zones\/reflection-zone.json",
                  "width":2640,
                  "x":0,
-                 "y":384
+                 "y":385
                 }],
          "opacity":1,
          "type":"objectgroup",

@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
@@ -25,51 +26,6 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
-
-   /* private static final class ReflectionArea {
-
-        private final double opacityModifier;
-        private final Bounds area;
-        private final Bounds reflectedArea;
-        final double waveSeed;
-        private final boolean useWaveEffect;
-
-        public ReflectionArea(final Bounds area, final ReflectionComponent options, final Time time) {
-            this.area = area;
-            waveSeed = time.milliseconds() / 500.0;
-            useWaveEffect = options.useWaveEffect;
-            opacityModifier = useWaveEffect
-                    ? (Math.sin(waveSeed) * 0.25 + 0.75) * options.opacityModifier.value()
-                    : options.opacityModifier.value();
-            reflectedArea = area.moveBy(0, -area.height()).expandTop(useWaveEffect ? 2 : 0);
-        }
-
-        public SpriteBatch createRenderBatchFor(final List<Entity> reflectableEntities) {
-            final SpriteBatch spriteBatch = new SpriteBatch();
-            for (final var reflectableEntity : reflectableEntities) {
-                final var reflectableBounds = reflectableEntity.get(TransformComponent.class).bounds;
-                if (reflectableBounds.intersects(reflectedArea)) {
-                    final RenderComponent render = reflectableEntity.get(RenderComponent.class);
-                    if (render.parallaxX == 1 && render.parallaxY == 1) {
-                        final var spriteSize = render.sprite.size();
-                        final var spriteOrigin = reflectableBounds.position().add(-spriteSize.width() / 2.0, -spriteSize.height() / 2.0);
-
-                        final var xDelta = useWaveEffect ? Math.sin(waveSeed + spriteOrigin.y() / 16) * 2 : 0;
-                        final var yDelta = useWaveEffect ? Math.sin(waveSeed) * 2 : 0;
-                        final var effectOrigin = Vector.of(
-                                spriteOrigin.x() + xDelta,
-                                2 * area.minY() - spriteOrigin.y() - spriteSize.height() + yDelta);
-
-                        final var options = render.options
-                                .opacity(render.options.opacity().multiply(opacityModifier))
-                                .flipVertical(!render.options.isFlipVertical());
-                        spriteBatch.addEntry(render.sprite, effectOrigin, options, render.drawOrder);
-                    }
-                }
-            }
-            return spriteBatch;
-        }
-    }*/
 
     @Override
     public void update(final Engine engine) {
@@ -114,7 +70,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     }
 
                     graphics.dispose();
-                    Sprite reflectionSprite = Sprite.fromImage(image);
+                    Sprite reflectionSprite = Sprite.fromImage(image); // TODO Blur
                     RenderComponent renderComponent = new RenderComponent(
                             reflectionSprite,
                             reflectionEntity.get(ReflectionComponent.class).drawOrder,
