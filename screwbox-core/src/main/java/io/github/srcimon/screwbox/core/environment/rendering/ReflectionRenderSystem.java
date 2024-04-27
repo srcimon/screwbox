@@ -93,7 +93,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
 
-                var reflectionOrigin = reflection.origin();
                 int width =  (int)(Math.ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()));
                 int height = (int)(Math.ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
 
@@ -112,7 +111,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                                 var distance = entity.origin().substract(reflectedArea.origin());
                                 var offset = Offset.at(
                                         distance.x() ,
-                                        distance.y()
+                                        height -   distance.y() - render.sprite.size().height()
 
                                 );
                                 renderer.drawSprite(render.sprite, offset, render.options.invertVerticalFlip());
