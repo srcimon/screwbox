@@ -19,8 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-//TODO: check correct amount of drawn sprites?
-@Order(SystemOrder.PRESENTATION_PREPARE)//TODO FIX
+@Order(SystemOrder.PRESENTATION_PREPARE)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
