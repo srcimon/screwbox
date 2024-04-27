@@ -76,6 +76,10 @@ public class ReflectionRenderSystem implements EntitySystem {
                     for (var entity : reflectableEntities) {
                         var render = entity.get(RenderComponent.class);
 
+                        Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                                reflectionEntity.bounds().width() * render.options.scale() ,
+                                reflectionEntity.bounds().height() * render.options.scale());
+
                         ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entity.bounds(), render.parallaxX, render.parallaxY);
 
                         if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
