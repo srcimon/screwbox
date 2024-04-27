@@ -68,7 +68,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     var graphics = (Graphics2D) image.getGraphics();
 
                     var renderer = new DefaultRenderer();
-                    renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
+                    renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
                     for (var entity : reflectableEntities) {
                         if (entity.bounds().intersects(reflectedArea)) {
                             var render = entity.get(RenderComponent.class);
