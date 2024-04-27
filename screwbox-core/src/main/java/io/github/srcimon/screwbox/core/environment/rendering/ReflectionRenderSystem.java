@@ -28,75 +28,76 @@ import java.util.List;
 @Order(SystemOrder.PRESENTATION_OVERLAY)
 public class ReflectionRenderSystem implements EntitySystem {
 
-    private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
+    private static final Archetype MIRRORS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
     private static final Archetype REFLECTION_RENDERERS = Archetype.of(ReflectionResultComponent.class);
 
     @Override
     public void update(final Engine engine) {
         engine.environment().removeAll(REFLECTION_RENDERERS);
+        final var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
+        for (final Entity reflectionEntity : engine.environment().fetchAll(MIRRORS)) {
+            final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+            final var visiblePartOfReflection = reflectionEntity.bounds().intersection(visibleArea);
+            visiblePartOfReflection.ifPresent(reflection -> extracted(engine, reflectionEntity, reflection, reflectableEntities));
+        }
+    }
+
+    //TODO make class
+    private void extracted(Engine engine, Entity reflectionEntity, Bounds reflection, List<Entity> reflectableEntities) {
         double zoom = engine.graphics().camera().zoom();
-        var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
-        for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
+        var reflectionOnScreen = engine.graphics().toScreen(reflection);
 
-            Bounds visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
-            final var xxxx = reflectionEntity.bounds().intersection(visibleArea);
+        var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
-            xxxx.ifPresent(reflection -> {
-                var reflectionOnScreen = engine.graphics().toScreen(reflection);
+        ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
 
-                var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
+        int width = (int) (Math.ceil(reflectionOnScreen.size().width() / zoom));
+        int height = (int) (Math.ceil(reflectionOnScreen.size().height() / zoom));
 
-                ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
+        if (width > 0 && height > 0) {
+            List<SpriteBatchEntry> entries = new ArrayList<>();
+            for (var entity : reflectableEntities) {
+                var render = entity.get(RenderComponent.class);
 
-                int width = (int) (Math.ceil(reflectionOnScreen.size().width() / zoom));
-                int height = (int) (Math.ceil(reflectionOnScreen.size().height() / zoom));
+                Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                        reflectionEntity.bounds().width() * render.options.scale(),
+                        reflectionEntity.bounds().height() * render.options.scale());
 
-                if (width > 0 && height > 0) {
-                    List<SpriteBatchEntry> entries = new ArrayList<>();
-                    for (var entity : reflectableEntities) {
-                        var render = entity.get(RenderComponent.class);
+                ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
-                        Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                                reflectionEntity.bounds().width() * render.options.scale(),
-                                reflectionEntity.bounds().height() * render.options.scale());
+                if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
 
-                        ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+                    if (render.drawOrder <= reflectionComponent.drawOrder) {
+                        var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+                        var ldistOffset = Offset.at(
+                                ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
+                                height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
+                        );
 
-                        if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
-
-                            if (render.drawOrder <= reflectionComponent.drawOrder) {
-                                var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
-                                var ldistOffset = Offset.at(
-                                        ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
-                                        height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
-                                );
-
-                                entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
-                            }
-                        }
-
-
+                        entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
                     }
-                    Size size = Size.of(width, height);
-                    var image = cereateImage(size, entries);
-
-                    Sprite reflectionSprite = reflectionComponent.blur > 1
-                            ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
-                            : Sprite.fromImage(image);
-                    RenderComponent renderComponent = new RenderComponent(
-                            reflectionSprite,
-                            reflectionComponent.drawOrder,
-                            SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
-                    );
-
-                    engine.environment().addEntity(
-                            new TransformComponent(reflection),
-                            renderComponent,
-                            new ReflectionResultComponent()
-                    );
                 }
-            });
+
+
+            }
+            Size size = Size.of(width, height);
+            var image = cereateImage(size, entries);
+
+            Sprite reflectionSprite = reflectionComponent.blur > 1
+                    ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
+                    : Sprite.fromImage(image);
+            RenderComponent renderComponent = new RenderComponent(
+                    reflectionSprite,
+                    reflectionComponent.drawOrder,
+                    SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
+            );
+
+            engine.environment().addEntity(
+                    new TransformComponent(reflection),
+                    renderComponent,
+                    new ReflectionResultComponent()
+            );
         }
     }
 
@@ -107,7 +108,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         var renderer = new DefaultRenderer();
         renderer.updateGraphicsContext(() -> graphics, size);
         Collections.sort(entries);
-        for (var entry : entries) {
+        for (final var entry : entries) {
             renderer.drawSprite(entry.sprite(), entry.offset(), entry.options());
         }
 
