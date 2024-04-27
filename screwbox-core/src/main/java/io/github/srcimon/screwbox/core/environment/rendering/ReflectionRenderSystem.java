@@ -9,10 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -48,8 +45,8 @@ public class ReflectionRenderSystem implements EntitySystem {
             Bounds visibleArea = engine.graphics().world().visibleArea();
             double x = adjustSmaller(visibleArea.origin().x());
             double y = adjustSmaller(visibleArea.origin().y());
-            double xdelte =  visibleArea.origin().x() - x;
-            double ydelte =  visibleArea.origin().y() - y;
+            double xdelte = visibleArea.origin().x() - x;
+            double ydelte = visibleArea.origin().y() - y;
             Bounds visibleAreaAdjusted = Bounds.atOrigin(
                     x,
                     y,
@@ -77,27 +74,16 @@ public class ReflectionRenderSystem implements EntitySystem {
                         if (entity.bounds().intersects(reflectedArea)) {
                             var render = entity.get(RenderComponent.class);
                             if (render.drawOrder <= reflectionComponent.drawOrder) {
-                                var distance = entity.position().substract(reflectedArea.origin());
-
                                 var eos = engine.graphics().toScreenUsingParallax(entity.bounds(), render.parallaxX, render.parallaxY);
                                 var ldist = eos.center().substract(engine.graphics().toScreen(reflectedArea).offset());
-                                System.out.println(ldist);
-                                var offset = Offset.at(
-                                        distance.x() - render.sprite.size().width() * render.options.scale() / 2,
-                                        height - distance.y() - render.sprite.size().height() * render.options.scale()  / 2
-                                );
                                 var ldistOffset = Offset.at(
                                         ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
-                                        height -ldist.y() / zoom- distance.y() - render.sprite.size().height() * render.options.scale()  / 2
+                                        height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
                                 );
 
                                 renderer.drawSprite(render.sprite, ldistOffset, render.options.invertVerticalFlip());
                             }
                         }
-
-
-
-
 
 
                     }
@@ -110,7 +96,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     RenderComponent renderComponent = new RenderComponent(
                             reflectionSprite,
                             reflectionComponent.drawOrder,
-                            SpriteDrawOptions.originalSize() //.opacity(reflectionComponent.opacityModifier)
+                            SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
                     );
                     engine.environment().addEntity(
                             new TransformComponent(reflection),
