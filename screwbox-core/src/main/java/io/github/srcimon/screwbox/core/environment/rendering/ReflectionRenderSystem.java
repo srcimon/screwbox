@@ -13,16 +13,14 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.lang.Math.ceil;
@@ -58,7 +56,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                 ceil(reflectionOnScreen.size().width() / zoom),
                 ceil(reflectionOnScreen.size().height() / zoom));
 
-        List<SpriteBatchEntry> entries = new ArrayList<>();
+        SpriteBatch spriteBatch = new SpriteBatch();
         for (var entity : reflectableEntities) {
             var render = entity.get(RenderComponent.class);
             if (render.drawOrder <= reflectionComponent.drawOrder) {
@@ -75,17 +73,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                             size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
                     );
 
-                    entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
+                    spriteBatch.add(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder);
                 }
             }
         }
-        var image = cereateImage(size, entries);
-
-        Sprite reflectionSprite = reflectionComponent.blur > 1
-                ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
-                : Sprite.fromImage(image);
+        final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
         RenderComponent renderComponent = new RenderComponent(
-                reflectionSprite,
+                sprite,
                 reflectionComponent.drawOrder,
                 SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
         );
@@ -97,18 +91,17 @@ public class ReflectionRenderSystem implements EntitySystem {
         );
     }
 
-    private static BufferedImage cereateImage(final Size size, final List<SpriteBatchEntry> entries) {
+    private Sprite createReflection(final Size size, final SpriteBatch spriteBatch, int blur) {
         var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
         var graphics = (Graphics2D) image.getGraphics();
 
         var renderer = new DefaultRenderer();
         renderer.updateGraphicsContext(() -> graphics, size);
-        Collections.sort(entries);
-        for (final var entry : entries) {
-            renderer.drawSprite(entry.sprite(), entry.offset(), entry.options());
-        }
+        renderer.drawSpriteBatch(spriteBatch);
 
         graphics.dispose();
-        return image;
+        return blur > 1
+                ? Sprite.fromImage(new BlurImageFilter(blur).apply(image))
+                : Sprite.fromImage(image);
     }
 }
