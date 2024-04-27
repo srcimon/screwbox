@@ -110,7 +110,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                         if(entity.bounds().intersects(reflectedArea)) {
                             var render = entity.get(RenderComponent.class);
                             if(render.parallaxX == 1 && render.parallaxY == 1) {
-                                var normal = entity.position().substract(reflectionOrigin);
+                                var distance = entity.position().substract(reflectedArea.origin());
+                                var offset = Offset.at(
+                                        distance.x() ,
+                                        distance.y()
+
+                                );
+                                renderer.drawSprite(render.sprite, offset, render.options);
                             }
 
                         }
