@@ -13,6 +13,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Removed sprite batches (#304)
 - Renamed asset bundles
 
 ### 📦 Dependency updates

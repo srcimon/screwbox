@@ -59,22 +59,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    @Override
-    public World drawSpriteBatch(final SpriteBatch spriteBatch) {
-        for (final var entry : spriteBatch.entriesInDrawOrder()) {
-            drawSprite(entry.sprite(), entry.position(), entry.options());
-        }
-        return this;
-    }
-
-    @Override
-    public World drawSpriteBatch(final SpriteBatch spriteBatch, final Bounds clip) {
-        for (final var entry : spriteBatch.entriesInDrawOrder()) {
-            drawSprite(entry.sprite(), entry.position(), entry.options(), clip);
-        }
-        return this;
-    }
-
     public Offset toOffset(final Vector position) {
         final double x = (position.x() - cameraPosition.x()) * zoom + (screen.size().width() / 2.0);
         final double y = (position.y() - cameraPosition.y()) * zoom + (screen.size().height() / 2.0);
