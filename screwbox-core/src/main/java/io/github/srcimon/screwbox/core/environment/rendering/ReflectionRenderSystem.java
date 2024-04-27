@@ -18,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -40,9 +41,8 @@ public class ReflectionRenderSystem implements EntitySystem {
         var reflectableEntities = environment.fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : environment.fetchAll(REFLECTING_AREAS)) {
 
-            Bounds visibleArea = engine.graphics().world().visibleArea();
-            Bounds visibleAreaAdjusted = adjustPixelperfext(visibleArea);
-            final var xxxx = reflectionEntity.bounds().intersection(visibleAreaAdjusted);
+            Bounds visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+            final var xxxx = reflectionEntity.bounds().intersection(visibleArea);
 
             xxxx.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
@@ -109,26 +109,5 @@ public class ReflectionRenderSystem implements EntitySystem {
                 }
             });
         }
-    }
-
-    private static Bounds adjustPixelperfext(Bounds visibleArea) {
-        double x = adjustSmaller(visibleArea.origin().x());
-        double y = adjustSmaller(visibleArea.origin().y());
-        double xdelte = visibleArea.origin().x() - x;
-        double ydelte = visibleArea.origin().y() - y;
-        Bounds visibleAreaAdjusted = Bounds.atOrigin(
-                x,
-                y,
-                adjustGreater(visibleArea.width() + xdelte),
-                adjustGreater(visibleArea.height() + ydelte));
-        return visibleAreaAdjusted;
-    }
-
-    private static double adjustSmaller(final double value) {
-        return Math.floor(value / 2) * 2;
-    }
-
-    private static double adjustGreater(final double value) {
-        return Math.ceil(value / 2) * 2;
     }
 }
