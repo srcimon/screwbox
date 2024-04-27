@@ -16,6 +16,7 @@
 
 - Removed sprite batches (#304)
 - Renamed asset bundles
+- Added `Pixelperfect` util for pixelperfect drawing
 
 ### 📦 Dependency updates
 

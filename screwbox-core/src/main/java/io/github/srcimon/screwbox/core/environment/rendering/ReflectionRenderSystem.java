@@ -32,14 +32,6 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
     private static final Archetype REFLECTION_RENDERERS = Archetype.of(ReflectionRenderComponent.class);
 
-    private static double adjustSmaller(final double value) {
-        return Math.floor(value / 16) * 16;
-    }
-
-    private static double adjustGreater(final double value) {
-        return Math.ceil(value / 16) * 16;
-    }
-
     @Override
     public void update(final Engine engine) {
         Environment environment = engine.environment();
@@ -49,15 +41,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         for (final Entity reflectionEntity : environment.fetchAll(REFLECTING_AREAS)) {
 
             Bounds visibleArea = engine.graphics().world().visibleArea();
-            double x = adjustSmaller(visibleArea.origin().x());
-            double y = adjustSmaller(visibleArea.origin().y());
-            double xdelte = visibleArea.origin().x() - x;
-            double ydelte = visibleArea.origin().y() - y;
-            Bounds visibleAreaAdjusted = Bounds.atOrigin(
-                    x,
-                    y,
-                    adjustGreater(visibleArea.width() + xdelte),
-                    adjustGreater(visibleArea.height() + ydelte));
+            Bounds visibleAreaAdjusted = adjustPixelperfext(visibleArea);
             final var xxxx = reflectionEntity.bounds().intersection(visibleAreaAdjusted);
 
             xxxx.ifPresent(reflection -> {
@@ -125,5 +109,26 @@ public class ReflectionRenderSystem implements EntitySystem {
                 }
             });
         }
+    }
+
+    private static Bounds adjustPixelperfext(Bounds visibleArea) {
+        double x = adjustSmaller(visibleArea.origin().x());
+        double y = adjustSmaller(visibleArea.origin().y());
+        double xdelte = visibleArea.origin().x() - x;
+        double ydelte = visibleArea.origin().y() - y;
+        Bounds visibleAreaAdjusted = Bounds.atOrigin(
+                x,
+                y,
+                adjustGreater(visibleArea.width() + xdelte),
+                adjustGreater(visibleArea.height() + ydelte));
+        return visibleAreaAdjusted;
+    }
+
+    private static double adjustSmaller(final double value) {
+        return Math.floor(value / 2) * 2;
+    }
+
+    private static double adjustGreater(final double value) {
+        return Math.ceil(value / 2) * 2;
     }
 }
