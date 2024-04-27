@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -31,15 +30,14 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
-    private static final Archetype REFLECTION_RENDERERS = Archetype.of(ReflectionRenderComponent.class);
+    private static final Archetype REFLECTION_RENDERERS = Archetype.of(ReflectionResultComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        Environment environment = engine.environment();
-        environment.removeAll(REFLECTION_RENDERERS);
+        engine.environment().removeAll(REFLECTION_RENDERERS);
         double zoom = engine.graphics().camera().zoom();
-        var reflectableEntities = environment.fetchAll(RELECTED_ENTITIES);
-        for (final Entity reflectionEntity : environment.fetchAll(REFLECTING_AREAS)) {
+        var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
+        for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
 
             Bounds visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
             final var xxxx = reflectionEntity.bounds().intersection(visibleArea);
@@ -55,7 +53,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                 int height = (int) (Math.ceil(reflectionOnScreen.size().height() / zoom));
 
                 if (width > 0 && height > 0) {
-                    var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                     List<SpriteBatchEntry> entries = new ArrayList<>();
                     for (var entity : reflectableEntities) {
                         var render = entity.get(RenderComponent.class);
@@ -81,16 +78,8 @@ public class ReflectionRenderSystem implements EntitySystem {
 
 
                     }
-                    var graphics = (Graphics2D) image.getGraphics();
-
-                    var renderer = new DefaultRenderer();
-                    renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
-                    Collections.sort(entries);
-                    for (var entry : entries) {
-                        renderer.drawSprite(entry.sprite(), entry.offset(), entry.options());
-                    }
-
-                    graphics.dispose();
+                    Size size = Size.of(width, height);
+                    var image = cereateImage(size, entries);
 
                     Sprite reflectionSprite = reflectionComponent.blur > 1
                             ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
@@ -101,13 +90,28 @@ public class ReflectionRenderSystem implements EntitySystem {
                             SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
                     );
 
-                    environment.addEntity(
+                    engine.environment().addEntity(
                             new TransformComponent(reflection),
                             renderComponent,
-                            new ReflectionRenderComponent()
+                            new ReflectionResultComponent()
                     );
                 }
             });
         }
+    }
+
+    private static BufferedImage cereateImage(final Size size, final List<SpriteBatchEntry> entries) {
+        var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+        var graphics = (Graphics2D) image.getGraphics();
+
+        var renderer = new DefaultRenderer();
+        renderer.updateGraphicsContext(() -> graphics, size);
+        Collections.sort(entries);
+        for (var entry : entries) {
+            renderer.drawSprite(entry.sprite(), entry.offset(), entry.options());
+        }
+
+        graphics.dispose();
+        return image;
     }
 }

@@ -37,10 +37,12 @@ public class MacOsWindowFrame extends WindowFrame {
         }
     }
 
+    @Override
     public void setIcon(final Sprite sprite) {
         Taskbar.getTaskbar().setIconImage(sprite.singleFrame().image());
     }
 
+    @Override
     protected Sprite defaultIcon() {
         return SpriteBundle.ICON_512.get();
     }
