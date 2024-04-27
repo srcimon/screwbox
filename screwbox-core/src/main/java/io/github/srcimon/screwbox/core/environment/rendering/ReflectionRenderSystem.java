@@ -61,16 +61,14 @@ public class ReflectionRenderSystem implements EntitySystem {
         List<SpriteBatchEntry> entries = new ArrayList<>();
         for (var entity : reflectableEntities) {
             var render = entity.get(RenderComponent.class);
+            if (render.drawOrder <= reflectionComponent.drawOrder) {
+                Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                        reflectionEntity.bounds().width() * render.options.scale(),
+                        reflectionEntity.bounds().height() * render.options.scale());
 
-            Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                    reflectionEntity.bounds().width() * render.options.scale(),
-                    reflectionEntity.bounds().height() * render.options.scale());
+                ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
-            ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
-
-            if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
-
-                if (render.drawOrder <= reflectionComponent.drawOrder) {
+                if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
                     var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
                     var ldistOffset = Offset.at(
                             ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
