@@ -105,18 +105,17 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     var renderer = new DefaultRenderer();
                     renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
-                    renderer.fillWith(Color.WHITE);
                     for(var entity : reflectableEntities) {
                         if(entity.bounds().intersects(reflectedArea)) {
                             var render = entity.get(RenderComponent.class);
                             if(render.parallaxX == 1 && render.parallaxY == 1) {
-                                var distance = entity.position().substract(reflectedArea.origin());
+                                var distance = entity.origin().substract(reflectedArea.origin());
                                 var offset = Offset.at(
                                         distance.x() ,
                                         distance.y()
 
                                 );
-                                renderer.drawSprite(render.sprite, offset, render.options);
+                                renderer.drawSprite(render.sprite, offset, render.options.invertVerticalFlip());
                             }
 
                         }

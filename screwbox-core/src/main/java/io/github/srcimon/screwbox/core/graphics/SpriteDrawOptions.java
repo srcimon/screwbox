@@ -71,4 +71,9 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     public SpriteDrawOptions flipVertical(boolean flipVertical) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical);
     }
+
+    //TODO Javadoc
+    public SpriteDrawOptions invertVerticalFlip() {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical);
+    }
 }
