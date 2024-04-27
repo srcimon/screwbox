@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.Math.ceil;
+
 @Order(SystemOrder.PRESENTATION_OVERLAY)
 public class ReflectionRenderSystem implements EntitySystem {
 
@@ -52,53 +54,49 @@ public class ReflectionRenderSystem implements EntitySystem {
 
         ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
 
-        int width = (int) (Math.ceil(reflectionOnScreen.size().width() / zoom));
-        int height = (int) (Math.ceil(reflectionOnScreen.size().height() / zoom));
+        final Size size = Size.of(
+                ceil(reflectionOnScreen.size().width() / zoom),
+                ceil(reflectionOnScreen.size().height() / zoom));
 
-        if (width > 0 && height > 0) {
-            List<SpriteBatchEntry> entries = new ArrayList<>();
-            for (var entity : reflectableEntities) {
-                var render = entity.get(RenderComponent.class);
+        List<SpriteBatchEntry> entries = new ArrayList<>();
+        for (var entity : reflectableEntities) {
+            var render = entity.get(RenderComponent.class);
 
-                Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                        reflectionEntity.bounds().width() * render.options.scale(),
-                        reflectionEntity.bounds().height() * render.options.scale());
+            Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                    reflectionEntity.bounds().width() * render.options.scale(),
+                    reflectionEntity.bounds().height() * render.options.scale());
 
-                ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+            ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
-                if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
+            if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
 
-                    if (render.drawOrder <= reflectionComponent.drawOrder) {
-                        var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
-                        var ldistOffset = Offset.at(
-                                ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
-                                height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
-                        );
+                if (render.drawOrder <= reflectionComponent.drawOrder) {
+                    var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+                    var ldistOffset = Offset.at(
+                            ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
+                            size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
+                    );
 
-                        entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
-                    }
+                    entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
                 }
-
-
             }
-            Size size = Size.of(width, height);
-            var image = cereateImage(size, entries);
-
-            Sprite reflectionSprite = reflectionComponent.blur > 1
-                    ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
-                    : Sprite.fromImage(image);
-            RenderComponent renderComponent = new RenderComponent(
-                    reflectionSprite,
-                    reflectionComponent.drawOrder,
-                    SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
-            );
-
-            engine.environment().addEntity(
-                    new TransformComponent(reflection),
-                    renderComponent,
-                    new ReflectionResultComponent()
-            );
         }
+        var image = cereateImage(size, entries);
+
+        Sprite reflectionSprite = reflectionComponent.blur > 1
+                ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
+                : Sprite.fromImage(image);
+        RenderComponent renderComponent = new RenderComponent(
+                reflectionSprite,
+                reflectionComponent.drawOrder,
+                SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
+        );
+
+        engine.environment().addEntity(
+                new TransformComponent(reflection),
+                renderComponent,
+                new ReflectionResultComponent()
+        );
     }
 
     private static BufferedImage cereateImage(final Size size, final List<SpriteBatchEntry> entries) {
