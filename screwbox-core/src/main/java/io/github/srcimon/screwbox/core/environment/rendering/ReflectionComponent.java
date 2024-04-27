@@ -12,6 +12,7 @@ public class ReflectionComponent implements Component {
 
     public final Percent opacityModifier;
     public int drawOrder;
+    public int blur = 0;
 
     public ReflectionComponent() {
         this(Percent.quater());

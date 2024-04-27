@@ -14,7 +14,8 @@ public class ReflectionZone implements Converter<GameObject> {
         Percent opacityModifier = Percent.of(object.properties().getDouble("opacityModifier"));
 
         return new Entity()
-                .add(new ReflectionComponent(opacityModifier, object.layer().order()))
+                .addCustomized(new ReflectionComponent(opacityModifier, object.layer().order()),
+                        reflection -> reflection.blur = object.properties().tryGetInt("blur").orElse(0))
                 .add(new TransformComponent(object.bounds()));
     }
 

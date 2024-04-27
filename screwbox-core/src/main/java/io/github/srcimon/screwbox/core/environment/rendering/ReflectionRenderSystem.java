@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
@@ -87,11 +88,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                     }
 
                     graphics.dispose();
-                    Sprite reflectionSprite = Sprite.fromImage(image); // TODO Blur
+                    ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
+                    Sprite reflectionSprite = reflectionComponent.blur > 1
+                            ? Sprite.fromImage(new BlurImageFilter(reflectionComponent.blur).apply(image))
+                            : Sprite.fromImage(image);
                     RenderComponent renderComponent = new RenderComponent(
                             reflectionSprite,
-                            reflectionEntity.get(ReflectionComponent.class).drawOrder,
-                            SpriteDrawOptions.originalSize().opacity(reflectionEntity.get(ReflectionComponent.class).opacityModifier)
+                            reflectionComponent.drawOrder,
+                            SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
                     );
                     engine.environment().addEntity(
                             new TransformComponent(reflection),

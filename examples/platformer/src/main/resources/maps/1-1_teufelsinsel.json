@@ -1006,6 +1006,11 @@
                  "id":462,
                  "properties":[
                         {
+                         "name":"blur",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
                          "name":"opacityModifier",
                          "type":"float",
                          "value":0.2
