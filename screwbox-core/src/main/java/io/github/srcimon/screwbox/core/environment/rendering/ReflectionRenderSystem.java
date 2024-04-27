@@ -3,31 +3,23 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
+//TODO: check correct amount of drawn sprites?
 @Order(SystemOrder.PRESENTATION_PREPARE)//TODO FIX
 public class ReflectionRenderSystem implements EntitySystem {
 
@@ -93,8 +85,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
 
-                int width =  (int)(Math.ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()));
-                int height = (int)(Math.ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
+                int width = (int) (Math.ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()));
+                int height = (int) (Math.ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
 
                 if (width > 0 && height > 0) {
                     var image = new BufferedImage(
@@ -104,14 +96,14 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                     var renderer = new DefaultRenderer();
                     renderer.updateGraphicsContext(() -> graphics, Size.of(image.getWidth(), image.getHeight()));
-                    for(var entity : reflectableEntities) {
-                        if(entity.bounds().intersects(reflectedArea)) {
+                    for (var entity : reflectableEntities) {
+                        if (entity.bounds().intersects(reflectedArea)) {
                             var render = entity.get(RenderComponent.class);
-                            if(render.parallaxX == 1 && render.parallaxY == 1) {
+                            if (render.parallaxX == 1 && render.parallaxY == 1) {
                                 var distance = entity.origin().substract(reflectedArea.origin());
                                 var offset = Offset.at(
-                                        distance.x() ,
-                                        height -   distance.y() - render.sprite.size().height()
+                                        distance.x(),
+                                        height - distance.y() - render.sprite.size().height()
 
                                 );
                                 renderer.drawSprite(render.sprite, offset, render.options.invertVerticalFlip());
@@ -138,14 +130,6 @@ public class ReflectionRenderSystem implements EntitySystem {
 
         }
 
-    }
-
-    public static void exportPng(final Frame frame, final String fileName) {
-        try {
-            ImageIO.write(ImageUtil.toBufferedImage(frame.image()), "png", new File(fileName));
-        } catch (IOException e) {
-            throw new IllegalStateException("could not export png", e);
-        }
     }
 
 }
