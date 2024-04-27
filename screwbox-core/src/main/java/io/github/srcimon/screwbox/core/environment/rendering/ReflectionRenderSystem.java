@@ -38,6 +38,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
         engine.environment().remove(oldReflections);
+        double zoom = engine.graphics().camera().zoom();
         var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
 
@@ -59,13 +60,12 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
 
-                int width = (int) (Math.ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()));
-                int height = (int) (Math.ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
+
+                int width = (int) (Math.ceil(reflectionOnScreen.size().width() / zoom));
+                int height = (int) (Math.ceil(reflectionOnScreen.size().height() / zoom));
 
                 if (width > 0 && height > 0) {
-                    var image = new BufferedImage(
-                            width,
-                            height, BufferedImage.TYPE_INT_ARGB);
+                    var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                     var graphics = (Graphics2D) image.getGraphics();
 
                     var renderer = new DefaultRenderer();
