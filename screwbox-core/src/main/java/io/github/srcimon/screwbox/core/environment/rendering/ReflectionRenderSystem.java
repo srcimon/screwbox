@@ -9,7 +9,10 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -20,7 +23,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-@Order(SystemOrder.PRESENTATION_PREPARE)
+@Order(SystemOrder.PRESENTATION_OVERLAY)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
@@ -71,10 +74,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                     var renderer = new DefaultRenderer();
                     renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
                     for (var entity : reflectableEntities) {
-                        if (entity.bounds().intersects(reflectedArea)) {
-                            var render = entity.get(RenderComponent.class);
+                        var render = entity.get(RenderComponent.class);
+
+                        ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entity.bounds(), render.parallaxX, render.parallaxY);
+
+                        if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
+
                             if (render.drawOrder <= reflectionComponent.drawOrder) {
-                                var eos = engine.graphics().toScreenUsingParallax(entity.bounds(), render.parallaxX, render.parallaxY);
+                                var eos = screenUsingParallax;
                                 var ldist = eos.center().substract(engine.graphics().toScreen(reflectedArea).offset());
                                 var ldistOffset = Offset.at(
                                         ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
