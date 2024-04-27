@@ -30,6 +30,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -149,6 +150,14 @@ public interface Environment {
 
     default List<Entity> fetchAllHaving(Class<? extends Component> componentA, Class<? extends Component> componentB) {
         return fetchAll(Archetype.of(componentA, componentB));
+    }
+
+    /**
+     * Removes all {@link Entity entities} matching the specified {@link Archetype}.
+     */
+    default Environment removeAll(final Archetype archetype) {
+        remove(new ArrayList<>(fetchAll(archetype)));
+        return this;
     }
 
     /**
@@ -305,4 +314,5 @@ public interface Environment {
      * @see ParticleBurstSystem
      */
     Environment enableParticles();
+
 }

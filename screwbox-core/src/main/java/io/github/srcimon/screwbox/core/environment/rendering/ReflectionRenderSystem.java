@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -29,6 +30,7 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
+    private static final Archetype REFLECTION_RENDERERS = Archetype.of(ReflectionRenderComponent.class);
 
     private static double adjustSmaller(final double value) {
         return Math.floor(value / 16) * 16;
@@ -40,11 +42,11 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
-        engine.environment().remove(oldReflections);
+        Environment environment = engine.environment();
+        environment.removeAll(REFLECTION_RENDERERS);
         double zoom = engine.graphics().camera().zoom();
-        var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
-        for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
+        var reflectableEntities = environment.fetchAll(RELECTED_ENTITIES);
+        for (final Entity reflectionEntity : environment.fetchAll(REFLECTING_AREAS)) {
 
             Bounds visibleArea = engine.graphics().world().visibleArea();
             double x = adjustSmaller(visibleArea.origin().x());
@@ -115,11 +117,10 @@ public class ReflectionRenderSystem implements EntitySystem {
                             SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
                     );
 
-
-                    engine.environment().addEntity(
+                    environment.addEntity(
                             new TransformComponent(reflection),
                             renderComponent,
-                            new ReflectionImageComponent()
+                            new ReflectionRenderComponent()
                     );
                 }
             });

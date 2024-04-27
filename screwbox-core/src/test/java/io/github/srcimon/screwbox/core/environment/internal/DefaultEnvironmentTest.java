@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
@@ -505,15 +506,33 @@ class DefaultEnvironmentTest {
 
     @Test
     void removeAllComponentsOfType_twoEntitiesWithGivenComponentAfterUpdate_componentNoLongerPresent() {
-        environment.addEntity(new CameraTargetComponent());
-        environment.addEntity(new CollisionDetectionComponent(), new PhysicsComponent());
-        environment.addEntity(new CollisionDetectionComponent());
+        environment.addEntity(1, new CameraTargetComponent());
+        environment.addEntity(2, new CollisionDetectionComponent(), new PhysicsComponent());
+        environment.addEntity(3, new CollisionDetectionComponent());
 
         environment.removeAllComponentsOfType(CollisionDetectionComponent.class);
 
         environment.update();
 
         assertThat(environment.fetchAllHaving(CollisionDetectionComponent.class)).isEmpty();
+        assertThat(environment.tryFetchById(1)).isNotEmpty();
+        assertThat(environment.tryFetchById(2)).isNotEmpty();
+        assertThat(environment.tryFetchById(3)).isEmpty();
+    }
+
+    @Test
+    void removeAll_removesAllMatchingEntities() {
+        environment.addEntity(1, new CameraTargetComponent());
+        environment.addEntity(2, new CollisionDetectionComponent(), new PhysicsComponent());
+        environment.addEntity(3, new CollisionDetectionComponent());
+
+        environment.removeAll(Archetype.of(CollisionDetectionComponent.class));
+
+        environment.update();
+
+        assertThat(environment.tryFetchById(1)).isNotEmpty();
+        assertThat(environment.tryFetchById(2)).isEmpty();
+        assertThat(environment.tryFetchById(3)).isEmpty();
     }
 
     @AfterEach

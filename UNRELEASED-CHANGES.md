@@ -5,6 +5,7 @@
 - Added individual app icons for MacOs and Windows / Linux
 - Tiled layers now uses offset when calculating sprite positions 
 - Changed default zoom range from 1 to 5
+- Added `Environment.removeAll(Archetype)`
 
 ### 🪛 Bug Fixes
 
