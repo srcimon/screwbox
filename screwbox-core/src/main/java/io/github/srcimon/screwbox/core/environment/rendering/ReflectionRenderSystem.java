@@ -26,16 +26,12 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
 
-    private static double adjustGreater(final double value) {
-        return Math.ceil(value / 16) * 16;
-    }
-
     private static double adjustSmaller(final double value) {
         return Math.floor(value / 16) * 16;
     }
 
-    public static void main(String[] args) {
-        System.out.println(adjustSmaller(246.25));
+    private static double adjustGreater(final double value) {
+        return Math.ceil(value / 16) * 16;
     }
 
     @Override
@@ -53,13 +49,9 @@ public class ReflectionRenderSystem implements EntitySystem {
             Bounds visibleAreaAdjusted = Bounds.atOrigin(
                     x,
                     y,
-                    visibleArea.width() + xdelte,
-                    visibleArea.height() + ydelte);
+                    adjustGreater(visibleArea.width() + xdelte),
+                    adjustGreater(visibleArea.height() + ydelte));
             final var xxxx = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleAreaAdjusted);
-
-            if(xxxx.isEmpty() && reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea).isPresent()) {
-                System.out.println("!!!" + visibleArea.height());
-            }
 
             xxxx.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
