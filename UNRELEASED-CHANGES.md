@@ -12,7 +12,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed asset bundles
 
 ### 📦 Dependency updates
 

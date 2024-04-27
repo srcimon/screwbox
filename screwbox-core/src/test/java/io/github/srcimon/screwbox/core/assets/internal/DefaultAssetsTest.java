@@ -52,7 +52,7 @@ class DefaultAssetsTest {
         var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.assets");
 
         assertThat(locations).hasSizeGreaterThan(21)
-                .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundsBundle.STEAM"));
+                .anyMatch(asset -> asset.id().equals("io.github.srcimon.screwbox.core.assets.SoundBundle.STEAM"));
     }
 
     @Test

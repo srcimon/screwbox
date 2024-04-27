@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.assets.SoundsBundle;
+import io.github.srcimon.screwbox.core.assets.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -22,7 +22,7 @@ public class CollectableSystem implements EntitySystem {
         for (final Entity entity : engine.environment().fetchAll(COLLECTABLES)) {
             if (entity.get(CollisionDetectionComponent.class).collidedEntities.contains(player)) {
                 engine.environment().remove(entity);
-                engine.audio().playSound(SoundsBundle.PLING);
+                engine.audio().playSound(SoundBundle.PLING);
             }
         }
 

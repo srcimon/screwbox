@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -28,7 +28,7 @@ public class ShowLabelSystem implements EntitySystem {
                 Bounds bounds = entity.get(TransformComponent.class).bounds;
 
                 Vector position = Vector.of(bounds.position().x(), bounds.minY());
-                engine.graphics().world().drawText(position, labelComponent.label, font(FontsBundle.BOLDZILLA).alignCenter().scale(labelComponent.size / 15.0));
+                engine.graphics().world().drawText(position, labelComponent.label, font(FontBundle.BOLDZILLA).alignCenter().scale(labelComponent.size / 15.0));
             }
         }
 

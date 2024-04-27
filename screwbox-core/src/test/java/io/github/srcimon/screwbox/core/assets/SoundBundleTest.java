@@ -5,11 +5,11 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FontsBundleTest {
+class SoundBundleTest {
 
     @ParameterizedTest
-    @EnumSource(FontsBundle.class)
-    void testAllAssetsCanBeLoaded(FontsBundle bundle) {
+    @EnumSource(SoundBundle.class)
+    void testAllAssetsCanBeLoaded(SoundBundle bundle) {
         assertThat(bundle.get()).isNotNull();
     }
 

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.SoundsBundle;
+import io.github.srcimon.screwbox.core.assets.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -56,7 +56,7 @@ public class VanishingOnCollisionSystem implements EntitySystem {
         for (final Entity entity : activatedEntities) {
             var vanish = entity.get(VanishingOnCollisionComponent.class);
             if (vanish.vanishTime.isUnset()) {
-                engine.audio().playSound(SoundsBundle.STEAM);
+                engine.audio().playSound(SoundBundle.STEAM);
                 vanish.vanishTime = vanish.timeout.addTo(now);
             }
         }

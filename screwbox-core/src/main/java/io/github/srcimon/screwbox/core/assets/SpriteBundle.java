@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 /**
  * An {@link AssetBundle} for {@link Sprite}s shipped with the {@link ScrewBox} game engine.
  */
-public enum SpritesBundle implements AssetBundle<Sprite> {
+public enum SpriteBundle implements AssetBundle<Sprite> {
 
     ICON_32(Asset.asset(() -> Sprite.fromFile("assets/sprites/ICON_32.png"))),
     ICON_512(Asset.asset(() -> Sprite.fromFile("assets/sprites/ICON_512.png"))),
@@ -22,7 +22,7 @@ public enum SpritesBundle implements AssetBundle<Sprite> {
 
     private final Asset<Sprite> asset;
 
-    SpritesBundle(final Asset<Sprite> asset) {
+    SpriteBundle(final Asset<Sprite> asset) {
         this.asset = asset;
     }
 

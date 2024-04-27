@@ -17,7 +17,7 @@ import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
  * An {@link AssetBundle} for {@link Pixelfont}s shipped with the {@link ScrewBox} game engine. Default {@link Color}
  * is {@link Color#WHITE}.
  */
-public enum FontsBundle implements AssetBundle<Pixelfont> {
+public enum FontBundle implements AssetBundle<Pixelfont> {
 
     BOLDZILLA(Asset.asset(() -> loadFont("assets/pixelfonts/BOLDZILLA.png", Size.square(8),
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' ', '.', ',', ':', '!', '?', '-'))),
@@ -28,7 +28,7 @@ public enum FontsBundle implements AssetBundle<Pixelfont> {
     private final Cache<Color, Asset<Pixelfont>> cache = new Cache<>();
     private final Asset<Pixelfont> asset;
 
-    FontsBundle(final Asset<Pixelfont> supplier) {
+    FontBundle(final Asset<Pixelfont> supplier) {
         this.asset = supplier;
     }
 

@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,10 +18,10 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A font made of {@link Sprite}s (even animated ones) for system independent rendering. Have a look at {@link FontsBundle}
+ * A font made of {@link Sprite}s (even animated ones) for system independent rendering. Have a look at {@link FontBundle}
  * if you want some inspiration.
  *
- * @see FontsBundle
+ * @see FontBundle
  */
 public class Pixelfont implements Serializable {
 

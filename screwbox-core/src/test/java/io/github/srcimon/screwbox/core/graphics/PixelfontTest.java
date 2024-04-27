@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -101,21 +101,21 @@ class PixelfontTest {
 
     @Test
     void spritesFor_textContainsOnlyUnknownCharacters_isEmpty() {
-        var font = FontsBundle.BOLDZILLA.get();
+        var font = FontBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("@@@@")).isEmpty();
     }
 
     @Test
     void spritesFor_textContainsOnlyKnownCharacters_returnsSprites() {
-        var font = FontsBundle.BOLDZILLA.get();
+        var font = FontBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("HELLO")).hasSize(5);
     }
 
     @Test
     void spritesFor_textHasLowercaseCharacters_returnsSpritesFromUppercaseCharacters() {
-        var font = FontsBundle.BOLDZILLA.get();
+        var font = FontBundle.BOLDZILLA.get();
 
         assertThat(font.spritesFor("Hello")).hasSize(5);
     }

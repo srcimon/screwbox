@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
+import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -46,18 +46,18 @@ class ParticleOptionsTest {
     @Test
     void modifiers_multipleModifiersOfSameTypeAdded_onlyContainsLastModifier() {
         var particle = options
-                .sprite(SpritesBundle.MOON_SURFACE_16)
-                .sprite(SpritesBundle.MOON_SURFACE_16.get())
-                .sprite(SpritesBundle.BLOB_ANIMATED_16)
-                .sprites(SpritesBundle.DOT_BLUE_16)
-                .sprites(SpritesBundle.DOT_BLUE_16.get());
+                .sprite(SpriteBundle.MOON_SURFACE_16)
+                .sprite(SpriteBundle.MOON_SURFACE_16.get())
+                .sprite(SpriteBundle.BLOB_ANIMATED_16)
+                .sprites(SpriteBundle.DOT_BLUE_16)
+                .sprites(SpriteBundle.DOT_BLUE_16.get());
 
         assertThat(particle.modifiers()).hasSize(1);
     }
 
     @Test
     void sprites_listOfSprites_setsSpritesToUse() {
-        List<Sprite> sprites = List.of(SpritesBundle.DOT_BLUE_16.get(), SpritesBundle.DOT_YELLOW_16.get());
+        List<Sprite> sprites = List.of(SpriteBundle.DOT_BLUE_16.get(), SpriteBundle.DOT_YELLOW_16.get());
 
         Entity particle = applyOptionsOnTemplateParticle(options.sprites(sprites));
 

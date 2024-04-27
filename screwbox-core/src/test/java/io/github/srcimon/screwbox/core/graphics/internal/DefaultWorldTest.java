@@ -2,8 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,8 +68,8 @@ class DefaultWorldTest {
 
     @Test
     void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
-        Sprite second = SpritesBundle.BLOB_ANIMATED_16.get();
-        Sprite first = SpritesBundle.MOON_SURFACE_16.get();
+        Sprite second = SpriteBundle.BLOB_ANIMATED_16.get();
+        Sprite first = SpriteBundle.MOON_SURFACE_16.get();
 
         var batch = new SpriteBatch();
         batch.addEntry(second, $(10, 20), SpriteDrawOptions.scaled(2), 2);
@@ -92,8 +92,8 @@ class DefaultWorldTest {
     @Test
     void drawText_pixelfont_callsScreen() {
         world.updateZoom(2);
-        world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(4));
+        world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(4));
 
-        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(8));
+        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
     }
 }

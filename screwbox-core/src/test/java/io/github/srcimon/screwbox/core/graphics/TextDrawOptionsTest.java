@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,14 +26,14 @@ class TextDrawOptionsTest {
 
     @Test
     void sizeOf_uppercaseText_returnsSizeOfText() {
-        var options = TextDrawOptions.font(FontsBundle.SKINNY_SANS).scale(2).uppercase();
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).uppercase();
 
         assertThat(options.sizeOf("Some kind of lane text")).isEqualTo(Size.of(238, 8));
     }
 
     @Test
     void widthOf_text_returnsSizeOfText() {
-        var options = TextDrawOptions.font(FontsBundle.SKINNY_SANS).scale(2);
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2);
 
         assertThat(options.widthOf("Some kind of lane text")).isEqualTo(224);
     }
