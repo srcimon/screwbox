@@ -168,6 +168,11 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public void drawSpriteBatch(SpriteBatch spriteBatch) {
+        renderer.drawSpriteBatch(spriteBatch);
+    }
+
+    @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);

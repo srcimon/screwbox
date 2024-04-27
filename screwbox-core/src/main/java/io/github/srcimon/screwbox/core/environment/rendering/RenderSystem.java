@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<SpriteBatchEntry> entries = new ArrayList<>();
+        SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         final ScreenBounds visibleBounds = graphics.screen().bounds();
         double zoom = graphics.camera().zoom();
@@ -36,14 +37,10 @@ public class RenderSystem implements EntitySystem {
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
             final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);
             if (visibleBounds.intersects(entityScreenBounds)) {
-                entries.add(new SpriteBatchEntry(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder));
+                spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
             }
         }
 
-        Collections.sort(entries);
-        final Screen screen = graphics.screen();
-        for (final var entry : entries) {
-            screen.drawSprite(entry.sprite(), entry.offset(), entry.options());
-        }
+        graphics.screen().drawSpriteBatch(spriteBatch);
     }
 }

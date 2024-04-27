@@ -29,4 +29,6 @@ public interface Renderer {
     void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     void drawText(Offset offset, String text, TextDrawOptions options);
+
+    void drawSpriteBatch(SpriteBatch spriteBatch);
 }

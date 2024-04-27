@@ -88,6 +88,11 @@ public class AsyncRenderer implements Renderer {
         renderTasks.active().add(() -> next.drawText(offset, text, options));
     }
 
+    @Override
+    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+        renderTasks.active().add(() -> next.drawSpriteBatch(spriteBatch));
+    }
+
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
             try {

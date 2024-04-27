@@ -115,4 +115,6 @@ public interface Screen {
      * Returns the current {@link ScreenBounds}.
      */
     ScreenBounds bounds();
+
+    void drawSpriteBatch(SpriteBatch spriteBatch);
 }

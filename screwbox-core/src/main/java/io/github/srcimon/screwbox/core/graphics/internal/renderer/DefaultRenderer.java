@@ -244,4 +244,11 @@ public class DefaultRenderer implements Renderer {
         resetOpacityConfig(options.opacity());
     }
 
+    @Override
+    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+        for(final var entry : spriteBatch.entriesInOrder()) {
+            drawSprite(entry.sprite(), entry.offset(), entry.options());
+        }
+    }
+
 }
