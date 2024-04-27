@@ -34,6 +34,10 @@ public class ReflectionRenderSystem implements EntitySystem {
         return Math.floor(value / 16) * 16;
     }
 
+    public static void main(String[] args) {
+        System.out.println(adjustSmaller(246.25));
+    }
+
     @Override
     public void update(final Engine engine) {
         final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
@@ -42,13 +46,21 @@ public class ReflectionRenderSystem implements EntitySystem {
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
 
             Bounds visibleArea = engine.graphics().world().visibleArea();
+            double x = adjustSmaller(visibleArea.origin().x());
+            double y = adjustSmaller(visibleArea.origin().y());
+            double xdelte =  visibleArea.origin().x() - x;
+            double ydelte =  visibleArea.origin().y() - y;
             Bounds visibleAreaAdjusted = Bounds.atOrigin(
-                    adjustSmaller(visibleArea.origin().x()),
-                    adjustSmaller(visibleArea.origin().y()),
-                    adjustGreater(visibleArea.width()),
-                    adjustGreater(visibleArea.height())
-            );
+                    x,
+                    y,
+                    visibleArea.width() + xdelte,
+                    visibleArea.height() + ydelte);
             final var xxxx = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleAreaAdjusted);
+
+            if(xxxx.isEmpty() && reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea).isPresent()) {
+                System.out.println("!!!" + visibleArea.height());
+            }
+
             xxxx.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
 
