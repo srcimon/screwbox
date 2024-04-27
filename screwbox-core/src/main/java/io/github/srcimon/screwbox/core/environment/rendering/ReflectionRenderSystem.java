@@ -13,7 +13,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
 import java.awt.*;
@@ -27,15 +26,30 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static final Archetype REFLECTING_AREAS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
     private static final Archetype RELECTED_ENTITIES = Archetype.of(TransformComponent.class, RenderComponent.class);
 
+    private static double adjustGreater(final double value) {
+        return Math.ceil(value / 16) * 16;
+    }
+
+    private static double adjustSmaller(final double value) {
+        return Math.floor(value / 16) * 16;
+    }
+
     @Override
     public void update(final Engine engine) {
-        final Bounds visibleArea = engine.graphics().world().visibleArea();
         final List<Entity> oldReflections = engine.environment().fetchAll(Archetype.of(ReflectionImageComponent.class));
         engine.environment().remove(oldReflections);
         var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity reflectionEntity : engine.environment().fetchAll(REFLECTING_AREAS)) {
-            final var visibleReflection = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleArea);
-            visibleReflection.ifPresent(reflection -> {
+
+            Bounds visibleArea = engine.graphics().world().visibleArea();
+            Bounds visibleAreaAdjusted = Bounds.atOrigin(
+                    adjustSmaller(visibleArea.origin().x()),
+                    adjustSmaller(visibleArea.origin().y()),
+                    adjustGreater(visibleArea.width()),
+                    adjustGreater(visibleArea.height())
+            );
+            final var xxxx = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleAreaAdjusted);
+            xxxx.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
 
                 var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
@@ -83,7 +97,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                     );
                 }
             });
-
         }
 
     }
