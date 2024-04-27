@@ -76,8 +76,8 @@ public class ReflectionRenderSystem implements EntitySystem {
                             if (render.parallaxX == 1 && render.parallaxY == 1) {
                                 var distance = entity.position().substract(reflectedArea.origin());
                                 var offset = Offset.at(
-                                        distance.x() - render.sprite.size().width() / 2,
-                                        height - distance.y() - render.sprite.size().height() / 2
+                                        distance.x() - render.sprite.size().width() * render.options.scale() / 2,
+                                        height - distance.y() - render.sprite.size().height() * render.options.scale()  / 2
 
                                 );
                                 renderer.drawSprite(render.sprite, offset, render.options.invertVerticalFlip());
