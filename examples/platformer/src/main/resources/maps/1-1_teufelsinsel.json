@@ -1009,11 +1009,6 @@
                          "name":"opacityModifier",
                          "type":"float",
                          "value":0.2
-                        }, 
-                        {
-                         "name":"useWaveEffect",
-                         "type":"bool",
-                         "value":true
                         }],
                  "template":"..\/templates\/zones\/reflection-zone.json",
                  "width":2640,
