@@ -52,7 +52,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     y,
                     adjustGreater(visibleArea.width() + xdelte),
                     adjustGreater(visibleArea.height() + ydelte));
-            final var xxxx = reflectionEntity.get(TransformComponent.class).bounds.intersection(visibleAreaAdjusted);
+            final var xxxx = reflectionEntity.bounds().intersection(visibleAreaAdjusted);
 
             xxxx.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
