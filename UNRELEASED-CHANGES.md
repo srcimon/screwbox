@@ -13,6 +13,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed asset bundles
+- Slightly improved performance of `CollisionDetectionSystem`
 
 ### 📦 Dependency updates
 
