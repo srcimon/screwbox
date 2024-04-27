@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.SpriteBatchEntry;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 
@@ -69,12 +70,7 @@ public class ReflectionRenderSystem implements EntitySystem {
 
                 if (width > 0 && height > 0) {
                     var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-                    var graphics = (Graphics2D) image.getGraphics();
-
-                    var renderer = new DefaultRenderer();
-                    renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
-
-                    List<BatchEntry> entries = new ArrayList<>();
+                    List<SpriteBatchEntry> entries = new ArrayList<>();
                     for (var entity : reflectableEntities) {
                         var render = entity.get(RenderComponent.class);
 
@@ -93,15 +89,19 @@ public class ReflectionRenderSystem implements EntitySystem {
                                         height - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
                                 );
 
-                                entries.add(new BatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
+                                entries.add(new SpriteBatchEntry(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder));
                             }
                         }
 
 
                     }
+                    var graphics = (Graphics2D) image.getGraphics();
+
+                    var renderer = new DefaultRenderer();
+                    renderer.updateGraphicsContext(() -> graphics, Size.of(width, height));
                     Collections.sort(entries);
                     for (var entry : entries) {
-                        renderer.drawSprite(entry.sprite, entry.offset, entry.options);
+                        renderer.drawSprite(entry.sprite(), entry.offset(), entry.options());
                     }
 
                     graphics.dispose();
@@ -124,16 +124,5 @@ public class ReflectionRenderSystem implements EntitySystem {
                 }
             });
         }
-
     }
-
-    private record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
-            implements Comparable<BatchEntry> {
-
-        @Override
-        public int compareTo(final BatchEntry o) {
-            return Integer.compare(drawOrder, o.drawOrder);
-        }
-    }
-
 }
