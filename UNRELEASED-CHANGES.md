@@ -5,6 +5,7 @@
 - Added individual app icons for MacOs and Windows / Linux
 - Tiled layers now uses offset when calculating sprite positions 
 - Added `Environment.removeAll(Archetype)`
+- Added `Size.isValid()`
 
 ### 🪛 Bug Fixes
 
