@@ -8,6 +8,7 @@
 - Added `Frame.colors()`
 - Added `Environment.removeAll(Archetype)`
 - Added `SpriteDrawOptions.invertVerticalFlip()`
+- Added `ParticleOptions.startOpacity(Percent)`
 
 ### 🪛 Bug Fixes
 

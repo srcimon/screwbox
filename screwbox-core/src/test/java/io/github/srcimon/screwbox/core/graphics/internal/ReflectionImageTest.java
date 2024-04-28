@@ -32,7 +32,7 @@ class ReflectionImageTest {
 
     @BeforeEach
     void setUp() {
-        reflectionImage = new ReflectionImage(graphics, 4, Size.of(200, 40), new ScreenBounds(0, 0, 400, 80));
+        reflectionImage = new ReflectionImage(graphics, 4, Size.of(200, 40), new ScreenBounds(0, 0, 400, 80), null);
     }
 
     @Test

@@ -24,6 +24,7 @@ public class SmokeEmitter implements SourceImport.Converter<GameObject> {
                         .sprite(SpriteBundle.SMOKE_16)
                         .tweenMode(TweenMode.SINE_IN_OUT)
                         .randomStartScale(1, 3)
+                        .startOpacity(Percent.zero())
                         .animateOpacity(Percent.zero(), Percent.of(0.1))
                         .baseSpeed(Vector.y(-60))
                         .chaoticMovement(50, ofSeconds(1))

@@ -15,7 +15,10 @@ public class ReflectionZone implements Converter<GameObject> {
 
         return new Entity()
                 .addCustomized(new ReflectionComponent(opacityModifier, object.layer().order()),
-                        reflection -> reflection.blur = object.properties().tryGetInt("blur").orElse(0))
+                        reflection -> {
+                            reflection.blur = object.properties().tryGetInt("blur").orElse(0);
+                            reflection.useWaveEffect = object.properties().tryGetBoolean("useWaveEffect").orElse(false);
+                        })
                 .add(new TransformComponent(object.bounds()));
     }
 

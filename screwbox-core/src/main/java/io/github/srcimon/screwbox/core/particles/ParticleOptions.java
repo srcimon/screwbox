@@ -58,6 +58,11 @@ public class ParticleOptions implements Serializable {
         return new ParticleOptions(source);
     }
 
+    public ParticleOptions startOpacity(final Percent opacity) {
+        return customize(PREFIX + "start-render-opacity",
+                entity -> entity.get(RenderComponent.class).options = entity.get(RenderComponent.class).options.opacity(opacity));
+    }
+
     /**
      * Used to add special customization to the particles that is not already available via {@link ParticleOptions}
      * methods.
