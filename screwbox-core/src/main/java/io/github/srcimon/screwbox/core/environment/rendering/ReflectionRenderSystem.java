@@ -45,14 +45,15 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()),
                         ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
-                    MirrorRendering rendering = new MirrorRendering(engine.graphics(), mirror, size, reflection);
+                    final var reflectionImage = new ReflectionImage(engine.graphics(), mirror, size, reflection);
                     for (final var entity : reflectableEntities) {
-                        rendering.tryRenderEntity(entity.get(RenderComponent.class), entity.bounds());
+                        reflectionImage.addEntity(entity.get(RenderComponent.class), entity.position());
                     }
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
                     engine.environment().addEntity("reflection",
                             new TransformComponent(reflection),
-                            new RenderComponent(rendering.createReflectionImage(reflectionConfig.blur),
+                            new RenderComponent(
+                                    reflectionImage.create(reflectionConfig.blur),
                                     reflectionConfig.drawOrder,
                                     SpriteDrawOptions.originalSize().opacity(reflectionConfig.opacityModifier)),
                             new ReflectionResultComponent());
@@ -61,28 +62,32 @@ public class ReflectionRenderSystem implements EntitySystem {
         }
     }
 
-    private static class MirrorRendering {
+    private static class ReflectionImage {
         private final Graphics graphics;
-        private final Entity reflectionEntity;
+        private final Entity mirror;
         private final Size size;
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
         private final ReflectionComponent reflectionComponent;
 
-        public MirrorRendering(Graphics graphics, Entity reflectionEntity, Size size, Bounds reflectionBounds) {
+        public ReflectionImage(Graphics graphics, Entity mirror, Size size, Bounds reflectionBounds) {
             this.graphics = graphics;
-            this.reflectionEntity = reflectionEntity;
+            this.mirror = mirror;
             this.size = size;
             final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
             reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
-            this.reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
+            this.reflectionComponent = mirror.get(ReflectionComponent.class);
         }
 
-        public void tryRenderEntity(final RenderComponent render, final Bounds bounds) {
+        public void addEntity(final RenderComponent render, final Vector position) {
             if (render.drawOrder > reflectionComponent.drawOrder) {
                 return;
             }
-            final ScreenBounds screenBounds = calculateScreenBounds(render, bounds);
+            final Bounds entityRenderArea = Bounds.atPosition(position,
+                    mirror.bounds().width() * render.options.scale(),
+                    mirror.bounds().height() * render.options.scale());
+
+            final ScreenBounds screenBounds = graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
             if (screenBounds.intersects(reflectedAreaOnSreen)) {
                 var localDistance = screenBounds.center().substract(reflectedAreaOnSreen.offset());
@@ -94,7 +99,7 @@ public class ReflectionRenderSystem implements EntitySystem {
             }
         }
 
-        public Sprite createReflectionImage(final int blur) {
+        public Sprite create(final int blur) {
             final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
             final var graphics = (Graphics2D) image.getGraphics();
             final var renderer = new DefaultRenderer();
@@ -103,14 +108,5 @@ public class ReflectionRenderSystem implements EntitySystem {
             graphics.dispose();
             return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
         }
-
-        private ScreenBounds calculateScreenBounds(final RenderComponent render, final Bounds bounds) {
-            final Bounds entityRenderArea = Bounds.atPosition(bounds.position(),
-                    reflectionEntity.bounds().width() * render.options.scale(),
-                    reflectionEntity.bounds().height() * render.options.scale());
-
-            return graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
-        }
-
     }
 }
