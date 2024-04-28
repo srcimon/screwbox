@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -185,6 +187,17 @@ public final class Frame implements Serializable {
             }
         }
         return distinct;
+    }
+
+    /**
+     * Lists all distinct {@link Color colors} contained in this {@link Frame}.
+     */
+    public Set<Color> colors() {
+        final Set<Color> colors = new HashSet<>();
+        for (var offset : size().allPixels()) {
+            colors.add(colorAt(offset));
+        }
+        return colors;
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
