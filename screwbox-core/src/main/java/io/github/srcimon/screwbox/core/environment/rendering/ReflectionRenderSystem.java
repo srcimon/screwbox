@@ -50,7 +50,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                     final var reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
                     final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen);
                     for (final var entity : reflectableEntities) {
-                        reflectionImage.addEntity(entity.get(RenderComponent.class), entity, entity.position());
+                        reflectionImage.addEntity(entity);
                     }
 
                     engine.environment().addEntity("reflection",
@@ -79,13 +79,15 @@ public class ReflectionRenderSystem implements EntitySystem {
             this.drawOrder = drawOrder;
         }
 
-        public void addEntity(final RenderComponent render, final Entity entity, final Vector position) {
+        public void addEntity(final Entity entity) {
+            final var render = entity.get(RenderComponent.class);
             if (render.drawOrder > drawOrder) {
                 return;
             }
-            final Bounds entityRenderArea = Bounds.atPosition(position,
-                    entity.bounds().width() * render.options.scale(),
-                    entity.bounds().height() * render.options.scale());
+            final Bounds entityBounds = entity.bounds();
+            final Bounds entityRenderArea = Bounds.atPosition(entityBounds.position(),
+                    entityBounds.width() * render.options.scale(),
+                    entityBounds.height() * render.options.scale());
 
             final ScreenBounds screenBounds = graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
