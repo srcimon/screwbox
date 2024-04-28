@@ -10,12 +10,10 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +45,6 @@ class ReflectionImageTest {
 
     @Test
     void create_entityInAreaAdded_createImage() {
-        //TODO finish
         Entity reflectableSprite = new Entity()
                 .add(new TransformComponent(200, 100, 40, 50))
                 .add(new RenderComponent(SpriteBundle.ICON_32, 4));
@@ -67,9 +64,22 @@ class ReflectionImageTest {
                 .add(new TransformComponent(200, 100, 40, 50))
                 .add(new RenderComponent(SpriteBundle.ICON_32, 4));
 
-        when(graphics.camera()).thenReturn(camera);
         when(graphics.toScreenUsingParallax(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
+        var result = reflectionImage.create(0);
+
+        assertThat(result.size()).isEqualTo(Size.of(200, 40));
+        assertThat(result.singleFrame().colors()).containsExactly(Color.TRANSPARENT);
+    }
+
+    @Test
+    void create_entityWithHigherDrawOrderAdded_createTransparentImage() {
+        Entity reflectableSprite = new Entity()
+                .add(new TransformComponent(200, 100, 40, 50))
+                .add(new RenderComponent(SpriteBundle.ICON_32, 400));
+
+        reflectionImage.addEntity(reflectableSprite);
+
         var result = reflectionImage.create(0);
 
         assertThat(result.size()).isEqualTo(Size.of(200, 40));
