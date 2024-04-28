@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PixelperfectTest {
+class PixelperfectTest {
 
     @Test
-    void bounds_xxx() {
+    void bounds_notPixelperfect_returnsPixelperfectBounds() {
         Bounds bounds = $$(12.123, 1239.40, 129.60, 132.40);
 
         var result = Pixelperfect.bounds(bounds);
