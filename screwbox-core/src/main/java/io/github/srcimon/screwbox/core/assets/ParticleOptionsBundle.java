@@ -29,6 +29,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .chaoticMovement(100, Duration.ofSeconds(1))
             .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
+            .startOpacity(Percent.zero())
             .randomLifeTimeSeconds(6, 7)
             .animateOpacity()),
     EXPLOSION(ParticleOptions.unknownSource()
