@@ -9,10 +9,8 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -69,15 +67,15 @@ public class ReflectionRenderSystem implements EntitySystem {
     private static class ReflectionImage {
         private final Graphics graphics;
         private final Entity mirror;
-        private final Size size;
+        private final Size imageSize;
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
         private final ReflectionComponent reflectionComponent;
 
-        public ReflectionImage(final Graphics graphics, final Entity mirror, final Size size, final ScreenBounds reflectedAreaOnSreen) {
+        public ReflectionImage(final Graphics graphics, final Entity mirror, final Size imageSize, final ScreenBounds reflectedAreaOnSreen) {
             this.graphics = graphics;
             this.mirror = mirror;
-            this.size = size;
+            this.imageSize = imageSize;
             this.reflectedAreaOnSreen = reflectedAreaOnSreen;
             this.reflectionComponent = mirror.get(ReflectionComponent.class);
         }
@@ -96,17 +94,17 @@ public class ReflectionRenderSystem implements EntitySystem {
                 var localDistance = screenBounds.center().substract(reflectedAreaOnSreen.offset());
                 var localOffset = Offset.at(
                         localDistance.x() / graphics.camera().zoom() - render.sprite.size().width() * render.options.scale() / 2,
-                        size.height() - localDistance.y() / graphics.camera().zoom() - render.sprite.size().height() * render.options.scale() / 2
+                        imageSize.height() - localDistance.y() / graphics.camera().zoom() - render.sprite.size().height() * render.options.scale() / 2
                 );
                 spriteBatch.add(render.sprite, localOffset, render.options.invertVerticalFlip(), render.drawOrder);
             }
         }
 
         public Sprite create(final int blur) {
-            final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+            final var image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
             final var graphics = (Graphics2D) image.getGraphics();
             final var renderer = new DefaultRenderer();
-            renderer.updateGraphicsContext(() -> graphics, size);
+            renderer.updateGraphicsContext(() -> graphics, imageSize);
             renderer.drawSpriteBatch(spriteBatch);
             graphics.dispose();
             return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
