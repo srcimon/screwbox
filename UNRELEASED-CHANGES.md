@@ -20,6 +20,7 @@
 - Renamed asset bundles
 - Added `Pixelperfect` util for pixelperfect drawing
 - Changed default zoom range from 1 to 5
+- Reduced default particle spawn distance to 1000
 
 ### 📦 Dependency updates
 

@@ -33,7 +33,7 @@ public class DefaultParticles implements Particles, Updatable {
     private boolean particleCountRefreshed = false;
     private int particleCount = 0;
     private int particleLimit = 10000;
-    private double spawnDistance = 2000;
+    private double spawnDistance = 1000;
     private long particleSpawnCount = 0;
 
     public DefaultParticles(final DefaultScenes scenes, final World world) {

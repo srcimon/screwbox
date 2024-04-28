@@ -19,7 +19,6 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .tweenMode(TweenMode.SINE_IN_OUT)
             .randomStartScale(6, 8)
             .animateOpacity(Percent.zero(), Percent.of(0.1))
-            .baseSpeed(Vector.$(0, -100))
             .chaoticMovement(50, ofSeconds(1))
             .drawOrder(2)
             .randomStartRotation()

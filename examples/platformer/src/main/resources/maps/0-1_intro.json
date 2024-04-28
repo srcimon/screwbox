@@ -302,6 +302,30 @@
                  "width":1664,
                  "x":0,
                  "y":208
+                }, 
+                {
+                 "height":0,
+                 "id":19,
+                 "name":"smoke-emitter",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1437,
+                 "y":208
+                }, 
+                {
+                 "height":0,
+                 "id":20,
+                 "name":"smoke-emitter",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1411,
+                 "y":209
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -409,7 +433,7 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":18,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "properties":[
         {
