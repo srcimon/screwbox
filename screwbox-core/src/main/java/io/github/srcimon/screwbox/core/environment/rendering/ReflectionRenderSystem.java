@@ -55,40 +55,42 @@ public class ReflectionRenderSystem implements EntitySystem {
         final Size size = Size.of(
                 ceil(reflectionOnScreen.size().width() / zoom),
                 ceil(reflectionOnScreen.size().height() / zoom));
+//TODO if(size.hasZeroLe)
+        if(size.width() > 0 && size.height() > 0) {
+            SpriteBatch spriteBatch = new SpriteBatch();
+            for (var entity : reflectableEntities) {
+                var render = entity.get(RenderComponent.class);
+                if (render.drawOrder <= reflectionComponent.drawOrder) {
+                    Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                            reflectionEntity.bounds().width() * render.options.scale(),
+                            reflectionEntity.bounds().height() * render.options.scale());
 
-        SpriteBatch spriteBatch = new SpriteBatch();
-        for (var entity : reflectableEntities) {
-            var render = entity.get(RenderComponent.class);
-            if (render.drawOrder <= reflectionComponent.drawOrder) {
-                Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                        reflectionEntity.bounds().width() * render.options.scale(),
-                        reflectionEntity.bounds().height() * render.options.scale());
+                    ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
-                ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+                    if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
+                        var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+                        var ldistOffset = Offset.at(
+                                ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
+                                size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
+                        );
 
-                if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
-                    var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
-                    var ldistOffset = Offset.at(
-                            ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
-                            size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
-                    );
-
-                    spriteBatch.add(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder);
+                        spriteBatch.add(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder);
+                    }
                 }
             }
-        }
-        final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
-        RenderComponent renderComponent = new RenderComponent(
-                sprite,
-                reflectionComponent.drawOrder,
-                SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
-        );
+            final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
+            RenderComponent renderComponent = new RenderComponent(
+                    sprite,
+                    reflectionComponent.drawOrder,
+                    SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
+            );
 
-        engine.environment().addEntity(
-                new TransformComponent(reflection),
-                renderComponent,
-                new ReflectionResultComponent()
-        );
+            engine.environment().addEntity(
+                    new TransformComponent(reflection),
+                    renderComponent,
+                    new ReflectionResultComponent()
+            );
+        }
     }
 
     private Sprite createReflection(final Size size, final SpriteBatch spriteBatch, int blur) {
