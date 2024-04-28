@@ -72,7 +72,9 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical);
     }
 
-    //TODO Javadoc
+    /**
+     * Creates a new instance with inverted value for {@link #isFlipVertical()}.
+     */
     public SpriteDrawOptions invertVerticalFlip() {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical);
     }

@@ -4,8 +4,9 @@
 - Improved reflections now use drawOrder and support blur effect (#303)
 - Added individual app icons for MacOs and Windows / Linux
 - Tiled layers now uses offset when calculating sprite positions 
-- Added `Environment.removeAll(Archetype)`
 - Added `Size.isValid()`
+- Added `Environment.removeAll(Archetype)`
+- Added `SpriteDrawOptions.invertVerticalFlip()`
 
 ### 🪛 Bug Fixes
 
