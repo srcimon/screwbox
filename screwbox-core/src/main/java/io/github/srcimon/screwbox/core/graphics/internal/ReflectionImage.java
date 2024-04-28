@@ -14,6 +14,9 @@ import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRendere
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.function.UnaryOperator;
+
+import static java.util.Objects.isNull;
 
 public final class ReflectionImage {
 
@@ -22,12 +25,14 @@ public final class ReflectionImage {
     private final SpriteBatch spriteBatch = new SpriteBatch();
     private final ScreenBounds screenArea;
     private final int drawOrder;
+    private UnaryOperator<Bounds> entityMotion;
 
-    public ReflectionImage(final Graphics graphics, final int drawOrder, final Size imageSize, final ScreenBounds screenArea) {
+    public ReflectionImage(final Graphics graphics, final int drawOrder, final Size imageSize, final ScreenBounds screenArea, final UnaryOperator<Bounds> entityMotion) {
         this.graphics = graphics;
         this.imageSize = imageSize;
         this.screenArea = screenArea;
         this.drawOrder = drawOrder;
+        this.entityMotion = entityMotion;
     }
 
     public void addEntity(final Entity entity) {
@@ -35,7 +40,7 @@ public final class ReflectionImage {
         if (render.drawOrder > drawOrder) {
             return;
         }
-        final Bounds entityBounds = entity.bounds();
+        final Bounds entityBounds = isNull(entityMotion) ? entity.bounds() : entityMotion.apply(entity.bounds());
         final Bounds entityRenderArea = Bounds.atPosition(entityBounds.position(),
                 entityBounds.width() * render.options.scale(),
                 entityBounds.height() * render.options.scale());

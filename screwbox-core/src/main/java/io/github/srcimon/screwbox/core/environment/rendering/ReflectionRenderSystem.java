@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -12,6 +14,8 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
+
+import java.util.function.UnaryOperator;
 
 import static java.lang.Math.ceil;
 
@@ -36,9 +40,10 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
+                    final UnaryOperator<Bounds> entityMotion = createMotion(reflectionConfig.useWaveEffect, engine.loop().lastUpdate());
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
-                    final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen);
+                    final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
                     for (final var entity : reflectableEntities) {
                         reflectionImage.addEntity(entity);
                     }
@@ -53,5 +58,12 @@ public class ReflectionRenderSystem implements EntitySystem {
                 }
             });
         }
+    }
+
+    private UnaryOperator<Bounds> createMotion(final boolean useWaveEffect, final Time time) {
+        if (!useWaveEffect) {
+            return null;
+        }
+        return bounds -> bounds.moveBy(Math.sin((time.milliseconds() + bounds.position().y() * 100) / 320) * 2, 0);
     }
 }
