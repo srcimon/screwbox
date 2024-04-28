@@ -45,7 +45,9 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()),
                         ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
-                    final var reflectionImage = new ReflectionImage(engine.graphics(), mirror, size, reflection);
+                    final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
+                    final var reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
+                    final var reflectionImage = new ReflectionImage(engine.graphics(), mirror, size, reflectedAreaOnSreen);
                     for (final var entity : reflectableEntities) {
                         reflectionImage.addEntity(entity.get(RenderComponent.class), entity.position());
                     }
@@ -70,12 +72,11 @@ public class ReflectionRenderSystem implements EntitySystem {
         private final ScreenBounds reflectedAreaOnSreen;
         private final ReflectionComponent reflectionComponent;
 
-        public ReflectionImage(Graphics graphics, Entity mirror, Size size, Bounds reflectionBounds) {
+        public ReflectionImage(Graphics graphics, Entity mirror, Size size, ScreenBounds reflectedAreaOnSreen) {
             this.graphics = graphics;
             this.mirror = mirror;
             this.size = size;
-            final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
-            reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
+            this.reflectedAreaOnSreen = reflectedAreaOnSreen;
             this.reflectionComponent = mirror.get(ReflectionComponent.class);
         }
 
