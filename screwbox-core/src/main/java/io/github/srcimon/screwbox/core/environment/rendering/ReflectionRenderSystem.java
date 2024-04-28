@@ -45,13 +45,14 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()),
                         ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
+                    final var reflectionConfig = mirror.get(ReflectionComponent.class);
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
-                    final var reflectionImage = new ReflectionImage(engine.graphics(), mirror, size, reflectedAreaOnSreen);
+                    final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen);
                     for (final var entity : reflectableEntities) {
-                        reflectionImage.addEntity(entity.get(RenderComponent.class), entity.position());
+                        reflectionImage.addEntity(entity.get(RenderComponent.class), entity, entity.position());
                     }
-                    final var reflectionConfig = mirror.get(ReflectionComponent.class);
+
                     engine.environment().addEntity("reflection",
                             new TransformComponent(reflection),
                             new RenderComponent(
@@ -66,27 +67,25 @@ public class ReflectionRenderSystem implements EntitySystem {
 
     private static class ReflectionImage {
         private final Graphics graphics;
-        private final Entity mirror;
         private final Size imageSize;
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
-        private final ReflectionComponent reflectionComponent;
+        private final int drawOrder;
 
-        public ReflectionImage(final Graphics graphics, final Entity mirror, final Size imageSize, final ScreenBounds reflectedAreaOnSreen) {
+        public ReflectionImage(final Graphics graphics, final int drawOrder, final Size imageSize, final ScreenBounds reflectedAreaOnSreen) {
             this.graphics = graphics;
-            this.mirror = mirror;
             this.imageSize = imageSize;
             this.reflectedAreaOnSreen = reflectedAreaOnSreen;
-            this.reflectionComponent = mirror.get(ReflectionComponent.class);
+            this.drawOrder = drawOrder;
         }
 
-        public void addEntity(final RenderComponent render, final Vector position) {
-            if (render.drawOrder > reflectionComponent.drawOrder) {
+        public void addEntity(final RenderComponent render, final Entity entity, final Vector position) {
+            if (render.drawOrder > drawOrder) {
                 return;
             }
             final Bounds entityRenderArea = Bounds.atPosition(position,
-                    mirror.bounds().width() * render.options.scale(),
-                    mirror.bounds().height() * render.options.scale());
+                    entity.bounds().width() * render.options.scale(),
+                    entity.bounds().height() * render.options.scale());
 
             final ScreenBounds screenBounds = graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
