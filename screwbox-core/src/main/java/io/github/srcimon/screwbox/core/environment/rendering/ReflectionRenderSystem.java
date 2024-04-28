@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -40,7 +39,12 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
-                    final UnaryOperator<Bounds> entityMotion = createMotion(reflectionConfig.useWaveEffect, engine.loop().lastUpdate());
+                    final long seed = engine.loop().lastUpdate().milliseconds();
+                    final UnaryOperator<Bounds> entityMotion = reflectionConfig.useWaveEffect
+                            ? bounds -> bounds.moveBy(
+                            Math.sin((seed + bounds.position().y() * 100) / 320) * 2,
+                            Math.sin((seed + bounds.position().x() * 50) / 500) * 2)
+                            : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
                     final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
@@ -60,12 +64,4 @@ public class ReflectionRenderSystem implements EntitySystem {
         }
     }
 
-    private UnaryOperator<Bounds> createMotion(final boolean useWaveEffect, final Time time) {
-        if (!useWaveEffect) {
-            return null;
-        }
-        return bounds -> bounds.moveBy(
-                Math.sin((time.milliseconds() + bounds.position().y() * 100) / 320) * 2,
-                Math.sin((time.milliseconds() + bounds.position().x() * 50) / 500) * 2);
-    }
 }
