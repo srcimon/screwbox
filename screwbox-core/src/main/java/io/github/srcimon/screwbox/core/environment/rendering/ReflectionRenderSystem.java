@@ -22,7 +22,6 @@ import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 import static java.lang.Math.ceil;
 
@@ -48,7 +47,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().width() / zoom),
                         ceil(reflectionOnScreen.size().height() / zoom));
                 if (size.isValid()) {
-                    MirrorRendering rendering = new MirrorRendering(engine.graphics(), mirror, size, reflection, reflectableEntities);
+                    MirrorRendering rendering = new MirrorRendering(engine.graphics(), mirror, size, reflection);
                     for (final var entity : reflectableEntities) {
                         rendering.tryRenderEntity(entity.get(RenderComponent.class), entity.bounds());
                     }
@@ -64,17 +63,15 @@ public class ReflectionRenderSystem implements EntitySystem {
         private final Graphics graphics;
         private final Entity reflectionEntity;
         private final Bounds reflectionBounds;
-        private final List<Entity> reflectableEntities;
         private final Size size;
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
         private final ReflectionComponent reflectionComponent;
 
-        public MirrorRendering(Graphics graphics, Entity reflectionEntity, Size size, Bounds reflectionBounds, List<Entity> reflectableEntities) {
+        public MirrorRendering(Graphics graphics, Entity reflectionEntity, Size size, Bounds reflectionBounds) {
             this.graphics = graphics;
             this.reflectionEntity = reflectionEntity;
             this.reflectionBounds = reflectionBounds;
-            this.reflectableEntities = reflectableEntities;
             this.size = size;
             final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
             reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
@@ -113,7 +110,6 @@ public class ReflectionRenderSystem implements EntitySystem {
                         localDistance.x() / graphics.camera().zoom() - render.sprite.size().width() * render.options.scale() / 2,
                         size.height() - localDistance.y() / graphics.camera().zoom() - render.sprite.size().height() * render.options.scale() / 2
                 );
-
                 spriteBatch.add(render.sprite, localOffset, render.options.invertVerticalFlip(), render.drawOrder);
             }
         }
