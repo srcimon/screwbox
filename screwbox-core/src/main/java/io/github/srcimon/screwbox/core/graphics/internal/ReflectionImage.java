@@ -54,11 +54,11 @@ public final class ReflectionImage {
 
     public Sprite create(final int blur) {
         final var image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
-        final var graphics = (Graphics2D) image.getGraphics();
+        final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
-        renderer.updateGraphicsContext(() -> graphics, imageSize);
+        renderer.updateGraphicsContext(() -> graphics2d, imageSize);
         renderer.drawSpriteBatch(spriteBatch);
-        graphics.dispose();
+        graphics2d.dispose();
         return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
     }
 }
