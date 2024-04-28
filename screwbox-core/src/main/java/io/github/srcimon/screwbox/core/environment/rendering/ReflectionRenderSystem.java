@@ -36,60 +36,73 @@ public class ReflectionRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         engine.environment().removeAll(REFLECTION_RENDERERS);
         final var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
-        for (final Entity reflectionEntity : engine.environment().fetchAll(MIRRORS)) {
+        for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
-            final var visiblePartOfReflection = reflectionEntity.bounds().intersection(visibleArea);
-            visiblePartOfReflection.ifPresent(reflection -> extracted(engine, reflectionEntity, reflection, reflectableEntities));
+            final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
+            visibleAreaOfMirror.ifPresent(reflection -> new MirrorRendering(engine, mirror, reflection, reflectableEntities).run());
         }
     }
 
-    //TODO make class
-    private void extracted(Engine engine, Entity reflectionEntity, Bounds reflection, List<Entity> reflectableEntities) {
-        double zoom = engine.graphics().camera().zoom();
-        var reflectionOnScreen = engine.graphics().toScreen(reflection);
+    private class MirrorRendering {
+        private final Engine engine;
+        private final Entity reflectionEntity;
+        private final Bounds reflection;
+        private final List<Entity> reflectableEntities;
 
-        var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
+        public MirrorRendering(Engine engine, Entity reflectionEntity, Bounds reflection, List<Entity> reflectableEntities) {
+            this.engine = engine;
+            this.reflectionEntity = reflectionEntity;
+            this.reflection = reflection;
+            this.reflectableEntities = reflectableEntities;
+        }
 
-        ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
+        public void run() {
+            double zoom = engine.graphics().camera().zoom();
+            var reflectionOnScreen = engine.graphics().toScreen(reflection);
 
-        final Size size = Size.of(
-                ceil(reflectionOnScreen.size().width() / zoom),
-                ceil(reflectionOnScreen.size().height() / zoom));
+            var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
-        if (size.isValid()) {
-            SpriteBatch spriteBatch = new SpriteBatch();
-            for (var entity : reflectableEntities) {
-                var render = entity.get(RenderComponent.class);
-                if (render.drawOrder <= reflectionComponent.drawOrder) {
-                    Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
-                            reflectionEntity.bounds().width() * render.options.scale(),
-                            reflectionEntity.bounds().height() * render.options.scale());
+            ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
 
-                    ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+            final Size size = Size.of(
+                    ceil(reflectionOnScreen.size().width() / zoom),
+                    ceil(reflectionOnScreen.size().height() / zoom));
 
-                    if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
-                        var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
-                        var ldistOffset = Offset.at(
-                                ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
-                                size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
-                        );
+            if (size.isValid()) {
+                SpriteBatch spriteBatch = new SpriteBatch();
+                for (var entity : reflectableEntities) {
+                    var render = entity.get(RenderComponent.class);
+                    if (render.drawOrder <= reflectionComponent.drawOrder) {
+                        Bounds entityRenderArea = Bounds.atPosition(entity.bounds().position(),
+                                reflectionEntity.bounds().width() * render.options.scale(),
+                                reflectionEntity.bounds().height() * render.options.scale());
 
-                        spriteBatch.add(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder);
+                        ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+
+                        if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
+                            var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+                            var ldistOffset = Offset.at(
+                                    ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
+                                    size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
+                            );
+
+                            spriteBatch.add(render.sprite, ldistOffset, render.options.invertVerticalFlip(), render.drawOrder);
+                        }
                     }
                 }
-            }
-            final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
-            RenderComponent renderComponent = new RenderComponent(
-                    sprite,
-                    reflectionComponent.drawOrder,
-                    SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
-            );
+                final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
+                RenderComponent renderComponent = new RenderComponent(
+                        sprite,
+                        reflectionComponent.drawOrder,
+                        SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
+                );
 
-            engine.environment().addEntity(
-                    new TransformComponent(reflection),
-                    renderComponent,
-                    new ReflectionResultComponent()
-            );
+                engine.environment().addEntity(
+                        new TransformComponent(reflection),
+                        renderComponent,
+                        new ReflectionResultComponent()
+                );
+            }
         }
     }
 
