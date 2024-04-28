@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -48,33 +49,38 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().height() / zoom));
                 if (size.isValid()) {
                     MirrorRendering rendering = new MirrorRendering(engine, mirror, size, reflection, reflectableEntities);
-                    rendering.run();
+                    engine.environment().addEntity(rendering.createReflectionEntity());
                 }
             });
         }
     }
 
+    //TODO clean up
+
     private static class MirrorRendering {
         private final Engine engine;
         private final Entity reflectionEntity;
-        private final Bounds reflection;
+        private final Bounds reflectionBounds;
         private final List<Entity> reflectableEntities;
         private final Size size;
+        private final SpriteBatch spriteBatch = new SpriteBatch();
+        private final ScreenBounds reflectedAreaOnSreen;
 
-        public MirrorRendering(Engine engine, Entity reflectionEntity, Size size, Bounds reflection, List<Entity> reflectableEntities) {
+        public MirrorRendering(Engine engine, Entity reflectionEntity, Size size, Bounds reflectionBounds, List<Entity> reflectableEntities) {
             this.engine = engine;
             this.reflectionEntity = reflectionEntity;
-            this.reflection = reflection;
+            this.reflectionBounds = reflectionBounds;
             this.reflectableEntities = reflectableEntities;
             this.size = size;
+            final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
+            reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
         }
 
-        public void run() {
-            double zoom = engine.graphics().camera().zoom();
-            var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
-            ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
+        public Entity createReflectionEntity() {
+            Graphics graphics = engine.graphics();
+            double zoom = graphics.camera().zoom();
 
-            SpriteBatch spriteBatch = new SpriteBatch();
+            ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
             for (var entity : reflectableEntities) {
                 var render = entity.get(RenderComponent.class);
                 if (render.drawOrder <= reflectionComponent.drawOrder) {
@@ -82,10 +88,11 @@ public class ReflectionRenderSystem implements EntitySystem {
                             reflectionEntity.bounds().width() * render.options.scale(),
                             reflectionEntity.bounds().height() * render.options.scale());
 
-                    ScreenBounds screenUsingParallax = engine.graphics().toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+                    ScreenBounds screenUsingParallax = graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
 
-                    if (screenUsingParallax.intersects(engine.graphics().toScreen(reflectedArea))) {
-                        var ldist = screenUsingParallax.center().substract(engine.graphics().toScreen(reflectedArea).offset());
+
+                    if (screenUsingParallax.intersects(reflectedAreaOnSreen)) {
+                        var ldist = screenUsingParallax.center().substract(reflectedAreaOnSreen.offset());
                         var ldistOffset = Offset.at(
                                 ldist.x() / zoom - render.sprite.size().width() * render.options.scale() / 2,
                                 size.height() - ldist.y() / zoom - render.sprite.size().height() * render.options.scale() / 2
@@ -95,20 +102,18 @@ public class ReflectionRenderSystem implements EntitySystem {
                     }
                 }
             }
-            final var sprite = createReflection(size, spriteBatch, reflectionComponent.blur);
-            RenderComponent renderComponent = new RenderComponent(
-                    sprite,
-                    reflectionComponent.drawOrder,
-                    SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)
-            );
+            final var sprite = createReflectionImage(size, spriteBatch, reflectionComponent.blur);
 
-            engine.environment().addEntity(
-                    new TransformComponent(reflection),
-                    renderComponent,
+            return new Entity("reflection").add(
+                    new TransformComponent(reflectionBounds),
+                    new RenderComponent(
+                            sprite,
+                            reflectionComponent.drawOrder,
+                            SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)),
                     new ReflectionResultComponent());
         }
 
-        private Sprite createReflection(final Size size, final SpriteBatch spriteBatch, int blur) {
+        private Sprite createReflectionImage(final Size size, final SpriteBatch spriteBatch, int blur) {
             var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
             var graphics = (Graphics2D) image.getGraphics();
 
