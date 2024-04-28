@@ -51,7 +51,13 @@ public class ReflectionRenderSystem implements EntitySystem {
                     for (final var entity : reflectableEntities) {
                         rendering.tryRenderEntity(entity.get(RenderComponent.class), entity.bounds());
                     }
-                    engine.environment().addEntity(rendering.createReflectionEntity());
+                    final var reflectionConfig = mirror.get(ReflectionComponent.class);
+                    engine.environment().addEntity("reflection",
+                            new TransformComponent(reflection),
+                            new RenderComponent(rendering.createReflectionImage(reflectionConfig.blur),
+                                    reflectionConfig.drawOrder,
+                                    SpriteDrawOptions.originalSize().opacity(reflectionConfig.opacityModifier)),
+                            new ReflectionResultComponent());
                 }
             });
         }
@@ -76,16 +82,6 @@ public class ReflectionRenderSystem implements EntitySystem {
             final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
             reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
             this.reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
-        }
-
-        public Entity createReflectionEntity() {
-            return new Entity("reflection").add(
-                    new TransformComponent(reflectionBounds),
-                    new RenderComponent(
-                            createReflectionImage(reflectionComponent.blur),
-                            reflectionComponent.drawOrder,
-                            SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)),
-                    new ReflectionResultComponent());
         }
 
         private Sprite createReflectionImage(final int blur) {
