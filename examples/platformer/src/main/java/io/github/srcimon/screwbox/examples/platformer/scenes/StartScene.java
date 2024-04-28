@@ -5,18 +5,20 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle;
-import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
+import io.github.srcimon.screwbox.core.graphics.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.log.Log;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.ui.KeyboardAndMouseInteractor;
+import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.examples.platformer.menues.StartGameMenu;
-import io.github.srcimon.screwbox.examples.platformer.systems.StartBackgroundSystem;
 
 import java.util.List;
 
@@ -40,13 +42,14 @@ public class StartScene implements Scene {
         environment
                 .enableTweening()
                 .enablePhysics()
-                .addSystem(new LogFpsSystem())
                 .enableParticles()
                 .enableRendering()
+                .addEntity(1, new TransformComponent(0, 0, 60, 60), new ParticleInteractionComponent(20), new PhysicsComponent())
+                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
-                    if(t.isTick()) {
+                    if (t.isTick()) {
                         engine.particles().spawnMultiple(1, engine.graphics().world().visibleArea().moveBy(0, engine.graphics().world().visibleArea().height()), ParticleOptions.unknownSource()
-                                .baseSpeed(Vector.y(-100))
+                                .baseSpeed(Vector.y(-60))
                                 .tweenMode(TweenMode.SINE_IN_OUT)
                                 .randomStartScale(6, 8)
                                 .startOpacity(Percent.zero())
@@ -54,22 +57,31 @@ public class StartScene implements Scene {
                                 .chaoticMovement(50, ofSeconds(1))
                                 .drawOrder(2)
                                 .randomStartRotation()
-                                .randomLifeTimeSeconds(2, 3)
-                                        .animateScale(0.5, 1.5)
-                                        .animateOpacity(Percent.zero(), Percent.max())
+                                .randomLifeTimeSeconds(2, 4)
+                                .animateScale(0.5, 1.5)
+                                .animateOpacity(Percent.zero(), Percent.max())
                                 .sprites(BACKGROUNDS.get()));
                     }
-        });
+                });
     }
 
     @Override
     public void onEnter(Engine engine) {
-        engine.ui().openMenu(new StartGameMenu());
-        engine.window().setTitle("Platformer (Menu)");
+        engine.ui()
+                .setInteractor(new KeyboardAndMouseInteractor())
+                .openMenu(new StartGameMenu());
+        engine.window()
+                .setTitle("Platformer (Menu)")
+                .setCursor(MouseCursor.DEFAULT);
     }
 
     @Override
     public void onExit(Engine engine) {
-        engine.ui().closeMenu();
+        engine.ui()
+                .setInteractor(new KeyboardInteractor())
+                .closeMenu();
+
+        engine.window()
+                .setCursor(MouseCursor.HIDDEN);
     }
 }
