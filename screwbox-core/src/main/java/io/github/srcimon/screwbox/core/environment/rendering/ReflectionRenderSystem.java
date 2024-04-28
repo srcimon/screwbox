@@ -48,7 +48,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                         ceil(reflectionOnScreen.size().width() / zoom),
                         ceil(reflectionOnScreen.size().height() / zoom));
                 if (size.isValid()) {
-                    MirrorRendering rendering = new MirrorRendering(engine, mirror, size, reflection, reflectableEntities);
+                    MirrorRendering rendering = new MirrorRendering(engine.graphics(), mirror, size, reflection, reflectableEntities);
                     engine.environment().addEntity(rendering.createReflectionEntity());
                 }
             });
@@ -58,7 +58,7 @@ public class ReflectionRenderSystem implements EntitySystem {
     //TODO clean up
 
     private static class MirrorRendering {
-        private final Engine engine;
+        private final Graphics graphics;
         private final Entity reflectionEntity;
         private final Bounds reflectionBounds;
         private final List<Entity> reflectableEntities;
@@ -66,18 +66,17 @@ public class ReflectionRenderSystem implements EntitySystem {
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
 
-        public MirrorRendering(Engine engine, Entity reflectionEntity, Size size, Bounds reflectionBounds, List<Entity> reflectableEntities) {
-            this.engine = engine;
+        public MirrorRendering(Graphics graphics, Entity reflectionEntity, Size size, Bounds reflectionBounds, List<Entity> reflectableEntities) {
+            this.graphics = graphics;
             this.reflectionEntity = reflectionEntity;
             this.reflectionBounds = reflectionBounds;
             this.reflectableEntities = reflectableEntities;
             this.size = size;
             final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
-            reflectedAreaOnSreen = engine.graphics().toScreen(reflectedBounds);
+            reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
         }
 
         public Entity createReflectionEntity() {
-            Graphics graphics = engine.graphics();
             double zoom = graphics.camera().zoom();
 
             ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
