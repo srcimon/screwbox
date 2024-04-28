@@ -40,12 +40,10 @@ public class ReflectionRenderSystem implements EntitySystem {
             final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(reflection -> {
-
-                double zoom = engine.graphics().camera().zoom();
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
                 final Size size = Size.of(
-                        ceil(reflectionOnScreen.size().width() / zoom),
-                        ceil(reflectionOnScreen.size().height() / zoom));
+                        ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()),
+                        ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
                     MirrorRendering rendering = new MirrorRendering(engine.graphics(), mirror, size, reflection);
                     for (final var entity : reflectableEntities) {
@@ -63,12 +61,9 @@ public class ReflectionRenderSystem implements EntitySystem {
         }
     }
 
-    //TODO clean up
-
     private static class MirrorRendering {
         private final Graphics graphics;
         private final Entity reflectionEntity;
-        private final Bounds reflectionBounds;
         private final Size size;
         private final SpriteBatch spriteBatch = new SpriteBatch();
         private final ScreenBounds reflectedAreaOnSreen;
@@ -77,21 +72,10 @@ public class ReflectionRenderSystem implements EntitySystem {
         public MirrorRendering(Graphics graphics, Entity reflectionEntity, Size size, Bounds reflectionBounds) {
             this.graphics = graphics;
             this.reflectionEntity = reflectionEntity;
-            this.reflectionBounds = reflectionBounds;
             this.size = size;
             final var reflectedBounds = reflectionBounds.moveBy(Vector.y(-reflectionBounds.height()));
             reflectedAreaOnSreen = graphics.toScreen(reflectedBounds);
             this.reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
-        }
-
-        private Sprite createReflectionImage(final int blur) {
-            final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
-            final var graphics = (Graphics2D) image.getGraphics();
-            final var renderer = new DefaultRenderer();
-            renderer.updateGraphicsContext(() -> graphics, size);
-            renderer.drawSpriteBatch(spriteBatch);
-            graphics.dispose();
-            return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
         }
 
         public void tryRenderEntity(final RenderComponent render, final Bounds bounds) {
@@ -110,6 +94,16 @@ public class ReflectionRenderSystem implements EntitySystem {
             }
         }
 
+        public Sprite createReflectionImage(final int blur) {
+            final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
+            final var graphics = (Graphics2D) image.getGraphics();
+            final var renderer = new DefaultRenderer();
+            renderer.updateGraphicsContext(() -> graphics, size);
+            renderer.drawSpriteBatch(spriteBatch);
+            graphics.dispose();
+            return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
+        }
+
         private ScreenBounds calculateScreenBounds(final RenderComponent render, final Bounds bounds) {
             final Bounds entityRenderArea = Bounds.atPosition(bounds.position(),
                     reflectionEntity.bounds().width() * render.options.scale(),
@@ -117,5 +111,6 @@ public class ReflectionRenderSystem implements EntitySystem {
 
             return graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
         }
+
     }
 }
