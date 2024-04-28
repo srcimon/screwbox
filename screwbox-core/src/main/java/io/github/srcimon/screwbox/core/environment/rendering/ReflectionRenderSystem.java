@@ -39,7 +39,10 @@ public class ReflectionRenderSystem implements EntitySystem {
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
-            visibleAreaOfMirror.ifPresent(reflection -> new MirrorRendering(engine, mirror, reflection, reflectableEntities).run());
+            visibleAreaOfMirror.ifPresent(reflection -> {
+                MirrorRendering rendering = new MirrorRendering(engine, mirror, reflection, reflectableEntities);
+                rendering.run();
+            });
         }
     }
 
@@ -59,14 +62,15 @@ public class ReflectionRenderSystem implements EntitySystem {
         public void run() {
             double zoom = engine.graphics().camera().zoom();
             var reflectionOnScreen = engine.graphics().toScreen(reflection);
+            final Size size = Size.of(
+                    ceil(reflectionOnScreen.size().width() / zoom),
+                    ceil(reflectionOnScreen.size().height() / zoom));
 
             var reflectedArea = reflection.moveBy(Vector.y(-reflection.height()));
 
             ReflectionComponent reflectionComponent = reflectionEntity.get(ReflectionComponent.class);
 
-            final Size size = Size.of(
-                    ceil(reflectionOnScreen.size().width() / zoom),
-                    ceil(reflectionOnScreen.size().height() / zoom));
+
 
             if (size.isValid()) {
                 SpriteBatch spriteBatch = new SpriteBatch();
