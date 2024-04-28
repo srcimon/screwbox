@@ -19,7 +19,7 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        SpriteBatch spriteBatch = new SpriteBatch();
+        final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         final ScreenBounds visibleBounds = graphics.screen().bounds();
         double zoom = graphics.camera().zoom();

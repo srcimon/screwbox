@@ -55,8 +55,8 @@ public class ReflectionRenderSystem implements EntitySystem {
         final Size size = Size.of(
                 ceil(reflectionOnScreen.size().width() / zoom),
                 ceil(reflectionOnScreen.size().height() / zoom));
-//TODO if(size.hasZeroLe)
-        if(size.width() > 0 && size.height() > 0) {
+
+        if (size.isValid()) {
             SpriteBatch spriteBatch = new SpriteBatch();
             for (var entity : reflectableEntities) {
                 var render = entity.get(RenderComponent.class);
