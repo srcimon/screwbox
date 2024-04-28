@@ -64,6 +64,6 @@ public class ReflectionRenderSystem implements EntitySystem {
         if (!useWaveEffect) {
             return null;
         }
-        return bounds -> bounds.moveBy(Math.sin((time.milliseconds() + bounds.position().y() * 100) / 320) * 2, 0);
+        return bounds -> bounds.moveBy(Math.sin((time.milliseconds() + bounds.position().y() * 100) / 320) * 2,0);
     }
 }
