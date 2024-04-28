@@ -9,8 +9,10 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -25,7 +27,7 @@ import java.awt.image.BufferedImage;
 
 import static java.lang.Math.ceil;
 
-@Order(SystemOrder.PRESENTATION_OVERLAY)
+@Order(SystemOrder.PRESENTATION_PREPARE)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype MIRRORS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
@@ -72,7 +74,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         private final ScreenBounds reflectedAreaOnSreen;
         private final ReflectionComponent reflectionComponent;
 
-        public ReflectionImage(Graphics graphics, Entity mirror, Size size, ScreenBounds reflectedAreaOnSreen) {
+        public ReflectionImage(final Graphics graphics, final Entity mirror, final Size size, final ScreenBounds reflectedAreaOnSreen) {
             this.graphics = graphics;
             this.mirror = mirror;
             this.size = size;
