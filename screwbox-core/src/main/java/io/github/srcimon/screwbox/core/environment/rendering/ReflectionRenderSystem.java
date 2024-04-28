@@ -85,24 +85,20 @@ public class ReflectionRenderSystem implements EntitySystem {
             return new Entity("reflection").add(
                     new TransformComponent(reflectionBounds),
                     new RenderComponent(
-                            createReflectionImage(size, spriteBatch, reflectionComponent.blur),
+                            createReflectionImage(reflectionComponent.blur),
                             reflectionComponent.drawOrder,
                             SpriteDrawOptions.originalSize().opacity(reflectionComponent.opacityModifier)),
                     new ReflectionResultComponent());
         }
 
-        private Sprite createReflectionImage(final Size size, final SpriteBatch spriteBatch, int blur) {
+        private Sprite createReflectionImage(final int blur) {
             final var image = new BufferedImage(size.width(), size.height(), BufferedImage.TYPE_INT_ARGB);
             final var graphics = (Graphics2D) image.getGraphics();
-
             final var renderer = new DefaultRenderer();
             renderer.updateGraphicsContext(() -> graphics, size);
             renderer.drawSpriteBatch(spriteBatch);
-
             graphics.dispose();
-            return blur > 1
-                    ? Sprite.fromImage(new BlurImageFilter(blur).apply(image))
-                    : Sprite.fromImage(image);
+            return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
         }
 
         public void tryRenderEntity(final RenderComponent render, final Bounds bounds) {
