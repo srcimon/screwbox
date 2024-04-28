@@ -115,4 +115,12 @@ public interface Screen {
      * Returns the current {@link ScreenBounds}.
      */
     ScreenBounds bounds();
+
+    /**
+     * Draws multiple sorted {@link Sprite sprites} at once. May have slightly better performance than drawing them
+     * one by one.
+     *
+     * @since 1.11.0
+     */
+    void drawSpriteBatch(SpriteBatch spriteBatch);
 }

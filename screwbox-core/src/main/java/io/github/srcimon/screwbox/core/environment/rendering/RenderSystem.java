@@ -9,33 +9,17 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
 @Order(SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
-
-    public record BatchEntry(Sprite sprite, Offset offset, SpriteDrawOptions options, int drawOrder)
-            implements Comparable<BatchEntry> {
-
-        @Override
-        public int compareTo(final BatchEntry o) {
-            return Integer.compare(drawOrder, o.drawOrder);
-        }
-    }
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
-        final List<BatchEntry> entries = new ArrayList<>();
+        final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         final ScreenBounds visibleBounds = graphics.screen().bounds();
         double zoom = graphics.camera().zoom();
@@ -45,16 +29,13 @@ public class RenderSystem implements EntitySystem {
             final double width = render.sprite.size().width() * render.options.scale();
             final double height = render.sprite.size().height() * render.options.scale();
             final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
+
             final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);
             if (visibleBounds.intersects(entityScreenBounds)) {
-                entries.add(new BatchEntry(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder));
+                spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
             }
         }
 
-        Collections.sort(entries);
-        final Screen screen = graphics.screen();
-        for (final var entry : entries) {
-            screen.drawSprite(entry.sprite, entry.offset, entry.options);
-        }
+        graphics.screen().drawSpriteBatch(spriteBatch);
     }
 }

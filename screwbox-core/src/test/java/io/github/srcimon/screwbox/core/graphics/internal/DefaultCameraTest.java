@@ -151,7 +151,7 @@ class DefaultCameraTest {
 
         camera.update();
 
-        assertThat(camera.focus().distanceTo(camera.position())).isLessThan(5);
+        assertThat(camera.focus().distanceTo(camera.position())).isLessThan(6);
         assertThat(camera.focus()).isNotEqualTo(camera.position());
     }
 

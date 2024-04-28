@@ -35,7 +35,7 @@ public interface Assets {
 
     /**
      * Prepares all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended when using
-     * {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     * {@link SoundBundle}, {@link SpriteBundle} or {@link FontBundle}.
      *
      * @see #prepareEngineAssetsAsync()
      */
@@ -45,7 +45,7 @@ public interface Assets {
 
     /**
      * Start asynchronous loading of all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended
-     * when using {@link SoundsBundle}, {@link SpritesBundle} or {@link FontsBundle}.
+     * when using {@link SoundBundle}, {@link SpriteBundle} or {@link FontBundle}.
      *
      * @see #prepareEngineAssets()
      */

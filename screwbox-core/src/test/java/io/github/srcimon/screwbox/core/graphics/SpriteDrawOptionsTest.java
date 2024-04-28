@@ -10,13 +10,13 @@ class SpriteDrawOptionsTest {
 
     @Test
     void scaled_returnsScaledInstance() {
-        var options = SpriteDrawOptions.scaled(2);
+        var options = SpriteDrawOptions.scaled(2).invertVerticalFlip();
 
         assertThat(options.scale()).isEqualTo(2);
         assertThat(options.opacity()).isEqualTo(Percent.max());
         assertThat(options.rotation()).isEqualTo(Rotation.none());
         assertThat(options.isFlipHorizontal()).isFalse();
-        assertThat(options.isFlipVertical()).isFalse();
+        assertThat(options.isFlipVertical()).isTrue();
     }
 
     @Test

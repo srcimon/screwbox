@@ -17,7 +17,7 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     private final PhysicsComponent rigidBodyComponent;
 
     public CollisionCheck(final Entity physics, final Entity collider) {
-        this.colliderBounds = collider.get(TransformComponent.class).bounds;
+        this.colliderBounds = collider.bounds();
         this.physics = physics;
         this.collider = collider;
         this.colliderComponent = collider.get(ColliderComponent.class);
@@ -65,7 +65,7 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     }
 
     public double overlap() {
-        return physicsBounds().bounds.overlapArea(colliderBounds);
+        return physics.bounds().overlapArea(colliderBounds);
     }
 
     @Override

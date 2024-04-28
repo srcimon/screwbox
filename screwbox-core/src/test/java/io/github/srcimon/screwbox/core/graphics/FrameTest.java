@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -141,6 +142,19 @@ class FrameTest {
     void listPixelDifferences_differentImages_listsDifferences() {
         var other = Frame.fromFile("transparent.png");
 
-        assertThat(frame.listPixelDifferences(other)).hasSize(256).contains(Offset.at(0,0));
+        assertThat(frame.listPixelDifferences(other)).hasSize(256).contains(Offset.at(0, 0));
+    }
+
+    @Test
+    void colors_transparentImage_containsOnlyTransparent() {
+        assertThat(Frame.invisible().colors()).containsExactly(Color.TRANSPARENT);
+    }
+
+    @Test
+    void colors_frameWithFourColors_containsFourColors() {
+        Frame frameWithFourColors = SpriteBundle.DOT_YELLOW_16.get().singleFrame();
+
+        assertThat(frameWithFourColors.colors()).hasSize(4)
+                .contains(Color.rgb(205, 233, 17));
     }
 }

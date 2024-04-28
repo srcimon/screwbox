@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.util.Objects.nonNull;
@@ -42,7 +43,7 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public Vector focus() {
         final var focus = this.position.add(shake);
-        return Vector.of(pixelPerfectValue(focus.x()), pixelPerfectValue(focus.y()));
+        return Pixelperfect.vector(focus);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public double setZoom(final double zoom) {
         this.requestedZoom = Math.clamp(zoom, minZoom, maxZoom);
-        this.zoom = pixelPerfectValue(requestedZoom);
+        this.zoom = Pixelperfect.value(requestedZoom);
         world.updateZoom(this.zoom);
         return this.zoom;
     }
@@ -129,9 +130,5 @@ public class DefaultCamera implements Camera, Updatable {
         } else {
             shake = Vector.zero();
         }
-    }
-
-    private double pixelPerfectValue(final double value) {
-        return Math.floor(value * 16.0) / 16.0;
     }
 }

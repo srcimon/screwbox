@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -59,7 +59,7 @@ public class LetsGoSystem implements EntitySystem {
                     .moveBy(Vector.of(Math.sin(letsGoComponent.modifier * 100 - 100) * delta * 100, -10 * delta));
 
             Vector postion = bubbleTranform.bounds.position();
-            engine.graphics().world().drawText(postion, "LET'S GO", font(FontsBundle.BOLDZILLA).opacity(letsGoComponent.visibility).scale(0.5));
+            engine.graphics().world().drawText(postion, "LET'S GO", font(FontBundle.BOLDZILLA).opacity(letsGoComponent.visibility).scale(0.5));
             letsGoComponent.modifier += delta / 16;
             letsGoComponent.visibility = Percent.of(letsGoComponent.visibility.value() - delta / 2);
         }

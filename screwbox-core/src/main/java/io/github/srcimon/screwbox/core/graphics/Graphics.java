@@ -86,5 +86,4 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
-
 }

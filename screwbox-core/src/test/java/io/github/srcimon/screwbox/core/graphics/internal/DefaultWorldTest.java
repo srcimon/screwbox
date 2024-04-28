@@ -2,13 +2,17 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.FontsBundle;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -16,7 +20,6 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.Vector.zero;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -67,22 +70,6 @@ class DefaultWorldTest {
     }
 
     @Test
-    void drawSpriteBatch_twoSprites_drawsSpriteInDrawOrder() {
-        Sprite second = SpritesBundle.BLOB_ANIMATED_16.get();
-        Sprite first = SpritesBundle.MOON_SURFACE_16.get();
-
-        var batch = new SpriteBatch();
-        batch.addEntry(second, $(10, 20), SpriteDrawOptions.scaled(2), 2);
-        batch.addEntry(first, $(41, 20), SpriteDrawOptions.originalSize(), 1);
-
-        world.drawSpriteBatch(batch, Bounds.$$(40, 40, 100, 200));
-        InOrder orderVerifier = inOrder(screen);
-
-        orderVerifier.verify(screen).drawSprite(first, Offset.at(553, 404), SpriteDrawOptions.originalSize(), new ScreenBounds(552, 424, 100, 200));
-        orderVerifier.verify(screen).drawSprite(second, Offset.at(506, 388), SpriteDrawOptions.scaled(2), new ScreenBounds(552, 424, 100, 200));
-    }
-
-    @Test
     void drawText_systemText_callsScreen() {
         world.drawText($(20, 19), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
 
@@ -92,8 +79,8 @@ class DefaultWorldTest {
     @Test
     void drawText_pixelfont_callsScreen() {
         world.updateZoom(2);
-        world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(4));
+        world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(4));
 
-        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontsBundle.BOLDZILLA).scale(8));
+        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
     }
 }

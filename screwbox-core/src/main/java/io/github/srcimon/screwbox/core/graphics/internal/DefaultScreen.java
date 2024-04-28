@@ -43,6 +43,7 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+        renderer.fillWith(Color.BLACK);
     }
 
     private Graphics2D getDrawGraphics() {
@@ -164,6 +165,11 @@ public class DefaultScreen implements Screen {
     @Override
     public ScreenBounds bounds() {
         return new ScreenBounds(Offset.origin(), size());
+    }
+
+    @Override
+    public void drawSpriteBatch(SpriteBatch spriteBatch) {
+        renderer.drawSpriteBatch(spriteBatch);
     }
 
     @Override

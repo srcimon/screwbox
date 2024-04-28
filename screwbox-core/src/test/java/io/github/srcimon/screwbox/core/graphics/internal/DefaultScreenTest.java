@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -124,7 +125,15 @@ class DefaultScreenTest {
         assertThatThrownBy(() -> screen.takeScreenshot())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("window must be opend first to create screenshot");
+    }
 
+    @Test
+    void drawSpriteBatch_callsRenderer() {
+        var spriteBatch = new SpriteBatch();
+
+        screen.drawSpriteBatch(spriteBatch);
+
+        verify(renderer).drawSpriteBatch(spriteBatch);
     }
 
     @Test

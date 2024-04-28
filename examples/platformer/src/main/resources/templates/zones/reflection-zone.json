@@ -5,14 +5,14 @@
      "name":"reflection-zone",
      "properties":[
             {
+             "name":"blur",
+             "type":"int",
+             "value":0
+            }, 
+            {
              "name":"opacityModifier",
              "type":"float",
              "value":0.1
-            }, 
-            {
-             "name":"useWaveEffect",
-             "type":"bool",
-             "value":false
             }],
      "rotation":0,
      "type":"",

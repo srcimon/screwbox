@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.particles.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
+import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -137,7 +137,7 @@ public class DefaultParticles implements Particles, Updatable {
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
         TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(SpritesBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
+        RenderComponent render = new RenderComponent(SpriteBundle.DOT_BLUE_16, -1, SpriteDrawOptions.originalSize());
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())

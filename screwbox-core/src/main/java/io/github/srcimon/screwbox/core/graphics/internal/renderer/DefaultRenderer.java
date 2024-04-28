@@ -29,7 +29,6 @@ public class DefaultRenderer implements Renderer {
         this.canvasSize = canvasSize;
         this.graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        fillWith(Color.BLACK);
     }
 
     @Override
@@ -243,6 +242,13 @@ public class DefaultRenderer implements Renderer {
             x += distanceX;
         }
         resetOpacityConfig(options.opacity());
+    }
+
+    @Override
+    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+        for(final var entry : spriteBatch.entriesInOrder()) {
+            drawSprite(entry.sprite(), entry.offset(), entry.options());
+        }
     }
 
 }

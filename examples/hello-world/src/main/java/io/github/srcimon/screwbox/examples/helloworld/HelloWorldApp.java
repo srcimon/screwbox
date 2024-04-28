@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.examples.helloworld;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 
-import static io.github.srcimon.screwbox.core.assets.FontsBundle.BOLDZILLA;
+import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 public class HelloWorldApp {

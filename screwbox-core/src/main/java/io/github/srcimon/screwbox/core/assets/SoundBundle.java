@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 /**
  * An {@link AssetBundle} for {@link Sound}s shipped with the {@link ScrewBox} game engine.
  */
-public enum SoundsBundle implements AssetBundle<Sound> {
+public enum SoundBundle implements AssetBundle<Sound> {
 
     PHASER,
     JUMP,
@@ -17,7 +17,7 @@ public enum SoundsBundle implements AssetBundle<Sound> {
 
     private final Asset<Sound> sound;
 
-    SoundsBundle() {
+    SoundBundle() {
         this.sound = Asset.asset(() -> Sound.fromFile("assets/sounds/%s.wav".formatted(this.name())));
     }
 

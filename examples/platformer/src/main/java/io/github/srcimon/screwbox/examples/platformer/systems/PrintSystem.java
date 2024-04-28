@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.examples.platformer.components.TextComponent;
 
-import static io.github.srcimon.screwbox.core.assets.FontsBundle.BOLDZILLA;
+import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
 @Order(SystemOrder.PRESENTATION_UI)

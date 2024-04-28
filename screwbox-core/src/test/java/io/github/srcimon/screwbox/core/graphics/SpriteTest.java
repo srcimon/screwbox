@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.SpritesBundle;
+import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -22,7 +22,7 @@ class SpriteTest {
 
     @Test
     void dummy16x16animated_returnsAnimatedDummySprite() {
-        var sprite = SpritesBundle.BLOB_ANIMATED_16.get();
+        var sprite = SpriteBundle.BLOB_ANIMATED_16.get();
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(3);
@@ -30,7 +30,7 @@ class SpriteTest {
 
     @Test
     void dummy16x16_returnsDummySprite() {
-        var sprite = SpritesBundle.MOON_SURFACE_16.get();
+        var sprite = SpriteBundle.MOON_SURFACE_16.get();
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(1);

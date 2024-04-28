@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SpriteBundleTest {
 
     @ParameterizedTest
-    @EnumSource(SpritesBundle.class)
-    void testAllAssetsCanBeLoaded(SpritesBundle bundle) {
+    @EnumSource(SpriteBundle.class)
+    void testAllAssetsCanBeLoaded(SpriteBundle bundle) {
         assertThat(bundle.get()).isNotNull();
     }
 

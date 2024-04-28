@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.SoundsBundle;
+import io.github.srcimon.screwbox.core.assets.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
@@ -45,7 +45,7 @@ public class PlayerDeathState implements EntityState {
         entity.remove(PlayerControlComponent.class);
         switch (entity.get(DeathEventComponent.class).deathType) {
             case WATER -> engine.audio().playSound(BLUPP_SOUND);
-            case LAVA -> engine.audio().playSound(SoundsBundle.ZISCH);
+            case LAVA -> engine.audio().playSound(SoundBundle.ZISCH);
             default -> engine.audio().playSound(OUCH_SOUND);
         }
 

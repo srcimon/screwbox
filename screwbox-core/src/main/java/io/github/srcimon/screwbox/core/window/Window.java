@@ -110,7 +110,7 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    default Window setFullscreenCursor(Sprite cursor) {
+    default Window setFullscreenCursor(final Sprite cursor) {
         return setFullscreenCursor(cursor.singleFrame());
     }
 
@@ -121,7 +121,7 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    default Window setWindowCursor(Sprite cursor) {
+    default Window setWindowCursor(final Sprite cursor) {
         return setWindowCursor(cursor.singleFrame());
     }
 

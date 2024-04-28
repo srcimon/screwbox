@@ -52,10 +52,17 @@ public class Size implements Serializable, Comparable<Size> {
     /**
      * Returns a new instance of {@link Size} defined by two edges.
      */
-    public static Size definedBy(Offset from, Offset to) {
+    public static Size definedBy(final Offset from, final Offset to) {
         final int width = max(from.x(), to.x()) - min(from.x(), to.x());
         final int height = max(from.y(), to.y()) - min(from.y(), to.y());
         return Size.of(width, height);
+    }
+
+    /**
+     * Returns {@code true} if the {@link Size} has positive width and heigth.
+     */
+    public boolean isValid() {
+        return width > 0 && height > 0;
     }
 
     private Size(final int width, final int height) {

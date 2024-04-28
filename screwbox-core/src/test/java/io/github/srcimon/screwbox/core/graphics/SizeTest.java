@@ -80,4 +80,14 @@ class SizeTest {
                 Offset.at(2, 1));
     }
 
+    @Test
+    void isValid_positiveWidthAndHeight_isTrue() {
+        assertThat(Size.of(1, 129).isValid()).isTrue();
+    }
+
+    @Test
+    void isValid_widthOrHeightZero_isFalse() {
+        assertThat(Size.of(0, 129).isValid()).isFalse();
+        assertThat(Size.of(1, 0).isValid()).isFalse();
+    }
 }
