@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.examples.platformer.scenes;
 
+import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -27,8 +27,7 @@ import static io.github.srcimon.screwbox.tiled.Tileset.fromJson;
 
 public class StartScene implements Scene {
 
-    private static final Asset<List<Sprite>> BACKGROUNDS = Asset
-            .asset(() -> List.of(
+    private static final Asset<List<Sprite>> BACKGROUNDS = Asset.asset(() -> List.of(
                     fromJson("tilesets/specials/player.json").findByName("idle"),
                     fromJson("tilesets/enemies/slime.json").findByName("moving"),
                     fromJson("tilesets/enemies/tracer.json").findByName("active"),
@@ -38,17 +37,21 @@ public class StartScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        Sheduler t = Sheduler.withInterval(Duration.ofMillis(40));
+        Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(40));
         environment
                 .enableTweening()
                 .enablePhysics()
                 .enableParticles()
                 .enableRendering()
-                .addEntity(1, new TransformComponent(0, 0, 60, 60), new ParticleInteractionComponent(20), new PhysicsComponent())
+                .addEntity(1, "mouse particle interactor",
+                        new TransformComponent(0, 0, 60, 60),
+                        new ParticleInteractionComponent(20),
+                        new PhysicsComponent())
                 .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
-                    if (t.isTick()) {
-                        engine.particles().spawnMultiple(1, engine.graphics().world().visibleArea().moveBy(0, engine.graphics().world().visibleArea().height()), ParticleOptions.unknownSource()
+                    Bounds visibleArea = engine.graphics().world().visibleArea();
+                    if (sheduler.isTick()) {
+                        engine.particles().spawnMultiple(1, visibleArea.moveBy(0, visibleArea.height()), ParticleOptions.unknownSource()
                                 .baseSpeed(Vector.y(-60))
                                 .tweenMode(TweenMode.SINE_IN_OUT)
                                 .randomStartScale(6, 8)
