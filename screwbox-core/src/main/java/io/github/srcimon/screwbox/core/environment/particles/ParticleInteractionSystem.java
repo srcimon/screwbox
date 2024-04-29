@@ -13,7 +13,7 @@ import static java.util.Objects.isNull;
 
 public class ParticleInteractionSystem implements EntitySystem {
 
-    private static final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class, PhysicsComponent.class);
+    private static final Archetype INTERACTORS = Archetype.of(ParticleInteractionComponent.class, TransformComponent.class);
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class, TransformComponent.class, PhysicsComponent.class);
 
     @Override
