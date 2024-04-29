@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -176,6 +177,24 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
+    public Window setCursor(final Frame cursor) {
+        final Image image = cursor.image();
+        windowCursor = createCustomCursor(image);
+        fullscreenCursor = createCustomCursor(image);
+        updateCursor();
+        return this;
+    }
+
+    @Override
+    public Window setCursor(final MouseCursor cursor) {
+        final var awtCursor = cursorFrom(cursor);
+        windowCursor = awtCursor;
+        fullscreenCursor = awtCursor;
+        updateCursor();
+        return this;
+    }
+
+    @Override
     public String title() {
         return frame.getTitle();
     }
@@ -200,7 +219,7 @@ public class DefaultWindow implements Window, Updatable {
             return Cursor.getDefaultCursor();
         }
         if (MouseCursor.HIDDEN == cursor) {
-            return createCustomCursor(Frame.invisible().image());
+            return createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
         }
         throw new IllegalStateException("Unknown mouse cursor: " + cursor);
     }

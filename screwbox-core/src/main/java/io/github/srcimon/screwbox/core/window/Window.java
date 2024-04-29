@@ -67,11 +67,7 @@ public interface Window {
      * @see #setFullscreenCursor(MouseCursor)
      * @see #setWindowCursor(MouseCursor)
      */
-    default Window setCursor(final MouseCursor cursor) {
-        setWindowCursor(cursor);
-        setFullscreenCursor(cursor);
-        return this;
-    }
+    Window setCursor(final MouseCursor cursor);
 
     /**
      * Updates the mouse cursor of to the given {@link MouseCursor} when game is in
@@ -132,11 +128,7 @@ public interface Window {
      * @see #setWindowCursor(Frame)
      * @see #setFullscreenCursor(Frame)
      */
-    default Window setCursor(final Frame cursor) {
-        setWindowCursor(cursor);
-        setFullscreenCursor(cursor);
-        return this;
-    }
+    Window setCursor(final Frame cursor);
 
     /**
      * Updates the mouse cursor with the given {@link Frame} when game is in
@@ -175,6 +167,7 @@ public interface Window {
 
     /**
      * Returns {@code true} if the {@link Window} is currently open.
+     *
      * @see #isClosed()
      */
     boolean isOpen();
