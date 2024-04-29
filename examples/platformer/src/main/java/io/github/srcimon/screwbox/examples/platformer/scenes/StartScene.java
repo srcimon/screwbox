@@ -7,16 +7,11 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.ui.KeyboardAndMouseInteractor;
-import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.examples.platformer.menues.StartGameMenu;
 
@@ -28,12 +23,12 @@ import static io.github.srcimon.screwbox.tiled.Tileset.fromJson;
 public class StartScene implements Scene {
 
     private static final Asset<List<Sprite>> BACKGROUNDS = Asset.asset(() -> List.of(
-                    fromJson("tilesets/specials/player.json").findByName("idle"),
-                    fromJson("tilesets/enemies/slime.json").findByName("moving"),
-                    fromJson("tilesets/enemies/tracer.json").findByName("active"),
-                    fromJson("tilesets/specials/cat.json").findByName("walking"),
-                    fromJson("tilesets/collectables/cherries.json").first(),
-                    fromJson("tilesets/props/box.json").first()));
+            fromJson("tilesets/specials/player.json").findByName("idle"),
+            fromJson("tilesets/enemies/slime.json").findByName("moving"),
+            fromJson("tilesets/enemies/tracer.json").findByName("active"),
+            fromJson("tilesets/specials/cat.json").findByName("walking"),
+            fromJson("tilesets/collectables/cherries.json").first(),
+            fromJson("tilesets/props/box.json").first()));
 
     @Override
     public void populate(Environment environment) {
@@ -43,11 +38,6 @@ public class StartScene implements Scene {
                 .enablePhysics()
                 .enableParticles()
                 .enableRendering()
-                .addEntity(1, "mouse particle interactor",
-                        new TransformComponent(0, 0, 60, 60),
-                        new ParticleInteractionComponent(20),
-                        new PhysicsComponent())
-                .addSystem(engine -> engine.environment().fetchById(1).moveTo(engine.mouse().position()))
                 .addSystem(engine -> {
                     Bounds visibleArea = engine.graphics().world().visibleArea();
                     if (sheduler.isTick()) {
@@ -66,25 +56,17 @@ public class StartScene implements Scene {
                                 .sprites(BACKGROUNDS.get()));
                     }
                 });
+
     }
 
     @Override
     public void onEnter(Engine engine) {
-        engine.ui()
-                .setInteractor(new KeyboardAndMouseInteractor())
-                .openMenu(new StartGameMenu());
-        engine.window()
-                .setTitle("Platformer (Menu)")
-                .setCursor(MouseCursor.DEFAULT);
+        engine.ui().openMenu(new StartGameMenu());
+        engine.window().setTitle("Platformer (Menu)");
     }
 
     @Override
     public void onExit(Engine engine) {
-        engine.ui()
-                .setInteractor(new KeyboardInteractor())
-                .closeMenu();
-
-        engine.window()
-                .setCursor(MouseCursor.HIDDEN);
+        engine.ui().closeMenu();
     }
 }
