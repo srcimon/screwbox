@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -30,7 +29,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Screen screen;
     private Sprite lastSceneScreen;
 
-    private SceneContainer nextActiveScene;
+    private SceneContainer nextActiveScene; //TODO: Replace with activeTransition
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
     private ActiveTransition activeTransition;
@@ -58,7 +57,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
         ensureSceneExists(sceneClass);
-        activeTransition = new ActiveTransition(transition);
+        activeTransition = new ActiveTransition(sceneClass, transition);
         return this;
     }
 
@@ -146,12 +145,9 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        applySceneChanges();
-        final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
-        sceneToUpdate.environment().update();
-    }
-
-    private void applySceneChanges() {
+        if (isTransitioning() && activeTransition.isTimeToSwitchScenes(engine.loop().lastUpdate())) {
+            switchTo(activeTransition.targetScene());
+        }
         final boolean sceneChange = !activeScene.equals(nextActiveScene);
         if (sceneChange) {
             lastSceneScreen = screen.takeScreenshot();
@@ -159,6 +155,8 @@ public class DefaultScenes implements Scenes, Updatable {
             activeScene = nextActiveScene;
             nextActiveScene.scene().onEnter(engine);
         }
+        final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
+        sceneToUpdate.environment().update();
     }
 
     private void add(final Scene scene) {

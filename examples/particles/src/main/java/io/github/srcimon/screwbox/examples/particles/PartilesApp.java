@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
 import static io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle.CONFETTI;
 import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.AREA;
@@ -21,6 +23,13 @@ public class PartilesApp {
                 .enableTweening()
                 .enableParticles()
                 .enablePhysics()
+                .addSystem(engine -> {
+                    if(engine.keyboard().isPressed(Key.SPACE)) {
+                        engine.scenes().add(new AltScene());
+                        engine.scenes().switchTo(AltScene.class, SceneTransition
+                                .extroDuration(Duration.ofMillis(1200)));
+                    }
+                })
                 .addEntity("particle spawner",
                         new TransformComponent(screwBox.graphics().world().visibleArea()),
                         new ParticleEmitterComponent(Duration.ofMillis(10), AREA, CONFETTI))
