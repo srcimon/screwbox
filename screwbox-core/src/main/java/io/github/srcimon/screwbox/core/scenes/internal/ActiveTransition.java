@@ -15,11 +15,11 @@ public class ActiveTransition {
         this.targetScene = targetScene;
     }
 
-    public boolean isTimeToSwitchScenes(final Time time) {
-        return time.isAfter(transition.extroDuration().addTo(started));
-    }
-
     public Class<? extends Scene> targetScene() {
         return targetScene;
+    }
+
+    public Time switchTime() {
+        return transition.extroDuration().addTo(started);
     }
 }
