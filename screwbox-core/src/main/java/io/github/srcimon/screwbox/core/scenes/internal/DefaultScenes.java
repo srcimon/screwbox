@@ -141,7 +141,10 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        if (isTransitioning() && Time.now().isAfter(activeTransition.switchTime())) {
+        boolean mustSwitchScenes = isTransitioning()
+                && !activeTransition.targetScene().equals(activeScene.scene().getClass())
+                && Time.now().isAfter(activeTransition.switchTime());
+        if (mustSwitchScenes) {
             previousSceneScreenshot = screen.takeScreenshot();
             activeScene.scene().onExit(engine);
             activeScene = scenes.get(activeTransition.targetScene());

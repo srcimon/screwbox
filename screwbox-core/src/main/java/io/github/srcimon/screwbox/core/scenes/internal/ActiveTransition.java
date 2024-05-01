@@ -22,4 +22,6 @@ public class ActiveTransition {
     public Time switchTime() {
         return transition.extroDuration().addTo(started);
     }
+
+
 }
