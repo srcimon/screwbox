@@ -34,11 +34,26 @@ public interface Scenes {
     Scenes add(Scene... scenes);
 
     /**
-     * Switches to an existing {@link Scene} that has previously been added.
+     * Switches directly to another existing {@link Scene} that has previously been added without using a {@link SceneTransition}.
      *
+     * @see #switchTo(Class, SceneTransition)
      * @see #add(Scene...)
      */
     Scenes switchTo(Class<? extends Scene> sceneClass);
+
+    /**
+     * Switches to another existing {@link Scene} that has previously been added. Uses the specified {@link SceneTransition}
+     * to add some charm.
+     *
+     * @see #switchTo(Class)
+     * @see #add(Scene...)
+     */
+    Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition);
+
+    /**
+     * Returns {@code true} if there is currently a {@link SceneTransition} in progress.
+     */
+    boolean isTransitioning();
 
     /**
      * Removes a previously added {@link Scene}. Throws an {@link IllegalArgumentException} if the specified {@link Scene }

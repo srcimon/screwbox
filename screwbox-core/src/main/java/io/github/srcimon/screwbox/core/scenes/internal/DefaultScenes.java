@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -9,6 +10,7 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
@@ -30,6 +33,8 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer nextActiveScene;
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
+    private ActiveTransition activeTransition;
+
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -48,6 +53,18 @@ public class DefaultScenes implements Scenes, Updatable {
         ensureSceneExists(sceneClass);
         nextActiveScene = scenes.get(sceneClass);
         return this;
+    }
+
+    @Override
+    public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
+        ensureSceneExists(sceneClass);
+        activeTransition = new ActiveTransition(transition);
+        return this;
+    }
+
+    @Override
+    public boolean isTransitioning() {
+        return nonNull(activeTransition);
     }
 
     public DefaultEnvironment activeEnvironment() {

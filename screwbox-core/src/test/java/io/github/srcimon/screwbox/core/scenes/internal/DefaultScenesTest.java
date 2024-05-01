@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -154,6 +155,20 @@ class DefaultScenesTest {
         scenes.update();
 
         assertThat(scenes.previousSceneScreenshot()).contains(Sprite.invisible());
+    }
+
+    @Test
+    void isTransitioning_noTransitionInProgress_isFalse() {
+        assertThat(scenes.isTransitioning()).isFalse();
+    }
+
+    @Test
+    void isTransitioning_transitionInProgress_isTrue() {
+        scenes.add(new GameScene());
+
+        scenes.switchTo(GameScene.class, SceneTransition.noExtro());
+
+        assertThat(scenes.isTransitioning()).isTrue();
     }
 
     @AfterEach
