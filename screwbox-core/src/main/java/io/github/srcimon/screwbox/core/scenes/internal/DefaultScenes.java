@@ -27,7 +27,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Executor executor;
     private final Engine engine;
     private final Screen screen;
-    private Sprite lastSceneScreen;
+    private Sprite previousSceneScreenshot;
 
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
@@ -132,7 +132,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Optional<Sprite> previousSceneScreenshot() {
-        return Optional.ofNullable(lastSceneScreen);
+        return Optional.ofNullable(previousSceneScreenshot);
     }
 
     public boolean isShowingLoadingScene() {
@@ -142,7 +142,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public void update() {
         if (isTransitioning() && activeTransition.isTimeToSwitchScenes(Time.now())) {
-            lastSceneScreen = screen.takeScreenshot();
+            previousSceneScreenshot = screen.takeScreenshot();
             activeScene.scene().onExit(engine);
             activeScene = scenes.get(activeTransition.targetScene());
             activeScene.scene().onEnter(engine);
