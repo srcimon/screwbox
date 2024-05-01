@@ -47,7 +47,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
-        return switchTo(sceneClass, SceneTransition.noExtro());
+        return switchTo(sceneClass, SceneTransition.instant());
     }
 
     @Override
@@ -141,18 +141,21 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        boolean mustSwitchScenes = isTransitioning()
-                && !activeTransition.targetScene().equals(activeScene.scene().getClass())
-                && Time.now().isAfter(activeTransition.switchTime());
-        if (mustSwitchScenes) {
-            previousSceneScreenshot = screen.takeScreenshot();
-            activeScene.scene().onExit(engine);
-            activeScene = scenes.get(activeTransition.targetScene());
-            activeScene.scene().onEnter(engine);
-            activeTransition = null;
-        }
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
+
+        if (isTransitioning()) {
+            final boolean hasChangedToTargetScene = !activeTransition.targetScene().equals(activeScene.scene().getClass());
+            final boolean mustSwitchScenes = hasChangedToTargetScene && Time.now().isAfter(activeTransition.switchTime());
+            if (mustSwitchScenes) {
+                previousSceneScreenshot = screen.takeScreenshot();
+                activeScene.scene().onExit(engine);
+                activeScene = scenes.get(activeTransition.targetScene());
+                activeScene.scene().onEnter(engine);
+                activeTransition = null;
+            }
+        }
+
     }
 
     private void add(final Scene scene) {
