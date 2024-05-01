@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -17,7 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
@@ -29,7 +29,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Screen screen;
     private Sprite lastSceneScreen;
 
-    private SceneContainer nextActiveScene; //TODO: Replace with activeTransition
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
     private ActiveTransition activeTransition;
@@ -43,15 +42,12 @@ public class DefaultScenes implements Scenes, Updatable {
         defaultSceneContainer.isInitialized = true;
         scenes.put(DefaultScene.class, defaultSceneContainer);
         this.activeScene = defaultSceneContainer;
-        this.nextActiveScene = defaultSceneContainer;
         setLoadingScene(new DefaultLoadingScene());
     }
 
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
-        ensureSceneExists(sceneClass);
-        nextActiveScene = scenes.get(sceneClass);
-        return this;
+        return switchTo(sceneClass, SceneTransition.noExtro());
     }
 
     @Override
@@ -75,7 +71,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
-        if (activeScene.sameSceneAs(sceneClass) || nextActiveScene.sameSceneAs(sceneClass)) {
+        if (activeScene.sameSceneAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
         scenes.remove(sceneClass);
@@ -145,15 +141,12 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        if (isTransitioning() && activeTransition.isTimeToSwitchScenes(engine.loop().lastUpdate())) {
-            switchTo(activeTransition.targetScene());
-        }
-        final boolean sceneChange = !activeScene.equals(nextActiveScene);
-        if (sceneChange) {
+        if (isTransitioning() && activeTransition.isTimeToSwitchScenes(Time.now())) {
             lastSceneScreen = screen.takeScreenshot();
             activeScene.scene().onExit(engine);
-            activeScene = nextActiveScene;
-            nextActiveScene.scene().onEnter(engine);
+            activeScene = scenes.get(activeTransition.targetScene());
+            activeScene.scene().onEnter(engine);
+            activeTransition = null;
         }
         final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
         sceneToUpdate.environment().update();
@@ -163,11 +156,6 @@ public class DefaultScenes implements Scenes, Updatable {
         final SceneContainer sceneContainer = new SceneContainer(scene, engine);
         executor.execute(sceneContainer::initialize);
         scenes.put(scene.getClass(), sceneContainer);
-
-        if (isNull(nextActiveScene)) {
-            nextActiveScene = sceneContainer;
-            activeScene = sceneContainer;
-        }
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
