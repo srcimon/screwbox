@@ -30,12 +30,12 @@ public class PartilesApp {
                     if(engine.keyboard().isPressed(Key.SPACE)) {
                         engine.scenes().add(new AltScene());
                         engine.scenes().switchTo(AltScene.class, SceneTransition
-                                .extro(new SceneTransition.ExtroAnimation() {
-                                    @Override
-                                    public void draw(Screen screen, Percent progress) {
-                                        screen.fillWith(Color.BLUE.opacity(progress));
-                                    }
-                                }, Duration.ofMillis(1200)));
+                                        .extro(new SceneTransition.ExtroAnimation() {
+                                            @Override
+                                            public void draw(Screen screen, Percent progress) {
+                                                screen.fillWith(Color.BLUE.opacity(progress));
+                                            }
+                                        }, Duration.ofSeconds(2)));
                     }
                 })
                 .addEntity("particle spawner",

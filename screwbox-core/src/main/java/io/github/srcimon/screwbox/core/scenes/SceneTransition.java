@@ -33,12 +33,17 @@ public record SceneTransition(
         return new SceneTransition(Duration.none(), NO_INTRO, Duration.none(), NO_EXTRO);
     }
 
-    public static SceneTransition intro(IntroAnimation introAnimation, Duration duration) {
-        return new SceneTransition(duration, introAnimation, Duration.none(), NO_EXTRO);
+    //TODO javadoc for readability
+    public static SceneTransition noExtro() {
+        return instant();
     }
 
-    public static SceneTransition extro(final ExtroAnimation extroAnimation, final Duration duration) {
-        return new SceneTransition(Duration.none(), NO_INTRO, duration, extroAnimation);
+    public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
+        return new SceneTransition(Duration.none(), NO_INTRO, duration, animation);
+    }
+
+    public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
+        return new SceneTransition(duration, animation, extroDuration, extroAnimation);
     }
 
 }
