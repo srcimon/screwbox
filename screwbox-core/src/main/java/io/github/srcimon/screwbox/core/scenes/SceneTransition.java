@@ -21,16 +21,24 @@ public record SceneTransition(
         void draw(Screen screen, Percent progress, Sprite previousSceneScreenshot);
     }
 
+    private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
+
+    };
+
+    private static final IntroAnimation NO_INTRO = (screen, progress, previousSceneScreenshot) -> {
+
+    };
+
     public static SceneTransition instant() {
-        return new SceneTransition(Duration.none(), null, Duration.none(), null);
+        return new SceneTransition(Duration.none(), NO_INTRO, Duration.none(), NO_EXTRO);
     }
 
-    public static SceneTransition introOnly(IntroAnimation introAnimation, Duration duration) {
-        return new SceneTransition(duration, introAnimation, Duration.none(), null);
+    public static SceneTransition intro(IntroAnimation introAnimation, Duration duration) {
+        return new SceneTransition(duration, introAnimation, Duration.none(), NO_EXTRO);
     }
 
-    public static SceneTransition extroOnly(final ExtroAnimation extroAnimation, final Duration duration) {
-        return new SceneTransition(Duration.none(), null, duration, extroAnimation);
+    public static SceneTransition extro(final ExtroAnimation extroAnimation, final Duration duration) {
+        return new SceneTransition(Duration.none(), NO_INTRO, duration, extroAnimation);
     }
 
 }

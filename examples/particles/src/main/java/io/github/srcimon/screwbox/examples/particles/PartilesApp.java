@@ -2,12 +2,15 @@ package io.github.srcimon.screwbox.examples.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
@@ -27,7 +30,12 @@ public class PartilesApp {
                     if(engine.keyboard().isPressed(Key.SPACE)) {
                         engine.scenes().add(new AltScene());
                         engine.scenes().switchTo(AltScene.class, SceneTransition
-                                .extroDuration(Duration.ofMillis(1200)));
+                                .extro(new SceneTransition.ExtroAnimation() {
+                                    @Override
+                                    public void draw(Screen screen, Percent progress) {
+                                        screen.fillWith(Color.BLUE.opacity(progress));
+                                    }
+                                }, Duration.ofMillis(1200)));
                     }
                 })
                 .addEntity("particle spawner",

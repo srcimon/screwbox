@@ -145,18 +145,26 @@ public class DefaultScenes implements Scenes, Updatable {
         sceneToUpdate.environment().update();
 
         if (isTransitioning()) {
-            final boolean hasChangedToTargetScene = !activeTransition.targetScene().equals(activeScene.scene().getClass());
-            final boolean mustSwitchScenes = hasChangedToTargetScene && Time.now().isAfter(activeTransition.switchTime());
+            final Time time = Time.now();
+            final boolean hasChangedToTargetScene = activeTransition.targetScene().equals(activeScene.scene().getClass());
+            final boolean mustSwitchScenes = hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 previousSceneScreenshot = screen.takeScreenshot();
                 activeScene.scene().onExit(engine);
                 activeScene = scenes.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
-                activeTransition = null;
             }
+            if(hasChangedToTargetScene) {
+                activeTransition.transition().introAnimation().draw(engine.graphics().screen(), activeTransition.introProgress(time), previousSceneScreenshot);
+            } else {
+                activeTransition.transition().extroAnimation().draw(engine.graphics().screen(), activeTransition.extroProgress(time));
+            }
+            //TODO remove transition
         }
 
     }
+
+    //TODO ScrenshotOfScene(Scene.class)
 
     private void add(final Scene scene) {
         final SceneContainer sceneContainer = new SceneContainer(scene, engine);
