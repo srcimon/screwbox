@@ -35,7 +35,7 @@ public class PartilesApp {
                                             public void draw(Screen screen, Percent progress) {
                                                 screen.fillWith(Color.BLUE.opacity(progress));
                                             }
-                                        }, Duration.ofSeconds(2)));
+                                        }, Duration.oneSecond()));
                     }
                 })
                 .addEntity("particle spawner",
