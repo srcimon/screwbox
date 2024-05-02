@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Manage different game situations like pause or options in different {@link Scenes}.
@@ -46,9 +47,22 @@ public interface Scenes {
      * to add some charm.
      *
      * @see #switchTo(Class)
+     * @see #switchTo(Class, Supplier)
      * @see #add(Scene...)
      */
     Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition);
+
+    /**
+     * Switches to another existing {@link Scene} that has previously been added. Uses the specified {@link SceneTransition}
+     * to add some charm.
+     *
+     * @see #switchTo(Class)
+     * @see #switchTo(Class, SceneTransition)  
+     * @see #add(Scene...)
+     */
+    default Scenes switchTo(Class<? extends Scene> sceneClass, Supplier<SceneTransition> transition) {
+        return switchTo(sceneClass, transition.get());
+    }
 
     /**
      * Returns {@code true} if there is currently a {@link SceneTransition} in progress.

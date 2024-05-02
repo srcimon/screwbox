@@ -18,7 +18,7 @@ public enum SoundBundle implements AssetBundle<Sound> {
     private final Asset<Sound> sound;
 
     SoundBundle() {
-        this.sound = Asset.asset(() -> Sound.fromFile("assets/sounds/%s.wav".formatted(this.name())));
+        this.sound = Sound.assetFromFile("assets/sounds/%s.wav".formatted(this.name()));
     }
 
     @Override

@@ -34,7 +34,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer loadingScene;
     private ActiveTransition activeTransition;
 
-
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
         this.executor = executor;

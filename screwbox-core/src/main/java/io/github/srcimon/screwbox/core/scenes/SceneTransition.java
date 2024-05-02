@@ -21,6 +21,7 @@ public record SceneTransition(
         void draw(Screen screen, Percent progress, Sprite screenshot);
     }
 
+    //TODO make EXTRO ANIMATAION SAME AS INTRO ANIMATION
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
 
     };
