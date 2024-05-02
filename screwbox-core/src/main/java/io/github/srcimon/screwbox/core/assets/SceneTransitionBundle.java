@@ -2,11 +2,17 @@ package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
 
@@ -20,8 +26,9 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
         @Override
         public void draw(Screen screen, Percent progress, Sprite screenshot) {
             screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
+            screen.fillWith(Color.RED);
         }
-    }, Duration.ofMillis(3000)));//TODO simplify duration changes
+    }, Duration.ofMillis(8000)));//TODO simplify duration changes
 
     private final SceneTransition sceneTransition;
 
