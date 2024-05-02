@@ -32,7 +32,7 @@ public class ActiveTransition {
     }
 
     public Percent introProgress(final Time time) {
-        var elapsedDuration = Duration.between(time, transition.introDuration().addTo(started));
+        var elapsedDuration = Duration.between(time, transition.extroDuration().addTo(started));
         return Percent.of(elapsedDuration.nanos()/ (transition.introDuration().nanos() + 1.0));
     }
 

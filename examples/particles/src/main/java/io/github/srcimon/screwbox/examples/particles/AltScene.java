@@ -16,13 +16,7 @@ public class AltScene implements Scene {
         environment.addSystem(engine -> engine.graphics().screen().fillWith(Color.RED))
          .addSystem(engine -> {
             if(engine.keyboard().isPressed(Key.SPACE)) {
-                engine.scenes().switchTo(DefaultScene.class, SceneTransition
-                        .extro(new SceneTransition.ExtroAnimation() {
-                            @Override
-                            public void draw(Screen screen, Percent progress) {
-                                screen.fillWith(Color.BLUE.opacity(progress));
-                            }
-                        }, Duration.ofMillis(1200)));
+                engine.scenes().switchTo(DefaultScene.class, SceneTransition.instant());
             }
         });
     }

@@ -157,9 +157,12 @@ public class DefaultScenes implements Scenes, Updatable {
             if(hasChangedToTargetScene) {
                 activeTransition.transition().introAnimation().draw(engine.graphics().screen(), activeTransition.introProgress(time), previousSceneScreenshot);
             } else {
-//                activeTransition.transition().extroAnimation().draw(engine.graphics().screen(), activeTransition.extroProgress(time));
+                activeTransition.transition().extroAnimation().draw(engine.graphics().screen(), activeTransition.extroProgress(time));
             }
-            //TODO remove transition
+
+            if(hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
+                activeTransition = null;
+            }
         }
 
     }

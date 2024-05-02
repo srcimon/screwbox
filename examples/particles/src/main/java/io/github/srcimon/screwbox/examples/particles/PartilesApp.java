@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -17,7 +16,6 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
-import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle.CONFETTI;
 import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.AREA;
 
@@ -31,16 +29,12 @@ public class PartilesApp {
                 .enableParticles()
                 .enablePhysics()
                 .addSystem(engine -> {
-                    if(engine.keyboard().isPressed(Key.SPACE)) {
+                    if (engine.keyboard().isPressed(Key.SPACE)) {
                         engine.scenes().add(new AltScene());
                         engine.scenes().switchTo(AltScene.class, SceneTransition
-                                        .noExtro()
-                                .intro(new SceneTransition.IntroAnimation() {
-                                    @Override
-                                    public void draw(Screen screen, Percent progress, Sprite screenshot) {
-screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
-                                    }
-                                }, Duration.ofSeconds(2)));
+                                .noExtro()
+                                .intro((screen, progress, screenshot) -> screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert())),
+                                        Duration.ofSeconds(2)));
                     }
                 })
                 .addEntity("particle spawner",
