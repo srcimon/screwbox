@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
 import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT;
+import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT_SLOW;
 
 public class StartGameMenu extends UiMenu {
 
@@ -31,6 +32,6 @@ public class StartGameMenu extends UiMenu {
     private void startMap(String map, Engine engine) {
         engine.scenes()
                 .add(new GameScene(map))
-                .switchTo(GameScene.class, FADEOUT);
+                .switchTo(GameScene.class, FADEOUT_SLOW);
     }
 }

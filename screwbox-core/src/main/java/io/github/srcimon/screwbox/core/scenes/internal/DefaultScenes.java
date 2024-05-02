@@ -141,9 +141,6 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public void update() {
-        final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
-        sceneToUpdate.environment().update();
-
         if (isTransitioning()) {
             final Time time = Time.now();
             final boolean hasChangedToTargetScene = activeTransition.targetScene().equals(activeScene.scene().getClass());
@@ -164,11 +161,12 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeTransition = null;
             }
         }
-
+        final var sceneToUpdate = isShowingLoadingScene() ? loadingScene : activeScene;
+        sceneToUpdate.environment().update();
     }
 
     //TODO ScrenshotOfScene(Scene.class)
-
+//TODO prevent scene change while already changing scenes
     private void add(final Scene scene) {
         final SceneContainer sceneContainer = new SceneContainer(scene, engine);
         executor.execute(sceneContainer::initialize);
