@@ -20,6 +20,7 @@ import java.util.concurrent.Executor;
 
 import static java.util.Objects.nonNull;
 
+//TODO REMOVE Fade in and out from tiled map
 public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
