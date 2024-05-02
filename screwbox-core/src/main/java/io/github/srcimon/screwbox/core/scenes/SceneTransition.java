@@ -18,14 +18,14 @@ public record SceneTransition(
     }
 
     public interface IntroAnimation {
-        void draw(Screen screen, Percent progress, Sprite previousSceneScreenshot);
+        void draw(Screen screen, Percent progress, Sprite screenshot);
     }
 
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
 
     };
 
-    private static final IntroAnimation NO_INTRO = (screen, progress, previousSceneScreenshot) -> {
+    private static final IntroAnimation NO_INTRO = (screen, progress, screenshot) -> {
 
     };
 
