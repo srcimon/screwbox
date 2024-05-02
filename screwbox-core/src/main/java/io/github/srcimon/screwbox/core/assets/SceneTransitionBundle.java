@@ -2,17 +2,11 @@ package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 
 public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
 
@@ -22,13 +16,18 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
             screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
         }
     }, Duration.ofMillis(500))),
-    FADEOUT_SLOW(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
+    SLIDE_LEFT(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
         @Override
         public void draw(Screen screen, Percent progress, Sprite screenshot) {
-            screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
-            screen.fillWith(Color.RED);
+            screen.drawSprite(screenshot, Offset.origin().addX((int) (screen.size().width() * -progress.value())), SpriteDrawOptions.originalSize());
         }
-    }, Duration.ofMillis(8000)));//TODO simplify duration changes
+    }, Duration.ofMillis(1000))),
+    SLIDE_UP(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
+        @Override
+        public void draw(Screen screen, Percent progress, Sprite screenshot) {
+            screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -progress.value())), SpriteDrawOptions.originalSize());
+        }
+    }, Duration.ofMillis(1000)));//TODO simplify duration changes
 
     private final SceneTransition sceneTransition;
 
