@@ -14,7 +14,7 @@ public class BackToMenuSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.ESCAPE)) {
-            System.out.println("WHY?");
+            //TODO BUG: Exits engine -> keypress from previous scene is collected? maybe
             engine.scenes().switchTo(StartScene.class, FADEOUT);
         }
     }
