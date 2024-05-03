@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -16,16 +17,11 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
             screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
         }
     }, Duration.ofMillis(500))),
-    SLIDE_LEFT(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
+    SLIDE_UP(SceneTransition.noExtro()
+            .intro(new SceneTransition.IntroAnimation() {
         @Override
         public void draw(Screen screen, Percent progress, Sprite screenshot) {
-            screen.drawSprite(screenshot, Offset.origin().addX((int) (screen.size().width() * -progress.value())), SpriteDrawOptions.originalSize());
-        }
-    }, Duration.ofMillis(1000))),
-    SLIDE_UP(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
-        @Override
-        public void draw(Screen screen, Percent progress, Sprite screenshot) {
-            screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -progress.value())), SpriteDrawOptions.originalSize());
+            screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * (1 -progress.value()))), SpriteDrawOptions.originalSize());
         }
     }, Duration.ofMillis(1000)));//TODO simplify duration changes
 

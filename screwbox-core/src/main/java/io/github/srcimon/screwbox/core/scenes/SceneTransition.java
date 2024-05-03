@@ -36,7 +36,7 @@ public record SceneTransition(
     };
 
     public static SceneTransition instant() {
-        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_IN, NO_EXTRO, Duration.none(), LINEAR_OUT);
+        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, NO_EXTRO, Duration.none(), LINEAR_IN);
     }
 
     //TODO javadoc for readability
@@ -44,12 +44,20 @@ public record SceneTransition(
         return instant();
     }
 
+
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
-        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_IN, animation, duration, LINEAR_OUT);
+        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, animation, duration, LINEAR_IN);
     }
 
     public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
         return new SceneTransition(animation, duration, introTweenMode, extroAnimation, extroDuration, extroTweenMode);
     }
 
+    public SceneTransition extroTweenMode(final TweenMode tweenMode) {
+        return new SceneTransition(introAnimation, Duration.none(), tweenMode, extroAnimation, extroDuration, LINEAR_IN);
+    }
+
+    public SceneTransition introTweenMode(final TweenMode tweenMode) {
+        return new SceneTransition(introAnimation, Duration.none(), tweenMode, extroAnimation, extroDuration, extroTweenMode);
+    }
 }
