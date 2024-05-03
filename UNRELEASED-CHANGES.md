@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed obsolete `ScreenTransitionSystem` / `Component`
 
 ### 📦 Dependency updates
 
