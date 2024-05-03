@@ -8,40 +8,42 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.scenes.ExtroAnimation;
+import io.github.srcimon.screwbox.core.scenes.IntroAnimation;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
-public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
+import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 
+public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
     FADE_OVER_BLACK(SceneTransition
-            .extro(new SceneTransition.ExtroAnimation() {
+            .extro(new ExtroAnimation() {
                 @Override
-                public void draw(Screen screen, Percent progress) {
-                    screen.fillWith(Color.BLACK.opacity(progress));
+                public void draw(Screen screen, Percent value) {
+                    screen.fillWith(Color.BLACK.opacity(value));
                 }
             }, Duration.ofMillis(250))
             .extroTweenMode(TweenMode.SINE_IN)
-            .intro(new SceneTransition.IntroAnimation() {
+            .intro(new IntroAnimation() {
                 @Override
-                public void draw(Screen screen, Percent progress, Sprite screenshot) {
-                    screen.fillWith(Color.BLACK.opacity(progress));
+                public void draw(Screen screen, Percent value, Sprite screenshot) {
+                    screen.fillWith(Color.BLACK.opacity(value));
                 }
             }, Duration.ofMillis(250))
             .introTweenMode(TweenMode.SINE_OUT)),
-
     FADEOUT(SceneTransition.noExtro().
 
-            intro(new SceneTransition.IntroAnimation() {
+            intro(new IntroAnimation() {
                 @Override
-                public void draw(Screen screen, Percent progress, Sprite screenshot) {
-                    screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress));
+                public void draw(Screen screen, Percent value, Sprite screenshot) {
+                    screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(value));
                 }
             }, Duration.ofMillis(500))),
-
+    FADEOUT_SLOW(FADEOUT.get().introDuration(oneSecond())),
     SLIDE_UP(SceneTransition.noExtro()
-            .intro(new SceneTransition.IntroAnimation() {
+            .intro(new IntroAnimation() {
                 @Override
-                public void draw(Screen screen, Percent progress, Sprite screenshot) {
-                    screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())), SpriteDrawOptions.originalSize());
+                public void draw(Screen screen, Percent value, Sprite screenshot) {
+                    screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -value.invert().value())), SpriteDrawOptions.originalSize());
                 }
             }, Duration.ofMillis(1000)));//TODO simplify duration changes
 

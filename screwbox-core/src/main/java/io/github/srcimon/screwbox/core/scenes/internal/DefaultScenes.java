@@ -33,6 +33,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
+    private SceneTransition defaultTransition = SceneTransition.instant();
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -47,7 +48,13 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
-        return switchTo(sceneClass, SceneTransition.instant());
+        return switchTo(sceneClass, defaultTransition);
+    }
+
+    @Override
+    public Scenes setDefaultTransition(final SceneTransition transition) {
+        defaultTransition = transition;
+        return this;
     }
 
     @Override
@@ -172,7 +179,7 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
-//TODO prevent scene change while already changing scenes
+    //TODO prevent scene change while already changing scenes
     private void add(final Scene scene) {
         final SceneContainer sceneContainer = new SceneContainer(scene, engine);
         executor.execute(sceneContainer::initialize);

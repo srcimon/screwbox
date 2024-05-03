@@ -42,6 +42,13 @@ public interface Scenes {
      */
     Scenes switchTo(Class<? extends Scene> sceneClass);
 
+    //TODO Javadoc
+    Scenes setDefaultTransition(SceneTransition transition);
+
+    //TODO Javadoc
+    default Scenes setDefaultTransition(Supplier<SceneTransition> transition) {
+        return setDefaultTransition(transition.get());
+    }
     /**
      * Switches to another existing {@link Scene} that has previously been added. Uses the specified {@link SceneTransition}
      * to add some charm.

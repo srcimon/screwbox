@@ -7,6 +7,8 @@ import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
+import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT_SLOW;
+
 public class PlatformerApp {
 
     public static void main(String[] args) {
@@ -23,6 +25,7 @@ public class PlatformerApp {
                 .prepareClassPackageAsync(PlatformerApp.class);
 
         engine.scenes()
+                .setDefaultTransition(FADEOUT_SLOW)
                 .add(new DeadScene())
                 .add(new PauseScene())
                 .add(new StartScene());
