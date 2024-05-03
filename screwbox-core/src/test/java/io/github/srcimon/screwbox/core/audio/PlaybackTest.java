@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.assets.SoundBundle;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

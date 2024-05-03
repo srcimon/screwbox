@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
 import io.github.srcimon.screwbox.examples.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADE_OVER_BLACK;
+import static io.github.srcimon.screwbox.core.scenes.SceneTransitionBundle.FADE_OVER_BLACK;
 
 public class PlatformerApp {
 

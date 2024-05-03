@@ -12,6 +12,7 @@
 
 - Removed obsolete `ScreenTransitionSystem` / `Component` (#153)
 - Renamed `TweenMode` to `Ease` and moved class to core package
+- Moved asset bundles to the package with best matching scope
 
 ### 📦 Dependency updates
 

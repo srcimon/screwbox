@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.tiled.GameObject;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.Ease.SINE_IN_OUT;
-import static io.github.srcimon.screwbox.core.assets.SpriteBundle.SMOKE_16;
+import static io.github.srcimon.screwbox.core.graphics.SpriteBundle.SMOKE_16;
 
 public class SmokeEmitter implements SourceImport.Converter<GameObject> {
 

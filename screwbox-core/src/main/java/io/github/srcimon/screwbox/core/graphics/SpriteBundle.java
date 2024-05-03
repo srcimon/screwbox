@@ -1,9 +1,9 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 
 /**
  * An {@link AssetBundle} for {@link Sprite}s shipped with the {@link ScrewBox} game engine.

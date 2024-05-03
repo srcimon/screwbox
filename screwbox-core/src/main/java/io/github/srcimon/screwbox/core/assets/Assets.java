@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
 import java.util.List;
 

@@ -1,16 +1,15 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.scenes.ExtroAnimation;
-import io.github.srcimon.screwbox.core.scenes.IntroAnimation;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
 import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 

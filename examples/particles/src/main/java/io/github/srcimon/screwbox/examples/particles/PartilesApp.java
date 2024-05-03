@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
-import static io.github.srcimon.screwbox.core.assets.ParticleOptionsBundle.CONFETTI;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.CONFETTI;
 import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.AREA;
 
 public class PartilesApp {

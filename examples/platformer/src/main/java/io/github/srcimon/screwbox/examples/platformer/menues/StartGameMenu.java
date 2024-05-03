@@ -1,13 +1,10 @@
 package io.github.srcimon.screwbox.examples.platformer.menues;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT;
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT_SLOW;
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADE_OVER_BLACK;
+import static io.github.srcimon.screwbox.core.scenes.SceneTransitionBundle.FADEOUT_SLOW;
 
 public class StartGameMenu extends UiMenu {
 

@@ -1,15 +1,15 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.particles;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SoundBundleTest {
+class ParticleOptionsBundleTest {
 
     @ParameterizedTest
-    @EnumSource(SoundBundle.class)
-    void testAllAssetsCanBeLoaded(SoundBundle bundle) {
+    @EnumSource(ParticleOptionsBundle.class)
+    void testAllAssetsCanBeLoaded(ParticleOptionsBundle bundle) {
         assertThat(bundle.get()).isNotNull();
     }
 

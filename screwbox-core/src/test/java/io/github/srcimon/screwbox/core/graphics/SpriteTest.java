@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.SpriteBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 

@@ -1,7 +1,8 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 
 
 /**
