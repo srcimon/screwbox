@@ -2,14 +2,17 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
+import static io.github.srcimon.screwbox.core.environment.tweening.TweenMode.LINEAR_IN;
+import static io.github.srcimon.screwbox.core.environment.tweening.TweenMode.LINEAR_OUT;
+
 public record SceneTransition(
-        Duration introDuration,
-        IntroAnimation introAnimation,
-        Duration extroDuration,
-        ExtroAnimation extroAnimation) {
+        IntroAnimation introAnimation, Duration introDuration, TweenMode introTweenMode,
+        ExtroAnimation extroAnimation, Duration extroDuration, TweenMode extroTweenMode
+) {
 
     //TODO validations
 
@@ -26,12 +29,14 @@ public record SceneTransition(
 
     };
 
+    //TODO Rename tween mode to easing see https://github.com/vydd/easing
+
     private static final IntroAnimation NO_INTRO = (screen, progress, screenshot) -> {
 
     };
 
     public static SceneTransition instant() {
-        return new SceneTransition(Duration.none(), NO_INTRO, Duration.none(), NO_EXTRO);
+        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_IN, NO_EXTRO, Duration.none(), LINEAR_OUT);
     }
 
     //TODO javadoc for readability
@@ -40,11 +45,11 @@ public record SceneTransition(
     }
 
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
-        return new SceneTransition(Duration.none(), NO_INTRO, duration, animation);
+        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_IN, animation, duration, LINEAR_OUT);
     }
 
     public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
-        return new SceneTransition(duration, animation, extroDuration, extroAnimation);
+        return new SceneTransition(animation, duration, introTweenMode, extroAnimation, extroDuration, extroTweenMode);
     }
 
 }
