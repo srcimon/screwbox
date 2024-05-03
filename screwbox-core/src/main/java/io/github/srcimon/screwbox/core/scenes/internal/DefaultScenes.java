@@ -172,7 +172,6 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
-    //TODO ScrenshotOfScene(Scene.class)
 //TODO prevent scene change while already changing scenes
     private void add(final Scene scene) {
         final SceneContainer sceneContainer = new SceneContainer(scene, engine);
