@@ -17,9 +17,11 @@ import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
  * @param introEase      the {@link Ease} applied on the intro animation
  */
 public record SceneTransition(
-        ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase, IntroAnimation introAnimation, Duration introDuration, Ease introEase
+        ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase, IntroAnimation introAnimation,
+        Duration introDuration, Ease introEase
 ) {
 
+ //TODO Support incomming graphics as well scene.screenshotfrom(scene.class)
     //TODO validations
 
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
