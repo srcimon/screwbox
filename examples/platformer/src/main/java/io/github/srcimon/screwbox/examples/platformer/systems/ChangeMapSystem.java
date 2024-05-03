@@ -18,7 +18,6 @@ public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);
 
-    //TODO BUGFIX
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.SPACE)) {

@@ -13,7 +13,6 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
-import java.io.FilterOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +20,6 @@ import java.util.concurrent.Executor;
 
 import static java.util.Objects.nonNull;
 
-//TODO REMOVE Fade in and out from tiled map
 public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
@@ -157,7 +155,7 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
             }
-            if(hasChangedToTargetScene) {
+            if (hasChangedToTargetScene) {
                 activeTransition.transition().introAnimation().draw(
                         engine.graphics().screen(),
                         activeTransition.transition().introTweenMode().applyOn(activeTransition.introProgress(time)),
@@ -168,7 +166,7 @@ public class DefaultScenes implements Scenes, Updatable {
                         activeTransition.transition().extroTweenMode().applyOn(activeTransition.extroProgress(time)));
             }
 
-            if(hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
+            if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;
             }
         }
