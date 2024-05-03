@@ -16,6 +16,7 @@ public record SceneTransition(
 
     //TODO validations
 
+
     public interface ExtroAnimation {
         void draw(Screen screen, Percent progress);
     }
@@ -44,6 +45,7 @@ public record SceneTransition(
         return instant();
     }
 
+    //TODO: split duration and animation possible?
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
         return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, animation, duration, LINEAR_IN);
     }
