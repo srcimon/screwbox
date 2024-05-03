@@ -10,15 +10,14 @@ import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
  * Configures a scene transition. Every transition contains an extro phase (leaving a {@link Scene}) and and intro phase (entering a {@link Scene}).
  *
  * @param extroAnimation animation used for extro
- * @param extroDuration {@link Duration} of the extro
- * @param extroEase the {@link Ease} applied on the extro animation
+ * @param extroDuration  {@link Duration} of the extro
+ * @param extroEase      the {@link Ease} applied on the extro animation
  * @param introAnimation animation used for intro
- * @param introDuration {@link Duration} of the intro
- * @param introEase the {@link Ease} applied on the intro animation
+ * @param introDuration  {@link Duration} of the intro
+ * @param introEase      the {@link Ease} applied on the intro animation
  */
 public record SceneTransition(
-        IntroAnimation introAnimation, Duration introDuration, Ease introEase,
-        ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase
+        ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase, IntroAnimation introAnimation, Duration introDuration, Ease introEase
 ) {
 
     //TODO validations
@@ -32,7 +31,7 @@ public record SceneTransition(
     };
 
     public static SceneTransition instant() {
-        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, NO_EXTRO, Duration.none(), LINEAR_IN);
+        return new SceneTransition(NO_EXTRO, Duration.none(), LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
     }
 
     //TODO javadoc for readability
@@ -42,26 +41,26 @@ public record SceneTransition(
 
     //TODO: split duration and animation possible?
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
-        return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, animation, duration, LINEAR_IN);
+        return new SceneTransition(animation, duration, LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
     }
 
     public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
-        return new SceneTransition(animation, duration, introEase, extroAnimation, extroDuration, extroEase);
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, animation, duration, introEase);
     }
 
     public SceneTransition extroEase(final Ease ease) {
-        return new SceneTransition(introAnimation, introDuration, ease, extroAnimation, extroDuration, LINEAR_IN);
+        return new SceneTransition(extroAnimation, extroDuration, LINEAR_IN, introAnimation, introDuration, ease);
     }
 
     public SceneTransition introEase(final Ease ease) {
-        return new SceneTransition(introAnimation, introDuration, ease, extroAnimation, extroDuration, extroEase);
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, ease);
     }
 
     public SceneTransition introDuration(final Duration duration) {
-        return new SceneTransition(introAnimation, duration, introEase, extroAnimation, extroDuration, extroEase);
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, duration, introEase);
     }
 
     public SceneTransition extroDuration(final Duration duration) {
-        return new SceneTransition(introAnimation, introDuration, introEase, extroAnimation, duration, extroEase);
+        return new SceneTransition(extroAnimation, duration, extroEase, introAnimation, introDuration, introEase);
     }
 }
