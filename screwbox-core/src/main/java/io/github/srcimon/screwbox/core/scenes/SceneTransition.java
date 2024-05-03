@@ -54,10 +54,10 @@ public record SceneTransition(
     }
 
     public SceneTransition extroTweenMode(final TweenMode tweenMode) {
-        return new SceneTransition(introAnimation, Duration.none(), tweenMode, extroAnimation, extroDuration, LINEAR_IN);
+        return new SceneTransition(introAnimation, introDuration, tweenMode, extroAnimation, extroDuration, LINEAR_IN);
     }
 
     public SceneTransition introTweenMode(final TweenMode tweenMode) {
-        return new SceneTransition(introAnimation, Duration.none(), tweenMode, extroAnimation, extroDuration, extroTweenMode);
+        return new SceneTransition(introAnimation, introDuration, tweenMode, extroAnimation, extroDuration, extroTweenMode);
     }
 }
