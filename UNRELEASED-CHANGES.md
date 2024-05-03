@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added transitions to scene changes (#231)
 
 ### 🪛 Bug Fixes
 
@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Removed obsolete `ScreenTransitionSystem` / `Component`
+- Removed obsolete `ScreenTransitionSystem` / `Component` (#153)
 
 ### 📦 Dependency updates
 
