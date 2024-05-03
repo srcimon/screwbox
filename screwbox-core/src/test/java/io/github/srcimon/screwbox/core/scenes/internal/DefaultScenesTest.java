@@ -63,7 +63,7 @@ class DefaultScenesTest {
     void switchTo_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.switchTo(GameScene.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("missing scene: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+                .hasMessage("scene doesn't exist: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test

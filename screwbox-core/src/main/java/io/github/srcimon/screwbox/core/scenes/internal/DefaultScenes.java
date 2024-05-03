@@ -22,15 +22,15 @@ import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private final Map<Class<? extends Scene>, SceneContainer> scenes = new HashMap<>();
+    private final Map<Class<? extends Scene>, SceneData> scenes = new HashMap<>();
 
     private final Executor executor;
     private final Engine engine;
     private final Screen screen;
     private Sprite previousSceneScreenshot;
 
-    private SceneContainer activeScene;
-    private SceneContainer loadingScene;
+    private SceneData activeScene;
+    private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
 
@@ -38,10 +38,10 @@ public class DefaultScenes implements Scenes, Updatable {
         this.engine = engine;
         this.executor = executor;
         this.screen = screen;
-        SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene(), engine);
-        defaultSceneContainer.setInitialized();
-        scenes.put(DefaultScene.class, defaultSceneContainer);
-        this.activeScene = defaultSceneContainer;
+        SceneData defaultSceneData = new SceneData(new DefaultScene(), engine);
+        defaultSceneData.setInitialized();
+        scenes.put(DefaultScene.class, defaultSceneData);
+        this.activeScene = defaultSceneData;
         setLoadingScene(new DefaultLoadingScene());
     }
 
@@ -69,9 +69,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes remove(final Class<? extends Scene> sceneClass) {
-        if (!scenes.containsKey(sceneClass)) {
-            throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
-        }
+        ensureSceneExists(sceneClass);
         if (activeScene.isSameAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
@@ -126,7 +124,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes setLoadingScene(final Scene loadingScene) {
-        this.loadingScene = new SceneContainer(loadingScene, engine);
+        this.loadingScene = new SceneData(loadingScene, engine);
         this.loadingScene.initialize();
         return this;
     }
@@ -174,14 +172,14 @@ public class DefaultScenes implements Scenes, Updatable {
 
     //TODO prevent scene change while already changing scenes
     private void add(final Scene scene) {
-        final SceneContainer sceneContainer = new SceneContainer(scene, engine);
-        executor.execute(sceneContainer::initialize);
-        scenes.put(scene.getClass(), sceneContainer);
+        final SceneData sceneData = new SceneData(scene, engine);
+        executor.execute(sceneData::initialize);
+        scenes.put(scene.getClass(), sceneData);
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
         if (!scenes.containsKey(sceneClass)) {
-            throw new IllegalArgumentException("missing scene: " + sceneClass);
+            throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
     }
 

@@ -4,12 +4,12 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
-class SceneContainer {
+class SceneData {
     private final Scene scene;
     private final DefaultEnvironment environment;
     private boolean isInitialized;
 
-    SceneContainer(final Scene scene, final Engine engine) {
+    SceneData(final Scene scene, final Engine engine) {
         this.scene = scene;
         this.environment = new DefaultEnvironment(engine);
     }
