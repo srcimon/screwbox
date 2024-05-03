@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
+import java.io.FilterOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneContainer activeScene;
     private SceneContainer loadingScene;
     private ActiveTransition activeTransition;
+    private boolean hasChangedToTargetScene = true;
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -54,6 +56,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
         ensureSceneExists(sceneClass);
         activeTransition = new ActiveTransition(sceneClass, transition);
+        hasChangedToTargetScene = false;
         return this;
     }
 
@@ -146,13 +149,13 @@ public class DefaultScenes implements Scenes, Updatable {
 
         if (isTransitioning()) {
             final Time time = Time.now();
-            final boolean hasChangedToTargetScene = activeTransition.targetScene().equals(activeScene.scene().getClass());
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 previousSceneScreenshot = screen.takeScreenshot();
                 activeScene.scene().onExit(engine);
                 activeScene = scenes.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
+                hasChangedToTargetScene = true;
             }
             if(hasChangedToTargetScene) {
                 activeTransition.transition().introAnimation().draw(
