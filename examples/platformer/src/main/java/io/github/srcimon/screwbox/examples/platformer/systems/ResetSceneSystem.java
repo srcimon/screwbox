@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.assets.SceneTransitionBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
@@ -20,7 +21,7 @@ public class ResetSceneSystem implements EntitySystem {
             Time resetTime = resetter.get(ResetSceneComponent.class).atTime;
             if (Time.now().isAfter(resetTime)) {
                 engine.audio().stopAllSounds();
-                engine.scenes().switchTo(DeadScene.class);
+                engine.scenes().switchTo(DeadScene.class, SceneTransitionBundle.FADEOUT);
             }
         }
     }

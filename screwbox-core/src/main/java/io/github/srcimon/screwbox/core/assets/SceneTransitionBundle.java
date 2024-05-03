@@ -18,14 +18,14 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
                 public void draw(Screen screen, Percent progress) {
                     screen.fillWith(Color.BLACK.opacity(progress));
                 }
-            }, Duration.ofMillis(500))
+            }, Duration.ofMillis(250))
             .extroTweenMode(TweenMode.SINE_IN)
             .intro(new SceneTransition.IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent progress, Sprite screenshot) {
                     screen.fillWith(Color.BLACK.opacity(progress));
                 }
-            }, Duration.ofMillis(500))
+            }, Duration.ofMillis(250))
             .introTweenMode(TweenMode.SINE_OUT)),
 
     FADEOUT(SceneTransition.noExtro().
@@ -38,12 +38,10 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
             }, Duration.ofMillis(500))),
 
     SLIDE_UP(SceneTransition.noExtro()
-                    .
-
-            intro(new SceneTransition.IntroAnimation() {
+            .intro(new SceneTransition.IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent progress, Sprite screenshot) {
-                    screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * (1 - progress.value()))), SpriteDrawOptions.originalSize());
+                    screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())), SpriteDrawOptions.originalSize());
                 }
             }, Duration.ofMillis(1000)));//TODO simplify duration changes
 
