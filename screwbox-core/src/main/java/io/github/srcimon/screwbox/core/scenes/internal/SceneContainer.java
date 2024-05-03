@@ -4,10 +4,10 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
-public class SceneContainer {
+class SceneContainer {
     private final Scene scene;
     private final DefaultEnvironment environment;
-    boolean isInitialized;
+    private boolean isInitialized;
 
     SceneContainer(final Scene scene, final Engine engine) {
         this.scene = scene;
@@ -16,18 +16,26 @@ public class SceneContainer {
 
     void initialize() {
         scene.populate(environment);
-        isInitialized = true;
+        setInitialized();
     }
 
     public DefaultEnvironment environment() {
         return environment;
     }
 
-    public boolean sameSceneAs(Class<? extends Scene> sceneClass) {
+    public boolean isSameAs(Class<? extends Scene> sceneClass) {
         return scene.getClass().equals(sceneClass);
     }
 
     public Scene scene() {
         return scene;
+    }
+
+    public void setInitialized() {
+        isInitialized = true;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
     }
 }

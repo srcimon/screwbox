@@ -39,7 +39,7 @@ public class DefaultScenes implements Scenes, Updatable {
         this.executor = executor;
         this.screen = screen;
         SceneContainer defaultSceneContainer = new SceneContainer(new DefaultScene(), engine);
-        defaultSceneContainer.isInitialized = true;
+        defaultSceneContainer.setInitialized();
         scenes.put(DefaultScene.class, defaultSceneContainer);
         this.activeScene = defaultSceneContainer;
         setLoadingScene(new DefaultLoadingScene());
@@ -72,7 +72,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (!scenes.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
-        if (activeScene.sameSceneAs(sceneClass)) {
+        if (activeScene.isSameAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
         scenes.remove(sceneClass);
@@ -137,7 +137,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     public boolean isShowingLoadingScene() {
-        return !engine.isWarmedUp() || !activeScene.isInitialized;
+        return !engine.isWarmedUp() || !activeScene.isInitialized();
     }
 
     @Override
