@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.assets;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.TweenMode;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -22,14 +22,14 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
                     screen.fillWith(Color.BLACK.opacity(value));
                 }
             }, Duration.ofMillis(250))
-            .extroTweenMode(TweenMode.SINE_IN)
+            .extroEase(Ease.SINE_IN)
             .intro(new IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent value, Sprite screenshot) {
                     screen.fillWith(Color.BLACK.opacity(value));
                 }
             }, Duration.ofMillis(250))
-            .introTweenMode(TweenMode.SINE_OUT)),
+            .introEase(Ease.SINE_OUT)),
     FADEOUT(SceneTransition.noExtro().
 
             intro(new IntroAnimation() {

@@ -165,12 +165,12 @@ public class DefaultScenes implements Scenes, Updatable {
             if (hasChangedToTargetScene) {
                 activeTransition.transition().introAnimation().draw(
                         screen,
-                        activeTransition.transition().introTweenMode().applyOn(activeTransition.introProgress(time)),
+                        activeTransition.transition().introEase().applyOn(activeTransition.introProgress(time)),
                         previousSceneScreenshot);
             } else {
                 activeTransition.transition().extroAnimation().draw(
                         screen,
-                        activeTransition.transition().extroTweenMode().applyOn(activeTransition.extroProgress(time)));
+                        activeTransition.transition().extroEase().applyOn(activeTransition.extroProgress(time)));
             }
 
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {

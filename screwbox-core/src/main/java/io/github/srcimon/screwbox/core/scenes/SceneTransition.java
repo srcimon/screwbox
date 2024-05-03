@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.TweenMode;
+import io.github.srcimon.screwbox.core.Ease;
 
-import static io.github.srcimon.screwbox.core.TweenMode.LINEAR_IN;
-import static io.github.srcimon.screwbox.core.TweenMode.LINEAR_OUT;
+import static io.github.srcimon.screwbox.core.Ease.LINEAR_IN;
+import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
 
 public record SceneTransition(
-        IntroAnimation introAnimation, Duration introDuration, TweenMode introTweenMode,
-        ExtroAnimation extroAnimation, Duration extroDuration, TweenMode extroTweenMode
+        IntroAnimation introAnimation, Duration introDuration, Ease introEase,
+        ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase
 ) {
 
     //TODO validations
@@ -18,8 +18,6 @@ public record SceneTransition(
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
 
     };
-
-    //TODO Rename tween mode to easing see https://github.com/vydd/easing
 
     private static final IntroAnimation NO_INTRO = (screen, progress, screenshot) -> {
 
@@ -40,22 +38,22 @@ public record SceneTransition(
     }
 
     public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
-        return new SceneTransition(animation, duration, introTweenMode, extroAnimation, extroDuration, extroTweenMode);
+        return new SceneTransition(animation, duration, introEase, extroAnimation, extroDuration, extroEase);
     }
 
-    public SceneTransition extroTweenMode(final TweenMode tweenMode) {
-        return new SceneTransition(introAnimation, introDuration, tweenMode, extroAnimation, extroDuration, LINEAR_IN);
+    public SceneTransition extroEase(final Ease ease) {
+        return new SceneTransition(introAnimation, introDuration, ease, extroAnimation, extroDuration, LINEAR_IN);
     }
 
-    public SceneTransition introTweenMode(final TweenMode tweenMode) {
-        return new SceneTransition(introAnimation, introDuration, tweenMode, extroAnimation, extroDuration, extroTweenMode);
+    public SceneTransition introEase(final Ease ease) {
+        return new SceneTransition(introAnimation, introDuration, ease, extroAnimation, extroDuration, extroEase);
     }
 
     public SceneTransition introDuration(final Duration duration) {
-        return new SceneTransition(introAnimation, duration, introTweenMode, extroAnimation, extroDuration, extroTweenMode);
+        return new SceneTransition(introAnimation, duration, introEase, extroAnimation, extroDuration, extroEase);
     }
 
     public SceneTransition extroDuration(final Duration duration) {
-        return new SceneTransition(introAnimation, introDuration, introTweenMode, extroAnimation, duration, extroTweenMode);
+        return new SceneTransition(introAnimation, introDuration, introEase, extroAnimation, duration, extroEase);
     }
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 
-class TweenModeTest {
+class EaseTest {
 
     @ParameterizedTest
     @CsvSource({
@@ -37,7 +37,7 @@ class TweenModeTest {
     void applyOn_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);
 
-        var output = TweenMode.valueOf(modeName).applyOn(input);
+        var output = Ease.valueOf(modeName).applyOn(input);
 
         assertThat(output.value()).isEqualTo(out, offset(0.1));
     }

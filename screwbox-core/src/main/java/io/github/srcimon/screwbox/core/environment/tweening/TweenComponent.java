@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.TweenMode;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 
@@ -23,22 +23,22 @@ public class TweenComponent implements Component {
 
     public Duration duration;
     public boolean isLooped;
-    public TweenMode mode;
+    public Ease mode;
     public boolean usePingPong;
 
     public TweenComponent(final Duration duration) {
-        this(duration, TweenMode.LINEAR_OUT);
+        this(duration, Ease.LINEAR_OUT);
     }
 
-    public TweenComponent(final Duration duration, final TweenMode mode) {
+    public TweenComponent(final Duration duration, final Ease mode) {
         this(duration, mode, false);
     }
 
-    public TweenComponent(final Duration duration, final TweenMode mode, final boolean isLooped) {
+    public TweenComponent(final Duration duration, final Ease mode, final boolean isLooped) {
         this(duration, mode, isLooped, true);
     }
 
-    public TweenComponent(final Duration duration, final TweenMode mode, final boolean isLooped, final  boolean usePingPong) {
+    public TweenComponent(final Duration duration, final Ease mode, final boolean isLooped, final  boolean usePingPong) {
         this.duration = duration;
         this.isLooped = isLooped;
         this.mode = mode;

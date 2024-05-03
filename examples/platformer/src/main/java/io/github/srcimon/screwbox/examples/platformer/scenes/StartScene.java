@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.TweenMode;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -42,7 +42,7 @@ public class StartScene implements Scene {
                     if (sheduler.isTick()) {
                         engine.particles().spawnMultiple(1, visibleArea.moveBy(0, visibleArea.height()), ParticleOptions.unknownSource()
                                 .baseSpeed(Vector.y(-60))
-                                .tweenMode(TweenMode.SINE_IN_OUT)
+                                .ease(Ease.SINE_IN_OUT)
                                 .randomStartScale(6, 8)
                                 .startOpacity(Percent.zero())
                                 .animateOpacity(Percent.zero(), Percent.of(0.1))

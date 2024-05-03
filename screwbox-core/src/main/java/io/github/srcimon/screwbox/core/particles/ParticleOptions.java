@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementCompon
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.TweenMode;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -138,10 +138,10 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Sets the {@link TweenMode} for animation.
+     * Sets the {@link Ease} for animation.
      */
-    public ParticleOptions tweenMode(final TweenMode tweenMode) {
-        return customize(PREFIX + "tween-tweenmode", entity -> entity.get(TweenComponent.class).mode = tweenMode);
+    public ParticleOptions ease(final Ease ease) {
+        return customize(PREFIX + "tween-ease", entity -> entity.get(TweenComponent.class).mode = ease);
     }
 
     /**
