@@ -3,11 +3,10 @@ package io.github.srcimon.screwbox.examples.platformer;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
-import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADEOUT_SLOW;
+import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADE_OVER_BLACK;
 
 public class PlatformerApp {
 
@@ -25,8 +24,7 @@ public class PlatformerApp {
                 .prepareClassPackageAsync(PlatformerApp.class);
 
         engine.scenes()
-                .setDefaultTransition(FADEOUT_SLOW)
-                .add(new DeadScene())
+                .setDefaultTransition(FADE_OVER_BLACK)
                 .add(new PauseScene())
                 .add(new StartScene());
 

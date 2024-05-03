@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ResetSceneComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 
@@ -21,7 +22,10 @@ public class ResetSceneSystem implements EntitySystem {
             Time resetTime = resetter.get(ResetSceneComponent.class).atTime;
             if (Time.now().isAfter(resetTime)) {
                 engine.audio().stopAllSounds();
-                engine.scenes().switchTo(DeadScene.class, SceneTransitionBundle.FADEOUT);
+                String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
+                engine.scenes()
+                        .add(new DeadScene(currentLevel))
+                        .switchTo(DeadScene.class, SceneTransitionBundle.FADEOUT);
             }
         }
     }
