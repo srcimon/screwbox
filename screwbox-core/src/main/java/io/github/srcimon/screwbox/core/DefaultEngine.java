@@ -30,7 +30,6 @@ import io.github.srcimon.screwbox.core.particles.internal.DefaultParticles;
 import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.Ui;
@@ -134,7 +133,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public void start(final Class<? extends Scene> sceneClass) {
-        scenes().switchTo(sceneClass, SceneTransition.instant());
+        scenes().switchTo(sceneClass);
         start();
     }
 
