@@ -44,7 +44,6 @@ public record SceneTransition(
         return instant();
     }
 
-
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
         return new SceneTransition(NO_INTRO, Duration.none(), LINEAR_OUT, animation, duration, LINEAR_IN);
     }
