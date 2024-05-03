@@ -1,6 +1,5 @@
-package io.github.srcimon.screwbox.core.environment.tweening;
+package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.Percent;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

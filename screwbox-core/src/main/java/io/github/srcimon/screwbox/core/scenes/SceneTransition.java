@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
+import io.github.srcimon.screwbox.core.TweenMode;
 
-import static io.github.srcimon.screwbox.core.environment.tweening.TweenMode.LINEAR_IN;
-import static io.github.srcimon.screwbox.core.environment.tweening.TweenMode.LINEAR_OUT;
+import static io.github.srcimon.screwbox.core.TweenMode.LINEAR_IN;
+import static io.github.srcimon.screwbox.core.TweenMode.LINEAR_OUT;
 
 public record SceneTransition(
         IntroAnimation introAnimation, Duration introDuration, TweenMode introTweenMode,
@@ -14,7 +14,7 @@ public record SceneTransition(
     //TODO validations
 
 
-    //TODO make EXTRO ANIMATAION SAME AS INTRO ANIMATION
+    //TODO Export interfaces to scene
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
 
     };

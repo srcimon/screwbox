@@ -1,6 +1,4 @@
-package io.github.srcimon.screwbox.core.environment.tweening;
-
-import io.github.srcimon.screwbox.core.Percent;
+package io.github.srcimon.screwbox.core;
 
 import java.util.Map;
 import java.util.function.UnaryOperator;

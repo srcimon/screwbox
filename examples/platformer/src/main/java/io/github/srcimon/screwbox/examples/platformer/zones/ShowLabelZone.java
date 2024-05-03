@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
+import io.github.srcimon.screwbox.core.TweenMode;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
