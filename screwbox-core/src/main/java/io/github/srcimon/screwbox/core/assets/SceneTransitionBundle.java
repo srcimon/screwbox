@@ -14,7 +14,7 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
     FADEOUT(SceneTransition.noExtro().intro(new SceneTransition.IntroAnimation() {
         @Override
         public void draw(Screen screen, Percent progress, Sprite screenshot) {
-            screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert()));
+            screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress));
         }
     }, Duration.ofMillis(500))),
     SLIDE_UP(SceneTransition.noExtro()
