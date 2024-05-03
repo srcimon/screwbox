@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
 import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADE_OVER_BLACK;
-import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.SLIDE_UP;
 
 public class StartGameMenu extends UiMenu {
 

@@ -33,7 +33,7 @@ public class PartilesApp {
                         engine.scenes().add(new AltScene());
                         engine.scenes().switchTo(AltScene.class, SceneTransition
                                 .noExtro()
-                                .intro((screen, progress, screenshot) -> screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress.invert())),
+                                .intro((screen, progress, screenshot) -> screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress)),
                                         Duration.ofSeconds(2)));
                     }
                 })

@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
+import static io.github.srcimon.screwbox.core.assets.SceneTransitionBundle.FADE_OVER_BLACK;
+
 public class PauseMenu extends UiMenu {
 
     private static final String SAVEGAME_NAME = "savegame.sav";
@@ -23,7 +25,7 @@ public class PauseMenu extends UiMenu {
         }).activeCondition(engine -> engine.environment().savegameExists(SAVEGAME_NAME));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
-        addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class));
+        addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, FADE_OVER_BLACK));
         addItem("Quit Game").onActivate(Engine::stop);
     }
 
