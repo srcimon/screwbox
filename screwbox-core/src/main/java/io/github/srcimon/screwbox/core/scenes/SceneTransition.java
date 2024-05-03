@@ -6,6 +6,16 @@ import io.github.srcimon.screwbox.core.Ease;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_IN;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
 
+/**
+ * Configures a scene transition. Every transition contains an extro phase (leaving a {@link Scene}) and and intro phase (entering a {@link Scene}).
+ *
+ * @param extroAnimation animation used for extro
+ * @param extroDuration {@link Duration} of the extro
+ * @param extroEase the {@link Ease} applied on the extro animation
+ * @param introAnimation animation used for intro
+ * @param introDuration {@link Duration} of the intro
+ * @param introEase the {@link Ease} applied on the intro animation
+ */
 public record SceneTransition(
         IntroAnimation introAnimation, Duration introDuration, Ease introEase,
         ExtroAnimation extroAnimation, Duration extroDuration, Ease extroEase
@@ -13,8 +23,6 @@ public record SceneTransition(
 
     //TODO validations
 
-
-    //TODO Export interfaces to scene
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
 
     };
