@@ -41,7 +41,6 @@ public record SceneTransition(
     public static SceneTransition noExtro() {
         return instant();
     }
-//TODO PAUSE MENU IS HALF TRANSPARENT
     //TODO: split duration and animation possible?
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
         return new SceneTransition(animation, duration, LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
