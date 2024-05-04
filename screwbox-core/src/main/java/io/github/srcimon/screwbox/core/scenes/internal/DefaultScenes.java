@@ -49,6 +49,8 @@ public class DefaultScenes implements Scenes, Updatable {
         return switchTo(sceneClass, SceneTransition.instant());
     }
 
+    //TODO prevent scene change while already changing scenes
+
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
         ensureSceneExists(sceneClass);
@@ -169,11 +171,10 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
-    //TODO prevent scene change while already changing scenes
     private void add(final Scene scene) {
-        final SceneData sceneData = new SceneData(scene, engine);
-        executor.execute(sceneData::initialize);
-        this.sceneData.put(scene.getClass(), sceneData);
+        final SceneData data = new SceneData(scene, engine);
+        executor.execute(data::initialize);
+        this.sceneData.put(scene.getClass(), data);
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
