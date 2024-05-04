@@ -84,7 +84,7 @@ public class DefaultScenes implements Scenes, Updatable {
     public Scenes addOrReplace(final Scene scene) {
         final var sceneClass = scene.getClass();
         if (contains(sceneClass)) {
-            remove(sceneClass);
+            sceneData.remove(sceneClass);
         }
         add(scene);
         return this;

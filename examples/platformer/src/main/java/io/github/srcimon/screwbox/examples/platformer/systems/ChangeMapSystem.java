@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.examples.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
@@ -32,7 +31,7 @@ public class ChangeMapSystem implements EntitySystem {
             for (Entity entity : engine.environment().fetchAll(CHANGE_MAP_ZONES)) {
                 if (entity.get(SignalComponent.class).isTriggered) {
                     engine.scenes()
-                            .add(new GameScene(entity.get(ChangeMapComponent.class).fileName))
+                            .addOrReplace(new GameScene(entity.get(ChangeMapComponent.class).fileName))
                             .switchTo(GameScene.class, TRANSITION);
                 }
             }
