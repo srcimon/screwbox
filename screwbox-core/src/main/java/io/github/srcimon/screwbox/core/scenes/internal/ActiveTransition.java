@@ -26,12 +26,6 @@ public class ActiveTransition {
         return transition.extroDuration().addTo(started);
     }
 
-    //TODO Time.progressInRange(from, to)
-    public Percent extroProgress(final Time time) {
-        var elapsedDuration = Duration.between(started, time);
-        return Percent.of(elapsedDuration.nanos() / (transition.extroDuration().nanos() + 1.0));
-    }
-
     public Percent introProgress(final Time time) {
         var elapsedDuration = Duration.between(time, transition.extroDuration().addTo(started));
         return Percent.of(elapsedDuration.nanos() / (transition.introDuration().nanos() + 1.0));
@@ -44,6 +38,13 @@ public class ActiveTransition {
 
     public void drawExtro(final Screen screen, final Time time) {
         Percent progress = transition.extroEase().applyOn(extroProgress(time));
-        transition.animation().draw(screen, progress);
+        transition.extroAnimation().draw(screen, progress);
     }
+
+    private Percent extroProgress(final Time time) {
+        var elapsedDuration = Duration.between(started, time);
+        return Percent.of(elapsedDuration.nanos() / (transition.extroDuration().nanos() + 1.0));
+    }
+
+
 }

@@ -49,8 +49,6 @@ public class DefaultScenes implements Scenes, Updatable {
         return switchTo(sceneClass, SceneTransition.instant());
     }
 
-    //TODO prevent scene change while already changing scenes
-
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass, final SceneTransition transition) {
         ensureSceneExists(sceneClass);
