@@ -2,9 +2,7 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -106,9 +104,5 @@ public interface Scenes {
      */
     Scenes setLoadingScene(Scene loadingScene);
 
-    /**
-     * Returns a screenshot of the specified {@link Scene}. Maybe empty when scene was not active before.
-     */
-    Optional<Sprite> screenshotOfScene(Class<? extends Scene> sceneClass);
 }
 

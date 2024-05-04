@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
@@ -15,7 +14,6 @@ import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.nonNull;
@@ -32,7 +30,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
-    private boolean isFirstUpdate = true;
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -129,12 +126,6 @@ public class DefaultScenes implements Scenes, Updatable {
         return this;
     }
 
-    @Override
-    public Optional<Sprite> screenshotOfScene(final Class<? extends Scene> sceneClass) {
-        ensureSceneExists(sceneClass);
-        return Optional.ofNullable(sceneData.get(sceneClass).screenshot());
-    }
-
     public boolean isShowingLoadingScene() {
         return !engine.isWarmedUp() || !activeScene.isInitialized();
     }
@@ -148,9 +139,6 @@ public class DefaultScenes implements Scenes, Updatable {
             final Time time = Time.now();
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
-                if (!isFirstUpdate) {
-                    activeScene.setScreenshot(screen.takeScreenshot());
-                }
                 activeScene.scene().onExit(engine);
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
@@ -166,7 +154,6 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeTransition = null;
             }
         }
-        isFirstUpdate = false;
     }
 
     private void add(final Scene scene) {
