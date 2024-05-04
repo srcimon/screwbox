@@ -58,7 +58,7 @@ public record SceneTransition(
      * Sets the {@link Ease} used for {@link #extroAnimation()}.
      */
     public SceneTransition extroEase(final Ease extroEase) {
-        return new SceneTransition(extroAnimation, extroDuration, LINEAR_IN, introAnimation, introDuration, extroEase);
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, introEase);
     }
 
     /**
