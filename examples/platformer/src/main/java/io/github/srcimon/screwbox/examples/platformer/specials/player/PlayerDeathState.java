@@ -42,7 +42,7 @@ public class PlayerDeathState implements EntityState {
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
         engine.scenes()
-                .add(new DeadScene(currentLevel))
+                .addOrReplace(new DeadScene(currentLevel))
                 .switchTo(DeadScene.class, SceneTransition
                         .extroAnimation(CIRCLES)
                         .extroDurationMillis(2000)

@@ -172,9 +172,13 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private void add(final Scene scene) {
+        final var sceneClass = scene.getClass();
+        if(sceneData.containsKey(sceneClass)) {
+            throw new IllegalStateException("scane is already present: " + sceneClass);
+        }
         final SceneData data = new SceneData(scene, engine);
         executor.execute(data::initialize);
-        this.sceneData.put(scene.getClass(), data);
+        this.sceneData.put(sceneClass, data);
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
