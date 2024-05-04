@@ -34,15 +34,15 @@ public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
                     Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())),
                     SpriteDrawOptions.originalSize()));
 
-    private final Asset<SceneTransition.Animation> animation;
+    private final Supplier<SceneTransition.Animation> animation;
 
     AnimationBundle(final Supplier<SceneTransition.Animation> animation) {
-        this.animation = Asset.asset(animation);
+        this.animation = animation;
     }
 
     @Override
     public Asset<SceneTransition.Animation> asset() {
-        return animation;
+        return Asset.asset(animation);
     }
 
     private static Sprite getScreenshot(final Screen screen) {
