@@ -12,12 +12,13 @@ public enum ExtroAnimationBundle implements AssetBundle<ExtroAnimation> {
 
     FADE_TO_BLACK(() -> (screen, value) -> screen.fillWith(Color.BLACK.opacity(value))),
     CIRCLES(() -> (screen, value) -> {
-        int xDelta = screen.size().width() / 20;
-        int yDelta = screen.size().height() / 10;
+        int size = Math.max(screen.size().width(), screen.size().height()) / 20;
+        int xDelta = screen.size().width() / (screen.size().width() / size);
+        int yDelta = screen.size().height() / (screen.size().height() / size);
 
         for(int x = 0; x < screen.size().width() + xDelta; x += xDelta) {
             for (int y = 0; y < screen.size().height() +yDelta; y += yDelta) {
-                screen.drawCircle(Offset.at(x, y), (int) (value.value() * xDelta), CircleDrawOptions.filled(Color.BLACK));
+                screen.drawCircle(Offset.at(x, y), (int) (value.value() * size), CircleDrawOptions.filled(Color.BLACK));
             }
         }
     });

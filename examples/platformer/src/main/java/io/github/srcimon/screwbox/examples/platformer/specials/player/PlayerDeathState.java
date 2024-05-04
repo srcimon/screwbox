@@ -8,17 +8,16 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.scenes.ExtroAnimationBundle;
+import io.github.srcimon.screwbox.core.scenes.IntroAnimationBundle;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.TextComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 
 import java.io.Serial;
 
-import static io.github.srcimon.screwbox.core.scenes.IntroAnimationBundle.FADE_OUT;
+import static io.github.srcimon.screwbox.core.scenes.ExtroAnimationBundle.CIRCLES;
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDeathState implements EntityState {
@@ -41,14 +40,14 @@ public class PlayerDeathState implements EntityState {
         }
 
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
-        entity.add(new TextComponent("GAME OVER", ""));
         String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
         engine.scenes()
                 .add(new DeadScene(currentLevel))
-                .switchTo(DeadScene.class, SceneTransition.extroAnimation(ExtroAnimationBundle.CIRCLES)
-                                .extroDurationMillis(500)
-                .introAnimation(FADE_OUT)
-                .introDurationMillis(500));
+                .switchTo(DeadScene.class, SceneTransition
+                        .extroAnimation(CIRCLES)
+                        .extroDurationMillis(2000)
+                        .introAnimation(IntroAnimationBundle.FADE_FROM_BLACK)
+                        .introDurationMillis(250));
 
     }
 

@@ -25,6 +25,7 @@ public class StartGameMenu extends UiMenu {
     }
 
     @Override
+
     public void onExit(Engine engine) {
         engine.stop();
     }
@@ -34,6 +35,6 @@ public class StartGameMenu extends UiMenu {
                 .add(new GameScene(map))
                 .switchTo(GameScene.class, SceneTransition.noExtroAnimation()
                         .introAnimation(FADE_OUT)
-                        .introDurationSeconds(1));
+                        .introDurationSeconds(2));
     }
 }
