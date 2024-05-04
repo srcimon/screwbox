@@ -1,7 +1,8 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
 
 
 /**
@@ -18,7 +19,7 @@ public enum SoundBundle implements AssetBundle<Sound> {
     private final Asset<Sound> sound;
 
     SoundBundle() {
-        this.sound = Asset.asset(() -> Sound.fromFile("assets/sounds/%s.wav".formatted(this.name())));
+        this.sound = Sound.assetFromFile("assets/sounds/%s.wav".formatted(this.name()));
     }
 
     @Override

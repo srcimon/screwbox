@@ -1,0 +1,52 @@
+package io.github.srcimon.screwbox.core.scenes;
+
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+
+import java.util.function.Supplier;
+
+public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
+
+    COLOR_FADE(() -> (screen, progress) ->
+            screen.fillWith(Color.BLACK.opacity(progress))),
+    CIRCLES(() -> (screen, progress) -> {
+        int size = Math.max(screen.size().width(), screen.size().height()) / 20;
+        int xDelta = screen.size().width() / (screen.size().width() / size);
+        int yDelta = screen.size().height() / (screen.size().height() / size);
+
+        for (int x = 0; x < screen.size().width() + xDelta; x += xDelta) {
+            for (int y = 0; y < screen.size().height() + yDelta; y += yDelta) {
+                screen.drawCircle(Offset.at(x, y), (int) (progress.value() * size), CircleDrawOptions.filled(Color.BLACK));
+            }
+        }
+    }),
+    SCREENSHOT_FADE(() -> (screen, progress) ->
+            screen.drawSprite(getScreenshot(screen), Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress))),
+    SCREENSHOT_SLIDE_UP(() -> (screen, progress) ->
+            screen.drawSprite(
+                    getScreenshot(screen),
+                    Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())),
+                    SpriteDrawOptions.originalSize()));
+
+    private final Asset<SceneTransition.Animation> animation;
+
+    AnimationBundle(final Supplier<SceneTransition.Animation> animation) {
+        this.animation = Asset.asset(animation);
+    }
+
+    @Override
+    public Asset<SceneTransition.Animation> asset() {
+        return animation;
+    }
+
+    private static Sprite getScreenshot(final Screen screen) {
+        return screen.lastScreenshot().orElseThrow(() ->
+                new IllegalArgumentException("This animation requires a screenshot of the previous scene to work properly. It's only support to be used as intro animation."));
+    }
+}

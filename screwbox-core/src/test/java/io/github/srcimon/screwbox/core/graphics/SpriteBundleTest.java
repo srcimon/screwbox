@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.graphics;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

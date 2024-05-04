@@ -618,18 +618,6 @@
                  "y":338
                 }, 
                 {
-                 "id":347,
-                 "properties":[
-                        {
-                         "name":"duration-secs",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "template":"..\/templates\/effects\/fade-in.json",
-                 "x":49,
-                 "y":255
-                }, 
-                {
                  "id":350,
                  "template":"..\/templates\/collectables\/debo-d.json",
                  "x":395,

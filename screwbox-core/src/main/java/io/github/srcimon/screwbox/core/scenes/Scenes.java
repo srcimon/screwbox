@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Manage different game situations like pause or options in different {@link Scenes}.
@@ -34,11 +35,39 @@ public interface Scenes {
     Scenes add(Scene... scenes);
 
     /**
-     * Switches to an existing {@link Scene} that has previously been added.
+     * Switches directly to another existing {@link Scene} that has previously been added without using a {@link SceneTransition}.
      *
+     * @see #switchTo(Class, SceneTransition)
      * @see #add(Scene...)
      */
     Scenes switchTo(Class<? extends Scene> sceneClass);
+
+    /**
+     * Switches to another existing {@link Scene} that has previously been added. Uses the specified {@link SceneTransition}
+     * to add some charm.
+     *
+     * @see #switchTo(Class)
+     * @see #switchTo(Class, Supplier)
+     * @see #add(Scene...)
+     */
+    Scenes switchTo(Class<? extends Scene> sceneClass, SceneTransition transition);
+
+    /**
+     * Switches to another existing {@link Scene} that has previously been added. Uses the specified {@link SceneTransition}
+     * to add some charm.
+     *
+     * @see #switchTo(Class)
+     * @see #switchTo(Class, SceneTransition)
+     * @see #add(Scene...)
+     */
+    default Scenes switchTo(Class<? extends Scene> sceneClass, Supplier<SceneTransition> transition) {
+        return switchTo(sceneClass, transition.get());
+    }
+
+    /**
+     * Returns {@code true} if there is currently a {@link SceneTransition} in progress.
+     */
+    boolean isTransitioning();
 
     /**
      * Removes a previously added {@link Scene}. Throws an {@link IllegalArgumentException} if the specified {@link Scene }
@@ -78,9 +107,8 @@ public interface Scenes {
     Scenes setLoadingScene(Scene loadingScene);
 
     /**
-     * Returns a screenshot of the last scene right before {@link Scenes} were switched. Is empty when no scene change
-     * happend yet.
+     * Returns a screenshot of the specified {@link Scene}. Maybe empty when scene was not active before.
      */
-    Optional<Sprite> previousSceneScreenshot();
+    Optional<Sprite> screenshotOfScene(Class<? extends Scene> sceneClass);
 }
 

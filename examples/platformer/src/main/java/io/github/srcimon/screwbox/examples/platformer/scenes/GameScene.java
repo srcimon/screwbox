@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.examples.platformer.collectables.DeboE;
 import io.github.srcimon.screwbox.examples.platformer.collectables.DeboO;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.effects.Background;
-import io.github.srcimon.screwbox.examples.platformer.effects.FadeInEffect;
 import io.github.srcimon.screwbox.examples.platformer.enemies.MovingSpikes;
 import io.github.srcimon.screwbox.examples.platformer.enemies.slime.Slime;
 import io.github.srcimon.screwbox.examples.platformer.enemies.tracer.Tracer;
@@ -100,7 +99,6 @@ public class GameScene implements Scene {
                 .addSystem(new CameraShiftSystem())
                 .addSystem(new DetectLineOfSightToPlayerSystem())
                 .addSystem(new PatrollingMovementSystem())
-                .addSystem(new ResetSceneSystem())
                 .addSystem(new BackgroundSystem())
                 .addSystem(new CatMovementSystem());
     }
@@ -147,7 +145,6 @@ public class GameScene implements Scene {
                 .when("diggable").as(new Diggable())
                 .when("change-map-zone").as(new ChangeMapZone())
                 .when("show-label-zone").as(new ShowLabelZone())
-                .when("fade-in").as(new FadeInEffect())
                 .when("tracer").as(new Tracer());
     }
 

@@ -1,6 +1,9 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added transitions to scene changes (#231)
+- Added `Scenes.screenshotOfScene(Class)` (#313)
+- Added `Screen.lastScreenshot()`
+- Added `AnimationBundle` to support your scene transitions
 
 ### 🪛 Bug Fixes
 
@@ -9,7 +12,9 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed obsolete `ScreenTransitionSystem` / `Component` (#153)
+- Renamed `TweenMode` to `Ease` and moved class to core package
+- Moved asset bundles to the package with best matching scope
 
 ### 📦 Dependency updates
 

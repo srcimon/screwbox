@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
@@ -17,6 +18,7 @@ public class DefaultScreen implements Screen {
     private final WindowFrame frame;
     private final Robot robot;
     private Graphics2D lastGraphics;
+    private Sprite lastScreenshot;
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
@@ -131,7 +133,8 @@ public class DefaultScreen implements Screen {
                 frame.canvasHeight());
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
-        return Sprite.fromImage(screenCapture);
+        lastScreenshot = Sprite.fromImage(screenCapture);
+        return lastScreenshot;
     }
 
     @Override
@@ -170,6 +173,11 @@ public class DefaultScreen implements Screen {
     @Override
     public void drawSpriteBatch(SpriteBatch spriteBatch) {
         renderer.drawSpriteBatch(spriteBatch);
+    }
+
+    @Override
+    public Optional<Sprite> lastScreenshot() {
+        return Optional.ofNullable(lastScreenshot);
     }
 
     @Override

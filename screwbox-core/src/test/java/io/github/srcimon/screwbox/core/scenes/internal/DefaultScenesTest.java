@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.ui.Ui;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +31,6 @@ class DefaultScenesTest {
 
     @Mock
     Engine engine;
-
-    @Mock
-    Ui ui;
 
     @Mock
     Screen screen;
@@ -62,7 +59,7 @@ class DefaultScenesTest {
     void switchTo_sceneDoesntExist_throwsException() {
         assertThatThrownBy(() -> scenes.switchTo(GameScene.class))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("missing scene: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+                .hasMessage("scene doesn't exist: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
     }
 
     @Test
@@ -78,16 +75,6 @@ class DefaultScenesTest {
         scenes.add(new GameScene());
         scenes.switchTo(GameScene.class);
         scenes.update();
-
-        assertThatThrownBy(() -> scenes.remove(GameScene.class))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("cannot remove active scene");
-    }
-
-    @Test
-    void remove_isNextActiveScene_throwsException() {
-        scenes.add(new GameScene());
-        scenes.switchTo(GameScene.class);
 
         assertThatThrownBy(() -> scenes.remove(GameScene.class))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -125,6 +112,8 @@ class DefaultScenesTest {
 
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
+        scenes.update();
+
         when(engine.isWarmedUp()).thenReturn(true);
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
@@ -140,12 +129,9 @@ class DefaultScenesTest {
     }
 
     @Test
-    void previousSceneScreenshot_noSceneChange_isEmpty() {
-        assertThat(scenes.previousSceneScreenshot()).isEmpty();
-    }
-
-    @Test
     void previousSceneScreenshot_sceneChanged_containsScreenshot() {
+        scenes.update();
+
         when(screen.takeScreenshot()).thenReturn(Sprite.invisible());
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
@@ -153,7 +139,42 @@ class DefaultScenesTest {
         scenes.switchTo(firstScene.getClass());
         scenes.update();
 
-        assertThat(scenes.previousSceneScreenshot()).contains(Sprite.invisible());
+        assertThat(scenes.screenshotOfScene(DefaultScene.class)).contains(Sprite.invisible());
+    }
+
+    @Test
+    void previousSceneScreenshot_sceneChangedButItIsFirstUpdate_doesntTakeScreenshot() {
+        var firstScene = mock(Scene.class);
+        scenes.add(firstScene);
+
+        scenes.switchTo(firstScene.getClass());
+        scenes.update();
+
+        assertThat(scenes.screenshotOfScene(DefaultScene.class)).isEmpty();
+    }
+
+    @Test
+    void isTransitioning_noTransitionInProgress_isFalse() {
+        assertThat(scenes.isTransitioning()).isFalse();
+    }
+
+    @Test
+    void isTransitioning_transitionInProgress_isTrue() {
+        scenes.add(new GameScene());
+
+        scenes.switchTo(GameScene.class, SceneTransition.noExtroAnimation());
+
+        assertThat(scenes.isTransitioning()).isTrue();
+    }
+
+    @Test
+    void add_sceneAlreadyPresent_throwsException() {
+        scenes.add(new GameScene());
+        GameScene gameScene = new GameScene();
+
+        assertThatThrownBy(() -> scenes.add(gameScene))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("scene is already present: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
     }
 
     @AfterEach

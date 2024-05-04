@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.examples.platformer;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.ui.WobblyUiLayouter;
-import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
@@ -23,7 +22,6 @@ public class PlatformerApp {
                 .prepareClassPackageAsync(PlatformerApp.class);
 
         engine.scenes()
-                .add(new DeadScene())
                 .add(new PauseScene())
                 .add(new StartScene());
 

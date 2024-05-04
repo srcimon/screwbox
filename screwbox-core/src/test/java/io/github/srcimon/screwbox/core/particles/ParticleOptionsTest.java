@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -78,14 +78,14 @@ class ParticleOptionsTest {
     }
 
     @Test
-    void lifetimeSeconds_setsTweenModeDuration() {
+    void lifetimeSeconds_setsEaseDuration() {
         Entity particle = applyOptionsOnTemplateParticle(options.lifetimeSeconds(4));
 
         assertThat(particle.get(TweenComponent.class).duration).isEqualTo(Duration.ofSeconds(4));
     }
 
     @Test
-    void randomLifeTimeSeconds_validRange_setsTweenModeDurationOnRandomValueInRange() {
+    void randomLifeTimeSeconds_validRange_setsEaseDurationOnRandomValueInRange() {
         Entity particle = applyOptionsOnTemplateParticle(options.randomLifeTimeSeconds(4, 20));
 
         assertThat(particle.get(TweenComponent.class).duration.seconds()).isBetween(4L, 20L);

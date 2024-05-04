@@ -338,18 +338,6 @@
                  "y":118
                 }, 
                 {
-                 "id":5,
-                 "properties":[
-                        {
-                         "name":"duration-secs",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "template":"..\/templates\/effects\/fade-in.json",
-                 "x":64,
-                 "y":123
-                }, 
-                {
                  "id":13,
                  "properties":[
                         {

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.loop.Loop;
@@ -49,7 +50,7 @@ class TweenSystemTest {
     void update_loopedInterval_entityNotRemoved(DefaultEnvironment environment, Loop loop) {
         when(loop.lastUpdate()).thenReturn(Time.now().addSeconds(4));
 
-        Entity smoke = new Entity().add(new TweenComponent(ofMillis(200), TweenMode.LINEAR_IN, true));
+        Entity smoke = new Entity().add(new TweenComponent(ofMillis(200), Ease.LINEAR_IN, true));
 
         environment
                 .addEntity(smoke)

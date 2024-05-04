@@ -1,11 +1,13 @@
-package io.github.srcimon.screwbox.core.assets;
+package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenMode;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.assets.AssetBundle;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
@@ -16,7 +18,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     SMOKE(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.SMOKE_16)
             .baseSpeed(Vector.y(-100))
-            .tweenMode(TweenMode.SINE_IN_OUT)
+            .ease(Ease.SINE_IN_OUT)
             .randomStartScale(6, 8)
             .startOpacity(Percent.zero())
             .animateOpacity(Percent.zero(), Percent.of(0.1))
@@ -27,7 +29,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     CONFETTI(ParticleOptions.unknownSource()
             .sprites(SpriteBundle.DOT_BLUE_16, SpriteBundle.DOT_RED_16, SpriteBundle.DOT_YELLOW_16)
             .chaoticMovement(100, Duration.ofSeconds(1))
-            .tweenMode(TweenMode.SIN_IN_OUT_TWICE)
+            .ease(Ease.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
             .startOpacity(Percent.zero())
             .randomLifeTimeSeconds(6, 7)

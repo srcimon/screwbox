@@ -1,14 +1,13 @@
-package io.github.srcimon.screwbox.core.environment.tweening;
-
-import io.github.srcimon.screwbox.core.Percent;
+package io.github.srcimon.screwbox.core;
 
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
 /**
- * Configures the direction and the value change in a tween.
+ * Configures the direction and the progress of a value change.
+ * To get an idea of what that means: <a href="https://easings.net/de">Easing Functions Cheat</a>
  */
-public enum TweenMode {
+public enum Ease {
 
     /**
      * Linear fade in: 0 to 1
@@ -74,7 +73,7 @@ public enum TweenMode {
 
     private final UnaryOperator<Percent> adjustment;
 
-    TweenMode(final UnaryOperator<Percent> adjustment) {
+    Ease(final UnaryOperator<Percent> adjustment) {
         this.adjustment = adjustment;
     }
 

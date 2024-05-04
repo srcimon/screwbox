@@ -1,26 +1,23 @@
 package io.github.srcimon.screwbox.examples.platformer.specials.player;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.assets.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.ScreenTransitionComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.scenes.AnimationBundle;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.ResetSceneComponent;
-import io.github.srcimon.screwbox.examples.platformer.components.TextComponent;
-import io.github.srcimon.screwbox.core.graphics.transitions.*;
+import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 
 import java.io.Serial;
-import java.util.List;
 
-import static io.github.srcimon.screwbox.core.utils.ListUtil.randomFrom;
+import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.CIRCLES;
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDeathState implements EntityState {
@@ -33,13 +30,6 @@ public class PlayerDeathState implements EntityState {
     private static final Asset<Sound> OUCH_SOUND = Sound.assetFromFile("sounds/ouch.wav");
     private static final Asset<Sound> BLUPP_SOUND = Sound.assetFromFile("sounds/blupp.wav");
 
-    private static final List<ScreenTransition> TRANSITIONS = List.of(
-            new FadeOutTransition(new HorizontalLinesTransition(20)),
-            new FadeOutTransition(new SwipeTransition()),
-            new FadeOutTransition(new FadingScreenTransition()),
-            new FadeOutTransition(new CircleTransition()),
-            new FadeOutTransition(new MosaikTransition(30, 20)));
-
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.remove(PlayerControlComponent.class);
@@ -50,9 +40,15 @@ public class PlayerDeathState implements EntityState {
         }
 
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
-        entity.add(new ScreenTransitionComponent(randomFrom(TRANSITIONS), Duration.ofSeconds(3)));
-        entity.add(new TextComponent("GAME OVER", ""));
-        entity.add(new ResetSceneComponent(Time.now().addSeconds(3)));
+        String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
+        engine.scenes()
+                .addOrReplace(new DeadScene(currentLevel))
+                .switchTo(DeadScene.class, SceneTransition
+                        .extroAnimation(CIRCLES)
+                        .extroDurationMillis(2000)
+                        .introAnimation(AnimationBundle.COLOR_FADE)
+                        .introDurationMillis(250));
+
     }
 
     @Override
