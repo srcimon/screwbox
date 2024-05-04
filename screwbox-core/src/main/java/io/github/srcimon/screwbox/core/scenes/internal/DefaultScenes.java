@@ -32,6 +32,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
+    private boolean isFirstUpdate = true;
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -147,7 +148,9 @@ public class DefaultScenes implements Scenes, Updatable {
             final Time time = Time.now();
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
-                activeScene.setScreenshot(screen.takeScreenshot());
+                if (!isFirstUpdate) {
+                    activeScene.setScreenshot(screen.takeScreenshot());
+                }
                 activeScene.scene().onExit(engine);
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
@@ -163,6 +166,7 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeTransition = null;
             }
         }
+        isFirstUpdate = false;
     }
 
     private void add(final Scene scene) {

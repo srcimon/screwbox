@@ -112,6 +112,8 @@ class DefaultScenesTest {
 
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
+        scenes.update();
+
         when(engine.isWarmedUp()).thenReturn(true);
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
@@ -128,6 +130,8 @@ class DefaultScenesTest {
 
     @Test
     void previousSceneScreenshot_sceneChanged_containsScreenshot() {
+        scenes.update();
+
         when(screen.takeScreenshot()).thenReturn(Sprite.invisible());
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
@@ -136,6 +140,17 @@ class DefaultScenesTest {
         scenes.update();
 
         assertThat(scenes.screenshotOfScene(DefaultScene.class)).contains(Sprite.invisible());
+    }
+
+    @Test
+    void previousSceneScreenshot_sceneChangedButItIsFirstUpdate_doesntTakeScreenshot() {
+        var firstScene = mock(Scene.class);
+        scenes.add(firstScene);
+
+        scenes.switchTo(firstScene.getClass());
+        scenes.update();
+
+        assertThat(scenes.screenshotOfScene(DefaultScene.class)).isEmpty();
     }
 
     @Test

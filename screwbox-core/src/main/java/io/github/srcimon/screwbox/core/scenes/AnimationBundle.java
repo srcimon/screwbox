@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 import java.util.function.Supplier;
@@ -25,10 +27,10 @@ public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
         }
     }),
     SCREENSHOT_FADE(() -> (screen, progress) ->
-            screen.drawSprite(screen.lastScreenshot().orElseThrow(), Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress))),
+            screen.drawSprite(getScreenshot(screen), Offset.origin(), SpriteDrawOptions.originalSize().opacity(progress))),
     SCREENSHOT_SLIDE_UP(() -> (screen, progress) ->
             screen.drawSprite(
-                    screen.lastScreenshot().orElseThrow(),
+                    getScreenshot(screen),
                     Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())),
                     SpriteDrawOptions.originalSize()));
 
@@ -41,5 +43,10 @@ public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
     @Override
     public Asset<SceneTransition.Animation> asset() {
         return animation;
+    }
+
+    private static Sprite getScreenshot(final Screen screen) {
+        return screen.lastScreenshot().orElseThrow(() ->
+                new IllegalArgumentException("This animation requires a screenshot of the previous scene to work properly. It's only support to be used as intro animation."));
     }
 }
