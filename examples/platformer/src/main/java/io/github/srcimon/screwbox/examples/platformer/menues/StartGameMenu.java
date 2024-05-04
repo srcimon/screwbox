@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.examples.platformer.menues;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
-import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
@@ -33,8 +32,7 @@ public class StartGameMenu extends UiMenu {
     private void startMap(String map, Engine engine) {
         engine.scenes()
                 .addOrReplace(new GameScene(map))
-                .switchTo(GameScene.class, SceneTransition
-                        .extroAnimation(new ColorFadeAnimation())
+                .switchTo(GameScene.class, SceneTransition.custom()
                         .extroDurationMillis(100)
                         .introAnimation(new CirclesAnimation())
                         .introDurationMillis(1200));

@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
-import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
@@ -43,10 +42,9 @@ public class PlayerDeathState implements EntityState {
         String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
         engine.scenes()
                 .addOrReplace(new DeadScene(currentLevel))
-                .switchTo(DeadScene.class, SceneTransition
+                .switchTo(DeadScene.class, SceneTransition.custom()
                         .extroAnimation(new CirclesAnimation())
                         .extroDurationMillis(2000)
-                        .introAnimation(new ColorFadeAnimation())
                         .introDurationMillis(250));
 
     }

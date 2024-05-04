@@ -47,7 +47,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
-        return switchTo(sceneClass, SceneTransition.instant());
+        return switchTo(sceneClass, SceneTransition.custom());
     }
 
     @Override

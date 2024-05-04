@@ -20,11 +20,9 @@ public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);
 
-    public static final SceneTransition TRANSITION = SceneTransition
-            .extroAnimation(new ColorFadeAnimation())
+    public static final SceneTransition TRANSITION = SceneTransition.custom()
             .extroDurationMillis(750)
             .extroEase(Ease.SINE_IN)
-            .introAnimation(new ColorFadeAnimation())
             .introDurationMillis(250)
             .introEase(Ease.SINE_OUT);
 

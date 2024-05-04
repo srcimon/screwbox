@@ -10,10 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SceneTransitionTest {
 
     @Test
-    void noExtroAnimation_createsTransitionWithoutExtroAnimation() {
+    void custom_introConfigured_createsTransitionWithoutExtroAnimation() {
         var animation = new ColorFadeAnimation();
 
-        var transition = SceneTransition.noExtroAnimation()
+        var transition = SceneTransition.custom()
                 .introEase(Ease.SINE_IN)
                 .introDurationSeconds(2)
                 .introAnimation(animation);

@@ -27,31 +27,23 @@ public record SceneTransition(
     private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
 
     /**
-     * Switch {@link Scenes} in an instant without any intro or extro {@link Animation}.
+     * Switch {@link Scenes} in an instant without any intro or extro {@link Animation}. Can be further customized.
      */
-    public static SceneTransition instant() {
+    public static SceneTransition custom() {
         return new SceneTransition(DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
-    }
-
-
-    /**
-     * Switch {@link Scenes} without an extro {@link Animation}.
-     */
-    public static SceneTransition noExtroAnimation() {
-        return instant();
     }
 
     /**
      * Switch {@link Scenes} using an extro {@link Animation}.
      */
-    public static SceneTransition extroAnimation(final Supplier<Animation> extroAnimation) {
+    public SceneTransition extroAnimation(final Supplier<Animation> extroAnimation) {
         return extroAnimation(extroAnimation.get());
     }
 
     /**
      * Switch {@link Scenes} using an extro {@link Animation}.
      */
-    public static SceneTransition extroAnimation(final Animation extroAnimation) {
+    public SceneTransition extroAnimation(final Animation extroAnimation) {
         return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
     }
 
