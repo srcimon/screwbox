@@ -46,7 +46,7 @@ public class PlayerDeathState implements EntityState {
                 .switchTo(DeadScene.class, SceneTransition
                         .extroAnimation(CIRCLES)
                         .extroDurationMillis(2000)
-                        .introAnimation(AnimationBundle.COLORFADE_BLACK)
+                        .introAnimation(AnimationBundle.COLOR_FADE)
                         .introDurationMillis(250));
 
     }

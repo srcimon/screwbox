@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
 
-    COLORFADE_BLACK(() -> (screen, progress) ->
+    COLOR_FADE(() -> (screen, progress) ->
             screen.fillWith(Color.BLACK.opacity(progress))),
     CIRCLES(() -> (screen, progress) -> {
         int size = Math.max(screen.size().width(), screen.size().height()) / 20;

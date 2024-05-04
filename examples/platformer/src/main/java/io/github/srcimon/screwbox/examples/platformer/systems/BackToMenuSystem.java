@@ -13,7 +13,7 @@ public class BackToMenuSystem implements EntitySystem {
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.ESCAPE)) {
             engine.scenes().switchTo(StartScene.class, SceneTransition.noExtroAnimation()
-                    .introAnimation(AnimationBundle.COLORFADE_BLACK)
+                    .introAnimation(AnimationBundle.COLOR_FADE)
                     .introDurationMillis(500));
         }
     }
