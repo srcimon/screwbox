@@ -11,8 +11,9 @@ public class RenderPauseScreenshotSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        var backgroundSprite = engine.scenes().previousSceneScreenshot().orElseThrow();
-        engine.graphics().screen().drawSprite(backgroundSprite, Offset.origin(), originalSize().opacity(Percent.half()));
+        engine.graphics().screen().lastScreenshot().ifPresent(screenshot ->
+                engine.graphics().screen().drawSprite(screenshot, Offset.origin(), originalSize().opacity(Percent.half())));
+        ;
     }
 
 }

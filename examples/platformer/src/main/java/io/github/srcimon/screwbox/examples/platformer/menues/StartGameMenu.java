@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
-import static io.github.srcimon.screwbox.core.scenes.IntroAnimationBundle.FADE_OUT;
+import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.SCREENSHOT_FADE;
 
 public class StartGameMenu extends UiMenu {
 
@@ -34,7 +34,7 @@ public class StartGameMenu extends UiMenu {
         engine.scenes()
                 .add(new GameScene(map))
                 .switchTo(GameScene.class, SceneTransition.noExtroAnimation()
-                        .introAnimation(FADE_OUT)
-                        .introDurationSeconds(2));
+                        .introAnimation(SCREENSHOT_FADE)
+                        .introDurationMillis(1200));
     }
 }

@@ -32,7 +32,6 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
-    private Sprite previousSceneScreenshot = null;
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -135,11 +134,6 @@ public class DefaultScenes implements Scenes, Updatable {
         return Optional.ofNullable(sceneData.get(sceneClass).screenshot());
     }
 
-    @Override
-    public Optional<Sprite> previousSceneScreenshot() {
-        return Optional.ofNullable(previousSceneScreenshot);
-    }
-
     public boolean isShowingLoadingScene() {
         return !engine.isWarmedUp() || !activeScene.isInitialized();
     }
@@ -153,8 +147,7 @@ public class DefaultScenes implements Scenes, Updatable {
             final Time time = Time.now();
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
-                previousSceneScreenshot = screen.takeScreenshot();
-                activeScene.setScreenshot(previousSceneScreenshot);
+                activeScene.setScreenshot(screen.takeScreenshot());
                 activeScene.scene().onExit(engine);
                 activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
@@ -163,10 +156,9 @@ public class DefaultScenes implements Scenes, Updatable {
             if (hasChangedToTargetScene) {
                 activeTransition.transition().introAnimation().draw(
                         screen,
-                        activeTransition.transition().introEase().applyOn(activeTransition.introProgress(time)),
-                        previousSceneScreenshot);
+                        activeTransition.transition().introEase().applyOn(activeTransition.introProgress(time)));
             } else {
-                activeTransition.transition().extroAnimation().draw(
+                activeTransition.transition().animation().draw(
                         screen,
                         activeTransition.transition().extroEase().applyOn(activeTransition.extroProgress(time)));
             }

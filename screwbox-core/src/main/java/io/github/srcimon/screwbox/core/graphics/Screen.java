@@ -1,5 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.scenes.Scenes;
+
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -123,4 +126,10 @@ public interface Screen {
      * @since 1.11.0
      */
     void drawSpriteBatch(SpriteBatch spriteBatch);
+
+    /**
+     * Returns the last taken screenshot. Will be empty if no screenshot has been taken. Every change of {@link Scenes}
+     * automatically creates a screenshot.
+     */
+    Optional<Sprite> lastScreenshot();
 }

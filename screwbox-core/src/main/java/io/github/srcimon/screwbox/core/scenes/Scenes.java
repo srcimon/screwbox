@@ -108,11 +108,5 @@ public interface Scenes {
 
     //TODO javadoc
     Optional<Sprite> screenshotOfScene(Class<? extends Scene> sceneClass);
-
-    /**
-     * Returns a screenshot of the last scene right before {@link Scenes} were switched. Is empty when no scene change
-     * happend yet.
-     */
-    Optional<Sprite> previousSceneScreenshot();
 }
 
