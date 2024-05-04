@@ -1,11 +1,14 @@
 package io.github.srcimon.screwbox.examples.platformer.menues;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
 
-import static io.github.srcimon.screwbox.core.scenes.SceneTransitionBundle.FADE_OVER_BLACK;
+import static io.github.srcimon.screwbox.core.scenes.ExtroAnimationBundle.FADE_TO_BLACK;
+import static io.github.srcimon.screwbox.core.scenes.IntroAnimationBundle.FADE_FROM_BLACK;
 
 public class PauseMenu extends UiMenu {
 
@@ -25,7 +28,13 @@ public class PauseMenu extends UiMenu {
         }).activeCondition(engine -> engine.environment().savegameExists(SAVEGAME_NAME));
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
-        addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, FADE_OVER_BLACK));
+        addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition
+                .extroAnimation(FADE_TO_BLACK)
+                .extroDurationMillis(250)
+                .extroEase(Ease.SINE_IN)
+                .introAnimation(FADE_FROM_BLACK)
+                .introDurationMillis(250)
+                .introEase(Ease.SINE_OUT)));
         addItem("Quit Game").onActivate(Engine::stop);
     }
 

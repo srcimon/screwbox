@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.examples.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.scenes.SceneTransitionBundle;
+import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
@@ -10,6 +10,8 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.ResetSceneComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
+
+import static io.github.srcimon.screwbox.core.scenes.IntroAnimationBundle.FADE_OUT;
 
 @Order(SystemOrder.SIMULATION_BEGIN)
 public class ResetSceneSystem implements EntitySystem {
@@ -25,7 +27,9 @@ public class ResetSceneSystem implements EntitySystem {
                 String currentLevel = engine.environment().fetchSingletonComponent(CurrentLevelComponent.class).name;
                 engine.scenes()
                         .add(new DeadScene(currentLevel))
-                        .switchTo(DeadScene.class, SceneTransitionBundle.FADEOUT);
+                        .switchTo(DeadScene.class, SceneTransition.noExtro()
+                                .introAnimation(FADE_OUT)
+                                .introDurationMillis(500));
             }
         }
     }

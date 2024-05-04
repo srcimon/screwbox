@@ -3,6 +3,8 @@ package io.github.srcimon.screwbox.core.scenes;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 
+import java.util.function.Supplier;
+
 import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_IN;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
@@ -42,6 +44,11 @@ public record SceneTransition(
         return instant();
     }
     //TODO: split duration and animation possible?
+
+    public static SceneTransition extroAnimation(final Supplier<ExtroAnimation> extroAnimation) {
+        return extroAnimation(extroAnimation.get());
+    }
+
     public static SceneTransition extroAnimation(final ExtroAnimation extroAnimation) {
         return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
     }
@@ -56,6 +63,10 @@ public record SceneTransition(
 
     public SceneTransition introEase(final Ease introEase) {
         return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, introEase);
+    }
+
+    public SceneTransition introAnimation(final Supplier<IntroAnimation> introAnimation) {
+        return introAnimation(introAnimation.get());
     }
 
     public SceneTransition introAnimation(final IntroAnimation introAnimation) {
