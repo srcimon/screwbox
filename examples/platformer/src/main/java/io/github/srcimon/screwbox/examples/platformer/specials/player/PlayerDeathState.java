@@ -8,8 +8,9 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.scenes.AnimationBundle;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.examples.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerControlComponent;
@@ -17,7 +18,6 @@ import io.github.srcimon.screwbox.examples.platformer.scenes.DeadScene;
 
 import java.io.Serial;
 
-import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.CIRCLES;
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDeathState implements EntityState {
@@ -44,9 +44,9 @@ public class PlayerDeathState implements EntityState {
         engine.scenes()
                 .addOrReplace(new DeadScene(currentLevel))
                 .switchTo(DeadScene.class, SceneTransition
-                        .extroAnimation(CIRCLES)
+                        .extroAnimation(new CirclesAnimation())
                         .extroDurationMillis(2000)
-                        .introAnimation(AnimationBundle.COLOR_FADE)
+                        .introAnimation(new ColorFadeAnimation())
                         .introDurationMillis(250));
 
     }

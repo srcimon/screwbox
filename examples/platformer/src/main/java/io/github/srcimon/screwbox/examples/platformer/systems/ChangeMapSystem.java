@@ -10,10 +10,10 @@ import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.examples.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
-import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.COLOR_FADE;
 
 @Order(SystemOrder.SIMULATION_BEGIN)
 public class ChangeMapSystem implements EntitySystem {
@@ -21,10 +21,10 @@ public class ChangeMapSystem implements EntitySystem {
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);
 
     public static final SceneTransition TRANSITION = SceneTransition
-            .extroAnimation(COLOR_FADE)
+            .extroAnimation(new ColorFadeAnimation())
             .extroDurationMillis(750)
             .extroEase(Ease.SINE_IN)
-            .introAnimation(COLOR_FADE)
+            .introAnimation(new ColorFadeAnimation())
             .introDurationMillis(250)
             .introEase(Ease.SINE_OUT);
 

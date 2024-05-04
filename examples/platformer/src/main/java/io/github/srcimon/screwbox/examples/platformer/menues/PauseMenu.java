@@ -3,11 +3,10 @@ package io.github.srcimon.screwbox.examples.platformer.menues;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
+import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 import io.github.srcimon.screwbox.examples.platformer.scenes.StartScene;
-
-import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.COLOR_FADE;
 
 public class PauseMenu extends UiMenu {
 
@@ -28,10 +27,10 @@ public class PauseMenu extends UiMenu {
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition
-                .extroAnimation(COLOR_FADE)
+                .extroAnimation(new ColorFadeAnimation())
                 .extroDurationMillis(250)
                 .extroEase(Ease.SINE_IN)
-                .introAnimation(COLOR_FADE)
+                .introAnimation(new ColorFadeAnimation())
                 .introDurationMillis(250)
                 .introEase(Ease.SINE_OUT)));
         addItem("Quit Game").onActivate(Engine::stop);
