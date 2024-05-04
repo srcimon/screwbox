@@ -51,7 +51,6 @@ public record SceneTransition(
     public static SceneTransition noExtroAnimation() {
         return instant();
     }
-    //TODO: split duration and animation possible?
 
     public static SceneTransition extroAnimation(final Supplier<Animation> extroAnimation) {
         return extroAnimation(extroAnimation.get());

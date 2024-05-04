@@ -3,7 +3,7 @@
 - Added transitions to scene changes (#231)
 - Added `Scenes.screenshotOfScene(Class)` (#313)
 - Added `Screen.lastScreenshot()`
-- Added `SceneTransitionBundle` to host some pre defined scene transitions
+- Added `AnimationBundle` to support your scene transitions
 
 ### 🪛 Bug Fixes
 

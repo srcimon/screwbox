@@ -106,7 +106,9 @@ public interface Scenes {
      */
     Scenes setLoadingScene(Scene loadingScene);
 
-    //TODO javadoc
+    /**
+     * Returns a screenshot of the specified {@link Scene}. Maybe empty when scene was not active before.
+     */
     Optional<Sprite> screenshotOfScene(Class<? extends Scene> sceneClass);
 }
 
