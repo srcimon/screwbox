@@ -156,13 +156,9 @@ public class DefaultScenes implements Scenes, Updatable {
                 hasChangedToTargetScene = true;
             }
             if (hasChangedToTargetScene) {
-                activeTransition.transition().introAnimation().draw(
-                        screen,
-                        activeTransition.transition().introEase().applyOn(activeTransition.introProgress(time)));
+                activeTransition.drawIntro(screen, time);
             } else {
-                activeTransition.transition().animation().draw(
-                        screen,
-                        activeTransition.transition().extroEase().applyOn(activeTransition.extroProgress(time)));
+                activeTransition.drawExtro(screen, time);
             }
 
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
@@ -173,7 +169,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private void add(final Scene scene) {
         final var sceneClass = scene.getClass();
-        if(sceneData.containsKey(sceneClass)) {
+        if (sceneData.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene is already present: " + sceneClass);
         }
         final SceneData data = new SceneData(scene, engine);
