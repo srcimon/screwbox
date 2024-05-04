@@ -2,8 +2,7 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.scenes.animations.ColorFadeAnimation;
 
 import java.util.function.Supplier;
 
@@ -25,50 +24,27 @@ public record SceneTransition(
         Duration introDuration, Ease introEase
 ) {
 
-    /**
-     * An animation used to leave a {@link Scene}.
-     */
-    public interface Animation {
-
-        /**
-         * Draw on the {@link Screen} dependent of the leaving or entering progress. On Entering progress will count down not
-         * up.
-         */
-        void draw(Screen screen, Percent progress);
-    }
-
-    private static final Animation NO_ANIMATION = (screen, progress) -> {
-
-    };
-
+    private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
 
     /**
-     * Switch {@link Scenes} in an instant without any intro or extro {@link Animation}.
+     * Switch {@link Scenes} in an instant without any intro or extro {@link Animation}. Can be further customized.
      */
-    public static SceneTransition instant() {
-        return new SceneTransition(NO_ANIMATION, Duration.none(), LINEAR_IN, NO_ANIMATION, Duration.none(), LINEAR_OUT);
-    }
-
-
-    /**
-     * Switch {@link Scenes} without an extro {@link Animation}.
-     */
-    public static SceneTransition noExtroAnimation() {
-        return instant();
+    public static SceneTransition custom() {
+        return new SceneTransition(DEFAULT_ANIMATION, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
     }
 
     /**
      * Switch {@link Scenes} using an extro {@link Animation}.
      */
-    public static SceneTransition extroAnimation(final Supplier<Animation> extroAnimation) {
+    public SceneTransition extroAnimation(final Supplier<Animation> extroAnimation) {
         return extroAnimation(extroAnimation.get());
     }
 
     /**
      * Switch {@link Scenes} using an extro {@link Animation}.
      */
-    public static SceneTransition extroAnimation(final Animation extroAnimation) {
-        return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, NO_ANIMATION, Duration.none(), LINEAR_OUT);
+    public SceneTransition extroAnimation(final Animation extroAnimation) {
+        return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
     }
 
     /**
