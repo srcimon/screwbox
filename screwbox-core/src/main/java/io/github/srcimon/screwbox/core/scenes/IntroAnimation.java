@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 public interface IntroAnimation {
 
     /**
-     * Draw on the {@link Screen} dependent of the entering value. A screenshot of the left {@link Scene} can be used.
+     * Draw on the {@link Screen} dependent of the entering value. A screenshot of the last {@link Scene} can be used.
      */
     void draw(Screen screen, Percent value, Sprite screenshot);
 }
