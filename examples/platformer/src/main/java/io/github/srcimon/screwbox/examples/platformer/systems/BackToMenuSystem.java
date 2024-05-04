@@ -13,7 +13,7 @@ public class BackToMenuSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         if (engine.keyboard().isPressed(Key.ESCAPE)) {
-            engine.scenes().switchTo(StartScene.class, SceneTransition.noExtro()
+            engine.scenes().switchTo(StartScene.class, SceneTransition.noExtroAnimation()
                     .introAnimation(FADE_OUT)
                     .introDurationMillis(500));
         }

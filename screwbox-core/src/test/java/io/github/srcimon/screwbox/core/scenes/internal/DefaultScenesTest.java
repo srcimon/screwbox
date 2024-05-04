@@ -156,7 +156,7 @@ class DefaultScenesTest {
     void isTransitioning_transitionInProgress_isTrue() {
         scenes.add(new GameScene());
 
-        scenes.switchTo(GameScene.class, SceneTransition.noExtro());
+        scenes.switchTo(GameScene.class, SceneTransition.noExtroAnimation());
 
         assertThat(scenes.isTransitioning()).isTrue();
     }

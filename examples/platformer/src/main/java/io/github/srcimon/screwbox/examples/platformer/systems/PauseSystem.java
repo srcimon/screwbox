@@ -17,7 +17,7 @@ public class PauseSystem implements EntitySystem {
                 || !engine.window().hasFocus()) {
 
             engine.audio().stopAllSounds();
-            engine.scenes().switchTo(PauseScene.class, SceneTransition.noExtro()
+            engine.scenes().switchTo(PauseScene.class, SceneTransition.noExtroAnimation()
                     .introAnimation(FADE_OUT)
                     .introDurationMillis(500));
         }

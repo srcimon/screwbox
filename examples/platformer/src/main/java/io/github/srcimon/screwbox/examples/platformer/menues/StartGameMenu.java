@@ -32,7 +32,7 @@ public class StartGameMenu extends UiMenu {
     private void startMap(String map, Engine engine) {
         engine.scenes()
                 .add(new GameScene(map))
-                .switchTo(GameScene.class, SceneTransition.noExtro()
+                .switchTo(GameScene.class, SceneTransition.noExtroAnimation()
                         .introAnimation(FADE_OUT)
                         .introDurationSeconds(1));
     }
