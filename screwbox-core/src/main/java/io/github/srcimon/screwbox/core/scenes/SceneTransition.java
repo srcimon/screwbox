@@ -42,16 +42,20 @@ public record SceneTransition(
         return instant();
     }
     //TODO: split duration and animation possible?
-    public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
-        return new SceneTransition(animation, duration, LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
+    public static SceneTransition extroAnimation(final ExtroAnimation extroAnimation) {
+        return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
     }
 
-    public SceneTransition extroEase(final Ease ease) {
-        return new SceneTransition(extroAnimation, extroDuration, LINEAR_IN, introAnimation, introDuration, ease);
+    public SceneTransition ease(final Ease ease) {
+        return new SceneTransition(extroAnimation, extroDuration, ease, introAnimation, introDuration, ease);
     }
 
-    public SceneTransition introEase(final Ease ease) {
-        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, ease);
+    public SceneTransition extroEase(final Ease extroEase) {
+        return new SceneTransition(extroAnimation, extroDuration, LINEAR_IN, introAnimation, introDuration, extroEase);
+    }
+
+    public SceneTransition introEase(final Ease introEase) {
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, introEase);
     }
 
     public SceneTransition introAnimation(final IntroAnimation introAnimation) {
@@ -66,7 +70,7 @@ public record SceneTransition(
         return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, Duration.ofMillis(millis), introEase);
     }
 
-    public SceneTransition extroDuration(final Duration duration) {
-        return new SceneTransition(extroAnimation, duration, extroEase, introAnimation, introDuration, introEase);
+    public SceneTransition extroDurationMillis(final long millis) {
+        return new SceneTransition(extroAnimation, Duration.ofMillis(millis), extroEase, introAnimation, introDuration, introEase);
     }
 }
