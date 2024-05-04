@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
-import io.github.srcimon.screwbox.core.ui.Ui;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +31,6 @@ class DefaultScenesTest {
 
     @Mock
     Engine engine;
-
-    @Mock
-    Ui ui;
 
     @Mock
     Screen screen;
@@ -131,11 +127,6 @@ class DefaultScenesTest {
     }
 
     @Test
-    void previousSceneScreenshot_noSceneChange_isEmpty() {
-        assertThat(scenes.previousSceneScreenshot()).isEmpty();
-    }
-
-    @Test
     void previousSceneScreenshot_sceneChanged_containsScreenshot() {
         when(screen.takeScreenshot()).thenReturn(Sprite.invisible());
         var firstScene = mock(Scene.class);
@@ -144,7 +135,7 @@ class DefaultScenesTest {
         scenes.switchTo(firstScene.getClass());
         scenes.update();
 
-        assertThat(scenes.previousSceneScreenshot()).contains(Sprite.invisible());
+        assertThat(scenes.screenshotOfScene(DefaultScene.class)).contains(Sprite.invisible());
     }
 
     @Test
