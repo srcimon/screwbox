@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added transitions to scene changes (#231)
+- Added `Scenes.screenshotOfScene(Class)` and `.previousSceneScreenshot()` (#313)
 - Added `SceneTransitionBundle` to host some pre defined scene transitions
 
 ### 🪛 Bug Fixes

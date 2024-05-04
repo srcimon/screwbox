@@ -2,12 +2,14 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 class SceneData {
     private final Scene scene;
     private final DefaultEnvironment environment;
     private boolean isInitialized;
+    private Sprite screenshot = null;
 
     SceneData(final Scene scene, final Engine engine) {
         this.scene = scene;
@@ -19,6 +21,13 @@ class SceneData {
         setInitialized();
     }
 
+    public Sprite screenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(final Sprite screenshot) {
+        this.screenshot = screenshot;
+    }
     public DefaultEnvironment environment() {
         return environment;
     }

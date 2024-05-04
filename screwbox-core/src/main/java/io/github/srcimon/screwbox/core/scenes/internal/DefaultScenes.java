@@ -22,17 +22,17 @@ import static java.util.Objects.nonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
-    private final Map<Class<? extends Scene>, SceneData> scenes = new HashMap<>();
+    private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
 
     private final Executor executor;
     private final Engine engine;
     private final Screen screen;
-    private Sprite previousSceneScreenshot;
 
     private SceneData activeScene;
     private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
+    private Sprite previousSceneScreenshot = null;
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -40,7 +40,7 @@ public class DefaultScenes implements Scenes, Updatable {
         this.screen = screen;
         SceneData defaultSceneData = new SceneData(new DefaultScene(), engine);
         defaultSceneData.setInitialized();
-        scenes.put(DefaultScene.class, defaultSceneData);
+        sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
         setLoadingScene(new DefaultLoadingScene());
     }
@@ -73,13 +73,13 @@ public class DefaultScenes implements Scenes, Updatable {
         if (activeScene.isSameAs(sceneClass)) {
             throw new IllegalArgumentException("cannot remove active scene");
         }
-        scenes.remove(sceneClass);
+        sceneData.remove(sceneClass);
         return this;
     }
 
     @Override
     public int sceneCount() {
-        return scenes.size();
+        return sceneData.size();
     }
 
 
@@ -95,7 +95,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public boolean contains(Class<? extends Scene> sceneClass) {
-        return scenes.containsKey(sceneClass);
+        return sceneData.containsKey(sceneClass);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Environment environmentOf(final Class<? extends Scene> sceneClass) {
         ensureSceneExists(sceneClass);
-        return scenes.get(sceneClass).environment();
+        return sceneData.get(sceneClass).environment();
     }
 
     @Override
@@ -127,6 +127,12 @@ public class DefaultScenes implements Scenes, Updatable {
         this.loadingScene = new SceneData(loadingScene, engine);
         this.loadingScene.initialize();
         return this;
+    }
+
+    @Override
+    public Optional<Sprite> screenshotOfScene(final Class<? extends Scene> sceneClass) {
+        ensureSceneExists(sceneClass);
+        return Optional.ofNullable(sceneData.get(sceneClass).screenshot());
     }
 
     @Override
@@ -148,8 +154,9 @@ public class DefaultScenes implements Scenes, Updatable {
             final boolean mustSwitchScenes = !hasChangedToTargetScene && time.isAfter(activeTransition.switchTime());
             if (mustSwitchScenes) {
                 previousSceneScreenshot = screen.takeScreenshot();
+                activeScene.setScreenshot(previousSceneScreenshot);
                 activeScene.scene().onExit(engine);
-                activeScene = scenes.get(activeTransition.targetScene());
+                activeScene = sceneData.get(activeTransition.targetScene());
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
             }
@@ -174,11 +181,11 @@ public class DefaultScenes implements Scenes, Updatable {
     private void add(final Scene scene) {
         final SceneData sceneData = new SceneData(scene, engine);
         executor.execute(sceneData::initialize);
-        scenes.put(scene.getClass(), sceneData);
+        this.sceneData.put(scene.getClass(), sceneData);
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!scenes.containsKey(sceneClass)) {
+        if (!sceneData.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
     }
