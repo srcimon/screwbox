@@ -41,14 +41,14 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .randomLifeTimeMilliseconds(800, 1500)
             .randomBaseSpeed(100, 400));
 
-    private final ParticleOptions particleDesigner;
+    private final ParticleOptions particleOptions;
 
-    ParticleOptionsBundle(final ParticleOptions particleDesigner) {
-        this.particleDesigner = particleDesigner;
+    ParticleOptionsBundle(final ParticleOptions particleOptions) {
+        this.particleOptions = particleOptions;
     }
 
     @Override
     public Asset<ParticleOptions> asset() {
-        return Asset.asset(() -> particleDesigner);
+        return Asset.asset(() -> particleOptions);
     }
 }
