@@ -5,7 +5,8 @@ import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
-import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.SCREENSHOT_FADE;
+import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.CIRCLES;
+import static io.github.srcimon.screwbox.core.scenes.AnimationBundle.COLORFADE_BLACK;
 
 public class StartGameMenu extends UiMenu {
 
@@ -33,8 +34,10 @@ public class StartGameMenu extends UiMenu {
     private void startMap(String map, Engine engine) {
         engine.scenes()
                 .add(new GameScene(map))
-                .switchTo(GameScene.class, SceneTransition.noExtroAnimation()
-                        .introAnimation(SCREENSHOT_FADE)
+                .switchTo(GameScene.class, SceneTransition
+                        .extroAnimation(COLORFADE_BLACK)
+                        .extroDurationMillis(100)
+                        .introAnimation(CIRCLES)
                         .introDurationMillis(1200));
     }
 }
