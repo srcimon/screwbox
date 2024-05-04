@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 
 import java.util.function.Supplier;
 
@@ -11,7 +13,7 @@ import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
 /**
  * Configures a scene transition. Every transition contains an extro phase (leaving a {@link Scene}) and and intro phase (entering a {@link Scene}).
  *
- * @param animation animation used for extro
+ * @param animation      animation used for extro
  * @param extroDuration  {@link Duration} of the extro
  * @param extroEase      the {@link Ease} applied on the extro animation
  * @param introAnimation animation used for intro
@@ -23,10 +25,19 @@ public record SceneTransition(
         Duration introDuration, Ease introEase
 ) {
 
-    //TODO Support incomming graphics as well scene.screenshotfrom(scene.class)
-    //TODO validations
+    /**
+     * An animation used to leave a {@link Scene}.
+     */
+    public interface Animation {
 
-    private static final Animation NO_ANIMATION = (screen, progress) -> {//TODO: BUNDLE
+        /**
+         * Draw on the {@link Screen} dependent of the leaving or entering progress. On Entering progress will count down not
+         * up.
+         */
+        void draw(Screen screen, Percent progress);
+    }
+
+    private static final Animation NO_ANIMATION = (screen, progress) -> {
 
     };
 

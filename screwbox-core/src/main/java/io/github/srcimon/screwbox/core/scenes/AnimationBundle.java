@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 import java.util.function.Supplier;
 
-public enum AnimationBundle implements AssetBundle<Animation> {
+public enum AnimationBundle implements AssetBundle<SceneTransition.Animation> {
 
     COLORFADE_BLACK(() -> (screen, progress) ->
             screen.fillWith(Color.BLACK.opacity(progress))),
@@ -32,14 +32,14 @@ public enum AnimationBundle implements AssetBundle<Animation> {
                     Offset.origin().addY((int) (screen.size().height() * -progress.invert().value())),
                     SpriteDrawOptions.originalSize()));
 
-    private final Asset<Animation> animation;
+    private final Asset<SceneTransition.Animation> animation;
 
-    AnimationBundle(final Supplier<Animation> animation) {
+    AnimationBundle(final Supplier<SceneTransition.Animation> animation) {
         this.animation = Asset.asset(animation);
     }
 
     @Override
-    public Asset<Animation> asset() {
+    public Asset<SceneTransition.Animation> asset() {
         return animation;
     }
 }
