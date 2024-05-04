@@ -2,7 +2,6 @@
 
 - Added transitions to scene changes (#231)
 - Added `Screen.lastScreenshot()`
-- Added `AnimationBundle` to support your scene transitions
 
 ### 🪛 Bug Fixes
 
