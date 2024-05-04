@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.scenes;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 
+import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_IN;
 import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
 
@@ -21,7 +22,7 @@ public record SceneTransition(
         Duration introDuration, Ease introEase
 ) {
 
- //TODO Support incomming graphics as well scene.screenshotfrom(scene.class)
+    //TODO Support incomming graphics as well scene.screenshotfrom(scene.class)
     //TODO validations
 
     private static final ExtroAnimation NO_EXTRO = (screen, progress) -> {
@@ -40,14 +41,10 @@ public record SceneTransition(
     public static SceneTransition noExtro() {
         return instant();
     }
-
+//TODO PAUSE MENU IS HALF TRANSPARENT
     //TODO: split duration and animation possible?
     public static SceneTransition extro(final ExtroAnimation animation, final Duration duration) {
         return new SceneTransition(animation, duration, LINEAR_IN, NO_INTRO, Duration.none(), LINEAR_OUT);
-    }
-
-    public SceneTransition intro(final IntroAnimation animation, final Duration duration) {
-        return new SceneTransition(extroAnimation, extroDuration, extroEase, animation, duration, introEase);
     }
 
     public SceneTransition extroEase(final Ease ease) {
@@ -58,8 +55,16 @@ public record SceneTransition(
         return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, ease);
     }
 
-    public SceneTransition introDuration(final Duration duration) {
-        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, duration, introEase);
+    public SceneTransition introAnimation(final IntroAnimation introAnimation) {
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, introDuration, introEase);
+    }
+
+    public SceneTransition introDurationSeconds(final long seconds) {
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, Duration.ofSeconds(seconds), introEase);
+    }
+
+    public SceneTransition introDurationMillis(final long millis) {
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, introAnimation, Duration.ofMillis(millis), introEase);
     }
 
     public SceneTransition extroDuration(final Duration duration) {

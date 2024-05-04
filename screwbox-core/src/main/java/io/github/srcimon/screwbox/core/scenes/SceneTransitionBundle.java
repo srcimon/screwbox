@@ -22,29 +22,30 @@ public enum SceneTransitionBundle implements AssetBundle<SceneTransition> {
                 }
             }, Duration.ofMillis(250))
             .extroEase(Ease.SINE_IN)
-            .intro(new IntroAnimation() {
+            .introAnimation(new IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent value, Sprite screenshot) {
                     screen.fillWith(Color.BLACK.opacity(value));
                 }
-            }, Duration.ofMillis(250))
+            })
+            .introDurationMillis(250)
             .introEase(Ease.SINE_OUT)),
     FADEOUT(SceneTransition.noExtro().
 
-            intro(new IntroAnimation() {
+            introAnimation(new IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent value, Sprite screenshot) {
                     screen.drawSprite(screenshot, Offset.origin(), SpriteDrawOptions.originalSize().opacity(value));
                 }
-            }, Duration.ofMillis(500))),
-    FADEOUT_SLOW(FADEOUT.get().introDuration(oneSecond())),
+            }).introDurationMillis(500)),
+    FADEOUT_SLOW(FADEOUT.get().introDurationSeconds(1)),
     SLIDE_UP(SceneTransition.noExtro()
-            .intro(new IntroAnimation() {
+            .introAnimation(new IntroAnimation() {
                 @Override
                 public void draw(Screen screen, Percent value, Sprite screenshot) {
                     screen.drawSprite(screenshot, Offset.origin().addY((int) (screen.size().height() * -value.invert().value())), SpriteDrawOptions.originalSize());
                 }
-            }, Duration.ofMillis(1000)));//TODO simplify duration changes
+            }).introDurationSeconds(1));//TODO simplify duration changes
 
     private final SceneTransition sceneTransition;
 
