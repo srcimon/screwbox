@@ -152,6 +152,16 @@ class DefaultScenesTest {
         assertThat(scenes.isTransitioning()).isTrue();
     }
 
+    @Test
+    void add_sceneAlreadyPresent_throwsException() {
+        scenes.add(new GameScene());
+        GameScene gameScene = new GameScene();
+
+        assertThatThrownBy(() -> scenes.add(gameScene))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("scene is already present: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+    }
+
     @AfterEach
     void afterEach() {
         shutdown(executor);
