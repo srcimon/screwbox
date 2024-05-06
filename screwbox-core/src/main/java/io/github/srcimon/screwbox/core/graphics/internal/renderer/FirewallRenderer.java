@@ -7,10 +7,13 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import java.awt.*;
 import java.util.function.Supplier;
 
+/**
+ * Prevent uneccesary and invalid rendering tasks hitting the actual render.
+ */
 public class FirewallRenderer implements Renderer {
 
     private final Renderer next;
-
+//TODO double check all conditions
     public FirewallRenderer(final Renderer next) {
         this.next = next;
     }
