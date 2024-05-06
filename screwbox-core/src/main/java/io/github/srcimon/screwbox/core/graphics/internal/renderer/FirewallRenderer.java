@@ -56,6 +56,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+        //TODO skipp when not in drawing area
         if (!options.color().opacity().isZero() && options.strokeWidth() > 0) {
             next.drawLine(from, to, options);
         }
