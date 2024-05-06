@@ -3,9 +3,11 @@ package io.github.srcimon.screwbox.core.window.internal;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -113,8 +115,8 @@ public class DefaultWindow implements Window, Updatable {
         executor.execute(new InitializeFontDrawingTask());
 
         frame.getCanvas().createBufferStrategy(2);
-        final AsyncRenderer asyncRenderer = new AsyncRenderer(new DefaultRenderer(), executor);
-        screen.setRenderer(asyncRenderer);
+        final Renderer renderer = new FirewallRenderer(new AsyncRenderer(new DefaultRenderer(), executor));
+        screen.setRenderer(renderer);
         updateCursor();
         return this;
     }

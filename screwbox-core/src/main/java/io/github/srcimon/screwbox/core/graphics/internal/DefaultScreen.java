@@ -69,9 +69,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        if (size.width() > 0 && size.height() > 0) {
-            renderer.drawRectangle(origin, size, options);
-        }
+        renderer.drawRectangle(origin, size, options);
         return this;
     }
 
@@ -83,9 +81,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        if (radius > 0) {
-            renderer.drawCircle(offset, radius, options);
-        }
+        renderer.drawCircle(offset, radius, options);
         return this;
     }
 
@@ -115,9 +111,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        if (!options.opacity().isZero() && options.scale() > 0) {
-            renderer.drawText(offset, text, options);
-        }
+        renderer.drawText(offset, text, options);
         return this;
     }
 
@@ -139,9 +133,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        if (!options.opacity().isZero()) {
-            renderer.fillWith(sprite, options);
-        }
+        renderer.fillWith(sprite, options);
         return this;
     }
 
