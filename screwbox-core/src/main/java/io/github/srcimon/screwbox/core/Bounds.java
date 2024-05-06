@@ -163,7 +163,7 @@ public final class Bounds implements Serializable {
      * Same as {@link #expand(double)} but only inflates the top {@link Line}
      * of the {@link Bounds}.
      */
-    public Bounds expandTop(final int value) {
+    public Bounds expandTop(final double value) {
         return Bounds.atOrigin(origin.addY(-value), width(), height() + value);
     }
 
