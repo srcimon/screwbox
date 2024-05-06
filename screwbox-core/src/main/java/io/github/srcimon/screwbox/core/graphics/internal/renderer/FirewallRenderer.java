@@ -14,7 +14,10 @@ public class FirewallRenderer implements Renderer {
 
     private final Renderer next;
 
+    private ScreenBounds bounds;
+
     //TODO double check all conditions
+    //TODO add final modifier
     public FirewallRenderer(final Renderer next) {
         this.next = next;
     }
@@ -22,6 +25,7 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         next.updateGraphicsContext(graphicsSupplier, canvasSize);
+        bounds = new ScreenBounds(Offset.origin(), canvasSize);
     }
 
     @Override
@@ -47,7 +51,8 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawRectangle(Offset offset, Size size, RectangleDrawOptions options) {
-        if (!options.color().opacity().isZero() && size.isValid()) {
+        final var rectangleBounds = new ScreenBounds(offset, size);
+        if (!options.color().opacity().isZero() && size.isValid() && bounds.intersects(rectangleBounds)) {
             next.drawRectangle(offset, size, options);
         }
     }
@@ -61,7 +66,8 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawCircle(Offset offset, int radius, CircleDrawOptions options) {
-        if (!options.color().opacity().isZero() && radius > 0) {
+        final var circleBounds = new ScreenBounds(offset.x() - radius, offset.y() - radius, radius * 2, radius * 2);
+        if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(bounds)) {
             next.drawCircle(offset, radius, options);
         }
     }
