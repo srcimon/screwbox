@@ -44,7 +44,7 @@ public record SceneTransition(
      * Switch {@link Scenes} using an extro {@link Animation}.
      */
     public SceneTransition extroAnimation(final Animation extroAnimation) {
-        return new SceneTransition(extroAnimation, Duration.none(), LINEAR_IN, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
+        return new SceneTransition(extroAnimation, extroDuration, extroEase, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
     }
 
     /**

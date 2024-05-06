@@ -25,4 +25,21 @@ class SceneTransitionTest {
         assertThat(transition.extroDuration()).isEqualTo(Duration.none());
         assertThat(transition.extroEase()).isEqualTo(Ease.LINEAR_IN);
     }
+
+    @Test
+    void custom_extroConfigured_createsTransitionWithoutIntroAnimation() {
+        var animation = new ColorFadeAnimation();
+
+        var transition = SceneTransition.custom()
+                .extroEase(Ease.SINE_IN)
+                .extroDurationSeconds(2)
+                .extroAnimation(animation);
+
+        assertThat(transition.extroAnimation()).isEqualTo(animation);
+        assertThat(transition.extroEase()).isEqualTo(Ease.SINE_IN);
+        assertThat(transition.extroDuration()).isEqualTo(Duration.ofSeconds(2));
+        assertThat(transition.introAnimation()).isInstanceOf(ColorFadeAnimation.class);
+        assertThat(transition.introDuration()).isEqualTo(Duration.none());
+        assertThat(transition.introEase()).isEqualTo(Ease.LINEAR_OUT);
+    }
 }
