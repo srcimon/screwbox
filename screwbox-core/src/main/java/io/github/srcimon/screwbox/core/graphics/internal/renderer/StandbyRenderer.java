@@ -55,11 +55,6 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        // does nothing
-    }
-
-    @Override
     public void drawText(Offset offset, String text, TextDrawOptions options) {
         // does nothing
     }

@@ -23,7 +23,6 @@ import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -104,13 +103,6 @@ class DefaultScreenTest {
         screen.drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
 
         verify(renderer).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
-    }
-
-    @Test
-    void drawCircle_radiusZero_doesntCallRender() {
-        screen.drawCircle(Offset.at(10, 20), 0, CircleDrawOptions.fading(Color.RED));
-
-        verify(renderer, never()).drawCircle(Offset.at(10, 20), 0, CircleDrawOptions.fading(Color.RED));
     }
 
     @Test

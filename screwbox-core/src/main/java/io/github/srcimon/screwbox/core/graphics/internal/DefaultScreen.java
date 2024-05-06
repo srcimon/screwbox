@@ -98,12 +98,6 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        renderer.drawSprite(sprite, origin, options, clip);
-        return this;
-    }
-
-    @Override
     public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         renderer.drawText(offset, text, options);
         return this;

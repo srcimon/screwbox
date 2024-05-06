@@ -92,16 +92,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    @Override
-    public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options, final Bounds clip) {
-        final var offset = toOffset(origin);
-        final var x = offset.x() - ((options.scale() - 1) * sprite.size().width());
-        final var y = offset.y() - ((options.scale() - 1) * sprite.size().height());
-        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
-        screen.drawSprite(sprite, Offset.at(x, y), scaledOptions, toScreen(clip));
-        return this;
-    }
-
     private Size toDimension(final Vector size) {
         final long x = Math.round(size.x() * zoom);
         final long y = Math.round(size.y() * zoom);

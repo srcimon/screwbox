@@ -81,13 +81,6 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip) {
-        if (!options.opacity().isZero() & clip.size().isValid()) {
-            next.drawSprite(sprite, origin, options, clip);
-        }
-    }
-
-    @Override
     public void drawText(Offset offset, String text, TextDrawOptions options) {
         if (!options.opacity().isZero() && options.scale() > 0) {
             next.drawText(offset, text, options);

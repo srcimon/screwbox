@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -135,13 +134,6 @@ class DefaultRenderImageTest {
         renderer.drawSprite(SpriteBundle.MOON_SURFACE_16, Offset.at(4, 12), options);
 
         verifyIsIdenticalWithReferenceImage("drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
-    }
-
-    @Test
-    void drawSprite_useClip_drawsSpriteOnlyInClip() {
-        renderer.drawSprite(SPRITE, Offset.at(4, 12), SpriteDrawOptions.scaled(2), new ScreenBounds(4, 4, 16, 16));
-
-        verifyIsIdenticalWithReferenceImage("drawSprite_useClip_drawsSpriteOnlyInClip.png");
     }
 
     @Test

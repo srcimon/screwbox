@@ -68,7 +68,6 @@ public interface Screen {
      * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
      *
      * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
-     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
      */
     Screen drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
@@ -76,17 +75,8 @@ public interface Screen {
      * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
      *
      * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
-     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions, ScreenBounds)
      */
     Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
-
-    /**
-     * Draws a {@link Sprite} on the {@link Screen} using the given origin and {@link SpriteDrawOptions}.
-     *
-     * @see #drawSprite(Supplier, Offset, SpriteDrawOptions)
-     * @see #drawSprite(Sprite, Offset, SpriteDrawOptions)
-     */
-    Screen drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
     /**
      * Draws text on the {@link Screen} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and

@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added running time to log when stopping the engine
+- Removed api for drawing sprites using clip
 
 ### 📦 Dependency updates
 
