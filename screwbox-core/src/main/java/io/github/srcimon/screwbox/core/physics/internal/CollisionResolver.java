@@ -17,12 +17,12 @@ public final class CollisionResolver {
         } else {
             reactOnHorizontalCollision(check, correction);
         }
-        check.movePhysics(correction);
+        check.physicsBounds().bounds = check.physicsBounds().bounds.moveBy(correction);
     }
 
     private static Vector getResolveVector(final CollisionCheck check) {
         final var colliderBounds = check.colliderBounds();
-        final var entityBounds = check.physicsBounds();
+        final var entityBounds = check.physicsBounds().bounds;
 
         final boolean colliderBelowPhysics = abs(colliderBounds.maxY() - entityBounds.minY()) < abs(
                 colliderBounds.minY() - entityBounds.maxY());

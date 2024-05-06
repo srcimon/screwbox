@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.physics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import java.util.Objects;
 
@@ -25,16 +25,16 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
     }
 
     public boolean bodiesIntersect() {
-        return physicsBounds().intersects(colliderBounds);
+        return physicsBounds().bounds.intersects(colliderBounds);
     }
 
     public boolean bodiesTouch() {
-        return physicsBounds().touches(colliderBounds);
+        return physicsBounds().bounds.touches(colliderBounds);
     }
 
     public boolean isNoOneWayFalsePositive() {
         return !colliderComponent.isOneWay || (
-                colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().maxY()
+                colliderBounds.position().y() - (colliderBounds.height() / 8) >= physicsBounds().bounds.maxY()
                         && rigidBodyComponent != null
                         && rigidBodyComponent.momentum.y() >= 0
                         && !rigidBodyComponent.ignoreOneWayCollisions);
@@ -52,8 +52,8 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return colliderBounds;
     }
 
-    public Bounds physicsBounds() {
-        return physics.bounds();
+    public TransformComponent physicsBounds() {
+        return physics.get(TransformComponent.class);
     }
 
     public PhysicsComponent physicsBodyComponent() {
@@ -90,7 +90,4 @@ public final class CollisionCheck implements Comparable<CollisionCheck> {
         return Double.compare(other.overlap(), overlap());
     }
 
-    public void movePhysics(final Vector movement) {
-        physics.moveBy(movement);
-    }
 }

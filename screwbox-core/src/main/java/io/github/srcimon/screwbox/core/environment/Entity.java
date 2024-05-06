@@ -194,9 +194,4 @@ public final class Entity implements Serializable {
     public void moveTo(final Vector position) {
         tranform.bounds = bounds().moveTo(position);
     }
-
-    //TODO javadoc and test
-    public void moveBy(final Vector delta) {
-        tranform.bounds = bounds().moveBy(delta);
-    }
 }
