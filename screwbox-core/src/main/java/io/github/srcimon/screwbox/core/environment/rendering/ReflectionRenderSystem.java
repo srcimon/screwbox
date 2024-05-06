@@ -31,7 +31,7 @@ public class ReflectionRenderSystem implements EntitySystem {
         final var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
-            final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
+            final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea.expandTop(100));//TODO remove workaround
             visibleAreaOfMirror.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
                 final Size size = Size.of(
