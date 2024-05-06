@@ -13,11 +13,8 @@ import java.util.function.Supplier;
 public class FirewallRenderer implements Renderer {
 
     private final Renderer next;
+    private ScreenBounds screen;
 
-    private ScreenBounds bounds;
-
-    //TODO double check all conditions
-    //TODO add final modifier
     public FirewallRenderer(final Renderer next) {
         this.next = next;
     }
@@ -25,76 +22,76 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         next.updateGraphicsContext(graphicsSupplier, canvasSize);
-        bounds = new ScreenBounds(Offset.origin(), canvasSize);
+        screen = new ScreenBounds(Offset.origin(), canvasSize);
     }
 
     @Override
-    public void fillWith(Color color) {
+    public void fillWith(final Color color) {
         if (!color.opacity().isZero()) {
             next.fillWith(color);
         }
     }
 
     @Override
-    public void fillWith(Sprite sprite, SpriteFillOptions options) {
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
         if (!options.opacity().isZero() && options.scale() > 0) {
             next.fillWith(sprite, options);
         }
     }
 
     @Override
-    public void drawText(Offset offset, String text, SystemTextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         if (!options.color().opacity().isZero()) {
             next.drawText(offset, text, options);
         }
     }
 
     @Override
-    public void drawRectangle(Offset offset, Size size, RectangleDrawOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         final var rectangleBounds = new ScreenBounds(offset, size);
-        if (!options.color().opacity().isZero() && size.isValid() && bounds.intersects(rectangleBounds)) {
+        if (!options.color().opacity().isZero() && size.isValid() && screen.intersects(rectangleBounds)) {
             next.drawRectangle(offset, size, options);
         }
     }
 
     @Override
-    public void drawLine(Offset from, Offset to, LineDrawOptions options) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
         if (!options.color().opacity().isZero() && options.strokeWidth() > 0) {
             next.drawLine(from, to, options);
         }
     }
 
     @Override
-    public void drawCircle(Offset offset, int radius, CircleDrawOptions options) {
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
         final var circleBounds = new ScreenBounds(offset.x() - radius, offset.y() - radius, radius * 2, radius * 2);
-        if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(bounds)) {
+        if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(screen)) {
             next.drawCircle(offset, radius, options);
         }
     }
 
     @Override
-    public void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options) {
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
         if (!options.opacity().isZero()) {
             next.drawSprite(sprite, origin, options);
         }
     }
 
     @Override
-    public void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         if (!options.opacity().isZero()) {
             next.drawSprite(sprite, origin, options);
         }
     }
 
     @Override
-    public void drawText(Offset offset, String text, TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         if (!options.opacity().isZero() && options.scale() > 0) {
             next.drawText(offset, text, options);
         }
     }
 
     @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch) {
+    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
         next.drawSpriteBatch(spriteBatch);
     }
 }
