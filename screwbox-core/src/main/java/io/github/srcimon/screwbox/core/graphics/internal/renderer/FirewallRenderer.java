@@ -34,14 +34,13 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        if (!options.opacity().isZero() && options.scale() > 0) {
+        if (!options.opacity().isZero()) {
             next.fillWith(sprite, options);
         }
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-
         if (!options.color().opacity().isZero()) { //TODO(LEFT = options.alignment() || offset.x() > screen.size().width()))
             next.drawText(offset, text, options);
         }
