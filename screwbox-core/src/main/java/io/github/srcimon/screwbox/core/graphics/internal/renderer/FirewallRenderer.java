@@ -13,7 +13,8 @@ import java.util.function.Supplier;
 public class FirewallRenderer implements Renderer {
 
     private final Renderer next;
-//TODO double check all conditions
+
+    //TODO double check all conditions
     public FirewallRenderer(final Renderer next) {
         this.next = next;
     }
@@ -32,7 +33,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void fillWith(Sprite sprite, SpriteFillOptions options) {
-        if (!options.opacity().isZero()) {
+        if (!options.opacity().isZero() && options.scale() > 0) {
             next.fillWith(sprite, options);
         }
     }
@@ -53,7 +54,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawLine(Offset from, Offset to, LineDrawOptions options) {
-        if (!options.color().opacity().isZero()) {
+        if (!options.color().opacity().isZero() && options.strokeWidth() > 0) {
             next.drawLine(from, to, options);
         }
     }
@@ -81,7 +82,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip) {
-        if (!options.opacity().isZero()) {
+        if (!options.opacity().isZero() & clip.size().isValid()) {
             next.drawSprite(sprite, origin, options, clip);
         }
     }
