@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Added running time to log when stopping the engine
 
 ### 📦 Dependency updates
 
