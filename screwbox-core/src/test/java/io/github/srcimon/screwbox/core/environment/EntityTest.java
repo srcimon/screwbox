@@ -202,4 +202,14 @@ class EntityTest {
         assertThat(entity.position()).isEqualTo($(19, 30));
         assertThat(entity.bounds()).isEqualTo($$(11, 22, 16, 16));
     }
+
+    @Test
+    void moveBy_hasTransform_movesByVector() {
+        entity.add(new TransformComponent(20, 40, 16, 16));
+
+        entity.moveBy($(4, 2));
+
+        assertThat(entity.position()).isEqualTo($(24, 42));
+        assertThat(entity.bounds()).isEqualTo($$(16, 34, 16, 16));
+    }
 }
