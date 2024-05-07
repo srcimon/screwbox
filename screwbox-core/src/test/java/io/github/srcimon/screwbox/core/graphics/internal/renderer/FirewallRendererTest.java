@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -14,12 +16,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class FirewallRendererTest {
@@ -33,13 +36,14 @@ class FirewallRendererTest {
     @BeforeEach
     void setUp() {
         renderer.updateGraphicsContext(() -> null, Size.of(640, 480));
+        Mockito.reset(next);
     }
 
     @Test
     void fillWith_colorIsTransparent_skipsRendering() {
         renderer.fillWith(Color.TRANSPARENT);
 
-        verify(next, never()).fillWith(any());
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -53,7 +57,7 @@ class FirewallRendererTest {
     void fillWith_spriteHasZeroOpacity_skipsRendering() {
         renderer.fillWith(Sprite.invisible(), SpriteFillOptions.scale(2).opacity(Percent.zero()));
 
-        verify(next, never()).fillWith(any(), any());
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -67,14 +71,14 @@ class FirewallRendererTest {
     void drawText_transparent_skipsRendering() {
         renderer.drawText(Offset.at(0, 10), "Test", SystemTextDrawOptions.systemFont("Arial").color(Color.TRANSPARENT));
 
-        verify(next, never()).drawText(any(), anyString(), any(SystemTextDrawOptions.class));
+        verifyNoInteractions(next);
     }
 
     @Test
     void drawText_noText_skipsRendering() {
         renderer.drawText(Offset.at(0, 10), "", SystemTextDrawOptions.systemFont("Arial"));
 
-        verify(next, never()).drawText(any(), anyString(), any(SystemTextDrawOptions.class));
+        verifyNoInteractions(next);
     }
 
     @Test
@@ -88,27 +92,62 @@ class FirewallRendererTest {
     void drawRectangle_invalidSize_skipsRendering() {
         renderer.drawRectangle(Offset.origin(), Size.of(0, 2), RectangleDrawOptions.filled(Color.BLUE));
 
-        verify(next, never()).drawRectangle(any(), any(), any());
+        verifyNoInteractions(next);
     }
 
     @Test
     void drawRectangle_transparent_skipsRendering() {
         renderer.drawRectangle(Offset.origin(), Size.of(4, 2), RectangleDrawOptions.filled(Color.TRANSPARENT));
 
-        verify(next, never()).drawRectangle(any(), any(), any());
+        verifyNoInteractions(next);
     }
 
     @Test
     void drawRectangle_outOfBounds_skipsRendering() {
         renderer.drawRectangle(Offset.at(1000, 40), Size.of(4, 2), RectangleDrawOptions.filled(Color.BLACK));
 
-        verify(next, never()).drawRectangle(any(), any(), any());
+        verifyNoInteractions(next);
     }
 
     @Test
-    void drawRectangle_validDrawingTasks_renders() {
+    void drawRectangle_visibleRectangle_renders() {
         renderer.drawRectangle(Offset.at(70, 40), Size.of(4, 2), RectangleDrawOptions.filled(Color.BLACK));
 
         verify(next).drawRectangle(any(), any(), any());
+    }
+
+    @Test
+    void drawLine_transparent_skipsRendering() {
+        renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.TRANSPARENT));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawLine_strokeWidthZero_skipsRendering() {
+        renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.BLUE).strokeWidth(0));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawLine_visibleLine_renders() {
+        renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.BLUE).strokeWidth(2));
+
+        verify(next).drawLine(any(), any(), any());
+    }
+
+    @Test
+    void drawCircle_transparent_skipsRendering() {
+        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.TRANSPARENT));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawCircle_noRadius_skipsRendering() {
+        renderer.drawCircle(Offset.at(20, 40), 0, CircleDrawOptions.outline(Color.BLACK));
+
+        verifyNoInteractions(next);
     }
 }
