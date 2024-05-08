@@ -187,11 +187,22 @@ public final class Entity implements Serializable {
     }
 
     /**
-     * Moves an {@link Entity} to the given {@link Bounds#position()}.
+     * Moves an {@link Entity} to the specified {@link Bounds#position()}.
      *
      * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     * @see #moveBy(Vector)
      */
     public void moveTo(final Vector position) {
         tranform.bounds = bounds().moveTo(position);
+    }
+
+    /**
+     * Moves an {@link Entity} by the specified delta.
+     *
+     * @throws IllegalStateException if {@link Entity} has no {@link TransformComponent}
+     * @see #moveTo(Vector)
+     */
+    public void moveBy(final Vector delta) {
+        tranform.bounds = bounds().moveBy(delta);
     }
 }

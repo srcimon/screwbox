@@ -16,27 +16,15 @@ public interface World {
 
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
-     *
-     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
      */
     World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options);
 
     /**
      * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions}.
-     *
-     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions, Bounds)
      */
     default World drawSprite(final Supplier<Sprite> sprite, final Vector origin, final SpriteDrawOptions options) {
         return drawSprite(sprite.get(), origin, options);
     }
-
-    /**
-     * Draws a {@link Sprite} on the {@link World} using the given {@link SpriteDrawOptions} but only draws on
-     * the given {@link Bounds}. Can be used to apply effects.
-     *
-     * @see #drawSprite(Sprite, Vector, SpriteDrawOptions)
-     */
-    World drawSprite(Sprite sprite, Vector origin, SpriteDrawOptions options, Bounds clip);
 
     /**
      * Draws a sprite based text ({@link Pixelfont}) on the {@link World} using the given {@link TextDrawOptions}.

@@ -208,21 +208,6 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        final var oldClip = graphics.getClip();
-        graphics.setClip(
-                clip.offset().x(),
-                clip.offset().y(),
-                clip.size().width(),
-                clip.size().height());
-
-        drawSprite(sprite, origin, options);
-
-        graphics.setClip(oldClip);
-
-    }
-
-    @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());
         final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
@@ -246,7 +231,7 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        for(final var entry : spriteBatch.entriesInOrder()) {
+        for (final var entry : spriteBatch.entriesInOrder()) {
             drawSprite(entry.sprite(), entry.offset(), entry.options());
         }
     }

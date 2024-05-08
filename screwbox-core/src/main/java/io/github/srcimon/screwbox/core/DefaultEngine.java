@@ -164,7 +164,9 @@ class DefaultEngine implements Engine {
                 executor.shutdown();
             });
             window.close();
-            log.info("engine stopped (%,d frames total) after running for %s".formatted(loop().frameNumber(), loop.runningTime().humanReadable()));
+            log.info("engine stopped after running for %s and rendering %,d frames".formatted(
+                    loop.runningTime().humanReadable(),
+                    loop().frameNumber()));
             System.exit(0);
         }
     }

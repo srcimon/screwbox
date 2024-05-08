@@ -39,4 +39,11 @@ public class SpriteBatch {
         Collections.sort(entries);
         return entries;
     }
+
+    /**
+     * Returns {@code true} if batch has no entries.
+     */
+    public boolean isEmpty() {
+        return entries.isEmpty();
+    }
 }
