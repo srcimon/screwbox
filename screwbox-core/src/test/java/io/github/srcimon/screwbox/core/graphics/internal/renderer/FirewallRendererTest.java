@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
@@ -171,5 +172,26 @@ class FirewallRendererTest {
         renderer.drawSprite(SpriteBundle.SMOKE_16, Offset.origin(), SpriteDrawOptions.originalSize());
 
         verify(next).drawSprite(any(Supplier.class), any(), any());
+    }
+
+    @Test
+    void drawText_pixelfontNoText_skipsRendering() {
+        renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawText_pixelfontSizeZero_skipsRendering() {
+        renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(0));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawText_pixelfontTransparent_skipsRendering() {
+        renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA).opacity(Percent.zero()));
+
+        verifyNoInteractions(next);
     }
 }

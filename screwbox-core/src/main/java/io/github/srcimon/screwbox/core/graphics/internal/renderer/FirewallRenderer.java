@@ -86,7 +86,7 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        if (!options.opacity().isZero() && options.scale() > 0) {
+        if (!options.opacity().isZero() && !text.isEmpty() && options.scale() > 0) {
             next.drawText(offset, text, options);
         }
     }
