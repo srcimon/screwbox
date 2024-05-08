@@ -141,6 +141,13 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawCircle_outOfBounds_skipsRendering() {
+        renderer.drawCircle(Offset.at(2000, 40), 20, CircleDrawOptions.outline(Color.RED));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
     void drawCircle_transparent_skipsRendering() {
         renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.TRANSPARENT));
 
@@ -198,9 +205,16 @@ class FirewallRendererTest {
 
     @Test
     void drawText_pixelfontTransparent_skipsRendering() {
-        renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA).opacity(Percent.zero()));
+        renderer.drawText(Offset.origin(), "Test", TextDrawOptions.font(FontBundle.BOLDZILLA).opacity(Percent.zero()));
 
         verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawText_pixelfontIsVisible_renders() {
+        renderer.drawText(Offset.origin(), "Test", TextDrawOptions.font(FontBundle.BOLDZILLA));
+
+        verify(next).drawText(any(), any(), any(TextDrawOptions.class));
     }
 
     @Test
