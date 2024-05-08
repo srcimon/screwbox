@@ -1,15 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -149,5 +143,33 @@ class FirewallRendererTest {
         renderer.drawCircle(Offset.at(20, 40), 0, CircleDrawOptions.outline(Color.BLACK));
 
         verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawSprite_transparent_skipsRendering() {
+        renderer.drawSprite(SpriteBundle.SMOKE_16.get(), Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawSprite_visibleSprite_renders() {
+        renderer.drawSprite(SpriteBundle.SMOKE_16.get(), Offset.origin(), SpriteDrawOptions.originalSize());
+
+        verify(next).drawSprite(any(Sprite.class), any(), any());
+    }
+
+    @Test
+    void drawSprite_suppliedSpriteIsTransparent_skipsRendering() {
+        renderer.drawSprite(SpriteBundle.SMOKE_16, Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawSprite_visibleSuppliedSprite_renders() {
+        renderer.drawSprite(SpriteBundle.SMOKE_16, Offset.origin(), SpriteDrawOptions.originalSize());
+
+        verify(next).drawSprite(any(Supplier.class), any(), any());
     }
 }
