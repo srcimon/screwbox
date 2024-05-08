@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import java.awt.*;
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.Alignment.LEFT;
+import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.Alignment.RIGHT;
+
 /**
  * Prevent uneccesary and invalid rendering tasks hitting the actual render.
  */
@@ -42,9 +45,8 @@ public class FirewallRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         if (!options.color().opacity().isZero() && !text.isEmpty()
-                && !(SystemTextDrawOptions.Alignment.RIGHT.equals(options.alignment()) && offset.x() < 0)
-                && !(SystemTextDrawOptions.Alignment.LEFT.equals(options.alignment()) && offset.x() > screen.size().width())
-        ) {
+                && !(RIGHT.equals(options.alignment()) && offset.x() < 0)
+                && !(LEFT.equals(options.alignment()) && offset.x() > screen.size().width())) {
             next.drawText(offset, text, options);
         }
     }
