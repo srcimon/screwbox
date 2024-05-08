@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Entity.moveBy(Vector)`
+- Added `SpriteBatch.isEmpty()`
 
 ### 🪛 Bug Fixes
 

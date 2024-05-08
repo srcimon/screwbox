@@ -93,6 +93,8 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        next.drawSpriteBatch(spriteBatch);
+        if (!spriteBatch.isEmpty()) {
+            next.drawSpriteBatch(spriteBatch);
+        }
     }
 }

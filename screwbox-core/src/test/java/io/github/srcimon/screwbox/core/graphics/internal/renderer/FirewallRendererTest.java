@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -133,6 +134,13 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawCircle_visibleCircle_renders() {
+        renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.RED));
+
+        verify(next).drawCircle(any(), anyInt(), any());
+    }
+
+    @Test
     void drawCircle_transparent_skipsRendering() {
         renderer.drawCircle(Offset.at(20, 40), 20, CircleDrawOptions.outline(Color.TRANSPARENT));
 
@@ -191,6 +199,23 @@ class FirewallRendererTest {
     @Test
     void drawText_pixelfontTransparent_skipsRendering() {
         renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA).opacity(Percent.zero()));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawSpriteBatch_batchHasEntries_renders() {
+        SpriteBatch spriteBatch = new SpriteBatch();
+        spriteBatch.add(SpriteBundle.DOT_YELLOW_16.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
+
+        renderer.drawSpriteBatch(spriteBatch);
+
+        verify(next).drawSpriteBatch(any());
+    }
+
+    @Test
+    void drawSpriteBatch_batchIsEmpty_skipsRendering() {
+        renderer.drawSpriteBatch(new SpriteBatch());
 
         verifyNoInteractions(next);
     }
