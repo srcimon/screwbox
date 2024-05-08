@@ -205,7 +205,7 @@ class FirewallRendererTest {
 
     @Test
     void drawText_pixelfontSizeZero_skipsRendering() {
-        renderer.drawText(Offset.origin(), "", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(0));
+        renderer.drawText(Offset.origin(), "Test", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(0));
 
         verifyNoInteractions(next);
     }
