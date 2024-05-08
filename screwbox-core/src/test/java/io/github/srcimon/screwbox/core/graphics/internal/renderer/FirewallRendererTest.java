@@ -120,6 +120,13 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawLine_outOfBounds_skipsRendering() {
+        renderer.drawLine(Offset.at(500,1000), Offset.at(20, 4000), LineDrawOptions.color(Color.BLUE));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
     void drawLine_strokeWidthZero_skipsRendering() {
         renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.BLUE).strokeWidth(0));
 

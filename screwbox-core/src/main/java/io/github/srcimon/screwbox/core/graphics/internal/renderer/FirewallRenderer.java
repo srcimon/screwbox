@@ -56,8 +56,11 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        //TODO skipp when not in drawing area
-        if (!options.color().opacity().isZero() && options.strokeWidth() > 0) {
+        final int minX = Math.min(from.x(), to.x());
+        final int minY = Math.min(from.y(), to.y());
+        final var size = Size.definedBy(from, to);
+        final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
+        if (!options.color().opacity().isZero() && options.strokeWidth() > 0 && screenBounds.intersects(screen)) {
             next.drawLine(from, to, options);
         }
     }

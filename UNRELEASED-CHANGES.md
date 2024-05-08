@@ -10,6 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Added `FirewallRenderer` that prevents uneccessary and / or harmfull drawing operations (#259)
 - Added running time to log when stopping the engine
 - Added renderer decorator to block all uneccessary or potentially harmfull drawing calls (#259)
 - Removed api for drawing sprites using clip
