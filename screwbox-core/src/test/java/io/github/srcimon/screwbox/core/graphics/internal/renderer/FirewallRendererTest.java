@@ -64,6 +64,20 @@ class FirewallRendererTest {
     }
 
     @Test
+    void drawText_alignedRightAndLeftOfScreen_skipsRendering() {
+        renderer.drawText(Offset.at(-2, -4), "Test", SystemTextDrawOptions.systemFont("Arial").alignRight());
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
+    void drawText_alignedLeftAndRightOfScreen_skipsRendering() {
+        renderer.drawText(Offset.at(650, -4), "Test", SystemTextDrawOptions.systemFont("Arial"));
+
+        verifyNoInteractions(next);
+    }
+
+    @Test
     void drawText_transparent_skipsRendering() {
         renderer.drawText(Offset.at(0, 10), "Test", SystemTextDrawOptions.systemFont("Arial").color(Color.TRANSPARENT));
 
@@ -121,7 +135,7 @@ class FirewallRendererTest {
 
     @Test
     void drawLine_outOfBounds_skipsRendering() {
-        renderer.drawLine(Offset.at(500,1000), Offset.at(20, 4000), LineDrawOptions.color(Color.BLUE));
+        renderer.drawLine(Offset.at(500, 1000), Offset.at(20, 4000), LineDrawOptions.color(Color.BLUE));
 
         verifyNoInteractions(next);
     }

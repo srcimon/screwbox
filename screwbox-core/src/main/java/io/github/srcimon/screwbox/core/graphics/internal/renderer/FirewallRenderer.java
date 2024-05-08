@@ -41,7 +41,13 @@ public class FirewallRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        if (!options.color().opacity().isZero() && !text.isEmpty()) { //TODO(LEFT = options.alignment() || offset.x() > screen.size().width()))
+        if (SystemTextDrawOptions.Alignment.RIGHT.equals(options.alignment()) && offset.x() < 0) {
+            return;
+        }
+        if (SystemTextDrawOptions.Alignment.LEFT.equals(options.alignment()) && offset.x() > screen.size().width()) {
+            return;
+        }
+        if (!options.color().opacity().isZero() && !text.isEmpty()) {
             next.drawText(offset, text, options);
         }
     }
