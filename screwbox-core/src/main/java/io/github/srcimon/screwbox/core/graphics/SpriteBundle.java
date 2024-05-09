@@ -18,9 +18,8 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
     DOT_BLUE_16(assetFromFile("assets/sprites/DOT_BLUE_16.png")),
     DOT_YELLOW_16(assetFromFile("assets/sprites/DOT_YELLOW_16.png")),
     DOT_RED_16(assetFromFile("assets/sprites/DOT_RED_16.png")),
-    MOON_SURFACE_16(assetFromFile("assets/sprites/MOON_SURFACE_16.png")),
     SMOKE_16(assetFromFile("assets/sprites/SMOKE_16.png")),
-    BLOB_ANIMATED_16(Asset.asset(() -> Sprite.animatedFromFile("assets/sprites/BLOB_ANIMATED_16.png", Size.square(16), Duration.ofMillis(150))));
+    SLIME_WALKING(Asset.asset(() -> Sprite.animatedFromFile("assets/sprites/SLIME_WALKING.png", Size.square(16), Duration.ofMillis(150))));
 
     private final Asset<Sprite> asset;
 

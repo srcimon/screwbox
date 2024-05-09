@@ -48,7 +48,7 @@ class ParticleOptionsTest {
         var particle = options
                 .sprite(SpriteBundle.MOON_SURFACE_16)
                 .sprite(SpriteBundle.MOON_SURFACE_16.get())
-                .sprite(SpriteBundle.BLOB_ANIMATED_16)
+                .sprite(SpriteBundle.SLIME_WALKING)
                 .sprites(SpriteBundle.DOT_BLUE_16)
                 .sprites(SpriteBundle.DOT_BLUE_16.get());
 
