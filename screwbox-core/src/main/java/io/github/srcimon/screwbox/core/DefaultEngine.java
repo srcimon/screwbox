@@ -15,6 +15,9 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.RendererFactory;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
@@ -105,10 +108,15 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
+        final DefaultRenderer defaultRenderer = new DefaultRenderer();
+        final AsyncRenderer asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
+        final FirewallRenderer firewallRenderer = new FirewallRenderer(asyncRenderer);
+
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, new RendererFactory(executor));
+        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, firewallRenderer);
         final DefaultWorld world = new DefaultWorld(screen);
+
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
         scenes = new DefaultScenes(this, screen, executor);
