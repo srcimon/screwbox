@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RendererFactory;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
@@ -37,6 +38,7 @@ import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 import io.github.srcimon.screwbox.core.window.Window;
 import io.github.srcimon.screwbox.core.window.internal.DefaultWindow;
+import io.github.srcimon.screwbox.core.window.internal.InitializeFontDrawingTask;
 import io.github.srcimon.screwbox.core.window.internal.MacOsWindowFrame;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -105,7 +107,7 @@ class DefaultEngine implements Engine {
 
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, executor, screen, graphicsDevice);
+        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, new RendererFactory(executor));
         final DefaultWorld world = new DefaultWorld(screen);
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
@@ -127,6 +129,7 @@ class DefaultEngine implements Engine {
             component.addMouseWheelListener(mouse);
             component.addKeyListener(keyboard);
         }
+        executor.execute(new InitializeFontDrawingTask());
         this.name = name;
         window.setTitle(name);
     }

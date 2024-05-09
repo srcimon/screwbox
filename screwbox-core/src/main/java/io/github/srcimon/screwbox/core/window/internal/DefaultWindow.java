@@ -2,12 +2,13 @@ package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
+import io.github.srcimon.screwbox.core.graphics.MouseCursor;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.RendererFactory;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -17,7 +18,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
@@ -29,8 +29,8 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
+    private final RendererFactory renderFactory;
     private DisplayMode lastDisplayMode;
-    private final ExecutorService executor;
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
@@ -38,14 +38,14 @@ public class DefaultWindow implements Window, Updatable {
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
-                         final ExecutorService executor,
                          final DefaultScreen screen,
-                         final GraphicsDevice graphicsDevice) {
+                         final GraphicsDevice graphicsDevice,
+                         final RendererFactory rendererFactory) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
-        this.executor = executor;
         this.screen = screen;
+        this.renderFactory = rendererFactory;
         new DragAndDropSupport(frame, (files, position) -> filesDropedOnWindow = new FilesDropedOnWindow(files, position));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
@@ -84,7 +84,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window open() {
-        if(isOpen()) {
+        if (isOpen()) {
             return this;
         }
         final int width = configuration.resolution().width();
@@ -112,10 +112,8 @@ public class DefaultWindow implements Window, Updatable {
                 frame.setLocationRelativeTo(null);
             }
         }
-        executor.execute(new InitializeFontDrawingTask());
-
         frame.getCanvas().createBufferStrategy(2);
-        final Renderer renderer = new FirewallRenderer(new AsyncRenderer(new DefaultRenderer(), executor));
+        final Renderer renderer = renderFactory.createRenderer();
         screen.setRenderer(renderer);
         updateCursor();
         return this;
@@ -123,7 +121,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
-        if(isClosed()) {
+        if (isClosed()) {
             return this;
         }
         screen.setRenderer(new StandbyRenderer());

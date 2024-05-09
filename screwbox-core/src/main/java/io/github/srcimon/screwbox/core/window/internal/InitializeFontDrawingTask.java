@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  * around half a second. To speed up the engines start this should be called in
  * another thread.
  */
-class InitializeFontDrawingTask implements Runnable {
+public class InitializeFontDrawingTask implements Runnable {
 
     @Override
     public void run() {
