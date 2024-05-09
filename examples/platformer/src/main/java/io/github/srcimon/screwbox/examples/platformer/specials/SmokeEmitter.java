@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.tiled.GameObject;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.Ease.SINE_IN_OUT;
-import static io.github.srcimon.screwbox.core.graphics.SpriteBundle.SMOKE_16;
+import static io.github.srcimon.screwbox.core.graphics.SpriteBundle.SMOKE;
 
 public class SmokeEmitter implements SourceImport.Converter<GameObject> {
 
@@ -21,7 +21,7 @@ public class SmokeEmitter implements SourceImport.Converter<GameObject> {
         return new Entity(object.id()).add(
                 new TransformComponent(object.bounds()),
                 new ParticleEmitterComponent(Duration.ofMillis(80), ParticleOptions.unknownSource()
-                        .sprite(SMOKE_16)
+                        .sprite(SMOKE)
                         .ease(SINE_IN_OUT)
                         .randomStartScale(1, 3)
                         .startOpacity(Percent.zero())

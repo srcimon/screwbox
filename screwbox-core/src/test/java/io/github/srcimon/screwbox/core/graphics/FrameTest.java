@@ -151,7 +151,7 @@ class FrameTest {
 
     @Test
     void colors_frameWithFourColors_containsFourColors() {
-        Frame frameWithFourColors = SpriteBundle.DOT_YELLOW_16.get().singleFrame();
+        Frame frameWithFourColors = SpriteBundle.DOT_YELLOW.get().singleFrame();
 
         assertThat(frameWithFourColors.colors()).hasSize(4)
                 .contains(Color.rgb(205, 233, 17));

@@ -12,13 +12,13 @@ import static io.github.srcimon.screwbox.core.graphics.Sprite.assetFromFile;
  */
 public enum SpriteBundle implements AssetBundle<Sprite> {
 
-    ICON_32(assetFromFile("assets/sprites/ICON_32.png")),
-    ICON_512(assetFromFile("assets/sprites/ICON_512.png")),
-    BOX_STRIPED_32(assetFromFile("assets/sprites/BOX_STRIPED_32.png")),
-    DOT_BLUE_16(assetFromFile("assets/sprites/DOT_BLUE_16.png")),
-    DOT_YELLOW_16(assetFromFile("assets/sprites/DOT_YELLOW_16.png")),
-    DOT_RED_16(assetFromFile("assets/sprites/DOT_RED_16.png")),
-    SMOKE_16(assetFromFile("assets/sprites/SMOKE_16.png")),
+    ICON(assetFromFile("assets/sprites/ICON.png")),
+    ICON_LARGE(assetFromFile("assets/sprites/ICON_LARGE.png")),
+    BOX_STRIPED(assetFromFile("assets/sprites/BOX_STRIPED.png")),
+    DOT_BLUE(assetFromFile("assets/sprites/DOT_BLUE.png")),
+    DOT_YELLOW(assetFromFile("assets/sprites/DOT_YELLOW.png")),
+    DOT_RED(assetFromFile("assets/sprites/DOT_RED.png")),
+    SMOKE(assetFromFile("assets/sprites/SMOKE.png")),
     SLIME_WALKING(Asset.asset(() -> Sprite.animatedFromFile("assets/sprites/SLIME_WALKING.png", Size.square(16), Duration.ofMillis(150))));
 
     private final Asset<Sprite> asset;

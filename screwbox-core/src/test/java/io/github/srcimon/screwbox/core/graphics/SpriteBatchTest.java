@@ -9,7 +9,7 @@ class SpriteBatchTest {
     @Test
     void entriesInOrder_twoEntriesInWrongOrder_returnsEntriesInCorrectOrder() {
         SpriteBatch spriteBatch = new SpriteBatch();
-        spriteBatch.add(SpriteBundle.DOT_YELLOW_16.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
+        spriteBatch.add(SpriteBundle.DOT_YELLOW.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
         spriteBatch.add(SpriteBundle.SLIME_WALKING.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 1);
 
         assertThat(spriteBatch.entriesInOrder()).hasSize(2);
@@ -24,7 +24,7 @@ class SpriteBatchTest {
     @Test
     void isEmpty_oneEntry_isFalse() {
         SpriteBatch spriteBatch = new SpriteBatch();
-        spriteBatch.add(SpriteBundle.DOT_YELLOW_16.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
+        spriteBatch.add(SpriteBundle.DOT_YELLOW.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
 
         assertThat(spriteBatch.isEmpty()).isFalse();
     }

@@ -44,6 +44,6 @@ public class MacOsWindowFrame extends WindowFrame {
 
     @Override
     protected Sprite defaultIcon() {
-        return SpriteBundle.ICON_512.get();
+        return SpriteBundle.ICON_LARGE.get();
     }
 }

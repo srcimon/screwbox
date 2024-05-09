@@ -47,7 +47,7 @@ class ReflectionImageTest {
     void create_entityInAreaAdded_createImage() {
         Entity reflectableSprite = new Entity()
                 .add(new TransformComponent(200, 100, 40, 50))
-                .add(new RenderComponent(SpriteBundle.ICON_32, 4));
+                .add(new RenderComponent(SpriteBundle.ICON, 4));
 
         when(graphics.camera()).thenReturn(camera);
         when(graphics.toScreenUsingParallax(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
@@ -62,7 +62,7 @@ class ReflectionImageTest {
     void create_entityOutsideOfAreaAdded_createTransparentImage() {
         Entity reflectableSprite = new Entity()
                 .add(new TransformComponent(200, 100, 40, 50))
-                .add(new RenderComponent(SpriteBundle.ICON_32, 4));
+                .add(new RenderComponent(SpriteBundle.ICON, 4));
 
         when(graphics.toScreenUsingParallax(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
@@ -76,7 +76,7 @@ class ReflectionImageTest {
     void create_entityWithHigherDrawOrderAdded_createTransparentImage() {
         Entity reflectableSprite = new Entity()
                 .add(new TransformComponent(200, 100, 40, 50))
-                .add(new RenderComponent(SpriteBundle.ICON_32, 400));
+                .add(new RenderComponent(SpriteBundle.ICON, 400));
 
         reflectionImage.addEntity(reflectableSprite);
 

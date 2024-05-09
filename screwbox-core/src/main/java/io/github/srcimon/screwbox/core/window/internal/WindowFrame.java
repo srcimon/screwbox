@@ -64,7 +64,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     }
 
     protected Sprite defaultIcon() {
-        return SpriteBundle.ICON_32.get();
+        return SpriteBundle.ICON.get();
     }
 
     public Size getCanvasSize() {

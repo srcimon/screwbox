@@ -16,7 +16,7 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
  */
 public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     SMOKE(ParticleOptions.unknownSource()
-            .sprite(SpriteBundle.SMOKE_16)
+            .sprite(SpriteBundle.SMOKE)
             .baseSpeed(Vector.y(-100))
             .ease(Ease.SINE_IN_OUT)
             .randomStartScale(6, 8)
@@ -27,7 +27,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .randomStartRotation()
             .lifetimeSeconds(2)),
     CONFETTI(ParticleOptions.unknownSource()
-            .sprites(SpriteBundle.DOT_BLUE_16, SpriteBundle.DOT_RED_16, SpriteBundle.DOT_YELLOW_16)
+            .sprites(SpriteBundle.DOT_BLUE, SpriteBundle.DOT_RED, SpriteBundle.DOT_YELLOW)
             .chaoticMovement(100, Duration.ofSeconds(1))
             .ease(Ease.SIN_IN_OUT_TWICE)
             .animateScale(2, 1)
@@ -35,7 +35,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .randomLifeTimeSeconds(6, 7)
             .animateOpacity()),
     EXPLOSION(ParticleOptions.unknownSource()
-            .sprites(SpriteBundle.DOT_YELLOW_16, SpriteBundle.DOT_RED_16)
+            .sprites(SpriteBundle.DOT_YELLOW, SpriteBundle.DOT_RED)
             .animateOpacity()
             .animateScale(3, 1)
             .randomLifeTimeMilliseconds(800, 1500)

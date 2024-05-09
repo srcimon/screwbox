@@ -14,6 +14,7 @@
 - Enhanced log entry on engine stop
 - Removed api for drawing sprites using clip
 - `CollisionCheck` now uses performance optimized methods for detecting the entity bounds
+- Renamed existing sprite assets
 
 ### 📦 Dependency updates
 
