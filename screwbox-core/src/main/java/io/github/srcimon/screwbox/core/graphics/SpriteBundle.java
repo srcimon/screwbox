@@ -21,7 +21,7 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
     DOT_YELLOW(assetFromFile("assets/sprites/DOT_YELLOW.png")),
     DOT_RED(assetFromFile("assets/sprites/DOT_RED.png")),
     SMOKE(assetFromFile("assets/sprites/SMOKE.png")),
-    SLIME_WALKING(animatedAssetFromFile("assets/sprites/SLIME_WALKING.png", square(16), ofMillis(150))),
+    SLIME_MOVING(animatedAssetFromFile("assets/sprites/SLIME_MOVING.png", square(16), ofMillis(150))),
     TNT_TICKING(animatedAssetFromFile("assets/sprites/TNT_TICKING.png", square(16), ofMillis(150))),
     ELECTRICITY_SPARCLE(animatedAssetFromFile("assets/sprites/ELECTRICITY_SPARCLE.png", square(20), ofMillis(150))),
     EXPLOSION(animatedAssetFromFile("assets/sprites/EXPLOSION.png", square(16), ofMillis(150))),

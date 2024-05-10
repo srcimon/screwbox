@@ -48,7 +48,7 @@ class ParticleOptionsTest {
         var particle = options
                 .sprite(SpriteBundle.DOT_RED)
                 .sprite(SpriteBundle.DOT_RED.get())
-                .sprite(SpriteBundle.SLIME_WALKING)
+                .sprite(SpriteBundle.SLIME_MOVING)
                 .sprites(SpriteBundle.DOT_BLUE)
                 .sprites(SpriteBundle.DOT_BLUE.get());
 
