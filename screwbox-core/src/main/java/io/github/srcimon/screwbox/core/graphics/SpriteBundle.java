@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 
+import static io.github.srcimon.screwbox.core.graphics.Sprite.animatedAssetFromFile;
 import static io.github.srcimon.screwbox.core.graphics.Sprite.assetFromFile;
 
 /**
@@ -19,7 +20,8 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
     DOT_YELLOW(assetFromFile("assets/sprites/DOT_YELLOW.png")),
     DOT_RED(assetFromFile("assets/sprites/DOT_RED.png")),
     SMOKE(assetFromFile("assets/sprites/SMOKE.png")),
-    SLIME_WALKING(Asset.asset(() -> Sprite.animatedFromFile("assets/sprites/SLIME_WALKING.png", Size.square(16), Duration.ofMillis(150))));
+    SLIME_WALKING(animatedAssetFromFile("assets/sprites/SLIME_WALKING.png", Size.square(16), Duration.ofMillis(150))),
+    MONSTER_FLYING(animatedAssetFromFile("assets/sprites/MONSTER_FLYING.png", Size.square(32), Duration.ofMillis(150)));
 
     private final Asset<Sprite> asset;
 
