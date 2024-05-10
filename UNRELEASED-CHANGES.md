@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added a lot of new sprites to `SpriteBundle` (#321) @myTrx
 - Added `Entity.moveBy(Vector)`
 - Added `SpriteBatch.isEmpty()`
 - Added `Sprite.animatedAssetFromFile(...)`
