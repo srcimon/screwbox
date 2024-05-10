@@ -68,6 +68,10 @@ public class Sprite implements Serializable {
     }
 
 
+    public static Asset<Sprite> animatedAssetFromFile(final String fileName, final Size size, final Duration duration) {
+        return Asset.asset(() -> animatedFromFile(fileName, size, duration));
+    }
+
     public static Sprite animatedFromFile(final String fileName, final Size size, final Duration duration) {
         final var frames = new ArrayList<Frame>();
         for (final var frame : extractFrames(fileName, size)) {

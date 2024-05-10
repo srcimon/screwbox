@@ -12,8 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.BLACK;
-import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static io.github.srcimon.screwbox.core.graphics.Offset.origin;
+import static io.github.srcimon.screwbox.core.graphics.Size.square;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -25,14 +25,6 @@ class SpriteTest {
 
         assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
         assertThat(sprite.frameCount()).isEqualTo(3);
-    }
-
-    @Test
-    void dummy16x16_returnsDummySprite() {
-        var sprite = SpriteBundle.MOON_SURFACE_16.get();
-
-        assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
-        assertThat(sprite.frameCount()).isEqualTo(1);
     }
 
     @Test
@@ -235,5 +227,13 @@ class SpriteTest {
         assertThatThrownBy(animatedSprite::cropHorizontal)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot add frame with different dimension to sprite");
+    }
+
+    @Test
+    void animatedAssetFromFile_fileExist_returnsAnimatedSpriteAsset() {
+        Asset<Sprite> animatedSprite = Sprite.animatedAssetFromFile("tile.bmp", square(3), Duration.ofMillis(100));
+
+        assertThat(animatedSprite.get().frameCount()).isEqualTo(25);
+        assertThat(animatedSprite.get().duration()).isEqualTo(Duration.ofMillis(2500));
     }
 }

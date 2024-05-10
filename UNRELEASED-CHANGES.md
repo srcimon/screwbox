@@ -2,6 +2,7 @@
 
 - Added `Entity.moveBy(Vector)`
 - Added `SpriteBatch.isEmpty()`
+- Added `Sprite.animatedAssetFromFile(...)`
 
 ### 🪛 Bug Fixes
 

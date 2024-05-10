@@ -46,8 +46,8 @@ class ParticleOptionsTest {
     @Test
     void modifiers_multipleModifiersOfSameTypeAdded_onlyContainsLastModifier() {
         var particle = options
-                .sprite(SpriteBundle.MOON_SURFACE_16)
-                .sprite(SpriteBundle.MOON_SURFACE_16.get())
+                .sprite(SpriteBundle.DOT_RED)
+                .sprite(SpriteBundle.DOT_RED.get())
                 .sprite(SpriteBundle.SLIME_WALKING)
                 .sprites(SpriteBundle.DOT_BLUE)
                 .sprites(SpriteBundle.DOT_BLUE.get());
