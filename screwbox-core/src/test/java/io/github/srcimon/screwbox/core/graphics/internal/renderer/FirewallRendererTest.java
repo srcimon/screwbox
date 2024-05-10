@@ -184,28 +184,28 @@ class FirewallRendererTest {
 
     @Test
     void drawSprite_transparent_skipsRendering() {
-        renderer.drawSprite(SpriteBundle.SMOKE_16.get(), Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
+        renderer.drawSprite(SpriteBundle.SMOKE.get(), Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
 
         verifyNoInteractions(next);
     }
 
     @Test
     void drawSprite_visibleSprite_renders() {
-        renderer.drawSprite(SpriteBundle.SMOKE_16.get(), Offset.origin(), SpriteDrawOptions.originalSize());
+        renderer.drawSprite(SpriteBundle.SMOKE.get(), Offset.origin(), SpriteDrawOptions.originalSize());
 
         verify(next).drawSprite(any(Sprite.class), any(), any());
     }
 
     @Test
     void drawSprite_suppliedSpriteIsTransparent_skipsRendering() {
-        renderer.drawSprite(SpriteBundle.SMOKE_16, Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
+        renderer.drawSprite(SpriteBundle.SMOKE, Offset.origin(), SpriteDrawOptions.originalSize().opacity(0));
 
         verifyNoInteractions(next);
     }
 
     @Test
     void drawSprite_visibleSuppliedSprite_renders() {
-        renderer.drawSprite(SpriteBundle.SMOKE_16, Offset.origin(), SpriteDrawOptions.originalSize());
+        renderer.drawSprite(SpriteBundle.SMOKE, Offset.origin(), SpriteDrawOptions.originalSize());
 
         verify(next).drawSprite(any(Supplier.class), any(), any());
     }
@@ -241,7 +241,7 @@ class FirewallRendererTest {
     @Test
     void drawSpriteBatch_batchHasEntries_renders() {
         SpriteBatch spriteBatch = new SpriteBatch();
-        spriteBatch.add(SpriteBundle.DOT_YELLOW_16.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
+        spriteBatch.add(SpriteBundle.DOT_YELLOW.get(), Offset.origin(), SpriteDrawOptions.originalSize(), 2);
 
         renderer.drawSpriteBatch(spriteBatch);
 

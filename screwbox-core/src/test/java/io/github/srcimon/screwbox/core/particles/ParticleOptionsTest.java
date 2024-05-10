@@ -46,18 +46,18 @@ class ParticleOptionsTest {
     @Test
     void modifiers_multipleModifiersOfSameTypeAdded_onlyContainsLastModifier() {
         var particle = options
-                .sprite(SpriteBundle.MOON_SURFACE_16)
-                .sprite(SpriteBundle.MOON_SURFACE_16.get())
-                .sprite(SpriteBundle.BLOB_ANIMATED_16)
-                .sprites(SpriteBundle.DOT_BLUE_16)
-                .sprites(SpriteBundle.DOT_BLUE_16.get());
+                .sprite(SpriteBundle.DOT_RED)
+                .sprite(SpriteBundle.DOT_RED.get())
+                .sprite(SpriteBundle.SLIME_MOVING)
+                .sprites(SpriteBundle.DOT_BLUE)
+                .sprites(SpriteBundle.DOT_BLUE.get());
 
         assertThat(particle.modifiers()).hasSize(1);
     }
 
     @Test
     void sprites_listOfSprites_setsSpritesToUse() {
-        List<Sprite> sprites = List.of(SpriteBundle.DOT_BLUE_16.get(), SpriteBundle.DOT_YELLOW_16.get());
+        List<Sprite> sprites = List.of(SpriteBundle.DOT_BLUE.get(), SpriteBundle.DOT_YELLOW.get());
 
         Entity particle = applyOptionsOnTemplateParticle(options.sprites(sprites));
 

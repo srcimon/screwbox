@@ -1,7 +1,9 @@
 ### 🚀 Features & improvements
 
+- Added a lot of new sprites sponsored by @myTrx to `SpriteBundle` (#321)
 - Added `Entity.moveBy(Vector)`
 - Added `SpriteBatch.isEmpty()`
+- Added `Sprite.animatedAssetFromFile(...)`
 
 ### 🪛 Bug Fixes
 
@@ -14,6 +16,7 @@
 - Enhanced log entry on engine stop
 - Removed api for drawing sprites using clip
 - `CollisionCheck` now uses performance optimized methods for detecting the entity bounds
+- Renamed existing sprite assets
 
 ### 📦 Dependency updates
 

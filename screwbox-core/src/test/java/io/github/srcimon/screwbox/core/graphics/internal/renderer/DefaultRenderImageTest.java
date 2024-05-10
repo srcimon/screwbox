@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class DefaultRenderImageTest {
 
-    private static final Sprite SPRITE = SpriteBundle.MOON_SURFACE_16.get();
+    private static final Sprite SPRITE = SpriteBundle.DOT_BLUE.get();
 
     Frame result;
     Renderer renderer;
@@ -131,7 +131,7 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip() {
         SpriteDrawOptions options = SpriteDrawOptions.originalSize().opacity(Percent.of(0.4)).rotation(degrees(20)).flipVertical(true).flipHorizontal(true);
-        renderer.drawSprite(SpriteBundle.MOON_SURFACE_16, Offset.at(4, 12), options);
+        renderer.drawSprite(SpriteBundle.DOT_BLUE, Offset.at(4, 12), options);
 
         verifyIsIdenticalWithReferenceImage("drawSprite_assetRotatedAndTransparentAndFlipped_drawsSpriteOnlyInClip.png");
     }
