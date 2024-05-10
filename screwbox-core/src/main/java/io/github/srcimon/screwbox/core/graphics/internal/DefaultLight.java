@@ -127,7 +127,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
-        final CircleDrawOptions options = CircleDrawOptions.fading(color);
+        final CircleDrawOptions options = CircleDrawOptions.fading(color.opacity(color.opacity().value() / 3.0));
         final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
         if (radius != 0 && isVisible(lightBox)) {
             postDrawingTasks.add(() -> {
