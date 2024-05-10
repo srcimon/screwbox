@@ -3,8 +3,10 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,6 +67,16 @@ public class Sprite implements Serializable {
             sprites.add(new Sprite(frame));
         }
         return sprites;
+    }
+
+    /**
+     * Creates a {@link Sprite} with a single {@link Frame} containing a single pixel of the
+     * specified {@link Color}.
+     */
+    public static Sprite pixel(final Color color) {
+        final var image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
+        return Sprite.fromImage(image);
     }
 
 

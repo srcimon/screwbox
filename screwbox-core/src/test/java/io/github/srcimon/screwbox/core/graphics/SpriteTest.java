@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class SpriteTest {
 
     @Test
-    void dummy16x16animated_returnsAnimatedDummySprite() {
-        var sprite = SpriteBundle.SLIME_MOVING.get();
+    void pixel_colorRed_createsSpriteWithSingleRedPixel() {
+        var pixel = Sprite.pixel(Color.RED);
 
-        assertThat(sprite.size()).isEqualTo(Size.of(16, 16));
-        assertThat(sprite.frameCount()).isEqualTo(3);
+        assertThat(pixel.singleFrame().colorAt(0, 0)).isEqualTo(Color.RED);
+        assertThat(pixel.size()).isEqualTo(Size.of(1, 1));
     }
 
     @Test

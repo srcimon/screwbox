@@ -3,7 +3,9 @@
 - Added a lot of new sprites sponsored by @myTrx to `SpriteBundle` (#321)
 - Added `Entity.moveBy(Vector)`
 - Added `SpriteBatch.isEmpty()`
+- Added `Sprite.pixel(Color)`
 - Added `Sprite.animatedAssetFromFile(...)`
+- Added `Light.addBloom(...)`
 
 ### 🪛 Bug Fixes
 
