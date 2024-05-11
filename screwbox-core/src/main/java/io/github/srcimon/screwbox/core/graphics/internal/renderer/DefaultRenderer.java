@@ -15,7 +15,7 @@ import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtC
 
 public class DefaultRenderer implements Renderer {
 
-    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.02f, 0.4f, 1f};
+    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.3f, 0.6f, 1f};
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
@@ -165,8 +165,8 @@ public class DefaultRenderer implements Renderer {
             Color color = options.color();
             final var colors = new java.awt.Color[]{
                     toAwtColor(color),
-                    toAwtColor(color.opacity(color.opacity().value() / 1.4)),
-                    toAwtColor(color.opacity(color.opacity().value() / 2.6)),
+                    toAwtColor(color.opacity(color.opacity().value() / 1.8)),
+                    toAwtColor(color.opacity(color.opacity().value() / 3.2)),
                     FADEOUT_COLOR
             };
 
