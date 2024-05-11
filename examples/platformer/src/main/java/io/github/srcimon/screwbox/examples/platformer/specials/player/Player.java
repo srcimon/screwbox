@@ -41,7 +41,7 @@ public class Player implements Converter<GameObject> {
                                 .animateOpacity()),
                         emitter -> emitter.isEnabled = false)
                 .add(new CameraTargetComponent(),
-                        new GlowComponent(45, Color.WHITE.opacity(0.1)),
+                        new GlowComponent(45, Color.WHITE.opacity(0.3)),
                         new PointLightComponent(64, Color.BLACK),
                         new SpotLightComponent(64, Color.BLACK.opacity(0.4)),
                         new StateComponent(new PlayerStandingState()),
