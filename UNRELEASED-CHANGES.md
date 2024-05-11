@@ -14,6 +14,7 @@
 
 ### 🧽 Cleanup & refactoring
 
+- Major performance improvement of light glow effects due to less gradient rendering tasks
 - Added renderer decorator to block all uneccessary or potentially harmfull drawing calls (#259)
 - Enhanced log entry on engine stop
 - Removed api for drawing sprites using clip
