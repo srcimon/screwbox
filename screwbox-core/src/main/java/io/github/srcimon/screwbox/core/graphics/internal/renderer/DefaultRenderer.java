@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class DefaultRenderer implements Renderer {
 
-    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f,0.1f, 0.2f, 0.4f, 1f};
+    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f,0.02f, 0.2f, 0.4f, 1f};
 
     private static RadialGradientPaint paintByColors(Offset offset, int radius, CircleDrawOptions options) {
         final var colors = new java.awt.Color[]{
