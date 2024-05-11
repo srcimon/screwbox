@@ -5,7 +5,15 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
+import io.github.srcimon.screwbox.core.graphics.Light;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 
 import java.awt.image.BufferedImage;
@@ -128,12 +136,6 @@ public class DefaultLight implements Light {
                 }
             });
         }
-        return this;
-    }
-
-    @Override
-    public Light addBloom(Bounds area, Color color) {
-        postDrawingTasks.add(() -> world.drawRectangle(area, RectangleDrawOptions.filled(color)));
         return this;
     }
 

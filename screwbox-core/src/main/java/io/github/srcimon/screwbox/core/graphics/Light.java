@@ -95,9 +95,6 @@ public interface Light {
      */
     Light addGlow(Vector position, double radius, Color color);
 
-    //TODO javadoc
-    Light addBloom(Bounds area, Color color);
-
     /**
      * Renders the lightmap to {@link Window}. Can be automated by using
      * {@link LightRenderSystem}.

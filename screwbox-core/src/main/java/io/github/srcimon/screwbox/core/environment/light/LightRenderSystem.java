@@ -16,7 +16,6 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype POINTLIGHTS = Archetype.of(PointLightComponent.class, TransformComponent.class);
     private static final Archetype SPOTLIGHTS = Archetype.of(SpotLightComponent.class, TransformComponent.class);
     private static final Archetype GLOWS = Archetype.of(GlowComponent.class, TransformComponent.class);
-    private static final Archetype BLOOMS = Archetype.of(BloomComponent.class, TransformComponent.class);
     private static final Archetype SHADOWCASTERS = Archetype.of(LightBlockingComponent.class, TransformComponent.class);
 
     @Override
@@ -45,11 +44,7 @@ public class LightRenderSystem implements EntitySystem {
             final var glow = glowEmitter.get(GlowComponent.class);
             light.addGlow(glowEmitter.position(), glow.radius, glow.color);
         }
-//TODO: test
-        for (final Entity bloomEmitter : engine.environment().fetchAll(BLOOMS)) {
-            final var bloom = bloomEmitter.get(BloomComponent.class);
-            light.addBloom(bloomEmitter.bounds(), bloom.color);
-        }
+
         light.render();
     }
 }

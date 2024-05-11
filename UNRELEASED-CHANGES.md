@@ -5,7 +5,6 @@
 - Added `SpriteBatch.isEmpty()`
 - Added `Sprite.pixel(Color)`
 - Added `Sprite.animatedAssetFromFile(...)`
-- Added `Light.addBloom(...)`
 
 ### 🪛 Bug Fixes
 
