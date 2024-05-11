@@ -165,8 +165,8 @@ public class DefaultRenderer implements Renderer {
             Color color = options.color();
             final var colors = new java.awt.Color[]{
                     toAwtColor(color),
-                    toAwtColor(color.opacity(color.opacity().value() / 1.8)),
-                    toAwtColor(color.opacity(color.opacity().value() / 3.2)),
+                    toAwtColor(color.opacity(color.opacity().value() / 2.0)),
+                    toAwtColor(color.opacity(color.opacity().value() / 4.0)),
                     FADEOUT_COLOR
             };
 
