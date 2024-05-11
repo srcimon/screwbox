@@ -14,9 +14,31 @@ import java.util.function.Supplier;
 
 public class DefaultRenderer implements Renderer {
 
-    private static final float[] FADEOUT_FRACTIONS = new float[]{0.1f, 1f};
+    private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f,0.1f, 0.2f, 0.4f, 1f};
+
+    private static RadialGradientPaint paintByColors(Offset offset, int radius, CircleDrawOptions options) {
+        final var colors = new java.awt.Color[]{
+                AwtMapper.toAwtColor(options.color()),
+                AwtMapper.toAwtColor(options.color().opacity(options.color().opacity().value() / 1.4)),
+                AwtMapper.toAwtColor(options.color().opacity(options.color().opacity().value() / 2.0)),
+                AwtMapper.toAwtColor(options.color().opacity(options.color().opacity().value() / 3.0)),
+                FADEOUT_COLOR
+        };
+
+
+        RadialGradientPaint paint = new RadialGradientPaint(
+                offset.x(),
+                offset.y(),
+                radius,
+                FADEOUT_FRACTIONS, colors);
+        return paint;
+    }
+
+
+
 
     private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
+
 
     private Time lastUpdateTime = Time.now();
     private Size canvasSize;
@@ -162,12 +184,8 @@ public class DefaultRenderer implements Renderer {
             graphics.fillOval(x, y, diameter, diameter);
         } else if (options.style() == CircleDrawOptions.Style.FADING) {
             final var oldPaint = graphics.getPaint();
-            final var colors = new java.awt.Color[]{AwtMapper.toAwtColor(options.color()), FADEOUT_COLOR};
-            graphics.setPaint(new RadialGradientPaint(
-                    offset.x(),
-                    offset.y(),
-                    radius,
-                    FADEOUT_FRACTIONS, colors));
+            RadialGradientPaint paint = paintByColors(offset, radius, options);
+            graphics.setPaint(paint);
 
             graphics.fillOval(x, y, diameter, diameter);
             graphics.setPaint(oldPaint);
@@ -183,6 +201,8 @@ public class DefaultRenderer implements Renderer {
             }
         }
     }
+
+
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
