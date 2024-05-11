@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
@@ -12,10 +11,12 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.graphics.internal.AwtMapper.toAwtColor;
+
 public class DefaultRenderer implements Renderer {
 
     private static final float[] FADEOUT_FRACTIONS = new float[]{0.0f, 0.02f, 0.4f, 1f};
-    private static final java.awt.Color FADEOUT_COLOR = AwtMapper.toAwtColor(Color.TRANSPARENT);
+    private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
     private Size canvasSize;
@@ -103,7 +104,7 @@ public class DefaultRenderer implements Renderer {
     private void applyNewColor(final Color color) {
         if (lastUsedColor != color) {
             lastUsedColor = color;
-            graphics.setColor(AwtMapper.toAwtColor(color));
+            graphics.setColor(toAwtColor(color));
         }
     }
 
@@ -163,18 +164,17 @@ public class DefaultRenderer implements Renderer {
             final var oldPaint = graphics.getPaint();
             Color color = options.color();
             final var colors = new java.awt.Color[]{
-                    AwtMapper.toAwtColor(color),
-                    AwtMapper.toAwtColor(color.opacity(color.opacity().value() / 1.4)),
-
-                    AwtMapper.toAwtColor(color.opacity(color.opacity().value() / 3.0)),
+                    toAwtColor(color),
+                    toAwtColor(color.opacity(color.opacity().value() / 1.4)),
+                    toAwtColor(color.opacity(color.opacity().value() / 3.0)),
                     FADEOUT_COLOR
             };
 
             graphics.setPaint(new RadialGradientPaint(
-                        offset.x(),
-                        offset.y(),
-                        radius,
-                        FADEOUT_FRACTIONS, colors));
+                    offset.x(),
+                    offset.y(),
+                    radius,
+                    FADEOUT_FRACTIONS, colors));
 
             graphics.fillOval(x, y, diameter, diameter);
             graphics.setPaint(oldPaint);
