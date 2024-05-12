@@ -342,7 +342,6 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(ParticleBurstSystem.class));
     }
 
-
     @Test
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();

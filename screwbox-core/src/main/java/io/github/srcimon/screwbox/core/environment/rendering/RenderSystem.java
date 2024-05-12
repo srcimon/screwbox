@@ -26,7 +26,7 @@ public class RenderSystem implements EntitySystem {
 
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
             final RenderComponent render = entity.get(RenderComponent.class);
-            if (!render.isOnTopOfLight) {
+            if (mustRenderEntity(render)) {
                 final double width = render.sprite.size().width() * render.options.scale();
                 final double height = render.sprite.size().height() * render.options.scale();
                 final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
@@ -39,5 +39,9 @@ public class RenderSystem implements EntitySystem {
         }
 
         graphics.screen().drawSpriteBatch(spriteBatch);
+    }
+
+    protected boolean mustRenderEntity(final RenderComponent render) {
+        return !render.isOnTopOfLight;
     }
 }
