@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added a lot of new sprites sponsored by @myTrx to `SpriteBundle` (#321)
+- Added new system and property `RenderComponent.renderOverLight` to allow rendering over light (#319)
 - Added `Entity.moveBy(Vector)`
 - Added `SpriteBatch.isEmpty()`
 - Added `Sprite.pixel(Color)`

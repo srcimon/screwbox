@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
-class RenderSystemTest {
+class RenderOverLightSystemTest {
 
     @Captor
     ArgumentCaptor<SpriteBatch> spriteBatch;
@@ -37,10 +37,10 @@ class RenderSystemTest {
         when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
 
         environment
-                .addEntity(
-                        new TransformComponent(200, 200, 16, 16),
-                        new RenderComponent(sprite, 5))
-                .addSystem(new RenderSystem());
+                .addEntity(new Entity()
+                        .add(new TransformComponent(200, 200, 16, 16))
+                        .addCustomized(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
+                .addSystem(new RenderOverLightSystem());
 
         environment.update();
 
@@ -51,17 +51,17 @@ class RenderSystemTest {
     }
 
     @Test
-    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
+    void update_spriteIsBelowLightLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
         when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
 
         environment
-                .addEntity(new Entity()
-                        .add(new TransformComponent(200, 200, 16, 16))
-                        .addCustomized(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
-                .addSystem(new RenderSystem());
+                .addEntity(
+                        new TransformComponent(200, 200, 16, 16),
+                        new RenderComponent(sprite, 5))
+                .addSystem(new RenderOverLightSystem());
 
         environment.update();
 
