@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Camera;
@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -47,5 +48,25 @@ class RenderSystemTest {
 
         assertThat(spriteBatch.getValue().entriesInOrder()).containsExactly(
                 new SpriteBatch.SpriteBatchEntry(sprite, Offset.at(20, 20), SpriteDrawOptions.scaled(2), 5));
+    }
+
+    @Test
+    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
+        var sprite = SpriteBundle.ICON.get();
+        when(camera.zoom()).thenReturn(2.0);
+        when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
+        when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+
+        environment
+                .addEntity(new Entity()
+                        .add(new TransformComponent(200, 200, 16, 16))
+                        .addCustomized(new RenderComponent(sprite, 5), render -> render.isOnTopOfLight = true))
+                .addSystem(new RenderSystem());
+
+        environment.update();
+
+        verify(screen).drawSpriteBatch(spriteBatch.capture());
+
+        assertThat(spriteBatch.getValue().isEmpty()).isTrue();
     }
 }
