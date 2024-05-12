@@ -19,7 +19,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderOnTopOfLightSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -351,7 +351,7 @@ class DefaultEnvironmentTest {
                 .anyMatch(system -> system.getClass().equals(RotateSpriteSystem.class))
                 .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
-                .anyMatch(system -> system.getClass().equals(RenderOnTopOfLightSystem.class))
+                .anyMatch(system -> system.getClass().equals(RenderOverLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderSystem.class));
     }
 

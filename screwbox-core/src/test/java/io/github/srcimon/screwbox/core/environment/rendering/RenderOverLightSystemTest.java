@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({EnvironmentExtension.class, MockitoExtension.class})
-class RenderOnTopOfLightSystemTest {
+class RenderOverLightSystemTest {
 
     @Captor
     ArgumentCaptor<SpriteBatch> spriteBatch;
@@ -39,8 +39,8 @@ class RenderOnTopOfLightSystemTest {
         environment
                 .addEntity(new Entity()
                         .add(new TransformComponent(200, 200, 16, 16))
-                        .addCustomized(new RenderComponent(sprite, 5), render -> render.isOnTopOfLight = true))
-                .addSystem(new RenderOnTopOfLightSystem());
+                        .addCustomized(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
+                .addSystem(new RenderOverLightSystem());
 
         environment.update();
 
@@ -61,7 +61,7 @@ class RenderOnTopOfLightSystemTest {
                 .addEntity(
                         new TransformComponent(200, 200, 16, 16),
                         new RenderComponent(sprite, 5))
-                .addSystem(new RenderOnTopOfLightSystem());
+                .addSystem(new RenderOverLightSystem());
 
         environment.update();
 

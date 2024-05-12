@@ -42,6 +42,6 @@ public class RenderSystem implements EntitySystem {
     }
 
     protected boolean mustRenderEntity(final RenderComponent render) {
-        return !render.isOnTopOfLight;
+        return !render.renderOverLight;
     }
 }

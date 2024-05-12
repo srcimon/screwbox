@@ -19,7 +19,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderOnTopOfLightSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -44,7 +44,7 @@ public enum Feature {
 
     RENDERING(
             new ReflectionRenderSystem(),
-            new RenderOnTopOfLightSystem(),
+            new RenderOverLightSystem(),
             new RotateSpriteSystem(),
             new FlipSpriteSystem(),
             new RenderSystem(),

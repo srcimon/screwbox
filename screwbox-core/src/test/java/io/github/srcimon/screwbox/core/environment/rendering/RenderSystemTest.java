@@ -60,7 +60,7 @@ class RenderSystemTest {
         environment
                 .addEntity(new Entity()
                         .add(new TransformComponent(200, 200, 16, 16))
-                        .addCustomized(new RenderComponent(sprite, 5), render -> render.isOnTopOfLight = true))
+                        .addCustomized(new RenderComponent(sprite, 5), render -> render.renderOverLight = true))
                 .addSystem(new RenderSystem());
 
         environment.update();
