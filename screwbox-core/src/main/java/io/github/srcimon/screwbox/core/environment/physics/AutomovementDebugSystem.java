@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
 
@@ -19,7 +18,7 @@ import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.fill
 import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.systemFont;
 import static java.util.Objects.nonNull;
 
-@Order(SystemOrder.PRESENTATION_OVERLAY)
+@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class AutomovementDebugSystem implements EntitySystem {
 
     private static final SystemTextDrawOptions DRAW_OPTIONS = systemFont("Arial", 11).alignCenter().bold();

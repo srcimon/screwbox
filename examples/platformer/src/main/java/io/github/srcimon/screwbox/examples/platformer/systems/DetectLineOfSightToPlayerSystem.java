@@ -5,11 +5,10 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.examples.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerComponent;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class DetectLineOfSightToPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class);

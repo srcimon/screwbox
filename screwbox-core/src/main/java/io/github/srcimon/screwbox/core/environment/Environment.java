@@ -124,14 +124,14 @@ public interface Environment {
     Environment addEntity(Entity entity);
 
     /**
-     * Adds an {@link EntitySystem} to the {@link Environment} with default {@link SystemOrder#SIMULATION}.
+     * Adds an {@link EntitySystem} to the {@link Environment} with default {@link Order.SystemOrder#SIMULATION}.
      */
     Environment addSystem(EntitySystem system);
 
     /**
-     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link SystemOrder} (overwrites annotated {@link SystemOrder} if present.
+     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link Order.SystemOrder} (overwrites annotated {@link Order.SystemOrder} if present.
      */
-    Environment addSystem(SystemOrder order, EntitySystem system);
+    Environment addSystem(Order.SystemOrder order, EntitySystem system);
 
     Environment addEntities(List<Entity> entities);
 

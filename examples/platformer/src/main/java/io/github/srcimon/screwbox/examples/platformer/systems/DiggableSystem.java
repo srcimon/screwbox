@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
-@Order(SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class DiggableSystem implements EntitySystem {
 
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsComponent.class);

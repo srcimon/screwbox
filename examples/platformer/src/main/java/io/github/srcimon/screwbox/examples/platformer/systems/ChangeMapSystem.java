@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
@@ -15,7 +14,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.ChangeMapCompon
 import io.github.srcimon.screwbox.examples.platformer.scenes.GameScene;
 
 
-@Order(SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);

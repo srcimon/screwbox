@@ -4,10 +4,9 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
-@Order(SystemOrder.PRESENTATION_PREPARE)
+@Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class FlipSpriteSystem implements EntitySystem {
 
     private static final Archetype SPRITE_BODIES = Archetype.of(

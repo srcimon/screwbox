@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
 import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
 
-@Order(SystemOrder.PRESENTATION_OVERLAY)
+@Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);

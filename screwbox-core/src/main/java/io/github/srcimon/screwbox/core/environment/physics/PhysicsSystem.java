@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Order(SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class PhysicsSystem implements EntitySystem {
 
     private static final Archetype PHYSICS = Archetype.of(PhysicsComponent.class, TransformComponent.class);

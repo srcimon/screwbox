@@ -5,11 +5,10 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Light;
 
-@Order(SystemOrder.PRESENTATION_LIGHT)
+@Order(Order.SystemOrder.PRESENTATION_LIGHT)
 public class LightRenderSystem implements EntitySystem {
 
     private static final Archetype CONELIGHTS = Archetype.of(ConeLightComponent.class, TransformComponent.class);

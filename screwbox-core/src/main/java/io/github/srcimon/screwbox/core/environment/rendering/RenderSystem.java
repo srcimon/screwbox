@@ -6,13 +6,12 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 
-@Order(SystemOrder.PRESENTATION_WORLD)
+@Order(Order.SystemOrder.PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);

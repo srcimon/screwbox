@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
@@ -25,7 +24,7 @@ import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
-@Order(SystemOrder.PRESENTATION_EFFECTS)
+@Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);

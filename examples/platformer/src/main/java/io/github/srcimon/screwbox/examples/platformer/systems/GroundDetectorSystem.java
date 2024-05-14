@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionCom
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.GroundDetectorComponent;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class GroundDetectorSystem implements EntitySystem {
 
     private static final Archetype GROUND_DETECTORS = Archetype.of(GroundDetectorComponent.class,

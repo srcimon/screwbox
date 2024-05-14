@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 /**
  * Updates the {@link SpriteDrawOptions#opacity()} of all {@link Entity}s that use tweening and have an {@link TweenOpacityComponent}.
  */
-@Order(SystemOrder.PRESENTATION_PREPARE)
+@Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class TweenOpacitySystem implements EntitySystem {
 
     private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenOpacityComponent.class, RenderComponent.class);

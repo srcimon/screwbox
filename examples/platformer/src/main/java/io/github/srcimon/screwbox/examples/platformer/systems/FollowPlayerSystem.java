@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.PlayerMarkerCom
 
 import java.util.Optional;
 
-@Order(SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class FollowPlayerSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class,

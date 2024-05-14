@@ -26,7 +26,7 @@ import java.util.Optional;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static java.util.Objects.isNull;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class CatMovementSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);

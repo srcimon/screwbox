@@ -6,8 +6,8 @@ import io.github.srcimon.screwbox.core.environment.Component;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment addSystem(final SystemOrder order, final EntitySystem system) {
+    public Environment addSystem(final Order.SystemOrder order, final EntitySystem system) {
         requireNonNull(order, "order must not be null");
         verifySystemNotNull(system);
         systemManager.addSystem(system, order);

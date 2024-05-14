@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
@@ -388,7 +388,7 @@ class DefaultEnvironmentTest {
 
     @Test
     void addSystem_withOrderSystemNull_throwsException() {
-        assertThatThrownBy(() -> environment.addSystem(SystemOrder.PREPARATION, null))
+        assertThatThrownBy(() -> environment.addSystem(Order.SystemOrder.PREPARATION, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("system must not be null");
     }
@@ -398,7 +398,7 @@ class DefaultEnvironmentTest {
         List<String> systemsExecuted = new ArrayList<>();
 
         environment.addSystem(e -> systemsExecuted.add("first"));
-        environment.addSystem(SystemOrder.PREPARATION, e -> systemsExecuted.add("second"));
+        environment.addSystem(Order.SystemOrder.PREPARATION, e -> systemsExecuted.add("second"));
 
         environment.update();
 

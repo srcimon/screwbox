@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -18,7 +17,7 @@ import java.util.function.UnaryOperator;
 
 import static java.lang.Math.ceil;
 
-@Order(SystemOrder.PRESENTATION_PREPARE)
+@Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class ReflectionRenderSystem implements EntitySystem {
 
     private static final Archetype MIRRORS = Archetype.of(ReflectionComponent.class, TransformComponent.class);

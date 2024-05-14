@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
-@Order(SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class MovableSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);

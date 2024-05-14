@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.utils.GeometryUtil;
 import java.util.List;
 import java.util.Optional;
 
-@Order(SystemOrder.OPTIMIZATION)
+@Order(Order.SystemOrder.OPTIMIZATION)
 public class OptimizePhysicsPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(

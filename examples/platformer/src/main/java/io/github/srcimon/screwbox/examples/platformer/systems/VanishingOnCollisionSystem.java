@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
@@ -25,7 +24,7 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class VanishingOnCollisionSystem implements EntitySystem {
 
     private static final Archetype VANISHINGS = Archetype.of(VanishingOnCollisionComponent.class,

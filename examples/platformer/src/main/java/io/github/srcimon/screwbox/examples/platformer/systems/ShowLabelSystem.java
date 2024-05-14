@@ -8,14 +8,13 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.examples.platformer.components.LabelComponent;
 
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 
-@Order(SystemOrder.PRESENTATION_EFFECTS)
+@Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class ShowLabelSystem implements EntitySystem {
 
     private static final Archetype LABELD = Archetype.of(SignalComponent.class, LabelComponent.class);

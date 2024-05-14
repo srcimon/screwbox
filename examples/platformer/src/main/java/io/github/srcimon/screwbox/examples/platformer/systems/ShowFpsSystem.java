@@ -4,13 +4,12 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
 
-@Order(SystemOrder.PRESENTATION_UI_FOREGROUND)
+@Order(Order.SystemOrder.PRESENTATION_UI_FOREGROUND)
 public class ShowFpsSystem implements EntitySystem {
 
     private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);

@@ -5,10 +5,9 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class CameraSystem implements EntitySystem {
 
     private static final Archetype TARGET = Archetype.of(CameraTargetComponent.class, TransformComponent.class);

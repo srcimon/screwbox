@@ -5,14 +5,13 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.SystemOrder;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 /**
  * Updates the {@link SpriteDrawOptions#scale()} of all {@link Entity}s that use tweening and have an {@link TweenScaleComponent}.
  */
-@Order(SystemOrder.PRESENTATION_PREPARE)
+@Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class TweenScaleSystem implements EntitySystem {
 
     private static final Archetype TWEENS = Archetype.of(TweenComponent.class, TweenScaleComponent.class, RenderComponent.class);

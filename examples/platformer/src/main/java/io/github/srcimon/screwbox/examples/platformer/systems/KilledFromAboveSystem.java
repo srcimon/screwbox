@@ -12,7 +12,7 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.merge;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class KilledFromAboveSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerMarkerComponent.class);

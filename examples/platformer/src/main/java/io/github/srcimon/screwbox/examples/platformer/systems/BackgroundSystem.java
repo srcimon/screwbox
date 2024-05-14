@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.examples.platformer.components.BackgroundCompo
 import java.util.Comparator;
 import java.util.List;
 
-@Order(SystemOrder.PRESENTATION_BACKGROUND)
+@Order(Order.SystemOrder.PRESENTATION_BACKGROUND)
 public class BackgroundSystem implements EntitySystem {
 
     private static final Archetype BACKGROUNDS = Archetype.of(BackgroundComponent.class, RenderComponent.class);

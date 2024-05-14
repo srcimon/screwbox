@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
-@Order(SystemOrder.PREPARATION)
+@Order(Order.SystemOrder.PREPARATION)
 public class PhysicsGridUpdateSystem implements EntitySystem {
 
     private static final Archetype OBSTACLES = Archetype.of(PhysicsGridObstacleComponent.class, TransformComponent.class);
