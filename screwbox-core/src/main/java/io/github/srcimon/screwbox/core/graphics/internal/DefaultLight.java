@@ -130,9 +130,7 @@ public class DefaultLight implements Light {
         final CircleDrawOptions options = CircleDrawOptions.fading(color);
         final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
         if (radius != 0 && isVisible(lightBox)) {
-            postDrawingTasks.add(() -> {
-                    world.drawCircle(position, radius, options);
-            });
+            postDrawingTasks.add(() -> world.drawCircle(position, radius, options));
         }
         return this;
     }
@@ -154,12 +152,11 @@ public class DefaultLight implements Light {
     }
 
     private void renderLightmap() {
-        final var copiedLightmap = lightmap;
         for (final var task : tasks) {
             task.run();
         }
         final var spriteFuture = executor.submit(() -> {
-            final BufferedImage image = copiedLightmap.createImage();
+            final BufferedImage image = lightmap.createImage();
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
