@@ -83,7 +83,8 @@ class EntityTest {
     void add_addsComponentsToExistingEntity() {
         var physicsBodyComponent = new PhysicsComponent();
         var colliderComponent = new ColliderComponent();
-        Entity entity = new Entity().add(physicsBodyComponent, colliderComponent);
+
+        entity.add(physicsBodyComponent, colliderComponent);
 
         assertThat(entity.getAll()).contains(physicsBodyComponent, colliderComponent);
     }

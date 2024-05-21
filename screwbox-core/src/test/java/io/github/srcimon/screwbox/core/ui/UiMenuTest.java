@@ -102,7 +102,7 @@ class UiMenuTest {
     @Test
     void previousItem_previousItemIsInactive_switchesToItemBeforePreviousItem() {
         var optionsItem = menu.addItem("Options");
-        menu.addItem("Start").activeCondition(engine -> false);
+        menu.addItem("Start").activeCondition(e -> false);
         var quitItem = menu.addItem("Quit");
 
         menu.selectItem(quitItem);
@@ -125,7 +125,7 @@ class UiMenuTest {
     void addItem_dynamicLabel_addsItemWithDynamicLabel() {
         when(engine.name()).thenReturn("engine-name");
 
-        menu.addItem(e -> e.name());
+        menu.addItem(Engine::name);
 
         UiMenuItem item = menu.items().getFirst();
         assertThat(item.label(engine)).isEqualTo("engine-name");

@@ -188,7 +188,7 @@ class DefaultAudioTest {
     @Test
     void playSound_musicLoopedVolumeZero_doesntPlayEffect() {
         audio.configuration().muteMusic();
-        audio.playSound(sound, playOnce().asMusic());
+        audio.playSound(sound, playLooped().asMusic());
 
         TestUtil.shutdown(executor);
 

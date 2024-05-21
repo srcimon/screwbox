@@ -46,7 +46,7 @@ class UiMenuItemTest {
     void isActive_activeConditionMet_true() {
         when(engine.name()).thenReturn("active");
         var menuItem = new UiMenuItem("Active on Engine named 'active'")
-                .activeCondition(engine -> engine.name().equals("active"));
+                .activeCondition(e -> e.name().equals("active"));
 
         assertThat(menuItem.isActive(engine)).isTrue();
     }
@@ -55,7 +55,7 @@ class UiMenuItemTest {
     void isActive_activeConditionNotMet_false() {
         when(engine.name()).thenReturn("inactive");
         var menuItem = new UiMenuItem("Active on Engine named 'active'")
-                .activeCondition(engine -> engine.name().equals("active"));
+                .activeCondition(e -> e.name().equals("active"));
 
         assertThat(menuItem.isActive(engine)).isFalse();
     }

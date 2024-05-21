@@ -77,7 +77,6 @@ class FrameTest {
 
     @Test
     void fromFile_fileIsImage_returnsFrame() {
-        Frame frame = Frame.fromFile("tile.bmp");
         assertThat(frame.size()).isEqualTo(Size.square(16));
     }
 

@@ -67,7 +67,7 @@ class DefaultUiTest {
         when(engine.graphics()).thenReturn(graphics);
         UiMenu menu = new UiMenu();
         UiMenuItem firstItem = menu.addItem("some button").activeCondition(e -> activated.active())
-                .onActivate(engine -> activated.toggle());
+                .onActivate(e -> activated.toggle());
         menu.addItem("some button");
         ScreenBounds layoutBounds = new ScreenBounds(Offset.at(20, 40), Size.of(100, 20));
         when(screen.isVisible(layoutBounds)).thenReturn(true);
