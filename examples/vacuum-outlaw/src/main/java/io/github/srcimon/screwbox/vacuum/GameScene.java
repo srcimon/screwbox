@@ -9,18 +9,22 @@ import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.light.SpotLightComponent;
+import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
+import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -34,7 +38,9 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.graphics().camera().setZoom(6);
+        engine.loop().unlockFps();
+        engine.graphics().configuration().toggleFullscreen();
+        engine.graphics().camera().setZoom(3);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
         engine.window()
                 .setCursor(Sprite.fromFile("cursor.png").scaled(4));
@@ -58,6 +64,7 @@ public class GameScene implements Scene {
                 })//TODO: FIXUP
                 .addSystem(engine -> {
                     if(engine.mouse().isPressedLeft()) {
+                        engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.ofMillis(200)).strength(10));
                         Entity player = engine.environment().fetchById(1);
                         engine.audio().playSound(SoundBundle.PHASER);
                         var speed = engine.mouse().position().substract(player.position()).length(200);
@@ -75,6 +82,7 @@ public class GameScene implements Scene {
                 .addSystem(new AttachmentSystem())
                 .enablePhysics()
                 .enableLight()
+                .addSystem(new LogFpsSystem())
                 .enableTweening()
                 .enableRendering();
 
@@ -92,19 +100,26 @@ public class GameScene implements Scene {
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
                         .add(new PointLightComponent(120, Color.BLACK))
-                        .add(new GlowComponent(100, Color.YELLOW.opacity(0.1))));
+                        .add(new GlowComponent(30, Color.hex("#b5ffb5").opacity(0.5))));
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().name())
                 .when("walls").as(tile -> new Entity().name("wall")
                         .add(new ColliderComponent())
                         .add(new ShadowCasterComponent())
+                        .add(new StaticColliderComponent())
+                        .add(new StaticShadowCasterComponent())
                         .add(new RenderComponent(tile.sprite(), tile.layer().order()))
                         .add(new TransformComponent(tile.renderBounds())))
                 .stopUsingIndex()//TODO: usingIndex
                 .usingIndex(tile -> tile.layer().name())
                 .when("decoration").as(tile -> new Entity().name("decoration")
-                        .add(new RenderComponent(tile.sprite(), tile.layer().order()))
+                        .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()),
+                                renderComponent -> {
+                                    renderComponent.parallaxX = tile.layer().parallaxX();
+                                    renderComponent.parallaxY= tile.layer().parallaxY();
+                                }
+                        )
                         .add(new TransformComponent(tile.renderBounds())))
                 .when("decorationover").as(tile -> new Entity().name("decoration")
                         .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()),

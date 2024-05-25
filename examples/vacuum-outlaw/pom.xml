@@ -6,7 +6,7 @@
         <relativePath>../../pom.xml</relativePath>
         <version>1.13.1-SNAPSHOT</version>
     </parent>
-    <artifactId>vacuum-outlaws</artifactId>
+    <artifactId>vacuum-outlaw</artifactId>
     <properties>
         <sonar.coverage.exclusions>**/*.*</sonar.coverage.exclusions><!-- no test coverage on examples -->
         <maven.javadoc.skip>true</maven.javadoc.skip><!-- no JavaDoc for examples -->
