@@ -94,7 +94,7 @@ public class GameScene implements Scene {
                         .add(new PhysicsComponent())
                         .add(new SpeedComponent())
                         .add(new RenderComponent(SpriteBundle.MAN_STAND, object.layer().order()))
-                        .add(new CameraTargetComponent(40)))
+                        .add(new CameraTargetComponent(5)))
                 //TODO .andAs(----)
 
                 .when("light").as(object -> new Entity(object.id()).name("light")
