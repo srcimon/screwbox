@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.LightBlockingComponent;
-import io.github.srcimon.screwbox.core.environment.light.StaticLightBlockingComponent;
+import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
+import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -19,8 +19,8 @@ public class SolidGround implements Converter<Tile> {
                 new RenderComponent(tile.sprite(), tile.layer().order()),
                 new TransformComponent(tile.renderBounds()),
                 new StaticColliderComponent(),
-                new StaticLightBlockingComponent(),
-                new LightBlockingComponent(),
+                new StaticShadowCasterComponent(),
+                new ShadowCasterComponent(),
                 new ColliderComponent(500, Percent.zero()));
     }
 

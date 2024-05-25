@@ -15,7 +15,7 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype POINTLIGHTS = Archetype.of(PointLightComponent.class, TransformComponent.class);
     private static final Archetype SPOTLIGHTS = Archetype.of(SpotLightComponent.class, TransformComponent.class);
     private static final Archetype GLOWS = Archetype.of(GlowComponent.class, TransformComponent.class);
-    private static final Archetype SHADOWCASTERS = Archetype.of(LightBlockingComponent.class, TransformComponent.class);
+    private static final Archetype SHADOWCASTERS = Archetype.of(ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {

@@ -32,7 +32,7 @@ class LightRenderSystemTest {
                 .addEntity(new TransformComponent($$(100, 0, 32, 32)), new SpotLightComponent(45))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new PointLightComponent(22, Color.BLUE))
                 .addEntity(new TransformComponent($$(200, 0, 32, 32)), new GlowComponent(20, Color.BLUE))
-                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new LightBlockingComponent())
+                .addEntity(new TransformComponent($$(50, 50, 32, 32)), new ShadowCasterComponent())
                 .addSystem(new LightRenderSystem());
 
         environment.update();

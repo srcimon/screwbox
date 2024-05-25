@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-public class LightBlockingComponent implements Component {
+public class ShadowCasterComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;
