@@ -28,7 +28,6 @@ import io.github.srcimon.screwbox.platformer.specials.CatCompanion;
 import io.github.srcimon.screwbox.platformer.specials.SmokeEmitter;
 import io.github.srcimon.screwbox.platformer.specials.Waypoint;
 import io.github.srcimon.screwbox.platformer.specials.player.Player;
-import io.github.srcimon.screwbox.examples.platformer.systems.*;
 import io.github.srcimon.screwbox.platformer.tiles.NonSolidTile;
 import io.github.srcimon.screwbox.platformer.tiles.OneWayGround;
 import io.github.srcimon.screwbox.platformer.tiles.SolidGround;
