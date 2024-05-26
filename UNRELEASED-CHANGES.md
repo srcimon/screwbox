@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Added `class` attribute to Tiled layers
 
 ### 🧽 Cleanup & refactoring
 

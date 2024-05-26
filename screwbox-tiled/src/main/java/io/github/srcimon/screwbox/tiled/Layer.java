@@ -31,6 +31,10 @@ public class Layer {
         return order;
     }
 
+    public String clazz() {
+        return layerEntity.clazz();
+    }
+
     public Properties properties() {
         return new Properties(layerEntity.properties());
     }
