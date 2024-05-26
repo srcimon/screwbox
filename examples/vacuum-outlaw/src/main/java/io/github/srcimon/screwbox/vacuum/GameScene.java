@@ -86,7 +86,6 @@ public class GameScene implements Scene {
                 .enableTweening()
                 .enableRendering();
 
-        environment.addEntity(new Entity("player shadow").add(new TransformComponent(0, 0, 4, 2)).add(new ShadowCasterComponent()).add(new AttachmentComponent(1, Vector.of(0, 6))));
         environment.importSource(map.objects())
                 .usingIndex(object -> object.name())
                 .when("world").as(object -> new Entity("world").add(new CameraBoundsComponent(object.bounds())))
