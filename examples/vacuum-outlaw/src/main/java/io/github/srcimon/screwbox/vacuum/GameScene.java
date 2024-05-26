@@ -95,7 +95,10 @@ public class GameScene implements Scene {
                         .add(new RenderComponent(SpriteBundle.MAN_STAND, object.layer().order()))
                         .add(new CameraTargetComponent(5)))
                 //TODO .andAs(----)
-
+                .when("bright").as(object -> new Entity(object.id()).name("light")
+                        .add(new TransformComponent(object.position()))
+                        .add(new PointLightComponent(30, Color.BLACK))
+                        .add(new GlowComponent(30, Color.WHITE.opacity(0.6))))
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
                         .add(new PointLightComponent(140, Color.BLACK))
