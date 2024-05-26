@@ -13,7 +13,7 @@ public class AttachmentSystem implements EntitySystem {
     public void update(final Engine engine) {
         for(final var entity : engine.environment().fetchAll(ATTACHED_ENTITIES))  {
             final var attachment = entity.get(AttachmentComponent.class);
-            entity.moveTo(engine.environment().fetchById(attachment.targetId).position().add(attachment.displacement));
+            entity.moveTo(engine.environment().fetchById(attachment.targetId).position().add(attachment.offset));
         }
     }
 }

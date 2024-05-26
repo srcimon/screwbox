@@ -11,14 +11,14 @@ public class AttachmentComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public int targetId;
-    public Vector displacement;
+    public Vector offset;
 
     public AttachmentComponent(final int targetId) {
         this(targetId, Vector.zero());
     }
 
-    public AttachmentComponent(final  int targetId, final  Vector displacement) {
+    public AttachmentComponent(final  int targetId, final  Vector offset) {
         this.targetId = targetId;
-        this.displacement = displacement;
+        this.offset = offset;
     }
 }
