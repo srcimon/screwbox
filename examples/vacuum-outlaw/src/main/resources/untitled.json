@@ -303,6 +303,17 @@
                  "width":0,
                  "x":456,
                  "y":250
+                }, 
+                {
+                 "height":380,
+                 "id":9,
+                 "name":"world",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":536,
+                 "x":315,
+                 "y":131
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -461,7 +472,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":9,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",

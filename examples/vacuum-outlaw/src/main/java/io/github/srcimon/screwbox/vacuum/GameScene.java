@@ -16,6 +16,7 @@ import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterCompo
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
@@ -88,6 +89,7 @@ public class GameScene implements Scene {
         environment.addEntity(new Entity("player shadow").add(new TransformComponent(0, 0, 4, 2)).add(new ShadowCasterComponent()).add(new AttachmentComponent(1, Vector.of(0, 6))));
         environment.importSource(map.objects())
                 .usingIndex(object -> object.name())
+                .when("world").as(object -> new Entity("world").add(new CameraBoundsComponent(object.bounds())))
                 .when("player").as(object -> new Entity(object.id()).name("player")
                         .add(new TransformComponent(object.position(), 12, 8))
                         .add(new PhysicsComponent())
@@ -98,7 +100,7 @@ public class GameScene implements Scene {
                 .when("bright").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
                         .add(new PointLightComponent(30, Color.BLACK))
-                        .add(new GlowComponent(30, Color.WHITE.opacity(0.6))))
+                        .add(new GlowComponent(20, Color.WHITE.opacity(0.5))))
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
                         .add(new PointLightComponent(140, Color.BLACK))
