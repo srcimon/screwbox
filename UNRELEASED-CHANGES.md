@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `AttachmentComponent` and `System`
 
 ### 🪛 Bug Fixes
 
