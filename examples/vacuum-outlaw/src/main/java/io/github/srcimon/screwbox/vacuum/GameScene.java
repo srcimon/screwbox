@@ -70,10 +70,11 @@ public class GameScene implements Scene {
                         var speed = engine.mouse().position().substract(player.position()).length(200);
                         engine.environment().addEntity(new Entity("bullet")
                                 .add(new TransformComponent(player.position(), 8, 8))
-                                        .add(new GlowComponent(10, Color.YELLOW.opacity(0.4)))
+//                                        .add(new GlowComponent(10, Color.YELLOW.opacity(0.4)))
                                         .add(new TweenComponent(Duration.oneSecond()))
                                         .add(new TweenDestroyComponent())
-                                        .add(new PointLightComponent(40, Color.BLACK))
+                                        .add(new SpotLightComponent(40, Color.BLACK.opacity(0.5)))
+                                        .add(new PointLightComponent(40, Color.BLACK.opacity(0.5)))
                                 .add(new RenderComponent(SpriteBundle.ELECTRICITY_SPARCLE, player.get(RenderComponent.class).drawOrder, SpriteDrawOptions.scaled(0.5)))
                                 .add(new PhysicsComponent(speed))
                         );
@@ -99,7 +100,8 @@ public class GameScene implements Scene {
 
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new PointLightComponent(120, Color.BLACK))
+                        .add(new PointLightComponent(120, Color.BLACK.opacity(0.5)))
+                        .add(new SpotLightComponent(60, Color.BLACK))
                         .add(new GlowComponent(30, Color.hex("#b5ffb5").opacity(0.5))));
 
         environment.importSource(map.tiles())
@@ -109,7 +111,7 @@ public class GameScene implements Scene {
                         .add(new ShadowCasterComponent())
                         .add(new StaticColliderComponent())
                         .add(new StaticShadowCasterComponent())
-                        .add(new RenderComponent(tile.sprite(), tile.layer().order()))
+                        .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderOverLight = true)
                         .add(new TransformComponent(tile.renderBounds())))
                 .stopUsingIndex()//TODO: usingIndex
                 .usingIndex(tile -> tile.layer().name())
