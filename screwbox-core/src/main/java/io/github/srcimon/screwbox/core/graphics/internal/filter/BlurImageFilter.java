@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
-import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,9 +31,27 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
 
     @Override
     public BufferedImage apply(final BufferedImage image) {
-        final BufferedImage newImage = ImageUtil.toBufferedImage(image.getScaledInstance(image.getWidth() + radius * 2, image.getHeight() + radius * 2, Image.SCALE_FAST));
+        final BufferedImage newImage = new BufferedImage(image.getWidth() + radius * 2, image.getHeight() + radius * 2, BufferedImage.TYPE_INT_ARGB);
+        final var graphics = (Graphics2D) newImage.getGraphics();
+
+        // draw image scaled
+        graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
+
+        // clear center
+        graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
+        graphics.clearRect(radius, radius, image.getWidth(), image.getHeight());
+
+        // draw image in correct size
+        graphics.drawImage(image, radius, radius, image.getWidth(), image.getHeight(), null);
+        graphics.dispose();
+
+        // blur (leaves outer radius untouched)
         final BufferedImage blurred = convolveOperation.filter(newImage, null);
+
+        // return just center
         return blurred.getSubimage(radius, radius, image.getWidth(), image.getHeight());
     }
+
+
 }
 

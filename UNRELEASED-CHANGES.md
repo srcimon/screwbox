@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Added `class` attribute to Tiled layers
+- Fixed light map shift on outer edges of the screen
 
 ### 🧽 Cleanup & refactoring
 
