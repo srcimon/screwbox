@@ -1,31 +1,21 @@
 package io.github.srcimon.screwbox.vacuum;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.AttachmentSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.Map;
@@ -52,10 +42,10 @@ public class GameScene implements Scene {
                     Entity player = engine.environment().fetchById(1);
                     SpeedComponent speedComponent = player.get(SpeedComponent.class);
                     if (engine.keyboard().isPressed(Key.SPACE)) {
-                        speedComponent.speed = 400;
+                        speedComponent.speed = 300;
                     }
 
-                    speedComponent.speed = Math.max(150, speedComponent.speed - engine.loop().delta(800));
+                    speedComponent.speed = Math.max(80, speedComponent.speed - engine.loop().delta(800));
 
                     player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(speedComponent.speed);
                 })//TODO: FIXUP
@@ -71,16 +61,16 @@ public class GameScene implements Scene {
                         .add(new TransformComponent(object.position(), 12, 8))
                         .add(new PhysicsComponent())
                         .add(new SpeedComponent())
-                        .add(new RenderComponent(SpriteBundle.MAN_STAND, object.layer().order()))
+                        .add(new RenderComponent(SpriteBundle.SLIME_MOVING, object.layer().order()))
                         .add(new CameraTargetComponent(5)))
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new PointLightComponent(140, Color.BLACK)));
+                        .add(new PointLightComponent(80, Color.BLACK)));
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
-                .when("walls").as(tile -> new Entity().name("wall")
+                .when("wall").as(tile -> new Entity().name("wall")
                         .add(new ColliderComponent())
                         .add(new ShadowCasterComponent())
                         .add(new StaticColliderComponent())
