@@ -1,5 +1,5 @@
 { "columns":16,
- "image":"StationOne_floors.png",
+ "image":"../tilesets/StationOne_floors.png",
  "imageheight":256,
  "imagewidth":256,
  "margin":0,

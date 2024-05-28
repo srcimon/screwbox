@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
@@ -66,7 +67,8 @@ public class GameScene implements Scene {
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new PointLightComponent(80, Color.BLACK)));
+                        .add(new GlowComponent(20, Color.WHITE.opacity(0.5)))
+                        .add(new PointLightComponent(120, Color.BLACK)));
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
