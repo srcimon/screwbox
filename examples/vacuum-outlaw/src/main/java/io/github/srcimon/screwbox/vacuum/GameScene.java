@@ -40,7 +40,7 @@ public class GameScene implements Scene {
         });
         environment
                 .addSystem(engine -> {
-                    Entity player = engine.environment().fetchById(1);
+                    Entity player = engine.environment().fetchById(5);
                     SpeedComponent speedComponent = player.get(SpeedComponent.class);
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         speedComponent.speed = 300;
