@@ -71,7 +71,7 @@ public class GameScene implements Scene {
                 .usingIndex(GameObject::name)
                 .when("smoke").as(object -> new Entity(object.id()).name("smoke")
                         .add(new TransformComponent(object.bounds()))
-                        .add(new ParticleEmitterComponent(Duration.ofMillis(400), ParticleOptions.unknownSource()
+                        .add(new ParticleEmitterComponent(Duration.ofMillis(200), ParticleOptions.unknownSource()
                                 .sprite(SpriteBundle.ELECTRICITY_SPARCLE)
                                 .drawOrder(object.layer().order())
                                 .ease(Ease.SINE_IN_OUT)
@@ -90,7 +90,7 @@ public class GameScene implements Scene {
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new GlowComponent(20, Color.WHITE.opacity(0.5)))
+                        .add(new GlowComponent(20, Color.WHITE.opacity(0.8)))
                         .add(new PointLightComponent(120, Color.BLACK)));
 
         environment.importSource(map.tiles())
