@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- Added `class` attribute to Tiled layers
+- Fixed crash when loading Tiles maps with layers containing `class` attribute
 - Fixed light map shift on outer edges of the screen
 
 ### 🧽 Cleanup & refactoring
