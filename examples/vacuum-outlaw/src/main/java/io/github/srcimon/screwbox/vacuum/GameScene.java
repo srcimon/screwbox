@@ -17,6 +17,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -66,6 +67,9 @@ public class GameScene implements Scene {
                 .enableTweening()
                 .enableParticles()
                 .enableRendering();
+
+        environment.importSource(map)
+                        .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
