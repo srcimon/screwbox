@@ -1,7 +1,10 @@
 package io.github.srcimon.screwbox.vacuum;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
@@ -10,6 +13,7 @@ import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
@@ -18,8 +22,13 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.keyboard.Key;
+import io.github.srcimon.screwbox.core.particles.ParticleOptions;
+import io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+
+import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
 public class GameScene implements Scene {
 
@@ -55,10 +64,23 @@ public class GameScene implements Scene {
                 .enableLight()
                 .addSystem(new LogFpsSystem())
                 .enableTweening()
+                .enableParticles()
                 .enableRendering();
 
         environment.importSource(map.objects())
-                .usingIndex(object -> object.name())
+                .usingIndex(GameObject::name)
+                .when("smoke").as(object -> new Entity(object.id()).name("smoke")
+                        .add(new TransformComponent(object.bounds()))
+                        .add(new ParticleEmitterComponent(Duration.ofMillis(400), ParticleOptions.unknownSource()
+                                .sprite(SpriteBundle.ELECTRICITY_SPARCLE)
+                                .drawOrder(object.layer().order())
+                                .ease(Ease.SINE_IN_OUT)
+                                .randomStartScale(1, 2)
+                                .startOpacity(Percent.zero())
+                                .animateOpacity(Percent.zero(), Percent.of(0.1))
+                                .chaoticMovement(50, ofSeconds(1))
+                                .randomStartRotation()
+                                .lifetimeSeconds(2))))
                 .when("player").as(object -> new Entity(object.id()).name("player")
                         .add(new TransformComponent(object.position(), 12, 8))
                         .add(new PhysicsComponent())

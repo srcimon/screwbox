@@ -3,6 +3,28 @@
  "infinite":false,
  "layers":[
         {
+         "draworder":"topdown",
+         "id":17,
+         "name":"underground",
+         "objects":[
+                {
+                 "height":24,
+                 "id":8,
+                 "name":"smoke",
+                 "rotation":358.877191954555,
+                 "type":"",
+                 "visible":true,
+                 "width":25,
+                 "x":260.767254798127,
+                 "y":118.24724714698
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "class":"decor",
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -341,8 +363,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":16,
- "nextobjectid":6,
+ "nextlayerid":18,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
