@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
@@ -24,7 +23,6 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
-import io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
@@ -35,7 +33,6 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-//        engine.graphics().configuration().lightFalloff(Percent.of(0.5));
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
     }
@@ -69,7 +66,7 @@ public class GameScene implements Scene {
                 .enableRendering();
 
         environment.importSource(map)
-                        .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
+                .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
