@@ -178,7 +178,7 @@ public final class Line implements Serializable, Comparable<Line> {
     //TODO Test javadoc and changelog
     public Vector center() {
         return Vector.of(
-                (to.x() - from.x()) / 2.0,
-                (to.y() - from.y()) / 2.0);
+                from.x() + (to.x() - from.x()) / 2.0,
+                from.y() + (to.y() - from.y()) / 2.0);
     }
 }

@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -88,8 +87,8 @@ class LineTest {
 
     @Test
     void center_validLine_calculatesCenter() {
-        var line = Line.between(Vector.zero(), Vector.$(10,20));
+        var line = Line.between($(30, -5), $(10, 20));
 
-        assertThat(line.center()).isEqualTo(Vector.$(5, 10));
+        assertThat(line.center()).isEqualTo($(20, 7.5));
     }
 }

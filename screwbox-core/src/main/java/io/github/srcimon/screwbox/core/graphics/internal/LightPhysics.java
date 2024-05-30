@@ -8,9 +8,9 @@ import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
+import static java.util.Comparator.comparingDouble;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -65,13 +65,13 @@ class LightPhysics {
         return area;
     }
 
-    private List<Line> extractFarDistanceLines(List<Bounds> allBounds, Vector position) {
+    private List<Line> extractFarDistanceLines(final List<Bounds> allBounds, final Vector position) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
-            List<Line> boundLines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
-            boundLines.sort(Comparator.comparingDouble(o -> o.center().distanceTo(position)));
-            allLines.add(boundLines.get(0));
-            allLines.add(boundLines.get(1));
+            final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+            borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
+            allLines.add(borders.get(2));
+            allLines.add(borders.get(3));
         }
         return allLines;
     }

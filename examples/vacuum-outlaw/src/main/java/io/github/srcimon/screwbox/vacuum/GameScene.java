@@ -87,7 +87,7 @@ public class GameScene implements Scene {
                                 .randomStartRotation()
                                 .lifetimeSeconds(2))))
                 .when("player").as(object -> new Entity(object.id()).name("player")
-                        .add(new TransformComponent(object.position(), 12, 8))
+                        .add(new TransformComponent(object.position(), 8, 8))
                         .add(new PhysicsComponent())
                         .add(new SpeedComponent())
                         .add(new RenderComponent(SpriteBundle.SLIME_MOVING, object.layer().order()))
