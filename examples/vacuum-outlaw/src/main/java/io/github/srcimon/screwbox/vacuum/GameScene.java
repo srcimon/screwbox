@@ -92,8 +92,8 @@ public class GameScene implements Scene {
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new GlowComponent(16, Color.WHITE.opacity(0.8)))
-                        .add(new PointLightComponent(120, Color.BLACK)));
+                        .add(new GlowComponent(object.properties().getDouble("glowradius"), object.properties().getColor("glowcolor")))
+                        .add(new PointLightComponent(object.properties().getDouble("radius"), object.properties().getColor("color"))));
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())

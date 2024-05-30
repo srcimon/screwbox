@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.tiled;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.tiled.internal.PropertyEntity;
 
 import java.util.List;
@@ -44,6 +45,16 @@ public class Properties {
         return property.isPresent() && property.get().hasValue()
                 ? Optional.of(property.get().getDouble())
                 : Optional.empty();
+    }
+
+    //TODO Test and changelog
+    public Optional<Color> tryGetColor(final String name) {
+        return tryGetString(name).map(Color::hex);
+    }
+
+    //TODO Test and changelog
+    public Color getColor(final String name) {
+        return Color.hex(getString(name));
     }
 
     public String getString(final String name) {

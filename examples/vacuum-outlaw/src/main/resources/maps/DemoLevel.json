@@ -195,21 +195,63 @@
                 }, 
                 {
                  "height":0,
-                 "id":9,
+                 "id":11,
                  "name":"light",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"color",
+                         "value":"#ff383911"
+                        }, 
+                        {
+                         "name":"glowcolor",
+                         "type":"color",
+                         "value":"#c4f4f87e"
+                        }, 
+                        {
+                         "name":"glowradius",
+                         "type":"float",
+                         "value":18
+                        }, 
+                        {
+                         "name":"radius",
+                         "type":"float",
+                         "value":120
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":312,
-                 "y":194
+                 "x":280,
+                 "y":65
                 }, 
                 {
                  "height":0,
-                 "id":10,
+                 "id":12,
                  "name":"light",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"color",
+                         "value":"#ff000000"
+                        }, 
+                        {
+                         "name":"glowcolor",
+                         "type":"color",
+                         "value":"#c4fbf3ec"
+                        }, 
+                        {
+                         "name":"glowradius",
+                         "type":"float",
+                         "value":18
+                        }, 
+                        {
+                         "name":"radius",
+                         "type":"float",
+                         "value":120
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -219,15 +261,36 @@
                 }, 
                 {
                  "height":0,
-                 "id":11,
+                 "id":14,
                  "name":"light",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"color",
+                         "value":"#ff000000"
+                        }, 
+                        {
+                         "name":"glowcolor",
+                         "type":"color",
+                         "value":"#c4fbf3ec"
+                        }, 
+                        {
+                         "name":"glowradius",
+                         "type":"float",
+                         "value":18
+                        }, 
+                        {
+                         "name":"radius",
+                         "type":"float",
+                         "value":120
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":280,
-                 "y":65
+                 "x":313,
+                 "y":194
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -388,7 +451,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":12,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
