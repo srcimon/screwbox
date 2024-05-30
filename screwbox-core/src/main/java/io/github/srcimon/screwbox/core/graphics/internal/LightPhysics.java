@@ -27,8 +27,8 @@ class LightPhysics {
         this.shadowCasters.add(shadowCaster);
     }
 
-    public List<Bounds> shadowCasters() {
-        return shadowCasters;
+    public void clear() {
+        shadowCasters.clear();
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {

@@ -188,7 +188,7 @@ public class DefaultLight implements Light {
         initLightmap();
         tasks.clear();
         postDrawingTasks.clear();
-        lightPhysics.shadowCasters().clear();
+        lightPhysics.clear();
     }
 
     private boolean isVisible(final Bounds lightBox) {
