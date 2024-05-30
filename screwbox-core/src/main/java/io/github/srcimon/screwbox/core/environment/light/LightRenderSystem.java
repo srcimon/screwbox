@@ -22,7 +22,8 @@ public class LightRenderSystem implements EntitySystem {
         final Light light = engine.graphics().light();
 
         for (final var shadowCaster : engine.environment().fetchAll(SHADOWCASTERS)) {
-            light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
+            final var shadow = shadowCaster.get(ShadowCasterComponent.class);
+            light.addShadowCaster(shadowCaster.bounds(), shadow.selfShadow);
         }
 
         for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {

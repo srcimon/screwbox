@@ -52,7 +52,6 @@ public class GameScene implements Scene {
         environment
                 .addSystem(engine -> {
                     Entity player = engine.environment().fetchById(5);
-                    engine.graphics().light().addTopLightShadowCaster(player.bounds());
                     SpeedComponent speedComponent = player.get(SpeedComponent.class);
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         speedComponent.speed = 300;
@@ -89,6 +88,7 @@ public class GameScene implements Scene {
                 .when("player").as(object -> new Entity(object.id()).name("player")
                         .add(new TransformComponent(object.position(), 8, 8))
                         .add(new PhysicsComponent())
+                        .add(new ShadowCasterComponent(false))
                         .add(new SpeedComponent())
                         .add(new RenderComponent(SpriteBundle.SLIME_MOVING, object.layer().order()))
                         .add(new CameraTargetComponent(5)))

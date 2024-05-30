@@ -13,6 +13,7 @@
 - Updated package names of example applications
 - Renamed `LightBlockingComponent` to `ShadowCasterComponent`
 - Enhanced performance of image blurring / applying light effects
+- Removed `Light.addShadowCasters(List)`
 
 ### 📦 Dependency updates
 

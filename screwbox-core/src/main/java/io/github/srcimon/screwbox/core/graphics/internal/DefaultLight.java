@@ -58,14 +58,13 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addShadowCasters(final List<Bounds> shadowCasters) {
-        lightPhysics.addShadowCasters(shadowCasters);
-        return this;
-    }
-
-    @Override
-    public Light addShadowCaster(final Bounds shadowCaster) {
-        lightPhysics.addShadowCaster(shadowCaster);
+    public Light addShadowCaster(Bounds shadowCaster, boolean selfShadow) {
+        //TODO refactor
+        if (selfShadow) {
+            lightPhysics.addShadowCaster(shadowCaster);
+        } else {
+            lightPhysics.addTopLightShadowCaster(shadowCaster);
+        }
         return this;
     }
 
@@ -75,12 +74,6 @@ public class DefaultLight implements Light {
             final ScreenBounds bounds = world.toScreen(area);
             lightmap.add(bounds);
         }
-        return this;
-    }
-
-    @Override
-    public Light addTopLightShadowCaster(final Bounds bounds) {
-        lightPhysics.addTopLightShadowCaster(bounds);
         return this;
     }
 
