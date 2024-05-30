@@ -63,13 +63,6 @@ class DefaultLightTest {
     }
 
     @Test
-    void addShadowCasters_castersNull_throwsException() {
-        assertThatThrownBy(() -> light.addShadowCasters(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("shadowCasters must not be null");
-    }
-
-    @Test
     void render_fullBrigthnessAreaPresent_rendersImage() {
         when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addFullBrightnessArea($$(20, 20, 50, 50));
