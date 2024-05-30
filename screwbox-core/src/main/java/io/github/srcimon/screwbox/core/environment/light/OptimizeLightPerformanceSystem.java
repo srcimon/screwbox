@@ -2,9 +2,12 @@ package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.GeometryUtil;
-import io.github.srcimon.screwbox.core.environment.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +37,9 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private boolean tryToCombine(final Entity first, Entity second, final Engine engine) {
         if (first == second) {
+            return false;
+        }
+        if (first.get(ShadowCasterComponent.class).selfShadow != second.get(ShadowCasterComponent.class).selfShadow) {
             return false;
         }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.get(TransformComponent.class).bounds,

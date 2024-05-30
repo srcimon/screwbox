@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `AttachmentComponent` and `System`
+- Added ability to specify if shadow caster cast shadows over itself
 
 ### 🪛 Bug Fixes
 
