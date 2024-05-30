@@ -92,7 +92,7 @@ public class GameScene implements Scene {
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
-                        .add(new GlowComponent(20, Color.WHITE.opacity(0.8)))
+                        .add(new GlowComponent(16, Color.WHITE.opacity(0.8)))
                         .add(new PointLightComponent(120, Color.BLACK)));
 
         environment.importSource(map.tiles())
@@ -102,7 +102,7 @@ public class GameScene implements Scene {
                         .add(new ShadowCasterComponent())
                         .add(new StaticColliderComponent())
                         .add(new StaticShadowCasterComponent())
-                        .add(new RenderComponent(tile.sprite(), tile.layer().order()))
+                        .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderOverLight = true)
                         .add(new TransformComponent(tile.renderBounds())))
                 .when("decor").as(tile -> new Entity().name("decoration")
                         .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()),
