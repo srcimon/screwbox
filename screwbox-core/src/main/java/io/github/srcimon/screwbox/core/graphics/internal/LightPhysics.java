@@ -17,26 +17,26 @@ import static java.util.Objects.requireNonNull;
 class LightPhysics {
 
     private final List<Bounds> shadowCasters = new ArrayList<>();
-    private final List<Bounds> topLightShadowCasters = new ArrayList<>();
+    private final List<Bounds> noSelfShadowShadowCasters = new ArrayList<>();
 
     public void addShadowCaster(final Bounds shadowCaster) {
         requireNonNull(shadowCaster, "shadowCaster must not be null");
         this.shadowCasters.add(shadowCaster);
     }
 
-    public void addTopLightShadowCaster(final Bounds shadowCaster) {
+    public void addNoSelfShadowShadowCasters(final Bounds shadowCaster) {
         requireNonNull(shadowCaster, "shadowCaster must not be null");
-        this.topLightShadowCasters.add(shadowCaster);
+        this.noSelfShadowShadowCasters.add(shadowCaster);
     }
 
     public void clear() {
         shadowCasters.clear();
-        topLightShadowCasters.clear();
+        noSelfShadowShadowCasters.clear();
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
-        final var relevantTopLightShadowCasters = lightBox.allIntersecting(topLightShadowCasters);
+        final var relevantTopLightShadowCasters = lightBox.allIntersecting(noSelfShadowShadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);

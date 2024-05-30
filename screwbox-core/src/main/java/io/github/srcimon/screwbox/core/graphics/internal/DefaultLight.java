@@ -63,7 +63,7 @@ public class DefaultLight implements Light {
         if (selfShadow) {
             lightPhysics.addShadowCaster(shadowCaster);
         } else {
-            lightPhysics.addTopLightShadowCaster(shadowCaster);
+            lightPhysics.addNoSelfShadowShadowCasters(shadowCaster);
         }
         return this;
     }
