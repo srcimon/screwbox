@@ -1,13 +1,14 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.physics.Borders;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -16,6 +17,7 @@ import static java.util.Objects.requireNonNull;
 class LightPhysics {
 
     private final List<Bounds> shadowCasters = new ArrayList<>();
+    private final List<Bounds> topLightShadowCasters = new ArrayList<>();
 
     public void addShadowCasters(final List<Bounds> shadowCasters) {
         requireNonNull(shadowCasters, "shadowCasters must not be null");
@@ -27,15 +29,23 @@ class LightPhysics {
         this.shadowCasters.add(shadowCaster);
     }
 
+    public void addTopLightShadowCaster(final Bounds shadowCaster) {
+        requireNonNull(shadowCaster, "shadowCaster must not be null");
+        this.topLightShadowCasters.add(shadowCaster);
+    }
+
     public void clear() {
         shadowCasters.clear();
+        topLightShadowCasters.clear();
     }
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
+        final var relevantTopLightShadowCasters = lightBox.allIntersecting(topLightShadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);
+        shadowCasterLines.addAll(extractFarDistanceLines(relevantTopLightShadowCasters, lightBox.position()));
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
@@ -46,13 +56,24 @@ class LightPhysics {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
                         && intersectionPoint.distanceTo(lightBox.position()) < nearestPoint
-                                .distanceTo(lightBox.position())) {
+                        .distanceTo(lightBox.position())) {
                     nearestPoint = intersectionPoint;
                 }
             }
             area.add(nearestPoint);
         }
         return area;
+    }
+
+    private List<Line> extractFarDistanceLines(List<Bounds> allBounds, Vector position) {
+        final List<Line> allLines = new ArrayList<>();
+        for (final var bounds : allBounds) {
+            List<Line> boundLines = new ArrayList<>(Borders.ALL.extractFrom(bounds));
+            boundLines.sort(Comparator.comparingDouble(o -> o.center().distanceTo(position)));
+            allLines.add(boundLines.get(0));
+            allLines.add(boundLines.get(1));
+        }
+        return allLines;
     }
 
     private List<Line> extractLines(final List<Bounds> allBounds) {

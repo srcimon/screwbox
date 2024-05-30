@@ -16,7 +16,8 @@ import java.util.List;
  * the {@link LightRenderSystem}.
  */
 public interface Light {
-
+//TODO Test and javadoc
+    Light addTopLightShadowCaster(Bounds bounds);
     /**
      * Adds a directed light to the {@link World}. Cone lights cast shadows.
      *

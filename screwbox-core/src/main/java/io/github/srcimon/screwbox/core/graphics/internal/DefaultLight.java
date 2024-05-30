@@ -79,6 +79,12 @@ public class DefaultLight implements Light {
     }
 
     @Override
+    public Light addTopLightShadowCaster(final Bounds bounds) {
+        lightPhysics.addTopLightShadowCaster(bounds);
+        return this;
+    }
+
+    @Override
     public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
         double minRotation = direction.degrees() - cone.degrees() / 2.0;
         double maxRotation = direction.degrees() + cone.degrees() / 2.0;
