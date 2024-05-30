@@ -46,7 +46,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
                 second.get(TransformComponent.class).bounds);
         if (result.isPresent()) {
             Entity combined = new Entity()
-                    .add(new ShadowCasterComponent())
+                    .add(new ShadowCasterComponent(first.get(ShadowCasterComponent.class).selfShadow))
                     .add(new StaticShadowCasterComponent())
                     .add(new TransformComponent(result.get()));
             engine.environment().addEntity(combined);
