@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics.light.internal;
+package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -11,8 +11,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

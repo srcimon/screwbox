@@ -31,12 +31,12 @@ public class DefaultLight implements Light {
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Screen screen;
-    private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
+    private LightPhysics lightPhysics;
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
