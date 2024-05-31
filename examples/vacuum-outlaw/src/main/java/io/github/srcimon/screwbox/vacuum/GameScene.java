@@ -4,23 +4,15 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.light.StaticShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
-import io.github.srcimon.screwbox.core.environment.physics.StaticColliderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.keyboard.Key;
@@ -28,6 +20,9 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+import io.github.srcimon.screwbox.vacuum.player.Player;
+import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
+import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
@@ -84,13 +79,7 @@ public class GameScene implements Scene {
                                 .chaoticMovement(50, ofSeconds(1))
                                 .randomStartRotation()
                                 .lifetimeSeconds(2))))
-                .when("player").as(object -> new Entity(object.id()).name("player")
-                        .add(new TransformComponent(object.position(), 8, 8))
-                        .add(new PhysicsComponent())
-                        .add(new ShadowCasterComponent(false))
-                        .add(new SpeedComponent())
-                        .add(new RenderComponent(SpriteBundle.SLIME_MOVING, object.layer().order()))
-                        .add(new CameraTargetComponent(5)))
+                .when("player").as(new Player())
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
@@ -99,20 +88,7 @@ public class GameScene implements Scene {
 
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
-                .when("wall").as(tile -> new Entity().name("wall")
-                        .add(new ColliderComponent())
-                        .add(new ShadowCasterComponent())
-                        .add(new StaticColliderComponent())
-                        .add(new StaticShadowCasterComponent())
-                        .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()), r -> r.renderOverLight = true)
-                        .add(new TransformComponent(tile.renderBounds())))
-                .when("decor").as(tile -> new Entity().name("decoration")
-                        .addCustomized(new RenderComponent(tile.sprite(), tile.layer().order()),
-                                renderComponent -> {
-                                    renderComponent.parallaxX = tile.layer().parallaxX();
-                                    renderComponent.parallaxY = tile.layer().parallaxY();
-                                }
-                        )
-                        .add(new TransformComponent(tile.renderBounds())));
+                .when("wall").as(new WallTile())
+                .when("decor").as(new DecorTile());
     }
 }
