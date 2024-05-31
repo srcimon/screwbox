@@ -68,7 +68,11 @@ class LightPhysics {
             final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
             if (isBetweenXandX2 != isBetweenYandY2) {
-                allLines.add(borders.get(1));
+                if (borders.get(1).intersects(Line.between(bounds.position(), position))) {
+                    allLines.add(borders.get(0));
+                } else {
+                    allLines.add(borders.get(1));
+                }
             }
             allLines.add(borders.get(2));
             allLines.add(borders.get(3));
