@@ -79,7 +79,6 @@ public final class Line implements Serializable, Comparable<Line> {
         return !((nominatorC <= 0) == nominatorIsPositive || (nominatorC >= nominator) == nominatorIsPositive);
     }
 
-
     /**
      * Finds all intersections between this {@link Line} and the given {@link Line}s.
      */
@@ -130,6 +129,15 @@ public final class Line implements Serializable, Comparable<Line> {
         return Vector.of(pX, pY);
     }
 
+    /**
+     * Returns the point in the middle of the line.
+     */
+    public Vector middle() {
+        return Vector.of(
+                from.x() + (to.x() - from.x()) / 2.0,
+                from.y() + (to.y() - from.y()) / 2.0);
+    }
+
     @Override
     public String toString() {
         return "Line [from=" + from + ", to=" + to + "]";
@@ -175,10 +183,4 @@ public final class Line implements Serializable, Comparable<Line> {
         return Double.compare(length(), other.length());
     }
 
-    //TODO Test javadoc and changelog
-    public Vector center() {
-        return Vector.of(
-                from.x() + (to.x() - from.x()) / 2.0,
-                from.y() + (to.y() - from.y()) / 2.0);
-    }
 }

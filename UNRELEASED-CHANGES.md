@@ -2,7 +2,8 @@
 
 - Added ability to attach entities to other entities via `AttachmentComponent`
 - Added ability to specify if shadow caster cast shadows over itself via `ShadowCasterComponent.selfShadow`
-- 
+- Added `Line.middle()`
+
 ### 🪛 Bug Fixes
 
 - Fixed crash when loading Tiles maps with layers containing `class` attribute

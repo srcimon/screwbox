@@ -86,9 +86,9 @@ class LineTest {
     }
 
     @Test
-    void center_validLine_calculatesCenter() {
+    void middle_validLine_calculatesMiddle() {
         var line = Line.between($(30, -5), $(10, 20));
 
-        assertThat(line.center()).isEqualTo($(20, 7.5));
+        assertThat(line.middle()).isEqualTo($(20, 7.5));
     }
 }
