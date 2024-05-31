@@ -34,6 +34,15 @@ class LightPhysics {
         noSelfShadowShadowCasters.clear();
     }
 
+    public boolean isCoveredByShadowCasters(final Vector position) {
+        for (final var bounds : shadowCasters) {
+            if (bounds.contains(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
         final var relevantTopLightShadowCasters = lightBox.allIntersecting(noSelfShadowShadowCasters);
@@ -63,16 +72,12 @@ class LightPhysics {
     private List<Line> extractFarDistanceLines(final List<Bounds> allBounds, final Vector position) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
-            final boolean isBetweenXandX2 = position.x() > bounds.minX() && position.x() < bounds.maxX();
-            final boolean isBetweenYandY2 = position.y() > bounds.minY() && position.y() < bounds.maxY();
+            final boolean isBetweenX = position.x() > bounds.minX() && position.x() < bounds.maxX();
+            final boolean isBetweenY = position.y() > bounds.minY() && position.y() < bounds.maxY();
             final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
-            if (isBetweenXandX2 != isBetweenYandY2) {
-                if (borders.get(1).intersects(Line.between(bounds.position(), position))) {
-                    allLines.add(borders.get(0));
-                } else {
-                    allLines.add(borders.get(1));
-                }
+            if (isBetweenX != isBetweenY) {
+                allLines.add(borders.get(borders.get(1).intersects(Line.between(bounds.position(), position)) ? 0 : 1));
             }
             allLines.add(borders.get(2));
             allLines.add(borders.get(3));
@@ -86,15 +91,6 @@ class LightPhysics {
             ListUtil.addAll(allLines, Borders.ALL.extractFrom(bounds));
         }
         return allLines;
-    }
-
-    public boolean isCoveredByShadowCasters(final Vector position) {
-        for (final var bounds : shadowCasters) {
-            if (bounds.contains(position)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
