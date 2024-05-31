@@ -63,8 +63,14 @@ class LightPhysics {
     private List<Line> extractFarDistanceLines(final List<Bounds> allBounds, final Vector position) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
+            final boolean isBetweenXandX2 = position.x() > bounds.minX() && position.x() < bounds.maxX();
+            final boolean isBetweenYandY2 = position.y() > bounds.minY() && position.y() < bounds.maxY();
             final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
+            if(isBetweenXandX2 != isBetweenYandY2) {
+                System.out.println("X");
+                allLines.add(borders.get(1));
+            }
             allLines.add(borders.get(2));
             allLines.add(borders.get(3));
         }
