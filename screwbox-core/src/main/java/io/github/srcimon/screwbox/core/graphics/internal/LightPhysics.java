@@ -67,8 +67,7 @@ class LightPhysics {
             final boolean isBetweenYandY2 = position.y() > bounds.minY() && position.y() < bounds.maxY();
             final List<Line> borders = new ArrayList<>(Borders.ALL.extractFrom(bounds));
             borders.sort(comparingDouble(border -> border.center().distanceTo(position)));
-            if(isBetweenXandX2 != isBetweenYandY2) {
-                System.out.println("X");
+            if (isBetweenXandX2 != isBetweenYandY2) {
                 allLines.add(borders.get(1));
             }
             allLines.add(borders.get(2));
