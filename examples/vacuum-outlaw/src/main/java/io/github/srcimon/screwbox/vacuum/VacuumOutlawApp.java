@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.vacuum;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 
 public class VacuumOutlawApp {
 

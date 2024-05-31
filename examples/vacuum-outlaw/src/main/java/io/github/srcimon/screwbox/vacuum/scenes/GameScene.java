@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.vacuum;
+package io.github.srcimon.screwbox.vacuum.scenes;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
@@ -20,6 +20,7 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+import io.github.srcimon.screwbox.vacuum.SpeedComponent;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
