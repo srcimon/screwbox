@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetCompone
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.tiled.GameObject;
+import io.github.srcimon.screwbox.vacuum.player.movement.PlayerWalkingState;
 
 public class Player implements SourceImport.Converter<GameObject> {
 
