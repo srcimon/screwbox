@@ -232,4 +232,11 @@ public class Duration implements Serializable {
         }
         return nanos + "ns";
     }
+
+    //TODO REUSE WHEN POSSIBLE
+    //TODO CHANGELOG javadoc test
+    public Percent progress(final Time started, final Time now) {
+        final var timePassed = Duration.between(started, now);
+        return Percent.of(timePassed.nanos / nanos);
+    }
 }

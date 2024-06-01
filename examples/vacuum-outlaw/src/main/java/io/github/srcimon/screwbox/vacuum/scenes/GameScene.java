@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -20,8 +19,9 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
-import io.github.srcimon.screwbox.vacuum.SpeedComponent;
+import io.github.srcimon.screwbox.vacuum.player.DashingSystem;
 import io.github.srcimon.screwbox.vacuum.player.Player;
+import io.github.srcimon.screwbox.vacuum.player.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
@@ -45,21 +45,13 @@ public class GameScene implements Scene {
             }
         });
         environment
-                .addSystem(engine -> {
-                    Entity player = engine.environment().fetchById(5);
-                    SpeedComponent speedComponent = player.get(SpeedComponent.class);
-                    if (engine.keyboard().isPressed(Key.SPACE)) {
-                        speedComponent.speed = 300;
-                    }
-
-                    speedComponent.speed = Math.max(80, speedComponent.speed - engine.loop().delta(800));
-
-                    player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(speedComponent.speed);
-                })//TODO: FIXUP
                 .enablePhysics()
                 .enableLight()
+                .addSystem(new DashingSystem())
+                .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .enableTweening()
+                .enableLogic()
                 .enableParticles()
                 .enableRendering();
 
