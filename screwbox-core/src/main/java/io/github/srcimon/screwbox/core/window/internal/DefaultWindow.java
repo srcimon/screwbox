@@ -35,6 +35,7 @@ public class DefaultWindow implements Window, Updatable {
     private Offset lastOffset;
     private FilesDropedOnWindow filesDropedOnWindow;
 
+
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
                          final DefaultScreen screen,
