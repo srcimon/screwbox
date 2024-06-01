@@ -8,6 +8,9 @@ public class VacuumOutlawApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Vacuum Outlaws");
+        screwBox.assets()
+                .prepareClassPackageAsync(VacuumOutlawApp.class)
+                .prepareEngineAssetsAsync();
         screwBox.scenes().add(new GameScene());
         screwBox.start(GameScene.class);
     }

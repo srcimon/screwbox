@@ -432,15 +432,15 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/tilesets\/StationOne_floors.json"
+         "source":"..\/tilesets\/maps\/StationOne_floors.json"
         }, 
         {
          "firstgid":257,
-         "source":"..\/tilesets\/StationOne_walls.json"
+         "source":"..\/tilesets\/maps\/StationOne_walls.json"
         }, 
         {
          "firstgid":513,
-         "source":"..\/tilesets\/StationOne_decor.json"
+         "source":"..\/tilesets\/maps\/StationOne_decor.json"
         }],
  "tilewidth":16,
  "type":"map",
