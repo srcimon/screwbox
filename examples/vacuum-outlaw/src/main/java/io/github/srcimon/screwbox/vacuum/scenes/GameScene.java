@@ -19,9 +19,9 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
-import io.github.srcimon.screwbox.vacuum.player.DashingSystem;
-import io.github.srcimon.screwbox.vacuum.player.Player;
+import io.github.srcimon.screwbox.vacuum.player.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.MovementControlSystem;
+import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
@@ -47,7 +47,7 @@ public class GameScene implements Scene {
         environment
                 .enablePhysics()
                 .enableLight()
-                .addSystem(new DashingSystem())
+                .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .enableTweening()

@@ -13,7 +13,7 @@ public class PlayerWalkingState implements EntityState {
 
     @Override
     public EntityState update(Entity entity, Engine engine) {
-        return entity.hasComponent(DashingComponent.class)
+        return entity.hasComponent(DashComponent.class)
                 ? new PlayerDashingState()
                 : this;
     }
