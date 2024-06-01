@@ -28,21 +28,11 @@
                  "tileid":1
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"moving"
-                }]
+         "type":"moving"
         }, 
         {
          "id":3,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"dead"
-                }]
+         "type":"dead"
         }],
  "tilewidth":16,
  "type":"tileset",

@@ -36,12 +36,7 @@
                  "tileid":5
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"ticking"
-                }]
+         "type":"ticking"
         }, 
         {
          "animation":[
@@ -58,12 +53,7 @@
                  "tileid":8
                 }],
          "id":6,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"explosion"
-                }]
+         "type":"explosion"
         }],
  "tilewidth":32,
  "type":"tileset",

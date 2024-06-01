@@ -202,7 +202,7 @@
                 <module>examples/particles</module>
                 <module>examples/game-of-life</module>
                 <module>examples/platformer</module>
-                <module>examples/vacuum-outlaws</module>
+                <module>examples/vacuum-outlaw</module>
             </modules>
             <build>
                 <plugins>

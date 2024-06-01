@@ -28,22 +28,10 @@
                  "tileid":1
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"idle"
-                }],
          "type":"idle"
         }, 
         {
          "id":4,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"dashing"
-                }],
          "type":"dashing"
         }],
  "tilewidth":16,

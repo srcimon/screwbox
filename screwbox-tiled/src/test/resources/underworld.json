@@ -17,15 +17,10 @@
                  "type":"string",
                  "value":"value123"
                 }]
-        }, 
+        },
         {
          "id":5,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"myNamedSprite"
-                }]
+         "type":"myNamedSprite"
         }],
  "tilewidth":16,
  "transparentcolor":"#ff00ff",

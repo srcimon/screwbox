@@ -41,7 +41,7 @@ class LightRenderSystemTest {
         verify(light).addSpotLight($(116, 16), 45, Color.BLACK);
         verify(light).addGlow($(216, 16), 20, Color.BLUE);
         verify(light).addPointLight($(216, 16), 22, Color.BLUE);
-        verify(light).addShadowCaster($$(50, 50, 32, 32));
+        verify(light).addShadowCaster($$(50, 50, 32, 32), true);
         verify(light).render();
     }
 }
