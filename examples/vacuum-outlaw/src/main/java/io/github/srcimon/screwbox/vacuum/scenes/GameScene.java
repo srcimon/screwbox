@@ -19,9 +19,9 @@ import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
-import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
@@ -78,7 +78,6 @@ public class GameScene implements Scene {
                         .add(new TransformComponent(object.position()))
                         .add(new GlowComponent(18, Color.hex("#feffe9")))
                         .add(new PointLightComponent(120, Color.BLACK)));
-
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
