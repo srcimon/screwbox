@@ -3,6 +3,7 @@
 - Added ability to attach entities to other entities via `AttachmentComponent`
 - Added ability to specify if shadow caster cast shadows over itself via `ShadowCasterComponent.selfShadow`
 - Added `Line.middle()`
+- Added new example application for top down games `VacuumOutlawApp`
 
 ### 🪛 Bug Fixes
 
