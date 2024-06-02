@@ -21,9 +21,9 @@ class SceneTransitionTest {
         assertThat(transition.introAnimation()).isEqualTo(animation);
         assertThat(transition.introEase()).isEqualTo(Ease.SINE_IN);
         assertThat(transition.introDuration()).isEqualTo(Duration.ofSeconds(2));
-        assertThat(transition.extroAnimation()).isInstanceOf(ColorFadeAnimation.class);
-        assertThat(transition.extroDuration()).isEqualTo(Duration.none());
-        assertThat(transition.extroEase()).isEqualTo(Ease.LINEAR_IN);
+        assertThat(transition.outroAnimation()).isInstanceOf(ColorFadeAnimation.class);
+        assertThat(transition.outroDuration()).isEqualTo(Duration.none());
+        assertThat(transition.outroEase()).isEqualTo(Ease.LINEAR_IN);
     }
 
     @Test
@@ -31,13 +31,13 @@ class SceneTransitionTest {
         var animation = new ColorFadeAnimation();
 
         var transition = SceneTransition.custom()
-                .extroEase(Ease.SINE_IN)
-                .extroDurationSeconds(2)
-                .extroAnimation(animation);
+                .outroEase(Ease.SINE_IN)
+                .outroDurationSeconds(2)
+                .outroAnimation(animation);
 
-        assertThat(transition.extroAnimation()).isEqualTo(animation);
-        assertThat(transition.extroEase()).isEqualTo(Ease.SINE_IN);
-        assertThat(transition.extroDuration()).isEqualTo(Duration.ofSeconds(2));
+        assertThat(transition.outroAnimation()).isEqualTo(animation);
+        assertThat(transition.outroEase()).isEqualTo(Ease.SINE_IN);
+        assertThat(transition.outroDuration()).isEqualTo(Duration.ofSeconds(2));
         assertThat(transition.introAnimation()).isInstanceOf(ColorFadeAnimation.class);
         assertThat(transition.introDuration()).isEqualTo(Duration.none());
         assertThat(transition.introEase()).isEqualTo(Ease.LINEAR_OUT);

@@ -16,6 +16,7 @@
 - Made `SystemOrder` inner class of `Order` annotation 
 - Updated package names of example applications
 - Renamed `LightBlockingComponent` to `ShadowCasterComponent`
+- Renamed scene switch extro to outro
 - Enhanced performance of image blurring / applying light effects
 - Removed `Light.addShadowCasters(List)`
 - Tiled tiles use `class` as name instead of custom property `name` (#333)

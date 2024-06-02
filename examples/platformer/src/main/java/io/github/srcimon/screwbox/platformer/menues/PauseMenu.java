@@ -26,8 +26,8 @@ public class PauseMenu extends UiMenu {
 
         addItem("Options").onActivate(engine -> engine.ui().openMenu(new OptionsMenu()));
         addItem("Back to menu").onActivate(engine -> engine.scenes().switchTo(StartScene.class, SceneTransition.custom()
-                .extroDurationMillis(250)
-                .extroEase(Ease.SINE_IN)
+                .outroDurationMillis(250)
+                .outroEase(Ease.SINE_IN)
                 .introDurationMillis(250)
                 .introEase(Ease.SINE_OUT)));
         addItem("Quit Game").onActivate(Engine::stop);

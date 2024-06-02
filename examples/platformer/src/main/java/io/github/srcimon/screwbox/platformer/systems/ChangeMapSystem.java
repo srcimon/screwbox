@@ -27,8 +27,8 @@ public class ChangeMapSystem implements EntitySystem {
                     engine.scenes()
                             .addOrReplace(new GameScene(entity.get(ChangeMapComponent.class).fileName))
                             .switchTo(GameScene.class, SceneTransition.custom()
-                                    .extroDurationMillis(750)
-                                    .extroEase(Ease.SINE_IN)
+                                    .outroDurationMillis(750)
+                                    .outroEase(Ease.SINE_IN)
                                     .introAnimation(new CirclesAnimation())
                                     .introDurationMillis(1200));
                 }

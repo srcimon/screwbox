@@ -33,7 +33,7 @@ public class StartGameMenu extends UiMenu {
         engine.scenes()
                 .addOrReplace(new GameScene(map))
                 .switchTo(GameScene.class, SceneTransition.custom()
-                        .extroDurationMillis(100)
+                        .outroDurationMillis(100)
                         .introAnimation(new CirclesAnimation())
                         .introDurationMillis(1200));
     }

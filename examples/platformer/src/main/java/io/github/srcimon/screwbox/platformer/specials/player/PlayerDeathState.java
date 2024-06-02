@@ -43,8 +43,8 @@ public class PlayerDeathState implements EntityState {
         engine.scenes()
                 .addOrReplace(new DeadScene(currentLevel))
                 .switchTo(DeadScene.class, SceneTransition.custom()
-                        .extroAnimation(new CirclesAnimation())
-                        .extroDurationMillis(2000)
+                        .outroAnimation(new CirclesAnimation())
+                        .outroDurationMillis(2000)
                         .introDurationMillis(250));
 
     }
