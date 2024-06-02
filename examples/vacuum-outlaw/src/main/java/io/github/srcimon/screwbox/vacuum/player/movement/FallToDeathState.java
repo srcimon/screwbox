@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.vacuum.player.movement;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -20,6 +21,7 @@ public class FallToDeathState implements EntityState {
         entity.add(new TweenScaleComponent(0, 1));
         entity.remove(MovementControlComponent.class);
         entity.get(PhysicsComponent.class).momentum = Vector.zero();
+        engine.audio().playSound(SoundBundle.STEAM);
     }
 
     @Override
@@ -30,7 +32,9 @@ public class FallToDeathState implements EntityState {
                     .addOrReplace(new GameScene())
                     .switchTo(GameScene.class, SceneTransition.custom()
                             .outroDurationSeconds(1)
-                            .outroAnimation(new CirclesAnimation()));
+                            .outroAnimation(new CirclesAnimation())
+                            .introDurationSeconds(1)
+                            .introAnimation(new CirclesAnimation()));
         }
         return this;
     }
