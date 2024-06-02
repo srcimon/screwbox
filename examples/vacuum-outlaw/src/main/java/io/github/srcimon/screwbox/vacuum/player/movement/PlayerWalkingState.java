@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.deathpit.FallenIntoDeathpitComponent;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
@@ -17,6 +18,7 @@ public class PlayerWalkingState implements EntityState {
     @Override
     public void enter(Entity entity, Engine engine) {
         entity.get(RenderComponent.class).sprite = SPRITE.get();
+        entity.addIfNotPresent(new DeathpitVictimComponent());
         entity.add(new MovementControlComponent());
     }
 
@@ -28,5 +30,10 @@ public class PlayerWalkingState implements EntityState {
         return entity.hasComponent(DashComponent.class)
                 ? new PlayerDashingState()
                 : this;
+    }
+
+    @Override
+    public void exit(Entity entity, Engine engine) {
+        entity.remove(DeathpitVictimComponent.class);
     }
 }

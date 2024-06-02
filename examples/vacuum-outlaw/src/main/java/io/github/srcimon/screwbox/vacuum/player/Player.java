@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetCompone
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
-import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.player.movement.PlayerWalkingState;
 
 public class Player implements SourceImport.Converter<GameObject> {
@@ -20,7 +19,6 @@ public class Player implements SourceImport.Converter<GameObject> {
         return new Entity(object.id()).name("player")
                 .add(new TransformComponent(object.position(), 10, 10))
                 .add(new PhysicsComponent())
-                .add(new DeathpitVictimComponent())
                 .add(new RotateSpriteComponent())
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new ShadowCasterComponent(false))

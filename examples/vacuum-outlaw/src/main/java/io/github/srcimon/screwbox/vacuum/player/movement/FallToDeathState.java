@@ -31,9 +31,9 @@ public class FallToDeathState implements EntityState {
             engine.scenes()
                     .addOrReplace(new GameScene())
                     .switchTo(GameScene.class, SceneTransition.custom()
-                            .outroDurationSeconds(1)
+                            .outroDurationMillis(500)
                             .outroAnimation(new CirclesAnimation())
-                            .introDurationSeconds(1)
+                            .introDurationMillis(500)
                             .introAnimation(new CirclesAnimation()));
         }
         return this;
