@@ -222,6 +222,7 @@ class DurationTest {
         assertThat(progress).isEqualTo(Percent.of(0.6));
     }
 
+    //TODO Started after now
     @Test
     void progress_endReached_isMax() {
         Time started = Time.atNanos(10);
