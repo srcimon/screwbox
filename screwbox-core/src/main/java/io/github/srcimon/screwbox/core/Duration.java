@@ -237,6 +237,9 @@ public class Duration implements Serializable {
      * Calculates the progress that has been made from a start time towards the {@link Duration}.
      */
     public Percent progress(final Time started, final Time now) {
+        if(started.isAfter(now)) {
+            return Percent.zero();
+        }
         final var timePassed = Duration.between(started, now);
         return isNone() ? Percent.max() : Percent.of(timePassed.nanos * 1.0 / nanos);
     }
