@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.vacuum.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
@@ -10,6 +11,7 @@ import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -22,10 +24,15 @@ import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
+import static io.github.srcimon.screwbox.core.assets.Asset.asset;
+
 public class GameScene implements Scene {
+
+    private static final Asset<Sprite> CURSOR = asset(() -> Sprite.fromFile("tilesets/objects/cursor.png").scaled(3));
 
     @Override
     public void onEnter(Engine engine) {
+        engine.window().setCursor(CURSOR);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
     }
