@@ -205,4 +205,11 @@ public final class Entity implements Serializable {
     public void moveBy(final Vector delta) {
         tranform.bounds = bounds().moveBy(delta);
     }
+
+    //TODO javadoc test changelog
+    public void addIfNotPresent(final Component component) {
+        if(!hasComponent(component.getClass())) {
+            add(component);
+        }
+    }
 }

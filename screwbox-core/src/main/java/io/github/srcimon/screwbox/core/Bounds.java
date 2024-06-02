@@ -312,4 +312,8 @@ public final class Bounds implements Serializable {
         return intersecting;
     }
 
+    //TODO changelog, javadoc and test
+    public boolean contains(final Bounds other) {
+        return maxX() > other.maxX() && minX() < other.minX() && maxY() > other.maxY() && minY() < other.minY();
+    }
 }
