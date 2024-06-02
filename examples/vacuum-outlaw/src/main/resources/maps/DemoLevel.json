@@ -8,15 +8,15 @@
          "name":"underground",
          "objects":[
                 {
-                 "height":31.5226842799286,
+                 "height":32,
                  "id":8,
-                 "name":"smoke",
-                 "rotation":358.877191954555,
+                 "name":"deathpit",
+                 "rotation":360,
                  "type":"",
                  "visible":true,
-                 "width":77.3971599982063,
-                 "x":259,
-                 "y":115
+                 "width":80,
+                 "x":256,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
