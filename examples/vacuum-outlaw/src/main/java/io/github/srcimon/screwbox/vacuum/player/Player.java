@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.vacuum.player.movement.PlayerWalkingState;
 
@@ -23,7 +22,7 @@ public class Player implements SourceImport.Converter<GameObject> {
                 .add(new RotateSpriteComponent())
                 .add(new StateComponent(new PlayerWalkingState()))
                 .add(new ShadowCasterComponent(false))
-                .add(new RenderComponent(SpriteBundle.SLIME_MOVING, object.layer().order()))
+                .add(new RenderComponent(object.layer().order()))
                 .add(new CameraTargetComponent(5));
     }
 }
