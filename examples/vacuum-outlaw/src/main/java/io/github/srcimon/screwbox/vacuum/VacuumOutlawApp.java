@@ -11,13 +11,16 @@ public class VacuumOutlawApp {
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Vacuum Outlaws");
         screwBox.assets()
+                .enableLogging()
                 .prepareClassPackageAsync(VacuumOutlawApp.class)
                 .prepareEngineAssetsAsync();
+
         screwBox.scenes()
                 .add(new GameScene())
                 .switchTo(GameScene.class, SceneTransition.custom()
                         .introDurationMillis(500)
                         .introAnimation(new CirclesAnimation()));
+
         screwBox.start();
     }
 }

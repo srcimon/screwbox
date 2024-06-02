@@ -19,6 +19,7 @@ import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
 import io.github.srcimon.screwbox.vacuum.player.Player;
+import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
@@ -53,6 +54,7 @@ public class GameScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new DeathpitSystem())
+                .addSystem(new PlayerAttackControlSystem())
                 .enableTweening()
                 .enableLogic()
                 .enableParticles()

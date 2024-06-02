@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.deathpit.FallenIntoDeathpitComponent;
+import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
@@ -19,7 +20,8 @@ public class PlayerWalkingState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(RenderComponent.class).sprite = SPRITE.get();
         entity.addIfNotPresent(new DeathpitVictimComponent());
-        entity.add(new MovementControlComponent());
+        entity.addIfNotPresent(new MovementControlComponent());
+        entity.addIfNotPresent(new PlayerAttackControl());
     }
 
     @Override
