@@ -12,12 +12,32 @@
         {
          "animation":[
                 {
-                 "duration":3000,
+                 "duration":400,
                  "tileid":0
                 }, 
                 {
-                 "duration":100,
+                 "duration":400,
                  "tileid":1
+                }, 
+                {
+                 "duration":400,
+                 "tileid":0
+                }, 
+                {
+                 "duration":400,
+                 "tileid":1
+                }, 
+                {
+                 "duration":400,
+                 "tileid":0
+                }, 
+                {
+                 "duration":400,
+                 "tileid":1
+                }, 
+                {
+                 "duration":200,
+                 "tileid":2
                 }],
          "id":0,
          "type":"idle"
