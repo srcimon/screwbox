@@ -19,6 +19,7 @@ public class Cursor implements SourceImport.Converter<Map> {
 
     @Override
     public Entity convert(final Map map) {
+        //TODO Reload animation
         return new Entity().name("cursor")
                 .add(new TransformComponent(Vector.zero(), 16, 16))
                 .addCustomized(new RenderComponent(CURSOR, Integer.MAX_VALUE, scaled(0.3)),

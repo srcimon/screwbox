@@ -29,6 +29,7 @@ public class PlayerDashingState implements EntityState {
         engine.audio().playSound(SoundBundle.JUMP ,entity.position());
         entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, SILHOUETTE));
         entity.remove(PlayerAttackControl.class);
+        entity.remove(MovementControlComponent.class);
         entity.get(RenderComponent.class).sprite = DASHING.get().freshInstance();
     }
 
