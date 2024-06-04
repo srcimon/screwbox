@@ -17,7 +17,7 @@ import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
-import io.github.srcimon.screwbox.vacuum.misc.Cursor;
+import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;

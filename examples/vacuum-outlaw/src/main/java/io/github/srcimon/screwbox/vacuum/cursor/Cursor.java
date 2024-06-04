@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.vacuum.misc;
+package io.github.srcimon.screwbox.vacuum.cursor;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
