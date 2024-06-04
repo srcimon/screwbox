@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
 
@@ -16,6 +18,7 @@ import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDashingState implements EntityState {
 
+    private static final Asset<Sprite> DASHING = spriteAssetFromJson("tilesets/objects/player.json", "dash");
     private static final Asset<ParticleOptions> DASH_PARTICLE = asset(() -> ParticleOptions.unknownSource()
             .sprite(spriteAssetFromJson("tilesets/objects/player.json", "dashing"))
             .lifetimeMilliseconds(400)
@@ -26,6 +29,7 @@ public class PlayerDashingState implements EntityState {
         engine.audio().playSound(SoundBundle.JUMP ,entity.position());
         entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, DASH_PARTICLE));
         entity.remove(PlayerAttackControl.class);
+        entity.get(RenderComponent.class).sprite = DASHING.get().freshInstance();
     }
 
     @Override

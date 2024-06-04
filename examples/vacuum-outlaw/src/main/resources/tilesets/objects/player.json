@@ -45,6 +45,63 @@
         {
          "id":4,
          "type":"dashing"
+        }, 
+        {
+         "animation":[
+                {
+                 "duration":23,
+                 "tileid":8
+                }, 
+                {
+                 "duration":23,
+                 "tileid":9
+                }, 
+                {
+                 "duration":23,
+                 "tileid":10
+                }, 
+                {
+                 "duration":23,
+                 "tileid":11
+                }, 
+                {
+                 "duration":23,
+                 "tileid":12
+                }, 
+                {
+                 "duration":23,
+                 "tileid":13
+                }, 
+                {
+                 "duration":23,
+                 "tileid":14
+                }, 
+                {
+                 "duration":23,
+                 "tileid":13
+                }, 
+                {
+                 "duration":23,
+                 "tileid":12
+                }, 
+                {
+                 "duration":23,
+                 "tileid":11
+                }, 
+                {
+                 "duration":23,
+                 "tileid":10
+                }, 
+                {
+                 "duration":23,
+                 "tileid":9
+                }, 
+                {
+                 "duration":23,
+                 "tileid":8
+                }],
+         "id":8,
+         "type":"dash"
         }],
  "tilewidth":16,
  "type":"tileset",
