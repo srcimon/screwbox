@@ -16,6 +16,7 @@ public class MovementControlSystem implements EntitySystem {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
             if (engine.keyboard().isPressed(Key.SPACE)) {
                 player.remove(MovementControlComponent.class);
+                //TODO NO DASH WHE NNOT MOBING
                 player.add(new DashComponent(engine.keyboard().wsadMovement(220), Duration.ofMillis(300)));
             } else {
                 player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(80);
