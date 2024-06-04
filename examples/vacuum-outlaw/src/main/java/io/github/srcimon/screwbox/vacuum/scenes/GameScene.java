@@ -33,7 +33,6 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.loop().unlockFps();
         engine.window().setCursor(CURSOR);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
