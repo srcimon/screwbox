@@ -15,11 +15,11 @@ public class MovementControlSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
-            if (engine.keyboard().isPressed(Key.SPACE)) {
-                player.remove(MovementControlComponent.class);
+            if (engine.keyboard().isPressed(Key.L)) {
                 Vector wsadMovement = engine.keyboard().wsadMovement(220);
                 if (!wsadMovement.isZero()) {
                     player.add(new DashComponent(wsadMovement, Duration.ofMillis(300)));
+                    player.remove(MovementControlComponent.class);
                 }
             } else {
                 player.get(PhysicsComponent.class).momentum = engine.keyboard().wsadMovement(80);

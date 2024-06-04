@@ -55,6 +55,7 @@ public class GameScene implements Scene {
                 .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
 
         environment.importSource(map).as(new Cursor());
+        //TODO environment .importOnce(new Cursor());
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
