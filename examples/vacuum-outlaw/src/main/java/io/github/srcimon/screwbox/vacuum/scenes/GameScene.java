@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.vacuum.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
@@ -11,13 +10,14 @@ import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.MouseCursor;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
+import io.github.srcimon.screwbox.vacuum.misc.Cursor;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
@@ -25,15 +25,11 @@ import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
 
-import static io.github.srcimon.screwbox.core.assets.Asset.asset;
-
 public class GameScene implements Scene {
-
-    private static final Asset<Sprite> CURSOR = asset(() -> Sprite.fromFile("tilesets/objects/cursor.png").scaled(3));
 
     @Override
     public void onEnter(Engine engine) {
-        engine.window().setCursor(CURSOR);
+        engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
     }
@@ -59,9 +55,12 @@ public class GameScene implements Scene {
                 .enableLogic()
                 .enableParticles()
                 .enableRendering();
+        //TODO enableAll (Github issue)
 
         environment.importSource(map)
                 .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
+
+        environment.importSource(map).as(new Cursor());
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
