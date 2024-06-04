@@ -18,16 +18,16 @@ import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerDashingState implements EntityState {
 
-    private static final Asset<Sprite> DASHING = spriteAssetFromJson("tilesets/objects/player.json", "dash");
-    private static final Asset<ParticleOptions> DASH_PARTICLE = asset(() -> ParticleOptions.unknownSource()
-            .sprite(spriteAssetFromJson("tilesets/objects/player.json", "dashing"))
+    private static final Asset<Sprite> DASHING = spriteAssetFromJson("tilesets/objects/player.json", "dashing");
+    private static final Asset<ParticleOptions> SILHOUETTE = asset(() -> ParticleOptions.unknownSource()
+            .sprite(spriteAssetFromJson("tilesets/objects/player.json", "silhouette"))
             .lifetimeMilliseconds(400)
-            .animateOpacity(Percent.zero(), Percent.half()));
+            .animateOpacity(Percent.zero(), Percent.quater()));
 
     @Override
     public void enter(Entity entity, Engine engine) {
         engine.audio().playSound(SoundBundle.JUMP ,entity.position());
-        entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, DASH_PARTICLE));
+        entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, SILHOUETTE));
         entity.remove(PlayerAttackControl.class);
         entity.get(RenderComponent.class).sprite = DASHING.get().freshInstance();
     }
