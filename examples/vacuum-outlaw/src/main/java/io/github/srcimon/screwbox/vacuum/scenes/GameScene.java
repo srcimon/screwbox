@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
@@ -48,6 +49,7 @@ public class GameScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new DeathpitSystem())
+                .addSystem(new DynamicCursorImageSystem())
                 .addSystem(new PlayerAttackControlSystem())
                 .enableAllFeatures();
 
