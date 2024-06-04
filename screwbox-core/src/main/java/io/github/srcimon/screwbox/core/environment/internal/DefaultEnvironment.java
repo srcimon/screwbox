@@ -316,6 +316,14 @@ public class DefaultEnvironment implements Environment {
         return this;
     }
 
+    @Override
+    public Environment enableAllFeatures() {
+        for (final var feature : Feature.values()) {
+            enableFeature(feature);
+        }
+        return this;
+    }
+
     private void enableFeature(final Feature feature) {
         for (final var system : feature.systems) {
             addOrReplaceSystem(system);

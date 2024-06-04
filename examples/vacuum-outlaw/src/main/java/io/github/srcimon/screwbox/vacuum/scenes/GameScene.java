@@ -44,18 +44,12 @@ public class GameScene implements Scene {
             }
         });
         environment
-                .enablePhysics()
-                .enableLight()
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new DeathpitSystem())
                 .addSystem(new PlayerAttackControlSystem())
-                .enableTweening()
-                .enableLogic()
-                .enableParticles()
-                .enableRendering();
-        //TODO enableAll (Github issue)
+                .enableAllFeatures();
 
         environment.importSource(map)
                 .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));

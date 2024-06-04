@@ -6,6 +6,7 @@
 - Added `CursorAttachmentComponent` / `System`
 - Added `Line.middle()`
 - Added `Duration.progress(Time, Time)`
+- Added `Environment.enableAllFeatures()` (#336)
 
 ### 🪛 Bug Fixes
 

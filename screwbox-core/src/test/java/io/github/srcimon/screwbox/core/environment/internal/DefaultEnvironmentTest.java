@@ -536,6 +536,14 @@ class DefaultEnvironmentTest {
         assertThat(environment.tryFetchById(3)).isEmpty();
     }
 
+    @Test
+    void enableAllFeatures_noSystemPresent_addsAllSystems() {
+        environment.enableAllFeatures();
+
+        assertThat(environment.systems()).hasSize(29)
+                .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
+    }
+
     @AfterEach
     void afterEach() throws IOException {
         if (Files.exists(SAVEGAME)) {
