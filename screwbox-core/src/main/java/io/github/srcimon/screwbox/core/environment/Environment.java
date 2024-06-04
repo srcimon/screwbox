@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleInteraction
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
@@ -259,6 +260,7 @@ public interface Environment {
      * @see CollisionDetectionSystem
      * @see GravitySystem
      * @see MagnetSystem
+     * @see CursorAttachmentSystem
      * @see OptimizePhysicsPerformanceSystem
      * @see PhysicsSystem
      * @see ChaoticMovementSystem
