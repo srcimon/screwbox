@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 public class PlayerAttackControlSystem implements EntitySystem {
 
@@ -25,7 +26,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
             final var attackControl = player.get(PlayerAttackControl.class);
             boolean gunIsLoaded = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isBefore(engine.loop().lastUpdate());
-            if (engine.mouse().isPressedLeft() && gunIsLoaded) {
+            if (engine.mouse().isDown(MouseButton.LEFT) && gunIsLoaded) {
                 attackControl.lastShotFired = engine.loop().lastUpdate();
                 engine.audio().playSound(SoundBundle.PHASER, player.position());
                 engine.environment().addEntity("shoot",
