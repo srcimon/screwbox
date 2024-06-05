@@ -29,6 +29,5 @@ public class DynamicCursorImageSystem implements EntitySystem {
                         cursor.get(RenderComponent.class).sprite = assetToUse.get().freshInstance();
                     }
                 }));
-        //TODO: Sprite.lockLastFrame()
     }
 }
