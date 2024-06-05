@@ -38,9 +38,9 @@ class LightPhysicsTest {
     }
 
     @Test
-    void isCoveredByShadowCasters_noSelfshadowCasterObscuresPosition_isFalse() {
+    void isCoveredByShadowCasters_noSelfshadowCasterObscuresPosition_isTrue() {
         lightPhysics.addNoSelfShadowShadowCasters($$(0, 5, 100, 40));
-        assertThat(lightPhysics.isCoveredByShadowCasters($(30, 10))).isFalse();
+        assertThat(lightPhysics.isCoveredByShadowCasters($(30, 10))).isTrue();
     }
 
     @Test
