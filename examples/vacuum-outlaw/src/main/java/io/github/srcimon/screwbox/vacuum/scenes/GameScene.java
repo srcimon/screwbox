@@ -15,10 +15,10 @@ import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
+import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
-import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
@@ -30,7 +30,6 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
-        engine.loop().unlockFps();
         engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
