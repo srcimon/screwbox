@@ -40,6 +40,11 @@ class LightPhysics {
                 return true;
             }
         }
+        for (final var bounds : noSelfShadowShadowCasters) {
+            if (bounds.contains(position)) {
+                return true;
+            }
+        }
         return false;
     }
 
