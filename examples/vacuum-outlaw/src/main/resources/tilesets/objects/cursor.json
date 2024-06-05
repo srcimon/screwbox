@@ -1,11 +1,11 @@
-{ "columns":4,
+{ "columns":8,
  "image":"cursor.png",
  "imageheight":32,
- "imagewidth":64,
+ "imagewidth":128,
  "margin":0,
  "name":"cursor",
  "spacing":0,
- "tilecount":8,
+ "tilecount":16,
  "tiledversion":"1.10.1",
  "tileheight":16,
  "tiles":[
@@ -16,22 +16,38 @@
         {
          "animation":[
                 {
-                 "duration":200,
-                 "tileid":4
+                 "duration":100,
+                 "tileid":8
                 }, 
                 {
-                 "duration":200,
-                 "tileid":5
+                 "duration":100,
+                 "tileid":9
                 }, 
                 {
-                 "duration":200,
-                 "tileid":6
+                 "duration":100,
+                 "tileid":10
                 }, 
                 {
-                 "duration":200,
-                 "tileid":7
+                 "duration":100,
+                 "tileid":11
+                }, 
+                {
+                 "duration":100,
+                 "tileid":12
+                }, 
+                {
+                 "duration":100,
+                 "tileid":13
+                }, 
+                {
+                 "duration":100,
+                 "tileid":14
+                }, 
+                {
+                 "duration":100,
+                 "tileid":15
                 }],
-         "id":4,
+         "id":8,
          "type":"reloading"
         }],
  "tilewidth":16,
