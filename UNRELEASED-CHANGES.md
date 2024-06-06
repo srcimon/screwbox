@@ -12,6 +12,7 @@
 
 - Fixed crash when loading Tiled maps with layers containing `class` attribute
 - Fixed light map shift on outer edges of the screen
+- Fixed another threading issue preventing the engine to quit on errors
 
 ### 🧽 Cleanup & refactoring
 
