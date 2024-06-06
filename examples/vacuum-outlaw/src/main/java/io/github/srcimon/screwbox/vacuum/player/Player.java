@@ -18,6 +18,7 @@ public class Player implements SourceImport.Converter<GameObject> {
     public Entity convert(GameObject object) {
         return new Entity(object.id()).name("player")
                 .add(new TransformComponent(object.position(), 10, 10))
+                .add(new PlayerComponent())
                 .add(new PhysicsComponent())
                 .add(new RotateSpriteComponent())
                 .add(new StateComponent(new PlayerWalkingState()))

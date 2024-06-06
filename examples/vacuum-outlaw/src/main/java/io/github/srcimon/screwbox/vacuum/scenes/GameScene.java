@@ -21,6 +21,9 @@ import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
+import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
+import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
+import io.github.srcimon.screwbox.vacuum.enemies.SpawnPoint;
 import io.github.srcimon.screwbox.vacuum.player.Player;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
@@ -54,6 +57,8 @@ public class GameScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new PhysicsGridUpdateSystem())
+                .addSystem(new RunAtPlayerSystem())
+                .addSystem(new EnemySpawnSystem())
                 .addSystem(new DeathpitSystem())
                 .addSystem(new DynamicCursorImageSystem())
                 .addSystem(new PlayerAttackControlSystem())
@@ -73,6 +78,7 @@ public class GameScene implements Scene {
                 .usingIndex(GameObject::name)
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
+                .when("spawnpoint").as(new SpawnPoint())
                 //TODO .andAs(----)
                 .when("light").as(object -> new Entity(object.id()).name("light")
                         .add(new TransformComponent(object.position()))
