@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.deathpit.FallenIntoDeathpitComponent;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
+import io.github.srcimon.screwbox.vacuum.player.death.FallToDeathState;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 

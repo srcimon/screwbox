@@ -16,7 +16,7 @@ public class EnemySpawnSystem implements EntitySystem {
         for (final var spawnPoint : engine.environment().fetchAll(SPAWN_POINTS)) {
             final var spawnConfig = spawnPoint.get(SpawnPointComponent.class);
             if (spawnConfig.sheduler.isTick()) {
-                if(enemyCount < 2) {
+                if (enemyCount < 2) {
                     enemyCount++;
                     engine.environment().importSource(spawnPoint).as(new Slime());
                 }

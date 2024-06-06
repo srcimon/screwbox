@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.vacuum.player.movement;
+package io.github.srcimon.screwbox.vacuum.player.death;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
+import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 
 public class FallToDeathState implements EntityState {
