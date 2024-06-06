@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
+import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.MouseCursor;
@@ -25,6 +27,9 @@ import io.github.srcimon.screwbox.vacuum.player.movement.DashSystem;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlSystem;
 import io.github.srcimon.screwbox.vacuum.tiles.DecorTile;
 import io.github.srcimon.screwbox.vacuum.tiles.WallTile;
+
+import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
+import static io.github.srcimon.screwbox.core.utils.Sheduler.withInterval;
 
 public class GameScene implements Scene {
 
@@ -48,13 +53,18 @@ public class GameScene implements Scene {
                 .addSystem(new DashSystem())
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
+                .addSystem(new PhysicsGridUpdateSystem())
                 .addSystem(new DeathpitSystem())
                 .addSystem(new DynamicCursorImageSystem())
                 .addSystem(new PlayerAttackControlSystem())
                 .enableAllFeatures();
 
         environment.importSource(map)
-                .as(tiledMap -> new Entity("world").add(new CameraBoundsComponent(tiledMap.bounds())));
+                .as(tiledMap -> new Entity("world")
+                        .add(new CameraBoundsComponent(tiledMap.bounds()))
+                        .add(new PhysicsGridConfigurationComponent(tiledMap.bounds(), 16, withInterval(ofSeconds(60))))
+
+                );
 
         environment.importSource(map).as(new Cursor());
         //TODO environment .importOnce(new Cursor());
