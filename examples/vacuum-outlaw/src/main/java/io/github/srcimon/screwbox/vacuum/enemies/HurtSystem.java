@@ -13,7 +13,7 @@ public class HurtSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for(final var enemy : engine.environment().fetchAll(HURT_ENEMIES)) {
-            engine.audio().playSound(SoundBundle.ZISCH);
+            engine.audio().playSound(SoundBundle.SPLASH);
             engine.environment().remove(enemy);
         }
 

@@ -22,6 +22,7 @@ import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
+import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.SpawnPoint;
 import io.github.srcimon.screwbox.vacuum.player.Player;
@@ -57,6 +58,7 @@ public class GameScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new PhysicsGridUpdateSystem())
+                .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())
                 .addSystem(new DeathpitSystem())

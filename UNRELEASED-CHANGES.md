@@ -7,6 +7,7 @@
 - Added `Line.middle()`
 - Added `Duration.progress(Time, Time)`
 - Added `Environment.enableAllFeatures()` (#336)
+- Added new asset `SoundBundle.SPLASH`
 
 ### 🪛 Bug Fixes
 

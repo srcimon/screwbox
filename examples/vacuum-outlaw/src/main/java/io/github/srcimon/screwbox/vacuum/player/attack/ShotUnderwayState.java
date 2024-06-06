@@ -17,7 +17,7 @@ public class ShotUnderwayState implements EntityState {
     public EntityState update(Entity entity, Engine engine) {
         for (final var enemy : engine.environment().fetchAll(ENEMIES)) {
             if (entity.bounds().touches(enemy.bounds())) {
-                enemy.add(new HurtComponent());
+                enemy.addIfNotPresent(new HurtComponent());
                 return new ShotDissolvingState();
             }
         }
