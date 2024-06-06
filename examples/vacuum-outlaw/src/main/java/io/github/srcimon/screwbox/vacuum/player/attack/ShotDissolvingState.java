@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponen
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 
-public class ShootDissolvingState implements EntityState {
+public class ShotDissolvingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
