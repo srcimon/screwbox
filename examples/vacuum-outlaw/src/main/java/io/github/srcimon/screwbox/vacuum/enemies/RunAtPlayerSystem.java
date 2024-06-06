@@ -14,9 +14,11 @@ public class RunAtPlayerSystem implements EntitySystem {
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PlayerComponent.class).ifPresent(player -> {
             for (final var runner : engine.environment().fetchAll(RUNNERS)) {
-                engine.async().runExclusive(runner, () ->
-                        engine.physics().findPath(runner.position(), player.position()).ifPresent(
-                                path -> runner.get(AutomovementComponent.class).path = path));
+                if(runner.get(RunAtPlayerComponent.class).refreshPathSheduler.isTick()) {
+                    engine.async().runExclusive(runner, () ->
+                            engine.physics().findPath(runner.position(), player.position()).ifPresent(
+                                    path -> runner.get(AutomovementComponent.class).path = path));
+                }
             }
         });
 

@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -20,6 +21,7 @@ public class Slime implements SourceImport.Converter<Entity> {
                 .add(new TransformComponent(spawnPoint.position(), 8, 8))
                 .add(new RenderComponent(SpriteBundle.SLIME_MOVING, spawnPoint.get(SpawnPointComponent.class).drawOrder))
                 .add(new PhysicsComponent())
+                .add(new ColliderComponent())
                 .add(new EnemyComponent())
                 .add(new RunAtPlayerComponent())
                 .add(new ShadowCasterComponent(false))

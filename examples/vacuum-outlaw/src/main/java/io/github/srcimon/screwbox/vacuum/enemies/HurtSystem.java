@@ -15,7 +15,7 @@ public class HurtSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var enemy : engine.environment().fetchAll(HURT_ENEMIES)) {
-            engine.audio().playSound(SoundBundle.SPLASH);
+            engine.audio().playSound(SoundBundle.SPLASH, enemy.position());
             engine.particles().spawnMultiple(8, enemy.position(), ParticleOptions.particleSource(enemy)
                     .lifetimeSeconds(1)
                     .randomBaseSpeed(20)
