@@ -210,7 +210,9 @@ class DurationTest {
 
     @Test
     void progress_noDuration_isMax() {
-        Duration.none().progress(now(), now()).isMax();
+        Duration none = Duration.none();
+
+        assertThat(none.progress(now(), now())).isEqualTo(Percent.max());
     }
 
     @Test

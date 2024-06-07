@@ -7,10 +7,8 @@ import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentCompo
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
