@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
-import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
+import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
 import static io.github.srcimon.screwbox.core.assets.Asset.asset;
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
@@ -28,7 +28,7 @@ public class PlayerDashingState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         engine.audio().playSound(SoundBundle.JUMP ,entity.position());
         entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, SILHOUETTE));
-        entity.remove(PlayerAttackControl.class);
+        entity.remove(PlayerAttackControlComponent.class);
         entity.remove(MovementControlComponent.class);
         entity.get(RenderComponent.class).sprite = DASHING.get().freshInstance();
     }
@@ -43,6 +43,6 @@ public class PlayerDashingState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         entity.remove(ParticleEmitterComponent.class);
-        entity.add(new PlayerAttackControl());
+        entity.add(new PlayerAttackControlComponent());
     }
 }

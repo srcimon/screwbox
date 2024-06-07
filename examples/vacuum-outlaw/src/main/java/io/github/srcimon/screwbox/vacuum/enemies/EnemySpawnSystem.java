@@ -21,21 +21,19 @@ public class EnemySpawnSystem implements EntitySystem {
         var enemyCount = engine.environment().fetchAll(ENEMIES).size();
         for (final var spawnPoint : engine.environment().fetchAll(SPAWN_POINTS)) {
             final var spawnConfig = spawnPoint.get(SpawnPointComponent.class);
-            if (spawnConfig.sheduler.isTick()) {
-                if (enemyCount < 2) {
-                    enemyCount++;
-                    engine.particles().spawnMultiple(4, spawnPoint.position(), ParticleOptions.unknownSource()
-                            .sprite(SpriteBundle.ELECTRICITY_SPARCLE)
-                            .ease(Ease.SINE_IN_OUT)
-                            .randomStartScale(1, 2)
-                            .startOpacity(Percent.zero())
-                            .animateOpacity(Percent.zero(), Percent.of(0.6))
-                            .chaoticMovement(50, ofSeconds(1))
-                            .drawOrder(spawnConfig.drawOrder)
-                            .randomStartRotation()
-                            .lifetimeSeconds(1));
-                    engine.environment().importSource(spawnPoint).as(new Slime());
-                }
+            if (spawnConfig.sheduler.isTick() && enemyCount < 2) {
+                enemyCount++;
+                engine.particles().spawnMultiple(4, spawnPoint.position(), ParticleOptions.unknownSource()
+                        .sprite(SpriteBundle.ELECTRICITY_SPARCLE)
+                        .ease(Ease.SINE_IN_OUT)
+                        .randomStartScale(1, 2)
+                        .startOpacity(Percent.zero())
+                        .animateOpacity(Percent.zero(), Percent.of(0.6))
+                        .chaoticMovement(50, ofSeconds(1))
+                        .drawOrder(spawnConfig.drawOrder)
+                        .randomStartRotation()
+                        .lifetimeSeconds(1));
+                engine.environment().importSource(spawnPoint).as(new Slime());
             }
         }
     }

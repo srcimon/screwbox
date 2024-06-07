@@ -18,13 +18,13 @@ import io.github.srcimon.screwbox.core.mouse.MouseButton;
 
 public class PlayerAttackControlSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerAttackControl.class);
+    private static final Archetype PLAYER = Archetype.of(TransformComponent.class, PlayerAttackControlComponent.class);
     private static final Asset<Sprite> SHOOT = Sprite.assetFromFile("tilesets/objects/shot_small.png");
 
     @Override
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(PLAYER).ifPresent(player -> {
-            final var attackControl = player.get(PlayerAttackControl.class);
+            final var attackControl = player.get(PlayerAttackControlComponent.class);
             boolean gunIsLoaded = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isBefore(engine.loop().lastUpdate());
             if (engine.mouse().isDown(MouseButton.LEFT) && gunIsLoaded) {
                 attackControl.lastShotFired = engine.loop().lastUpdate();

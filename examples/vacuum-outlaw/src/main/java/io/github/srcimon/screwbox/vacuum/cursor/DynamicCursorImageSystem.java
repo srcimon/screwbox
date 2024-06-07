@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
+import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControlComponent;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
@@ -18,7 +18,7 @@ public class DynamicCursorImageSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        engine.environment().tryFetchSingletonComponent(PlayerAttackControl.class).ifPresent(attackControl ->
+        engine.environment().tryFetchSingletonComponent(PlayerAttackControlComponent.class).ifPresent(attackControl ->
                 engine.environment().tryFetchSingleton(CURSOR).ifPresent(cursor -> {
                     boolean isReloading = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isAfter(engine.loop().lastUpdate());
                     var dynamicCursorImageComponent = cursor.get(DynamicCursorImageComponent.class);

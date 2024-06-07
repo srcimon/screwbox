@@ -7,8 +7,8 @@ import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 
 public class SpawnPointComponent implements Component {
 
-    final public Sheduler sheduler = Sheduler.withInterval(ofSeconds(5));
-    final public int drawOrder;
+    public final Sheduler sheduler = Sheduler.withInterval(ofSeconds(5));
+    public final int drawOrder;
 
     public SpawnPointComponent(final int drawOrder) {
         this.drawOrder = drawOrder;

@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Component;
 
-public class PlayerAttackControl implements Component {
+public class PlayerAttackControlComponent implements Component {
 
     public Duration reloadDuration = Duration.ofMillis(800);
     public Time lastShotFired = Time.unset();

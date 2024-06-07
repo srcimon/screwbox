@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
 import io.github.srcimon.screwbox.vacuum.cursor.DynamicCursorImageSystem;
 import io.github.srcimon.screwbox.vacuum.deathpit.Deathpit;
 import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitSystem;
+import io.github.srcimon.screwbox.vacuum.decoration.Light;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemySpawnSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.HurtSystem;
 import io.github.srcimon.screwbox.vacuum.enemies.RunAtPlayerSystem;
@@ -70,22 +71,16 @@ public class GameScene implements Scene {
                 .as(tiledMap -> new Entity("world")
                         .add(new CameraBoundsComponent(tiledMap.bounds()))
                         .add(new PhysicsGridConfigurationComponent(tiledMap.bounds(), 16, withInterval(ofSeconds(60))))
-
-                );
-
-        environment.importSource(map).as(new Cursor());
-        //TODO environment .importOnce(new Cursor());
+                )
+                .as(new Cursor());
 
         environment.importSource(map.objects())
                 .usingIndex(GameObject::name)
                 .when("deathpit").as(new Deathpit())
                 .when("player").as(new Player())
                 .when("spawnpoint").as(new SpawnPoint())
-                //TODO .andAs(----)
-                .when("light").as(object -> new Entity(object.id()).name("light")
-                        .add(new TransformComponent(object.position()))
-                        .add(new GlowComponent(18, Color.hex("#feffe9")))
-                        .add(new PointLightComponent(120, Color.BLACK)));
+                .when("light").as(new Light());
+
         environment.importSource(map.tiles())
                 .usingIndex(tile -> tile.layer().clazz())
                 .when("wall").as(new WallTile())
