@@ -206,7 +206,9 @@ public final class Entity implements Serializable {
         tranform.bounds = bounds().moveBy(delta);
     }
 
-    //TODO javadoc test changelog
+    /**
+     * Adds a {@link Component} if there is not already another instance of that {@link Component} present.
+     */
     public void addIfNotPresent(final Component component) {
         if(!hasComponent(component.getClass())) {
             add(component);

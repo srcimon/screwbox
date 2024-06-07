@@ -273,4 +273,9 @@ class BoundsTest {
 
         assertThat(first.contains(second)).isTrue();
     }
+
+    @Test
+    void toString_containsPositionAndSize() {
+        assertThat(Bounds.$$(10, 0, 40, 80)).hasToString("Bounds [x=10.0, y=0.0, width=40.0, height=80.0]");
+    }
 }

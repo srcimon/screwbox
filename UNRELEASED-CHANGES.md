@@ -5,6 +5,7 @@
 - Added new example application for top down games `VacuumOutlawApp`
 - Added `CursorAttachmentComponent` / `System`
 - Added `Line.middle()`
+- Added `Entity.addIfNotPresent(Component)`
 - Added `Bounds.contains(Bounds)`
 - Added `Duration.progress(Time, Time)`
 - Added `Environment.enableAllFeatures()` (#336)
