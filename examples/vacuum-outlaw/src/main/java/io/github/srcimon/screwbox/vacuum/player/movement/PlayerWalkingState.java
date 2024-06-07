@@ -12,7 +12,8 @@ import io.github.srcimon.screwbox.vacuum.deathpit.DeathpitVictimComponent;
 import io.github.srcimon.screwbox.vacuum.deathpit.FallenIntoDeathpitComponent;
 import io.github.srcimon.screwbox.vacuum.enemies.EnemyComponent;
 import io.github.srcimon.screwbox.vacuum.player.attack.PlayerAttackControl;
-import io.github.srcimon.screwbox.vacuum.player.death.DeathState;
+import io.github.srcimon.screwbox.vacuum.player.death.FallToDeathState;
+import io.github.srcimon.screwbox.vacuum.player.death.TouchedEnemyDeathState;
 
 import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
@@ -32,11 +33,11 @@ public class PlayerWalkingState implements EntityState {
     @Override
     public EntityState update(Entity entity, Engine engine) {
         if (entity.hasComponent(FallenIntoDeathpitComponent.class)) {
-            return new DeathState();
+            return new FallToDeathState();
         }
         for (final var enemy : engine.environment().fetchAll(ENEMIES)) {
             if (entity.bounds().touches(enemy.bounds())) {
-                return new DeathState();
+                return new TouchedEnemyDeathState();
             }
         }
         return entity.hasComponent(DashComponent.class)
