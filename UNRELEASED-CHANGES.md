@@ -5,6 +5,7 @@
 - Added new example application for top down games `VacuumOutlawApp`
 - Added `CursorAttachmentComponent` / `System`
 - Added `Line.middle()`
+- Added `Bounds.contains(Bounds)`
 - Added `Duration.progress(Time, Time)`
 - Added `Environment.enableAllFeatures()` (#336)
 - Added new asset `SoundBundle.SPLASH`

@@ -243,7 +243,7 @@ class BoundsTest {
 
         List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second));
 
-        Assertions.assertThat(intersecting).isEmpty();
+        assertThat(intersecting).isEmpty();
     }
 
     @Test
@@ -255,6 +255,22 @@ class BoundsTest {
 
         List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second, third));
 
-        Assertions.assertThat(intersecting).containsExactly(first, second);
+        assertThat(intersecting).containsExactly(first, second);
+    }
+
+    @Test
+    void contains_nextToEachOther_isFalse() {
+        Bounds first = Bounds.$$(10, 0, 40, 80);
+        Bounds second = Bounds.$$(100, 0, 20, 100);
+
+        assertThat(first.contains(second)).isFalse();
+    }
+
+    @Test
+    void contains_secondInsideFirst_isTrue() {
+        Bounds first = Bounds.$$(10, 0, 40, 80);
+        Bounds second = Bounds.$$(15, 1, 20, 50);
+
+        assertThat(first.contains(second)).isTrue();
     }
 }
