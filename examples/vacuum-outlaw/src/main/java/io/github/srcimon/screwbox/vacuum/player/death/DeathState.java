@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlComponent;
 import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 
-public class FallToDeathState implements EntityState {
+public class DeathState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
