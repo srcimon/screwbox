@@ -60,12 +60,24 @@ class LightPhysicsTest {
     }
 
     @Test
+    void calculateArea_noSelfShadowShadowCasterPresent_shadowCasterIsPartOfLight() {
+        Bounds lightBox = $$(0, 0, 100, 100);
+        Bounds shadowCaster = $$(0, 10, 100, 2);
+
+        lightPhysics.addNoSelfShadowShadowCasters(shadowCaster);
+
+        var area = lightPhysics.calculateArea(lightBox, 0, 360);
+
+        assertThat(area).allMatch(point -> point.y() >= 10.0);
+    }
+
+    @Test
     void clear_removesAllExistingShadowCasters() {
-        lightPhysics.addShadowCaster($$(0,0, 2,2));
-        assertThat(lightPhysics.isCoveredByShadowCasters($(1,1))).isTrue();
+        lightPhysics.addShadowCaster($$(0, 0, 2, 2));
+        assertThat(lightPhysics.isCoveredByShadowCasters($(1, 1))).isTrue();
 
         lightPhysics.clear();
 
-        assertThat(lightPhysics.isCoveredByShadowCasters($(1,1))).isFalse();
+        assertThat(lightPhysics.isCoveredByShadowCasters($(1, 1))).isFalse();
     }
 }

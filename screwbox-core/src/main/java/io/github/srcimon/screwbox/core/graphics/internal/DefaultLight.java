@@ -58,8 +58,7 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addShadowCaster(Bounds shadowCaster, boolean selfShadow) {
-        //TODO refactor
+    public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
         if (selfShadow) {
             lightPhysics.addShadowCaster(shadowCaster);
         } else {
