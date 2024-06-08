@@ -97,5 +97,4 @@ class LightPhysics {
         }
         return allLines;
     }
-
 }

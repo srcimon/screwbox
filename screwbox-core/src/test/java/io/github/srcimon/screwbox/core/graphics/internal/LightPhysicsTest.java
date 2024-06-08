@@ -58,4 +58,14 @@ class LightPhysicsTest {
                 .hasSize(11)
                 .contains(lightBox.position());
     }
+
+    @Test
+    void clear_removesAllExistingShadowCasters() {
+        lightPhysics.addShadowCaster($$(0,0, 2,2));
+        assertThat(lightPhysics.isCoveredByShadowCasters($(1,1))).isTrue();
+
+        lightPhysics.clear();
+
+        assertThat(lightPhysics.isCoveredByShadowCasters($(1,1))).isFalse();
+    }
 }
