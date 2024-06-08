@@ -20,12 +20,7 @@
                  "tileid":1
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"inactive"
-                }]
+         "type":"inactive"
         }, 
         {
          "animation":[
@@ -38,12 +33,7 @@
                  "tileid":3
                 }],
          "id":2,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"active"
-                }]
+         "type":"active"
         }],
  "tilewidth":16,
  "type":"tileset",

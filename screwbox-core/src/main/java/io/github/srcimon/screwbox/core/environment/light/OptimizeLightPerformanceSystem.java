@@ -2,9 +2,12 @@ package io.github.srcimon.screwbox.core.environment.light;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.GeometryUtil;
-import io.github.srcimon.screwbox.core.environment.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +16,7 @@ import java.util.Optional;
 public class OptimizeLightPerformanceSystem implements EntitySystem {
 
     private static final Archetype COMBINABLES = Archetype.of(
-            StaticLightBlockingComponent.class, LightBlockingComponent.class, TransformComponent.class);
+            StaticShadowCasterComponent.class, ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
@@ -27,7 +30,7 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         }
         // at this point all light blockers have been combined
         for (final var entity : combinables) {
-            entity.remove(StaticLightBlockingComponent.class);
+            entity.remove(StaticShadowCasterComponent.class);
         }
         engine.environment().remove(OptimizeLightPerformanceSystem.class);
     }
@@ -36,18 +39,21 @@ public class OptimizeLightPerformanceSystem implements EntitySystem {
         if (first == second) {
             return false;
         }
+        if (first.get(ShadowCasterComponent.class).selfShadow != second.get(ShadowCasterComponent.class).selfShadow) {
+            return false;
+        }
         Optional<Bounds> result = GeometryUtil.tryToCombine(first.get(TransformComponent.class).bounds,
                 second.get(TransformComponent.class).bounds);
         if (result.isPresent()) {
             Entity combined = new Entity()
-                    .add(new LightBlockingComponent())
-                    .add(new StaticLightBlockingComponent())
+                    .add(new ShadowCasterComponent(first.get(ShadowCasterComponent.class).selfShadow))
+                    .add(new StaticShadowCasterComponent())
                     .add(new TransformComponent(result.get()));
             engine.environment().addEntity(combined);
-            first.remove(StaticLightBlockingComponent.class);
-            first.remove(LightBlockingComponent.class);
-            second.remove(StaticLightBlockingComponent.class);
-            second.remove(LightBlockingComponent.class);
+            first.remove(StaticShadowCasterComponent.class);
+            first.remove(ShadowCasterComponent.class);
+            second.remove(StaticShadowCasterComponent.class);
+            second.remove(ShadowCasterComponent.class);
             return true;
         }
         return false;

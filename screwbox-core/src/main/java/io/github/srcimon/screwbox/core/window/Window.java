@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Used to control the game window and retrieve information about the game window.
@@ -97,6 +98,18 @@ public interface Window {
      */
     default Window setCursor(final Sprite cursor) {
         return setCursor(cursor.singleFrame());
+    }
+
+    /**
+     * Updates the mouse cursor with the given {@link Sprite} when game is in
+     * fullscreen and window mode. Supports only {@link Sprite}s with one
+     * {@link Frame}.
+     *
+     * @see #setFullscreenCursor(Sprite)
+     * @see #setWindowCursor(Sprite)
+     */
+    default Window setCursor(final Supplier<Sprite> cursor) {
+        return setCursor(cursor.get());
     }
 
     /**

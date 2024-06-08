@@ -15,14 +15,15 @@ public class LightRenderSystem implements EntitySystem {
     private static final Archetype POINTLIGHTS = Archetype.of(PointLightComponent.class, TransformComponent.class);
     private static final Archetype SPOTLIGHTS = Archetype.of(SpotLightComponent.class, TransformComponent.class);
     private static final Archetype GLOWS = Archetype.of(GlowComponent.class, TransformComponent.class);
-    private static final Archetype SHADOWCASTERS = Archetype.of(LightBlockingComponent.class, TransformComponent.class);
+    private static final Archetype SHADOWCASTERS = Archetype.of(ShadowCasterComponent.class, TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
         final Light light = engine.graphics().light();
 
         for (final var shadowCaster : engine.environment().fetchAll(SHADOWCASTERS)) {
-            light.addShadowCaster(shadowCaster.get(TransformComponent.class).bounds);
+            final var shadow = shadowCaster.get(ShadowCasterComponent.class);
+            light.addShadowCaster(shadowCaster.bounds(), shadow.selfShadow);
         }
 
         for (final Entity coneLightEntity : engine.environment().fetchAll(CONELIGHTS)) {

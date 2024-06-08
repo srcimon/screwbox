@@ -2,21 +2,23 @@ package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.tiled.internal.FrameEntity;
 import io.github.srcimon.screwbox.tiled.internal.TileEntity;
 import io.github.srcimon.screwbox.tiled.internal.TilesetEntity;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class Tileset {
 
@@ -69,8 +71,9 @@ public class Tileset {
 
                 addSprite(tilesetEntity.getFirstgid() + tileEntity.id(), animatedSprite);
             }
-            final Properties properties = new Properties(tileEntity.properties());
-            properties.tryGetString("name").ifPresent(s -> addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), s));
+            if (nonNull(tileEntity.type())) {
+                addNameToSprite(tilesetEntity.getFirstgid() + tileEntity.id(), tileEntity.type());
+            }
         }
     }
 
@@ -105,6 +108,7 @@ public class Tileset {
 
     /**
      * Returns all {@link Sprite}s of this {@link Tileset}.
+     *
      * @return all {@link Sprite}s
      */
     public List<Sprite> all() {
@@ -139,8 +143,7 @@ public class Tileset {
      * Returns a named {@link Sprite} directly from a {@link Tileset}.
      *
      * @param fileName name of the Tileset file
-     * @param name     name of the {@link Sprite} inside the file. The name is
-     *                 defined by a 'name' property.
+     * @param name     name of the {@link Sprite} inside the file.
      * @see #spriteFromJson(String)
      */
     public static Sprite spriteFromJson(final String fileName, final String name) {
@@ -163,7 +166,7 @@ public class Tileset {
      * wrapped as {@link Asset}.
      *
      * @param fileName name of the {@link Tileset} file
-     * @param name name of the sprite within the {@link Tileset}
+     * @param name     name of the sprite within the {@link Tileset}
      * @see #spriteAssetFromJson(String)
      */
     public static Asset<Sprite> spriteAssetFromJson(final String fileName, final String name) {

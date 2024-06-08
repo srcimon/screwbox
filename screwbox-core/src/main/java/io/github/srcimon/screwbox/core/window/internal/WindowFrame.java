@@ -22,6 +22,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
 
     public WindowFrame(final Size initialSize) {
         setIcon(defaultIcon());
+        setName("ScrewBox Window");
         this.initialSize = initialSize;
         addWindowFocusListener(this);
         canvas = new Canvas();

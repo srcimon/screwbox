@@ -84,4 +84,11 @@ class LineTest {
 
         assertThat(result).isEqualTo(Line.between($(20, 10), $(20, 50)));
     }
+
+    @Test
+    void middle_validLine_calculatesMiddle() {
+        var line = Line.between($(30, -5), $(10, 20));
+
+        assertThat(line.middle()).isEqualTo($(20, 7.5));
+    }
 }

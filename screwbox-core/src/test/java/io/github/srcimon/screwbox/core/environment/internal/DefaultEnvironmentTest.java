@@ -359,11 +359,13 @@ class DefaultEnvironmentTest {
     void enablePhysics_addsPhysicsSystems() {
         environment.enablePhysics();
 
-        assertThat(environment.systems()).hasSize(8)
+        assertThat(environment.systems()).hasSize(10)
                 .anyMatch(system -> system.getClass().equals(AutomovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
+                .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(MagnetSystem.class))
                 .anyMatch(system -> system.getClass().equals(OptimizePhysicsPerformanceSystem.class))
+                .anyMatch(system -> system.getClass().equals(CursorAttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(ChaoticMovementSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class))
                 .anyMatch(system -> system.getClass().equals(PhysicsGridUpdateSystem.class))
@@ -532,6 +534,14 @@ class DefaultEnvironmentTest {
         assertThat(environment.tryFetchById(1)).isNotEmpty();
         assertThat(environment.tryFetchById(2)).isEmpty();
         assertThat(environment.tryFetchById(3)).isEmpty();
+    }
+
+    @Test
+    void enableAllFeatures_noSystemPresent_addsAllSystems() {
+        environment.enableAllFeatures();
+
+        assertThat(environment.systems()).hasSize(29)
+                .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
     @AfterEach

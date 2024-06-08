@@ -205,4 +205,13 @@ public final class Entity implements Serializable {
     public void moveBy(final Vector delta) {
         tranform.bounds = bounds().moveBy(delta);
     }
+
+    /**
+     * Adds a {@link Component} if there is not already another instance of that {@link Component} present.
+     */
+    public void addIfNotPresent(final Component component) {
+        if(!hasComponent(component.getClass())) {
+            add(component);
+        }
+    }
 }

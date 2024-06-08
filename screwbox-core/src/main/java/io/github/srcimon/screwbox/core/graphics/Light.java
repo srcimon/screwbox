@@ -7,8 +7,6 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.window.Window;
 
-import java.util.List;
-
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
  * light sources and shadow casters are reseted every frame. To actually render
@@ -47,22 +45,25 @@ public interface Light {
     Light addSpotLight(Vector position, double radius, Color color);
 
     /**
-     * Adds object that cast shadows.
+     * Adds object that cast shadows. Casts shadows over itself.
      *
      * @param shadowCaster the {@link Bounds} of the shadow caster
      * @see #addPointLight(Vector, double, Color) )
-     * @see #addShadowCasters(List)
+     * @see #addShadowCaster(Bounds, boolean) 
      */
-    Light addShadowCaster(Bounds shadowCaster);
+    default Light addShadowCaster(Bounds shadowCaster) {
+        return addShadowCaster(shadowCaster, true);
+    }
 
     /**
-     * Adds objects that cast shadows.
+     * Adds object that cast shadows.
      *
-     * @param shadowCasters the {@link Bounds} of the shadow casters
-     * @see #addPointLight(Vector, double, Color)
-     * @see #addShadowCaster(Bounds)
+     * @param shadowCaster the {@link Bounds} of the shadow caster
+     * @param selfShadow   specify if the object casts shadows over itself
+     * @see #addPointLight(Vector, double, Color) )
+     * @see #addShadowCaster(Bounds) 
      */
-    Light addShadowCasters(List<Bounds> shadowCasters);
+    Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
 
     /**
      * Adds an area to the {@link World} that is fully illuminated.

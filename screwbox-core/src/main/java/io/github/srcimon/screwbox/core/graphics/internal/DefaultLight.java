@@ -31,9 +31,9 @@ public class DefaultLight implements Light {
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
     private final Screen screen;
-    private final LightPhysics lightPhysics = new LightPhysics();
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
+    private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
     private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
@@ -58,14 +58,12 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addShadowCasters(final List<Bounds> shadowCasters) {
-        lightPhysics.addShadowCasters(shadowCasters);
-        return this;
-    }
-
-    @Override
-    public Light addShadowCaster(final Bounds shadowCaster) {
-        lightPhysics.addShadowCaster(shadowCaster);
+    public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
+        if (selfShadow) {
+            lightPhysics.addShadowCaster(shadowCaster);
+        } else {
+            lightPhysics.addNoSelfShadowShadowCasters(shadowCaster);
+        }
         return this;
     }
 
@@ -127,10 +125,12 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
-        final CircleDrawOptions options = CircleDrawOptions.fading(color);
-        final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-        if (radius != 0 && isVisible(lightBox)) {
-            postDrawingTasks.add(() -> world.drawCircle(position, radius, options));
+        if (!lightPhysics.isCoveredByShadowCasters(position)) {
+            final CircleDrawOptions options = CircleDrawOptions.fading(color);
+            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+            if (radius != 0 && isVisible(lightBox)) {
+                postDrawingTasks.add(() -> world.drawCircle(position, radius, options));
+            }
         }
         return this;
     }
@@ -188,7 +188,7 @@ public class DefaultLight implements Light {
         initLightmap();
         tasks.clear();
         postDrawingTasks.clear();
-        lightPhysics.shadowCasters().clear();
+        lightPhysics.clear();
     }
 
     private boolean isVisible(final Bounds lightBox) {

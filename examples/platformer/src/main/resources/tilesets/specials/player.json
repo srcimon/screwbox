@@ -44,12 +44,7 @@
                  "tileid":3
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"standing"
-                }]
+         "type":"standing"
         }, 
         {
          "animation":[
@@ -70,12 +65,7 @@
                  "tileid":9
                 }],
          "id":8,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"running"
-                }]
+          "type":"running"
         }, 
         {
          "animation":[
@@ -96,21 +86,11 @@
                  "tileid":19
                 }],
          "id":16,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"jumping"
-                }]
+          "type":"jumping"
         }, 
         {
          "id":24,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"digging"
-                }]
+          "type":"digging"
         }, 
         {
          "animation":[
@@ -139,12 +119,7 @@
                  "tileid":37
                 }],
          "id":32,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"dead"
-                }]
+          "type":"dead"
         }, 
         {
          "animation":[
@@ -229,12 +204,7 @@
                  "tileid":40
                 }],
          "id":40,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"idle"
-                }]
+          "type":"idle"
         }],
  "tilewidth":32,
  "type":"tileset",

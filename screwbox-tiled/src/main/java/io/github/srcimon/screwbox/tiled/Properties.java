@@ -16,9 +16,9 @@ public class Properties {
         this.propertyList = isNull(propertyEntities)
                 ? emptyList()
                 : propertyEntities.stream()
-                        .map(Property::new)
-                        .map(Property.class::cast)
-                        .toList();
+                .map(Property::new)
+                .map(Property.class::cast)
+                .toList();
     }
 
     public Optional<String> tryGetString(final String name) {

@@ -11,12 +11,7 @@
  "tiles":[
         {
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"standing"
-                }]
+         "type":"standing"
         }, 
         {
          "animation":[
@@ -53,12 +48,7 @@
                  "tileid":3
                 }],
          "id":1,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"walking"
-                }]
+         "type":"walking"
         }],
  "tilewidth":16,
  "type":"tileset",

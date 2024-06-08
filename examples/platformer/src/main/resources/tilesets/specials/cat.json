@@ -28,12 +28,7 @@
                  "tileid":1
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"standing"
-                }]
+         "type":"standing"
         }, 
         {
          "animation":[
@@ -54,12 +49,7 @@
                  "tileid":4
                 }],
          "id":3,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"idle"
-                }]
+         "type":"idle"
         }, 
         {
          "animation":[
@@ -80,21 +70,11 @@
                  "tileid":7
                 }],
          "id":6,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"walking"
-                }]
+         "type":"walking"
         }, 
         {
          "id":9,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"jumping"
-                }]
+          "type":"jumping"
         }],
  "tilewidth":32,
  "type":"tileset",

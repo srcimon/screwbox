@@ -90,7 +90,7 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.25.3</version>
+                <version>3.26.0</version>
                 <scope>test</scope>
                 <exclusions><!-- current version (assertj-core 3.24.2) uses non java 21 compatible bytebuddy version -->
                     <exclusion>
@@ -102,14 +102,14 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
-                <version>5.11.0</version>
+                <version>5.12.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.17.0</version>
+                <version>2.17.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -202,6 +202,7 @@
                 <module>examples/particles</module>
                 <module>examples/game-of-life</module>
                 <module>examples/platformer</module>
+                <module>examples/vacuum-outlaw</module>
             </modules>
             <build>
                 <plugins>

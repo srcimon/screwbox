@@ -213,4 +213,22 @@ class EntityTest {
         assertThat(entity.position()).isEqualTo($(24, 42));
         assertThat(entity.bounds()).isEqualTo($$(16, 34, 16, 16));
     }
+
+    @Test
+    void addIfNotPresent_notPresent_addsComponent() {
+        entity.addIfNotPresent(new ColliderComponent());
+
+        assertThat(entity.hasComponent(ColliderComponent.class)).isTrue();
+    }
+
+    @Test
+    void addIfNotPresent_alreadyPresent_doesntAddComponent() {
+        var originalComponent = new ColliderComponent();
+        entity.add(originalComponent);
+
+        entity.addIfNotPresent(new ColliderComponent());
+
+        assertThat(entity.hasComponent(ColliderComponent.class)).isTrue();
+        assertThat(entity.get(ColliderComponent.class)).isEqualTo(originalComponent);
+    }
 }

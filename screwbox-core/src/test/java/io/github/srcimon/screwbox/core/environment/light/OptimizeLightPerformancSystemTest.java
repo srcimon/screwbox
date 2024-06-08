@@ -17,18 +17,18 @@ class OptimizeLightPerformancSystemTest {
     @Test
     void update_combinesHorizontallyAlignedColliders(DefaultEnvironment environment) {
         Entity brickA = new Entity().add(
-                new StaticLightBlockingComponent(),
-                new LightBlockingComponent(),
+                new StaticShadowCasterComponent(),
+                new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(0, 0, 20, 20)));
 
         Entity brickB = new Entity().add(
-                new StaticLightBlockingComponent(),
-                new LightBlockingComponent(),
+                new StaticShadowCasterComponent(),
+                new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(20, 0, 20, 20)));
 
         Entity brickC = new Entity().add(
-                new StaticLightBlockingComponent(),
-                new LightBlockingComponent(),
+                new StaticShadowCasterComponent(),
+                new ShadowCasterComponent(),
                 new TransformComponent(atOrigin(40, 0, 20, 20)));
 
         environment.addEntities(brickA, brickB, brickC);
@@ -37,7 +37,7 @@ class OptimizeLightPerformancSystemTest {
         environment.update(); // one brick per cycle aligned
         environment.update(); // ...and another one
 
-        var shadowCasters = environment.fetchAll(Archetype.of(LightBlockingComponent.class));
+        var shadowCasters = environment.fetchAll(Archetype.of(ShadowCasterComponent.class));
         var bounds = shadowCasters.getFirst().get(TransformComponent.class).bounds;
         assertThat(shadowCasters).hasSize(1);
         assertThat(bounds).isEqualTo(atOrigin(0, 0, 60, 20));

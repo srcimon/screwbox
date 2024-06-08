@@ -8,9 +8,11 @@ import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.AttachmentSystem;
 import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
+import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
@@ -59,7 +61,9 @@ public enum Feature {
     PHYSICS(
             new AutomovementSystem(),
             new CollisionDetectionSystem(),
+            new AttachmentSystem(),
             new GravitySystem(),
+            new CursorAttachmentSystem(),
             new MagnetSystem(),
             new OptimizePhysicsPerformanceSystem(),
             new PhysicsSystem(),

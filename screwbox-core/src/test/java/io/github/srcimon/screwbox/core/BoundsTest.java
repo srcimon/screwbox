@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -243,7 +242,7 @@ class BoundsTest {
 
         List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second));
 
-        Assertions.assertThat(intersecting).isEmpty();
+        assertThat(intersecting).isEmpty();
     }
 
     @Test
@@ -255,6 +254,27 @@ class BoundsTest {
 
         List<Bounds> intersecting = bounds.allIntersecting(List.of(first, second, third));
 
-        Assertions.assertThat(intersecting).containsExactly(first, second);
+        assertThat(intersecting).containsExactly(first, second);
+    }
+
+    @Test
+    void contains_nextToEachOther_isFalse() {
+        Bounds first = Bounds.$$(10, 0, 40, 80);
+        Bounds second = Bounds.$$(100, 0, 20, 100);
+
+        assertThat(first.contains(second)).isFalse();
+    }
+
+    @Test
+    void contains_secondInsideFirst_isTrue() {
+        Bounds first = Bounds.$$(10, 0, 40, 80);
+        Bounds second = Bounds.$$(15, 1, 20, 50);
+
+        assertThat(first.contains(second)).isTrue();
+    }
+
+    @Test
+    void toString_containsPositionAndSize() {
+        assertThat(Bounds.$$(10, 0, 40, 80)).hasToString("Bounds [x=10.0, y=0.0, width=40.0, height=80.0]");
     }
 }

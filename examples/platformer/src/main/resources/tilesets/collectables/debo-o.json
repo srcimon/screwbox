@@ -28,12 +28,7 @@
                  "tileid":1
                 }],
          "id":0,
-         "properties":[
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"animation"
-                }]
+         "type":"animation"
         }],
  "tilewidth":16,
  "type":"tileset",

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -23,7 +24,7 @@ class DurationTest {
 
     @Test
     void since_returnsDurationOfPositiveNanos() {
-        Time now = Time.now();
+        Time now = now();
 
         long nanosSince = Duration.since(now).nanos();
 
@@ -199,11 +200,45 @@ class DurationTest {
             "7_200_000_000_999; 2h"
     })
     void humanReadable_validInput_returnsReadableString(long nanos, String humanFormat) {
-       assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
+        assertThat(Duration.ofNanos(nanos).humanReadable()).isEqualTo(humanFormat);
     }
 
     @Test
     void toString_isHumanReadable() {
         assertThat(Duration.ofNanos(8_100_000_000_000L)).hasToString("Duration [2h, 15m]");
+    }
+
+    @Test
+    void progress_noDuration_isMax() {
+        Duration none = Duration.none();
+
+        assertThat(none.progress(now(), now())).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void progress_4of10SecondsMissing_is60Percent() {
+        Time started = Time.atNanos(10);
+        Time now = started.addSeconds(6);
+        var progress = Duration.ofSeconds(10).progress(started, now);
+
+        assertThat(progress).isEqualTo(Percent.of(0.6));
+    }
+
+    @Test
+    void progress_startedAfterEnd_isZero() {
+        Time now = Time.atNanos(10);
+        Time started = now.addSeconds(60);
+        var progress = Duration.ofSeconds(10).progress(started, now);
+
+        assertThat(progress).isEqualTo(Percent.zero());
+    }
+
+    @Test
+    void progress_endReached_isMax() {
+        Time started = Time.atNanos(10);
+        Time now = started.addSeconds(60);
+        var progress = Duration.ofSeconds(10).progress(started, now);
+
+        assertThat(progress).isEqualTo(Percent.max());
     }
 }

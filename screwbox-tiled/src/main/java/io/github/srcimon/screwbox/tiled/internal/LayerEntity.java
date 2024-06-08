@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.tiled.internal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.emptyWhenNull;
@@ -9,6 +11,8 @@ public record LayerEntity(
         String compression,
         List<Integer> data,
         String draworder,
+        @JsonProperty("class")
+        String clazz,
         String encoding,
         int height,
         int id,
