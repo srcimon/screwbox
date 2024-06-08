@@ -8,6 +8,9 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 
+import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+
 public class HurtSystem implements EntitySystem {
 
     private static final Archetype HURT_ENEMIES = Archetype.of(EnemyComponent.class, HurtComponent.class, TransformComponent.class);
@@ -16,6 +19,7 @@ public class HurtSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var enemy : engine.environment().fetchAll(HURT_ENEMIES)) {
             engine.audio().playSound(SoundBundle.SPLASH, enemy.position());
+            engine.graphics().camera().shake(lastingForDuration(ofMillis(200)).strength(20));
             engine.particles().spawnMultiple(8, enemy.position(), ParticleOptions.particleSource(enemy)
                     .lifetimeSeconds(1)
                     .randomBaseSpeed(20)
