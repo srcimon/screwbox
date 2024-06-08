@@ -55,7 +55,4 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         // return just center
         return blurred.getSubimage(radius, radius, image.getWidth(), image.getHeight());
     }
-
-
 }
-
