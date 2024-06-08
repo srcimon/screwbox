@@ -21,8 +21,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             2, MouseButton.MIDDLE,
             3, MouseButton.RIGHT);
 
-    private final Set<MouseButton> pressed = new HashSet<>();
-    private final TrippleLatch<Set<MouseButton>> justPressed = TrippleLatch.of(
+    private final Set<MouseButton> downButtons = new HashSet<>();
+    private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final Graphics graphics;
     private Offset position = Offset.origin();
@@ -53,7 +53,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public boolean isDown(final MouseButton button) {
-        return pressed.contains(button);
+        return downButtons.contains(button);
     }
 
     @Override
@@ -64,14 +64,14 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public void mousePressed(final MouseEvent e) {
         final var mouseButton = MAPPINGS.get(e.getButton());
-        pressed.add(mouseButton);
-        justPressed.active().add(mouseButton);
+        downButtons.add(mouseButton);
+        pressedButtons.active().add(mouseButton);
     }
 
     @Override
     public void mouseReleased(final MouseEvent e) {
         final var mouseButton = MAPPINGS.get(e.getButton());
-        pressed.remove(mouseButton);
+        downButtons.remove(mouseButton);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public void mouseExited(final MouseEvent e) {
-        pressed.clear();
+        downButtons.clear();
         isCursorOnScreen = false;
     }
 
     @Override
     public boolean isPressed(final MouseButton button) {
-        return justPressed.inactive().contains(button);
+        return pressedButtons.inactive().contains(button);
     }
 
     @Override
@@ -95,8 +95,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         unitsScrolled.toggle();
         unitsScrolled.assignActive(0);
         lastPosition = position;
-        justPressed.backupInactive().clear();
-        justPressed.toggle();
+        pressedButtons.backupInactive().clear();
+        pressedButtons.toggle();
     }
 
     @Override
@@ -133,7 +133,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public boolean isAnyButtonDown() {
-        return !pressed.isEmpty();
+        return !downButtons.isEmpty();
     }
 
     private void updateMousePosition(final MouseEvent e) {
