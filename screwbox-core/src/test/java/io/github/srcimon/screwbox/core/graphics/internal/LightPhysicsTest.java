@@ -68,7 +68,9 @@ class LightPhysicsTest {
 
         var area = lightPhysics.calculateArea(lightBox, 0, 360);
 
-        assertThat(area).allMatch(point -> point.y() >= 10.0);
+        assertThat(area)
+                .isNotEmpty()
+                .allMatch(point -> point.y() >= 10.0);
     }
 
     @Test
