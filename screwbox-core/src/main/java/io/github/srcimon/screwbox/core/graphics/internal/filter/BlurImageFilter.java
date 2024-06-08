@@ -1,8 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal.filter;
 
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
@@ -34,14 +31,21 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         final BufferedImage newImage = new BufferedImage(image.getWidth() + radius * 2, image.getHeight() + radius * 2, BufferedImage.TYPE_INT_ARGB);
         final var graphics = (Graphics2D) newImage.getGraphics();
 
-        // draw image scaled
+        // draw image scaled in the corners
+        graphics.setClip(new Rectangle(0, 0, radius * 2 + image.getWidth(), radius));
         graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
 
-        // clear center
-        graphics.setBackground(AwtMapper.toAwtColor(Color.TRANSPARENT));
-        graphics.clearRect(radius, radius, image.getWidth(), image.getHeight());
+        graphics.setClip(new Rectangle(0, image.getHeight() + radius, radius * 2 + image.getWidth(), radius));
+        graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
+
+        graphics.setClip(new Rectangle(0, radius, radius, image.getHeight()));
+        graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
+
+        graphics.setClip(new Rectangle(radius + image.getWidth(), radius, radius, image.getHeight()));
+        graphics.drawImage(image, 0, 0, image.getWidth() + radius * 2, image.getHeight() + radius * 2, null);
 
         // draw image in correct size
+        graphics.setClip(new Rectangle(radius, radius, image.getWidth(), image.getHeight()));
         graphics.drawImage(image, radius, radius, image.getWidth(), image.getHeight(), null);
         graphics.dispose();
 
@@ -51,7 +55,4 @@ public class BlurImageFilter implements UnaryOperator<BufferedImage> {
         // return just center
         return blurred.getSubimage(radius, radius, image.getWidth(), image.getHeight());
     }
-
-
 }
-
