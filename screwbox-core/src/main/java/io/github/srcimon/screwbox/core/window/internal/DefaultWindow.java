@@ -177,18 +177,18 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window setCursor(final Frame cursor) {
-        final Image image = cursor.image();
-        windowCursor = createCustomCursor(image);
-        fullscreenCursor = createCustomCursor(image);
+        final Cursor customCursor = createCustomCursor(cursor.image());
+        windowCursor = customCursor;
+        fullscreenCursor = customCursor;
         updateCursor();
         return this;
     }
 
     @Override
     public Window setCursor(final MouseCursor cursor) {
-        final var awtCursor = cursorFrom(cursor);
-        windowCursor = awtCursor;
-        fullscreenCursor = awtCursor;
+        final var customCursor = cursorFrom(cursor);
+        windowCursor = customCursor;
+        fullscreenCursor = customCursor;
         updateCursor();
         return this;
     }
@@ -232,5 +232,4 @@ public class DefaultWindow implements Window, Updatable {
         return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
                 "custom cursor");
     }
-
 }
