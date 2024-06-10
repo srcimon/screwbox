@@ -173,14 +173,24 @@ public class Sprite implements Serializable {
     }
 
     /**
-     * Returns the frame of the sprite if there is only a single frame in the
-     * sprite.
+     * Returns the {@link Frame} of the {@link Sprite} if there is only a single {@link Frame} in the {@link Sprite}.
+     *
+     * @throws IllegalStateException {@link Sprite} has more than one {@link Frame}
      */
     public Frame singleFrame() {
         if (frameCount() > 1) {
-            throw new IllegalStateException("The sprite has more than one frame.");
+            throw new IllegalStateException("the sprite has more than one frame");
         }
         return frame(0);
+    }
+
+    /**
+     * Returns the {@link Image} of the {@link Sprite} if there is only a single {@link Frame} in the {@link Sprite}.
+     *
+     * @throws IllegalStateException {@link Sprite} has more than one {@link Frame}
+     */
+    public Image singleImage() {
+        return singleFrame().image();
     }
 
     /**

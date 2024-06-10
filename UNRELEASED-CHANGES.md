@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Sprite.singleImage()`
 
 ### 🪛 Bug Fixes
 

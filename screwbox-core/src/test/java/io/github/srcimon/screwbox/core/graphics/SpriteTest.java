@@ -106,7 +106,7 @@ class SpriteTest {
 
         assertThatThrownBy(spriteWithMultipleFrames::singleFrame)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("The sprite has more than one frame.");
+                .hasMessage("the sprite has more than one frame");
     }
 
     @Test

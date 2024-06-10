@@ -227,7 +227,7 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     private Cursor createCustomCursor(final Sprite sprite) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleFrame().image(), new Point(0, 0),
-                "custom cursor");//TODO: sprite.singleImage()
+        return Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
+                "custom cursor");
     }
 }
