@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.core.window;
 
 import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 /**
  * Used to control the game window and retrieve information about the game window.
  */
-public interface Window {
+public interface Window extends Sizeable {
 
     /**
      * Returns the current position of the {@link Window}.
@@ -96,9 +96,7 @@ public interface Window {
      * @see #setFullscreenCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    default Window setCursor(final Sprite cursor) {
-        return setCursor(cursor.singleFrame());
-    }
+    Window setCursor(final Sprite cursor);
 
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
@@ -119,9 +117,7 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    default Window setFullscreenCursor(final Sprite cursor) {
-        return setFullscreenCursor(cursor.singleFrame());
-    }
+    Window setFullscreenCursor(final Sprite cursor);
 
     /**
      * Updates the mouse cursor with the given {@link Sprite} when game is in
@@ -130,36 +126,7 @@ public interface Window {
      * @see #setCursor(Sprite)
      * @see #setWindowCursor(Sprite)
      */
-    default Window setWindowCursor(final Sprite cursor) {
-        return setWindowCursor(cursor.singleFrame());
-    }
-
-    /**
-     * Updates the mouse cursor with the given {@link Frame} when game is in
-     * fullscreen and window mode.
-     *
-     * @see #setWindowCursor(Frame)
-     * @see #setFullscreenCursor(Frame)
-     */
-    Window setCursor(final Frame cursor);
-
-    /**
-     * Updates the mouse cursor with the given {@link Frame} when game is in
-     * fullscreen mode.
-     *
-     * @see #setCursor(Frame)
-     * @see #setWindowCursor(Frame)
-     */
-    Window setFullscreenCursor(Frame cursor);
-
-    /**
-     * Updates the mouse cursor with the given {@link Frame} when game is in window
-     * mode.
-     *
-     * @see #setCursor(Frame)
-     * @see #setFullscreenCursor(Frame)
-     */
-    Window setWindowCursor(Frame cursor);
+    Window setWindowCursor(final Sprite cursor);
 
     /**
      * Sets the application icon. Does not support animated {@link Sprite}s.

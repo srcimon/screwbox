@@ -70,7 +70,6 @@ public enum Ease {
         }
     }
 
-
     private final UnaryOperator<Percent> adjustment;
 
     Ease(final UnaryOperator<Percent> adjustment) {

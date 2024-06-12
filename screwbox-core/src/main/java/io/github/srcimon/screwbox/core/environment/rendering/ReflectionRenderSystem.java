@@ -35,8 +35,8 @@ public class ReflectionRenderSystem implements EntitySystem {
             visibleAreaOfMirror.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toScreen(reflection);
                 final Size size = Size.of(
-                        ceil(reflectionOnScreen.size().width() / engine.graphics().camera().zoom()),
-                        ceil(reflectionOnScreen.size().height() / engine.graphics().camera().zoom()));
+                        ceil(reflectionOnScreen.width() / engine.graphics().camera().zoom()),
+                        ceil(reflectionOnScreen.height() / engine.graphics().camera().zoom()));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
                     final long seed = engine.loop().lastUpdate().milliseconds();

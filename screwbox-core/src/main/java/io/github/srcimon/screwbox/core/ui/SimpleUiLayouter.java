@@ -15,7 +15,7 @@ public class SimpleUiLayouter implements UiLayouter {
         final int y = screen.center().y() - heightOfMenu / 2;
 
         final var offset = Offset.at(0, y + itemIndex * heightOfItem);
-        final var dimension = Size.of(screen.size().width(), heightOfItem);
+        final var dimension = Size.of(screen.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }
 

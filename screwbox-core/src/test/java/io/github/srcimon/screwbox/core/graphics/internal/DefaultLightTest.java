@@ -54,6 +54,8 @@ class DefaultLightTest {
     @BeforeEach
     void beforeEach() {
         when(screen.size()).thenReturn(Size.of(640, 480));
+        when(screen.width()).thenReturn(640);
+        when(screen.height()).thenReturn(480);
         world = new DefaultWorld(screen);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();

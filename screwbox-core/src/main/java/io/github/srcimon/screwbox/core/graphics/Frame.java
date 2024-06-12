@@ -22,7 +22,7 @@ import java.util.Set;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
-public final class Frame implements Serializable {
+public final class Frame implements Serializable, Sizeable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -97,6 +97,7 @@ public final class Frame implements Serializable {
     /**
      * Returns the size of the frames {@link #image()}.
      */
+    @Override
     public Size size() {
         return Size.of(imageCont.getIconWidth(), imageCont.getIconHeight());
     }
@@ -143,8 +144,8 @@ public final class Frame implements Serializable {
      * Returns a scaled version of the current {@link Frame}.
      */
     public Frame scaled(final double scale) {
-        final int width = (int) (size().width() * scale);
-        final int height = (int) (size().height() * scale);
+        final int width = (int) (width() * scale);
+        final int height = (int) (height() * scale);
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Scaled image is size is invalid");
         }
@@ -168,7 +169,7 @@ public final class Frame implements Serializable {
         }
 
         final var offset = Offset.at(minX, 0);
-        final var target = Offset.at(maxX + 1, size().height());
+        final var target = Offset.at(maxX + 1, height());
         final var size = Size.definedBy(offset, target);
         return extractArea(offset, size);
     }
@@ -201,7 +202,7 @@ public final class Frame implements Serializable {
     }
 
     private boolean hasOnlyTransparentPixelInColumn(final int x) {
-        for (int y = 0; y < size().height(); y++) {
+        for (int y = 0; y < height(); y++) {
             if (!colorAt(x, y).equals(Color.TRANSPARENT)) {
                 return false;
             }

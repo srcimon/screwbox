@@ -22,13 +22,29 @@ public interface Physics {
 
     Optional<Path> findPath(Vector start, Vector end, Grid grid);
 
-    Physics updateGrid(Grid grid);
-
-    Optional<Grid> grid();
-
     Bounds snapToGrid(Bounds bounds);
 
     Vector snapToGrid(Vector position);
+
+    /**
+     * Sets the {@link Grid} that is currently used to snap objects and find paths.
+     *
+     * @see #snapToGrid(Bounds)
+     * @see #snapToGrid(Vector)
+     * @see #findPath(Vector, Vector)
+     * @see #grid()
+     */
+    Physics setGrid(Grid grid);
+
+    /**
+     * Returns the {@link Grid} that is currently used to snap objects and find paths.
+     *
+     * @see #snapToGrid(Bounds)
+     * @see #snapToGrid(Vector)
+     * @see #findPath(Vector, Vector)
+     * @see #setGrid(Grid)
+     */
+    Optional<Grid> grid();
 
     /**
      * Set the currently used {@link PathfindingAlgorithm}. {@link AStarAlgorithm}

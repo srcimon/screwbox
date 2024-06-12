@@ -20,9 +20,8 @@ import static io.github.srcimon.screwbox.core.Ease.LINEAR_OUT;
  * @param introEase      the {@link Ease} applied on the intro animation
  */
 public record SceneTransition(
-        Animation outroAnimation, Duration outroDuration, Ease outroEase, Animation introAnimation,
-        Duration introDuration, Ease introEase
-) {
+        Animation outroAnimation, Duration outroDuration, Ease outroEase,
+        Animation introAnimation, Duration introDuration, Ease introEase) {
 
     private static final Animation DEFAULT_ANIMATION = new ColorFadeAnimation();
 

@@ -61,8 +61,8 @@ class Lightmap {
         applyOpacityConfig(Color.BLACK);
         graphics.fillRect(bounds.offset().x() / resolution,
                 bounds.offset().y() / resolution,
-                bounds.size().width() / resolution,
-                bounds.size().height() / resolution);
+                bounds.width() / resolution,
+                bounds.height() / resolution);
     }
 
     private void addPointLight(final PointLight pointLight) {

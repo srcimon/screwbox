@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 public class VacuumOutlawApp {
 
     public static void main(String[] args) {
-        Engine screwBox = ScrewBox.createEngine("Vacuum Outlaws");
+        Engine screwBox = ScrewBox.createEngine("Vacuum Outlaw");
         screwBox.assets()
                 .enableLogging()
                 .prepareClassPackageAsync(VacuumOutlawApp.class)

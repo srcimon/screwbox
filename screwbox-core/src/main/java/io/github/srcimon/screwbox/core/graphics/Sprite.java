@@ -14,7 +14,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class Sprite implements Serializable {
+public class Sprite implements Serializable, Sizeable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -99,8 +99,8 @@ public class Sprite implements Serializable {
     private static List<Frame> extractFrames(final String fileName, final Size size) {
         final var frame = Frame.fromFile(fileName);
         final var extracted = new ArrayList<Frame>();
-        for (int y = 0; y + size.height() <= frame.size().height(); y += size.height()) {
-            for (int x = 0; x + size.width() <= frame.size().width(); x += size.width()) {
+        for (int y = 0; y + size.height() <= frame.height(); y += size.height()) {
+            for (int x = 0; x + size.width() <= frame.width(); x += size.width()) {
                 final var area = frame.extractArea(Offset.at(x, y), size);
                 extracted.add(area);
             }
@@ -173,14 +173,24 @@ public class Sprite implements Serializable {
     }
 
     /**
-     * Returns the frame of the sprite if there is only a single frame in the
-     * sprite.
+     * Returns the {@link Frame} of the {@link Sprite} if there is only a single {@link Frame} in the {@link Sprite}.
+     *
+     * @throws IllegalStateException {@link Sprite} has more than one {@link Frame}
      */
     public Frame singleFrame() {
         if (frameCount() > 1) {
-            throw new IllegalStateException("The sprite has more than one frame.");
+            throw new IllegalStateException("the sprite has more than one frame");
         }
         return frame(0);
+    }
+
+    /**
+     * Returns the {@link Image} of the {@link Sprite} if there is only a single {@link Frame} in the {@link Sprite}.
+     *
+     * @throws IllegalStateException {@link Sprite} has more than one {@link Frame}
+     */
+    public Image singleImage() {
+        return singleFrame().image();
     }
 
     /**

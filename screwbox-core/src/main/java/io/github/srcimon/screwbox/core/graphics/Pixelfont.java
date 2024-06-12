@@ -62,9 +62,9 @@ public class Pixelfont implements Serializable {
         }
 
         if (height == 0) {
-            height = sprite.size().height();
+            height = sprite.height();
         } else {
-            if (height != sprite.size().height()) {
+            if (height != sprite.height()) {
                 throw new IllegalArgumentException("New character has different height than pixelfont.");
             }
         }

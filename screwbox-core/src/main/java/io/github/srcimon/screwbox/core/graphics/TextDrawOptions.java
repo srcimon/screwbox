@@ -105,7 +105,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     public int widthOf(final String text) {
         int totalWidth = 0;
         for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
-            totalWidth += (int) ((sprite.size().width() + padding) * scale);
+            totalWidth += (int) ((sprite.width() + padding) * scale);
         }
         return totalWidth;
     }

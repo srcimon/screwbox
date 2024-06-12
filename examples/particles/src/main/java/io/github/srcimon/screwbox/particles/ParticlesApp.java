@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.AREA;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.CONFETTI;
 
-public class PartilesApp {
+public class ParticlesApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Particles");

@@ -68,7 +68,7 @@ public class DefaultPhysics implements Physics {
     }
 
     @Override
-    public Physics updateGrid(final Grid grid) {
+    public Physics setGrid(final Grid grid) {
         this.grid = grid;
         return this;
     }

@@ -41,8 +41,8 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
         applyOpacityConfig(options.opacity());
 
-        final int spriteWidth = (int) (sprite.size().width() * options.scale());
-        final int spriteHeight = (int) (sprite.size().height() * options.scale());
+        final int spriteWidth = (int) (sprite.width() * options.scale());
+        final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
         for (int x = xStart; x <= canvasSize.width(); x += spriteWidth) {
@@ -201,8 +201,8 @@ public class DefaultRenderer implements Renderer {
         applyOpacityConfig(options.opacity());
 
         if (!options.rotation().isNone()) {
-            final double x = origin.x() + sprite.size().width() * options.scale() / 2.0;
-            final double y = origin.y() + sprite.size().height() * options.scale() / 2.0;
+            final double x = origin.x() + sprite.width() * options.scale() / 2.0;
+            final double y = origin.y() + sprite.height() * options.scale() / 2.0;
             final double radians = options.rotation().radians();
             graphics.rotate(radians, x, y);
             drawSpriteInContext(sprite, origin, options);
@@ -230,7 +230,7 @@ public class DefaultRenderer implements Renderer {
             transform.translate(x, offset.y());
             transform.scale(options.scale(), options.scale());
             graphics.drawImage(image, transform, null);
-            final int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
+            final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
             x += distanceX;
         }
         resetOpacityConfig(options.opacity());

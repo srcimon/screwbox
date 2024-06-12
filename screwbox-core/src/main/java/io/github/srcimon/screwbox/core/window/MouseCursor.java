@@ -1,6 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics;
-
-import io.github.srcimon.screwbox.core.window.Window;
+package io.github.srcimon.screwbox.core.window;
 
 /**
  * Some predefined mouse cursors that you can use.

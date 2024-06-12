@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
 
 import java.awt.*;
@@ -39,7 +39,7 @@ public class MacOsWindowFrame extends WindowFrame {
 
     @Override
     public void setIcon(final Sprite sprite) {
-        Taskbar.getTaskbar().setIconImage(sprite.singleFrame().image());
+        Taskbar.getTaskbar().setIconImage(sprite.singleImage());
     }
 
     @Override

@@ -155,8 +155,8 @@ public final class Bounds implements Serializable {
      * with different {@link #size()}. Positive values increase the {@link #size()},
      * negative one decreases the {@link #size()}.
      */
-    public Bounds expand(final double inflation) {
-        return Bounds.atPosition(position, width() + inflation, height() + inflation);
+    public Bounds expand(final double expansion) {
+        return Bounds.atPosition(position, width() + expansion, height() + expansion);
     }
 
     /**

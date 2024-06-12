@@ -106,7 +106,7 @@ class SpriteTest {
 
         assertThatThrownBy(spriteWithMultipleFrames::singleFrame)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("The sprite has more than one frame.");
+                .hasMessage("the sprite has more than one frame");
     }
 
     @Test
@@ -235,5 +235,22 @@ class SpriteTest {
 
         assertThat(animatedSprite.get().frameCount()).isEqualTo(25);
         assertThat(animatedSprite.get().duration()).isEqualTo(Duration.ofMillis(2500));
+    }
+
+    @Test
+    void singleImage_hasMultipleImages_throwsException() {
+        var frames = List.of(Frame.fromFile("tile.bmp"), Frame.fromFile("transparent.png"));
+        Sprite animatedSprite = new Sprite(frames);
+
+        assertThatThrownBy(() -> animatedSprite.singleImage()).isInstanceOf(IllegalStateException.class)
+                .hasMessage("the sprite has more than one frame");
+    }
+
+    @Test
+    void singleImage_onlyOneFrame_returnsImage() {
+        Frame frame = Frame.fromFile("tile.bmp");
+        Sprite sprite = new Sprite(frame);
+
+        assertThat(sprite.singleImage()).isEqualTo(frame.image());
     }
 }

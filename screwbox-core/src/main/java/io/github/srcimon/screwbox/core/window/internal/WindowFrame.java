@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +61,7 @@ public class WindowFrame extends JFrame implements WindowFocusListener {
     }
 
     public void setIcon(final Sprite sprite) {
-        setIconImage(sprite.singleFrame().image());
+        setIconImage(sprite.singleImage());
     }
 
     protected Sprite defaultIcon() {

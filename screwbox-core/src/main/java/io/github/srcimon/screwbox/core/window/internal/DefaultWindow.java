@@ -1,8 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.MouseCursor;
+import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -14,7 +13,6 @@ import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +69,7 @@ public class DefaultWindow implements Window, Updatable {
     @Override
     public Window moveTo(final Offset position) {
         if (configuration.isFullscreen()) {
-            throw new IllegalStateException("Can't move Window in fullscreen.");
+            throw new IllegalStateException("cannot move Window in fullscreen");
         }
         frame.setBounds(position.x(), position.y(), frame.getWidth(), frame.getHeight());
         return this;
@@ -144,15 +142,15 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Window setFullscreenCursor(final Frame cursor) {
-        fullscreenCursor = createCustomCursor(cursor.image());
+    public Window setFullscreenCursor(final Sprite cursor) {
+        fullscreenCursor = createCustomCursor(cursor);
         updateCursor();
         return this;
     }
 
     @Override
-    public Window setWindowCursor(final Frame cursor) {
-        windowCursor = createCustomCursor(cursor.image());
+    public Window setWindowCursor(final Sprite cursor) {
+        windowCursor = createCustomCursor(cursor);
         updateCursor();
         return this;
     }
@@ -176,8 +174,8 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     @Override
-    public Window setCursor(final Frame cursor) {
-        final Cursor customCursor = createCustomCursor(cursor.image());
+    public Window setCursor(final Sprite cursor) {
+        final Cursor customCursor = createCustomCursor(cursor);
         windowCursor = customCursor;
         fullscreenCursor = customCursor;
         updateCursor();
@@ -218,7 +216,7 @@ public class DefaultWindow implements Window, Updatable {
             return Cursor.getDefaultCursor();
         }
         if (MouseCursor.HIDDEN == cursor) {
-            return createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
+            return createCustomCursor(Sprite.invisible());
         }
         throw new IllegalStateException("Unknown mouse cursor: " + cursor);
     }
@@ -228,8 +226,8 @@ public class DefaultWindow implements Window, Updatable {
 
     }
 
-    private Cursor createCustomCursor(final Image image) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0),
+    private Cursor createCustomCursor(final Sprite sprite) {
+        return Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
                 "custom cursor");
     }
 }
