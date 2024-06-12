@@ -159,7 +159,7 @@ public class DefaultParticles implements Particles, Updatable {
                 render.drawOrder = 0;
             }
         }
-        transfrom.bounds = Bounds.atPosition(position, render.sprite.size().width() * render.options.scale(), render.sprite.size().height() * render.options.scale());
+        transfrom.bounds = Bounds.atPosition(position, render.sprite.width() * render.options.scale(), render.sprite.height() * render.options.scale());
         return entity;
 
     }

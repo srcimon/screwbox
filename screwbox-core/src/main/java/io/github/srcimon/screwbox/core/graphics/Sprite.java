@@ -99,8 +99,8 @@ public class Sprite implements Serializable, Sizeable {
     private static List<Frame> extractFrames(final String fileName, final Size size) {
         final var frame = Frame.fromFile(fileName);
         final var extracted = new ArrayList<Frame>();
-        for (int y = 0; y + size.height() <= frame.size().height(); y += size.height()) {
-            for (int x = 0; x + size.width() <= frame.size().width(); x += size.width()) {
+        for (int y = 0; y + size.height() <= frame.height(); y += size.height()) {
+            for (int x = 0; x + size.width() <= frame.width(); x += size.width()) {
                 final var area = frame.extractArea(Offset.at(x, y), size);
                 extracted.add(area);
             }

@@ -26,8 +26,8 @@ public class RenderSystem implements EntitySystem {
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (mustRenderEntity(render)) {
-                final double width = render.sprite.size().width() * render.options.scale();
-                final double height = render.sprite.size().height() * render.options.scale();
+                final double width = render.sprite.width() * render.options.scale();
+                final double height = render.sprite.height() * render.options.scale();
                 final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
 
                 final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);

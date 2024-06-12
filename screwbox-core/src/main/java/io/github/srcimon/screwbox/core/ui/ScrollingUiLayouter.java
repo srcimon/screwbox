@@ -14,7 +14,7 @@ public class ScrollingUiLayouter implements UiLayouter {
         int y = screen.center().y() + (itemIndex - menu.activeItemIndex()) * heightOfItem;
 
         var offset = Offset.at(0, y);
-        var dimension = Size.of(screen.size().width(), heightOfItem);
+        var dimension = Size.of(screen.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }
 
