@@ -16,4 +16,6 @@
 
 ### 📦 Dependency updates
 
-- Bump jacoco-maven-plugin to 0.8.13
+- Bump jacoco-maven-plugin to 0.8.12
+- Bump maven-enforcer-plugin to 3.5.0
+- Bump maven-javadoc-plugin to 3.7.0
