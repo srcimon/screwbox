@@ -32,7 +32,7 @@ class PhysicsGridUpdateSystemTest {
 
         environment.update();
 
-        verify(physics, never()).updateGrid(any());
+        verify(physics, never()).setGrid(any());
     }
 
     @Test
@@ -54,7 +54,7 @@ class PhysicsGridUpdateSystemTest {
         environment.update();
 
         var gridCaptor = ArgumentCaptor.forClass(Grid.class);
-        verify(physics).updateGrid(gridCaptor.capture());
+        verify(physics).setGrid(gridCaptor.capture());
 
         Grid grid = gridCaptor.getValue();
         assertThat(grid.isFree(0, 0)).isTrue();

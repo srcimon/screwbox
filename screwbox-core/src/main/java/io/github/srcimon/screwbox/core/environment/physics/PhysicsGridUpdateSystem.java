@@ -18,7 +18,7 @@ public class PhysicsGridUpdateSystem implements EntitySystem {
                 for (final Entity obstacle : engine.environment().fetchAll(OBSTACLES)) {
                     grid.blockArea(obstacle.get(TransformComponent.class).bounds);
                 }
-                engine.physics().updateGrid(grid);
+                engine.physics().setGrid(grid);
             }
         });
     }
