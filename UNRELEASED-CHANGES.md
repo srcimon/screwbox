@@ -16,4 +16,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump jacoco-maven-plugin to 0.8.13
