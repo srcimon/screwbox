@@ -50,8 +50,8 @@ public final class ReflectionImage {
         if (screenBounds.intersects(screenArea)) {
             var localDistance = screenBounds.center().substract(screenArea.offset());
             var localOffset = Offset.at(
-                    localDistance.x() / graphics.camera().zoom() - render.sprite.size().width() * render.options.scale() / 2,
-                    imageSize.height() - localDistance.y() / graphics.camera().zoom() - render.sprite.size().height() * render.options.scale() / 2
+                    localDistance.x() / graphics.camera().zoom() - render.sprite.width() * render.options.scale() / 2,
+                    imageSize.height() - localDistance.y() / graphics.camera().zoom() - render.sprite.height() * render.options.scale() / 2
             );
             spriteBatch.add(render.sprite, localOffset, render.options.invertVerticalFlip(), render.drawOrder);
         }

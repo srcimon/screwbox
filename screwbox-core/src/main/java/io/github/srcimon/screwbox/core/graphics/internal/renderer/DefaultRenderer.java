@@ -230,7 +230,7 @@ public class DefaultRenderer implements Renderer {
             transform.translate(x, offset.y());
             transform.scale(options.scale(), options.scale());
             graphics.drawImage(image, transform, null);
-            final int distanceX = (int) ((sprite.size().width() + options.padding()) * options.scale());
+            final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
             x += distanceX;
         }
         resetOpacityConfig(options.opacity());

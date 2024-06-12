@@ -29,7 +29,9 @@ public class DefaultWorld implements World {
     }
 
     public void recalculateVisibleArea() {
-        visibleArea = Bounds.atPosition(cameraPosition, screen.width() / zoom, screen.height() / zoom);
+        visibleArea = Bounds.atPosition(cameraPosition,
+                screen.size().width() / zoom,
+                screen.size().height() / zoom);
     }
 
     @Override
@@ -58,14 +60,14 @@ public class DefaultWorld implements World {
     }
 
     public Offset toOffset(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (screen.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (screen.height() / 2.0);
+        final double x = (position.x() - cameraPosition.x()) * zoom + (screen.size().width() / 2.0);
+        final double y = (position.y() - cameraPosition.y()) * zoom + (screen.size().height() / 2.0);
         return Offset.at(x, y);
     }
 
     public Vector toPosition(final Offset offset) {
-        final double x = (offset.x() - (screen.width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() - (screen.height() / 2.0)) / zoom + cameraPosition.y();
+        final double x = (offset.x() - (screen.size().width() / 2.0)) / zoom + cameraPosition.x();
+        final double y = (offset.y() - (screen.size().height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
     }
@@ -109,8 +111,8 @@ public class DefaultWorld implements World {
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final Vector position = bounds.origin();
         final var offset = Offset.at(
-                (position.x() - parallaxX * cameraPosition.x()) * zoom + (screen.width() / 2.0),
-                (position.y() - parallaxY * cameraPosition.y()) * zoom + (screen.height() / 2.0));
+                (position.x() - parallaxX * cameraPosition.x()) * zoom + (screen.size().width() / 2.0),
+                (position.y() - parallaxY * cameraPosition.y()) * zoom + (screen.size().height() / 2.0));
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }
