@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.Vector.zero;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
@@ -40,7 +42,7 @@ class DefaultWorldTest {
 
     @Test
     void visibleArea_noCameraUpdateYet_returnsVisibleArea() {
-        assertThat(world.visibleArea()).isEqualTo(Bounds.$$(-512, -384, 1024, 768));
+        assertThat(world.visibleArea()).isEqualTo($$(-512, -384, 1024, 768));
     }
 
     @Test
@@ -83,5 +85,14 @@ class DefaultWorldTest {
         world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(4));
 
         verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
+    }
+
+    @Test
+    void toScreen_usingParallax_returnsScreenBounds() {
+        world.updateZoom(2);
+
+        var result = world.toScreen($$(10, 20, 40, 80), 1.4, 1.2);
+
+        assertThat(result).isEqualTo(new ScreenBounds(532, 424, 80, 160));
     }
 }
