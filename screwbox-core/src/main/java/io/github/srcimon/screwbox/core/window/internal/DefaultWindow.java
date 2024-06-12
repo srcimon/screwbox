@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.MouseCursor;
+import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;

@@ -11,6 +11,7 @@
 
 - Improved performance of BlurImageFilter (#330)
 - Removed unecessary methods from `Window` to set cursor from `Frame`
+- Moved `MouseCursor` in correct package
 
 ### 📦 Dependency updates
 
