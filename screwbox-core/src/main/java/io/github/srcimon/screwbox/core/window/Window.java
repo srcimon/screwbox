@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.util.Optional;
@@ -12,7 +13,7 @@ import java.util.function.Supplier;
 /**
  * Used to control the game window and retrieve information about the game window.
  */
-public interface Window {
+public interface Window extends Sizeable {
 
     /**
      * Returns the current position of the {@link Window}.
