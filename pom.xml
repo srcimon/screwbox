@@ -92,12 +92,6 @@
                 <artifactId>assertj-core</artifactId>
                 <version>3.26.0</version>
                 <scope>test</scope>
-                <exclusions><!-- current version (assertj-core 3.24.2) uses non java 21 compatible bytebuddy version -->
-                    <exclusion>
-                        <artifactId>byte-buddy</artifactId>
-                        <groupId>net.bytebuddy</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
