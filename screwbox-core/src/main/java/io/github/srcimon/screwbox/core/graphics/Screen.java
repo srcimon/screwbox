@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  *
  * @see World
  */
-public interface Screen {
+public interface Screen extends Sizeable {
 
     /**
      * Returns the position of the {@link Screen} relative to the monitor.

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Sprite.singleImage()`
+- Added `width()` and `height()` to `Screen`, `Frame` and `Sprite` via common interface `Sizeable`
 
 ### 🪛 Bug Fixes
 

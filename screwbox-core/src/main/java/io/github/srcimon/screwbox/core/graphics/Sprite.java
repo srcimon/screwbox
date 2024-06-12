@@ -14,7 +14,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class Sprite implements Serializable {
+public class Sprite implements Serializable, Sizeable {
 
     @Serial
     private static final long serialVersionUID = 1L;
