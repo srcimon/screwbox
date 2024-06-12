@@ -33,7 +33,8 @@ class DefaultWorldTest {
 
     @BeforeEach
     void setUp() {
-        when(screen.size()).thenReturn(Size.of(1024, 768));
+        when(screen.width()).thenReturn(1024);
+        when(screen.height()).thenReturn(768);
         world = new DefaultWorld(screen);
     }
 
