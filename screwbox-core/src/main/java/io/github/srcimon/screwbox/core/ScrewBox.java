@@ -29,4 +29,12 @@ public final class ScrewBox {
         return new DefaultEngine(name);
     }
 
+    public static Engine createEngine(final String name, EngineSetup... customizers) {
+        DefaultEngine engine = new DefaultEngine(name);
+        for(var customizer : customizers) {
+            customizer.customize(engine);
+        }
+        return engine;
+    }
+
 }
