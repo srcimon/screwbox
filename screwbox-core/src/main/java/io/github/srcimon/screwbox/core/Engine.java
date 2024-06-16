@@ -16,7 +16,6 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.particles.Particles;
 import io.github.srcimon.screwbox.core.physics.Physics;
-import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.UiMenu;
@@ -115,20 +114,8 @@ public interface Engine {
      * Starts the {@link Engine}. This opens the game {@link Window} and starts the
      * {@link Loop}. The {@link Engine} can be stopped by calling {@link #stop()}
      * from within an {@link EntitySystem} or a {@link UiMenu}.
-     *
-     * @see #start(Class)
      */
     void start();
-
-    /**
-     * Starts the {@link Engine} with the given {@link Scene}. This opens the game
-     * {@link Window} and starts the {@link Loop}. The {@link Engine} can be stopped
-     * by calling {@link #stop()} from within an {@link EntitySystem} or a
-     * {@link UiMenu}.
-     *
-     * @see #start()
-     */
-    void start(Class<? extends Scene> sceneClass);
 
     /**
      * Stops a running {@link Loop} and closes the game {@link Window}. Can be

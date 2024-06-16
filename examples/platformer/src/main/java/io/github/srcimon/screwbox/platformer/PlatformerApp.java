@@ -23,8 +23,9 @@ public class PlatformerApp {
 
         engine.scenes()
                 .add(new PauseScene())
-                .add(new StartScene());
+                .add(new StartScene())
+                .switchTo(StartScene.class);
 
-        engine.start(StartScene.class);
+        engine.start();
     }
 }

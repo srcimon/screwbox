@@ -13,6 +13,7 @@
 - Removed unecessary methods from `Window` to set cursor from `Frame`
 - Moved `MouseCursor` in correct package
 - Renamed `Physics.setGrid(Grid)`
+- Removed unecessary `Engine.start(Class)`
 
 ### 📦 Dependency updates
 

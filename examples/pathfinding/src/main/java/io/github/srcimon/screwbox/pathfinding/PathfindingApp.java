@@ -9,12 +9,13 @@ public class PathfindingApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Pathfinding");
 
-        engine.scenes().add(new DemoScene());
+        engine.scenes().add(new DemoScene())
+                .switchTo(DemoScene.class);
 
         engine.assets().enableLogging().prepareClassPackageAsync(PathfindingApp.class);
 
         engine.graphics().camera().setZoom(2.7);
 
-        engine.start(DemoScene.class);
+        engine.start();
     }
 }
