@@ -118,9 +118,6 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
-        if (isClosed()) {
-            return this;
-        }
         screen.setRenderer(new StandbyRenderer());
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
