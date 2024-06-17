@@ -156,6 +156,9 @@ class DefaultEngine implements Engine {
 
     @Override
     public void stop() {
+        if (loop.startTime().isUnset()) {
+            throw new IllegalStateException("engine has not been startet yet");
+        }
         if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
@@ -170,7 +173,6 @@ class DefaultEngine implements Engine {
             log.info("engine stopped after running for %s and rendering %,d frames".formatted(
                     loop.runningTime().humanReadable(),
                     loop().frameNumber()));
-            System.exit(0);
         }
     }
 
@@ -257,6 +259,7 @@ class DefaultEngine implements Engine {
     private void exceptionHandler(final Throwable throwable) {
         log().error(throwable);
         stop();
+        System.exit(0);
     }
 
     private Robot createRobot() {
