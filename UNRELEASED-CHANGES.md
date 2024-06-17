@@ -5,7 +5,8 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Engine cannot be stopped when it has not been startet yet
+- Engine won't stop JVM process when stopped
 
 ### 🧽 Cleanup & refactoring
 
