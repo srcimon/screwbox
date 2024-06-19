@@ -144,5 +144,4 @@ public class Percent implements Serializable {
     public Percent multiply(double value) {
         return new Percent(this.value * value);
     }
-
 }
