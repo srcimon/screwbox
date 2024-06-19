@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.physics.Borders;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +92,7 @@ class LightPhysics {
     private List<Line> extractLines(final List<Bounds> allBounds) {
         final List<Line> allLines = new ArrayList<>();
         for (final var bounds : allBounds) {
-            ListUtil.addAll(allLines, Borders.ALL.extractFrom(bounds));
+            allLines.addAll(Borders.ALL.extractFrom(bounds));
         }
         return allLines;
     }

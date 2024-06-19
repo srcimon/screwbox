@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class Raycast {
         for (final Entity entity : entities) {
             if (isNotFiltered(entity)) {
                 final var lines = getLines(entity);
-                ListUtil.addAll(intersections, ray.intersections((lines)));
+                intersections.addAll(ray.intersections((lines)));
             }
         }
         return intersections;

@@ -52,7 +52,5 @@ public class Latch<T> {
         } else {
             first = primary;
         }
-
     }
-
 }
