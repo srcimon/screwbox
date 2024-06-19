@@ -43,18 +43,18 @@ public class EntityManager implements EntityListener {
         return entities;
     }
 
-    public List<Entity> entitiesMatching(final Archetype componentGroup) {
-        final List<Entity> cacheResult = archetypeCache.get(componentGroup);
+    public List<Entity> entitiesMatching(final Archetype archetype) {
+        final List<Entity> cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
             return cacheResult;
         }
         final List<Entity> calculatedResult = new ArrayList<>();
         for (final var entity : entities) {
-            if (componentGroup.matches(entity)) {
+            if (archetype.matches(entity)) {
                 calculatedResult.add(entity);
             }
         }
-        archetypeCache.put(componentGroup, calculatedResult);
+        archetypeCache.put(archetype, calculatedResult);
         return calculatedResult;
     }
 
@@ -125,5 +125,4 @@ public class EntityManager implements EntityListener {
     public Entity findById(final int id) {
         return entitiesById.get(id);
     }
-
 }

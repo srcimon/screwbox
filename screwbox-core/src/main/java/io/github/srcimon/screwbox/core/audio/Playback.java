@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.audio;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
@@ -30,7 +29,7 @@ public class Playback {
      * The current progress of the {@link Playback} using {@link #startTime()} and {@link Sound#duration()}.
      */
     public Percent progress() {
-        return Percent.of(1.0 * Duration.since(startTime).nanos() / sound.duration().nanos());
+        return sound.duration().progress(startTime, Time.now());
     }
 
     /**
