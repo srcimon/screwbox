@@ -2,6 +2,7 @@
 
 - Added `Sprite.singleImage()`
 - Added `width()` and `height()` to `Window`, `Screen`, `Frame` and `Sprite` via common interface `Sizeable`
+- Added `Playback.progress(Time)`
 
 ### 🪛 Bug Fixes
 

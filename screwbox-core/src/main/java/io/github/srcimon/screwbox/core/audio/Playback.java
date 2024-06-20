@@ -26,10 +26,21 @@ public class Playback {
     }
 
     /**
+     * The current progress at a specified {@link Time} of the {@link Playback} using {@link #startTime()} and {@link Sound#duration()}.
+     *
+     * @see #progress()
+     */
+    public Percent progress(final Time time) {
+        return sound.duration().progress(startTime, time);
+    }
+
+    /**
      * The current progress of the {@link Playback} using {@link #startTime()} and {@link Sound#duration()}.
+     *
+     * @see #progress(Time)
      */
     public Percent progress() {
-        return sound.duration().progress(startTime, Time.now());
+        return progress(Time.now());
     }
 
     /**
