@@ -254,7 +254,7 @@
                             <execution>
                                 <id>attach-source</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>jar-no-fork</goal>
                                 </goals>
                             </execution>
                         </executions>
