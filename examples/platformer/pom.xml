@@ -4,7 +4,7 @@
 		<groupId>io.github.srcimon</groupId>
 		<artifactId>screwbox</artifactId>
 		<relativePath>../../pom.xml</relativePath>
-		<version>1.15.0-SNAPSHOT</version>
+		<version>1.15.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>platformer</artifactId>
 	<properties>
