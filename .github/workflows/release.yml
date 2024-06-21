@@ -23,6 +23,7 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         java-package: 'jdk'
+        cache: 'maven'
         server-id: ossrh
     - name: Configure Git User
       run: |
