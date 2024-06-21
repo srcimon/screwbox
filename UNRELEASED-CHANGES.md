@@ -2,6 +2,7 @@
 
 - Added `Sprite.singleImage()`
 - Added `width()` and `height()` to `Window`, `Screen`, `Frame` and `Sprite` via common interface `Sizeable`
+- Added `Playback.progress(Time)`
 
 ### 🪛 Bug Fixes
 
@@ -15,6 +16,7 @@
 - Moved `MouseCursor` in correct package
 - Renamed `Physics.setGrid(Grid)`
 - Removed unecessary `Engine.start(Class)`
+- Removed unecessary `ListUtil.addAll(List, List)`
 
 ### 📦 Dependency updates
 

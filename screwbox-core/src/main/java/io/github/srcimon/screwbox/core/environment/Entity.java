@@ -85,19 +85,32 @@ public final class Entity implements Serializable {
         return this;
     }
 
+    /**
+     * Returns a {@link Component} of the specified class attached to this {@link Entity}. Will return null if no such
+     * {@link Component} is present.
+     */
     @SuppressWarnings("unchecked")
     public <T extends Component> T get(final Class<T> componentClass) {
         return (T) components.get(componentClass);
     }
 
+    /**
+     * Returns all {@link Component components}  attached to this {@link Entity}.
+     */
     public Collection<Component> getAll() {
         return components.values();
     }
 
+    /**
+     * Returns the count of all present {@link Component components} attached to this {@link Entity}.
+     */
     public int componentCount() {
         return components.size();
     }
 
+    /**
+     * Returns a collection of all present {@link Component} classes attached to this {@link Entity}.
+     */
     public Collection<Class<? extends Component>> getComponentClasses() {
         return components.keySet();
     }
@@ -113,7 +126,7 @@ public final class Entity implements Serializable {
     }
 
     /**
-     * Checks if the given {@link Component}-class is present in this
+     * Checks if the specified {@link Component}-class is present in this
      * {@link Entity}.
      *
      * @param componentClass the {@link Component}-class to check
@@ -123,6 +136,9 @@ public final class Entity implements Serializable {
         return components.containsKey(componentClass);
     }
 
+    /**
+     * Removes a {@link Component} of the given class. Won't do anything, if no {@link Component} of specified class is present.
+     */
     public void remove(final Class<? extends Component> componentClass) {
         components.remove(componentClass);
         if (TransformComponent.class.equals(componentClass)) {
@@ -147,13 +163,6 @@ public final class Entity implements Serializable {
                 id == null ? "" : "id='" + id + "', ",
                 name == null ? "" : "name='" + name + "', ",
                 components.isEmpty() ? "none" : components.size());
-    }
-
-    private List<EntityListener> getListeners() {
-        if (isNull(listeners)) {
-            listeners = new ArrayList<>();
-        }
-        return listeners;
     }
 
     /**
@@ -210,8 +219,15 @@ public final class Entity implements Serializable {
      * Adds a {@link Component} if there is not already another instance of that {@link Component} present.
      */
     public void addIfNotPresent(final Component component) {
-        if(!hasComponent(component.getClass())) {
+        if (!hasComponent(component.getClass())) {
             add(component);
         }
+    }
+
+    private List<EntityListener> getListeners() {
+        if (isNull(listeners)) {
+            listeners = new ArrayList<>();
+        }
+        return listeners;
     }
 }
