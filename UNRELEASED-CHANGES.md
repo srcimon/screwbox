@@ -23,7 +23,6 @@
 - Bump jacoco-maven-plugin to 0.8.12
 - Bump maven-enforcer-plugin to 3.5.0
 - Bump maven-javadoc-plugin to 3.7.0
-- Bump maven-source-plugin to 3.3.1
 - Bump maven-surefire-plugin to 3.2.5
 - Bump nexus-staging-maven-plugin to 1.7.0
 - Bump maven-release-plugin to 3.0.1
