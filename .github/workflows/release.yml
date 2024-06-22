@@ -46,7 +46,8 @@ jobs:
           -s ./.github/settings.xml \
           -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
           -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
-          -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} \
+          deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
