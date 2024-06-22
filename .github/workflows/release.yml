@@ -39,6 +39,8 @@ jobs:
       run: |
         mvn -B -U \
           -Prelase-to-maven-central \
+          release:prepare \
+          release:perform \
           javadoc:jar \
           source:jar \
           -s ./.github/settings.xml \
