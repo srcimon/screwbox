@@ -217,7 +217,7 @@
                             <execution>
                                 <id>attach-javadoc</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>jar-no-fork</goal>
                                 </goals>
                                 <configuration>
                                     <excludePackageNames>${javdoc-exluded-packages}</excludePackageNames>
