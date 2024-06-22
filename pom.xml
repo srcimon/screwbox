@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox</artifactId>
-    <version>1.15.2-SNAPSHOT</version>
+    <version>1.15.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>ScrewBox is a minimalistic Java 2D game engine.</description>
     <name>ScrewBox</name>
@@ -133,7 +133,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version><!-- update to 3.3.1 failed due to https://issues.apache.org/jira/browse/MSOURCES-141 -->
+                    <version>3.3.1</version><!-- update to 3.3.1 failed due to https://issues.apache.org/jira/browse/MSOURCES-141 -->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
