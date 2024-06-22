@@ -282,7 +282,7 @@
                                 <configuration>
                                     <tagNameFormat>@{project.version}</tagNameFormat>
                                     <useReleaseProfile>false</useReleaseProfile>
-                                    <arguments>-Dmaven.javadoc.skip=true</arguments>
+                                    <arguments>-Dmaven.javadoc.skip=true maven.source.skip=true</arguments>
                                 </configuration>
                             </execution>
                             <execution>
