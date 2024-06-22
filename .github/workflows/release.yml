@@ -43,7 +43,6 @@ jobs:
           release:perform \
           javadoc:jar \
           source:jar \
-          -s ./.github/settings.xml \
           -DreleaseVersion=${{ github.event.inputs.releaseVersion }} \
           -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }} \
           -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} \
