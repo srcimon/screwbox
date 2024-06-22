@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox</artifactId>
-    <version>1.15.2-SNAPSHOT</version>
+    <version>1.15.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>ScrewBox is a minimalistic Java 2D game engine.</description>
     <name>ScrewBox</name>
