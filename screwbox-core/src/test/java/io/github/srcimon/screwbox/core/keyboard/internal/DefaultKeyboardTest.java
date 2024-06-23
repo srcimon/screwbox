@@ -26,6 +26,39 @@ class DefaultKeyboardTest {
     @Mock
     private KeyEvent keyEvent;
 
+
+    @Test
+    void isAnyKeyPressed_spaceWasPressedSameFrame_isFalse() {
+        mockKeyPress(Key.SPACE);
+
+        assertThat(keyboard.isAnyKeyPressed()).isFalse();
+    }
+
+    @Test
+    void isAnyKeyPressed_spaceWasPressedNextFrame_isTrue() {
+        mockKeyPress(Key.SPACE);
+        keyboard.update();
+
+        assertThat(keyboard.isAnyKeyPressed()).isTrue();
+    }
+
+    @Test
+    void isAnyKeyPressed_noKeyPressed_isFalse() {
+        assertThat(keyboard.isAnyKeyPressed()).isFalse();
+    }
+
+    @Test
+    void isAnyKeyDown_spaceWasPressed_isTrue() {
+        mockKeyPress(Key.SPACE);
+
+        assertThat(keyboard.isAnyKeyDown()).isTrue();
+    }
+
+    @Test
+    void isAnyKeyDown_noKeyPressed_isFalse() {
+        assertThat(keyboard.isAnyKeyDown()).isFalse();
+    }
+
     @Test
     void isDown_keyWasPressedAndNotReleased_returnsTrue() {
         mockKeyPress(Key.SPACE);

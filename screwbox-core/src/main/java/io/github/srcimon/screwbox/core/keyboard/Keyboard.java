@@ -26,7 +26,7 @@ public interface Keyboard {
     boolean isAnyKeyDown();
 
     /**
-     * Returns {@code true} if the given {@link Key} was typed right now.
+     * Returns {@code true} if the specified {@link Key} was typed right now.
      *
      * @param key the {@link Key} to check
      */
@@ -53,4 +53,9 @@ public interface Keyboard {
      * @see #wsadMovement(double)
      */
     Vector arrowKeysMovement(double length);
+
+    /**
+     * Returns {@code true} any {@link Key} was typed right now.
+     */
+    boolean isAnyKeyPressed();
 }

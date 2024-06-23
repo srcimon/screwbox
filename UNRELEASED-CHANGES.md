@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Keyboard.isAnyKeyPressed()`
 
 ### 🪛 Bug Fixes
 
