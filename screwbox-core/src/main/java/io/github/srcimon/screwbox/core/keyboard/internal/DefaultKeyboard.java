@@ -100,7 +100,7 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
     @Override
     public boolean isAnyKeyPressed() {
-        return !downKeys.isEmpty();
+        return !pressedKeys.inactive().isEmpty();
     }
 
     private double valueOfHighLow(final Key low, final Key high) {
