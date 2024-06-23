@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Made `SoundOptions` immutable
 
 ### 📦 Dependency updates
 

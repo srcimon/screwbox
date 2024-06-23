@@ -82,6 +82,6 @@ class SoundOptionsTest {
     @Test
     void toString_valuesSet_containsReadableString() {
         assertThat(SoundOptions.playTimes(5).balance(2).asMusic())
-                .hasToString("SoundOptions{times=5, volume=Percentage [value=1.0], balance=1.0, pan=0.0, isMusic=true}");
+                .hasToString("SoundOptions[times=5, volume=Percentage [value=1.0], balance=1.0, pan=0.0, isMusic=true]");
     }
 }
