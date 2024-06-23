@@ -98,6 +98,11 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
                 .length(length);
     }
 
+    @Override
+    public boolean isAnyKeyPressed() {
+        return !downKeys.isEmpty();
+    }
+
     private double valueOfHighLow(final Key low, final Key high) {
         if (isDown(low)) {
             return isDown(high) ? 0 : -1;

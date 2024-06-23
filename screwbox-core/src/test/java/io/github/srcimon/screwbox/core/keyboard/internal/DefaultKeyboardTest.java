@@ -27,6 +27,18 @@ class DefaultKeyboardTest {
     private KeyEvent keyEvent;
 
     @Test
+    void isAnyKeyDown_spaceWasPressed_isTrue() {
+        mockKeyPress(Key.SPACE);
+
+        assertThat(keyboard.isAnyKeyDown()).isTrue();
+    }
+
+    @Test
+    void isAnyKeyDown_noKeyPressed_isFalse() {
+        assertThat(keyboard.isAnyKeyDown()).isFalse();
+    }
+
+    @Test
     void isDown_keyWasPressedAndNotReleased_returnsTrue() {
         mockKeyPress(Key.SPACE);
 
