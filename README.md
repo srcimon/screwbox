@@ -28,7 +28,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Asset Management** Load game assets without interrupting the game.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
-- **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smothly switch between the scenes.
+- **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
 - **Audio Support** Play wav and midi sounds. Control the volume, pan and balance. Get information on whats currently
   playing. That's it. Only the basics.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from
