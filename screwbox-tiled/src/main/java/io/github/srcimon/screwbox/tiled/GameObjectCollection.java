@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.tiled;
 
 import io.github.srcimon.screwbox.tiled.internal.LayerEntity;
 import io.github.srcimon.screwbox.tiled.internal.MapEntity;
-import io.github.srcimon.screwbox.tiled.internal.ObjectEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +15,9 @@ class GameObjectCollection {
         int order = 0;
         for (final LayerEntity layerEntity : map.getLayers()) {
             final Layer layer = new Layer(layerEntity, order);
-            for (final ObjectEntity object : layerEntity.objects()) {
-                final GameObject tiledObject = new GameObject(object, layer);
-                objects.add(tiledObject);
-            }
+            layerEntity.objects().stream()
+                    .map(objectEntity -> new GameObject(objectEntity, layer))
+                    .forEach(objects::add);
             order++;
         }
     }
@@ -30,7 +28,7 @@ class GameObjectCollection {
 
     Optional<GameObject> findByName(final String name) {
         return objects.stream()
-                .filter(o -> name.equals(o.name()))
+                .filter(object -> name.equals(object.name()))
                 .findFirst();
     }
 }
