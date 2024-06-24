@@ -31,18 +31,17 @@ public class ActiveTransition {
         return Percent.of(elapsedDuration.nanos() / (transition.introDuration().nanos() + 1.0));
     }
 
-    public void drawIntro(final Screen screen, final Time time) {//TODO Duration.progress()
+    public void drawIntro(final Screen screen, final Time time) {
         Percent progress = transition.introEase().applyOn(introProgress(time));
         transition.introAnimation().draw(screen, progress);
     }
 
-    public void drawOutro(final Screen screen, final Time time) {//TODO Duration.progress()
+    public void drawOutro(final Screen screen, final Time time) {
         Percent progress = transition.outroEase().applyOn(outroProgress(time));
         transition.outroAnimation().draw(screen, progress);
     }
 
-    public Percent outroProgress(final Time time) {//TODO Duration.progress()
-        var elapsedDuration = Duration.between(started, time);
-        return Percent.of(elapsedDuration.nanos() / (transition.outroDuration().nanos() + 1.0));
+    public Percent outroProgress(final Time time) {
+        return transition.outroDuration().progress(started, time);
     }
 }
