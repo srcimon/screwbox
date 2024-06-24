@@ -33,9 +33,9 @@ class ActiveTransitionTest {
     }
 
     @Test
-    void introProgress_rightAfterStart_isMax() {
+    void introProgress_rightAfterStart_isZero() {
         Percent introProgress = activeTransition.introProgress(Time.now());
-        assertThat(introProgress).isEqualTo(Percent.max());
+        assertThat(introProgress).isEqualTo(Percent.zero());
     }
 
     @Test
