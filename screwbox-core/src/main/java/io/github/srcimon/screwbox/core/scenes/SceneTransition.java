@@ -43,7 +43,7 @@ public record SceneTransition(
      * Switch {@link Scenes} using an outro {@link Animation}.
      */
     public SceneTransition outroAnimation(final Animation outroAnimation) {
-        return new SceneTransition(outroAnimation, outroDuration, outroEase, DEFAULT_ANIMATION, Duration.none(), LINEAR_OUT);
+        return new SceneTransition(outroAnimation, outroDuration, outroEase, introAnimation, introDuration, LINEAR_OUT);
     }
 
     /**

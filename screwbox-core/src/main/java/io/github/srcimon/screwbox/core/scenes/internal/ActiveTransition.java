@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -27,8 +26,8 @@ public class ActiveTransition {
     }
 
     public Percent introProgress(final Time time) {
-        var elapsedDuration = Duration.between(time, transition.outroDuration().addTo(started));
-        return Percent.of(elapsedDuration.nanos() / (transition.introDuration().nanos() + 1.0));
+        final Time introStartTime = transition.outroDuration().addTo(started);
+        return transition.introDuration().progress(introStartTime, time);
     }
 
     public void drawIntro(final Screen screen, final Time time) {
@@ -36,15 +35,12 @@ public class ActiveTransition {
         transition.introAnimation().draw(screen, progress);
     }
 
-    public void drawExtro(final Screen screen, final Time time) {
-        Percent progress = transition.outroEase().applyOn(extroProgress(time));
+    public void drawOutro(final Screen screen, final Time time) {
+        Percent progress = transition.outroEase().applyOn(outroProgress(time));
         transition.outroAnimation().draw(screen, progress);
     }
 
-    private Percent extroProgress(final Time time) {
-        var elapsedDuration = Duration.between(started, time);
-        return Percent.of(elapsedDuration.nanos() / (transition.outroDuration().nanos() + 1.0));
+    public Percent outroProgress(final Time time) {
+        return transition.outroDuration().progress(started, time);
     }
-
-
 }

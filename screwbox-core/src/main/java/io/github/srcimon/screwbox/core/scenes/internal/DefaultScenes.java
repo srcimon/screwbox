@@ -83,7 +83,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes addOrReplace(final Scene scene) {
         final var sceneClass = scene.getClass();
-        if (contains(sceneClass)) {
+        if (exists(sceneClass)) {
             sceneData.remove(sceneClass);
         }
         add(scene);
@@ -91,7 +91,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public boolean contains(Class<? extends Scene> sceneClass) {
+    public boolean exists(Class<? extends Scene> sceneClass) {
         return sceneData.containsKey(sceneClass);
     }
 
@@ -147,7 +147,7 @@ public class DefaultScenes implements Scenes, Updatable {
             if (hasChangedToTargetScene) {
                 activeTransition.drawIntro(screen, time);
             } else {
-                activeTransition.drawExtro(screen, time);
+                activeTransition.drawOutro(screen, time);
             }
 
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
@@ -167,7 +167,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!sceneData.containsKey(sceneClass)) {
+        if (!exists(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
     }
