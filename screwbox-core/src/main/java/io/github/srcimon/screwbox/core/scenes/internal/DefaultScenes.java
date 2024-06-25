@@ -83,7 +83,7 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public Scenes addOrReplace(final Scene scene) {
         final var sceneClass = scene.getClass();
-        if (contains(sceneClass)) {
+        if (exists(sceneClass)) {
             sceneData.remove(sceneClass);
         }
         add(scene);
@@ -91,7 +91,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public boolean contains(Class<? extends Scene> sceneClass) {
+    public boolean exists(Class<? extends Scene> sceneClass) {
         return sceneData.containsKey(sceneClass);
     }
 

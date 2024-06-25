@@ -43,7 +43,6 @@ class DefaultScenesTest {
         executor = Executors.newSingleThreadExecutor();
         scenes = new DefaultScenes(engine, screen, executor);
         scenes.setLoadingScene(environment -> {
-
         });
     }
 
@@ -81,6 +80,15 @@ class DefaultScenesTest {
     }
 
     @Test
+    void remove_sceneIsPresentAndInactive_removesScene() {
+        scenes.add(new GameScene());
+
+        scenes.remove(GameScene.class);
+
+        assertThat(scenes.exists(GameScene.class)).isFalse();
+    }
+
+    @Test
     void activeScene_noSceneAdded_isDefaultScene() {
         assertThat(scenes.activeScene()).isEqualTo(DefaultScene.class);
     }
@@ -96,7 +104,7 @@ class DefaultScenesTest {
 
         scenes.addOrReplace(newScene);
 
-        assertThat(scenes.contains(GameScene.class)).isTrue();
+        assertThat(scenes.exists(GameScene.class)).isTrue();
     }
 
     @Test
@@ -106,7 +114,19 @@ class DefaultScenesTest {
 
         scenes.addOrReplace(newScene);
 
-        assertThat(scenes.contains(GameScene.class)).isTrue();
+        assertThat(scenes.exists(GameScene.class)).isTrue();
+    }
+
+    @Test
+    void exits_sceneExists_isTrue() {
+        scenes.add(new GameScene());
+
+        assertThat(scenes.exists(GameScene.class)).isTrue();
+    }
+
+    @Test
+    void exits_sceneNotPresent_isFalse() {
+        assertThat(scenes.exists(GameScene.class)).isFalse();
     }
 
     @Test

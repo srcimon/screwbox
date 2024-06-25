@@ -23,7 +23,7 @@ public interface Scenes {
      * @param sceneClass class of the {@link Scene}
      * @return true if {@link Scene} is present
      */
-    boolean contains(Class<? extends Scene> sceneClass);
+    boolean exists(Class<? extends Scene> sceneClass);
 
     /**
      * Adds one ore multiple {@link Scene scenes}. These {@link Scene scenes} are than available to switch into.

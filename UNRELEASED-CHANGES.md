@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Made `SoundOptions` immutable
+- Renamed `Scenes.exist(Class)`
 
 ### 📦 Dependency updates
 
