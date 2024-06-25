@@ -167,7 +167,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private void ensureSceneExists(final Class<? extends Scene> sceneClass) {
-        if (!sceneData.containsKey(sceneClass)) {
+        if (!exists(sceneClass)) {
             throw new IllegalArgumentException("scene doesn't exist: " + sceneClass);
         }
     }
