@@ -13,7 +13,12 @@ import java.util.function.Supplier;
 public interface Scenes {
 
 
-    //TODO resetCurrentScene();
+    //TODO test javadoc and changelog
+    Scenes resetActiveScene();
+
+    //TODO test javadoc and changelog
+    Scenes resetActiveScene(SceneTransition transition);
+
 
     //TODO test
     /**

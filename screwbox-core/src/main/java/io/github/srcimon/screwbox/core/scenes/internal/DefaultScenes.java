@@ -81,6 +81,18 @@ public class DefaultScenes implements Scenes, Updatable {
         return sceneData.size();
     }
 
+    @Override
+    public Scenes resetActiveScene() {
+        return resetActiveScene(defaultTransition);
+    }
+
+    @Override
+    public Scenes resetActiveScene(final SceneTransition transition) {
+        final Scene activeScene = this.activeScene.scene();
+        addOrReplace(activeScene);
+        switchTo(activeScene.getClass(), transition);
+        return this;
+    }
 
     @Override
     public Scenes setDefaultTransition(final SceneTransition transition) {

@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.vacuum.player.movement.MovementControlComponent;
-import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
 
 public class FallToDeathState implements EntityState {
 
@@ -27,9 +26,7 @@ public class FallToDeathState implements EntityState {
     public EntityState update(Entity entity, Engine engine) {
         if (!entity.hasComponent(TweenComponent.class)) {
             engine.environment().remove(entity);
-            engine.scenes()
-                    .addOrReplace(new GameScene())
-                    .switchTo(GameScene.class);
+            engine.scenes().resetActiveScene();
         }
         return this;
     }

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Scenes.setDefaultTransition(SceneTransition)`
+- Added `Scenes.resetActiveScene()` and `.resetActiveScene(SceneTransition)`
 - Added `Keyboard.isAnyKeyPressed()`
 
 ### 🪛 Bug Fixes
