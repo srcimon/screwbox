@@ -12,8 +12,10 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
-    //TODO test
 
+    //TODO resetCurrentScene();
+
+    //TODO test
     /**
      * Sets the default {@link SceneTransition} when changing {@link Scenes} without specifying a {@link SceneTransition}.
      *
