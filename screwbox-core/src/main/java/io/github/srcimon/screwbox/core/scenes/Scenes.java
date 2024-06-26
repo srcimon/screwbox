@@ -12,7 +12,13 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
-    //TODO test and javadoc
+    //TODO test
+
+    /**
+     * Sets the default {@link SceneTransition} when changing {@link Scenes} without specifying a {@link SceneTransition}.
+     *
+     * @see #switchTo(Class)
+     */
     Scenes setDefaultTransition(SceneTransition transition);
 
     /**
