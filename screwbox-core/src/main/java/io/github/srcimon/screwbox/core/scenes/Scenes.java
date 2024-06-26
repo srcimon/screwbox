@@ -12,6 +12,9 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
+    //TODO test and javadoc
+    Scenes setDefaultTransition(SceneTransition transition);
+
     /**
      * Adds a {@link Scene}. If the {@link Scene} is already present the {@link Scene} will be replaced.
      */

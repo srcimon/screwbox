@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultScenes implements Scenes, Updatable {
 
@@ -30,6 +31,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private SceneData loadingScene;
     private ActiveTransition activeTransition;
     private boolean hasChangedToTargetScene = true;
+    private SceneTransition defaultTransition = SceneTransition.custom();
 
     public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
         this.engine = engine;
@@ -44,7 +46,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes switchTo(final Class<? extends Scene> sceneClass) {
-        return switchTo(sceneClass, SceneTransition.custom());
+        return switchTo(sceneClass, defaultTransition);
     }
 
     @Override
@@ -79,6 +81,12 @@ public class DefaultScenes implements Scenes, Updatable {
         return sceneData.size();
     }
 
+
+    @Override
+    public Scenes setDefaultTransition(final SceneTransition transition) {
+        this.defaultTransition = requireNonNull(transition, "transition must not be null");
+        return this;
+    }
 
     @Override
     public Scenes addOrReplace(final Scene scene) {
