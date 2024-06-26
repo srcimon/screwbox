@@ -152,7 +152,7 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
             }
-            if (hasChangedToTargetScene) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
                 activeTransition.drawIntro(screen, time);
             } else {
                 activeTransition.drawOutro(screen, time);

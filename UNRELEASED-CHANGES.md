@@ -6,6 +6,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed resetted attributes in `SceneTransition` when setting intro animation after outro animation
+- Fixed outro animation is drawn on loading scene.
 
 ### 🧽 Cleanup & refactoring
 
