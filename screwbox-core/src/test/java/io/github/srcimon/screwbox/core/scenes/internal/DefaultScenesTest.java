@@ -181,7 +181,8 @@ class DefaultScenesTest {
 
         scenes.resetActiveScene();
 
-        verify(mockScene, times(2)).populate(any());
+        shutdown(executor);
+        verify(mockScene, times(2)).populate(any()); // first time when added, second time on reset
         assertThat(scenes.activeScene()).isEqualTo(mockScene.getClass());
         assertThat(scenes.exists(mockScene.getClass())).isTrue();
     }
@@ -198,7 +199,6 @@ class DefaultScenesTest {
                 .switchTo(GameScene.class);
 
         scenes.update();
-        shutdown(executor);
         verify(mockAnimation).draw(any(), any());
     }
 
