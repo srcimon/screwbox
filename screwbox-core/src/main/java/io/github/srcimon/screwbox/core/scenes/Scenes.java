@@ -13,6 +13,29 @@ import java.util.function.Supplier;
 public interface Scenes {
 
     /**
+     * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
+     * Uses the default transition to reenter the current scene.
+     *
+     * @see #resetActiveScene(SceneTransition)
+     */
+    Scenes resetActiveScene();
+
+    /**
+     * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
+     * Uses the specified transition to reenter the current scene.
+     *
+     * @see #resetActiveScene()
+     */
+    Scenes resetActiveScene(SceneTransition transition);
+
+    /**
+     * Sets the default {@link SceneTransition} when changing {@link Scenes} without specifying a {@link SceneTransition}.
+     *
+     * @see #switchTo(Class)
+     */
+    Scenes setDefaultTransition(SceneTransition transition);
+
+    /**
      * Adds a {@link Scene}. If the {@link Scene} is already present the {@link Scene} will be replaced.
      */
     Scenes addOrReplace(Scene scene);

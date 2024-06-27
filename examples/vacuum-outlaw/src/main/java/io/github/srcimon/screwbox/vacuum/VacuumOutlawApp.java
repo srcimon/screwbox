@@ -16,6 +16,11 @@ public class VacuumOutlawApp {
                 .prepareEngineAssetsAsync();
 
         screwBox.scenes()
+                .setDefaultTransition(SceneTransition.custom()
+                        .outroDurationMillis(500)
+                        .outroAnimation(new CirclesAnimation())
+                        .introDurationMillis(500)
+                        .introAnimation(new CirclesAnimation()))
                 .add(new GameScene())
                 .switchTo(GameScene.class, SceneTransition.custom()
                         .introDurationMillis(500)

@@ -8,9 +8,9 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
@@ -34,6 +34,8 @@ import static io.github.srcimon.screwbox.core.utils.Sheduler.withInterval;
 
 public class GameScene implements Scene {
 
+    private final Map map = Map.fromJson("maps/DemoLevel.json");
+
     @Override
     public void onEnter(Engine engine) {
         engine.window().setCursor(MouseCursor.HIDDEN);
@@ -43,8 +45,6 @@ public class GameScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-        Map map = Map.fromJson("maps/DemoLevel.json");
-
         environment.addSystem(engine -> {
             if (engine.keyboard().isPressed(Key.K)) {
                 engine.graphics().configuration().toggleFullscreen();

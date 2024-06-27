@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.scenes.Animation;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
@@ -19,8 +20,9 @@ import java.util.concurrent.Executors;
 import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -168,6 +170,36 @@ class DefaultScenesTest {
         assertThatThrownBy(() -> scenes.add(gameScene))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("scene is already present: class io.github.srcimon.screwbox.core.scenes.internal.GameScene");
+    }
+
+    @Test
+    void resetActiveScene_repopulatesActiveScene() {
+        Scene mockScene = mock(Scene.class);
+        scenes.add(mockScene);
+        scenes.switchTo(mockScene.getClass());
+        scenes.update();
+
+        scenes.resetActiveScene();
+
+        shutdown(executor);
+        verify(mockScene, times(2)).populate(any()); // first time when added, second time on reset
+        assertThat(scenes.activeScene()).isEqualTo(mockScene.getClass());
+        assertThat(scenes.exists(mockScene.getClass())).isTrue();
+    }
+
+    @Test
+    void setDefaultTransition_setsTransitionUsedWhenChangingScenesWithoutSpecifyingTransition() {
+        Animation mockAnimation = mock(Animation.class);
+        SceneTransition sceneTransition = SceneTransition.custom()
+                .outroDurationSeconds(4)
+                .outroAnimation(mockAnimation);
+
+        scenes.setDefaultTransition(sceneTransition)
+                .add(new GameScene())
+                .switchTo(GameScene.class);
+
+        scenes.update();
+        verify(mockAnimation).draw(any(), any());
     }
 
     @AfterEach

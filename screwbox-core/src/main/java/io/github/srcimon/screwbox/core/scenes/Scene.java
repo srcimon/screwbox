@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.environment.Environment;
  *
  * @see Scenes#add(Scene...)
  */
+@FunctionalInterface
 public interface Scene {
 
     /**
