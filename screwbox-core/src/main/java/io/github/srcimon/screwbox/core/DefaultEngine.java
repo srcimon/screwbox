@@ -159,21 +159,7 @@ class DefaultEngine implements Engine {
         if (loop.startTime().isUnset()) {
             throw new IllegalStateException("engine has not been startet yet");
         }
-        if (!stopCalled) {
-            stopCalled = true;
-            executor.execute(() -> {
-                audio.stopAllSounds();
-                ui.closeMenu();
-                loop.stop();
-                loop.awaitTermination();
-                window.close();
-                executor.shutdown();
-            });
-
-            log.info("engine stopped after running for %s and rendering %,d frames".formatted(
-                    loop.runningTime().humanReadable(),
-                    loop().frameNumber()));
-        }
+        shutdownEngine();
     }
 
     @Override
@@ -258,8 +244,26 @@ class DefaultEngine implements Engine {
 
     private void exceptionHandler(final Throwable throwable) {
         log().error(throwable);
-        stop();
+        shutdownEngine();
         System.exit(0);
+    }
+
+    private void shutdownEngine() {
+        if (!stopCalled) {
+            stopCalled = true;
+            executor.execute(() -> {
+                audio.stopAllSounds();
+                ui.closeMenu();
+                loop.stop();
+                loop.awaitTermination();
+                window.close();
+                executor.shutdown();
+            });
+
+            log.info("engine stopped after running for %s and rendering %,d frames".formatted(
+                    loop.runningTime().humanReadable(),
+                    loop().frameNumber()));
+        }
     }
 
     private Robot createRobot() {

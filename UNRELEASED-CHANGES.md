@@ -8,6 +8,7 @@
 
 - Fixed resetted attributes in `SceneTransition` when setting intro animation after outro animation
 - Fixed outro animation is drawn on loading scene
+- Fixed engine shutdown on exception before even starting
 
 ### 🧽 Cleanup & refactoring
 
