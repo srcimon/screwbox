@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.scenes.Animation;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
@@ -183,6 +184,21 @@ class DefaultScenesTest {
         verify(mockScene, times(2)).populate(any());
         assertThat(scenes.activeScene()).isEqualTo(mockScene.getClass());
         assertThat(scenes.exists(mockScene.getClass())).isTrue();
+    }
+
+    @Test
+    void setDefaultTransition_setsTransitionUsedWhenChangingScenesWithoutSpecifyingTransition() {
+        Animation mockAnimation = mock(Animation.class);
+        SceneTransition sceneTransition = SceneTransition.custom()
+                .outroDurationSeconds(4)
+                .outroAnimation(mockAnimation);
+
+        scenes.setDefaultTransition(sceneTransition)
+                .add(new GameScene())
+                .switchTo(GameScene.class);
+
+        scenes.update();
+        verify(mockAnimation).draw(any(), any());
     }
 
     @AfterEach

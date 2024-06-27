@@ -28,7 +28,6 @@ public interface Scenes {
      */
     Scenes resetActiveScene(SceneTransition transition);
 
-    //TODO test
     /**
      * Sets the default {@link SceneTransition} when changing {@link Scenes} without specifying a {@link SceneTransition}.
      *
