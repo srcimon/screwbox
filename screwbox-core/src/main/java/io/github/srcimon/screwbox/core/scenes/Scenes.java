@@ -13,10 +13,22 @@ import java.util.function.Supplier;
 public interface Scenes {
 
 
-    //TODO test javadoc and changelog
+    //TODO test
+    /**
+     * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
+     * Uses the default transition to reenter the current scene.
+     *
+     * @see #resetActiveScene(SceneTransition)
+     */
     Scenes resetActiveScene();
 
-    //TODO test javadoc and changelog
+    //TODO test
+    /**
+     * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
+     * Uses the specified transition to reenter the current scene.
+     *
+     * @see #resetActiveScene()
+     */
     Scenes resetActiveScene(SceneTransition transition);
 
 
