@@ -13,6 +13,7 @@
 
 - Made `SoundOptions` immutable
 - Renamed `Scenes.exist(Class)`
+- Specified version of sonar-maven-plugin
 
 ### 📦 Dependency updates
 
