@@ -198,6 +198,7 @@ class DefaultScenesTest {
                 .switchTo(GameScene.class);
 
         scenes.update();
+        shutdown(executor);
         verify(mockAnimation).draw(any(), any());
     }
 
