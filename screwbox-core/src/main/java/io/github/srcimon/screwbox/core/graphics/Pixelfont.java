@@ -86,6 +86,10 @@ public class Pixelfont implements Serializable {
         return characters.containsKey(character);
     }
 
+    /**
+     * Returns the {@link Sprite sprites} for the specified text. If a character in the text has no corresponding
+     * {@link Sprite} it will be left and won't raise an exception.
+     */
     public List<Sprite> spritesFor(final String text) {
         final List<Sprite> sprites = new ArrayList<>();
         for (final var character : text.toCharArray()) {

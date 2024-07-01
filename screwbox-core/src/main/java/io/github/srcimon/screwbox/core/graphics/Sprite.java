@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.format;
-
 public class Sprite implements Serializable, Sizeable {
 
     @Serial
@@ -204,7 +202,7 @@ public class Sprite implements Serializable, Sizeable {
         }
         if (nr >= frames.size()) {
             throw new IllegalArgumentException(
-                    format("Cannot return frame nr %d, because sprite has only %d frame(s).", nr, frames.size()));
+                    "Cannot return frame nr %d, because sprite has only %d frame(s).".formatted(nr, frames.size()));
         }
         return frames.get(nr);
     }
