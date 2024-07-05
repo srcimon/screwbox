@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.Character.isSpaceChar;
 import static java.lang.Character.isUpperCase;
@@ -93,27 +94,24 @@ public class Pixelfont implements Serializable {
     public List<Sprite> spritesFor(final String text) {
         final List<Sprite> sprites = new ArrayList<>();
         for (final var character : text.toCharArray()) {
-            final var sprite = spriteFor(character);
-            if (nonNull(sprite)) {
-                sprites.add(sprite);
-            }
+            spriteFor(character).ifPresent(sprites::add);
         }
         return sprites;
     }
 
     /**
      * Returns the sprite for the given {@link Character}. Ignores case of
-     * {@link Character} if character is missing. Returns null if there is no such
+     * {@link Character} if character is missing. Returns empty if there is no such
      * {@link Character}.
      */
-    public Sprite spriteFor(final char character) {
+    public Optional<Sprite> spriteFor(final char character) {
         final Sprite sprite = characters.get(character);
         if (nonNull(sprite)) {
-            return sprite;
+            return Optional.of(sprite);
         }
-        return isUpperCase(character)
+        return Optional.ofNullable(isUpperCase(character)
                 ? characters.get(toLowerCase(character))
-                : characters.get(toUpperCase(character));
+                : characters.get(toUpperCase(character)));
     }
 
     /**

@@ -15,6 +15,7 @@
 - Made `SoundOptions` immutable
 - Renamed `Scenes.exist(Class)`
 - Specified version of sonar-maven-plugin
+- Made return value of `Pixelfont.spriteFor(Character)` optional
 
 ### 📦 Dependency updates
 

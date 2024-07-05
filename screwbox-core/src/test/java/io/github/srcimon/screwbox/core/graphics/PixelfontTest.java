@@ -137,9 +137,9 @@ class PixelfontTest {
     }
 
     @Test
-    void spriteFor_characterMissing_returnsNull() {
+    void spriteFor_characterMissing_isEmpty() {
         pixelfont.addCharacter('A', Sprite.invisible());
 
-        assertThat(pixelfont.spriteFor('B')).isNull();
+        assertThat(pixelfont.spriteFor('B')).isEmpty();
     }
 }
