@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
+
 /**
  * Utility class that holds two instances of a class to be easily swapped
  * between an active and inactive state.
