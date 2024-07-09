@@ -56,6 +56,11 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public void update() {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         final var menu = openMenu.menu;
         if (nonNull(menu) && !scenes.isShowingLoadingScene()) {
             interactor.interactWith(menu, layouter, engine);

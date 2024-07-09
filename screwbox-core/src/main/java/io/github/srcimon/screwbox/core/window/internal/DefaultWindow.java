@@ -31,8 +31,8 @@ public class DefaultWindow implements Window, Updatable {
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
-    private FilesDropedOnWindow filesDropedOnWindow;
-
+    private FilesDropedOnWindow nextFilesDroppedOnWindow;
+    private FilesDropedOnWindow currentFilesDroppedOnWindow;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -44,7 +44,7 @@ public class DefaultWindow implements Window, Updatable {
         this.configuration = configuration;
         this.screen = screen;
         this.renderer = renderer;
-        new DragAndDropSupport(frame, (files, position) -> filesDropedOnWindow = new FilesDropedOnWindow(files, position));
+        new DragAndDropSupport(frame, (files, position) -> nextFilesDroppedOnWindow = new FilesDropedOnWindow(files, position));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -77,7 +77,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Optional<FilesDropedOnWindow> filesDropedOnWindow() {
-        return Optional.ofNullable(filesDropedOnWindow);
+        return Optional.ofNullable(currentFilesDroppedOnWindow);
     }
 
     @Override
@@ -205,7 +205,8 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public void update() {
-        filesDropedOnWindow = null;
+        currentFilesDroppedOnWindow = nextFilesDroppedOnWindow;
+        nextFilesDroppedOnWindow = null;
     }
 
     private Cursor cursorFrom(final MouseCursor cursor) {
