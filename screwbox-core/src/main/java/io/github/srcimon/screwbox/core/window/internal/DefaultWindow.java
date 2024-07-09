@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -9,7 +8,9 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
+import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.core.window.Window;
 
 import java.awt.*;
@@ -27,12 +28,12 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
     private final Renderer renderer;
+    private final Latch<FilesDropedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
+
     private DisplayMode lastDisplayMode;
     private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
-    private FilesDropedOnWindow nextFilesDroppedOnWindow;
-    private FilesDropedOnWindow currentFilesDroppedOnWindow;
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -44,7 +45,7 @@ public class DefaultWindow implements Window, Updatable {
         this.configuration = configuration;
         this.screen = screen;
         this.renderer = renderer;
-        new DragAndDropSupport(frame, (files, position) -> nextFilesDroppedOnWindow = new FilesDropedOnWindow(files, position));
+        new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDropedOnWindow(files, position)));
         configuration.addListener(event -> {
             final boolean mustReopen = List.of(WINDOW_MODE, RESOLUTION).contains(event.changedProperty());
             if (mustReopen && frame.isVisible()) {
@@ -77,7 +78,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Optional<FilesDropedOnWindow> filesDropedOnWindow() {
-        return Optional.ofNullable(currentFilesDroppedOnWindow);
+        return Optional.ofNullable(filesDroppedOnWindow.inactive());
     }
 
     @Override
@@ -205,8 +206,8 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public void update() {
-        currentFilesDroppedOnWindow = nextFilesDroppedOnWindow;
-        nextFilesDroppedOnWindow = null;
+        filesDroppedOnWindow.toggle();
+        filesDroppedOnWindow.assignActive(null);
     }
 
     private Cursor cursorFrom(final MouseCursor cursor) {

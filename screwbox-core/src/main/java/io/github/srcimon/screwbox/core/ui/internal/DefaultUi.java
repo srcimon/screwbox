@@ -4,7 +4,14 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.ui.*;
+import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
+import io.github.srcimon.screwbox.core.ui.SimpleUiLayouter;
+import io.github.srcimon.screwbox.core.ui.SimpleUiRenderer;
+import io.github.srcimon.screwbox.core.ui.Ui;
+import io.github.srcimon.screwbox.core.ui.UiInteractor;
+import io.github.srcimon.screwbox.core.ui.UiLayouter;
+import io.github.srcimon.screwbox.core.ui.UiMenu;
+import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -56,11 +63,6 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public void update() {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         final var menu = openMenu.menu;
         if (nonNull(menu) && !scenes.isShowingLoadingScene()) {
             interactor.interactWith(menu, layouter, engine);

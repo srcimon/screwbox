@@ -9,6 +9,7 @@
 - Fixed resetted attributes in `SceneTransition` when setting intro animation after outro animation
 - Fixed outro animation is drawn on loading scene
 - Fixed engine shutdown on exception before even starting
+- Fixed `Window.filesDropedOnWindow()` is empty when file is dropped between updates
 
 ### 🧽 Cleanup & refactoring
 
