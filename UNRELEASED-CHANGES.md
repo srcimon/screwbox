@@ -20,4 +20,5 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump assertj to 3.26.0
+- Bump jackson to 2.17.2
