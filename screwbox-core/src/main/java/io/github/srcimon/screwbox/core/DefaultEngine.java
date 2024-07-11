@@ -50,6 +50,7 @@ import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.jar.Manifest;
 
 import static java.lang.String.format;
 
@@ -220,6 +221,11 @@ class DefaultEngine implements Engine {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public String version() {
+        return ScrewBox.class.getPackage().getImplementationVersion();
     }
 
     @Override
