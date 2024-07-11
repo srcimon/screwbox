@@ -148,7 +148,7 @@ class DefaultEngine implements Engine {
         if (loop.startTime().isSet()) {
             throw new IllegalStateException("engine can only be started once.");
         }
-        log.info(format("engine with name '%s' started", name));
+        log.info(format("engine (version %s) with name '%s' started", version(), name));
         try {
             window.open();
             loop.start();
