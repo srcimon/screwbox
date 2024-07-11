@@ -129,7 +129,7 @@ public interface Engine {
     String name();
 
     /**
-     * Returns the version of the used {@link ScrewBox} runtime.
+     * Returns the version of the used {@link ScrewBox} runtime. Will return 'unknown' when working directly with {@link ScrewBox} source.
      */
     String version();
 

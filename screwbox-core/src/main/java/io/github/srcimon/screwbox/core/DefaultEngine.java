@@ -50,9 +50,9 @@ import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.jar.Manifest;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 class DefaultEngine implements Engine {
 
@@ -72,6 +72,7 @@ class DefaultEngine implements Engine {
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
+    private final String version;
 
     private boolean stopCalled = false;
 
@@ -138,6 +139,7 @@ class DefaultEngine implements Engine {
         }
         executor.execute(new InitializeFontDrawingTask());
         this.name = name;
+        this.version = DefaultEngine.class.getPackage().getImplementationVersion();
         window.setTitle(name);
     }
 
@@ -225,7 +227,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public String version() {
-        return ScrewBox.class.getPackage().getImplementationVersion();
+        return isNull(version) ? "unknown" : version;
     }
 
     @Override
