@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- added `Engine.version()`
 
 ### 🪛 Bug Fixes
 

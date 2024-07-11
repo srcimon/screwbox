@@ -129,6 +129,11 @@ public interface Engine {
     String name();
 
     /**
+     * Returns the version of the used {@link ScrewBox} runtime. Will return 'unknown' when working directly with {@link ScrewBox} source.
+     */
+    String version();
+
+    /**
      * Returns true if the engine has reached a certain speed for once. Once it is true it will
      * never switch back to false. Will also return true after a certain amount of time so that slow machines wont have any issue.
      * This mainly covers JVM warmup and can be used to wait before  starting the real business of your game.

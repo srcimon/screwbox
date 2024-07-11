@@ -52,6 +52,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 class DefaultEngine implements Engine {
 
@@ -71,6 +72,7 @@ class DefaultEngine implements Engine {
     private final WarmUpIndicator warmUpIndicator;
     private final ExecutorService executor;
     private final String name;
+    private final String version;
 
     private boolean stopCalled = false;
 
@@ -137,6 +139,7 @@ class DefaultEngine implements Engine {
         }
         executor.execute(new InitializeFontDrawingTask());
         this.name = name;
+        this.version = DefaultEngine.class.getPackage().getImplementationVersion();
         window.setTitle(name);
     }
 
@@ -220,6 +223,11 @@ class DefaultEngine implements Engine {
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public String version() {
+        return isNull(version) ? "unknown" : version;
     }
 
     @Override
