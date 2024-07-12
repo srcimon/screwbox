@@ -48,11 +48,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.management.ManagementFactory;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
 
@@ -139,8 +141,13 @@ class DefaultEngine implements Engine {
         }
         executor.execute(new InitializeFontDrawingTask());
         this.name = name;
-        this.version = DefaultEngine.class.getPackage().getImplementationVersion();
+        this.version = detectVersion();
         window.setTitle(name);
+    }
+
+    private String detectVersion() {
+        final String versionInfo = DefaultEngine.class.getPackage().getImplementationVersion();
+        return nonNull(versionInfo) ? versionInfo : "0.0.0 (dev-mode)";
     }
 
     @Override
@@ -148,7 +155,7 @@ class DefaultEngine implements Engine {
         if (loop.startTime().isSet()) {
             throw new IllegalStateException("engine can only be started once.");
         }
-        log.info(format("engine (version %s) with name '%s' started", version(), name));
+        log.info(format("'%s' started using engine version %s", name, version()));
         try {
             window.open();
             loop.start();
@@ -227,7 +234,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public String version() {
-        return isNull(version) ? "unknown" : version;
+        return isNull(version) ? "1.0.0" : version;
     }
 
     @Override
