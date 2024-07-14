@@ -24,8 +24,8 @@ public final class ReflectionImage {
     private final Size imageSize;
     private final SpriteBatch spriteBatch = new SpriteBatch();
     private final ScreenBounds screenArea;
+    private final UnaryOperator<Bounds> entityMotion;
     private final int drawOrder;
-    private UnaryOperator<Bounds> entityMotion;
 
     public ReflectionImage(final Graphics graphics, final int drawOrder, final Size imageSize, final ScreenBounds screenArea, final UnaryOperator<Bounds> entityMotion) {
         this.graphics = graphics;
