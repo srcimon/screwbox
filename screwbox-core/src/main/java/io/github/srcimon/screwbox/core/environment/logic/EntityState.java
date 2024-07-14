@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 
 import java.io.Serializable;
 
+@FunctionalInterface
 public interface EntityState extends Serializable {
 
     default void enter(final Entity entity, final Engine engine) {
@@ -14,5 +15,4 @@ public interface EntityState extends Serializable {
 
     default void exit(final Entity entity, final Engine engine) {
     }
-
 }

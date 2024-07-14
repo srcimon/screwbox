@@ -4,11 +4,13 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Grid;
 import io.github.srcimon.screwbox.core.Path;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.Environment;
 
 import java.util.Optional;
 
 /**
- * Advanced searching for entities, pathfinding, raycasting and adjusting Entites to a {@link Grid}.
+ * Advanced searching for {@link Entity entities}, pathfinding, raycasting and adjusting {@link Entity entities} to a {@link Grid}.
  */
 public interface Physics {
 
@@ -18,8 +20,22 @@ public interface Physics {
 
     SelectEntityBuilder searchInRange(Bounds range);
 
+    /**
+     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
+     * Requires a {@link Grid}. Searches only within the {@link Grid}.
+     *
+     * @see Environment#enablePhysics()
+     * @see #setGrid(Grid)
+     * @see #findPath(Vector, Vector, Grid)
+     */
     Optional<Path> findPath(Vector start, Vector end);
 
+    /**
+     * Finds a {@link Path} between specified start and end position. Will be empty if there is no {@link Path}.
+     *
+     * @see #setGrid(Grid)
+     * @see #findPath(Vector, Vector)
+     */
     Optional<Path> findPath(Vector start, Vector end, Grid grid);
 
     Bounds snapToGrid(Bounds bounds);
