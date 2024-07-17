@@ -77,8 +77,15 @@ public interface Camera {
      */
     Camera setZoomRestriction(double min, double max);
 
+    /**
+     * Returns the postion of the {@link Camera}.
+     */
     Vector position();
 
+    /**
+     * Returns the focus of the {@link Camera}. The value differs from {@link #position()} while the
+     * {@link Camera} {@link #isShaking()}.
+     */
     Vector focus();
 
     /**
@@ -86,7 +93,17 @@ public interface Camera {
      */
     double zoom();
 
+    /**
+     * Returns the minimum {@link #zoom()} that can be set.
+     *
+     * @see #setZoomRestriction(double, double)
+     */
     double minZoom();
 
+    /**
+     * Returns the maximum {@link #zoom()} that can be set.
+     *
+     * @see #setZoomRestriction(double, double)
+     */
     double maxZoom();
 }
