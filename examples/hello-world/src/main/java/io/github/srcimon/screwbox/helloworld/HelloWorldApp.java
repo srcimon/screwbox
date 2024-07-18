@@ -29,14 +29,12 @@ public class HelloWorldApp {
                     var screen = engine.graphics().screen();
                     var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
                     screen.drawText(screen.center(), "Hello world!", drawOptions);
-
                 })
 
                 // add falling leaves
-                .addEntity(
+                .addEntity("falling leaves emitter",
                         new TransformComponent(screwBox.graphics().world().visibleArea().expand(400)),
-                        new ParticleEmitterComponent(Duration.ofMillis(100), ParticleOptionsBundle.FALLING_LEAVES)
-                );
+                        new ParticleEmitterComponent(Duration.ofMillis(100), ParticleOptionsBundle.FALLING_LEAVES));
 
         screwBox.start();
     }
