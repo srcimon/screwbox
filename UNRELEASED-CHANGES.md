@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added no args constructor to `TransformComponent`
+- Added `SpriteBundle.LEAVE_FALLING`
+- Added `ParticleOptionsBundle.FALLING_LEAVES`
 
 ### 🪛 Bug Fixes
 

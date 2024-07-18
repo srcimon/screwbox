@@ -13,6 +13,10 @@ public final class TransformComponent implements Component {
 
     public Bounds bounds;
 
+    public TransformComponent() {
+       this(Vector.zero());
+    }
+
     public TransformComponent(final Bounds bounds) {
         this.bounds = bounds;
     }

@@ -1,10 +1,10 @@
 package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
@@ -39,7 +39,15 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .animateOpacity()
             .animateScale(3, 1)
             .randomLifeTimeMilliseconds(800, 1500)
-            .randomBaseSpeed(100, 400));
+            .randomBaseSpeed(100, 400)),
+    FALLING_LEAVES(ParticleOptions.unknownSource()
+            .sprite(SpriteBundle.LEAVE_FALLING)
+            .randomStartScale(1, 1.5)
+            .baseSpeed(Vector.$(60, 10))
+            .chaoticMovement(50, Duration.ofSeconds(1))
+            .animateOpacity()
+            .randomLifeTimeSeconds(6, 10)
+            .ease(Ease.SINE_IN_OUT));
 
     private final ParticleOptions particleOptions;
 
