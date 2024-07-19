@@ -42,9 +42,9 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .randomBaseSpeed(100, 400)),
     FALLING_LEAVES(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.LEAVE_FALLING)
-            .randomStartScale(1, 1.5)
+            .randomStartScale(1, 2)
             .baseSpeed(Vector.$(60, 10))
-            .chaoticMovement(50, Duration.ofSeconds(1))
+            .chaoticMovement(50, ofSeconds(1))
             .animateOpacity()
             .randomLifeTimeSeconds(6, 10)
             .ease(Ease.SINE_IN_OUT));
