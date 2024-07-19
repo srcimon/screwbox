@@ -24,6 +24,7 @@ public class HelloWorldApp {
                 .enableParticles()
                 .enableTweening()
 
+
                 // draw Hello World
                 .addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
@@ -32,7 +33,7 @@ public class HelloWorldApp {
                 })
 
                 // add falling leaves
-                .addEntity("falling leaves emitter",
+                .addEntity("falling leaves",
                         new TransformComponent(screwBox.graphics().world().visibleArea().expand(400)),
                         new ParticleEmitterComponent(Duration.ofMillis(100), ParticleOptionsBundle.FALLING_LEAVES));
 
