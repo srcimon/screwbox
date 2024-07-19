@@ -23,7 +23,7 @@ public class HelloWorldApp {
                 .enablePhysics()
                 .enableParticles()
                 .enableTweening()
-                //TODO options.createEntities(position, "text");
+
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
