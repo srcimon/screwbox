@@ -27,7 +27,7 @@ public class HelloWorldApp {
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
-                    var drawOptions = font(BOLDZILLA).scale(4).alignCenter();
+                    var drawOptions = font(BOLDZILLA).scale(8).alignCenter();
                     screen.drawText(screen.center(), "Hello world!", drawOptions);
                 })
 
