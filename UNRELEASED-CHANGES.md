@@ -6,7 +6,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed wrong heigth of `TextDrawOptions.sizeOf(String)` when using scale
 
 ### 🧽 Cleanup & refactoring
 

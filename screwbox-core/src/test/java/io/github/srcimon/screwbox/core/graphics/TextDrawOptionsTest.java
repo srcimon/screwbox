@@ -26,15 +26,22 @@ class TextDrawOptionsTest {
 
     @Test
     void sizeOf_uppercaseText_returnsSizeOfText() {
-        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).uppercase();
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase();
 
-        assertThat(options.sizeOf("Some kind of lane text")).isEqualTo(Size.of(238, 8));
+        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(120, 8));
+    }
+
+    @Test
+    void sizeOf_scaledText_returnsSizeOfText() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2);
+
+        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(226, 16));
     }
 
     @Test
     void widthOf_text_returnsSizeOfText() {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2);
 
-        assertThat(options.widthOf("Some kind of lane text")).isEqualTo(224);
+        assertThat(options.widthOf("Some kind of lame text")).isEqualTo(226);
     }
 }

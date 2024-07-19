@@ -114,6 +114,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
      */
     public Size sizeOf(final String text) {
-        return Size.of(widthOf(text), font.height());
+        return Size.of(widthOf(text), font.height() * scale);
     }
 }
