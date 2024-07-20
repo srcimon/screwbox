@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -301,6 +302,13 @@ public class ParticleOptions implements Serializable {
         return customize(SCALE_PREFIX, entity -> entity.add(new TweenScaleComponent(from, to)));
     }
 
+    /**
+     * Adds a {@link ShadowCasterComponent} to the particle.
+     */
+    //TODO Test
+    public ParticleOptions castShadow() {
+        return customize("shadow-casting", entity -> entity.add(new ShadowCasterComponent(false)));
+    }
     /**
      * Add special customization to the {@link ParticleOptions} that is not already available via
      * {@link ParticleOptions} methods.

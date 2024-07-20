@@ -30,14 +30,6 @@ public class HelloWorldApp {
 
         screwBox.environment()
 
-                // enable all features
-                .enableAllFeatures()
-
-                // add light spot to create shadow effect
-                .addEntity("sun", new PointLightComponent(800, Color.BLACK),
-                        new GlowComponent(800, Color.YELLOW.opacity(0.1)),
-                        new TransformComponent())
-
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
@@ -46,11 +38,20 @@ public class HelloWorldApp {
                     screen.drawText(screen.center(), "Hello world!", drawOptions);
                 })
 
+                // enable all features
+                .enableAllFeatures()
+
+                // add light spot to create shadow effect
+                .addEntity("sun", new PointLightComponent(800, Color.BLACK),
+                        new GlowComponent(800, Color.YELLOW.opacity(0.1)),
+                        new TransformComponent())
+
+
+
                 // add falling leaves
                 .addEntity("falling leaves",
                         new TransformComponent(screwBox.graphics().world().visibleArea().expand(400)),
-                        new ParticleEmitterComponent(Duration.ofMillis(60), ParticleOptionsBundle.FALLING_LEAVES.get()
-                                .customize("x", entity -> entity.add(new ShadowCasterComponent(false)))));
+                        new ParticleEmitterComponent(Duration.ofMillis(60), ParticleOptionsBundle.FALLING_LEAVES));
 
         screwBox.start();
     }
