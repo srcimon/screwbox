@@ -8,6 +8,8 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
+import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
+import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
@@ -28,6 +30,9 @@ public class HelloWorldApp {
 
         screwBox.environment()
 
+                // enable all features that are used below...
+                .enableAllFeatures()
+
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
@@ -35,9 +40,6 @@ public class HelloWorldApp {
                     screen.fillWith(Color.hex("#125d7e"));
                     screen.drawText(screen.center(), "Hello world!", drawOptions);
                 })
-
-                // enable all features
-                .enableAllFeatures()
 
                 // add light spot to create nice sunlight effect
                 .addEntity("sun", new PointLightComponent(800, Color.BLACK),
@@ -48,7 +50,13 @@ public class HelloWorldApp {
                 // add falling leaves
                 .addEntity("falling leaves",
                         new TransformComponent(screwBox.graphics().world().visibleArea()),
-                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES));
+                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
+
+                // let the mouse interact with the falling leaves
+                .addEntity("cursor",
+                        new TransformComponent(),
+                        new CursorAttachmentComponent(),
+                        new ParticleInteractionComponent(80, Percent.max()));
 
         screwBox.start();
     }
