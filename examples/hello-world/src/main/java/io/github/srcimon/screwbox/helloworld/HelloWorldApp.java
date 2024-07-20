@@ -4,18 +4,17 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
+import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.LEFT;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
 
@@ -27,7 +26,7 @@ public class HelloWorldApp {
 
         // set good shadow quality
         screwBox.graphics().configuration().setLightmapScale(2);
-
+screwBox.graphics().configuration().toggleFullscreen().setUseAntialiasing(true);
         screwBox.environment()
 
                 // draw Hello World
@@ -47,11 +46,10 @@ public class HelloWorldApp {
                         new TransformComponent())
 
 
-
                 // add falling leaves
                 .addEntity("falling leaves",
-                        new TransformComponent(screwBox.graphics().world().visibleArea().expand(400)),
-                        new ParticleEmitterComponent(Duration.ofMillis(60), ParticleOptionsBundle.FALLING_LEAVES));
+                        new TransformComponent(screwBox.graphics().world().visibleArea()),
+                        new ParticleEmitterComponent(Duration.ofMillis(250), LEFT, FALLING_LEAVES));
 
         screwBox.start();
     }
