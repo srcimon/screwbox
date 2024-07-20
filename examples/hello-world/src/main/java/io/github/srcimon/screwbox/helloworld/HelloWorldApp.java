@@ -46,7 +46,6 @@ public class HelloWorldApp {
                         new GlowComponent(800, Color.YELLOW.opacity(0.1)),
                         new TransformComponent())
 
-
                 // add falling leaves
                 .addEntity("falling leaves",
                         new TransformComponent(screwBox.graphics().world().visibleArea()),

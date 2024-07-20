@@ -214,7 +214,6 @@
                 <module>screwbox-tiled</module>
                 <module>examples/hello-world</module>
                 <module>examples/pathfinding</module>
-                <module>examples/particles</module>
                 <module>examples/game-of-life</module>
                 <module>examples/platformer</module>
                 <module>examples/vacuum-outlaw</module>
