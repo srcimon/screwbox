@@ -47,7 +47,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
             .baseSpeed(Vector.$(60, 10))
             .chaoticMovement(50, ofSeconds(1))
             .animateOpacity()
-            .randomLifeTimeSeconds(15, 20)
+            .randomLifeTimeSeconds(10, 15)
             .ease(Ease.SINE_IN_OUT)
             .castShadow());
 

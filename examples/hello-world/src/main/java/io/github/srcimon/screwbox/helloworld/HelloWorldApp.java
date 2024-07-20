@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
-import static io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent.SpawnMode.LEFT;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
@@ -22,11 +21,11 @@ public class HelloWorldApp {
         Engine screwBox = ScrewBox.createEngine("Hello World");
 
         // set ambient light to nearly full brightness
-        screwBox.graphics().light().setAmbientLight(Percent.of(0.96));
+        screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 
         // set good shadow quality
         screwBox.graphics().configuration().setLightmapScale(2);
-screwBox.graphics().configuration().toggleFullscreen().setUseAntialiasing(true);
+
         screwBox.environment()
 
                 // draw Hello World
@@ -49,7 +48,7 @@ screwBox.graphics().configuration().toggleFullscreen().setUseAntialiasing(true);
                 // add falling leaves
                 .addEntity("falling leaves",
                         new TransformComponent(screwBox.graphics().world().visibleArea()),
-                        new ParticleEmitterComponent(Duration.ofMillis(250), LEFT, FALLING_LEAVES));
+                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES));
 
         screwBox.start();
     }
