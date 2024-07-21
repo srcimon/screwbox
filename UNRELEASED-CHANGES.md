@@ -3,6 +3,7 @@
 - Added no args constructor to `TransformComponent`
 - Added new pre packed assets `SpriteBundle.LEAVE_FALLING` and `ParticleOptionsBundle.FALLING_LEAVES`
 - Added `ParticleOptions.castShadow()`
+- Added new spawn modes to the `ParticleEmitterComponent`: `LEFT_SIDE`, `RIGHT_SIDE`, `TOP_SIDE` and `BOTTOM_SIDE`
 - Made hello world example application more appealing
 
 ### 🪛 Bug Fixes
