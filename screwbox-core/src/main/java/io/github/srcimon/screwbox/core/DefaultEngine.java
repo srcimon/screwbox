@@ -52,7 +52,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 class DefaultEngine implements Engine {
@@ -233,7 +232,7 @@ class DefaultEngine implements Engine {
 
     @Override
     public String version() {
-        return isNull(version) ? "1.0.0" : version;
+        return version;
     }
 
     @Override
