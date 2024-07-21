@@ -40,10 +40,10 @@ class ParticleEmitterSystemTest {
 
         environment.update();
 
-        var position = ArgumentCaptor.forClass(Vector.class);
+        var position = ArgumentCaptor.forClass(Bounds.class);
         var options = ArgumentCaptor.forClass(ParticleOptions.class);
         verify(particles).spawn(position.capture(), options.capture());
-        assertThat(position.getValue()).isEqualTo($(120, 10));
+        assertThat(position.getValue()).isEqualTo($$(120, 10,0,0));
         assertThat(options.getValue().modifierIds()).containsExactly("default-render-sprite");
         assertThat(options.getValue().source().id()).contains(1249);
     }

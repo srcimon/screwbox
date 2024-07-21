@@ -35,22 +35,22 @@ public class ParticleEmitterComponent implements Component {
         /**
          * Spawn {@link Particles} only from the left side of the {@link Bounds}.
          */
-        LEFT_SIDE(bounds -> Bounds.atOrigin(bounds.origin(), 1, bounds.height())),
+        LEFT_SIDE(bounds -> Bounds.atOrigin(bounds.origin(), 0, bounds.height())),
 
         /**
          * Spawn {@link Particles} only from the right side of the {@link Bounds}.
          */
-        RIGHT_SIDE(bounds -> Bounds.atOrigin(bounds.origin().addX(bounds.width() - 1), 1, bounds.height())),
+        RIGHT_SIDE(bounds -> Bounds.atOrigin(bounds.origin().addX(bounds.width()), 0, bounds.height())),
 
         /**
          * Spawn {@link Particles} only from the top side of the {@link Bounds}.
          */
-        TOP_SIDE(bounds -> Bounds.atOrigin(bounds.origin(), bounds.width(), 1)),
+        TOP_SIDE(bounds -> Bounds.atOrigin(bounds.origin(), bounds.width(), 0)),
 
         /**
          * Spawn {@link Particles} only from the bottom side of the {@link Bounds}.
          */
-        BOTTOM_SIDE(bounds -> Bounds.atOrigin(bounds.origin().addY(bounds.height() - 1), bounds.width(), 1));
+        BOTTOM_SIDE(bounds -> Bounds.atOrigin(bounds.origin().addY(bounds.height()), bounds.width(),0));
 
         private final UnaryOperator<Bounds> spawnArea;
 
