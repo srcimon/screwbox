@@ -305,7 +305,6 @@ public class ParticleOptions implements Serializable {
     /**
      * Adds a {@link ShadowCasterComponent} to the particle.
      */
-    //TODO Test
     public ParticleOptions castShadow() {
         return customize("shadow-casting", entity -> entity.add(new ShadowCasterComponent(false)));
     }

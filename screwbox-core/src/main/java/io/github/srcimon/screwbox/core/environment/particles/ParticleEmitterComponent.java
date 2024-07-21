@@ -16,8 +16,6 @@ public class ParticleEmitterComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    //TODO test
-
     /**
      * Specify the area where {@link Particles} are emitted.
      */
