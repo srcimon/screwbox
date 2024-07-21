@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
@@ -24,6 +25,7 @@ public enum SpriteBundle implements AssetBundle<Sprite> {
     SLIME_MOVING(animatedAssetFromFile("assets/sprites/SLIME_MOVING.png", square(16), ofMillis(150))),
     TNT_TICKING(animatedAssetFromFile("assets/sprites/TNT_TICKING.png", square(16), ofMillis(150))),
     ELECTRICITY_SPARCLE(animatedAssetFromFile("assets/sprites/ELECTRICITY_SPARCLE.png", square(20), ofMillis(150))),
+    LEAVE_FALLING(animatedAssetFromFile("assets/sprites/LEAVE_FALLING.png", Size.square(8), Duration.ofMillis(250))),
     EXPLOSION(animatedAssetFromFile("assets/sprites/EXPLOSION.png", square(16), ofMillis(150))),
     FIRE(animatedAssetFromFile("assets/sprites/FIRE.png", square(16), ofMillis(150))),
     MAN_STAND(animatedAssetFromFile("assets/sprites/MAN_STAND.png", square(16), ofMillis(150))),

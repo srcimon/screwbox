@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -119,6 +120,14 @@ class ParticleOptionsTest {
         Entity particle = applyOptionsOnTemplateParticle(options.randomBaseSpeed(40, 80));
 
         assertThat(particle.get(PhysicsComponent.class).momentum.length()).isBetween(40.0, 80.0);
+    }
+
+    @Test
+    void castShadow_addsShadowCasterComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.castShadow());
+
+        assertThat(particle.hasComponent(ShadowCasterComponent.class)).isTrue();
+        assertThat(particle.get(ShadowCasterComponent.class).selfShadow).isFalse();
     }
 
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {

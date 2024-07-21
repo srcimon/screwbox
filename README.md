@@ -132,9 +132,8 @@ ScrewBox packs some examples. You can inspect these examples to learn how to use
 
 | Example                                       | Description                                                                                                          |
 |-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------| 
-| **[hello-world](./examples/hello-world)**     | Very simple hello world application. Shows how to get started.                                                       |
+| **[hello-world](./examples/hello-world)**     | Hello world application with some interactive particle effects.                                                      |
 | **[pathfinding](./examples/pathfinding)**     | Example application showing how to use pathfinding and importing maps from [Tiled Editor](https://www.mapeditor.org) |
-| **[particles](./examples/particles)**         | Demonstration of particle interaction with mouse                                                                     |
 | **[game-of-life](./examples/game-of-life)**   | An interactive game of life implementation.                                                                          |
 | **[platformer](./examples/platformer)**       | A much more complex example showing how to make a platformer.                                                        |
 | **[vacuum-outlaw](./examples/vacuum-outlaw)** | Example for a top down game.                                                                                         |
