@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>io.github.srcimon</groupId>
 		<artifactId>screwbox</artifactId>
-		<version>1.17.1-SNAPSHOT</version>
+		<version>1.18.0</version>
 	</parent>
 	<artifactId>screwbox-tiled</artifactId>
 	<dependencies>
