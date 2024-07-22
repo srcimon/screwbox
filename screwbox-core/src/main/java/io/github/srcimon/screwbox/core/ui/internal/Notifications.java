@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 
@@ -13,7 +15,7 @@ import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.sys
 
 class Notifications {
 
-    private Duration notificationTimeout = Duration.ofSeconds(2);
+    private Duration notificationTimeout = Duration.ofSeconds(6);
 
     private record ActiveNotification(String message, Time time) {
 
@@ -25,8 +27,7 @@ class Notifications {
 //TODO More performantly remove items from list
 
     public void add(final String message) {
-        final Time timeout = notificationTimeout.addTo(Time.now());
-        activeNotifications.add(new ActiveNotification(message, timeout));
+        activeNotifications.add(new ActiveNotification(message, Time.now()));
     }
 
     public void render(final Screen screen) {
@@ -38,10 +39,19 @@ class Notifications {
 
         activeNotifications.removeAll(outdatedNotifications);
         int y = screen.height();
+        int maxwidth = 100;
         for (final var notification : activeNotifications) {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
-            y -= 10;
-            screen.drawText(Offset.at(screen.center().x(), y), notification.message, systemFont("Arial").color(Color.WHITE.opacity(notificationProgress.invert())).alignCenter());
+            y -= 20;
+
+            screen.drawLine(
+                    Offset.at(screen.center().x(), y-2).addX((int)(-maxwidth * notificationProgress.invert().value())),
+                    Offset.at(screen.center().x(), y-2).addX((int)(maxwidth * notificationProgress.invert().value())),
+                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
+            screen.drawText(Offset.at(screen.center().x(), y), notification.message, systemFont("Arial")
+                            .size(12).bold()
+                    .color(Color.WHITE.opacity(notificationProgress.invert()))
+                    .alignCenter());
         }
     }
 }
