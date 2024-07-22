@@ -23,6 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
+    private final Notifications notifications = new Notifications();
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -71,6 +72,7 @@ public class DefaultUi implements Ui, Updatable {
             }
             renderMenu(menu, engine.graphics().screen());
         }
+        notifications.render(engine.graphics().screen());
     }
 
     private void renderMenu(final UiMenu menu, final Screen screen) {
@@ -115,6 +117,12 @@ public class DefaultUi implements Ui, Updatable {
     @Override
     public Ui setLayouter(final UiLayouter layouter) {
         this.layouter = layouter;
+        return this;
+    }
+
+    @Override
+    public Ui showNotification(final String message) {
+        notifications.add(message);
         return this;
     }
 

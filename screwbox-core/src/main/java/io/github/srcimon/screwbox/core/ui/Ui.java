@@ -41,4 +41,5 @@ public interface Ui {
 
     Ui setLayouter(UiLayouter layouter);
 
+    Ui showNotification(String message);
 }
