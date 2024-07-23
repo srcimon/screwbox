@@ -2,8 +2,14 @@ package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
+import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
@@ -35,17 +41,18 @@ public class Notifications implements Updatable {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
             y += 20;
 
-//            screen.drawLine(
-//                    Offset.at(0, y-2),
-//                    Offset.at(0, y-2).addX((int)(maxwidth * notificationProgress.invert().value())),
-//                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
 
             double inFlowX = notificationProgress.value() < 0.5
                     ? Math.min(0, -2000 * (0.2 - notificationProgress.value()))
                     : Math.min(0, -2000 * (-0.8 + notificationProgress.value()));
+            screen.drawLine(
+                    Offset.at(inFlowX, y-2),
+                    Offset.at(inFlowX, y-2).addX((int)(maxwidth * (notificationProgress.invert().value() -0.2) )),
+                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
             //TODO use Ease for this
-            screen.drawText(Offset.at(inFlowX, y), notification.message, systemFont("Arial")
-                    .size(12).bold());
+            TextDrawOptions font = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(1.4);
+//            screen.drawRectangle(Offset.at(inFlowX, y), font.sizeOf(notification.message), RectangleDrawOptions.filled(Color.WHITE));
+            screen.drawText(Offset.at(inFlowX, y), notification.message, font);
         }
     }
 

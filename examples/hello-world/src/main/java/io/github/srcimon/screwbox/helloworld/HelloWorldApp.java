@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -32,7 +33,7 @@ public class HelloWorldApp {
 
                 .addSystem(engine -> {
                     if (engine.mouse().isPressedLeft()) {
-                        engine.ui().showNotification("Mouse clicked left at " + engine.mouse().offset());
+                        engine.ui().showNotification("Mouse clicked left at Runtime " + engine.loop().runningTime().humanReadable());
                     }
                 })
                 // enable all features that are used below...
