@@ -42,9 +42,8 @@ public class Notifications implements Updatable {
             y += 20;
 
 
-            double inFlowX = notificationProgress.value() < 0.5
-                    ? Math.min(0, -2000 * (0.2 - notificationProgress.value()))
-                    : Math.min(0, -2000 * (-0.8 + notificationProgress.value()));
+            double inFlowX =
+                     Math.min(0, -2000 * (notificationProgress.value() < 0.5 ? (0.2 - notificationProgress.value()) : (-0.8 + notificationProgress.value())));
             screen.drawLine(
                     Offset.at(inFlowX, y-2),
                     Offset.at(inFlowX, y-2).addX((int)(maxwidth * (notificationProgress.invert().value() -0.2) )),
