@@ -7,31 +7,24 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.systemFont;
 
-class Notifications {
+public class Notifications implements Updatable {
 
     private Duration notificationTimeout = Duration.ofSeconds(6);
+    private final Screen screen;
 
-    private record ActiveNotification(String message, Time time) {
-
+    public Notifications(final Screen screen) {
+        this.screen = screen;
     }
 
-    private List<ActiveNotification> activeNotifications = new ArrayList<>();
-
-
-//TODO More performantly remove items from list
-
-    public void add(final String message) {
-        activeNotifications.add(new ActiveNotification(message, Time.now()));
-    }
-
-    public void render(final Screen screen) {
-        //TODO removing notifications should not happen in render method
+    @Override
+    public void update() {
         final var updateTime = Time.now();
         final var outdatedNotifications = activeNotifications.stream().
                 filter(n -> notificationTimeout.addTo(n.time)
@@ -49,9 +42,23 @@ class Notifications {
                     Offset.at(screen.center().x(), y-2).addX((int)(maxwidth * notificationProgress.invert().value())),
                     LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
             screen.drawText(Offset.at(screen.center().x(), y), notification.message, systemFont("Arial")
-                            .size(12).bold()
+                    .size(12).bold()
                     .color(Color.WHITE.opacity(notificationProgress.invert()))
                     .alignCenter());
         }
     }
+
+    private record ActiveNotification(String message, Time time) {
+
+    }
+
+    private List<ActiveNotification> activeNotifications = new ArrayList<>();
+
+
+//TODO More performantly remove items from list
+
+    public void add(final String message) {
+        activeNotifications.add(new ActiveNotification(message, Time.now()));
+    }
+
 }

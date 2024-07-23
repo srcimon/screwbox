@@ -23,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final Notifications notifications = new Notifications();
+    private final Notifications notifications;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -34,9 +34,10 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, DefaultScenes scenes) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Notifications notifications) {
         this.engine = engine;
         this.scenes = scenes;
+        this.notifications = notifications;
     }
 
     @Override
@@ -72,7 +73,6 @@ public class DefaultUi implements Ui, Updatable {
             }
             renderMenu(menu, engine.graphics().screen());
         }
-        notifications.render(engine.graphics().screen());
     }
 
     private void renderMenu(final UiMenu menu, final Screen screen) {
