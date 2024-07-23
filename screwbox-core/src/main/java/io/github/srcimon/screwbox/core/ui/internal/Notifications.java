@@ -1,10 +1,7 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -16,7 +13,7 @@ import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.sys
 
 public class Notifications implements Updatable {
 
-    private Duration notificationTimeout = Duration.ofSeconds(6);
+    private Duration notificationTimeout = Duration.ofSeconds(4);
     private final Screen screen;
 
     public Notifications(final Screen screen) {
@@ -28,23 +25,27 @@ public class Notifications implements Updatable {
         final var updateTime = Time.now();
         final var outdatedNotifications = activeNotifications.stream().
                 filter(n -> notificationTimeout.addTo(n.time)
-                        .isBefore(updateTime)).toList();
+                        .isBefore(updateTime))
+                .toList();
 
         activeNotifications.removeAll(outdatedNotifications);
-        int y = screen.height();
+        int y = 20;
         int maxwidth = 100;
         for (final var notification : activeNotifications) {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
-            y -= 20;
+            y += 20;
 
-            screen.drawLine(
-                    Offset.at(screen.center().x(), y-2).addX((int)(-maxwidth * notificationProgress.invert().value())),
-                    Offset.at(screen.center().x(), y-2).addX((int)(maxwidth * notificationProgress.invert().value())),
-                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
-            screen.drawText(Offset.at(screen.center().x(), y), notification.message, systemFont("Arial")
-                    .size(12).bold()
-                    .color(Color.WHITE.opacity(notificationProgress.invert()))
-                    .alignCenter());
+//            screen.drawLine(
+//                    Offset.at(0, y-2),
+//                    Offset.at(0, y-2).addX((int)(maxwidth * notificationProgress.invert().value())),
+//                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
+
+            double inFlowX = notificationProgress.value() < 0.5
+                    ? Math.min(0, -2000 * (0.2 - notificationProgress.value()))
+                    : Math.min(0, -2000 * (-0.8 + notificationProgress.value()));
+            //TODO use Ease for this
+            screen.drawText(Offset.at(inFlowX, y), notification.message, systemFont("Arial")
+                    .size(12).bold());
         }
     }
 

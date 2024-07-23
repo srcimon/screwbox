@@ -41,5 +41,7 @@ public interface Ui {
 
     Ui setLayouter(UiLayouter layouter);
 
+    //TODO changelog
+    //TODO javadoc
     Ui showNotification(String message);
 }

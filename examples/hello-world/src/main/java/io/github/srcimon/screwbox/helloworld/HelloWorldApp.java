@@ -31,7 +31,7 @@ public class HelloWorldApp {
         screwBox.environment()
 
                 .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
+                    if (engine.mouse().isPressedLeft()) {
                         engine.ui().showNotification("Mouse clicked left at " + engine.mouse().offset());
                     }
                 })
