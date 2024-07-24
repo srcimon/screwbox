@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -42,13 +44,12 @@ public class Notifications implements Updatable {
             y += 20;
 
 
-            double inFlowX =
-                     Math.min(0, -2000 * (notificationProgress.value() < 0.5 ? (0.2 - notificationProgress.value()) : (-0.8 + notificationProgress.value())));
+            Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
+            double inFlowX = val.invert().value() * -500;
             screen.drawLine(
                     Offset.at(inFlowX, y-2),
                     Offset.at(inFlowX, y-2).addX((int)(maxwidth * (notificationProgress.invert().value() -0.2) )),
                     LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
-            //TODO use Ease for this
             TextDrawOptions font = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(1.4);
 //            screen.drawRectangle(Offset.at(inFlowX, y), font.sizeOf(notification.message), RectangleDrawOptions.filled(Color.WHITE));
             screen.drawText(Offset.at(inFlowX, y), notification.message, font);
