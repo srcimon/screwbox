@@ -10,7 +10,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Removed uneffective caching of audio clips
 
 ### 📦 Dependency updates
 
