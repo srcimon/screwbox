@@ -214,24 +214,30 @@ public class DefaultRenderer implements Renderer {
         resetOpacityConfig(options.opacity());
     }
 
+    //TODO add renderer test for multine text
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());
-        final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
-        int x = offset.x() + switch (options.alignment()) {
-            case LEFT -> 0;
-            case CENTER -> -options.widthOf(text) / 2;
-            case RIGHT -> -options.widthOf(text);
-        };
 
-        for (final var sprite : allSprites) {
-            final Image image = sprite.image(lastUpdateTime);
-            final AffineTransform transform = new AffineTransform();
-            transform.translate(x, offset.y());
-            transform.scale(options.scale(), options.scale());
-            graphics.drawImage(image, transform, null);
-            final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
-            x += distanceX;
+        int y = 0;
+        for (String line : options.lines(text)) {
+            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
+            int x = offset.x() + switch (options.alignment()) {
+                case LEFT -> 0;
+                case CENTER -> -options.widthOf(line) / 2;
+                case RIGHT -> -options.widthOf(line);
+            };
+
+            for (final var sprite : allSprites) {
+                final Image image = sprite.image(lastUpdateTime);
+                final AffineTransform transform = new AffineTransform();
+                transform.translate(x, offset.y() + y);
+                transform.scale(options.scale(), options.scale());
+                graphics.drawImage(image, transform, null);
+                final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
+                x += distanceX;
+            }
+            y += options.font().height() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
     }

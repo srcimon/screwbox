@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -17,7 +19,18 @@ import static java.util.Objects.requireNonNull;
  * @param alignment   the direction to draw from given offset
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
-                              Alignment alignment) {
+                              Alignment alignment, int lineLength, int lineSpacing) {
+
+    //TOOD add lineSpacing configuration
+
+        //TODO javadoc test and changelog
+    public List<String> lines(final String text) {
+        if(lineLength >= text.length()) {
+            return List.of(text);
+        }
+        List<String> lines = new ArrayList<>();
+        return List.of("Test", "asadiasidi");//TODO fixme!!!!
+    }
 
     /**
      * Alignment of the text.
@@ -32,10 +45,11 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         requireNonNull(font, "font must not be null");
         requireNonNull(opacity, "opacity must not be null");
         requireNonNull(alignment, "alignment must not be null");
+        //TODO validate line length
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4);
     }
 
 
@@ -61,48 +75,54 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, lineLength, lineSpacing);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, lineLength, lineSpacing);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, lineLength, lineSpacing);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
+    }
+
+    //TODO javadoc, changelog test
+    public TextDrawOptions lineLength(final int lineLength) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
     /**
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
     public int widthOf(final String text) {
+        //TODO FIX apply lineLength
         int totalWidth = 0;
         for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
             totalWidth += (int) ((sprite.width() + padding) * scale);
@@ -114,6 +134,7 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
      */
     public Size sizeOf(final String text) {
+        //TODO FIX apply lineLength
         return Size.of(widthOf(text), font.height() * scale);
     }
 }

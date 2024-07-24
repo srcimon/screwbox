@@ -44,8 +44,7 @@ public class Notifications implements Updatable {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
             Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
             double inFlowX = val.invert().value() * -1000 + 10;
-            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2);
-            TextDrawOptions font2 = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(0.8);
+            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2).lineLength(10);
             var size = font.sizeOf(notification.message).expand(8);
             size = Size.of(600, size.height() + 20);
             screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
