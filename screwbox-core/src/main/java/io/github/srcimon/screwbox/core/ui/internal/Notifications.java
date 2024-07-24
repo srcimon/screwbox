@@ -48,6 +48,7 @@ public class Notifications implements Updatable {
             var size = font.sizeOf(notification.title).expand(8);
             size = Size.of(size.width(), size.height() + 20);
             screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
+            screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.outline(Color.WHITE.opacity(0.5)).strokeWidth(2));
             screen.drawText(Offset.at(inFlowX, y), notification.title, font);
             screen.drawText(Offset.at(inFlowX, y+14), notification.message, font2);
             y += size.height() + 4+14;
