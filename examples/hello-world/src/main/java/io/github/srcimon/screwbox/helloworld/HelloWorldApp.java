@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
@@ -33,7 +34,7 @@ public class HelloWorldApp {
 
                 .addSystem(engine -> {
                     if (engine.mouse().isPressedLeft()) {
-                        engine.ui().showNotification("Mouse clicked left at Runtime " + engine.loop().runningTime().humanReadable());
+                        engine.ui().showNotification(ListUtil.randomFrom("This is a message.","You won the game", "First enemy killed", "This is some more text to show how a long message might be displayed."));
                     }
                 })
                 // enable all features that are used below...

@@ -6,18 +6,13 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Pixelfont;
-import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.systemFont;
 
 public class Notifications implements Updatable {
 
@@ -37,22 +32,14 @@ public class Notifications implements Updatable {
                 .toList();
 
         activeNotifications.removeAll(outdatedNotifications);
-        int y = 20;
-        int maxwidth = 100;
+        int y = 10;
         for (final var notification : activeNotifications) {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
-            y += 20;
-
-
             Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
-            double inFlowX = val.invert().value() * -500;
-            screen.drawLine(
-                    Offset.at(inFlowX, y-2),
-                    Offset.at(inFlowX, y-2).addX((int)(maxwidth * (notificationProgress.invert().value() -0.2) )),
-                    LineDrawOptions.color(Color.YELLOW).strokeWidth(2));
-            TextDrawOptions font = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(1.4);
-//            screen.drawRectangle(Offset.at(inFlowX, y), font.sizeOf(notification.message), RectangleDrawOptions.filled(Color.WHITE));
+            double inFlowX = val.invert().value() * -1000 + 10;
+            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.YELLOW)).scale(1.2);
             screen.drawText(Offset.at(inFlowX, y), notification.message, font);
+            y += 30;
         }
     }
 
