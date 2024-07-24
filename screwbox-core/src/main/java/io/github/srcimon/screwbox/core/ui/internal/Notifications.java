@@ -31,14 +31,12 @@ public class Notifications implements Updatable {
 
     @Override
     public void update() {
-
         final var updateTime = Time.now();
         final var outdatedNotifications = activeNotifications.stream().
-                filter(n -> notificationTimeout.addTo(n.time)
-                        .isBefore(updateTime))
+                filter(n -> notificationTimeout.addTo(n.time).isBefore(updateTime))
                 .toList();
-
         activeNotifications.removeAll(outdatedNotifications);
+
         int y = 10;
         for (final var notification : activeNotifications) {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
@@ -56,7 +54,7 @@ public class Notifications implements Updatable {
 
     }
 
-    private List<ActiveNotification> activeNotifications = new ArrayList<>();
+    private final List<ActiveNotification> activeNotifications = new ArrayList<>();
 
 
 //TODO More performantly remove items from list
