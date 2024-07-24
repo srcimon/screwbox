@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -122,6 +123,12 @@ public class DefaultUi implements Ui, Updatable {
 
     @Override
     public Ui showNotification(final String message) {
+        notifications.add(engine -> message);
+        return this;
+    }
+
+    @Override
+    public Ui showDynamicNotification(Function<Engine, String> message) {
         notifications.add(message);
         return this;
     }

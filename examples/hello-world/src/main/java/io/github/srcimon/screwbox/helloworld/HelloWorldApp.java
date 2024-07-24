@@ -37,6 +37,9 @@ public class HelloWorldApp {
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         engine.ui().showNotification(ListUtil.randomFrom("This is a message with some length.","You won the game by not dying.", "First enemy killed", "This is some more text to show how a long message might be displayed."));
                     }
+                    if(engine.mouse().isPressedLeft()) {
+                        engine.ui().showDynamicNotification(e -> e.particles().particleCount() + " Particles visible");
+                    }
                 })
                 // enable all features that are used below...
                 .enableAllFeatures()

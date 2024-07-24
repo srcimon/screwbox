@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
@@ -16,17 +17,21 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Notifications implements Updatable {
 
+    private final Engine engine;
     private Duration notificationTimeout = Duration.ofSeconds(4);
     private final Screen screen;
 
-    public Notifications(final Screen screen) {
+    public Notifications(final Screen screen, final Engine engine) {
         this.screen = screen;
+        this.engine = engine;
     }
 
-    public void add(final String message) {
+    public void add(final Function<Engine, String> message) {
         activeNotifications.add(new ActiveNotification(message, Time.now()));
     }
 
@@ -44,16 +49,17 @@ public class Notifications implements Updatable {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
             Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
             double inFlowX = val.invert().value() * -1000 + 10;
-            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2).lineLength(10).opacity(val);
-            var size = font.sizeOf(notification.message).expand(8);
+            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2).lineLength(30).opacity(val);
+            String text = notification.message.apply(engine);
+            var size = font.sizeOf(text).expand(8);
             size = Size.of(600, size.height() + 20);
             screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1 * val.value())));
-            screen.drawText(Offset.at(inFlowX, y), notification.message, font);
+            screen.drawText(Offset.at(inFlowX, y), text, font);
             y += size.height() + 4+14;
         }
     }
 
-    private record ActiveNotification(String message, Time time) {
+    private record ActiveNotification(Function<Engine, String> message, Time time) {
 
     }
 

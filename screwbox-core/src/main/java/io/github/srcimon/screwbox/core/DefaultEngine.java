@@ -121,7 +121,7 @@ class DefaultEngine implements Engine {
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
         audio = new DefaultAudio(executor, new AudioAdapter(), camera);
-        final Notifications notifications = new Notifications(screen);
+        final Notifications notifications = new Notifications(screen, this);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
