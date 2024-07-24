@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
-import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -19,18 +18,15 @@ import java.util.List;
 
 public class Notifications implements Updatable {
 
-    private final Audio audio;
     private Duration notificationTimeout = Duration.ofSeconds(4);
     private final Screen screen;
 
-    public Notifications(final Screen screen, final Audio audio) {
+    public Notifications(final Screen screen) {
         this.screen = screen;
-        this.audio = audio;
     }
 
     public void add(final String message) {
         activeNotifications.add(new ActiveNotification(message, Time.now()));
-        audio.playSound(SoundBundle.NOTIFY);
     }
 
     @Override
@@ -50,7 +46,7 @@ public class Notifications implements Updatable {
             double inFlowX = val.invert().value() * -1000 + 10;
             TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2);
             var size = font.sizeOf(notification.message).expand(8);
-            screen.drawRectangle(Offset.at(inFlowX-4, y-4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
+            screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
             screen.drawText(Offset.at(inFlowX, y), notification.message, font);
             y += size.height() + 4;
         }
