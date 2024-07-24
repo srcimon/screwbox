@@ -27,7 +27,7 @@ public class Notifications implements Updatable {
     }
 
     public void add(final String message) {
-        activeNotifications.add(new ActiveNotification(message, "This is a much longer text used as description for the message", Time.now()));
+        activeNotifications.add(new ActiveNotification(message, Time.now()));
     }
 
     @Override
@@ -46,17 +46,15 @@ public class Notifications implements Updatable {
             double inFlowX = val.invert().value() * -1000 + 10;
             TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2);
             TextDrawOptions font2 = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(0.8);
-            var size = font.sizeOf(notification.title).expand(8);
+            var size = font.sizeOf(notification.message).expand(8);
             size = Size.of(600, size.height() + 20);
             screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
-            screen.drawRectangle(Offset.at(inFlowX - 4, y - 4), size, RectangleDrawOptions.outline(Color.WHITE.opacity(0.5)).strokeWidth(2));
-            screen.drawText(Offset.at(inFlowX, y), notification.title, font);
-            screen.drawText(Offset.at(inFlowX, y+14), notification.message, font2);
+            screen.drawText(Offset.at(inFlowX, y), notification.message, font);
             y += size.height() + 4+14;
         }
     }
 
-    private record ActiveNotification(String title, String message, Time time) {
+    private record ActiveNotification(String message, Time time) {
 
     }
 
