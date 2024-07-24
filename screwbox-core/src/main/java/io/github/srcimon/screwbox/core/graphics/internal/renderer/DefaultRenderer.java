@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -220,7 +221,7 @@ public class DefaultRenderer implements Renderer {
         applyOpacityConfig(options.opacity());
 
         int y = 0;
-        for (String line : options.lines(text)) {
+        for (final String line : TextUtil.wrapLines(text, options.lineLength())) {
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             int x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;

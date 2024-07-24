@@ -23,15 +23,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
 
     //TOOD add lineSpacing configuration
 
-        //TODO javadoc test and changelog
-    public List<String> lines(final String text) {
-        if(lineLength >= text.length()) {
-            return List.of(text);
-        }
-        List<String> lines = new ArrayList<>();
-        return List.of("Test", "asadiasidi");//TODO fixme!!!!
-    }
-
     /**
      * Alignment of the text.
      */
