@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
@@ -33,8 +34,8 @@ public class HelloWorldApp {
         screwBox.environment()
 
                 .addSystem(engine -> {
-                    if (engine.mouse().isPressedLeft()) {
-                        engine.ui().showNotification(ListUtil.randomFrom("This is a message.","You won the game", "First enemy killed", "This is some more text to show how a long message might be displayed."));
+                    if (engine.keyboard().isPressed(Key.SPACE)) {
+                        engine.ui().showNotification(ListUtil.randomFrom("This is a message with some length.","You won the game by not dying.", "First enemy killed", "This is some more text to show how a long message might be displayed."));
                     }
                 })
                 // enable all features that are used below...

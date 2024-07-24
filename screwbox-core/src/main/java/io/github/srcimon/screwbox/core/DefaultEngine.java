@@ -120,7 +120,8 @@ class DefaultEngine implements Engine {
 
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
-        final Notifications notifications = new Notifications(screen);
+        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
+        final Notifications notifications = new Notifications(screen, audio);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
@@ -128,7 +129,6 @@ class DefaultEngine implements Engine {
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, notifications, mouse, window, camera, particles));
-        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);

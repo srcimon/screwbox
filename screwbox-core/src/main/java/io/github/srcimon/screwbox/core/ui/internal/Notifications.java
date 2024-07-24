@@ -5,6 +5,8 @@ import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.audio.Audio;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
@@ -17,15 +19,23 @@ import java.util.List;
 
 public class Notifications implements Updatable {
 
+    private final Audio audio;
     private Duration notificationTimeout = Duration.ofSeconds(4);
     private final Screen screen;
 
-    public Notifications(final Screen screen) {
+    public Notifications(final Screen screen, final Audio audio) {
         this.screen = screen;
+        this.audio = audio;
+    }
+
+    public void add(final String message) {
+        activeNotifications.add(new ActiveNotification(message, Time.now()));
+        audio.playSound(SoundBundle.NOTIFY);
     }
 
     @Override
     public void update() {
+
         final var updateTime = Time.now();
         final var outdatedNotifications = activeNotifications.stream().
                 filter(n -> notificationTimeout.addTo(n.time)
@@ -54,9 +64,5 @@ public class Notifications implements Updatable {
 
 
 //TODO More performantly remove items from list
-
-    public void add(final String message) {
-        activeNotifications.add(new ActiveNotification(message, Time.now()));
-    }
 
 }
