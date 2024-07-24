@@ -39,6 +39,7 @@ public class Notifications implements Updatable {
         activeNotifications.removeAll(outdatedNotifications);
 //TODO no title but line breaks
         int y = 10;
+        //TODO TextDrawOptions.enableLinefeedAfter(characters)
         for (final var notification : activeNotifications) {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
             Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
