@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.TextDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -37,9 +38,11 @@ public class Notifications implements Updatable {
             var notificationProgress = notificationTimeout.progress(notification.time, updateTime);
             Percent val = Ease.IN_PLATEAU_OUT.applyOn(notificationProgress);
             double inFlowX = val.invert().value() * -1000 + 10;
-            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.YELLOW)).scale(1.2);
+            TextDrawOptions font = TextDrawOptions.font(FontBundle.BOLDZILLA.customColor(Color.WHITE)).scale(1.2);
+            var size = font.sizeOf(notification.message).expand(8);
+            screen.drawRectangle(Offset.at(inFlowX-4, y-4), size, RectangleDrawOptions.filled(Color.WHITE.opacity(0.1)));
             screen.drawText(Offset.at(inFlowX, y), notification.message, font);
-            y += 30;
+            y += size.height() + 4;
         }
     }
 

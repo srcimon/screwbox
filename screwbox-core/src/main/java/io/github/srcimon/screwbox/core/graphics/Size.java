@@ -144,4 +144,10 @@ public class Size implements Serializable, Comparable<Size> {
         return allPixels;
     }
 
+    /**
+     * Expands the size by the specified value.
+     */
+    public Size expand(final int expansion) {
+        return Size.of(width + expansion, height + expansion);
+    }
 }
