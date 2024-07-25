@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
@@ -25,9 +26,7 @@ public record SoundOptions(int times, Percent volume, double balance, double pan
      * Playback {@link Sound} looped for the given times.
      */
     public static SoundOptions playTimes(final int times) {
-        if (times < 1) {
-            throw new IllegalArgumentException("sound must be played at least once");
-        }
+        Validate.positive(times, "sound must be played at least once");
         return new SoundOptions(times, Percent.max(), 0, 0, false);
     }
 

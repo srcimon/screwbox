@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.utils.Validated;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -68,8 +68,8 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     private Size(final int width, final int height) {
-        this.width = Validated.aboveZero(width, "width must be positive");
-        this.height = Validated.aboveZero(height, "height must be positive");
+        this.width = Validate.aboveZero(width, "width must be positive");
+        this.height = Validate.aboveZero(height, "height must be positive");
     }
 
     /**

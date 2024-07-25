@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.core.utils;
 
 //TODO javadoc changelog and USE USE USE
-public final class Validated {
+public final class Validate {
 
-    private Validated() {
+    private Validate() {
     }
 
     public static int positive(final int value, final String message) {
