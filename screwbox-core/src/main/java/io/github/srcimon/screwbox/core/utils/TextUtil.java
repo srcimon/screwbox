@@ -16,12 +16,9 @@ public class TextUtil {
         if (lineLength >= text.length()) {
             return List.of(text);
         }
-        //TODO Optimize performance
         List<String> lines = new ArrayList<>();
         for (int chars = 0; chars < text.length(); chars += lineLength) {
-            String substring = text.substring(chars, Math.min(chars + lineLength, text.length()));
-            System.out.println(substring);
-            lines.add(substring);
+            lines.add(text.substring(chars, Math.min(chars + lineLength, text.length())).trim());
         }
         return lines;
     }

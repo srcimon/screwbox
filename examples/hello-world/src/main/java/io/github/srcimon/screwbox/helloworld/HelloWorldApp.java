@@ -35,10 +35,13 @@ public class HelloWorldApp {
 
                 .addSystem(engine -> {
                     if (engine.keyboard().isPressed(Key.SPACE)) {
-                        engine.ui().showNotification(ListUtil.randomFrom("This is a message with some length.","You won the game by not dying.", "First enemy killed", "This is some more text to show how a long message might be displayed."));
+                        engine.ui().showNotification(ListUtil.randomFrom("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam ut labore et dolore", "you earned 20 points"));
                     }
                     if(engine.mouse().isPressedLeft()) {
                         engine.ui().showDynamicNotification(e -> e.particles().particleCount() + " Particles visible");
+                    }
+                    if(engine.mouse().isPressedRight()) {
+                        engine.ui().showDynamicNotification(e -> "engine is running for at %s fps for %s".formatted(e.loop().fps(), e.loop().runningTime().humanReadable()));
                     }
                 })
                 // enable all features that are used below...
