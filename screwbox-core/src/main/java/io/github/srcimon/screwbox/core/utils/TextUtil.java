@@ -18,8 +18,8 @@ public class TextUtil {
         }
         //TODO Optimize performance
         List<String> lines = new ArrayList<>();
-        for(int chars = 0; chars < text.length(); chars+= lineLength) {
-            String substring = text.substring(chars, chars + lineLength);
+        for (int chars = 0; chars < text.length(); chars += lineLength) {
+            String substring = text.substring(chars, Math.min(chars + lineLength, text.length()));
             System.out.println(substring);
             lines.add(substring);
         }
