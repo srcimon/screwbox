@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,9 @@ public class GraphicsConfiguration {
      * @param lightmapScale in range from 1 to 6
      */
     public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        if (lightmapScale < 1 || lightmapScale > 6) {
-            throw new IllegalArgumentException("valid range for lightmap scale is 1 to 6");
+        Validate.positive(lightmapScale, "lightmap scale must be positive");
+        if (lightmapScale > 6) {
+            throw new IllegalArgumentException("lightmap scale supports only values up to 6");
         }
         this.lightmapScale = lightmapScale;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
@@ -52,8 +54,9 @@ public class GraphicsConfiguration {
      * @param lightmapBlur blur value from 0 (no blur) to 6.
      */
     public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        if (lightmapBlur < 0 || lightmapBlur > 6) {
-            throw new IllegalArgumentException("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
+        Validate.zeroOrPositive(lightmapBlur, "blur cannot be negative");
+        if (lightmapBlur > 6) {
+            throw new IllegalArgumentException("blur only supports values 0 (no blur) to 6 (heavy blur)");
         }
         this.lightmapBlur = lightmapBlur;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR);

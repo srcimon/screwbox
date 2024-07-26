@@ -15,7 +15,7 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth) {
         if (style != Style.OUTLINE && strokeWidth != 1) {
             throw new IllegalArgumentException("stroke width is only used when drawing circle outline");
         }
-        Validate.aboveZero(strokeWidth, "stroke width must be positive");
+        Validate.positive(strokeWidth, "stroke width must be positive");
     }
 
     /**

@@ -68,8 +68,8 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     private Size(final int width, final int height) {
-        this.width = Validate.aboveZero(width, "width must be positive");
-        this.height = Validate.aboveZero(height, "height must be positive");
+        this.width = Validate.zeroOrPositive(width, "width must be positive");
+        this.height = Validate.zeroOrPositive(height, "height must be positive");
     }
 
     /**

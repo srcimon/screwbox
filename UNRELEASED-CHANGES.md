@@ -11,6 +11,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Removed uneffective caching of audio clips
+- Added missing validation for `LineDrawOptions.srokeWidth()`
 
 ### 📦 Dependency updates
 

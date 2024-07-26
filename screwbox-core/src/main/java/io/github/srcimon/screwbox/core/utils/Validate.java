@@ -24,7 +24,7 @@ public final class Validate {
         return value;
     }
 
-    public static int aboveZero(final int value, final String message) {
+    public static int zeroOrPositive(final int value, final String message) {
         if (value < 0) {
             throw new IllegalArgumentException(message);
         }
