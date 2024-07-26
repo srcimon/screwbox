@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Customize the drawing of circles.
@@ -14,10 +15,9 @@ public record CircleDrawOptions(Style style, Color color, int strokeWidth) {
         if (style != Style.OUTLINE && strokeWidth != 1) {
             throw new IllegalArgumentException("stroke width is only used when drawing circle outline");
         }
-        if (strokeWidth < 1) {
-            throw new IllegalArgumentException("stroke width must be positive");
-        }
+        Validate.aboveZero(strokeWidth, "stroke width must be positive");
     }
+
     /**
      * The style used to draw.
      */
