@@ -93,7 +93,6 @@ public enum Key {
      * Returns the {@link Key} with the given code. Empty when code is unknown.
      */
     public static Optional<Key> fromCode(final int code) {
-        final Key key = REVERSE_LOOKUP.get(code);
-        return Optional.ofNullable(key);
+        return Optional.ofNullable(REVERSE_LOOKUP.get(code));
     }
 }

@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.core.keyboard;
 
-import io.github.srcimon.screwbox.core.utils.ListUtil;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.List;
 
@@ -19,12 +19,8 @@ public class KeyCombination {
     }
 
     private KeyCombination(final List<Key> keys) {
-        if (keys.isEmpty()) {
-            throw new IllegalArgumentException("combination must contain a key");
-        }
-        if (ListUtil.containsDuplicates(keys)) {
-            throw new IllegalArgumentException("combination must not contain duplicate keys");
-        }
+        Validate.notEmpty(keys, "combination must contain a key");
+        Validate.noDuplicates(keys, "combination must not contain duplicate keys");
         this.keys = keys;
     }
 
