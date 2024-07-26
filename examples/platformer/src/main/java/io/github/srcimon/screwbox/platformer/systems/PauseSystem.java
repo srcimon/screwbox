@@ -11,9 +11,9 @@ public class PauseSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        if (engine.keyboard().isPressed(Key.P)
+        if (!engine.scenes().isTransitioning() && (engine.keyboard().isPressed(Key.P)
                 || engine.keyboard().isPressed(Key.ESCAPE)
-                || !engine.window().hasFocus()) {
+                || !engine.window().hasFocus())) {
 
             engine.audio().stopAllSounds();
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
