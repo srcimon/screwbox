@@ -35,33 +35,32 @@ class TextUtilTest {
 
     @Test
     void wrapLines_textLengthCanBeDividedByLineLength_returnsLines() {
-        var result =  TextUtil.wrapLines("this_is_a_test!!", 4);
+        var result = TextUtil.wrapLines("this_is_a_test!!", 4);
         assertThat(result).containsExactly("this", "_is_", "a_te", "st!!");
     }
 
     @Test
     void wrapLines_textLengthCantBeDividedByLineLength_returnsLines() {
-        var result =  TextUtil.wrapLines("this_is_a_test", 4);
+        var result = TextUtil.wrapLines("this_is_a_test", 4);
         assertThat(result).containsExactly("this", "_is_", "a_te", "st");
     }
 
     @Test
     void wrapLines_lineStartsEndEndsWithSpace_removesSpaces() {
-        var result =  TextUtil.wrapLines("this isa te", 4);
+        var result = TextUtil.wrapLines("this isa te", 4);
         assertThat(result).containsExactly("this", "isa", "te");
     }
 
     @Test
-    void xxxxx() {
-        var result =  TextUtil.wrapLines("this is a test", 4);
+    void wrapLines_lineStartsWithSpace_fitsInMoreCharsInLine() {
+        var result = TextUtil.wrapLines("this is a test", 4);
         assertThat(result).containsExactly("this", "is a", "test");
     }
 
     @Test
-    void xxxxxxx() {
-        var result =  TextUtil.wrapLines("this is clearly a nicer test than you could imagine", 6);
-        for(var x : result) {
-            System.out.println(x);
-        };
+    void wrapLines_lineEndSplitsWords_triesToPushWordsInNextLine() {
+        var result = TextUtil.wrapLines("this is clearly a nicer test than you could imagine", 8);
+
+        assertThat(result).containsExactly("this is", "clearly", "a nicer", "test", "than you", "could", "imagine");
     }
 }

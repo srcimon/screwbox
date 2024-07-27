@@ -30,7 +30,7 @@ public class TextUtil {
             String substring = text.substring(processed, actual);
             lines.add(substring.trim());
             processed += substring.length();
-            if(processed < text.length() && text.charAt(processed) == ' ') {
+            if (processed < text.length() && text.charAt(processed) == ' ') {
                 processed++;
             }
         }
@@ -44,16 +44,6 @@ public class TextUtil {
             i--;
         }
 
-        return i;
-//
-//
-//
-//        if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
-//            for (int bestEndIndex = maxEndIndex; bestEndIndex >= processed; bestEndIndex--) {
-//                if (text.charAt(bestEndIndex-1) != ' ') {
-//                   return bestEndIndex-1;
-//                }
-//            }
-//        }
+        return i == processed + 1 ? end : i;
     }
 }
