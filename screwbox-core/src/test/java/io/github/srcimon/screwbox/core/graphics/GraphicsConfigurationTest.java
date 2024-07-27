@@ -36,7 +36,7 @@ class GraphicsConfigurationTest {
 
     @Test
     void setLightmapBlur_blurIsTooHigh_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(0))
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("blur only supports values 0 (no blur) to 6 (heavy blur)");
     }
