@@ -2,8 +2,6 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -104,7 +102,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
-    //TODO test
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */

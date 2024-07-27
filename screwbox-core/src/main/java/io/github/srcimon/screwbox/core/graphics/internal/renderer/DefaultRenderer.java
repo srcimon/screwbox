@@ -232,7 +232,7 @@ public class DefaultRenderer implements Renderer {
             for (final var sprite : allSprites) {
                 final Image image = sprite.image(lastUpdateTime);
                 final AffineTransform transform = new AffineTransform();
-                transform.translate(x, offset.y() + y);
+                transform.translate(x, (double)offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 graphics.drawImage(image, transform, null);
                 final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());

@@ -16,6 +16,7 @@ public class TextUtil {
     /**
      * Wraps text lines at a certain line length. Currently does not try to avoid splitting words.
      */
+    //TODO dont wrap words
     public static List<String> wrapLines(final String text, final int lineLength) {
         requireNonNull(text, "text must not be null");
         Validate.positive(lineLength, "line length must be positive");
