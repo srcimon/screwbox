@@ -104,7 +104,10 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
-    //TODO javadoc, changelog test
+    //TODO test
+    /**
+     * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
+     */
     public TextDrawOptions lineLength(final int lineLength) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }

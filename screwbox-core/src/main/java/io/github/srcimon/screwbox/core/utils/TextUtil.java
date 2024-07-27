@@ -5,13 +5,17 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-//TODO javadoc test and changelog
+/**
+ * Utils to help you with texts.
+ */
 public class TextUtil {
 
     private TextUtil() {
     }
-    //TODO optimize -> dont split words
-    //TODO javadoc test and changelog
+
+    /**
+     * Wraps text lines at a certain line length. Currently does not try to avoid splitting words.
+     */
     public static List<String> wrapLines(final String text, final int lineLength) {
         requireNonNull(text, "text must not be null");
         Validate.positive(lineLength, "line length must be positive");
