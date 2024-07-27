@@ -40,14 +40,11 @@ public class TextUtil {
 
     private static int findBetter(String text, int maxEndIndex, int processed) {
         if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
-            System.out.println("NEXT: " + text.charAt(maxEndIndex));
             for (int bestEndIndex = maxEndIndex; bestEndIndex >= processed; bestEndIndex--) {
-                System.out.println(bestEndIndex);
                 if (text.charAt(bestEndIndex-1) != ' ') {
-                   return bestEndIndex;
+                   return bestEndIndex-1;
                 }
             }
-
         }
         return maxEndIndex;
     }

@@ -56,4 +56,12 @@ class TextUtilTest {
         var result =  TextUtil.wrapLines("this is a test", 4);
         assertThat(result).containsExactly("this", "is a", "test");
     }
+
+    @Test
+    void xxxxxxx() {
+        var result =  TextUtil.wrapLines("this is clearly a nicer test than you could imagine", 6);
+        for(var x : result) {
+            System.out.println(x);
+        };
+    }
 }
