@@ -16,18 +16,18 @@ public class TextUtil {
     /**
      * Wraps text lines at a certain line length. Tries to avoid to split words.
      */
-    public static List<String> wrapLines(final String text, final int lineLength) {
+    public static List<String> lineWrap(final String text, final int maxCharacters) {
         requireNonNull(text, "text must not be null");
-        Validate.positive(lineLength, "line length must be positive");
+        Validate.positive(maxCharacters, "line length must be positive");
 
-        if(text.length() <= lineLength) {
+        if(text.length() <= maxCharacters) {
             return List.of(text);
         }
 
         final var lines = new ArrayList<String>();
         int processed = 0;
         while (processed < text.length()) {
-            int latestLineEnd = Math.min(processed + lineLength, text.length());
+            int latestLineEnd = Math.min(processed + maxCharacters, text.length());
             int betterEnd = latestLineEnd;
             while (betterEnd < text.length() && betterEnd > processed + 1 && text.charAt(betterEnd) != ' ') {
                 betterEnd--;

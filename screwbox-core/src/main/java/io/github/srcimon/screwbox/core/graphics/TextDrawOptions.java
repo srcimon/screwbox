@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  * @param alignment   the direction to draw from given offset
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
-                              Alignment alignment, int lineLength, int lineSpacing) {
+                              Alignment alignment, int charactersPerLine, int lineSpacing) {
 
     //TOOD add lineSpacing configuration
 
@@ -66,48 +66,48 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
-    public TextDrawOptions lineLength(final int lineLength) {
+    public TextDrawOptions charactersPerLine(final int lineLength) {
         return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
     }
 
@@ -115,14 +115,14 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
     public int widthOf(final String text) {
-        return widthOfLines(TextUtil.wrapLines(text, lineLength));
+        return widthOfLines(TextUtil.lineWrap(text, charactersPerLine));
     }
 
     /**
      * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
      */
     public Size sizeOf(final String text) {
-        var lines = TextUtil.wrapLines(text, lineLength);
+        var lines = TextUtil.lineWrap(text, charactersPerLine);
         return Size.of(widthOfLines(lines), heightOf(lines.size()));
     }
 

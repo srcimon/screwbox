@@ -4,7 +4,7 @@
 - Added `Ease.IN_PLATEAU_OUT`
 - Added `Size.expand(int)`
 - Added `SoundBunle.NOTIFY`
-- Added `TextUtil.wrapLines(String, int)`
+- Added `TextUtil.lineWrap(String, int)`
 
 ### 🪛 Bug Fixes
 

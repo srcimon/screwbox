@@ -221,7 +221,7 @@ public class DefaultRenderer implements Renderer {
         applyOpacityConfig(options.opacity());
 
         int y = 0;
-        for (final String line : TextUtil.wrapLines(text, options.lineLength())) {
+        for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
             int x = offset.x() + switch (options.alignment()) {
                 case LEFT -> 0;

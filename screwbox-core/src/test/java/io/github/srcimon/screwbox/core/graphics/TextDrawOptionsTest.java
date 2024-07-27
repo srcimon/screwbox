@@ -47,14 +47,14 @@ class TextDrawOptionsTest {
 
     @Test
     void widthOf_multipleLines_returnsSizeOfWidestLine() {
-        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).lineLength(10);
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).charactersPerLine(10);
 
         assertThat(options.widthOf("Some kind of lame text spread over three lines")).isEqualTo(106);
     }
 
     @Test
     void sizeOf_multipleLines_returnsSizeOfAllLines() {
-        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).lineLength(6);
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).charactersPerLine(6);
 
         assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 80));
     }

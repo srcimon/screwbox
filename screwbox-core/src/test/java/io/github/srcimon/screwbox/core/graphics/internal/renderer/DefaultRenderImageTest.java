@@ -216,7 +216,7 @@ class DefaultRenderImageTest {
 
     @Test
     void drawText_multilineDrawsText() {
-        renderer.drawText(Offset.at(60, 10), "TheFox", TextDrawOptions.font(FontBundle.SKINNY_SANS).lineLength(3).alignRight());
+        renderer.drawText(Offset.at(60, 10), "TheFox", TextDrawOptions.font(FontBundle.SKINNY_SANS).charactersPerLine(3).alignRight());
 
         verifyIsIdenticalWithReferenceImage("drawText_multilineDrawsText.png");
     }
