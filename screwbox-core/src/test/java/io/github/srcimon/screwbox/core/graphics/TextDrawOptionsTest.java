@@ -44,4 +44,18 @@ class TextDrawOptionsTest {
 
         assertThat(options.widthOf("Some kind of lame text")).isEqualTo(226);
     }
+
+    @Test
+    void widthOf_multipleLines_returnsSizeOfWidestLine() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).lineLength(10);
+
+        assertThat(options.widthOf("Some kind of lame text spread over three lines")).isEqualTo(106);
+    }
+
+    @Test
+    void sizeOf_multipleLines_returnsSizeOfAllLines() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).lineLength(6);
+
+        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 80));
+    }
 }
