@@ -38,14 +38,22 @@ public class TextUtil {
         return lines;
     }
 
-    private static int findBetter(String text, int maxEndIndex, int processed) {
-        if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
-            for (int bestEndIndex = maxEndIndex; bestEndIndex >= processed; bestEndIndex--) {
-                if (text.charAt(bestEndIndex-1) != ' ') {
-                   return bestEndIndex-1;
-                }
-            }
+    private static int findBetter(String text, int end, int processed) {
+        int i = end;
+        while (i < text.length() && i > processed + 1 && text.charAt(i) != ' ') {
+            i--;
         }
-        return maxEndIndex;
+
+        return i;
+//
+//
+//
+//        if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
+//            for (int bestEndIndex = maxEndIndex; bestEndIndex >= processed; bestEndIndex--) {
+//                if (text.charAt(bestEndIndex-1) != ' ') {
+//                   return bestEndIndex-1;
+//                }
+//            }
+//        }
     }
 }
