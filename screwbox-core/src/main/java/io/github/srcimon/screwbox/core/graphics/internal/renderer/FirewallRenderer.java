@@ -65,7 +65,7 @@ public class FirewallRenderer implements Renderer {
         final int minY = Math.min(from.y(), to.y());
         final var size = Size.definedBy(from, to);
         final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
-        if (!options.color().opacity().isZero() && options.strokeWidth() > 0 && screenBounds.intersects(screen)) {
+        if (!options.color().opacity().isZero() && screenBounds.intersects(screen)) {
             next.drawLine(from, to, options);
         }
     }

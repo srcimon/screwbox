@@ -141,13 +141,6 @@ class FirewallRendererTest {
     }
 
     @Test
-    void drawLine_strokeWidthZero_skipsRendering() {
-        renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.BLUE).strokeWidth(0));
-
-        verifyNoInteractions(next);
-    }
-
-    @Test
     void drawLine_visibleLine_renders() {
         renderer.drawLine(Offset.origin(), Offset.at(20, 40), LineDrawOptions.color(Color.BLUE).strokeWidth(2));
 
