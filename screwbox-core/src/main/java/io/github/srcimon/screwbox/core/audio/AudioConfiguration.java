@@ -30,7 +30,8 @@ public class AudioConfiguration {
      * when using {@link Audio#playSound(Sound, Vector)}.
      */
     public AudioConfiguration setSoundRange(final double soundRange) {
-        this.soundRange = Validate.positive(soundRange, "sound range must be positive");
+        Validate.positive(soundRange, "sound range must be positive");
+        this.soundRange = soundRange;
         notifyListeners(ConfigurationProperty.SOUND_RANGE);
         return this;
     }

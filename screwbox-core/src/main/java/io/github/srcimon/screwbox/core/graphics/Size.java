@@ -68,8 +68,10 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     private Size(final int width, final int height) {
-        this.width = Validate.zeroOrPositive(width, "width must be positive");
-        this.height = Validate.zeroOrPositive(height, "height must be positive");
+        Validate.zeroOrPositive(width, "width must be positive");
+        Validate.zeroOrPositive(height, "height must be positive");
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -132,8 +134,8 @@ public class Size implements Serializable, Comparable<Size> {
      */
     public List<Offset> allPixels() {
         final List<Offset> allPixels = new ArrayList<>();
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 allPixels.add(Offset.at(x, y));
             }
         }
