@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -12,8 +11,6 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
@@ -33,17 +30,6 @@ public class HelloWorldApp {
 
         screwBox.environment()
 
-                .addSystem(engine -> {
-                    if (engine.keyboard().isPressed(Key.SPACE)) {
-                        engine.ui().showNotification(ListUtil.randomFrom("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam ut labore et dolore", "you earned 20 points"));
-                    }
-                    if(engine.mouse().isPressedLeft()) {
-                        engine.ui().showDynamicNotification(e -> e.particles().particleCount() + " Particles visible");
-                    }
-                    if(engine.mouse().isPressedRight()) {
-                        engine.ui().showDynamicNotification(e -> "engine is running for at %s fps for %s".formatted(e.loop().fps(), e.loop().runningTime().humanReadable()));
-                    }
-                })
                 // enable all features that are used below...
                 .enableAllFeatures()
 

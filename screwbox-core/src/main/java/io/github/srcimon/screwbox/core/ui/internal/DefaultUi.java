@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -24,7 +23,6 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final Notifications notifications;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -35,10 +33,9 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Notifications notifications) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes) {
         this.engine = engine;
         this.scenes = scenes;
-        this.notifications = notifications;
     }
 
     @Override
@@ -120,17 +117,4 @@ public class DefaultUi implements Ui, Updatable {
         this.layouter = layouter;
         return this;
     }
-
-    @Override
-    public Ui showNotification(final String message) {
-        notifications.add(engine -> message);
-        return this;
-    }
-
-    @Override
-    public Ui showDynamicNotification(Function<Engine, String> message) {
-        notifications.add(message);
-        return this;
-    }
-
 }

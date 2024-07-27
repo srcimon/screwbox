@@ -1,11 +1,7 @@
 package io.github.srcimon.screwbox.core.ui;
 
-import io.github.srcimon.screwbox.core.Engine;
-
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Create simple ingame menus.
@@ -14,8 +10,8 @@ public interface Ui {
 
     /**
      * Opens a {@link UiMenu}.
-     * 
-     * @see #closeMenu() 
+     *
+     * @see #closeMenu()
      */
     Ui openMenu(UiMenu menu);
 
@@ -28,7 +24,7 @@ public interface Ui {
 
     /**
      * Closes the current open {@link UiMenu}.
-     * 
+     *
      * @see #openMenu(UiMenu)
      */
     Ui closeMenu();
@@ -45,8 +41,4 @@ public interface Ui {
 
     Ui setLayouter(UiLayouter layouter);
 
-    //TODO changelog
-    //TODO javadoc
-    Ui showNotification(String message);
-    Ui showDynamicNotification(Function<Engine, String> message);
 }
