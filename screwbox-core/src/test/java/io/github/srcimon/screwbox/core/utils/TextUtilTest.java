@@ -32,15 +32,15 @@ class TextUtilTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("text must not be null");
     }
-
     @Test
-    void lineWrap() {
+    void lineWrap_textLengthCanBeDividedByLineLength_returnsLines() {
         var result = TextUtil.lineWrap("this_is_a_test!!", 4);
         assertThat(result).containsExactly("this", "_is_", "a_te", "st!!");
     }
 
+
     @Test
-    void lineWrap() {
+    void lineWrap_textLengthCantBeDividedByLineLength_returnsLines() {
         var result = TextUtil.lineWrap("this_is_a_test", 4);
         assertThat(result).containsExactly("this", "_is_", "a_te", "st");
     }
