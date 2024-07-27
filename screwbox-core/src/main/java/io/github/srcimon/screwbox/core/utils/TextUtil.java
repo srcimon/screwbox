@@ -30,6 +30,9 @@ public class TextUtil {
             String substring = text.substring(processed, actual);
             lines.add(substring.trim());
             processed += substring.length();
+            if(processed < text.length() && text.charAt(processed) == ' ') {
+                processed++;
+            }
         }
 
         return lines;
@@ -37,12 +40,14 @@ public class TextUtil {
 
     private static int findBetter(String text, int maxEndIndex, int processed) {
         if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
-            for (int bestEndIndex = maxEndIndex; bestEndIndex > processed + 2; bestEndIndex--) {
-                if (text.charAt(bestEndIndex) != ' ') {
-                    System.out.println("F");
+            System.out.println("NEXT: " + text.charAt(maxEndIndex));
+            for (int bestEndIndex = maxEndIndex; bestEndIndex >= processed; bestEndIndex--) {
+                System.out.println(bestEndIndex);
+                if (text.charAt(bestEndIndex-1) != ' ') {
                    return bestEndIndex;
                 }
             }
+
         }
         return maxEndIndex;
     }
