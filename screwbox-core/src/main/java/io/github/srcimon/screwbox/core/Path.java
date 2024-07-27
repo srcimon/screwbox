@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +22,7 @@ public class Path implements Serializable {
     }
 
     private Path(final List<Vector> nodes) {
-        if (nodes.isEmpty()) {
-            throw new IllegalArgumentException("path must have at least one node");
-        }
+        Validate.notEmpty(nodes, "path must have at least one node");
         this.nodes = nodes;
         for (int i = 0; i < nodeCount() - 1; i++) {
             final var segment = Line.between(nodes.get(i), nodes.get(i + 1));

@@ -4,8 +4,6 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.containsDuplicates;
 
-//TODO changelog and USE USE USE
-
 /**
  * Used for validating input values.
  */
@@ -42,6 +40,17 @@ public final class Validate {
      * @throws IllegalArgumentException using specified message when not
      */
     public static void zeroOrPositive(final int value, final String message) {
+        if (value < 0) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Value must zero or positive double.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void zeroOrPositive(final double value, final String message) {
         if (value < 0) {
             throw new IllegalArgumentException(message);
         }
