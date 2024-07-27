@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Added multiline text rendering
 - Added `Ease.IN_PLATEAU_OUT`
 - Added `Size.expand(int)`
 - Added `SoundBunle.NOTIFY`
