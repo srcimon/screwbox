@@ -14,20 +14,26 @@ public class TextUtil {
     }
 
     /**
-     * Wraps text lines at a certain line length. Currently does not try to avoid splitting words.
+     * Wraps text lines at a certain line length. Tries to avoid to split words.
      */
-    //TODO dont wrap words
     public static List<String> wrapLines(final String text, final int lineLength) {
         requireNonNull(text, "text must not be null");
         Validate.positive(lineLength, "line length must be positive");
 
+        if(text.length() <= lineLength) {
+            return List.of(text);
+        }
+
         final var lines = new ArrayList<String>();
         int processed = 0;
         while (processed < text.length()) {
-
-            int maxEndIndex = Math.min(processed + lineLength, text.length());
-            var actual = findBetter(text, maxEndIndex, processed);
-            String substring = text.substring(processed, actual);
+            int latestLineEnd = Math.min(processed + lineLength, text.length());
+            int betterEnd = latestLineEnd;
+            while (betterEnd < text.length() && betterEnd > processed + 1 && text.charAt(betterEnd) != ' ') {
+                betterEnd--;
+            }
+            var optimizedLineEnd = betterEnd == processed + 1 ? latestLineEnd : betterEnd;
+            String substring = text.substring(processed, optimizedLineEnd);
             lines.add(substring.trim());
             processed += substring.length();
             if (processed < text.length() && text.charAt(processed) == ' ') {
@@ -38,12 +44,4 @@ public class TextUtil {
         return lines;
     }
 
-    private static int findBetter(String text, int end, int processed) {
-        int i = end;
-        while (i < text.length() && i > processed + 1 && text.charAt(i) != ' ') {
-            i--;
-        }
-
-        return i == processed + 1 ? end : i;
-    }
 }
