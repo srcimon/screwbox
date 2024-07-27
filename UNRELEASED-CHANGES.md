@@ -14,6 +14,7 @@
 
 - Removed uneffective caching of audio clips
 - Added missing validation for `LineDrawOptions.srokeWidth()`
+- Added `Validate` to clean up validation code
 
 ### 📦 Dependency updates
 

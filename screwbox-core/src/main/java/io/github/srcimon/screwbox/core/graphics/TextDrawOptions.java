@@ -114,7 +114,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     /**
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
-    //TODO add multiline test
     public int widthOf(final String text) {
         return widthOfLines(TextUtil.wrapLines(text, lineLength));
     }
@@ -122,7 +121,6 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     /**
      * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
      */
-    //TODO add multiline test
     public Size sizeOf(final String text) {
         var lines = TextUtil.wrapLines(text, lineLength);
         return Size.of(widthOfLines(lines), heightOf(lines.size()));
