@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.utils.TextUtil;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -112,8 +114,21 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     /**
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
+    //TODO add multiline test
     public int widthOf(final String text) {
-        //TODO FIX apply lineLength
+        return widthOfLines(TextUtil.wrapLines(text, lineLength));
+    }
+
+    /**
+     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
+     */
+    //TODO add multiline test
+    public Size sizeOf(final String text) {
+        var lines = TextUtil.wrapLines(text, lineLength);
+        return Size.of(widthOfLines(lines), heightOf(lines.size()));
+    }
+
+    private int widthOfLine(final String text) {
         int totalWidth = 0;
         for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
             totalWidth += (int) ((sprite.width() + padding) * scale);
@@ -121,11 +136,18 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return totalWidth;
     }
 
-    /**
-     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
-     */
-    public Size sizeOf(final String text) {
-        //TODO FIX apply lineLength
-        return Size.of(widthOf(text), font.height() * scale);
+    private int heightOf(final int lineCount) {
+        return (int) (lineCount * font.height() * scale);
+    }
+
+    private int widthOfLines(final List<String> lines) {
+        int maxWidth = 0;
+        for (var line : lines) {
+            var width = widthOfLine(line);
+            if (width > maxWidth) {
+                maxWidth = width;
+            }
+        }
+        return maxWidth;
     }
 }

@@ -238,7 +238,7 @@ public class DefaultRenderer implements Renderer {
                 final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
                 x += distanceX;
             }
-            y += options.font().height() + options.lineSpacing();
+            y += options.font().height() * options.scale() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
     }
