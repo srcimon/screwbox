@@ -47,7 +47,13 @@ class TextUtilTest {
 
     @Test
     void wrapLines_lineStartsEndEndsWithSpace_removesSpaces() {
+        var result =  TextUtil.wrapLines("this isa te", 4);
+        assertThat(result).containsExactly("this", "isa", "te");
+    }
+
+    @Test
+    void xxxxx() {
         var result =  TextUtil.wrapLines("this is a test", 4);
-        assertThat(result).containsExactly("this", "is", "a te", "st");
+        assertThat(result).containsExactly("this", "is a", "test");
     }
 }

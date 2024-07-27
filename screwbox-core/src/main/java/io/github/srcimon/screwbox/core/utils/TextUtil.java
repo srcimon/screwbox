@@ -21,14 +21,29 @@ public class TextUtil {
         requireNonNull(text, "text must not be null");
         Validate.positive(lineLength, "line length must be positive");
 
-        if (lineLength >= text.length()) {
-            return List.of(text);
-        }
         final var lines = new ArrayList<String>();
-        for (int chars = 0; chars < text.length(); chars += lineLength) {
-            final int endIndex = Math.min(chars + lineLength, text.length());
-            lines.add(text.substring(chars, endIndex).trim());
+        int processed = 0;
+        while (processed < text.length()) {
+
+            int maxEndIndex = Math.min(processed + lineLength, text.length());
+            var actual = findBetter(text, maxEndIndex, processed);
+            String substring = text.substring(processed, actual);
+            lines.add(substring.trim());
+            processed += substring.length();
         }
+
         return lines;
+    }
+
+    private static int findBetter(String text, int maxEndIndex, int processed) {
+        if (maxEndIndex + 1 < text.length() && text.charAt(maxEndIndex) != ' ') {
+            for (int bestEndIndex = maxEndIndex; bestEndIndex > processed + 2; bestEndIndex--) {
+                if (text.charAt(bestEndIndex) != ' ') {
+                    System.out.println("F");
+                   return bestEndIndex;
+                }
+            }
+        }
+        return maxEndIndex;
     }
 }
