@@ -88,6 +88,6 @@ class TextDrawOptionsTest {
     void sizeOf_multipleLines_returnsSizeOfAllLines() {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).scale(2).charactersPerLine(6);
 
-        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 80));
+        assertThat(options.sizeOf("Some kind of lame text")).isEqualTo(Size.of(50, 96));
     }
 }

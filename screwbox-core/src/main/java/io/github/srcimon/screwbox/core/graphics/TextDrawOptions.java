@@ -144,7 +144,8 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     }
 
     private int heightOf(final int lineCount) {
-        return (int) (lineCount * font.height() * scale);
+        final int space =  lineCount == 1 ? 0 : (lineCount -1) * lineSpacing;
+        return (int) (lineCount * font.height() * scale) + space;
     }
 
     private int widthOfLines(final List<String> lines) {
