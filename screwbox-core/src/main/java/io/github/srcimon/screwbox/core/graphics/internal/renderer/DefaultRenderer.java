@@ -215,7 +215,6 @@ public class DefaultRenderer implements Renderer {
         resetOpacityConfig(options.opacity());
     }
 
-    //TODO add renderer test for multine text
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());

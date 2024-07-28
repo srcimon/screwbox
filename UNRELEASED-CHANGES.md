@@ -1,10 +1,10 @@
 ### 🚀 Features & improvements
 
 - Added support for multiline text rendering
+- Added `TextUtil.lineWrap(String, int)`
 - Added `Ease.IN_PLATEAU_OUT`
 - Added `Size.expand(int)`
 - Added `SoundBunle.NOTIFY`
-- Added `TextUtil.lineWrap(String, int)`
 
 ### 🪛 Bug Fixes
 

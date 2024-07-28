@@ -41,6 +41,22 @@ class TextDrawOptionsTest {
     }
 
     @Test
+    void newInstance_changedAllProperties_setsAllProperties() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase()
+                .charactersPerLine(30)
+                .lineSpacing(4)
+                .scale(2.5)
+                .alignCenter()
+                .padding(3);
+
+        assertThat(options.charactersPerLine()).isEqualTo(30);
+        assertThat(options.lineSpacing()).isEqualTo(4);
+        assertThat(options.scale()).isEqualTo(2.5);
+        assertThat(options.alignment()).isEqualTo(TextDrawOptions.Alignment.CENTER);
+        assertThat(options.padding()).isEqualTo(3);
+    }
+
+    @Test
     void sizeOf_uppercaseText_returnsSizeOfText() {
         var options = TextDrawOptions.font(FontBundle.SKINNY_SANS).uppercase();
 
