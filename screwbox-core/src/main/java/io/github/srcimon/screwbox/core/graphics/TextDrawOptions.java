@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -36,7 +37,8 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         requireNonNull(font, "font must not be null");
         requireNonNull(opacity, "opacity must not be null");
         requireNonNull(alignment, "alignment must not be null");
-        //TODO validate line length
+        Validate.zeroOrPositive(lineSpacing, "line spacing must be positive");
+        Validate.positive(charactersPerLine, "characters per line must be positive");
     }
 
     private TextDrawOptions(final Pixelfont font) {
@@ -107,8 +109,15 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
     /**
      * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
      */
-    public TextDrawOptions charactersPerLine(final int lineLength) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, lineLength, lineSpacing);
+    public TextDrawOptions charactersPerLine(final int charactersPerLine) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
+    }
+
+    /**
+     * Sets the count of pixels between lines.
+     */
+    public TextDrawOptions lineSpacing(final int lineSpacing) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**

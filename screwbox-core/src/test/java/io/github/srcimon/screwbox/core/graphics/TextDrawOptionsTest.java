@@ -9,6 +9,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class TextDrawOptionsTest {
 
     @Test
+    void lineSpacing_negative_throwsException() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS);
+        assertThatThrownBy(() -> options.lineSpacing(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("line spacing must be positive");
+    }
+
+    @Test
+    void charactersPerLine_zero_throwsException() {
+        var options = TextDrawOptions.font(FontBundle.SKINNY_SANS);
+        assertThatThrownBy(() -> options.charactersPerLine(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("characters per line must be positive");
+    }
+
+    @Test
     void newInstance_fontNull_throwsException() {
         assertThatThrownBy(() -> TextDrawOptions.font((Pixelfont) null))
                 .isInstanceOf(NullPointerException.class)
