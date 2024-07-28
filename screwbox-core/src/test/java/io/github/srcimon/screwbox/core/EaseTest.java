@@ -33,6 +33,11 @@ class EaseTest {
             "SIN_IN_OUT_TWICE,1,0",
             "SIN_IN_OUT_TWICE,0.5,0",
             "SIN_IN_OUT_TWICE,0.25,1",
+            "IN_PLATEAU_OUT,0,0",
+            "IN_PLATEAU_OUT,0.05,0.5",
+            "IN_PLATEAU_OUT,0.5,1",
+            "IN_PLATEAU_OUT,0.95,0.5",
+            "IN_PLATEAU_OUT,1,0",
     })
     void applyOn_inputValid_returnsUpdatedOutput(String modeName, double in, double out) {
         Percent input = Percent.of(in);

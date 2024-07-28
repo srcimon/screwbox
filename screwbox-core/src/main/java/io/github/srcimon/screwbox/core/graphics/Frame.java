@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.internal.ImageUtil;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.ReplaceColorFilter;
 import io.github.srcimon.screwbox.core.utils.Resources;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -123,8 +124,7 @@ public final class Frame implements Serializable, Sizeable {
         if (x < 0 || x >= image.getWidth(null) || y < 0 || y >= image.getHeight(null)) {
             throw new IllegalArgumentException(format("position is out of bounds: %d:%d", x, y));
         }
-        final BufferedImage bufferedImage = ImageUtil.toBufferedImage(image);
-        final int rgb = bufferedImage.getRGB(x, y);
+        final int rgb = ImageUtil.toBufferedImage(image).getRGB(x, y);
         final java.awt.Color awtColor = new java.awt.Color(rgb, true);
         final Percent opacity = Percent.of(awtColor.getAlpha() / 255.0);
         return Color.rgb(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), opacity);
@@ -146,9 +146,8 @@ public final class Frame implements Serializable, Sizeable {
     public Frame scaled(final double scale) {
         final int width = (int) (width() * scale);
         final int height = (int) (height() * scale);
-        if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Scaled image is size is invalid");
-        }
+        Validate.positive(width, "scaled image width is invalid");
+        Validate.positive(height, "scaled image height is invalid");
         final var newImage = image().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new Frame(newImage, duration);
     }

@@ -10,8 +10,8 @@ public interface Ui {
 
     /**
      * Opens a {@link UiMenu}.
-     * 
-     * @see #closeMenu() 
+     *
+     * @see #closeMenu()
      */
     Ui openMenu(UiMenu menu);
 
@@ -24,7 +24,7 @@ public interface Ui {
 
     /**
      * Closes the current open {@link UiMenu}.
-     * 
+     *
      * @see #openMenu(UiMenu)
      */
     Ui closeMenu();

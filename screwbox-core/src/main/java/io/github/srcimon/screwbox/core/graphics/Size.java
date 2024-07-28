@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,12 +68,8 @@ public class Size implements Serializable, Comparable<Size> {
     }
 
     private Size(final int width, final int height) {
-        if (width < 0) {
-            throw new IllegalArgumentException("width must be positive");
-        }
-        if (height < 0) {
-            throw new IllegalArgumentException("height must be positive");
-        }
+        Validate.zeroOrPositive(width, "width must be positive");
+        Validate.zeroOrPositive(height, "height must be positive");
         this.width = width;
         this.height = height;
     }
@@ -136,12 +134,18 @@ public class Size implements Serializable, Comparable<Size> {
      */
     public List<Offset> allPixels() {
         final List<Offset> allPixels = new ArrayList<>();
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 allPixels.add(Offset.at(x, y));
             }
         }
         return allPixels;
     }
 
+    /**
+     * Expands the size by the specified value.
+     */
+    public Size expand(final int expansion) {
+        return Size.of(width + expansion, height + expansion);
+    }
 }

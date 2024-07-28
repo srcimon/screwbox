@@ -90,4 +90,10 @@ class SizeTest {
         assertThat(Size.of(0, 129).isValid()).isFalse();
         assertThat(Size.of(1, 0).isValid()).isFalse();
     }
+
+    @Test
+    void expand_positiveValue_makesBigger() {
+        Size size = Size.of(0, 129);
+        assertThat(size.expand(4)).isEqualTo(Size.of(4, 133));
+    }
 }

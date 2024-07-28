@@ -211,6 +211,14 @@ class DefaultRenderImageTest {
         renderer.drawText(Offset.at(60, 10), "TEST", TextDrawOptions.font(FontBundle.BOLDZILLA).alignRight());
 
         verifyIsIdenticalWithReferenceImage("drawText_boldzillaAlignedRight_drawsText.png");
+
+    }
+
+    @Test
+    void drawText_multilineDrawsText() {
+        renderer.drawText(Offset.at(60, 10), "TheFox", TextDrawOptions.font(FontBundle.SKINNY_SANS).charactersPerLine(3).alignRight());
+
+        verifyIsIdenticalWithReferenceImage("drawText_multilineDrawsText.png");
     }
 
     private void verifyNotAllPixelsAreBlack() {

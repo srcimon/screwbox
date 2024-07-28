@@ -1,7 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.utils.TextUtil;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -17,7 +20,9 @@ import static java.util.Objects.requireNonNull;
  * @param alignment   the direction to draw from given offset
  */
 public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean isUppercase, Percent opacity,
-                              Alignment alignment) {
+                              Alignment alignment, int charactersPerLine, int lineSpacing) {
+
+    //TOOD add lineSpacing configuration
 
     /**
      * Alignment of the text.
@@ -32,10 +37,12 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         requireNonNull(font, "font must not be null");
         requireNonNull(opacity, "opacity must not be null");
         requireNonNull(alignment, "alignment must not be null");
+        Validate.zeroOrPositive(lineSpacing, "line spacing must be positive");
+        Validate.positive(charactersPerLine, "characters per line must be positive");
     }
 
     private TextDrawOptions(final Pixelfont font) {
-        this(font, 2, 1, false, Percent.max(), Alignment.LEFT);
+        this(font, 2, 1, false, Percent.max(), Alignment.LEFT, Integer.MAX_VALUE, 4);
     }
 
 
@@ -61,48 +68,74 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
      * Creates a new instance with {@link Alignment#RIGHT}.
      */
     public TextDrawOptions alignRight() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.RIGHT, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with {@link Alignment#CENTER}.
      */
     public TextDrawOptions alignCenter() {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, Alignment.CENTER, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given padding.
      */
     public TextDrawOptions padding(final int padding) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given scale.
      */
     public TextDrawOptions scale(final double scale) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with all uppercase characters.
      */
     public TextDrawOptions uppercase() {
-        return new TextDrawOptions(font, padding, scale, true, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, true, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Creates a new instance with given opacity.
      */
     public TextDrawOptions opacity(final Percent opacity) {
-        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment);
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
+    }
+
+    /**
+     * Sets a maximum line length. Text will be wrapped when reaching the end of the line.
+     */
+    public TextDrawOptions charactersPerLine(final int charactersPerLine) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
+    }
+
+    /**
+     * Sets the count of pixels between lines.
+     */
+    public TextDrawOptions lineSpacing(final int lineSpacing) {
+        return new TextDrawOptions(font, padding, scale, isUppercase, opacity, alignment, charactersPerLine, lineSpacing);
     }
 
     /**
      * Returns the width of the given text renderd with this {@link TextDrawOptions}.
      */
     public int widthOf(final String text) {
+        return widthOfLines(TextUtil.lineWrap(text, charactersPerLine));
+    }
+
+    /**
+     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
+     */
+    public Size sizeOf(final String text) {
+        var lines = TextUtil.lineWrap(text, charactersPerLine);
+        return Size.of(widthOfLines(lines), heightOf(lines.size()));
+    }
+
+    private int widthOfLine(final String text) {
         int totalWidth = 0;
         for (final var sprite : font.spritesFor(isUppercase ? text.toUpperCase() : text)) {
             totalWidth += (int) ((sprite.width() + padding) * scale);
@@ -110,10 +143,18 @@ public record TextDrawOptions(Pixelfont font, int padding, double scale, boolean
         return totalWidth;
     }
 
-    /**
-     * Returns the {@link Size} of the given text renderd with this {@link TextDrawOptions}.
-     */
-    public Size sizeOf(final String text) {
-        return Size.of(widthOf(text), font.height() * scale);
+    private int heightOf(final int lineCount) {
+        return (int) (lineCount * font.height() * scale);
+    }
+
+    private int widthOfLines(final List<String> lines) {
+        int maxWidth = 0;
+        for (var line : lines) {
+            var width = widthOfLine(line);
+            if (width > maxWidth) {
+                maxWidth = width;
+            }
+        }
+        return maxWidth;
     }
 }

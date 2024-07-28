@@ -3,8 +3,6 @@ package io.github.srcimon.screwbox.core.graphics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,12 +27,18 @@ class GraphicsConfigurationTest {
         graphicsConfiguration.addListener(graphicsConfigListener);
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 7})
-    void setLightmapBlur_outOfRange_throwsException(int blur) {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(blur))
+    @Test
+    void setLightmapBlur_blurIsZero_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
+                .hasMessage("blur cannot be negative");
+    }
+
+    @Test
+    void setLightmapBlur_blurIsTooHigh_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("blur only supports values 0 (no blur) to 6 (heavy blur)");
     }
 
     @Test
@@ -54,12 +58,18 @@ class GraphicsConfigurationTest {
                 event -> event.changedProperty().equals(LIGHTMAP_BLUR)));
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {0, 7})
-    void setLightmapScale_outOfRange_throwsException(int resolution) {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(resolution))
+    @Test
+    void setLightmapScale_scaleIsZero_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("valid range for lightmap scale is 1 to 6");
+                .hasMessage("lightmap scale must be positive");
+    }
+
+    @Test
+    void setLightmapScale_scaleTooHight_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setLightmapScale(7))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lightmap scale supports only values up to 6");
     }
 
     @Test

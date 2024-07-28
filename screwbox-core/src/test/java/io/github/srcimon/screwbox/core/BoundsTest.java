@@ -46,14 +46,14 @@ class BoundsTest {
     void newInstance_negativeWidth_throwsException() {
         assertThatThrownBy(() -> Bounds.$$(0, 0, -1, 1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("size of width and length must no be negative");
+                .hasMessage("width must no be negative");
     }
 
     @Test
     void newInstance_negativeHeight_throwsException() {
         assertThatThrownBy(() -> Bounds.$$(0, 0, 1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("size of width and length must no be negative");
+                .hasMessage("height must no be negative");
     }
 
     @Test

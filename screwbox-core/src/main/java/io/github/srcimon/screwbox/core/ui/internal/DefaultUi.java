@@ -33,7 +33,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, DefaultScenes scenes) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes) {
         this.engine = engine;
         this.scenes = scenes;
     }
@@ -117,5 +117,4 @@ public class DefaultUi implements Ui, Updatable {
         this.layouter = layouter;
         return this;
     }
-
 }

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -85,9 +86,7 @@ public class Grid implements Serializable {
     public Grid(final Bounds area, final int gridSize, final boolean useDiagonalSearch) {
         requireNonNull(area, "grid area must not be null");
 
-        if (gridSize <= 0) {
-            throw new IllegalArgumentException("grid size must have value above zero");
-        }
+        Validate.positive(gridSize, "grid size must be positive");
         if (area.origin().x() % gridSize != 0) {
             throw new IllegalArgumentException("area origin x should be dividable by grid size.");
         }

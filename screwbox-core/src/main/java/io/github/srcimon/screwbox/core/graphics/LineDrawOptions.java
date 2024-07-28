@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.utils.Validate;
+
 /**
  * Customize the drawing of lines.
  *
@@ -7,6 +9,9 @@ package io.github.srcimon.screwbox.core.graphics;
  */
 public record LineDrawOptions(Color color, int strokeWidth) {
 
+    public LineDrawOptions {
+        Validate.positive(strokeWidth, "stroke width must be positive");
+    }
 
     /**
      * Returns new instance with new {@link #color()}.

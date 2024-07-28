@@ -69,10 +69,10 @@ class FrameTest {
     }
 
     @Test
-    void scaled_invalidScale_throwsException() {
+    void scaled_invalidWidth_throwsException() {
         assertThatThrownBy(() -> frame.scaled(-0.1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Scaled image is size is invalid");
+                .hasMessage("scaled image width is invalid");
     }
 
     @Test

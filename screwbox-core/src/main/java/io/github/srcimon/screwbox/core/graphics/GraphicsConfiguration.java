@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.loop.Loop;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,13 @@ public class GraphicsConfiguration {
      * Sets the resolution modifier for the light map. Higher values lower the
      * visual quality but massivly improve performance when using {@link Light}.
      * Default value is 4.
-     * 
+     *
      * @param lightmapScale in range from 1 to 6
      */
     public GraphicsConfiguration setLightmapScale(final int lightmapScale) {
-        if (lightmapScale < 1 || lightmapScale > 6) {
-            throw new IllegalArgumentException("valid range for lightmap scale is 1 to 6");
+        Validate.positive(lightmapScale, "lightmap scale must be positive");
+        if (lightmapScale > 6) {
+            throw new IllegalArgumentException("lightmap scale supports only values up to 6");
         }
         this.lightmapScale = lightmapScale;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_SCALE);
@@ -37,7 +39,7 @@ public class GraphicsConfiguration {
 
     /**
      * Returns the current lightmap resolution modifier.
-     * 
+     *
      * @see #setLightmapScale(int)
      */
     public int lightmapScale() {
@@ -48,12 +50,13 @@ public class GraphicsConfiguration {
      * Configures the blur of the lightmap. 0 means no blur. Allowes values up to 6.
      * Higher values cause lower {@link Loop#fps} but may improve visual quality
      * when using {@link Light}.
-     * 
+     *
      * @param lightmapBlur blur value from 0 (no blur) to 6.
      */
     public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        if (lightmapBlur < 0 || lightmapBlur > 6) {
-            throw new IllegalArgumentException("valid range for lightmap blur is 0 (no blur) to 6 (heavy blur)");
+        Validate.positive(lightmapBlur, "blur cannot be negative");
+        if (lightmapBlur > 6) {
+            throw new IllegalArgumentException("blur only supports values 0 (no blur) to 6 (heavy blur)");
         }
         this.lightmapBlur = lightmapBlur;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR);
@@ -62,7 +65,7 @@ public class GraphicsConfiguration {
 
     /**
      * Returns the current blur of the lightmap.
-     * 
+     *
      * @see #setLightmapBlur(int)
      */
     public int lightmapBlur() {
@@ -112,14 +115,24 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * Adds a {@link GraphicsConfigurationListener}. The listener will be notified at any change of the
+     * configuration.
+     */
     public void addListener(final GraphicsConfigurationListener listener) {
         listeners.add(requireNonNull(listener, "listener must not be null"));
     }
 
+    /**
+     * Returns current resolution.
+     */
     public Size resolution() {
         return resolution;
     }
 
+    /**
+     * Returns {@code true} if fullscreen is configured.
+     */
     public boolean isFullscreen() {
         return fullscreen;
     }
@@ -133,13 +146,6 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
-    private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
-        GraphicsConfigurationEvent event = new GraphicsConfigurationEvent(this, changedProperty);
-        for (final var listener : listeners) {
-            listener.configurationChanged(event);
-        }
-    }
-
     public GraphicsConfiguration lightFalloff(final Percent lightFalloff) {
         this.lightFalloff = lightFalloff;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_FALLOFF);
@@ -149,4 +155,12 @@ public class GraphicsConfiguration {
     public Percent lightFalloff() {
         return lightFalloff;
     }
+
+    private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
+        GraphicsConfigurationEvent event = new GraphicsConfigurationEvent(this, changedProperty);
+        for (final var listener : listeners) {
+            listener.configurationChanged(event);
+        }
+    }
+
 }

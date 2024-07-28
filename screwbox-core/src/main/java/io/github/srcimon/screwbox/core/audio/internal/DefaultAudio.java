@@ -10,7 +10,6 @@ import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.utils.Cache;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
@@ -26,8 +25,6 @@ import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
-
-    private static final Cache<Sound, Clip> CLIP_CACHE = new Cache<>();
 
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
@@ -107,9 +104,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
-                final Clip clip = isActive(sound)
-                        ? audioAdapter.createClip(sound)
-                        : CLIP_CACHE.getOrElse(sound, () -> audioAdapter.createClip(sound));
+                final Clip clip = audioAdapter.createClip(sound);
                 audioAdapter.setVolume(clip, volume);
                 audioAdapter.setBalance(clip, options.balance());
                 audioAdapter.setPan(clip, options.pan());

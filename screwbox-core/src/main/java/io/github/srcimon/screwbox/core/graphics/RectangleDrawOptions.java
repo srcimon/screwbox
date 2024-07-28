@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Customize the drawing of rectangles.
@@ -32,9 +33,7 @@ public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Ro
         if (Style.OUTLINE != style && strokeWidth != 1) {
             throw new IllegalArgumentException("stroke width is only used when drawing outline of rectangles");
         }
-        if (strokeWidth < 1) {
-            throw new IllegalArgumentException("stroke width must be positive");
-        }
+        Validate.positive(strokeWidth, "stroke width must be positive");
     }
 
     private RectangleDrawOptions(final Style style, final Color color) {

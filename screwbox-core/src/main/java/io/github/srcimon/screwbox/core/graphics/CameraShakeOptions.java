@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Configures the shake of the {@link Camera}. Can be applied by {@link Camera#shake(CameraShakeOptions)}.
@@ -13,9 +14,8 @@ import io.github.srcimon.screwbox.core.Duration;
 public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval) {
 
     public CameraShakeOptions {
-        if (xStrength <= 0 || yStrength <= 0) {
-            throw new IllegalArgumentException("strength must be positive");
-        }
+        Validate.positive(xStrength, "strength must be positive");
+        Validate.positive(yStrength, "strength must be positive");
     }
 
     private CameraShakeOptions(final Duration duration) {

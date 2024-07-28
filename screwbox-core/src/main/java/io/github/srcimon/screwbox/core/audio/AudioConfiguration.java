@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,7 @@ public class AudioConfiguration {
      * when using {@link Audio#playSound(Sound, Vector)}.
      */
     public AudioConfiguration setSoundRange(final double soundRange) {
-        if (soundRange <= 0) {
-            throw new IllegalArgumentException("sound range must be positive");
-        }
+        Validate.positive(soundRange, "sound range must be positive");
         this.soundRange = soundRange;
         notifyListeners(ConfigurationProperty.SOUND_RANGE);
         return this;

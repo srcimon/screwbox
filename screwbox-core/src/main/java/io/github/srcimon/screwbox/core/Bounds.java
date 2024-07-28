@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core;
 
 import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -88,9 +89,8 @@ public final class Bounds implements Serializable {
     }
 
     private Bounds(final double x, final double y, final double width, final double height) {
-        if (width < 0 || height < 0) {
-            throw new IllegalArgumentException("size of width and length must no be negative");
-        }
+        Validate.zeroOrPositive(width, "width must no be negative");
+        Validate.zeroOrPositive(height, "height must no be negative");
         this.position = Vector.of(x, y);
         this.extents = Vector.of(width / 2.0, height / 2.0);
         this.origin = position.substract(extents);

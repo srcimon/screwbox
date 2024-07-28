@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.utils.TextUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -217,21 +218,26 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         applyOpacityConfig(options.opacity());
-        final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? text.toUpperCase() : text);
-        int x = offset.x() + switch (options.alignment()) {
-            case LEFT -> 0;
-            case CENTER -> -options.widthOf(text) / 2;
-            case RIGHT -> -options.widthOf(text);
-        };
 
-        for (final var sprite : allSprites) {
-            final Image image = sprite.image(lastUpdateTime);
-            final AffineTransform transform = new AffineTransform();
-            transform.translate(x, offset.y());
-            transform.scale(options.scale(), options.scale());
-            graphics.drawImage(image, transform, null);
-            final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
-            x += distanceX;
+        int y = 0;
+        for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
+            final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
+            int x = offset.x() + switch (options.alignment()) {
+                case LEFT -> 0;
+                case CENTER -> -options.widthOf(line) / 2;
+                case RIGHT -> -options.widthOf(line);
+            };
+
+            for (final var sprite : allSprites) {
+                final Image image = sprite.image(lastUpdateTime);
+                final AffineTransform transform = new AffineTransform();
+                transform.translate(x, (double)offset.y() + y);
+                transform.scale(options.scale(), options.scale());
+                graphics.drawImage(image, transform, null);
+                final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());
+                x += distanceX;
+            }
+            y += options.font().height() * options.scale() + options.lineSpacing();
         }
         resetOpacityConfig(options.opacity());
     }
