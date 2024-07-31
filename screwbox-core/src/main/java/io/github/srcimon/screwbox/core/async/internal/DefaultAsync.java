@@ -50,4 +50,9 @@ public class DefaultAsync implements Async {
         return this;
     }
 
+    @Override
+    public int taskCount() {
+        return runningTasks.size();
+    }
+
 }

@@ -27,4 +27,11 @@ public interface Async {
      * @see #run(Object, Runnable)
      */
     Async runExclusive(Object context, Runnable task);
+
+    /**
+     * Returns the current count of active tasks.
+     */
+    //TODO Test
+    //TODO changelog
+    int taskCount();
 }
