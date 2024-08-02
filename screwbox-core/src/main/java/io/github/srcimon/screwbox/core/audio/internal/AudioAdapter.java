@@ -33,6 +33,21 @@ public class AudioAdapter {
         }
     }
 
+    void setVolume(final SourceDataLine line, final Percent volume) {
+        final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume.value()));
+    }
+
+    void setPan(final SourceDataLine line, final double pan) {
+        final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.PAN);
+        gainControl.setValue((float) pan);
+    }
+
+    void setBalance(final SourceDataLine line, final double balance) {
+        final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.BALANCE);
+        gainControl.setValue((float) balance);
+    }
+
     void setVolume(final Clip clip, final Percent volume) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));

@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
     private final VolumeMonitor volumeMonitor;
+    private final DataLinePool dataLinePool = new DataLinePool();
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
         this.executor = executor;
@@ -104,18 +106,31 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             executor.execute(() -> {
-                final Clip clip = audioAdapter.createClip(sound);
-                audioAdapter.setVolume(clip, volume);
-                audioAdapter.setBalance(clip, options.balance());
-                audioAdapter.setPan(clip, options.pan());
-                playbacks.put(clip, new Playback(sound, options, position));
-                clip.setFramePosition(0);
-                clip.addLineListener(event -> {
-                    if (event.getType().equals(LineEvent.Type.STOP)) {
-                        playbacks.remove(event.getSource());
+                try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
+                    var format = stream.getFormat();
+                    var line = dataLinePool.getLine(format);
+                    audioAdapter.setVolume(line, volume);
+                    audioAdapter.setBalance(line, options.balance());
+                    audioAdapter.setPan(line, options.pan());
+                    byte[] bufferBytes = new byte[4096];
+                    int readBytes = -1;
+                    while ((readBytes = stream.read(bufferBytes)) != -1) {
+                        line.write(bufferBytes, 0, readBytes);
                     }
-                });
-                clip.loop(options.times() - 1);
+                    dataLinePool.freeLine(line);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+//                final Clip clip = audioAdapter.createClip(sound);
+//                playbacks.put(clip, new Playback(sound, options, position));
+//                clip.setFramePosition(0);
+//                clip.addLineListener(event -> {
+//                    if (event.getType().equals(LineEvent.Type.STOP)) {
+//                        playbacks.remove(event.getSource());
+//                    }
+//                });
+//                clip.loop(options.times() - 1);
             });
         }
     }
