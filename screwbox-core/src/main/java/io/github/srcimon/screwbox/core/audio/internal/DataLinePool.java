@@ -25,6 +25,7 @@ public class DataLinePool {
     private List<Line> linePool = new ArrayList<>();//TODO optimize searching for free line
 
     public void freeLine(SourceDataLine sourceDataLine) {
+        System.out.println("free!");
         synchronized (linePool) {
             linePool.stream().filter(line -> line.line.equals(sourceDataLine))
                     .findFirst().orElseThrow()
@@ -53,6 +54,7 @@ public class DataLinePool {
     }
 
     private Line createAndAddLine(AudioFormat format) {
+        System.out.println("GET NEW");
         Line line = new Line(format, createLine(format));
         linePool.add(line);
         return line;

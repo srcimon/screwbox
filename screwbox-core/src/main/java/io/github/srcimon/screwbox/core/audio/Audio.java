@@ -16,6 +16,8 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
  */
 public interface Audio {
 
+    Audio prepareFor(List<Sound> sounds);
+
     /**
      * Returns the current microphone input volume. Microphone will turn on automatically when calling this method. Will turn off after
      * {@link AudioConfiguration#microphoneIdleTimeout()}
