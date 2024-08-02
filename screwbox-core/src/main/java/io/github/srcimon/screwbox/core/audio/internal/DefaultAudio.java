@@ -30,10 +30,21 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
 
+    private class ActivePlayback {
+        private boolean isShutdown = false;
+        private final Playback playback;
+        private final SourceDataLine line;
+
+        public ActivePlayback(final Playback playback, final SourceDataLine line) {
+            this.playback = playback;
+            this.line = line;
+        }
+    }
+
+    private final Map<UUID, ActivePlayback> activePlayBacks = new ConcurrentHashMap<>();
     private final ExecutorService executor;
     private final AudioAdapter audioAdapter;
     private final Camera camera;
-    private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
     private final VolumeMonitor volumeMonitor;
     private final DataLinePool dataLinePool = new DataLinePool();
@@ -105,20 +116,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    private class ActivePlayback {
-        private boolean isShutdown = false;
-        private Playback playback;
-        private SourceDataLine line;
-
-        public ActivePlayback(Playback playback, SourceDataLine line) {
-            this.playback = playback;
-            this.line = line;
-        }
-
-    }
-
-    private final Map<UUID, ActivePlayback> activePlayBacks = new ConcurrentHashMap<>();
-
     private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
@@ -146,10 +143,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                     }
                     dataLinePool.freeLine(line);
                     //TODO implement looping
-                    //TODO implement stopping
-                    //TODO implemnt audio change while playing
                     //TODO preload soundbundle into pool?
-                    //TODO implement  playbacks.put(clip, new Playback(sound, options, position));
                     activePlayBacks.remove(id);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
