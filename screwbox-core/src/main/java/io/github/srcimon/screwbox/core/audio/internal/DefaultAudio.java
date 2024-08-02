@@ -118,19 +118,14 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                         line.write(bufferBytes, 0, readBytes);
                     }
                     dataLinePool.freeLine(line);
+                    //TODO implement looping
+                    //TODO implement stopping
+                    //TODO implement shutdown
+                    //TODO implemnt audio change while playing
+                    //TODO implement  playbacks.put(clip, new Playback(sound, options, position));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
-//                final Clip clip = audioAdapter.createClip(sound);
-//                playbacks.put(clip, new Playback(sound, options, position));
-//                clip.setFramePosition(0);
-//                clip.addLineListener(event -> {
-//                    if (event.getType().equals(LineEvent.Type.STOP)) {
-//                        playbacks.remove(event.getSource());
-//                    }
-//                });
-//                clip.loop(options.times() - 1);
             });
         }
     }
