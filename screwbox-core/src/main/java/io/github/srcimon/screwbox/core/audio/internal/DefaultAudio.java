@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.SourceDataLine;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +84,11 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public List<Playback> activePlaybacks() {
-        return new ArrayList<>(playbacks.values());
+        final List<Playback> playbacks = new ArrayList<>();
+        for(var playback : activePlayBacks.values()) {
+            playbacks.add(playback.playback);
+        }
+        return playbacks;
     }
 
     @Override
@@ -103,9 +108,11 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private class ActivePlayback {
         private boolean isShutdown = false;
         private Playback playback;
+        private SourceDataLine line;
 
-        public ActivePlayback(Playback playback) {
+        public ActivePlayback(Playback playback, SourceDataLine line) {
             this.playback = playback;
+            this.line = line;
         }
 
     }
@@ -119,13 +126,16 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             var id = UUID.randomUUID();
-            ActivePlayback activePlayback = new ActivePlayback(new Playback(sound, options, position));
-            activePlayBacks.put(id, activePlayback);
+
             executor.execute(() -> {
 
                 try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
                     var format = stream.getFormat();
                     var line = dataLinePool.getLine(format);
+
+                    ActivePlayback activePlayback = new ActivePlayback(new Playback(sound, options, position), line);
+                    activePlayBacks.put(id, activePlayback);
+
                     audioAdapter.setVolume(line, volume);
                     audioAdapter.setBalance(line, options.balance());
                     audioAdapter.setPan(line, options.pan());
@@ -151,7 +161,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public int activeCount(final Sound sound) {
-        return fetchClipsFor(sound).size();
+        return fetchActivePlaybacksFor(sound).size();
     }
 
     @Override
@@ -177,15 +187,16 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().options().isMusic()) {
-                    audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
+            for(final var playback : activePlayBacks.values()) {
+                if(playback.playback.options().isMusic()) {
+                    audioAdapter.setVolume(playback.line, musicVolume().multiply(playback.playback.options().volume().value()));
                 }
             }
+
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().options().isEffect()) {
-                    audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
+            for(final var playback : activePlayBacks.values()) {
+                if(playback.playback.options().isEffect()) {
+                    audioAdapter.setVolume(playback.line, effectVolume().multiply(playback.playback.options().volume().value()));
                 }
             }
         }
@@ -199,15 +210,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
             }
         }
         return playbacks;
-    }
-    private List<Clip> fetchClipsFor(final Sound sound) {
-        final List<Clip> clips = new ArrayList<>();
-        for (final var activeSound : playbacks.entrySet()) {
-            if (activeSound.getValue().sound().equals(sound)) {
-                clips.add(activeSound.getKey());
-            }
-        }
-        return clips;
     }
 
     private Percent musicVolume() {
