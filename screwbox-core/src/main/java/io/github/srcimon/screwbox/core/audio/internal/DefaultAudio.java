@@ -128,14 +128,13 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 while (loop < options.times() && !activePlayback.isShutdown) {
                     loop++;
                     try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
-                        var format = stream.getFormat();
-                        var line = dataLinePool.getLine(format);
+                        var line = dataLinePool.getLine(stream.getFormat());
                         activePlayback.line = line;
                         audioAdapter.setVolume(line, volume);
                         audioAdapter.setBalance(line, options.balance());
                         audioAdapter.setPan(line, options.pan());
                         final byte[] bufferBytes = new byte[4096];
-                        int readBytes = -1;
+                        int readBytes;
                         while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown) {
                             line.write(bufferBytes, 0, readBytes);
                         }
