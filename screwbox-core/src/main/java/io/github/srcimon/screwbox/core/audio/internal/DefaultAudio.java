@@ -33,11 +33,10 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private class ActivePlayback {
         private boolean isShutdown = false;
         private final Playback playback;
-        private final SourceDataLine line;
+        private SourceDataLine line;
 
-        public ActivePlayback(final Playback playback, final SourceDataLine line) {
+        public ActivePlayback(final Playback playback) {
             this.playback = playback;
-            this.line = line;
         }
     }
 
@@ -96,7 +95,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public List<Playback> activePlaybacks() {
         final List<Playback> playbacks = new ArrayList<>();
-        for(var playback : activePlayBacks.values()) {
+        for (var playback : activePlayBacks.values()) {
             playbacks.add(playback.playback);
         }
         return playbacks;
@@ -110,7 +109,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio stopSound(final Sound sound) {
-        for(final  var playback : fetchActivePlaybacksFor(sound)) {
+        for (final var playback : fetchActivePlaybacksFor(sound)) {
             playback.isShutdown = true;
         }
         return this;
@@ -123,32 +122,31 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             var id = UUID.randomUUID();
+            ActivePlayback activePlayback = new ActivePlayback(new Playback(sound, options, position));
+            activePlayBacks.put(id, activePlayback);
 
             executor.execute(() -> {
+                for (int loop = 1; loop <= options.times(); loop++) {
+                    try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
+                        var format = stream.getFormat();
+                        var line = dataLinePool.getLine(format);
+                        activePlayback.line = line;
+                        audioAdapter.setVolume(line, volume);
+                        audioAdapter.setBalance(line, options.balance());
+                        audioAdapter.setPan(line, options.pan());
+                        byte[] bufferBytes = new byte[4096];
 
-                try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
-                    var format = stream.getFormat();
-                    var line = dataLinePool.getLine(format);
-
-                    ActivePlayback activePlayback = new ActivePlayback(new Playback(sound, options, position), line);
-                    activePlayBacks.put(id, activePlayback);
-
-                    audioAdapter.setVolume(line, volume);
-                    audioAdapter.setBalance(line, options.balance());
-                    audioAdapter.setPan(line, options.pan());
-                    byte[] bufferBytes = new byte[4096];
-                    int readBytes = -1;
-                    while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown) {
-                        line.write(bufferBytes, 0, readBytes);
+                        int readBytes = -1;
+                        while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown) {
+                            line.write(bufferBytes, 0, readBytes);
+                        }
+                        dataLinePool.freeLine(line);
+                        //TODO preload soundbundle into pool?
+                        activePlayBacks.remove(id);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                    dataLinePool.freeLine(line);
-                    //TODO implement looping
-                    //TODO preload soundbundle into pool?
-                    activePlayBacks.remove(id);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
-
             });
         }
     }
@@ -181,15 +179,15 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for(final var playback : activePlayBacks.values()) {
-                if(playback.playback.options().isMusic()) {
+            for (final var playback : activePlayBacks.values()) {
+                if (playback.playback.options().isMusic()) {
                     audioAdapter.setVolume(playback.line, musicVolume().multiply(playback.playback.options().volume().value()));
                 }
             }
 
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for(final var playback : activePlayBacks.values()) {
-                if(playback.playback.options().isEffect()) {
+            for (final var playback : activePlayBacks.values()) {
+                if (playback.playback.options().isEffect()) {
                     audioAdapter.setVolume(playback.line, effectVolume().multiply(playback.playback.options().volume().value()));
                 }
             }
