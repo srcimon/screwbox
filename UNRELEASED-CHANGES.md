@@ -2,9 +2,10 @@
 
 - Added support for multiline text rendering
 - Added `TextUtil.lineWrap(String, int)`
-- Added `Ease.IN_PLATEAU_OUT`
+- Added `Async.taskCount()`
 - Added `Size.expand(int)`
-- Added `SoundBunle.NOTIFY`
+- Added `SoundBundle.NOTIFY`
+- Added `Ease.IN_PLATEAU_OUT`
 
 ### 🪛 Bug Fixes
 
