@@ -94,8 +94,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio stopSound(final Sound sound) {
-        for (final Clip clip : fetchClipsFor(sound)) {
-            executor.execute(clip::stop);
+        for(final  var playback : fetchActivePlaybacksFor(sound)) {
+            playback.isShutdown = true;
         }
         return this;
     }
@@ -191,6 +191,15 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         }
     }
 
+    private List<ActivePlayback> fetchActivePlaybacksFor(final Sound sound) {
+        final List<ActivePlayback> playbacks = new ArrayList<>();
+        for (final var playback : activePlayBacks.values()) {
+            if (playback.playback.sound().equals(sound)) {
+                playbacks.add(playback);
+            }
+        }
+        return playbacks;
+    }
     private List<Clip> fetchClipsFor(final Sound sound) {
         final List<Clip> clips = new ArrayList<>();
         for (final var activeSound : playbacks.entrySet()) {
