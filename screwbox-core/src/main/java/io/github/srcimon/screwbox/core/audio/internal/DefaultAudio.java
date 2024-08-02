@@ -114,13 +114,12 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                     audioAdapter.setPan(line, options.pan());
                     byte[] bufferBytes = new byte[4096];
                     int readBytes = -1;
-                    while ((readBytes = stream.read(bufferBytes)) != -1) {
+                    while ((readBytes = stream.read(bufferBytes)) != -1 && !executor.isShutdown()) {
                         line.write(bufferBytes, 0, readBytes);
                     }
                     dataLinePool.freeLine(line);
                     //TODO implement looping
                     //TODO implement stopping
-                    //TODO implement shutdown
                     //TODO implemnt audio change while playing
                     //TODO implement  playbacks.put(clip, new Playback(sound, options, position));
                 } catch (IOException e) {
