@@ -156,8 +156,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public boolean isActive(final Sound sound) {
-        for (final var activeSound : playbacks.entrySet()) {
-            if (activeSound.getValue().sound().equals(sound)) {
+        for (final var activeSound : activePlayBacks.values()) {
+            if (activeSound.playback.sound().equals(sound)) {
                 return true;
             }
         }
@@ -166,7 +166,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public int activeCount() {
-        return playbacks.size();
+        return activePlayBacks.size();
     }
 
     @Override
