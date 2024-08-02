@@ -26,7 +26,6 @@ public class DataLinePool {
 
     public void freeLine(SourceDataLine sourceDataLine) {
         synchronized (linePool) {
-            System.out.println("freed data line");
             linePool.stream().filter(line -> line.line.equals(sourceDataLine))
                     .findFirst().orElseThrow()
                     .active = false;
@@ -56,7 +55,6 @@ public class DataLinePool {
     private Line createAndAddLine(AudioFormat format) {
         Line line = new Line(format, createLine(format));
         linePool.add(line);
-        System.out.println("added new line to pool, poolsize is: " + linePool.size());
         return line;
     }
 
