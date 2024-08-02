@@ -48,16 +48,19 @@ public class AudioAdapter {
         gainControl.setValue((float) balance);
     }
 
+    @Deprecated
     void setVolume(final Clip clip, final Percent volume) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume.value()));
     }
 
+    @Deprecated
     void setPan(final Clip clip, final double pan) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
         gainControl.setValue((float) pan);
     }
 
+    @Deprecated
     void setBalance(final Clip clip, final double balance) {
         final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.BALANCE);
         gainControl.setValue((float) balance);
