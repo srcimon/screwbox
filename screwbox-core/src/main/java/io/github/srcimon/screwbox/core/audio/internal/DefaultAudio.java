@@ -134,8 +134,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                         audioAdapter.setVolume(line, volume);
                         audioAdapter.setBalance(line, options.balance());
                         audioAdapter.setPan(line, options.pan());
-                        byte[] bufferBytes = new byte[4096];
-
+                        final byte[] bufferBytes = new byte[4096];
                         int readBytes = -1;
                         while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown) {
                             line.write(bufferBytes, 0, readBytes);
