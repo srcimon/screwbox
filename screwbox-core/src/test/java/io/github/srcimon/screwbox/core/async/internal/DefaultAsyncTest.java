@@ -28,6 +28,17 @@ class DefaultAsyncTest {
     }
 
     @Test
+    void taskCount_noTasks_isZero() {
+        assertThat(async.taskCount()).isZero();
+    }
+
+    @Test
+    void taskCount_oneTask_isOne() {
+        async.run("myContext", () -> someLongRunningTask());
+        assertThat(async.taskCount()).isOne();
+    }
+
+    @Test
     void hasActiveTasks_noTasks_isFalse() {
         boolean hasActiveTasks = async.hasActiveTasks("new-context");
         assertThat(hasActiveTasks).isFalse();
@@ -56,19 +67,19 @@ class DefaultAsyncTest {
 
     @Test
     void hasActiveTasks_hasTasksInSameContext_isTrue() {
-        async.run("myContext", () -> someLongRunningTask());
+        async.run("myContext", this::someLongRunningTask);
         assertThat(async.hasActiveTasks("myContext")).isTrue();
     }
 
     @Test
     void hasActiveTasks_hasTasksInAnotherContext_isFalse() {
-        async.run("another Context", () -> someLongRunningTask());
+        async.run("another Context", this::someLongRunningTask);
         assertThat(async.hasActiveTasks("myContext")).isFalse();
     }
 
     @Test
     void hasActiveTasks_taskCompleted_isFalse() {
-        async.run("myContext", () -> someLongRunningTask());
+        async.run("myContext", this::someLongRunningTask);
 
         while (async.hasActiveTasks("myContext")) {
             // wait
@@ -79,18 +90,16 @@ class DefaultAsyncTest {
 
     @Test
     void runExclusive_taskAlreadyRunning_noSecondExecution() {
-        async.run("myContext", () -> someLongRunningTask());
+        async.run("myContext", this::someLongRunningTask);
 
-        assertThatNoException().isThrownBy(() -> {
-            async.runExclusive("myContext", () -> {
-                throw new IllegalStateException("I would crash if i would start");
-            });
-        });
+        assertThatNoException().isThrownBy(() -> async.runExclusive("myContext", () -> {
+            throw new IllegalStateException("I would crash if i would start");
+        }));
     }
 
     @Test
     void runExclusive_isOnlyTaskInContext_startsTask() {
-        async.runExclusive("myContext", () -> someLongRunningTask());
+        async.runExclusive("myContext", this::someLongRunningTask);
 
         boolean hasActiveTasks = async.hasActiveTasks("myContext");
         assertThat(hasActiveTasks).isTrue();

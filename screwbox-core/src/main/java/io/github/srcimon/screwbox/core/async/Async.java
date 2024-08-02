@@ -31,6 +31,5 @@ public interface Async {
     /**
      * Returns the current count of active tasks.
      */
-    //TODO Test
     int taskCount();
 }
