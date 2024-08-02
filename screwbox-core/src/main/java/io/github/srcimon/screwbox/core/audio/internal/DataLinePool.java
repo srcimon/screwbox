@@ -21,7 +21,7 @@ public class DataLinePool {
             this.active = false;
         }
     }
-
+//TODO implememt max lines cap (free old unused lines)
     private final List<Line> lines = new ArrayList<>();//TODO optimize searching for free line
 
     public void freeLine(SourceDataLine sourceDataLine) {
