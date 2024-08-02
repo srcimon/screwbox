@@ -11,12 +11,9 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.SourceDataLine;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -57,13 +54,9 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio stopAllSounds() {
-        if (!executor.isShutdown()) {
-            executor.execute(() -> {
-                final List<ActivePlayback> playbacksToStop = new ArrayList<>(activePlayBacks.values());
-                for (final ActivePlayback playback : playbacksToStop) {
-                    playback.isShutdown = true;
-                }
-            });
+        final List<ActivePlayback> playbacksToStop = new ArrayList<>(activePlayBacks.values());
+        for (final ActivePlayback playback : playbacksToStop) {
+            playback.isShutdown = true;
         }
         return this;
     }
@@ -126,7 +119,9 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
             activePlayBacks.put(id, activePlayback);
 
             executor.execute(() -> {
-                for (int loop = 1; loop <= options.times(); loop++) {
+                int loop = 0;
+                while (loop < options.times() && !activePlayback.isShutdown) {
+                    loop++;
                     try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
                         var format = stream.getFormat();
                         var line = dataLinePool.getLine(format);
