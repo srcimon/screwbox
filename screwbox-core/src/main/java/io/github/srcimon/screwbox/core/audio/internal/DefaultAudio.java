@@ -27,9 +27,9 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, AudioConfigurationListener {
 
-    private class ActivePlayback {
-        private boolean isShutdown = false;
+    private static class ActivePlayback {
         private final Playback playback;
+        private boolean isShutdown = false;
         private SourceDataLine line;
 
         public ActivePlayback(final Playback playback) {
@@ -43,19 +43,19 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
     private final VolumeMonitor volumeMonitor;
-    private final DataLinePool dataLinePool = new DataLinePool();
+    private final DataLinePool dataLinePool;
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
+    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera, final DataLinePool dataLinePool) {
         this.executor = executor;
         this.audioAdapter = audioAdapter;
         this.camera = camera;
         this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
+        this.dataLinePool = dataLinePool;
     }
 
     @Override
     public Audio stopAllSounds() {
-        final List<ActivePlayback> playbacksToStop = new ArrayList<>(activePlayBacks.values());
-        for (final ActivePlayback playback : playbacksToStop) {
+        for (final ActivePlayback playback : new ArrayList<>(activePlayBacks.values())) {
             playback.isShutdown = true;
         }
         return this;
