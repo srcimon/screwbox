@@ -15,8 +15,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
@@ -46,11 +48,10 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     public Audio stopAllSounds() {
         if (!executor.isShutdown()) {
             executor.execute(() -> {
-                final List<Clip> activeClips = new ArrayList<>(playbacks.keySet());
-                for (final Clip clip : activeClips) {
-                    clip.stop();
+                final List<ActivePlayback> playbacksToStop = new ArrayList<>(activePlayBacks.values());
+                for (final ActivePlayback playback : playbacksToStop) {
+                    playback.isShutdown = true;
                 }
-                playbacks.clear();
             });
         }
         return this;
@@ -99,13 +100,29 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
+    private class ActivePlayback {
+        private boolean isShutdown = false;
+        private Playback playback;
+
+        public ActivePlayback(Playback playback) {
+            this.playback = playback;
+        }
+
+    }
+
+    private final Map<UUID, ActivePlayback> activePlayBacks = new ConcurrentHashMap<>();
+
     private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
         final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
+            var id = UUID.randomUUID();
+            ActivePlayback activePlayback = new ActivePlayback(new Playback(sound, options, position));
+            activePlayBacks.put(id, activePlayback);
             executor.execute(() -> {
+
                 try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
                     var format = stream.getFormat();
                     var line = dataLinePool.getLine(format);
@@ -114,17 +131,20 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                     audioAdapter.setPan(line, options.pan());
                     byte[] bufferBytes = new byte[4096];
                     int readBytes = -1;
-                    while ((readBytes = stream.read(bufferBytes)) != -1 && !executor.isShutdown()) {
+                    while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown) {
                         line.write(bufferBytes, 0, readBytes);
                     }
                     dataLinePool.freeLine(line);
                     //TODO implement looping
                     //TODO implement stopping
                     //TODO implemnt audio change while playing
+                    //TODO preload soundbundle into pool?
                     //TODO implement  playbacks.put(clip, new Playback(sound, options, position));
+                    activePlayBacks.remove(id);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
             });
         }
     }
