@@ -22,47 +22,48 @@ public class DataLinePool {
         }
     }
 
-    private List<Line> linePool = new ArrayList<>();//TODO optimize searching for free line
+    private final List<Line> lines = new ArrayList<>();//TODO optimize searching for free line
 
     public void freeLine(SourceDataLine sourceDataLine) {
-        System.out.println("free!");
-        synchronized (linePool) {
-            linePool.stream().filter(line -> line.line.equals(sourceDataLine))
+        synchronized (lines) {
+            lines.stream().filter(line -> line.line.equals(sourceDataLine))
                     .findFirst().orElseThrow()
                     .active = false;
         }
     }
 
     public SourceDataLine getLine(final AudioFormat format) {
-        synchronized (linePool) {
-            Line lineToUse = linePool.stream()
+        synchronized (lines) {
+            Line lineToUse = lines.stream()
                     .filter(line -> sameFormat(line.format, format))
                     .filter(line -> !line.active)
                     .findFirst()
-                    .orElseGet(() -> createAndAddLine(format));
+                    .orElseGet(() -> startNewLine(format));
             lineToUse.active = true;
             return lineToUse.line;
         }
     }
 
     private boolean sameFormat(AudioFormat a, AudioFormat b) {
-        return a.getFrameSize() == b.getFrameSize()
+        System.out.println(a);
+        return  a.getFrameSize() == b.getFrameSize()
                 && a.getEncoding().equals(b.getEncoding())
                 && a.getFrameRate() == b.getFrameRate()
                 && a.getSampleSizeInBits() == b.getSampleSizeInBits()
                 && a.getChannels() == b.getChannels();
     }
 
-    private Line createAndAddLine(AudioFormat format) {
-        System.out.println("GET NEW");
-        Line line = new Line(format, createLine(format));
-        linePool.add(line);
-        return line;
+    public Line startNewLine(final AudioFormat format) {
+        synchronized (lines) {
+            Line line = new Line(format, createLine(format));
+            lines.add(line);
+            return line;
+        }
     }
 
     private SourceDataLine createLine(final AudioFormat format) {
         try {
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
             sourceDataLine.open(format);
             sourceDataLine.start();

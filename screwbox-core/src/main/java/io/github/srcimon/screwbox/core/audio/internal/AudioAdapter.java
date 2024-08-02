@@ -75,7 +75,6 @@ public class AudioAdapter {
         final var originalFormat = monoInputStream.getFormat();
         final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),
                 originalFormat.getSampleSizeInBits(), 2, originalFormat.getFrameSize() * 2, originalFormat.getFrameRate(), false);
-
         try (final ByteArrayOutputStream stereoOutputStream = new ByteArrayOutputStream();
              final AudioInputStream stereoInputStream = AudioSystem.getAudioInputStream(stereoFormat, monoInputStream)) {
             AudioSystem.write(stereoInputStream, AudioFileFormat.Type.WAVE, stereoOutputStream);

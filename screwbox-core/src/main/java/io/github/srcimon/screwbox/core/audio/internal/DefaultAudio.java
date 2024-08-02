@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +52,10 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.camera = camera;
         this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
         this.dataLinePool = dataLinePool;
+        this.executor.execute(() -> {
+            dataLinePool.startNewLine(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false));
+            dataLinePool.startNewLine(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 48000, 16, 2, 4, 48000, false));
+        });
     }
 
     @Override
@@ -136,7 +141,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                             line.write(bufferBytes, 0, readBytes);
                         }
                         dataLinePool.freeLine(line);
-                        //TODO preload soundbundle into pool?
                         activePlayBacks.remove(id);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
