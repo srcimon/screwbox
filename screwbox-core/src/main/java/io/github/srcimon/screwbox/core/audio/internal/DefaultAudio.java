@@ -62,19 +62,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
-    public Audio prepareFor(List<Sound> sounds) {
-//        for(var sound : sounds) {
-//            try(var ais = AudioAdapter.getAudioInputStream(sound.content())) {
-//              var l =   dataLinePool.getLine(ais.getFormat());
-//                dataLinePool.freeLine(l);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-        return this;
-    }
-
-    @Override
     public Percent microphoneLevel() {
         return volumeMonitor.level();
     }
