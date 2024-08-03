@@ -36,9 +36,9 @@ class AudioTest {
 
     @Test
     void playSound_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
-        audio.playSound(ASSET, SoundOptions.playContinuous());
+        audio.playSound(ASSET, SoundOptions.playContinuously());
 
-        verify(audio).playSound(SOUND, SoundOptions.playContinuous());
+        verify(audio).playSound(SOUND, SoundOptions.playContinuously());
     }
 
     @Test

@@ -10,7 +10,7 @@ class SoundOptionsTest {
 
     @Test
     void soundOptions_loopedWithHalfVolume_hasInfinitePlaybacksAtHalfVolume() {
-        var options = SoundOptions.playContinuous().volume(Percent.half());
+        var options = SoundOptions.playContinuously().volume(Percent.half());
 
         assertThat(options.times()).isEqualTo(Integer.MAX_VALUE);
         assertThat(options.volume()).isEqualTo(Percent.half());

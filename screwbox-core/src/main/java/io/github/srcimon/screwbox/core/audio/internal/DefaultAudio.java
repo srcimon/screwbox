@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Playback;
@@ -36,7 +38,11 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            activePlayback.currentOptions = determinActualOptions(activePlayback.options);
+            SoundOptions currentOptions = determinActualOptions(activePlayback.options);
+            if(!activePlayback.currentOptions.equals(currentOptions)) {
+                applyOptionsOnLine(activePlayback.line, currentOptions);
+                activePlayback.currentOptions = currentOptions;
+            }
         }
     }
 
@@ -63,7 +69,6 @@ public class DefaultAudio implements Audio, Updatable {
             return options;
         }
     }
-
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final MicrophoneMonitor microphoneMonitor, final Camera camera, final AudioAdapter audioAdapter, final DataLinePool dataLinePool) {
@@ -129,9 +134,7 @@ public class DefaultAudio implements Audio, Updatable {
         ActivePlayback activePlayback = new ActivePlayback(sound, options, line);
         activePlayback.currentOptions = determinActualOptions(options);
         activePlaybacks.put(activePlayback.id, activePlayback);
-        audioAdapter.setVolume(line, activePlayback.currentOptions.volume());
-        audioAdapter.setBalance(line, activePlayback.currentOptions.balance());
-        audioAdapter.setPan(line, activePlayback.currentOptions.pan());
+        applyOptionsOnLine(line, activePlayback.currentOptions);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
@@ -148,6 +151,12 @@ public class DefaultAudio implements Audio, Updatable {
         } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
         dataLinePool.freeLine(line);
         activePlaybacks.remove(activePlayback.id);
+    }
+
+    private void applyOptionsOnLine(SourceDataLine line, SoundOptions options) {
+        audioAdapter.setVolume(line, options.volume());
+        audioAdapter.setBalance(line, options.balance());
+        audioAdapter.setPan(line, options.pan());
     }
 
     private SoundOptions determinActualOptions(SoundOptions options) {

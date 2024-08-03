@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Percent.zero;
 import static io.github.srcimon.screwbox.core.Vector.$;
-import static io.github.srcimon.screwbox.core.audio.SoundOptions.playContinuous;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playContinuously;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 import static io.github.srcimon.screwbox.core.test.TestUtil.await;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -168,7 +168,7 @@ class DefaultAudioTest {
     @Test
     void playSound_effectLoopedButVolumeZero_doesntPlayEffect() {
         audio.configuration().muteEffects();
-        audio.playSound(sound, playContinuous());
+        audio.playSound(sound, playContinuously());
 
         TestUtil.shutdown(executor);
 
@@ -188,7 +188,7 @@ class DefaultAudioTest {
     @Test
     void playSound_musicLoopedVolumeZero_doesntPlayEffect() {
         audio.configuration().muteMusic();
-        audio.playSound(sound, playContinuous().asMusic());
+        audio.playSound(sound, playContinuously().asMusic());
 
         TestUtil.shutdown(executor);
 
@@ -253,7 +253,7 @@ class DefaultAudioTest {
     void playSound_looped_invokesMethodsOnClipAndIncreasesActiveCount() {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
 
-        audio.playSound(sound, playContinuous().pan(-0.2).balance(0.1));
+        audio.playSound(sound, playContinuously().pan(-0.2).balance(0.1));
 
         TestUtil.shutdown(executor);
 
