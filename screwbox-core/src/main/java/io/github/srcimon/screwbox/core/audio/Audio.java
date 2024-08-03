@@ -60,6 +60,7 @@ public interface Audio {
     //TODO document playback reference
     UUID playSound(Sound sound, SoundOptions options);
 
+    Audio stopPlayback(UUID playbackId);
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *

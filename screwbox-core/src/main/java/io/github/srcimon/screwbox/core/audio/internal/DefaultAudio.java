@@ -121,6 +121,12 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
+    public Audio stopPlayback(UUID playbackId) {
+        activePlaybacks.remove(playbackId);
+        return this;
+    }
+
+    @Override
     public boolean isActive(final UUID playbackId) {
         return activePlaybacks.containsKey(playbackId);
     }
