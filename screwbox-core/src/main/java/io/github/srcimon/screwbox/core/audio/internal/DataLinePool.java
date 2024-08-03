@@ -28,6 +28,7 @@ public class DataLinePool {
                     .findFirst().map(line -> line.getKey())
                     .orElseGet(() -> startNewLine(format));
             lines.put(sourceDataLine, true);
+            System.out.println(lines.size());
             return sourceDataLine;
         }
     }
@@ -38,6 +39,7 @@ public class DataLinePool {
 
     private boolean isSame(AudioFormat format, AudioFormat other) {
         return format.getFrameSize() == other.getFrameSize()
+                && format.getSampleRate() == other.getSampleRate()
                 && format.getEncoding().equals(other.getEncoding())
                 && format.getFrameRate() == other.getFrameRate()
                 && format.getSampleSizeInBits() == other.getSampleSizeInBits()
