@@ -9,7 +9,6 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.audio.internal.DataLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
-import io.github.srcimon.screwbox.core.audio.internal.PlaybackTracker;
 import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.WarumUpDataLinePoolTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
@@ -127,9 +126,8 @@ class DefaultEngine implements Engine {
         final AudioAdapter audioAdapter = new AudioAdapter();
         final DataLinePool dataLinePool = new DataLinePool();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
-        final PlaybackTracker playbackTracker = new PlaybackTracker(audioAdapter, dataLinePool);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        audio = new DefaultAudio(executor, audioConfiguration, microphoneMonitor, camera, playbackTracker);
+        audio = new DefaultAudio(executor, audioConfiguration, microphoneMonitor, camera, audioAdapter, dataLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
