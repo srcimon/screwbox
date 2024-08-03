@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.tiled.Tileset;
 
 import java.io.Serial;
 
-import static io.github.srcimon.screwbox.core.audio.SoundOptions.playLooped;
+import static io.github.srcimon.screwbox.core.audio.SoundOptions.playContinuous;
 
 public class TracerActiveState implements EntityState {
 
@@ -27,7 +27,7 @@ public class TracerActiveState implements EntityState {
     public void enter(Entity entity, Engine engine) {
         entity.get(RenderComponent.class).sprite = SPRITE.get().freshInstance();
         entity.add(new FollowPlayerComponent());
-        engine.audio().playSound(SOUND, playLooped());
+        engine.audio().playSound(SOUND, playContinuous());
     }
 
     @Override

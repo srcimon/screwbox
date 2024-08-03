@@ -11,7 +11,7 @@ public record SoundOptions(int times, Percent volume, double balance, double pan
     /**
      * Playback {@link Sound} until stopped via {@link Audio#stopSound(Sound)}.
      */
-    public static SoundOptions playLooped() {
+    public static SoundOptions playContinuous() {
         return playTimes(Integer.MAX_VALUE);
     }
 
