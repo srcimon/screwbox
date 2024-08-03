@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
 //TODO rename this class and the managed sound class
 public class SoundManagement {
 
@@ -23,63 +24,35 @@ public class SoundManagement {
         this.dataLinePool = dataLinePool;
     }
 
-    public static class ManagedSound {
-        private final UUID id = UUID.randomUUID();
-        private final Playback playback;
-        private boolean isShutdown = false;
-        private SourceDataLine line;
-
-        public SourceDataLine line() {
-            return line;
-        }
-
-        public ManagedSound(final Playback playback) {
-            this.playback = playback;
-        }
-
-        public void stop() {
-            isShutdown = true;
-        }
-
-        public Playback playback() {
-            return playback;
-        }
-
-        public void setLine(SourceDataLine line) {
-            this.line = line;
-        }
+    public record ManagedSound(UUID id, Playback playback, SourceDataLine line) {
     }
 
-    public void streamPlayback(final Playback playback, final Percent volume) {
+    public void play(final Playback playback, final Percent volume) {
         int loop = 0;
-        ManagedSound managedSound = add(playback);
-        while (loop < playback.options().times() && !managedSound.isShutdown) {
+        UUID id = UUID.randomUUID();
+        while (loop < playback.options().times() && activeSounds.containsKey(id)) {
             loop++;
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                 var line = dataLinePool.getLine(stream.getFormat());
-                managedSound.setLine(line);
+                ManagedSound managedSound = new ManagedSound(id, playback, line);
+                activeSounds.put(managedSound.id, managedSound);
                 audioAdapter.setVolume(line, volume);
                 audioAdapter.setBalance(line, playback.options().balance());
                 audioAdapter.setPan(line, playback.options().pan());
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown) {
+                while ((readBytes = stream.read(bufferBytes)) != -1 && activeSounds.containsKey(managedSound.id)) {
                     line.write(bufferBytes, 0, readBytes);
                 }
                 dataLinePool.freeLine(line);
-                remove(managedSound);
+                activeSounds.remove(managedSound.id);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-    public ManagedSound add(Playback playback) {
-        ManagedSound managedSound = new ManagedSound(playback);
-        activeSounds.put(managedSound.id, managedSound);
-        return managedSound;
-    }
 
-    public void remove(ManagedSound managedSound) {
+    public void stop(final ManagedSound managedSound) {
         activeSounds.remove(managedSound.id);
     }
 

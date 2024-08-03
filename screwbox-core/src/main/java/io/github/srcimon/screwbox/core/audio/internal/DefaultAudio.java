@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 
-import javax.sound.sampled.AudioFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -46,7 +45,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio stopAllSounds() {
         for (final var managedSound : soundManagement.activeSounds()) {
-            managedSound.stop();
+            soundManagement.stop(managedSound);
         }
         return this;
     }
@@ -96,7 +95,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
         for (final var managedSound : soundManagement.fetchActiveSounds(sound)) {
-            managedSound.stop();
+            soundManagement.stop(managedSound);
         }
         return this;
     }
@@ -104,7 +103,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private void playSound(final Playback playback) {
         final Percent volume = calculateVolume(playback);
         if (!volume.isZero()) {
-            executor.execute(() -> soundManagement.streamPlayback(playback, volume));
+            executor.execute(() -> soundManagement.play(playback, volume));
         }
     }
 
