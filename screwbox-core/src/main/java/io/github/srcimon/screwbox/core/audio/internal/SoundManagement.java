@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+//TODO rename this class and the managed sound class
 public class SoundManagement {
 
     private final Map<UUID, ManagedSound> activeSounds = new ConcurrentHashMap<>();
@@ -24,14 +24,10 @@ public class SoundManagement {
     }
 
     public static class ManagedSound {
-        private UUID id = UUID.randomUUID();
+        private final UUID id = UUID.randomUUID();
         private final Playback playback;
         private boolean isShutdown = false;
         private SourceDataLine line;
-
-        public Sound sound() {
-            return playback.sound();
-        }
 
         public SourceDataLine line() {
             return line;
@@ -49,10 +45,6 @@ public class SoundManagement {
             return playback;
         }
 
-        public boolean isShutdown() {
-            return isShutdown;
-        }
-
         public void setLine(SourceDataLine line) {
             this.line = line;
         }
@@ -61,7 +53,7 @@ public class SoundManagement {
     public void streamPlayback(final Playback playback, final Percent volume) {
         int loop = 0;
         ManagedSound managedSound = add(playback);
-        while (loop < playback.options().times() && !managedSound.isShutdown()) {
+        while (loop < playback.options().times() && !managedSound.isShutdown) {
             loop++;
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                 var line = dataLinePool.getLine(stream.getFormat());
@@ -71,7 +63,7 @@ public class SoundManagement {
                 audioAdapter.setPan(line, playback.options().pan());
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown()) {
+                while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown) {
                     line.write(bufferBytes, 0, readBytes);
                 }
                 dataLinePool.freeLine(line);
