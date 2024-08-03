@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //TODO rename this class and the managed sound class
 public class PlaybackTracker {
-
+//TODO rework playback with position all propertys can be changed dynamically
     public record ActivePlayback(UUID id, Playback playback, SourceDataLine line) {
     }
 
@@ -26,7 +26,7 @@ public class PlaybackTracker {
         this.dataLinePool = dataLinePool;
     }
 
-    public void play(final Playback playback, final Percent volume) {
+    public void play(final Playback playback, final Percent volume) {//TODO <-- use sound options here
         int loop = 0;
         UUID id = UUID.randomUUID();
         do {
