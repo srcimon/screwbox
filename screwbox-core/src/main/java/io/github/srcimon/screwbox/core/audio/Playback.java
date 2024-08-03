@@ -70,4 +70,5 @@ public class Playback {
     public Optional<Vector> position() {
         return Optional.ofNullable(position);
     }
+
 }

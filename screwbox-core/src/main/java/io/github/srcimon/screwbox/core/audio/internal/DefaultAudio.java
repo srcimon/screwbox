@@ -105,8 +105,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     private void playSound(final Playback playback) {
-        final Percent volume = (playback.options().isMusic() ? musicVolume() : effectVolume()).multiply(playback.options().volume().value());
-        //TODO playback actualVolume();
+        final Percent volume = calculateVolume(playback);
         if (!volume.isZero()) {
 
             executor.execute(() -> {
@@ -158,19 +157,25 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for (final var playback : soundManagement.activeSounds()) {
-                if (!playback.isEffect()) {
-                    audioAdapter.setVolume(playback.line(), musicVolume().multiply(playback.volume().value()));
+            for (final var managedSound : soundManagement.activeSounds()) {
+                if (!managedSound.isEffect()) {
+                    audioAdapter.setVolume(managedSound.line(), musicVolume().multiply(managedSound.volume().value()));
                 }
             }
 
         } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var playback : soundManagement.activeSounds()) {
-                if (playback.isEffect()) {
-                    audioAdapter.setVolume(playback.line(), effectVolume().multiply(playback.volume().value()));
+            for (final var managedSound : soundManagement.activeSounds()) {
+                if (managedSound.isEffect()) {
+                    audioAdapter.setVolume(managedSound.line(), effectVolume().multiply(managedSound.volume().value()));
                 }
             }
         }
+    }
+
+
+    private Percent calculateVolume(final Playback playback) {
+        final Percent configuredVolume = playback.options().isMusic() ? musicVolume() : effectVolume();
+        return configuredVolume.multiply(playback.options().volume().value());
     }
 
     private Percent musicVolume() {
