@@ -2,11 +2,10 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
@@ -45,7 +44,7 @@ public interface Audio {
 //        return playSound(sound.get(), position);
 //    }
 
-//    /**
+    //    /**
 //     * Returns a list of all currently active {@link Playback}s.
 //     *
 //     * @see #activeCount()
@@ -59,34 +58,34 @@ public interface Audio {
      * @see #playSound(Supplier, SoundOptions)
      */
     //TODO document playback reference
-    PlaybackReference playSound(Sound sound, SoundOptions options);
+    UUID playSound(Sound sound, SoundOptions options);
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
      * @see #playSound(Sound, SoundOptions)
      */
-  default   PlaybackReference playSound(final Supplier<Sound> sound, final SoundOptions options) {
+    default UUID playSound(final Supplier<Sound> sound, final SoundOptions options) {
         return playSound(sound.get(), options);
     }
 
     /**
      * Plays a {@link Sound} a single time.
      */
-    default PlaybackReference playSound(final Sound sound) {
+    default UUID playSound(final Sound sound) {
         return playSound(sound, playOnce());
     }
 
     /**
      * Plays a {@link Sound} from an {@link Asset} a single time.
      */
-    default PlaybackReference playSound(final Supplier<Sound> sound) {
+    default UUID playSound(final Supplier<Sound> sound) {
         return playSound(sound.get());
     }
 
-    boolean isActive(PlaybackReference playbackReference);
+    boolean isActive(UUID playbackId);
 
-    boolean updateOptions(PlaybackReference playbackReference, SoundOptions options);
+    boolean updateOptions(UUID playbackId, SoundOptions options);
 
     /**
      * Stops all currently playing instances of the {@link Sound}.

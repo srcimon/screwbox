@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Playback;
-import io.github.srcimon.screwbox.core.audio.PlaybackReference;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
@@ -22,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
@@ -47,14 +47,14 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     public class ActivePlayback {
-        private final PlaybackReference reference;
+        private final UUID id;
         private final Sound sound;
         private SoundOptions options;
         private SourceDataLine line;
         private SoundOptions currentOptions;
 
-        public ActivePlayback(PlaybackReference reference, Sound sound, SoundOptions options) {
-            this.reference = reference;
+        public ActivePlayback(final Sound sound, final SoundOptions options) {
+            this.id = UUID.randomUUID();
             this.sound = sound;
             this.options = options;
             this.currentOptions = options;
@@ -91,7 +91,7 @@ public class DefaultAudio implements Audio, Updatable {
     public List<Playback> activePlaybacks() {
         List<Playback> playbacks = new ArrayList<>();
         for (var activePlayback : allActivePlaybacks()) {
-            playbacks.add(new Playback(activePlayback.reference, activePlayback.sound, activePlayback.options));//TODO activePlayback.toPlayback();
+            playbacks.add(new Playback(activePlayback.id, activePlayback.sound, activePlayback.options));//TODO activePlayback.toPlayback();
         }
         return playbacks;
     }
@@ -109,34 +109,33 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public PlaybackReference playSound(final Sound sound, final SoundOptions options) {
+    public UUID playSound(final Sound sound, final SoundOptions options) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
-        PlaybackReference playbackReference = new PlaybackReferenceImpl();
-        ActivePlayback activePlayback = new ActivePlayback(playbackReference, sound, options);
+        ActivePlayback activePlayback = new ActivePlayback(sound, options);
         activePlayback.currentOptions = determinActualOptions(options);
-        activePlaybacks.put(playbackReference.id(), activePlayback);
-        executor.execute(() -> play(playbackReference, sound, activePlayback));
-        return playbackReference;
+        activePlaybacks.put(activePlayback.id, activePlayback);
+        executor.execute(() -> play(sound, activePlayback));
+        return activePlayback.id;
     }
 
     @Override
-    public boolean isActive(PlaybackReference playbackReference) {
-        return activePlaybacks.containsKey(playbackReference.id());
+    public boolean isActive(final UUID playbackId) {
+        return activePlaybacks.containsKey(playbackId);
     }
 
     @Override
-    public boolean updateOptions(PlaybackReference playbackReference, SoundOptions options) {
-        var playback = activePlaybacks.get(playbackReference.id());
-        if(Objects.isNull(playback)) {
+    public boolean updateOptions(UUID playbackId, SoundOptions options) {
+        var playback = activePlaybacks.get(playbackId);
+        if (Objects.isNull(playback)) {
             return false;
         }
         playback.options = options;
         return true;
     }
 
-    private void play(PlaybackReference reference  , final Sound sound, final ActivePlayback activePlayback) {
+    private void play(final Sound sound, final ActivePlayback activePlayback) {
         int loop = 0;
         final var format = AudioAdapter.getAudioFormat(sound.content());
         activePlayback.line = dataLinePool.getLine(format);
@@ -147,20 +146,20 @@ public class DefaultAudio implements Audio, Updatable {
                 loop++;
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(reference.id())) {
+                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(activePlayback.id)) {
                     activePlayback.line.write(bufferBytes, 0, readBytes);
                 }
                 activePlayback.line.drain();
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(reference.id()));
+        } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
         dataLinePool.freeLine(activePlayback.line);
-        activePlaybacks.remove(reference.id());
+        activePlaybacks.remove(activePlayback.id);
     }
 
-    private void applyOptionsOnLine(SourceDataLine line, SoundOptions options) {
-        if(line != null) {
+    private void applyOptionsOnLine(final SourceDataLine line, final SoundOptions options) {
+        if (nonNull(line)) {
             audioAdapter.setVolume(line, options.volume());
             audioAdapter.setBalance(line, options.balance());
             audioAdapter.setPan(line, options.pan());
@@ -176,7 +175,7 @@ public class DefaultAudio implements Audio, Updatable {
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
         for (final var activePlayback : fetchPlaybacks(sound)) {
-            activePlaybacks.remove(activePlayback.reference.id());
+            activePlaybacks.remove(activePlayback.id);
         }
         return this;
     }

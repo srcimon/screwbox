@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.audio;
 
+import java.util.UUID;
+
 //TODO javadoc
-public record Playback(PlaybackReference playbackReference, Sound sound, SoundOptions options) {
+public record Playback(UUID id, Sound sound, SoundOptions options) {
 
 }
