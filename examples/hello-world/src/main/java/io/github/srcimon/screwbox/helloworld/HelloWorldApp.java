@@ -4,18 +4,13 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.audio.Playback;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
@@ -35,7 +30,6 @@ public class HelloWorldApp {
         screwBox.graphics().configuration().setLightmapScale(2);
 
         screwBox.environment()
-
                 // enable all features that are used below...
                 .enableAllFeatures()
 

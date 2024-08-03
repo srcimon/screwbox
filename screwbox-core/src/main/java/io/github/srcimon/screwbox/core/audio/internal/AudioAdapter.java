@@ -74,6 +74,14 @@ public class AudioAdapter {
         }
     }
 
+    public static AudioFormat getAudioFormat(final byte[] content) {
+        try(AudioInputStream inputStream = getAudioInputStream(content)) {
+            return inputStream.getFormat();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("could not get audio format", e);
+        }
+    }
+
     public static byte[] convertToStereo(final AudioInputStream monoInputStream) {
         final var originalFormat = monoInputStream.getFormat();
         final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),

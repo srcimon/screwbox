@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //TODO rename this class and the managed sound class
 public class PlaybackTracker {
-//TODO rework playback with position all propertys can be changed dynamically
+    //TODO rework playback with position all propertys can be changed dynamically
     public record ActivePlayback(UUID id, Playback playback, SourceDataLine line) {
     }
 
@@ -29,15 +29,19 @@ public class PlaybackTracker {
     public void play(final Playback playback, final Percent volume) {//TODO <-- use sound options here
         int loop = 0;
         UUID id = UUID.randomUUID();//TODO move id into playback / offer updatePosition(Playback)?
+
+        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
+        var line = dataLinePool.getLine(format);
+        ActivePlayback activePlayback = new ActivePlayback(id, playback, line);
+        activeSounds.put(activePlayback.id, activePlayback);
+        audioAdapter.setVolume(line, volume);
+        audioAdapter.setBalance(line, playback.options().balance());
+        audioAdapter.setPan(line, playback.options().pan());
+
+
         do {
-            loop++;
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
-                var line = dataLinePool.getLine(stream.getFormat());
-                ActivePlayback activePlayback = new ActivePlayback(id, playback, line);
-                activeSounds.put(activePlayback.id, activePlayback);
-                audioAdapter.setVolume(line, volume);
-                audioAdapter.setBalance(line, playback.options().balance());
-                audioAdapter.setPan(line, playback.options().pan());
+                loop++;
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
                 while ((readBytes = stream.read(bufferBytes)) != -1 && activeSounds.containsKey(activePlayback.id)) {
@@ -49,6 +53,7 @@ public class PlaybackTracker {
                 throw new IllegalStateException("could not close audio stream", e);
             }
         } while (loop < playback.options().times() && activeSounds.containsKey(id));
+
         activeSounds.remove(id);
     }
 
