@@ -12,12 +12,10 @@ public class DataLinePool {
 
 
     private class Line {
-        private final AudioFormat format;
         private final SourceDataLine line;
         private boolean active;
 
-        public Line(AudioFormat format, SourceDataLine line) {
-            this.format = format;
+        public Line(SourceDataLine line) {
             this.line = line;
             this.active = false;
         }
@@ -37,7 +35,7 @@ public class DataLinePool {
     public SourceDataLine getLine(final AudioFormat format) {
         synchronized (lines) {
             Line lineToUse = lines.stream()
-                    .filter(line -> isSame(line.format, format))
+                    .filter(line -> isSame(line.line.getFormat(), format))
                     .filter(line -> !line.active)
                     .findFirst()
                     .orElseGet(() -> startNewLine(format));
@@ -65,7 +63,7 @@ public class DataLinePool {
                 SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
                 sourceDataLine.open(format);
                 sourceDataLine.start();
-                Line line = new Line(format, sourceDataLine);
+                Line line = new Line(sourceDataLine);
                 lines.add(line);
                 return line;
             } catch (LineUnavailableException e) {
