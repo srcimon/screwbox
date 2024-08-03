@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 //TODO rename this class and the managed sound class
-public class SoundManagement {
+public class PlaybackTracker {
 
     public record ManagedSound(UUID id, Playback playback, SourceDataLine line) {
     }
@@ -22,7 +22,7 @@ public class SoundManagement {
     private final AudioAdapter audioAdapter;
     private final DataLinePool dataLinePool;
 
-    public SoundManagement(AudioAdapter audioAdapter, DataLinePool dataLinePool) {
+    public PlaybackTracker(AudioAdapter audioAdapter, DataLinePool dataLinePool) {
         this.audioAdapter = audioAdapter;
         this.dataLinePool = dataLinePool;
     }
@@ -51,7 +51,7 @@ public class SoundManagement {
                 dataLinePool.freeLine(line);
                 activeSounds.remove(managedSound.id);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException("could not close audio stream", e);
             }
         } while (loop < playback.options().times() && activeSounds.containsKey(id));
     }

@@ -26,21 +26,22 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final AudioConfiguration configuration;
     private final VolumeMonitor volumeMonitor;
-    private final SoundManagement soundManagement;
+    private final PlaybackTracker playbackTracker;
 
-    public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration, final VolumeMonitor volumeMonitor, final Camera camera, SoundManagement soundManagement) {
+    public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
+                        final VolumeMonitor volumeMonitor, final Camera camera, final PlaybackTracker playbackTracker) {
         this.executor = executor;
         this.camera = camera;
         this.volumeMonitor = volumeMonitor;
-        this.soundManagement = soundManagement;
+        this.playbackTracker = playbackTracker;
         this.configuration = configuration;
         configuration.addListener(this);
     }
 
     @Override
     public Audio stopAllSounds() {
-        for (final var managedSound : soundManagement.activeSounds()) {
-            soundManagement.stop(managedSound);
+        for (final var managedSound : playbackTracker.activeSounds()) {
+            playbackTracker.stop(managedSound);
         }
         return this;
     }
@@ -80,7 +81,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public List<Playback> activePlaybacks() {
         List<Playback> activePlaybacks = new ArrayList<>();
-        for (final var managedSound : soundManagement.activeSounds()) {
+        for (final var managedSound : playbackTracker.activeSounds()) {
             activePlaybacks.add(managedSound.playback());
         }
         return activePlaybacks;
@@ -89,15 +90,15 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
-        for (final var managedSound : soundManagement.fetchActiveSounds(sound)) {
-            soundManagement.stop(managedSound);
+        for (final var managedSound : playbackTracker.fetchActiveSounds(sound)) {
+            playbackTracker.stop(managedSound);
         }
         return this;
     }
 
     @Override
     public int activeCount(final Sound sound) {
-        return soundManagement.fetchActiveSounds(sound).size();
+        return playbackTracker.fetchActiveSounds(sound).size();
     }
 
     @Override
@@ -107,7 +108,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public int activeCount() {
-        return soundManagement.activeSounds().size();
+        return playbackTracker.activeSounds().size();
     }
 
     @Override
@@ -118,9 +119,9 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty()) || EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var managedSound : soundManagement.activeSounds()) {
+            for (final var managedSound : playbackTracker.activeSounds()) {
                 Percent volume = calculateVolume(managedSound.playback());
-                soundManagement.changeVolume(managedSound, volume);
+                playbackTracker.changeVolume(managedSound, volume);
             }
         }
     }
@@ -137,7 +138,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private void playSound(final Playback playback) {
         final Percent volume = calculateVolume(playback);
         if (!volume.isZero()) {
-            executor.execute(() -> soundManagement.play(playback, volume));
+            executor.execute(() -> playbackTracker.play(playback, volume));
         }
     }
 }
