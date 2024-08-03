@@ -80,8 +80,8 @@ public class DefaultAudio implements Audio {
     public Audio playSound(final Sound sound, final SoundOptions options) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
-        SoundOptions currentOptions = calculateCurrent(options);
-        executor.execute(() -> play(sound, options, currentOptions.volume(calculateVolume(options))));
+
+        executor.execute(() -> play(sound, options));
         return this;
     }
 
@@ -95,12 +95,13 @@ public class DefaultAudio implements Audio {
 //    }
 
 
-    private void play(final Sound sound, final SoundOptions options, SoundOptions currentOptions) {//TODO <-- use sound options here
+    private void play(final Sound sound, final SoundOptions options) {//TODO <-- use sound options here
         int loop = 0;
         UUID id = UUID.randomUUID();//TODO move id into playback / offer updatePosition(Playback)?
 
         final var format = AudioAdapter.getAudioFormat(sound.content());
         var line = dataLinePool.getLine(format);
+        SoundOptions currentOptions = calculateCurrent(options).volume(calculateVolume(options));
         ActivePlayback activePlayback = new ActivePlayback(id, sound, line, options, currentOptions);
         activePlaybacks.put(activePlayback.id, activePlayback);
         audioAdapter.setVolume(line, currentOptions.volume());

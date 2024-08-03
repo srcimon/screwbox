@@ -28,7 +28,6 @@ public class DataLinePool {
                     .findFirst().map(line -> line.getKey())
                     .orElseGet(() -> startNewLine(format));
             lines.put(sourceDataLine, true);
-            System.out.println(lines.size());
             return sourceDataLine;
         }
     }
