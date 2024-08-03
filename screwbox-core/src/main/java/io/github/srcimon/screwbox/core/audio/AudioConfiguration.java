@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
  * Read and change the current {@link AudioConfiguration}.
  */
 public class AudioConfiguration {
-
+//TODO add line limit
     private Percent effectVolume = Percent.max();
     private Percent musicVolume = Percent.max();
     private boolean isMusicMuted = false;
