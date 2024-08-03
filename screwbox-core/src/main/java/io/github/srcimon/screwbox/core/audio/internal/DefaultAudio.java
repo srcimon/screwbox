@@ -25,14 +25,14 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final ExecutorService executor;
     private final Camera camera;
     private final AudioConfiguration configuration;
-    private final VolumeMonitor volumeMonitor;
+    private final MicrophoneMonitor microphoneMonitor;
     private final PlaybackTracker playbackTracker;
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
-                        final VolumeMonitor volumeMonitor, final Camera camera, final PlaybackTracker playbackTracker) {
+                        final MicrophoneMonitor microphoneMonitor, final Camera camera, final PlaybackTracker playbackTracker) {
         this.executor = executor;
         this.camera = camera;
-        this.volumeMonitor = volumeMonitor;
+        this.microphoneMonitor = microphoneMonitor;
         this.playbackTracker = playbackTracker;
         this.configuration = configuration;
         configuration.addListener(this);
@@ -48,12 +48,12 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Percent microphoneLevel() {
-        return volumeMonitor.level();
+        return microphoneMonitor.level();
     }
 
     @Override
     public boolean isMicrophoneActive() {
-        return volumeMonitor.isActive();
+        return microphoneMonitor.isActive();
     }
 
     @Override

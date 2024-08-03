@@ -22,7 +22,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class VolumeMonitorTest {
+class MicrophoneMonitorTest {
 
     @Mock
     AudioAdapter audioAdapter;
@@ -32,7 +32,7 @@ class VolumeMonitorTest {
 
     ExecutorService executor;
 
-    VolumeMonitor volumeMonitor;
+    MicrophoneMonitor microphoneMonitor;
 
     AudioConfiguration configuration;
 
@@ -41,30 +41,30 @@ class VolumeMonitorTest {
     void setUp() {
         executor = Executors.newSingleThreadExecutor();
         configuration = new AudioConfiguration();
-        volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
+        microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, configuration);
     }
 
     @Test
     void isActive_afterCallingLevel_isTrue() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
-        volumeMonitor.level();
+        microphoneMonitor.level();
 
-        assertThat(volumeMonitor.isActive()).isTrue();
+        assertThat(microphoneMonitor.isActive()).isTrue();
     }
 
     @Test
     void isActive_noCallToLevel_isFalse() {
-        assertThat(volumeMonitor.isActive()).isFalse();
+        assertThat(microphoneMonitor.isActive()).isFalse();
     }
 
     @Test
     void isActive_afertIdleTimeoutReached_isFalse() {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         configuration.setMicrophoneIdleTimeout(Duration.ofMillis(40));
-        volumeMonitor.level();
+        microphoneMonitor.level();
 
-        await(() -> !volumeMonitor.isActive(), ofSeconds(1));
-        assertThat(volumeMonitor.isActive()).isFalse();
+        await(() -> !microphoneMonitor.isActive(), ofSeconds(1));
+        assertThat(microphoneMonitor.isActive()).isFalse();
     }
 
     @Test
@@ -80,8 +80,8 @@ class VolumeMonitorTest {
             return 4;
         }).when(targetDataLine).read(new byte[4], 0, 4);
 
-        await(() -> volumeMonitor.level().value() > 0.4, ofSeconds(1));
-        assertThat(volumeMonitor.level().value()).isGreaterThan(0.4);
+        await(() -> microphoneMonitor.level().value() > 0.4, ofSeconds(1));
+        assertThat(microphoneMonitor.level().value()).isGreaterThan(0.4);
     }
 
     @Test
@@ -89,7 +89,7 @@ class VolumeMonitorTest {
         when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
-        assertThat(volumeMonitor.level().isZero()).isTrue();
+        assertThat(microphoneMonitor.level().isZero()).isTrue();
     }
 
     @AfterEach
