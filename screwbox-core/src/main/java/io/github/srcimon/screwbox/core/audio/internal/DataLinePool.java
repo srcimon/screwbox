@@ -10,6 +10,7 @@ import java.util.List;
 
 public class DataLinePool {
 
+
     private class Line {
         private AudioFormat format;
         private boolean active;

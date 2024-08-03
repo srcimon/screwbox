@@ -34,11 +34,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.volumeMonitor = volumeMonitor;
         this.soundManagement = soundManagement;
         configuration.addListener(this);
-        //TODO Implement somewhere else
-//        this.executor.execute(() -> {
-//            dataLinePool.startNewLine(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false));
-//            dataLinePool.startNewLine(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 48000, 16, 2, 4, 48000, false));
-//        });
     }
 
     @Override
@@ -74,20 +69,20 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
+    public Audio playSound(final Sound sound, final SoundOptions options) {
+        requireNonNull(sound, "sound must not be null");
+        requireNonNull(options, "options must not be null");
+        playSound(new Playback(sound, options, null));
+        return this;
+    }
+
+    @Override
     public List<Playback> activePlaybacks() {
         List<Playback> activePlaybacks = new ArrayList<>();
         for (final var managedSound : soundManagement.activeSounds()) {
             activePlaybacks.add(managedSound.playback());
         }
         return activePlaybacks;
-    }
-
-    @Override
-    public Audio playSound(final Sound sound, final SoundOptions options) {
-        requireNonNull(sound, "sound must not be null");
-        requireNonNull(options, "options must not be null");
-        playSound(new Playback(sound, options, null));
-        return this;
     }
 
     @Override

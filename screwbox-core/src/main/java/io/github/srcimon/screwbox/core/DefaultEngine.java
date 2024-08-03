@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.audio.internal.DataLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
 import io.github.srcimon.screwbox.core.audio.internal.SoundManagement;
 import io.github.srcimon.screwbox.core.audio.internal.VolumeMonitor;
+import io.github.srcimon.screwbox.core.audio.internal.WarumUpDataLinePoolTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
@@ -147,6 +148,7 @@ class DefaultEngine implements Engine {
             component.addKeyListener(keyboard);
         }
         executor.execute(new InitializeFontDrawingTask());
+        executor.execute(new WarumUpDataLinePoolTask(dataLinePool));
         this.name = name;
         this.version = detectVersion();
         window.setTitle(name);
