@@ -1,5 +1,6 @@
 ### 🚀 Features & improvements
 
+- Completly reworked audio playback to remove any lag on playing sounds. This also fixeds the unbearable results when using bluetooth headphones (#359)
 - Added support for multiline text rendering
 - Added `TextUtil.lineWrap(String, int)`
 - Added `Async.taskCount()`
