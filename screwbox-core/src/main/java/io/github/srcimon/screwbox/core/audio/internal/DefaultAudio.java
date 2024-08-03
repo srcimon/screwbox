@@ -107,30 +107,31 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private void playSound(final Playback playback) {
         final Percent volume = calculateVolume(playback);
         if (!volume.isZero()) {
+            executor.execute(() -> streamPlayback(playback, volume));
+        }
+    }
 
-            executor.execute(() -> {
-                int loop = 0;
-                ManagedSound managedSound = soundManagement.add(playback);
-                while (loop < playback.options().times() && !managedSound.isShutdown()) {
-                    loop++;
-                    try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
-                        var line = dataLinePool.getLine(stream.getFormat());
-                        managedSound.setLine(line);
-                        audioAdapter.setVolume(line, volume);
-                        audioAdapter.setBalance(line, playback.options().balance());
-                        audioAdapter.setPan(line, playback.options().pan());
-                        final byte[] bufferBytes = new byte[4096];
-                        int readBytes;
-                        while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown()) {
-                            line.write(bufferBytes, 0, readBytes);
-                        }
-                        dataLinePool.freeLine(line);
-                        soundManagement.remove(managedSound);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+    private void streamPlayback(final Playback playback, final Percent volume) {
+        int loop = 0;
+        ManagedSound managedSound = soundManagement.add(playback);
+        while (loop < playback.options().times() && !managedSound.isShutdown()) {
+            loop++;
+            try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
+                var line = dataLinePool.getLine(stream.getFormat());
+                managedSound.setLine(line);
+                audioAdapter.setVolume(line, volume);
+                audioAdapter.setBalance(line, playback.options().balance());
+                audioAdapter.setPan(line, playback.options().pan());
+                final byte[] bufferBytes = new byte[4096];
+                int readBytes;
+                while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown()) {
+                    line.write(bufferBytes, 0, readBytes);
                 }
-            });
+                dataLinePool.freeLine(line);
+                soundManagement.remove(managedSound);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
