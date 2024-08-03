@@ -33,20 +33,8 @@ public class HelloWorldApp {
 
         // set good shadow quality
         screwBox.graphics().configuration().setLightmapScale(2);
-Sound longs =Sound.fromFile("long.wav");
+
         screwBox.environment()
-                .addSystem(Order.SystemOrder.PRESENTATION_OVERLAY, engine -> {
-                    if(engine.mouse().isPressedLeft()) {
-                        engine.audio().playSound(longs, engine.mouse().position());
-                    }
-                    for (Playback playback : engine.audio().activePlaybacks()) {
-                        engine.graphics().world().drawCircle(playback.position().get(), playback.progress().value() * 50, CircleDrawOptions.outline(Color.RED).strokeWidth(2));
-                        engine.graphics().world().drawCircle(playback.position().get(),  50, CircleDrawOptions.outline(Color.RED).strokeWidth(2));
-                    }
-
-                })
-
-
 
                 // enable all features that are used below...
                 .enableAllFeatures()
