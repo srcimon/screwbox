@@ -40,7 +40,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio stopAllSounds() {
-        for (final var managedSound : playbackTracker.activeSounds()) {
+        for (final var managedSound : playbackTracker.allActive()) {
             playbackTracker.stop(managedSound);
         }
         return this;
@@ -81,8 +81,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public List<Playback> activePlaybacks() {
         List<Playback> activePlaybacks = new ArrayList<>();
-        for (final var managedSound : playbackTracker.activeSounds()) {
-            activePlaybacks.add(managedSound.playback());
+        for (final var activePlayback : playbackTracker.allActive()) {
+            activePlaybacks.add(activePlayback.playback());
         }
         return activePlaybacks;
     }
@@ -90,16 +90,17 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
-        for (final var managedSound : playbackTracker.fetchActiveSounds(sound)) {
-            playbackTracker.stop(managedSound);
+        for (final var activePlayback : playbackTracker.fetchPlaybacks(sound)) {
+            playbackTracker.stop(activePlayback);
         }
         return this;
     }
 
     @Override
     public int activeCount(final Sound sound) {
-        return playbackTracker.fetchActiveSounds(sound).size();
+        return playbackTracker.fetchPlaybacks(sound).size();
     }
+
 
     @Override
     public boolean isActive(final Sound sound) {
@@ -108,7 +109,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public int activeCount() {
-        return playbackTracker.activeSounds().size();
+        return playbackTracker.allActive().size();
     }
 
     @Override
@@ -119,7 +120,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty()) || EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var managedSound : playbackTracker.activeSounds()) {
+            for (final var managedSound : playbackTracker.allActive()) {
                 Percent volume = calculateVolume(managedSound.playback());
                 playbackTracker.changeVolume(managedSound, volume);
             }
