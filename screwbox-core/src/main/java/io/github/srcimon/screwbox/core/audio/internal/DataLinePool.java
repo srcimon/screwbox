@@ -45,7 +45,6 @@ public class DataLinePool {
     }
 
     private boolean sameFormat(AudioFormat a, AudioFormat b) {
-        System.out.println(a);
         return  a.getFrameSize() == b.getFrameSize()
                 && a.getEncoding().equals(b.getEncoding())
                 && a.getFrameRate() == b.getFrameRate()
