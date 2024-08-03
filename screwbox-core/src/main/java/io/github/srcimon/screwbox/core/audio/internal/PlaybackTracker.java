@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Playback;
-import io.github.srcimon.screwbox.core.audio.Sound;
 
 import javax.sound.sampled.SourceDataLine;
 import java.io.IOException;
@@ -45,6 +44,7 @@ public class PlaybackTracker {
                     line.write(bufferBytes, 0, readBytes);
                 }
                 dataLinePool.freeLine(line);
+                line.drain();
                 activeSounds.remove(activePlayback.id);
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
@@ -62,15 +62,5 @@ public class PlaybackTracker {
 
     public List<ActivePlayback> allActive() {
         return new ArrayList<>(activeSounds.values());
-    }
-
-    public List<ActivePlayback> fetchPlaybacks(final Sound sound) {
-        final List<ActivePlayback> active = new ArrayList<>();
-        for (final var activeSound : activeSounds.values()) {
-            if (activeSound.playback().sound().equals(sound)) {
-                active.add(activeSound);
-            }
-        }
-        return active;
     }
 }

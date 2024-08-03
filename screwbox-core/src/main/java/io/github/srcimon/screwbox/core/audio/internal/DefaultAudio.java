@@ -90,7 +90,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     @Override
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
-        for (final var activePlayback : playbackTracker.fetchPlaybacks(sound)) {
+        for (final var activePlayback : fetchPlaybacks(sound)) {
             playbackTracker.stop(activePlayback);
         }
         return this;
@@ -98,9 +98,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public int activeCount(final Sound sound) {
-        return playbackTracker.fetchPlaybacks(sound).size();
+        return fetchPlaybacks(sound).size();
     }
-
 
     @Override
     public boolean isActive(final Sound sound) {
@@ -125,6 +124,16 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
                 playbackTracker.changeVolume(managedSound, volume);
             }
         }
+    }
+
+    private List<PlaybackTracker.ActivePlayback> fetchPlaybacks(final Sound sound) {
+        final var active = new ArrayList<PlaybackTracker.ActivePlayback>();
+        for (final var activeSound : playbackTracker.allActive()) {
+            if (activeSound.playback().sound().equals(sound)) {
+                active.add(activeSound);
+            }
+        }
+        return active;
     }
 
     private Percent calculateVolume(final Playback playback) {
