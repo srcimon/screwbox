@@ -156,18 +156,9 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public void configurationChanged(final AudioConfigurationEvent event) {
-        if (MUSIC_VOLUME.equals(event.changedProperty())) {
+        if (MUSIC_VOLUME.equals(event.changedProperty()) || EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var managedSound : soundManagement.activeSounds()) {
-                if (!managedSound.isEffect()) {
-                    audioAdapter.setVolume(managedSound.line(), musicVolume().multiply(managedSound.volume().value()));
-                }
-            }
-
-        } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var managedSound : soundManagement.activeSounds()) {
-                if (managedSound.isEffect()) {
-                    audioAdapter.setVolume(managedSound.line(), effectVolume().multiply(managedSound.volume().value()));
-                }
+                audioAdapter.setVolume(managedSound.line(), calculateVolume(managedSound.playback()));
             }
         }
     }
