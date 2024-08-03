@@ -28,6 +28,7 @@ public class DeadScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
+        engine.audio().stopAllSounds();
         engine.window().setTitle("Platformer (Game Over)");
     }
 }
