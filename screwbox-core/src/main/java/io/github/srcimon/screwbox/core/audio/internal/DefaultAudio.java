@@ -67,6 +67,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio playSound(final Sound sound, final Vector position) {
+        requireNonNull(sound, "sound must not be null");
         requireNonNull(position, "position must not be null");
         final var distance = camera.position().distanceTo(position);
         final var direction = modifier(position.x() - camera.position().x());
@@ -90,21 +91,22 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     @Override
     public Audio playSound(final Sound sound, final SoundOptions options) {
+        requireNonNull(sound, "sound must not be null");
+        requireNonNull(options, "options must not be null");
         playSound(sound, options, null);
         return this;
     }
 
     @Override
     public Audio stopSound(final Sound sound) {
-        for (final var playback : soundManagement.fetchActiveSounds(sound)) {
-            playback.stop();
+        requireNonNull(sound, "sound must not be null");
+        for (final var managedSound : soundManagement.fetchActiveSounds(sound)) {
+            managedSound.stop();
         }
         return this;
     }
 
     private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
-        requireNonNull(sound, "sound must not be null");
-        requireNonNull(options, "options must not be null");
         final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
@@ -181,5 +183,4 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private Percent effectVolume() {
         return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
     }
-
 }
