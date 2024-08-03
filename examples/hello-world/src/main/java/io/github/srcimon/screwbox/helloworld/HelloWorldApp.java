@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -22,7 +21,6 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-
         // set ambient light to nearly full brightness
         screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 
