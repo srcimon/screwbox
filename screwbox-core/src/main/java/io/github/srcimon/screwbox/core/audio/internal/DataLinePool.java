@@ -12,9 +12,9 @@ public class DataLinePool {
 
 
     private class Line {
-        private AudioFormat format;
+        private final AudioFormat format;
+        private final SourceDataLine line;
         private boolean active;
-        private SourceDataLine line;
 
         public Line(AudioFormat format, SourceDataLine line) {
             this.format = format;
@@ -22,7 +22,8 @@ public class DataLinePool {
             this.active = false;
         }
     }
-//TODO implememt max lines cap (free old unused lines)
+
+    //TODO implememt max lines cap (free old unused lines)
     private final List<Line> lines = new ArrayList<>();//TODO optimize searching for free line
 
     public void freeLine(SourceDataLine sourceDataLine) {
@@ -36,7 +37,7 @@ public class DataLinePool {
     public SourceDataLine getLine(final AudioFormat format) {
         synchronized (lines) {
             Line lineToUse = lines.stream()
-                    .filter(line -> sameFormat(line.format, format))
+                    .filter(line -> isSame(line.format, format))
                     .filter(line -> !line.active)
                     .findFirst()
                     .orElseGet(() -> startNewLine(format));
@@ -45,31 +46,31 @@ public class DataLinePool {
         }
     }
 
-    private boolean sameFormat(AudioFormat a, AudioFormat b) {
-        return  a.getFrameSize() == b.getFrameSize()
-                && a.getEncoding().equals(b.getEncoding())
-                && a.getFrameRate() == b.getFrameRate()
-                && a.getSampleSizeInBits() == b.getSampleSizeInBits()
-                && a.getChannels() == b.getChannels();
+    public void createLine(final AudioFormat format) {
+        startNewLine(format);
     }
 
-    public Line startNewLine(final AudioFormat format) {
+    private boolean isSame(AudioFormat format, AudioFormat other) {
+        return format.getFrameSize() == other.getFrameSize()
+                && format.getEncoding().equals(other.getEncoding())
+                && format.getFrameRate() == other.getFrameRate()
+                && format.getSampleSizeInBits() == other.getSampleSizeInBits()
+                && format.getChannels() == other.getChannels();
+    }
+
+    private Line startNewLine(final AudioFormat format) {
         synchronized (lines) {
-            Line line = new Line(format, createLine(format));
-            lines.add(line);
-            return line;
-        }
-    }
-
-    private SourceDataLine createLine(final AudioFormat format) {
-        try {
-            final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-            SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
-            sourceDataLine.open(format);
-            sourceDataLine.start();
-            return sourceDataLine;
-        } catch (LineUnavailableException e) {
-            throw new IllegalStateException("could not obtain new source data line", e);
+            try {
+                final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
+                sourceDataLine.open(format);
+                sourceDataLine.start();
+                Line line = new Line(format, sourceDataLine);
+                lines.add(line);
+                return line;
+            } catch (LineUnavailableException e) {
+                throw new IllegalStateException("could not obtain new source data line", e);
+            }
         }
     }
 }
