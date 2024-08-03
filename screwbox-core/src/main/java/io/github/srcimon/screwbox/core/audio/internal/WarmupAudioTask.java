@@ -4,11 +4,11 @@ import javax.sound.sampled.AudioFormat;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 
-public class WarumUpDataLinePoolTask implements Runnable {
+public class WarmupAudioTask implements Runnable {
 
     private final DataLinePool dataLinePool;
 
-    public WarumUpDataLinePoolTask(final DataLinePool dataLinePool) {
+    public WarmupAudioTask(final DataLinePool dataLinePool) {
         this.dataLinePool = dataLinePool;
     }
 

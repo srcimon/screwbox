@@ -18,10 +18,10 @@ public class SoundSystem implements EntitySystem {
         for (final var soundEntity : engine.environment().fetchAll(SOUNDS)) {
             final var soundComponent = soundEntity.get(SoundComponent.class);
             SoundOptions soundOptions = SoundOptions.playContinuously().position(soundEntity.position());
-            if (isNull(soundComponent.playbackId) || !engine.audio().isActive(soundComponent.playbackId)) {
-                soundComponent.playbackId = engine.audio().playSound(soundComponent.sound, soundOptions);
+            if (isNull(soundComponent.playback) || !engine.audio().isActive(soundComponent.playback)) {
+                soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
             } else {
-                engine.audio().updateOptions(soundComponent.playbackId, soundOptions);
+                engine.audio().updateOptions(soundComponent.playback, soundOptions);
             }
         }
     }

@@ -31,9 +31,9 @@ public class DefaultAudio implements Audio, Updatable {
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioAdapter audioAdapter;
+    private final DataLinePool dataLinePool;
 
     private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
-    private final DataLinePool dataLinePool;
 
     @Override
     public void update() {
@@ -58,6 +58,10 @@ public class DefaultAudio implements Audio, Updatable {
             this.sound = sound;
             this.options = options;
             this.currentOptions = options;
+        }
+
+        public Playback toPlayback() {
+            return new Playback(id, sound, options);
         }
     }
 
@@ -91,7 +95,8 @@ public class DefaultAudio implements Audio, Updatable {
     public List<Playback> activePlaybacks() {
         List<Playback> playbacks = new ArrayList<>();
         for (var activePlayback : allActivePlaybacks()) {
-            playbacks.add(new Playback(activePlayback.id, activePlayback.sound, activePlayback.options));//TODO activePlayback.toPlayback();
+            activePlayback.toPlayback();
+            playbacks.add(activePlayback.toPlayback());
         }
         return playbacks;
     }
@@ -109,7 +114,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public UUID playSound(final Sound sound, final SoundOptions options) {
+    public Playback playSound(final Sound sound, final SoundOptions options) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
@@ -117,27 +122,27 @@ public class DefaultAudio implements Audio, Updatable {
         activePlayback.currentOptions = determinActualOptions(options);
         activePlaybacks.put(activePlayback.id, activePlayback);
         executor.execute(() -> play(sound, activePlayback));
-        return activePlayback.id;
+        return activePlayback.toPlayback();
     }
 
     @Override
-    public Audio stopPlayback(UUID playbackId) {
-        activePlaybacks.remove(playbackId);
+    public Audio stopPlayback(Playback playback) {
+        activePlaybacks.remove(playback.id());//TODO has playback not id?
         return this;
     }
 
     @Override
-    public boolean isActive(final UUID playbackId) {
-        return activePlaybacks.containsKey(playbackId);
+    public boolean isActive(final Playback playback) {
+        return activePlaybacks.containsKey(playback.id());
     }
 
     @Override
-    public boolean updateOptions(UUID playbackId, SoundOptions options) {
-        var playback = activePlaybacks.get(playbackId);
-        if (Objects.isNull(playback)) {
+    public boolean updateOptions(Playback playback, SoundOptions options) {
+        var activePlayback = activePlaybacks.get(playback.id());
+        if (Objects.isNull(activePlayback)) {
             return false;
         }
-        playback.options = options;
+        activePlayback.options = options;
         return true;
     }
 
@@ -160,6 +165,7 @@ public class DefaultAudio implements Audio, Updatable {
                 throw new IllegalStateException("could not close audio stream", e);
             }
         } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
+        //TODO schedule echo here
         dataLinePool.freeLine(activePlayback.line);
         activePlaybacks.remove(activePlayback.id);
     }

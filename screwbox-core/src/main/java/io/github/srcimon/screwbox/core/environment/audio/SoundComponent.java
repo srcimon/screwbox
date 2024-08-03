@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.audio;
 
+import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Component;
 
@@ -13,7 +14,7 @@ public class SoundComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public Sound sound;
-    public UUID playbackId;
+    public Playback playback;
 
     public SoundComponent(Supplier<Sound> sound) {
         this(sound.get());

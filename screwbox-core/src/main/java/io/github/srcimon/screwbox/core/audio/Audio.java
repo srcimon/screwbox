@@ -58,35 +58,35 @@ public interface Audio {
      * @see #playSound(Supplier, SoundOptions)
      */
     //TODO document playback reference
-    UUID playSound(Sound sound, SoundOptions options);
+    Playback playSound(Sound sound, SoundOptions options);
 
-    Audio stopPlayback(UUID playbackId);
+    Audio stopPlayback(Playback playback);
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
      * @see #playSound(Sound, SoundOptions)
      */
-    default UUID playSound(final Supplier<Sound> sound, final SoundOptions options) {
+    default Playback playSound(final Supplier<Sound> sound, final SoundOptions options) {
         return playSound(sound.get(), options);
     }
 
     /**
      * Plays a {@link Sound} a single time.
      */
-    default UUID playSound(final Sound sound) {
+    default Playback playSound(final Sound sound) {
         return playSound(sound, playOnce());
     }
 
     /**
      * Plays a {@link Sound} from an {@link Asset} a single time.
      */
-    default UUID playSound(final Supplier<Sound> sound) {
+    default Playback playSound(final Supplier<Sound> sound) {
         return playSound(sound.get());
     }
 
-    boolean isActive(UUID playbackId);
+    boolean isActive(Playback playback);
 
-    boolean updateOptions(UUID playbackId, SoundOptions options);
+    boolean updateOptions(Playback playback, SoundOptions options);
 
     /**
      * Stops all currently playing instances of the {@link Sound}.
