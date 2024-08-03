@@ -5,42 +5,30 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataLinePool {
 
-
-    private class Line {
-        private final SourceDataLine line;
-        private boolean active;
-
-        public Line(SourceDataLine line) {
-            this.line = line;
-            this.active = false;
-        }
-    }
-
     //TODO implememt max lines cap (free old unused lines)
-    private final List<Line> lines = new ArrayList<>();//TODO optimize searching for free line
+    private final Map<SourceDataLine, Boolean> lines = new HashMap<>();
 
     public void freeLine(SourceDataLine sourceDataLine) {
         synchronized (lines) {
-            lines.stream().filter(line -> line.line.equals(sourceDataLine))
-                    .findFirst().orElseThrow()
-                    .active = false;
+            lines.put(sourceDataLine, false);
         }
     }
 
     public SourceDataLine getLine(final AudioFormat format) {
         synchronized (lines) {
-            Line lineToUse = lines.stream()
-                    .filter(line -> isSame(line.line.getFormat(), format))
-                    .filter(line -> !line.active)
-                    .findFirst()
+            var sourceDataLine = lines.entrySet()
+                    .stream()
+                    .filter(line -> !line.getValue())
+                    .filter(line -> isSame(line.getKey().getFormat(), format))
+                    .findFirst().map(line -> line.getKey())
                     .orElseGet(() -> startNewLine(format));
-            lineToUse.active = true;
-            return lineToUse.line;
+            lines.put(sourceDataLine, true);
+            return sourceDataLine;
         }
     }
 
@@ -56,16 +44,15 @@ public class DataLinePool {
                 && format.getChannels() == other.getChannels();
     }
 
-    private Line startNewLine(final AudioFormat format) {
+    private SourceDataLine startNewLine(final AudioFormat format) {
         synchronized (lines) {
             try {
                 final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
                 SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
                 sourceDataLine.open(format);
                 sourceDataLine.start();
-                Line line = new Line(sourceDataLine);
-                lines.add(line);
-                return line;
+                lines.put(sourceDataLine, false);
+                return sourceDataLine;
             } catch (LineUnavailableException e) {
                 throw new IllegalStateException("could not obtain new source data line", e);
             }
