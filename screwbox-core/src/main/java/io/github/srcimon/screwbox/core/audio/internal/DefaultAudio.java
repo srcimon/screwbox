@@ -109,26 +109,25 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final Percent volume = configVolume.multiply(options.volume().value());
         if (!volume.isZero()) {
             Playback playback = new Playback(sound, options, position);
-            new ManagedSound(playback);
-            UUID id = UUID.randomUUID();
-            ManagedSound activePlayback = soundManagement.add(id, playback);
+
+            ManagedSound managedSound = soundManagement.add(playback);
             executor.execute(() -> {
                 int loop = 0;
-                while (loop < options.times() && !activePlayback.isShutdown()) {
+                while (loop < options.times() && !managedSound.isShutdown()) {
                     loop++;
                     try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
                         var line = dataLinePool.getLine(stream.getFormat());
-                        activePlayback.setLine(line);
+                        managedSound.setLine(line);
                         audioAdapter.setVolume(line, volume);
                         audioAdapter.setBalance(line, options.balance());
                         audioAdapter.setPan(line, options.pan());
                         final byte[] bufferBytes = new byte[4096];
                         int readBytes;
-                        while ((readBytes = stream.read(bufferBytes)) != -1 && !activePlayback.isShutdown()) {
+                        while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown()) {
                             line.write(bufferBytes, 0, readBytes);
                         }
                         dataLinePool.freeLine(line);
-                        soundManagement.remove(id);
+                        soundManagement.remove(managedSound);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

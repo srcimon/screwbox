@@ -16,6 +16,7 @@ public class SoundManagement {
     private final Map<UUID, ManagedSound> activeSounds = new ConcurrentHashMap<>();
 
     public static class ManagedSound {
+        private UUID id = UUID.randomUUID();
         private final Playback playback;
         private boolean isShutdown = false;
         private SourceDataLine line;
@@ -57,14 +58,14 @@ public class SoundManagement {
         }
     }
 
-    public ManagedSound add(UUID id, Playback playback) {
-        ManagedSound value = new ManagedSound(playback);
-        activeSounds.put(id, value);
-        return value;
+    public ManagedSound add(Playback playback) {
+        ManagedSound managedSound = new ManagedSound(playback);
+        activeSounds.put(managedSound.id, managedSound);
+        return managedSound;
     }
 
-    public void remove(UUID id) {
-        activeSounds.remove(id);
+    public void remove(ManagedSound managedSound) {
+        activeSounds.remove(managedSound.id);
     }
 
     public List<ManagedSound> activeSounds() {
