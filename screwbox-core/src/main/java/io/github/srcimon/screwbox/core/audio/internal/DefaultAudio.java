@@ -16,7 +16,6 @@ import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
@@ -75,16 +74,15 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         final var options = SoundOptions.playOnce()
                 .pan(direction * quotient)
                 .volume(Percent.of(1 - quotient));
-
-        playSound(sound, options, position);
+        playSound(new Playback(sound, options, position));
         return this;
     }
 
     @Override
     public List<Playback> activePlaybacks() {
         List<Playback> activePlaybacks = new ArrayList<>();
-        for (final var activeSound : soundManagement.activeSounds()) {
-            activePlaybacks.add(activeSound.playback());
+        for (final var managedSound : soundManagement.activeSounds()) {
+            activePlaybacks.add(managedSound.playback());
         }
         return activePlaybacks;
     }
@@ -93,7 +91,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     public Audio playSound(final Sound sound, final SoundOptions options) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
-        playSound(sound, options, null);
+        playSound(new Playback(sound, options, null));
         return this;
     }
 
@@ -106,23 +104,22 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
-        final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
-        final Percent volume = configVolume.multiply(options.volume().value());
+    private void playSound(final Playback playback) {
+        final Percent volume = (playback.options().isMusic() ? musicVolume() : effectVolume()).multiply(playback.options().volume().value());
+        //TODO playback actualVolume();
         if (!volume.isZero()) {
-            Playback playback = new Playback(sound, options, position);
 
-            ManagedSound managedSound = soundManagement.add(playback);
             executor.execute(() -> {
                 int loop = 0;
-                while (loop < options.times() && !managedSound.isShutdown()) {
+                ManagedSound managedSound = soundManagement.add(playback);
+                while (loop < playback.options().times() && !managedSound.isShutdown()) {
                     loop++;
-                    try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
+                    try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                         var line = dataLinePool.getLine(stream.getFormat());
                         managedSound.setLine(line);
                         audioAdapter.setVolume(line, volume);
-                        audioAdapter.setBalance(line, options.balance());
-                        audioAdapter.setPan(line, options.pan());
+                        audioAdapter.setBalance(line, playback.options().balance());
+                        audioAdapter.setPan(line, playback.options().pan());
                         final byte[] bufferBytes = new byte[4096];
                         int readBytes;
                         while ((readBytes = stream.read(bufferBytes)) != -1 && !managedSound.isShutdown()) {
