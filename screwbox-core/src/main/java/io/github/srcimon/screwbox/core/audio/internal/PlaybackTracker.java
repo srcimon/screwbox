@@ -43,8 +43,8 @@ public class PlaybackTracker {
                 while ((readBytes = stream.read(bufferBytes)) != -1 && activeSounds.containsKey(activePlayback.id)) {
                     line.write(bufferBytes, 0, readBytes);
                 }
-                dataLinePool.freeLine(line);
                 line.drain();
+                dataLinePool.freeLine(line);
                 activeSounds.remove(activePlayback.id);
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
