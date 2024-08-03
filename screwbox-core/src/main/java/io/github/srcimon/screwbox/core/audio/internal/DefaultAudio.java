@@ -26,12 +26,10 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     private final Camera camera;
     private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
     private final VolumeMonitor volumeMonitor;
-    private final AudioAdapter audioAdapter;
     private final SoundManagement soundManagement;
 
     public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera, SoundManagement soundManagement) {
         this.executor = executor;
-        this.audioAdapter = audioAdapter;
         this.camera = camera;
         this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
         this.soundManagement = soundManagement;
@@ -100,13 +98,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    private void playSound(final Playback playback) {
-        final Percent volume = calculateVolume(playback);
-        if (!volume.isZero()) {
-            executor.execute(() -> soundManagement.play(playback, volume));
-        }
-    }
-
     @Override
     public int activeCount(final Sound sound) {
         return soundManagement.fetchActiveSounds(sound).size();
@@ -131,7 +122,8 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     public void configurationChanged(final AudioConfigurationEvent event) {
         if (MUSIC_VOLUME.equals(event.changedProperty()) || EFFECTS_VOLUME.equals(event.changedProperty())) {
             for (final var managedSound : soundManagement.activeSounds()) {
-                audioAdapter.setVolume(managedSound.line(), calculateVolume(managedSound.playback()));
+                Percent volume = calculateVolume(managedSound.playback());
+                soundManagement.changeVolume(managedSound, volume);
             }
         }
     }
@@ -143,5 +135,12 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         }
         final var effectVolume = configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
         return effectVolume.multiply(playback.options().volume().value());
+    }
+
+    private void playSound(final Playback playback) {
+        final Percent volume = calculateVolume(playback);
+        if (!volume.isZero()) {
+            executor.execute(() -> soundManagement.play(playback, volume));
+        }
     }
 }

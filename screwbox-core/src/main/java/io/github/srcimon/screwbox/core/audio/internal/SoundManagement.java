@@ -24,6 +24,10 @@ public class SoundManagement {
         this.dataLinePool = dataLinePool;
     }
 
+    public void changeVolume(ManagedSound managedSound, Percent volume) {
+        audioAdapter.setVolume(managedSound.line(), volume);
+    }
+
     public record ManagedSound(UUID id, Playback playback, SourceDataLine line) {
     }
 
