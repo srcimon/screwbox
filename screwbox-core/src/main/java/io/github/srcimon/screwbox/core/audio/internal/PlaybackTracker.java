@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-//TODO rename this class and the managed sound class
 public class PlaybackTracker {
     //TODO rework playback with position all propertys can be changed dynamically
     public record ActivePlayback(UUID id, Playback playback, SourceDataLine line) {
@@ -37,7 +36,6 @@ public class PlaybackTracker {
         audioAdapter.setVolume(line, volume);
         audioAdapter.setBalance(line, playback.options().balance());
         audioAdapter.setPan(line, playback.options().pan());
-
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
