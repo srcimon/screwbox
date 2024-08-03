@@ -34,7 +34,7 @@ public class SoundManagement {
     public void play(final Playback playback, final Percent volume) {
         int loop = 0;
         UUID id = UUID.randomUUID();
-        while (loop < playback.options().times()) {
+        do {
             loop++;
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                 var line = dataLinePool.getLine(stream.getFormat());
@@ -50,13 +50,10 @@ public class SoundManagement {
                 }
                 dataLinePool.freeLine(line);
                 activeSounds.remove(managedSound.id);
-                if(!activeSounds.containsKey(id)) {
-                    break;
-                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        } while (loop < playback.options().times() && activeSounds.containsKey(id));
     }
 
     public void stop(final ManagedSound managedSound) {
