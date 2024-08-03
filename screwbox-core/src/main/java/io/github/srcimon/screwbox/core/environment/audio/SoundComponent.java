@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.audio;
 
-import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.PlaybackReference;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.environment.Component;
