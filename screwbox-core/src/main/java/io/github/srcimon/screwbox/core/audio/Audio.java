@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 
 /**
- * Controls the audio playback of the {@link Engine} and gives information to the currently {@link #activePlaybacks()}.
+ * Controls the audio playback of the {@link Engine}.
  */
 public interface Audio {
 
@@ -45,13 +45,13 @@ public interface Audio {
         return playSound(sound.get(), position);
     }
 
-    /**
-     * Returns a list of all currently active {@link Playback}s.
-     *
-     * @see #activeCount()
-     * @see #activeCount(Sound)
-     */
-    List<Playback> activePlaybacks();
+//    /**
+//     * Returns a list of all currently active {@link Playback}s.
+//     *
+//     * @see #activeCount()
+//     * @see #activeCount(Sound)
+//     */
+//    List<Playback> activePlaybacks();
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.

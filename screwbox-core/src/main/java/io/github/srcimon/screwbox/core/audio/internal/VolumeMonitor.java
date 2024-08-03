@@ -34,6 +34,12 @@ public class VolumeMonitor {
         return level;
     }
 
+    public boolean isActive() {
+        synchronized (this) {
+            return isActive;
+        }
+    }
+
     private void continuouslyMonitorMicrophoneLevel() {
         try (final var line = audioAdapter.getStartedTargetDataLine(AUDIO_FORMAT)) {
             lastUsed = Time.now();
@@ -68,12 +74,6 @@ public class VolumeMonitor {
 
         double averageMeanSquare = sumMeanSquare / buffer.length;
         return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
-    }
-
-    public boolean isActive() {
-        synchronized (this) {
-            return isActive;
-        }
     }
 
     private boolean isIdleForTooLong() {

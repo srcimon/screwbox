@@ -78,14 +78,14 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         return this;
     }
 
-    @Override
-    public List<Playback> activePlaybacks() {
-        List<Playback> activePlaybacks = new ArrayList<>();
-        for (final var activePlayback : playbackTracker.allActive()) {
-            activePlaybacks.add(activePlayback.playback());
-        }
-        return activePlaybacks;
-    }
+//    @Override
+//    public List<Playback> activePlaybacks() {
+//        List<Playback> activePlaybacks = new ArrayList<>();
+//        for (final var activePlayback : playbackTracker.allActive()) {
+//            activePlaybacks.add(activePlayback.playback());
+//        }
+//        return activePlaybacks;
+//    }
 
     @Override
     public Audio stopSound(final Sound sound) {
