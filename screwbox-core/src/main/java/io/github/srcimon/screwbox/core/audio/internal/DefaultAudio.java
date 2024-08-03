@@ -24,7 +24,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     private final ExecutorService executor;
     private final Camera camera;
-    private final AudioConfiguration configuration = new AudioConfiguration();
+    private final AudioConfiguration configuration;
     private final VolumeMonitor volumeMonitor;
     private final SoundManagement soundManagement;
 
@@ -33,6 +33,7 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         this.camera = camera;
         this.volumeMonitor = volumeMonitor;
         this.soundManagement = soundManagement;
+        this.configuration = configuration;
         configuration.addListener(this);
     }
 
