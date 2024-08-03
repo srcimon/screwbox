@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 //TODO rename this class and the managed sound class
 public class SoundManagement {
 
+    public record ManagedSound(UUID id, Playback playback, SourceDataLine line) {
+    }
+
     private final Map<UUID, ManagedSound> activeSounds = new ConcurrentHashMap<>();
     private final AudioAdapter audioAdapter;
     private final DataLinePool dataLinePool;
@@ -28,13 +31,10 @@ public class SoundManagement {
         audioAdapter.setVolume(managedSound.line(), volume);
     }
 
-    public record ManagedSound(UUID id, Playback playback, SourceDataLine line) {
-    }
-
     public void play(final Playback playback, final Percent volume) {
         int loop = 0;
         UUID id = UUID.randomUUID();
-        while (loop < playback.options().times() && activeSounds.containsKey(id)) {
+        while (loop < playback.options().times()) {
             loop++;
             try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                 var line = dataLinePool.getLine(stream.getFormat());
@@ -50,6 +50,9 @@ public class SoundManagement {
                 }
                 dataLinePool.freeLine(line);
                 activeSounds.remove(managedSound.id);
+                if(!activeSounds.containsKey(id)) {
+                    break;
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

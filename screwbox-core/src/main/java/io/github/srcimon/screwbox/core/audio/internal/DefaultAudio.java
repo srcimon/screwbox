@@ -24,15 +24,16 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
 
     private final ExecutorService executor;
     private final Camera camera;
-    private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
+    private final AudioConfiguration configuration = new AudioConfiguration();
     private final VolumeMonitor volumeMonitor;
     private final SoundManagement soundManagement;
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera, SoundManagement soundManagement) {
+    public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration, final VolumeMonitor volumeMonitor, final Camera camera, SoundManagement soundManagement) {
         this.executor = executor;
         this.camera = camera;
-        this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
+        this.volumeMonitor = volumeMonitor;
         this.soundManagement = soundManagement;
+        configuration.addListener(this);
         //TODO Implement somewhere else
 //        this.executor.execute(() -> {
 //            dataLinePool.startNewLine(new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false));
