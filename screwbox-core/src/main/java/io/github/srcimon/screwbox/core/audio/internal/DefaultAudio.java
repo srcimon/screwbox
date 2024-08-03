@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Playback;
@@ -39,14 +37,14 @@ public class DefaultAudio implements Audio, Updatable {
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
             SoundOptions currentOptions = determinActualOptions(activePlayback.options);
-            if(!activePlayback.currentOptions.equals(currentOptions)) {
+            if (!activePlayback.currentOptions.equals(currentOptions)) {
                 applyOptionsOnLine(activePlayback.line, currentOptions);
                 activePlayback.currentOptions = currentOptions;
             }
         }
     }
 
-    public class ActivePlayback implements Playback {
+    public class ActivePlayback {
         private final UUID id;
         private final Sound sound;
         private final SourceDataLine line;
@@ -59,14 +57,6 @@ public class DefaultAudio implements Audio, Updatable {
             this.options = options;
             this.currentOptions = options;
             this.line = line;
-        }
-
-        public UUID id() {
-            return id;
-        }
-
-        public SoundOptions options() {
-            return options;
         }
     }
 
@@ -96,6 +86,15 @@ public class DefaultAudio implements Audio, Updatable {
         return microphoneMonitor.isActive();
     }
 
+    @Override
+    public List<Playback> activePlaybacks() {
+        List<Playback> playbacks = new ArrayList<>();
+        for (var activePlayback : allActivePlaybacks()) {
+            playbacks.add(new Playback(activePlayback.id, activePlayback.sound, activePlayback.options));//TODO activePlayback.toPlayback();
+        }
+        return playbacks;
+    }
+
     private SoundOptions calculateCurrent(SoundOptions options) {
         if (isNull(options.position())) {
             return options;
@@ -116,16 +115,6 @@ public class DefaultAudio implements Audio, Updatable {
         executor.execute(() -> play(sound, options));
         return this;
     }
-
-//    @Override
-//    public List<Playback> activePlaybacks() {
-//        List<Playback> activePlaybacks = new ArrayList<>();
-//        for (final var activePlayback : playbackTracker.allActive()) {
-//            activePlaybacks.add(activePlayback.playback());
-//        }
-//        return activePlaybacks;
-//    }
-
 
     private void play(final Sound sound, final SoundOptions options) {
         int loop = 0;
@@ -167,7 +156,7 @@ public class DefaultAudio implements Audio, Updatable {
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
         for (final var activePlayback : fetchPlaybacks(sound)) {
-            activePlaybacks.remove(activePlayback.id());
+            activePlaybacks.remove(activePlayback.id);
         }
         return this;
     }

@@ -51,7 +51,7 @@ public interface Audio {
 //     * @see #activeCount()
 //     * @see #activeCount(Sound)
 //     */
-//    List<Playback> activePlaybacks();
+    List<Playback> activePlaybacks();
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
