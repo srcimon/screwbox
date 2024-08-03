@@ -48,26 +48,8 @@ public class AudioAdapter {
         gainControl.setValue((float) balance);
     }
 
-    @Deprecated
-    void setVolume(final Clip clip, final Percent volume) {
-        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume.value()));
-    }
-
-    @Deprecated
-    void setPan(final Clip clip, final double pan) {
-        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.PAN);
-        gainControl.setValue((float) pan);
-    }
-
-    @Deprecated
-    void setBalance(final Clip clip, final double balance) {
-        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.BALANCE);
-        gainControl.setValue((float) balance);
-    }
-
     public static AudioInputStream getAudioInputStream(final byte[] content) {
-        try (InputStream inputStream = new ByteArrayInputStream(content)) {
+        try (final var inputStream = new ByteArrayInputStream(content)) {
             return AudioSystem.getAudioInputStream(inputStream);
         } catch (UnsupportedAudioFileException | IOException e) {
             throw new IllegalArgumentException("could not load audio content", e);
@@ -75,7 +57,7 @@ public class AudioAdapter {
     }
 
     public static AudioFormat getAudioFormat(final byte[] content) {
-        try(AudioInputStream inputStream = getAudioInputStream(content)) {
+        try (final var inputStream = getAudioInputStream(content)) {
             return inputStream.getFormat();
         } catch (IOException e) {
             throw new IllegalArgumentException("could not get audio format", e);

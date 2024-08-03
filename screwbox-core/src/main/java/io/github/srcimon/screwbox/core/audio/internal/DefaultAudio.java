@@ -35,30 +35,33 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public void update() {
-
+        for (var activePlayback : allActivePlaybacks()) {
+            activePlayback.currentOptions = determinActualOptions(activePlayback.options);
+        }
     }
 
     public class ActivePlayback implements Playback {
-       private final UUID id;
-       private  final Sound sound;
-       private final SourceDataLine line;
-       private final SoundOptions options;
-       private SoundOptions currentOptions;
+        private final UUID id;
+        private final Sound sound;
+        private final SourceDataLine line;
+        private final SoundOptions options;
+        private SoundOptions currentOptions;
 
-       public ActivePlayback(Sound sound, SoundOptions options, SourceDataLine line) {
-           this.id = UUID.randomUUID();
-           this.sound = sound;
-           this.options = options;
-           this.currentOptions = options;
-           this.line = line;
-       }
-       public UUID id() {
-           return id;
-       }
+        public ActivePlayback(Sound sound, SoundOptions options, SourceDataLine line) {
+            this.id = UUID.randomUUID();
+            this.sound = sound;
+            this.options = options;
+            this.currentOptions = options;
+            this.line = line;
+        }
 
-       public SoundOptions options() {
-           return options;
-       }
+        public UUID id() {
+            return id;
+        }
+
+        public SoundOptions options() {
+            return options;
+        }
     }
 
 
@@ -119,14 +122,12 @@ public class DefaultAudio implements Audio, Updatable {
 //    }
 
 
-    private void play(final Sound sound, final SoundOptions options) {//TODO <-- use sound options here
+    private void play(final Sound sound, final SoundOptions options) {
         int loop = 0;
-        UUID id = UUID.randomUUID();//TODO move id into playback / offer updatePosition(Playback)?
-
         final var format = AudioAdapter.getAudioFormat(sound.content());
         var line = dataLinePool.getLine(format);
         ActivePlayback activePlayback = new ActivePlayback(sound, options, line);
-        activePlayback.currentOptions = calculateCurrent(options).volume(calculateVolume(options));
+        activePlayback.currentOptions = determinActualOptions(options);
         activePlaybacks.put(activePlayback.id, activePlayback);
         audioAdapter.setVolume(line, activePlayback.currentOptions.volume());
         audioAdapter.setBalance(line, activePlayback.currentOptions.balance());
@@ -144,9 +145,13 @@ public class DefaultAudio implements Audio, Updatable {
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(id));
+        } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
         dataLinePool.freeLine(line);
-        activePlaybacks.remove(id);
+        activePlaybacks.remove(activePlayback.id);
+    }
+
+    private SoundOptions determinActualOptions(SoundOptions options) {
+        return calculateCurrent(options).volume(calculateVolume(options));
     }
 
     @Override
