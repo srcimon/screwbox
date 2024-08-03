@@ -21,14 +21,6 @@ public class SoundManagement {
         private boolean isShutdown = false;
         private SourceDataLine line;
 
-        public boolean isEffect() {
-            return playback.options().isEffect();
-        }
-
-        public Percent volume() {
-            return playback.options().volume();
-        }
-
         public Sound sound() {
             return playback.sound();
         }

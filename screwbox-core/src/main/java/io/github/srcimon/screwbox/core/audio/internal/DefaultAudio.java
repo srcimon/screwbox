@@ -164,7 +164,6 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
         }
     }
 
-
     private Percent calculateVolume(final Playback playback) {
         if (playback.options().isMusic()) {
             final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
