@@ -45,11 +45,11 @@ public class PlaybackTracker {
                 }
                 line.drain();
                 dataLinePool.freeLine(line);
-                activeSounds.remove(activePlayback.id);
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
         } while (loop < playback.options().times() && activeSounds.containsKey(id));
+        activeSounds.remove(id);
     }
 
     public void changeVolume(ActivePlayback activePlayback, Percent volume) {
