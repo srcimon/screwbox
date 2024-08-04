@@ -25,7 +25,6 @@ public class AudioConfiguration {
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
-    //TODO  test
     /**
      * Sets the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
      */
@@ -36,7 +35,6 @@ public class AudioConfiguration {
         return this;
     }
 
-    //TODO test
     /**
      * Returns the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
      */

@@ -4,10 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.audio.Playback;
-import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -23,8 +19,6 @@ import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FA
 
 public class HelloWorldApp {
 
-    private static Playback playback;
-
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
         // set ambient light to nearly full brightness
@@ -37,14 +31,6 @@ public class HelloWorldApp {
                 // enable all features that are used below...
                 .enableAllFeatures()
 
-                .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
-                        playback = engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().pan(0.8));
-                    }
-                    if(engine.mouse().isPressedRight()) {
-                        engine.audio().stopPlayback(playback);
-                    }
-                })
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
                     var screen = engine.graphics().screen();
