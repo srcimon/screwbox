@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
@@ -26,7 +27,7 @@ public class PlayerDashingState implements EntityState {
 
     @Override
     public void enter(Entity entity, Engine engine) {
-        engine.audio().playSound(SoundBundle.JUMP ,entity.position());
+        engine.audio().playSound(SoundBundle.JUMP , SoundOptions.playOnce().position(entity.position()));
         entity.add(new ParticleEmitterComponent(Duration.ofMillis(60), ParticleEmitterComponent.SpawnMode.POSITION, SILHOUETTE));
         entity.remove(PlayerAttackControlComponent.class);
         entity.remove(MovementControlComponent.class);

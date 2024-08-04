@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.vacuum.player.attack;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -28,7 +29,7 @@ public class PlayerAttackControlSystem implements EntitySystem {
             boolean gunIsLoaded = attackControl.reloadDuration.addTo(attackControl.lastShotFired).isBefore(engine.loop().lastUpdate());
             if (engine.mouse().isDown(MouseButton.LEFT) && gunIsLoaded) {
                 attackControl.lastShotFired = engine.loop().lastUpdate();
-                engine.audio().playSound(SoundBundle.PHASER, player.position());
+                engine.audio().playSound(SoundBundle.PHASER, SoundOptions.playOnce().position(player.position()));
                 engine.environment().addEntity("shoot",
                         new TransformComponent(player.position(), 8, 8),
                         new GlowComponent(8, Color.WHITE.opacity(0.75)),
