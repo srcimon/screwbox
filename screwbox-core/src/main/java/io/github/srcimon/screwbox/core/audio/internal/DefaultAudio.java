@@ -82,7 +82,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public int audioLineCount() {
+    public int availableAudioLines() {
         return audioLinePool.size();
     }
 
