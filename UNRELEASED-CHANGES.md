@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
-- Completly reworked audio playback to remove any lag on playing sounds. This also fixeds the unbearable results when using bluetooth headphones (#359)
+- Completly reworked audio playback to remove any lag on playing sounds (#359)
+- Added methods for changing already active audio playback
+- Added `SoundComponent`/`System` to add a constant sound to an entity
 - Added support for multiline text rendering
 - Added `TextUtil.lineWrap(String, int)`
 - Added `Async.taskCount()`
@@ -10,7 +12,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Rework of audio fixes the unbearable results when using bluetooth headphones
 
 ### 🧽 Cleanup & refactoring
 
