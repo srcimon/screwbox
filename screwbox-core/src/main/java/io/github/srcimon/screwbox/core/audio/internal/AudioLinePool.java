@@ -70,7 +70,8 @@ public class AudioLinePool {
                 .stream()
                 .filter(line -> !line.getValue())
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("could not find any unused line to remove"))
+                .orElseThrow(() -> new IllegalStateException("audio line pool has reached max capacity of %s lines"
+                        .formatted(configuration.maxLines())))
                 .getKey();
         lineToRemove.stop();
         lines.remove(lineToRemove);
