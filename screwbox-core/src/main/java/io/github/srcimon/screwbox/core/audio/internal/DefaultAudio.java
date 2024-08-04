@@ -46,7 +46,7 @@ public class DefaultAudio implements Audio, Updatable {
         }
     }
 
-    public class ActivePlayback {
+    private static class ActivePlayback {
         private final UUID id;
         private final Sound sound;
         private SoundOptions options;
@@ -142,7 +142,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean updateOptions(Playback playback, SoundOptions options) {
+    public boolean updatePlaybackOptions(Playback playback, SoundOptions options) {
         var activePlayback = activePlaybacks.get(playback.id());
         if (Objects.isNull(activePlayback)) {
             return false;

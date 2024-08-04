@@ -38,7 +38,7 @@ public class AudioLinePool {
                     .stream()
                     .filter(line -> !line.getValue())
                     .filter(line -> isSame(line.getKey().getFormat(), format))
-                    .findFirst().map(line -> line.getKey())
+                    .findFirst().map(Map.Entry::getKey)
                     .orElseGet(() -> startNewLine(format));
             lines.put(sourceDataLine, true);
             return sourceDataLine;
