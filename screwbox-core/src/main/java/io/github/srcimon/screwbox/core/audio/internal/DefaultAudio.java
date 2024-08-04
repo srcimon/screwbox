@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
-    private static class ActivePlayback implements Playback{
+    private static class ActivePlayback implements Playback {
         private final UUID id;
         private final Sound sound;
         private SoundOptions options;
@@ -174,8 +174,7 @@ public class DefaultAudio implements Audio, Updatable {
     private void applyOptionsOnLine(final SourceDataLine line, final SoundOptions options) {
         if (nonNull(line)) {
             audioAdapter.setVolume(line, options.volume());
-            audioAdapter.setBalance(line, options.balance());
-            audioAdapter.setPan(line, options.pan());//TODO FIX THIS RESETS BALANCE
+            audioAdapter.setPan(line, options.pan());
         }
     }
 

@@ -33,27 +33,24 @@ class SoundOptionsTest {
     }
 
     @Test
-    void soundOptions_panAndBalanceOutOfLowerBounds_hasValidPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(-4).balance(-9);
+    void soundOptions_panOutOfLowerBounds_hasValidPan() {
+        var options = SoundOptions.playOnce().pan(-4);
 
         assertThat(options.pan()).isEqualTo(-1);
-        assertThat(options.balance()).isEqualTo(-1);
     }
 
     @Test
-    void soundOptions_panAndBalanceOutOfUpperBounds_hasValidPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(4).balance(9);
+    void soundOptions_panOutOfUpperBounds_hasValidPan() {
+        var options = SoundOptions.playOnce().pan(4);
 
         assertThat(options.pan()).isEqualTo(1);
-        assertThat(options.balance()).isEqualTo(1);
     }
 
     @Test
-    void soundOptions_validInputForPanAndBalance_hasPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(0.2).balance(-0.3);
+    void soundOptions_validInputForPan_hasPan() {
+        var options = SoundOptions.playOnce().pan(0.2);
 
         assertThat(options.pan()).isEqualTo(0.2);
-        assertThat(options.balance()).isEqualTo(-0.3);
     }
 
     @Test

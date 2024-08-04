@@ -43,11 +43,6 @@ public class AudioAdapter {
         gainControl.setValue((float) pan);
     }
 
-    void setBalance(final SourceDataLine line, final double balance) {
-        final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.BALANCE);
-        gainControl.setValue((float) balance);
-    }
-
     public static AudioInputStream getAudioInputStream(final byte[] content) {
         try (final var inputStream = new ByteArrayInputStream(content)) {
             return AudioSystem.getAudioInputStream(inputStream);
