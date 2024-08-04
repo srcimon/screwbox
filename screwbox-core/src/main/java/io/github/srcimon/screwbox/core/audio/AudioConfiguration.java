@@ -27,7 +27,7 @@ public class AudioConfiguration {
 
     /**
      * Sets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
-     * when using {@link Audio#playSound(Sound, Vector)}.
+     * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public AudioConfiguration setSoundRange(final double soundRange) {
         Validate.positive(soundRange, "sound range must be positive");
@@ -54,7 +54,7 @@ public class AudioConfiguration {
 
     /**
      * Gets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
-     * when using {@link Audio#playSound(Sound, Vector)}.
+     * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public double soundRange() {
         return soundRange;
