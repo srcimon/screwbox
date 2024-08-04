@@ -7,6 +7,6 @@ public class GameScene implements Scene {
 
     @Override
     public void populate(Environment environment) {
-
+        // this scene is empty on purpose
     }
 }
