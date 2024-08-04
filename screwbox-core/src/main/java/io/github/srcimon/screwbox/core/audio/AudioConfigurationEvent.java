@@ -9,10 +9,12 @@ public class AudioConfigurationEvent extends EventObject {
 
     private final ConfigurationProperty changedProperty;
 
+    //TODO add javadoc
     public enum ConfigurationProperty {
         MUSIC_VOLUME,
         EFFECTS_VOLUME,
         SOUND_RANGE,
+        MAX_LINES,
         MICROPHONE_TIMEOUT
     }
     public AudioConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {

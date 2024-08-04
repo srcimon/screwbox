@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 import java.util.HashMap;
@@ -7,12 +9,13 @@ import java.util.Map;
 
 public class AudioLinePool {
 
-    //TODO implememt max lines cap (free old unused lines)
     private final Map<SourceDataLine, Boolean> lines = new HashMap<>();
     private final AudioAdapter audioAdapter;
+    private final AudioConfiguration configuration;
 
-    public AudioLinePool(final AudioAdapter audioAdapter) {
+    public AudioLinePool(final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.audioAdapter = audioAdapter;
+        this.configuration = configuration;
     }
 
     public void prepareLine(final AudioFormat format) {
@@ -53,10 +56,24 @@ public class AudioLinePool {
 
     private SourceDataLine startNewLine(final AudioFormat format) {
         synchronized (lines) {
+            while (size() >= configuration.maxLines()) {
+                removeUnusedLine();
+            }
             var line = audioAdapter.createLine(format);
             lines.put(line, false);
             return line;
         }
+    }
+
+    private void removeUnusedLine() {
+        var lineToRemove = lines.entrySet()
+                .stream()
+                .filter(line -> !line.getValue())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("could not find any unused line to remove"))
+                .getKey();
+        lineToRemove.stop();
+        lines.remove(lineToRemove);
     }
 
 }

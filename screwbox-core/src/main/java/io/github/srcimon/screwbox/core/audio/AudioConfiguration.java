@@ -22,8 +22,22 @@ public class AudioConfiguration {
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
     private Duration microphoneTimeout = Duration.ofSeconds(5);
+    private int maxLines = 64;
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
+
+    //TODO javadoc and test
+    public AudioConfiguration setMaxLines(final int maxLines) {
+        Validate.positive(maxLines, "max lines must be positive");
+        this.maxLines = maxLines;
+        notifyListeners(ConfigurationProperty.MAX_LINES);
+        return this;
+    }
+
+    //TODO javadoc and test
+    public int maxLines() {
+        return maxLines;
+    }
 
     /**
      * Sets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
