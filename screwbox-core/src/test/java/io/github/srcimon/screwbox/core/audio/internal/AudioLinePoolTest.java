@@ -38,7 +38,7 @@ class AudioLinePoolTest {
 
     @Test
     void prepareLine_maxLinesReached_removesOldLine() {
-        when(audioAdapter.createLine(STEREO_FORMAT))
+        when(audioAdapter.createSourceLine(STEREO_FORMAT))
                 .thenReturn(mock(SourceDataLine.class), mock(SourceDataLine.class), mock(SourceDataLine.class));
 
         audioLinePool.prepareLine(STEREO_FORMAT);
@@ -59,7 +59,7 @@ class AudioLinePoolTest {
     void aquireLine_lineHasBeenPrepared_returnsPreparedLine() {
         SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
-        when(audioAdapter.createLine(STEREO_FORMAT)).thenReturn(stereoLine);
+        when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(stereoLine);
         audioLinePool.prepareLine(STEREO_FORMAT);
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(STEREO_FORMAT);
@@ -70,7 +70,7 @@ class AudioLinePoolTest {
     @Test
     void aquireLine_lineHasNotBeenPrepared_returnsNewLine() {
         SourceDataLine monoLine = mock(SourceDataLine.class);
-        when(audioAdapter.createLine(MONO_FORMAT)).thenReturn(monoLine);
+        when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(monoLine);
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
         assertThat(aquireLine).isEqualTo(monoLine);
@@ -80,11 +80,11 @@ class AudioLinePoolTest {
     void aquireLine_stereoLineAvailableButMonoRequested_returnsNewMonoLine() {
         SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
-        when(audioAdapter.createLine(STEREO_FORMAT)).thenReturn(stereoLine);
+        when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(stereoLine);
         audioLinePool.prepareLine(STEREO_FORMAT);
 
         SourceDataLine monoLine = mock(SourceDataLine.class);
-        when(audioAdapter.createLine(MONO_FORMAT)).thenReturn(monoLine);
+        when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(monoLine);
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
         assertThat(aquireLine).isEqualTo(monoLine);

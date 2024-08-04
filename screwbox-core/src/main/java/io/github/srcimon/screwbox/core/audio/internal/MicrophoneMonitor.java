@@ -41,7 +41,7 @@ public class MicrophoneMonitor {
     }
 
     private void continuouslyMonitorMicrophoneLevel() {
-        try (final var line = audioAdapter.getStartedTargetDataLine(AUDIO_FORMAT)) {
+        try (final var line = audioAdapter.createTargetLine(AUDIO_FORMAT)) {
             lastUsed = Time.now();
             final byte[] buffer = new byte[line.getBufferSize()];
 

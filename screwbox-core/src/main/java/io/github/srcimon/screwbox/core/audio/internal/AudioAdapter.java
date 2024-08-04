@@ -1,18 +1,15 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.audio.Sound;
 
 import javax.sound.sampled.*;
-import javax.xml.transform.Source;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class AudioAdapter {
 
-    public SourceDataLine createLine(final AudioFormat format) {
+    public SourceDataLine createSourceLine(final AudioFormat format) {
         try {
             final var info = new DataLine.Info(SourceDataLine.class, format);
             final var sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
@@ -24,7 +21,7 @@ public class AudioAdapter {
         }
     }
 
-    public TargetDataLine getStartedTargetDataLine(final AudioFormat format) {
+    public TargetDataLine createTargetLine(final AudioFormat format) {
         try {
             final var info = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
@@ -67,6 +64,7 @@ public class AudioAdapter {
         }
     }
 
+    //TODO try to test?
     public static byte[] convertToStereo(final AudioInputStream monoInputStream) {
         final var originalFormat = monoInputStream.getFormat();
         final var stereoFormat = new AudioFormat(originalFormat.getEncoding(), originalFormat.getSampleRate(),
@@ -79,5 +77,4 @@ public class AudioAdapter {
             throw new IllegalStateException("could not convert mono to stereo audio", e);
         }
     }
-
 }

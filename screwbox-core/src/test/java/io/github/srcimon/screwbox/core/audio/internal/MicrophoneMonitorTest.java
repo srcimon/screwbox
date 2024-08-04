@@ -46,7 +46,7 @@ class MicrophoneMonitorTest {
 
     @Test
     void isActive_afterCallingLevel_isTrue() {
-        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         microphoneMonitor.level();
 
         assertThat(microphoneMonitor.isActive()).isTrue();
@@ -59,7 +59,7 @@ class MicrophoneMonitorTest {
 
     @Test
     void isActive_afertIdleTimeoutReached_isFalse() {
-        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         configuration.setMicrophoneIdleTimeout(Duration.ofMillis(40));
         microphoneMonitor.level();
 
@@ -69,7 +69,7 @@ class MicrophoneMonitorTest {
 
     @Test
     void level_someMicrophoneInput_isNotZero() {
-        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
         // sorry children!
@@ -86,7 +86,7 @@ class MicrophoneMonitorTest {
 
     @Test
     void level_firstCall_isZero() {
-        when(audioAdapter.getStartedTargetDataLine(any())).thenReturn(targetDataLine);
+        when(audioAdapter.createTargetLine(any())).thenReturn(targetDataLine);
         when(targetDataLine.getBufferSize()).thenReturn(4);
 
         assertThat(microphoneMonitor.level().isZero()).isTrue();

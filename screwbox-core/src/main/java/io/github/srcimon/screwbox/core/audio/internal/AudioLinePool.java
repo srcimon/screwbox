@@ -59,7 +59,7 @@ public class AudioLinePool {
             while (size() >= configuration.maxLines()) {
                 removeUnusedLine();
             }
-            var line = audioAdapter.createLine(format);
+            var line = audioAdapter.createSourceLine(format);
             lines.put(line, false);
             return line;
         }
