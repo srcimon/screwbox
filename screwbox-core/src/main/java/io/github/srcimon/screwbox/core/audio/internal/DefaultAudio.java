@@ -26,26 +26,6 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
-    private final ExecutorService executor;
-    private final Camera camera;
-    private final AudioConfiguration configuration;
-    private final MicrophoneMonitor microphoneMonitor;
-    private final AudioAdapter audioAdapter;
-    private final AudioLinePool audioLinePool;
-
-    private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
-
-    @Override
-    public void update() {
-        for (var activePlayback : allActivePlaybacks()) {
-            final SoundOptions currentOptions = determinActualOptions(activePlayback.options);
-            if (!activePlayback.currentOptions.equals(currentOptions)) {
-                applyOptionsOnLine(activePlayback.line, currentOptions);
-                activePlayback.currentOptions = currentOptions;
-            }
-        }
-    }
-
     private static class ActivePlayback {
         private final UUID id;
         private final Sound sound;
@@ -64,6 +44,14 @@ public class DefaultAudio implements Audio, Updatable {
             return new Playback(id, sound, options);
         }
     }
+
+    private final ExecutorService executor;
+    private final Camera camera;
+    private final AudioConfiguration configuration;
+    private final MicrophoneMonitor microphoneMonitor;
+    private final AudioAdapter audioAdapter;
+    private final AudioLinePool audioLinePool;
+    private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final MicrophoneMonitor microphoneMonitor, final Camera camera, final AudioAdapter audioAdapter, final AudioLinePool audioLinePool) {
@@ -213,6 +201,17 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public AudioConfiguration configuration() {
         return configuration;
+    }
+
+    @Override
+    public void update() {
+        for (var activePlayback : allActivePlaybacks()) {
+            final SoundOptions currentOptions = determinActualOptions(activePlayback.options);
+            if (!activePlayback.currentOptions.equals(currentOptions)) {
+                applyOptionsOnLine(activePlayback.line, currentOptions);
+                activePlayback.currentOptions = currentOptions;
+            }
+        }
     }
 
     private List<ActivePlayback> allActivePlaybacks() {
