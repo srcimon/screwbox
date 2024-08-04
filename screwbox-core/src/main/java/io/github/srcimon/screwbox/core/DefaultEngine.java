@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
-import io.github.srcimon.screwbox.core.audio.internal.DataLinePool;
+import io.github.srcimon.screwbox.core.audio.internal.AudioLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
 import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
@@ -124,10 +124,10 @@ class DefaultEngine implements Engine {
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
         final AudioAdapter audioAdapter = new AudioAdapter();
-        final DataLinePool dataLinePool = new DataLinePool(64);//TODO use audio configuration
+        final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter);
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        audio = new DefaultAudio(executor, audioConfiguration, microphoneMonitor, camera, audioAdapter, dataLinePool);
+        audio = new DefaultAudio(executor, audioConfiguration, microphoneMonitor, camera, audioAdapter, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
@@ -146,7 +146,7 @@ class DefaultEngine implements Engine {
             component.addKeyListener(keyboard);
         }
         executor.execute(new InitializeFontDrawingTask());
-        executor.execute(new WarmupAudioTask(dataLinePool));
+        executor.execute(new WarmupAudioTask(audioLinePool));
         this.name = name;
         this.version = detectVersion();
         window.setTitle(name);

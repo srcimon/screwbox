@@ -1,34 +1,35 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataLinePool {
+public class AudioLinePool {
 
     //TODO implememt max lines cap (free old unused lines)
     private final Map<SourceDataLine, Boolean> lines = new HashMap<>();
-    private int maxLineCount;
+    private final AudioAdapter audioAdapter;
 
-    public DataLinePool(final int maxLineCount) {
-        this.maxLineCount = maxLineCount;
+    public AudioLinePool(final AudioAdapter audioAdapter) {
+        this.audioAdapter = audioAdapter;
     }
 
-    public void setMaxLineCount(final int maxLineCount) {
-        this.maxLineCount = maxLineCount;
+    public void prepareLine(final AudioFormat format) {
+        startNewLine(format);
     }
 
-    public void freeLine(SourceDataLine sourceDataLine) {
+    public void releaseLine(final SourceDataLine sourceDataLine) {
         synchronized (lines) {
             lines.put(sourceDataLine, false);
         }
     }
 
-    public SourceDataLine getLine(final AudioFormat format) {
+    public int size() {
+        return lines.size();
+    }
+
+    public SourceDataLine aquireLine(final AudioFormat format) {
         synchronized (lines) {
             var sourceDataLine = lines.entrySet()
                     .stream()
@@ -39,14 +40,6 @@ public class DataLinePool {
             lines.put(sourceDataLine, true);
             return sourceDataLine;
         }
-    }
-
-    public void createLine(final AudioFormat format) {
-        startNewLine(format);
-    }
-
-    public int size() {
-        return lines.size();
     }
 
     private boolean isSame(final AudioFormat format, final AudioFormat other) {
@@ -60,16 +53,9 @@ public class DataLinePool {
 
     private SourceDataLine startNewLine(final AudioFormat format) {
         synchronized (lines) {
-            try {
-                final DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-                SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
-                sourceDataLine.open(format);
-                sourceDataLine.start();
-                lines.put(sourceDataLine, false);
-                return sourceDataLine;
-            } catch (LineUnavailableException e) {
-                throw new IllegalStateException("could not obtain new source data line", e);
-            }
+            var line = audioAdapter.createLine(format);
+            lines.put(line, false);
+            return line;
         }
     }
 

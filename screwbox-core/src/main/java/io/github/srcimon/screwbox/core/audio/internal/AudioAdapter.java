@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.Sound;
 
 import javax.sound.sampled.*;
+import javax.xml.transform.Source;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 
 public class AudioAdapter {
 
+    @Deprecated
     Clip createClip(final Sound sound) {
         try (AudioInputStream audioInputStream = getAudioInputStream(sound.content())) {
             final Clip clip = AudioSystem.getClip();
@@ -18,6 +20,18 @@ public class AudioAdapter {
             return clip;
         } catch (LineUnavailableException | IOException e) {
             throw new IllegalStateException("could not create sound", e);
+        }
+    }
+
+    public SourceDataLine createLine(final AudioFormat format) {
+        try {
+            final var info = new DataLine.Info(SourceDataLine.class, format);
+            final var sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
+            sourceDataLine.open(format);
+            sourceDataLine.start();
+            return sourceDataLine;
+        } catch (LineUnavailableException e) {
+            throw new IllegalStateException("could not obtain new source data line", e);
         }
     }
 

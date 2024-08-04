@@ -31,7 +31,7 @@ public class DefaultAudio implements Audio, Updatable {
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioAdapter audioAdapter;
-    private final DataLinePool dataLinePool;
+    private final AudioLinePool audioLinePool;
 
     private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
@@ -66,11 +66,11 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
-                        final MicrophoneMonitor microphoneMonitor, final Camera camera, final AudioAdapter audioAdapter, final DataLinePool dataLinePool) {
+                        final MicrophoneMonitor microphoneMonitor, final Camera camera, final AudioAdapter audioAdapter, final AudioLinePool audioLinePool) {
         this.executor = executor;
         this.camera = camera;
         this.microphoneMonitor = microphoneMonitor;
-        this.dataLinePool = dataLinePool;
+        this.audioLinePool = audioLinePool;
         this.configuration = configuration;
         this.audioAdapter = audioAdapter;
     }
@@ -83,7 +83,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public int linePoolSize() {
-        return dataLinePool.size();
+        return audioLinePool.size();
     }
 
     @Override
@@ -154,7 +154,7 @@ public class DefaultAudio implements Audio, Updatable {
     private void play(final Sound sound, final ActivePlayback activePlayback) {
         int loop = 0;
         final var format = AudioAdapter.getAudioFormat(sound.content());
-        activePlayback.line = dataLinePool.getLine(format);
+        activePlayback.line = audioLinePool.aquireLine(format);
         applyOptionsOnLine(activePlayback.line, activePlayback.currentOptions);
 
         do {
@@ -171,7 +171,7 @@ public class DefaultAudio implements Audio, Updatable {
             }
         } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
         //TODO schedule echo here
-        dataLinePool.freeLine(activePlayback.line);
+        audioLinePool.releaseLine(activePlayback.line);
         activePlaybacks.remove(activePlayback.id);
     }
 
