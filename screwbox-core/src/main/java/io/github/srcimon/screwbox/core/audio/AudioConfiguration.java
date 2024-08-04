@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
@@ -15,7 +14,7 @@ import static java.util.Objects.requireNonNull;
  * Read and change the current {@link AudioConfiguration}.
  */
 public class AudioConfiguration {
-//TODO add line limit
+
     private Percent effectVolume = Percent.max();
     private Percent musicVolume = Percent.max();
     private boolean isMusicMuted = false;
@@ -26,7 +25,10 @@ public class AudioConfiguration {
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
-    //TODO javadoc and test
+    //TODO  test
+    /**
+     * Sets the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
+     */
     public AudioConfiguration setMaxLines(final int maxLines) {
         Validate.positive(maxLines, "max lines must be positive");
         this.maxLines = maxLines;
@@ -34,7 +36,10 @@ public class AudioConfiguration {
         return this;
     }
 
-    //TODO javadoc and test
+    //TODO test
+    /**
+     * Returns the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
+     */
     public int maxLines() {
         return maxLines;
     }
