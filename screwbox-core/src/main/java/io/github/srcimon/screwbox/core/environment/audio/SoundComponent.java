@@ -22,11 +22,11 @@ public class SoundComponent implements Component {
     public Sound sound;
     public Playback playback;
 
-    public SoundComponent(Supplier<Sound> sound) {
+    public SoundComponent(final Supplier<Sound> sound) {
         this(sound.get());
     }
 
-    public SoundComponent(Sound sound) {
+    public SoundComponent(final Sound sound) {
         this.sound = sound;
     }
 }
