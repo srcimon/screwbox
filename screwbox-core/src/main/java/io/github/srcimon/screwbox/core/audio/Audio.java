@@ -67,7 +67,7 @@ public interface Audio {
         return playSound(sound.get());
     }
 
-    boolean isAlive(Playback playback);
+    boolean isActive(Playback playback);
 
     boolean updateOptions(Playback playback, SoundOptions options);
 
@@ -107,13 +107,13 @@ public interface Audio {
     /**
      * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
      */
-    boolean isAlive(Sound sound);
+    boolean isActive(Sound sound);
 
     /**
      * Returns {@code true} of there is any active playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default boolean isAlive(Supplier<Sound> sound) {
-        return isAlive(sound.get());
+    default boolean isActive(Supplier<Sound> sound) {
+        return isActive(sound.get());
     }
 
     /**
