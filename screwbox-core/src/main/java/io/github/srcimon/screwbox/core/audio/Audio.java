@@ -33,17 +33,23 @@ public interface Audio {
      */
     boolean isMicrophoneActive();
 
+    /**
+     * Returns a list of all currently active {@link Playback playbacks}.
+     */
     List<Playback> activePlaybacks();
 
     /**
-     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     * Plays a {@link Sound} using the given {@link SoundOptions}. Returns a reference to the {@link Playback} created.
      *
      * @see #playSound(Supplier, SoundOptions)
      */
-    //TODO document playback reference
     Playback playSound(Sound sound, SoundOptions options);
 
+    /**
+     * Stops a single {@link Playback}. If the {@link Playback} has already ended won't do anything.
+     */
     Audio stopPlayback(Playback playback);
+
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
@@ -67,9 +73,16 @@ public interface Audio {
         return playSound(sound.get());
     }
 
+    /**
+     * Returns {@code true} if the specified {@link Playback} is active.
+     */
     boolean isActive(Playback playback);
 
-    boolean updateOptions(Playback playback, SoundOptions options);
+    /**
+     * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}
+     * is still active and could be changed. Otherwise return value will be {@code false}.
+     */
+    boolean updatePlaybackOptions(Playback playback, SoundOptions options);
 
     /**
      * Stops all currently playing instances of the {@link Sound}.

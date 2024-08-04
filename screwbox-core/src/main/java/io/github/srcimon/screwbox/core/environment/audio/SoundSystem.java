@@ -21,7 +21,7 @@ public class SoundSystem implements EntitySystem {
             if (isNull(soundComponent.playback) || !engine.audio().isActive(soundComponent.playback)) {
                 soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
             } else {
-                engine.audio().updateOptions(soundComponent.playback, soundOptions);
+                engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);
             }
         }
     }
