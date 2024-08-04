@@ -132,7 +132,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean isActive(final Playback playback) {
+    public boolean isAlive(final Playback playback) {
         return activePlaybacks.containsKey(playback.id());
     }
 
@@ -198,7 +198,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean isActive(final Sound sound) {
+    public boolean isAlive(final Sound sound) {
         return activeCount(sound) > 0;
     }
 

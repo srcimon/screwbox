@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
@@ -26,30 +25,6 @@ public interface Audio {
      */
     boolean isMicrophoneActive();
 
-//    /**
-//     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
-//     * direction between the given position and the {@link Camera#position()} ()}.
-//     *
-//     * @see #playSound(Supplier, Vector)
-//     */
-//    Audio playSound(Sound sound, Vector position);
-//
-//    /**
-//     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
-//     * direction between the given position and the {@link Camera#position()}.
-//     *
-//     * @see #playSound(Sound, Vector)
-//     */
-//    default Audio playSound(final Supplier<Sound> sound, final Vector position) {
-//        return playSound(sound.get(), position);
-//    }
-
-    //    /**
-//     * Returns a list of all currently active {@link Playback}s.
-//     *
-//     * @see #activeCount()
-//     * @see #activeCount(Sound)
-//     */
     List<Playback> activePlaybacks();
 
     /**
@@ -84,7 +59,7 @@ public interface Audio {
         return playSound(sound.get());
     }
 
-    boolean isActive(Playback playback);
+    boolean isAlive(Playback playback);
 
     boolean updateOptions(Playback playback, SoundOptions options);
 
@@ -124,13 +99,13 @@ public interface Audio {
     /**
      * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
      */
-    boolean isActive(Sound sound);
+    boolean isAlive(Sound sound);
 
     /**
      * Returns {@code true} of there is any active playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default boolean isActive(Supplier<Sound> sound) {
-        return isActive(sound.get());
+    default boolean isAlive(Supplier<Sound> sound) {
+        return isAlive(sound.get());
     }
 
     /**

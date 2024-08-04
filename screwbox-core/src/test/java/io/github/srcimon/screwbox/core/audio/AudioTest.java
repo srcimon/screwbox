@@ -56,10 +56,10 @@ class AudioTest {
     }
 
     @Test
-    void isActive_supplierGiven_returnsIsActiveOfSound() {
-        when(audio.isActive(SOUND)).thenReturn(true);
+    void isActive_supplierGiven_returnsIsAliveOfSound() {
+        when(audio.isAlive(SOUND)).thenReturn(true);
 
-        assertThat(audio.isActive(ASSET)).isTrue();
+        assertThat(audio.isAlive(ASSET)).isTrue();
     }
 
     @Test

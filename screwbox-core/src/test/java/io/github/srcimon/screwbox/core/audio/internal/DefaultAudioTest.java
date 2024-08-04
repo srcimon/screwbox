@@ -197,7 +197,7 @@ class DefaultAudioTest {
 
     @Test
     void isActive_noInstanceActive_isFalse() {
-        assertThat(audio.isActive(sound)).isFalse();
+        assertThat(audio.isAlive(sound)).isFalse();
     }
 
     @Test
@@ -209,7 +209,7 @@ class DefaultAudioTest {
 
         TestUtil.shutdown(executor);
 
-        assertThat(audio.isActive(sound)).isTrue();
+        assertThat(audio.isAlive(sound)).isTrue();
     }
 
     @Test
@@ -329,7 +329,7 @@ class DefaultAudioTest {
         when(audioAdapter.createClip(sound)).thenReturn(clip);
         audio.playSound(sound);
 
-        await(() -> audio.isActive(sound), ofMillis(500));
+        await(() -> audio.isAlive(sound), ofMillis(500));
 
         audio.stopSound(sound);
 
