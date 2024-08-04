@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -14,6 +13,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,7 +26,7 @@ class AudioLinePoolTest {
     AudioAdapter audioAdapter;
 
     @Spy
-    AudioConfiguration configuration = new AudioConfiguration().setMaxLines(4);
+    AudioConfiguration configuration = new AudioConfiguration().setMaxLines(2);
 
     @InjectMocks
     AudioLinePool audioLinePool;
@@ -37,14 +37,15 @@ class AudioLinePoolTest {
     }
 
     @Test
-    void xxx() {
-        audioLinePool.prepareLine(STEREO_FORMAT);
-        audioLinePool.prepareLine(STEREO_FORMAT);
+    void prepareLine_maxLinesReached_removesOldLine() {
+        when(audioAdapter.createLine(STEREO_FORMAT))
+                .thenReturn(mock(SourceDataLine.class), mock(SourceDataLine.class), mock(SourceDataLine.class));
+
         audioLinePool.prepareLine(STEREO_FORMAT);
         audioLinePool.prepareLine(STEREO_FORMAT);
         audioLinePool.prepareLine(STEREO_FORMAT);
 
-        assertThat(audioLinePool.size()).isEqualTo(4);
+        assertThat(audioLinePool.size()).isEqualTo(2);
     }
 
     @Test
@@ -56,7 +57,7 @@ class AudioLinePoolTest {
 
     @Test
     void aquireLine_lineHasBeenPrepared_returnsPreparedLine() {
-        SourceDataLine stereoLine = Mockito.mock(SourceDataLine.class);
+        SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
         when(audioAdapter.createLine(STEREO_FORMAT)).thenReturn(stereoLine);
         audioLinePool.prepareLine(STEREO_FORMAT);
@@ -68,7 +69,7 @@ class AudioLinePoolTest {
 
     @Test
     void aquireLine_lineHasNotBeenPrepared_returnsNewLine() {
-        SourceDataLine monoLine = Mockito.mock(SourceDataLine.class);
+        SourceDataLine monoLine = mock(SourceDataLine.class);
         when(audioAdapter.createLine(MONO_FORMAT)).thenReturn(monoLine);
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
@@ -77,12 +78,12 @@ class AudioLinePoolTest {
 
     @Test
     void aquireLine_stereoLineAvailableButMonoRequested_returnsNewMonoLine() {
-        SourceDataLine stereoLine = Mockito.mock(SourceDataLine.class);
+        SourceDataLine stereoLine = mock(SourceDataLine.class);
         when(stereoLine.getFormat()).thenReturn(STEREO_FORMAT);
         when(audioAdapter.createLine(STEREO_FORMAT)).thenReturn(stereoLine);
         audioLinePool.prepareLine(STEREO_FORMAT);
 
-        SourceDataLine monoLine = Mockito.mock(SourceDataLine.class);
+        SourceDataLine monoLine = mock(SourceDataLine.class);
         when(audioAdapter.createLine(MONO_FORMAT)).thenReturn(monoLine);
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
