@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -18,6 +19,8 @@ import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
+
+    private static Playback playback;
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");

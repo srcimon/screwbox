@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
-    private static class ActivePlayback {
+    private static class ActivePlayback implements Playback{
         private final UUID id;
         private final Sound sound;
         private SoundOptions options;
@@ -40,8 +40,19 @@ public class DefaultAudio implements Audio, Updatable {
             this.currentOptions = options;
         }
 
-        public Playback toPlayback() {
-            return new Playback(id, sound, options);
+        @Override
+        public UUID id() {
+            return id;
+        }
+
+        @Override
+        public Sound sound() {
+            return sound;
+        }
+
+        @Override
+        public SoundOptions options() {
+            return options;
         }
     }
 
@@ -88,8 +99,7 @@ public class DefaultAudio implements Audio, Updatable {
     public List<Playback> activePlaybacks() {
         List<Playback> playbacks = new ArrayList<>();
         for (var activePlayback : allActivePlaybacks()) {
-            activePlayback.toPlayback();
-            playbacks.add(activePlayback.toPlayback());
+            playbacks.add(activePlayback);
         }
         return playbacks;
     }
@@ -115,7 +125,7 @@ public class DefaultAudio implements Audio, Updatable {
         activePlayback.currentOptions = determinActualOptions(options);
         activePlaybacks.put(activePlayback.id, activePlayback);
         executor.execute(() -> play(sound, activePlayback));
-        return activePlayback.toPlayback();
+        return activePlayback;
     }
 
     @Override
@@ -165,7 +175,7 @@ public class DefaultAudio implements Audio, Updatable {
         if (nonNull(line)) {
             audioAdapter.setVolume(line, options.volume());
             audioAdapter.setBalance(line, options.balance());
-            audioAdapter.setPan(line, options.pan());
+            audioAdapter.setPan(line, options.pan());//TODO FIX THIS RESETS BALANCE
         }
     }
 
