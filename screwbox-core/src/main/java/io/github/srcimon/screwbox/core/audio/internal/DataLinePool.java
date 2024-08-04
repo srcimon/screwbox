@@ -12,6 +12,15 @@ public class DataLinePool {
 
     //TODO implememt max lines cap (free old unused lines)
     private final Map<SourceDataLine, Boolean> lines = new HashMap<>();
+    private int maxLineCount;
+
+    public DataLinePool(final int maxLineCount) {
+        this.maxLineCount = maxLineCount;
+    }
+
+    public void setMaxLineCount(final int maxLineCount) {
+        this.maxLineCount = maxLineCount;
+    }
 
     public void freeLine(SourceDataLine sourceDataLine) {
         synchronized (lines) {
@@ -36,7 +45,11 @@ public class DataLinePool {
         startNewLine(format);
     }
 
-    private boolean isSame(AudioFormat format, AudioFormat other) {
+    public int size() {
+        return lines.size();
+    }
+
+    private boolean isSame(final AudioFormat format, final AudioFormat other) {
         return format.getFrameSize() == other.getFrameSize()
                 && format.getSampleRate() == other.getSampleRate()
                 && format.getEncoding().equals(other.getEncoding())
@@ -60,7 +73,4 @@ public class DataLinePool {
         }
     }
 
-    public int size() {
-        return lines.size();
-    }
 }

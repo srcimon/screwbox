@@ -124,7 +124,7 @@ class DefaultEngine implements Engine {
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
         final AudioAdapter audioAdapter = new AudioAdapter();
-        final DataLinePool dataLinePool = new DataLinePool();
+        final DataLinePool dataLinePool = new DataLinePool(64);//TODO use audio configuration
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, microphoneMonitor, camera, audioAdapter, dataLinePool);
