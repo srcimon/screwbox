@@ -38,7 +38,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            SoundOptions currentOptions = determinActualOptions(activePlayback.options);
+            final SoundOptions currentOptions = determinActualOptions(activePlayback.options);
             if (!activePlayback.currentOptions.equals(currentOptions)) {
                 applyOptionsOnLine(activePlayback.line, currentOptions);
                 activePlayback.currentOptions = currentOptions;

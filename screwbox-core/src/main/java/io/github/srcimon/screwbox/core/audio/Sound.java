@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import java.io.Serial;
 import java.io.Serializable;
@@ -86,7 +85,7 @@ public final class Sound implements Serializable {
     }
 
     /**
-     * The binary content of the sound.
+     * The binary sound data.
      */
     public byte[] content() {
         return content;
@@ -105,5 +104,4 @@ public final class Sound implements Serializable {
     public Duration duration() {
         return duration;
     }
-
 }
