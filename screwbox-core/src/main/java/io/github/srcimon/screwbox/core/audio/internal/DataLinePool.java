@@ -59,4 +59,8 @@ public class DataLinePool {
             }
         }
     }
+
+    public int size() {
+        return lines.size();
+    }
 }

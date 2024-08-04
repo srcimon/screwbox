@@ -82,6 +82,11 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
+    public int linePoolSize() {
+        return dataLinePool.size();
+    }
+
+    @Override
     public Percent microphoneLevel() {
         return microphoneMonitor.level();
     }
