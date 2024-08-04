@@ -152,14 +152,13 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     private void play(final Sound sound, final ActivePlayback activePlayback) {
-        int loop = 0;
+        int loop = 1;
         final var format = AudioAdapter.getAudioFormat(sound.content());
         activePlayback.line = audioLinePool.aquireLine(format);
         applyOptionsOnLine(activePlayback.line, activePlayback.currentOptions);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
-                loop++;
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
                 while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(activePlayback.id)) {
@@ -169,8 +168,7 @@ public class DefaultAudio implements Audio, Updatable {
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
-        //TODO schedule echo here
+        } while (loop++ < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback.id));
         audioLinePool.releaseLine(activePlayback.line);
         activePlaybacks.remove(activePlayback.id);
     }
