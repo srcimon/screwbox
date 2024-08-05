@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import javax.sound.sampled.SourceDataLine;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,10 @@ import static java.util.Objects.requireNonNull;
 public class DefaultAudio implements Audio, Updatable {
 
     private static class ActivePlayback implements Playback {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
+
         private final UUID id;
         private final Sound sound;
         private SoundOptions options;
