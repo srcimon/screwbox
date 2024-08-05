@@ -109,19 +109,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public List<Playback> activePlaybacks() {
-        return new ArrayList<>(allActivePlaybacks());
-    }
-
-    private SoundOptions calculateCurrent(SoundOptions options) {
-        if (isNull(options.position())) {
-            return options;
-        }
-        final var distance = camera.position().distanceTo(options.position());
-        final var direction = modifier(options.position().x() - camera.position().x());
-        final var quotient = distance / configuration.soundRange();
-        return options
-                .pan(direction * quotient)
-                .volume(Percent.of(1 - quotient));
+        return new ArrayList<>(activePlaybacks.values());
     }
 
     @Override
@@ -180,11 +168,6 @@ public class DefaultAudio implements Audio, Updatable {
         }
     }
 
-    private SoundOptions determinActualOptions(SoundOptions options) {
-        SoundOptions in = calculateCurrent(options);
-        return in.volume(calculateVolume(in));
-    }
-
     @Override
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
@@ -225,7 +208,7 @@ public class DefaultAudio implements Audio, Updatable {
         }
     }
 
-    private List<ActivePlayback> allActivePlaybacks() {//TODO Same as active playbacks
+    private List<ActivePlayback> allActivePlaybacks() {
         return new ArrayList<>(activePlaybacks.values());
     }
 
@@ -239,6 +222,11 @@ public class DefaultAudio implements Audio, Updatable {
         return active;
     }
 
+    private SoundOptions determinActualOptions(SoundOptions options) {
+        SoundOptions in = calculateCurrent(options);
+        return in.volume(calculateVolume(in));
+    }
+
     private Percent calculateVolume(final SoundOptions options) {
         if (options.isMusic()) {
             final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
@@ -246,5 +234,17 @@ public class DefaultAudio implements Audio, Updatable {
         }
         final var effectVolume = configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
         return effectVolume.multiply(options.volume().value());
+    }
+
+    private SoundOptions calculateCurrent(SoundOptions options) {
+        if (isNull(options.position())) {
+            return options;
+        }
+        final var distance = camera.position().distanceTo(options.position());
+        final var direction = modifier(options.position().x() - camera.position().x());
+        final var quotient = distance / configuration.soundRange();
+        return options
+                .pan(direction * quotient)
+                .volume(Percent.of(1 - quotient));
     }
 }

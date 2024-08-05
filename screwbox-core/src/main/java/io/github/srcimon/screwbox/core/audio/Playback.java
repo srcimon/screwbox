@@ -8,5 +8,4 @@ public interface Playback extends Serializable {
     Sound sound();
 
     SoundOptions options();
-
 }
