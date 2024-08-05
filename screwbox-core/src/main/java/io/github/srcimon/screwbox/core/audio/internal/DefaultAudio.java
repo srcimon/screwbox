@@ -42,10 +42,10 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopAllSounds() {
-        activePlaybacks.clear();
         for (final var activePlayback : allActivePlaybacks()) {
             activePlayback.line().flush();
         }
+        activePlaybacks.clear();
         return this;
     }
 
