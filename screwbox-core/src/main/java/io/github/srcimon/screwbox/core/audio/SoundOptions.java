@@ -4,10 +4,16 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
-public record SoundOptions(int times, Percent volume, double pan, boolean isMusic, Vector position) {
+public record SoundOptions(int times, Percent volume, double pan, boolean isMusic, Vector position) implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Playback {@link Sound} until stopped via {@link Audio#stopSound(Sound)}.

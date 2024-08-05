@@ -25,7 +25,6 @@ class ActivePlayback implements Playback {
         this.options = options;
     }
 
-
     public void setOptions(final SoundOptions options) {
         this.options = options;
     }
