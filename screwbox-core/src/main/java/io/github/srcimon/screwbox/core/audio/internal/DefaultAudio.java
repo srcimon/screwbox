@@ -58,8 +58,8 @@ public class DefaultAudio implements Audio, Updatable {
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioAdapter audioAdapter;
     private final AudioLinePool audioLinePool;
-    private final Map<Playback, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
     private final SoundOptionsSupport soundOptionsSupport;
+    private final Map<Playback, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final SoundOptionsSupport soundOptionsSupport,
@@ -125,11 +125,15 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public boolean isActive(final Playback playback) {
+        requireNonNull(playback, "playback must not be null");
         return activePlaybacks.containsKey(playback);
     }
 
     @Override
-    public boolean updatePlaybackOptions(Playback playback, SoundOptions options) {
+    public boolean updatePlaybackOptions(final Playback playback,final SoundOptions options) {
+        requireNonNull(playback, "playback must not be null");
+        requireNonNull(options, "options must not be null");
+
         var activePlayback = activePlaybacks.get(playback);
         if (isNull(activePlayback)) {
             return false;
@@ -158,13 +162,6 @@ public class DefaultAudio implements Audio, Updatable {
         } while (loop++ < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback));
         audioLinePool.releaseLine(activePlayback.line);
         activePlaybacks.remove(activePlayback);
-    }
-
-    private void applyOptionsOnLine(final SourceDataLine line, final SoundOptions options) {
-        if (nonNull(line)) {
-            audioAdapter.setVolume(line, options.volume());
-            audioAdapter.setPan(line, options.pan());
-        }
     }
 
     @Override
@@ -204,6 +201,13 @@ public class DefaultAudio implements Audio, Updatable {
                 applyOptionsOnLine(activePlayback.line, currentOptions);
                 activePlayback.currentOptions = currentOptions;
             }
+        }
+    }
+
+    private void applyOptionsOnLine(final SourceDataLine line, final SoundOptions options) {
+        if (nonNull(line)) {
+            audioAdapter.setVolume(line, options.volume());
+            audioAdapter.setPan(line, options.pan());
         }
     }
 
