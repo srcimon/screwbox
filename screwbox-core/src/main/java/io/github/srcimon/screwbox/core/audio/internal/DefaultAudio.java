@@ -130,7 +130,11 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopPlayback(Playback playback) {
-        activePlaybacks.remove(playback.id());//TODO has playback not id?
+        var activePlayback = activePlaybacks.get(playback.id());
+        if (nonNull(activePlayback)) {
+            activePlayback.line.flush();
+            activePlaybacks.remove(playback.id());
+        }
         return this;
     }
 
@@ -142,7 +146,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public boolean updatePlaybackOptions(Playback playback, SoundOptions options) {
         var activePlayback = activePlaybacks.get(playback.id());
-        if (Objects.isNull(activePlayback)) {
+        if (isNull(activePlayback)) {
             return false;
         }
         activePlayback.options = options;
