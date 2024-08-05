@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -77,6 +76,19 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public Audio stopAllSounds() {
         activePlaybacks.clear();
+        for(final var activePlayback : allActivePlaybacks()) {
+            activePlayback.line.flush();
+        }
+        return this;
+    }
+
+    @Override
+    public Audio stopPlayback(Playback playback) {
+        var activePlayback = activePlaybacks.get(playback.id());
+        if (nonNull(activePlayback)) {
+            activePlayback.line.flush();
+            activePlaybacks.remove(playback.id());
+        }
         return this;
     }
 
@@ -98,9 +110,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public List<Playback> activePlaybacks() {
         List<Playback> playbacks = new ArrayList<>();
-        for (var activePlayback : allActivePlaybacks()) {
-            playbacks.add(activePlayback);
-        }
+        playbacks.addAll(allActivePlaybacks());
         return playbacks;
     }
 
@@ -126,16 +136,6 @@ public class DefaultAudio implements Audio, Updatable {
         activePlaybacks.put(activePlayback.id, activePlayback);
         executor.execute(() -> play(sound, activePlayback));
         return activePlayback;
-    }
-
-    @Override
-    public Audio stopPlayback(Playback playback) {
-        var activePlayback = activePlaybacks.get(playback.id());
-        if (nonNull(activePlayback)) {
-            activePlayback.line.flush();
-            activePlaybacks.remove(playback.id());
-        }
-        return this;
     }
 
     @Override

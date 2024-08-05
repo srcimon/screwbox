@@ -4,12 +4,12 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AudioLinePool {
 
-    private final Map<SourceDataLine, Boolean> lines = new HashMap<>();
+    private final Map<SourceDataLine, Boolean> lines = new ConcurrentHashMap<>();
     private final AudioAdapter audioAdapter;
     private final AudioConfiguration configuration;
 
@@ -23,9 +23,7 @@ public class AudioLinePool {
     }
 
     public void releaseLine(final SourceDataLine sourceDataLine) {
-        synchronized (lines) {
-            lines.put(sourceDataLine, false);
-        }
+        lines.put(sourceDataLine, false);
     }
 
     public int size() {
@@ -57,24 +55,20 @@ public class AudioLinePool {
     private SourceDataLine startNewLine(final AudioFormat format) {
         synchronized (lines) {
             while (size() >= configuration.maxLines()) {
-                removeUnusedLine();
+                var lineToRemove = lines.entrySet()
+                        .stream()
+                        .filter(line -> !line.getValue())
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("audio line pool has reached max capacity of %s lines"
+                                .formatted(configuration.maxLines())))
+                        .getKey();
+                lineToRemove.stop();
+                lines.remove(lineToRemove);
             }
             var line = audioAdapter.createSourceLine(format);
             lines.put(line, false);
             return line;
         }
-    }
-
-    private void removeUnusedLine() {
-        var lineToRemove = lines.entrySet()
-                .stream()
-                .filter(line -> !line.getValue())
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("audio line pool has reached max capacity of %s lines"
-                        .formatted(configuration.maxLines())))
-                .getKey();
-        lineToRemove.stop();
-        lines.remove(lineToRemove);
     }
 
 }
