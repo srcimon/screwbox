@@ -76,7 +76,11 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public List<Playback> activePlaybacks() {
-        return new ArrayList<>(activePlaybacks.values());
+        final List<Playback> playbacks = new ArrayList<>();
+        for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
+            playbacks.add(activePlayback.toPlayback());
+        }
+        return playbacks;
     }
 
     @Override
@@ -87,7 +91,7 @@ public class DefaultAudio implements Audio, Updatable {
         ActivePlayback activePlayback = new ActivePlayback(sound, options);
         activePlaybacks.put(activePlayback.id(), activePlayback);
         executor.execute(() -> play(activePlayback));
-        return activePlayback;
+        return activePlayback.toPlayback();
     }
 
     @Override

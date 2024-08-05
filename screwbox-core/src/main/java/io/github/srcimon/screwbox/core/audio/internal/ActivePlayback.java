@@ -9,10 +9,7 @@ import javax.sound.sampled.SourceDataLine;
 import java.io.Serial;
 import java.util.UUID;
 
-class ActivePlayback implements Playback {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+class ActivePlayback {
 
     private final UUID id;
     private final Sound sound;
@@ -33,12 +30,10 @@ class ActivePlayback implements Playback {
         this.line = line;
     }
 
-    @Override
     public Sound sound() {
         return sound;
     }
 
-    @Override
     public SoundOptions options() {
         return options;
     }
@@ -49,5 +44,9 @@ class ActivePlayback implements Playback {
 
     public UUID id() {
         return id;
+    }
+
+    public Playback toPlayback() {
+        return new Playback(id, sound, options);
     }
 }

@@ -4,12 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 //TODO javadoc
-public interface Playback extends Serializable {
+public record Playback(UUID id, Sound sound, SoundOptions options) implements Serializable {
 
-    Sound sound();
-
-    SoundOptions options();
-
-    UUID id();
 
 }
