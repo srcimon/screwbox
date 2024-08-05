@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.graphics.Camera;
@@ -19,18 +20,12 @@ public class DynamicSoundSupport {
     }
 
     public Percent currentVolume(SoundOptions options) {
-        Percent in = calculateCurrent(options);
-        return calculateVolume(in, options.isMusic());
-    }
+        final Vector position = options.position();
+        Percent in = isNull(position)
+                ? options.volume()
+                : Percent.of(calculateQuotient(position)).invert();
 
-    public double currentPan(final SoundOptions options) {
-        return isNull(options.position())
-                ? options.pan()
-                : calculateDirection(options) * calculateQuotient(options);
-    }
-
-    private Percent calculateVolume(final Percent in, boolean isMusic) {
-        if (isMusic) {
+        if (options.isMusic()) {
             final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
             return musicVolume.multiply(in.value());
         }
@@ -38,19 +33,19 @@ public class DynamicSoundSupport {
         return effectVolume.multiply(in.value());
     }
 
-    private Percent calculateCurrent(SoundOptions options) {
-        if (isNull(options.position())) {
-            return options.volume();
-        }
-        return Percent.of(calculateQuotient(options)).invert();
+    public double currentPan(final SoundOptions options) {
+        final Vector position = options.position();
+        return isNull(position)
+                ? options.pan()
+                : calculateDirection(options) * calculateQuotient(position);
     }
 
     private double calculateDirection(SoundOptions options) {
         return modifier(options.position().x() - camera.position().x());
     }
 
-    private double calculateQuotient(SoundOptions options) {
-        final var distance = camera.position().distanceTo(options.position());
+    private double calculateQuotient(Vector position) {
+        final var distance = camera.position().distanceTo(position);
         return distance / configuration.soundRange();
     }
 }
