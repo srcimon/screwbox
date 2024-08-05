@@ -117,22 +117,26 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
         playback.setLine(audioLinePool.aquireLine(format));
-        refreshLineOptionsOfPlayback(playback);
+        refreshLineSettingsOfPlayback(playback);
 
         do {
-            try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
-                final byte[] bufferBytes = new byte[4096];
-                int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
-                    playback.line().write(bufferBytes, 0, readBytes);
-                }
-                playback.line().drain();
-            } catch (IOException e) {
-                throw new IllegalStateException("could not close audio stream", e);
-            }
+            writePlaybackDateToAudioLine(playback);
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
+    }
+
+    private void writePlaybackDateToAudioLine(ActivePlayback playback) {
+        try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
+            final byte[] bufferBytes = new byte[4096];
+            int readBytes;
+            while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
+                playback.line().write(bufferBytes, 0, readBytes);
+            }
+            playback.line().drain();
+        } catch (IOException e) {
+            throw new IllegalStateException("could not close audio stream", e);
+        }
     }
 
     @Override
@@ -168,12 +172,12 @@ public class DefaultAudio implements Audio, Updatable {
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
             if (nonNull(activePlayback.line())) {
-                refreshLineOptionsOfPlayback(activePlayback);
+                refreshLineSettingsOfPlayback(activePlayback);
             }
         }
     }
 
-    private void refreshLineOptionsOfPlayback(ActivePlayback activePlayback) {
+    private void refreshLineSettingsOfPlayback(ActivePlayback activePlayback) {
         AudioAdapter.setVolume(activePlayback.line(), dynamicSoundSupport.currentVolume(activePlayback.options()));
         AudioAdapter.setPan(activePlayback.line(), dynamicSoundSupport.currentPan(activePlayback.options()));
     }
