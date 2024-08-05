@@ -9,8 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.sound.sampled.SourceDataLine;
-
 @ExtendWith(MockitoExtension.class)
 class DynamicSoundSupportTest {
 
@@ -20,17 +18,12 @@ class DynamicSoundSupportTest {
     @Mock
     AudioConfiguration configuration;
 
-    @Mock
-    AudioAdapter audioAdapter;
-
-    @Mock
-    SourceDataLine line;
-
     @InjectMocks
     DynamicSoundSupport dynamicSoundSupport;
 
     @Test
     void xxx() {
-
+        var refreshedOptions = dynamicSoundSupport.refreshOptions(SoundOptions.playOnce());
+        //TODO Implement
     }
 }

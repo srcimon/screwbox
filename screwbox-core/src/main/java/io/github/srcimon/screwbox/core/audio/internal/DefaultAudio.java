@@ -174,7 +174,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     private void refreshLineOptionsOfPlayback(ActivePlayback activePlayback) {
-        var actualOptions = dynamicSoundSupport.determinActualOptions(activePlayback.options());
+        var actualOptions = dynamicSoundSupport.refreshOptions(activePlayback.options());
         AudioAdapter.setVolume(activePlayback.line(), actualOptions.volume());
         AudioAdapter.setPan(activePlayback.line(), actualOptions.pan());
     }

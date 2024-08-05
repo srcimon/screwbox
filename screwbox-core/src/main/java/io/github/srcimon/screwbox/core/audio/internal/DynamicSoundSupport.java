@@ -18,7 +18,7 @@ public class DynamicSoundSupport {
         this.configuration = configuration;
     }
 
-    public SoundOptions determinActualOptions(SoundOptions options) {
+    public SoundOptions refreshOptions(SoundOptions options) {
         SoundOptions in = calculateCurrent(options);
         return in.volume(calculateVolume(in));
     }
