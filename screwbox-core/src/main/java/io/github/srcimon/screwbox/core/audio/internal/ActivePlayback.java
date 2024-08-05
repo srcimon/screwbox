@@ -47,4 +47,7 @@ class ActivePlayback implements Playback {
         return line;
     }
 
+    public UUID id() {
+        return id;
+    }
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
@@ -26,7 +27,7 @@ public class DefaultAudio implements Audio, Updatable {
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioLinePool audioLinePool;
     private final PlaybackSupport playbackSupport;
-    private final Map<Playback, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
+    private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final PlaybackSupport playbackSupport,
@@ -50,10 +51,10 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopPlayback(Playback playback) {
-        var activePlayback = activePlaybacks.get(playback);
+        var activePlayback = activePlaybacks.get(playback.id());
         if (nonNull(activePlayback)) {
             activePlayback.line().flush();
-            activePlaybacks.remove(playback);
+            activePlaybacks.remove(playback.id());
         }
         return this;
     }
@@ -84,7 +85,7 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(options, "options must not be null");
 
         ActivePlayback activePlayback = new ActivePlayback(sound, options);
-        activePlaybacks.put(activePlayback, activePlayback);
+        activePlaybacks.put(activePlayback.id(), activePlayback);
         executor.execute(() -> play(activePlayback));
         return activePlayback;
     }
@@ -92,7 +93,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public boolean isActive(final Playback playback) {
         requireNonNull(playback, "playback must not be null");
-        return activePlaybacks.containsKey(playback);
+        return activePlaybacks.containsKey(playback.id());
     }
 
     @Override
@@ -100,7 +101,7 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(playback, "playback must not be null");
         requireNonNull(options, "options must not be null");
 
-        var activePlayback = activePlaybacks.get(playback);
+        var activePlayback = activePlaybacks.get(playback.id());
         if (isNull(activePlayback)) {
             return false;
         }
@@ -118,23 +119,23 @@ public class DefaultAudio implements Audio, Updatable {
             try (var stream = AudioAdapter.getAudioInputStream(activePlayback.sound().content())) {
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(activePlayback)) {
+                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(activePlayback.id())) {
                     activePlayback.line().write(bufferBytes, 0, readBytes);
                 }
                 activePlayback.line().drain();
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop++ < activePlayback.options().times() && activePlaybacks.containsKey(activePlayback));
+        } while (loop++ < activePlayback.options().times() && activePlaybacks.containsKey(activePlayback.id()));
         audioLinePool.releaseLine(activePlayback.line());
-        activePlaybacks.remove(activePlayback);
+        activePlaybacks.remove(activePlayback.id());
     }
 
     @Override
     public Audio stopSound(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
         for (final var activePlayback : fetchPlaybacks(sound)) {
-            activePlaybacks.remove(activePlayback);
+            activePlaybacks.remove(activePlayback.id());
         }
         return this;
     }
