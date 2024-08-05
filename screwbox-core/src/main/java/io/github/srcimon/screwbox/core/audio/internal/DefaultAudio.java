@@ -117,7 +117,7 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(activePlayback.sound().content());
         activePlayback.setLine(audioLinePool.aquireLine(format));
-        playbackSupport.applyOptionsOnPlayback(activePlayback);
+        playbackSupport.refreshPlaybackOptions(activePlayback);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(activePlayback.sound().content())) {
@@ -167,7 +167,9 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            playbackSupport.applyOptionsOnPlayback(activePlayback);
+            if (nonNull(activePlayback.line())) {
+                playbackSupport.refreshPlaybackOptions(activePlayback);
+            }
         }
     }
 

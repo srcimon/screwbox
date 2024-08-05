@@ -21,12 +21,10 @@ public class PlaybackSupport {
         this.audioAdapter = audioAdapter;
     }
 
-    public void applyOptionsOnPlayback(final ActivePlayback playback) {
-        if (nonNull(playback.line())) {
+    public void refreshPlaybackOptions(final ActivePlayback playback) {
             var actual = determinActualOptions(playback.options());
             audioAdapter.setVolume(playback.line(), actual.volume());
             audioAdapter.setPan(playback.line(), actual.pan());
-        }
     }
 
     private SoundOptions determinActualOptions(SoundOptions options) {
