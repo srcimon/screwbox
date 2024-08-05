@@ -21,40 +21,34 @@ public class DynamicSoundSupport {
 
     public Percent currentVolume(SoundOptions options) {
         final Vector position = options.position();
-       final Percent relativeVolume = isNull(position)
+        final Percent directionalVolume = isNull(position)
                 ? options.volume()
-                : Percent.of(calculateQuotient(position)).invert();
+                : Percent.of(distanceModifier(position)).invert();
 
-        return options.isMusic() ? musicVolume(relativeVolume) : effectVolume(relativeVolume);
-    }
-
-    private Percent effectVolume(Percent in) {
-        final var effectVolume = configuration.areEffectsMuted()
-                ? Percent.zero()
-                : configuration.effectVolume();
-        return effectVolume.multiply(in.value());
-    }
-
-    private Percent musicVolume(Percent in) {
-        final var musicVolume = configuration.isMusicMuted()
-                ? Percent.zero()
-                : configuration.musicVolume();
-        return musicVolume.multiply(in.value());
+        final Percent configuredVolume = options.isMusic() ? musicVolume() : effectVolume();
+        return directionalVolume.multiply(configuredVolume.value());
     }
 
     public double currentPan(final SoundOptions options) {
         final Vector position = options.position();
         return isNull(position)
                 ? options.pan()
-                : calculateDirection(options) * calculateQuotient(position);
+                : panByRelativePosition(position);
     }
 
-    private double calculateDirection(SoundOptions options) {
-        return modifier(options.position().x() - camera.position().x());
+    private double panByRelativePosition(final Vector position) {
+        return modifier(position.x() - camera.position().x()) * distanceModifier(position);
     }
 
-    private double calculateQuotient(Vector position) {
-        final var distance = camera.position().distanceTo(position);
-        return distance / configuration.soundRange();
+    private double distanceModifier(final Vector position) {
+        return camera.position().distanceTo(position) / configuration.soundRange();
+    }
+
+    private Percent effectVolume() {
+        return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
+    }
+
+    private Percent musicVolume() {
+        return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
     }
 }
