@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import javax.sound.sampled.SourceDataLine;
@@ -19,7 +18,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
@@ -37,11 +35,11 @@ public class DefaultAudio implements Audio, Updatable {
         private SourceDataLine line;
         private SoundOptions currentOptions;
 
-        public ActivePlayback(final Sound sound, final SoundOptions options) {
+        public ActivePlayback(final Sound sound, final SoundOptions options, final SoundOptions currentOptions) {
             this.id = UUID.randomUUID();
             this.sound = sound;
             this.options = options;
-            this.currentOptions = options;
+            this.currentOptions = currentOptions;
         }
 
         @Override
@@ -56,17 +54,18 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     private final ExecutorService executor;
-    private final Camera camera;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioAdapter audioAdapter;
     private final AudioLinePool audioLinePool;
     private final Map<Playback, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
+    private final SoundOptionsSupport soundOptionsSupport;
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
-                        final MicrophoneMonitor microphoneMonitor, final Camera camera, final AudioAdapter audioAdapter, final AudioLinePool audioLinePool) {
+                        final SoundOptionsSupport soundOptionsSupport,
+                        final MicrophoneMonitor microphoneMonitor, final AudioAdapter audioAdapter, final AudioLinePool audioLinePool) {
         this.executor = executor;
-        this.camera = camera;
+        this.soundOptionsSupport = soundOptionsSupport;
         this.microphoneMonitor = microphoneMonitor;
         this.audioLinePool = audioLinePool;
         this.configuration = configuration;
@@ -117,8 +116,8 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
-        ActivePlayback activePlayback = new ActivePlayback(sound, options);
-        activePlayback.currentOptions = determinActualOptions(options);
+        final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(options);
+        ActivePlayback activePlayback = new ActivePlayback(sound, options, currentOptions);
         activePlaybacks.put(activePlayback, activePlayback);
         executor.execute(() -> play(sound, activePlayback));
         return activePlayback;
@@ -200,7 +199,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            final SoundOptions currentOptions = determinActualOptions(activePlayback.options);
+            final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(activePlayback.options);
             if (!activePlayback.currentOptions.equals(currentOptions)) {
                 applyOptionsOnLine(activePlayback.line, currentOptions);
                 activePlayback.currentOptions = currentOptions;
@@ -220,31 +219,5 @@ public class DefaultAudio implements Audio, Updatable {
             }
         }
         return active;
-    }
-
-    private SoundOptions determinActualOptions(SoundOptions options) {
-        SoundOptions in = calculateCurrent(options);
-        return in.volume(calculateVolume(in));
-    }
-
-    private Percent calculateVolume(final SoundOptions options) {
-        if (options.isMusic()) {
-            final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
-            return musicVolume.multiply(options.volume().value());
-        }
-        final var effectVolume = configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
-        return effectVolume.multiply(options.volume().value());
-    }
-
-    private SoundOptions calculateCurrent(SoundOptions options) {
-        if (isNull(options.position())) {
-            return options;
-        }
-        final var distance = camera.position().distanceTo(options.position());
-        final var direction = modifier(options.position().x() - camera.position().x());
-        final var quotient = distance / configuration.soundRange();
-        return options
-                .pan(direction * quotient)
-                .volume(Percent.of(1 - quotient));
     }
 }
