@@ -21,16 +21,25 @@ public class DynamicSoundSupport {
 
     public Percent currentVolume(SoundOptions options) {
         final Vector position = options.position();
-        Percent in = isNull(position)
+       final Percent relativeVolume = isNull(position)
                 ? options.volume()
                 : Percent.of(calculateQuotient(position)).invert();
 
-        if (options.isMusic()) {
-            final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
-            return musicVolume.multiply(in.value());
-        }
-        final var effectVolume = configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
+        return options.isMusic() ? musicVolume(relativeVolume) : effectVolume(relativeVolume);
+    }
+
+    private Percent effectVolume(Percent in) {
+        final var effectVolume = configuration.areEffectsMuted()
+                ? Percent.zero()
+                : configuration.effectVolume();
         return effectVolume.multiply(in.value());
+    }
+
+    private Percent musicVolume(Percent in) {
+        final var musicVolume = configuration.isMusicMuted()
+                ? Percent.zero()
+                : configuration.musicVolume();
+        return musicVolume.multiply(in.value());
     }
 
     public double currentPan(final SoundOptions options) {
