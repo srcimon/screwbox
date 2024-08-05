@@ -57,7 +57,7 @@ class DynamicSoundSupportTest {
     void currentPan_noPositionAndNoSetting_isZero() {
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playTimes(3));
 
-        assertThat(pan).isEqualTo(0);
+        assertThat(pan).isZero();
     }
 
     @Test

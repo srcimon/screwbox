@@ -113,26 +113,26 @@ public class DefaultAudio implements Audio, Updatable {
         return true;
     }
 
-    private void play(final ActivePlayback activePlayback) {
+    private void play(final ActivePlayback playback) {
         int loop = 1;
-        final var format = AudioAdapter.getAudioFormat(activePlayback.sound().content());
-        activePlayback.setLine(audioLinePool.aquireLine(format));
-        refreshLineOptionsOfPlayback(activePlayback);
+        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
+        playback.setLine(audioLinePool.aquireLine(format));
+        refreshLineOptionsOfPlayback(playback);
 
         do {
-            try (var stream = AudioAdapter.getAudioInputStream(activePlayback.sound().content())) {
+            try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
                 final byte[] bufferBytes = new byte[4096];
                 int readBytes;
-                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(activePlayback.id())) {
-                    activePlayback.line().write(bufferBytes, 0, readBytes);
+                while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
+                    playback.line().write(bufferBytes, 0, readBytes);
                 }
-                activePlayback.line().drain();
+                playback.line().drain();
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop++ < activePlayback.options().times() && activePlaybacks.containsKey(activePlayback.id()));
-        audioLinePool.releaseLine(activePlayback.line());
-        activePlaybacks.remove(activePlayback.id());
+        } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
+        audioLinePool.releaseLine(playback.line());
+        activePlaybacks.remove(playback.id());
     }
 
     @Override
