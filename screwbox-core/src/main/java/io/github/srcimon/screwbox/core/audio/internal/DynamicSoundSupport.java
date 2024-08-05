@@ -18,29 +18,39 @@ public class DynamicSoundSupport {
         this.configuration = configuration;
     }
 
-    public SoundOptions refreshOptions(SoundOptions options) {
-        SoundOptions in = calculateCurrent(options);
-        return in.volume(calculateVolume(in));
+    public Percent currentVolume(SoundOptions options) {
+        Percent in = calculateCurrent(options);
+        return calculateVolume(in, options.isMusic());
     }
 
-    private Percent calculateVolume(final SoundOptions options) {
-        if (options.isMusic()) {
+    public double currentPan(final SoundOptions options) {
+        return isNull(options.position())
+                ? options.pan()
+                : calculateDirection(options) * calculateQuotient(options);
+    }
+
+    private Percent calculateVolume(final Percent in, boolean isMusic) {
+        if (isMusic) {
             final var musicVolume = configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
-            return musicVolume.multiply(options.volume().value());
+            return musicVolume.multiply(in.value());
         }
         final var effectVolume = configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
-        return effectVolume.multiply(options.volume().value());
+        return effectVolume.multiply(in.value());
     }
 
-    private SoundOptions calculateCurrent(SoundOptions options) {
+    private Percent calculateCurrent(SoundOptions options) {
         if (isNull(options.position())) {
-            return options;
+            return options.volume();
         }
+        return Percent.of(calculateQuotient(options)).invert();
+    }
+
+    private double calculateDirection(SoundOptions options) {
+        return modifier(options.position().x() - camera.position().x());
+    }
+
+    private double calculateQuotient(SoundOptions options) {
         final var distance = camera.position().distanceTo(options.position());
-        final var direction = modifier(options.position().x() - camera.position().x());
-        final var quotient = distance / configuration.soundRange();
-        return options
-                .pan(direction * quotient)
-                .volume(Percent.of(1 - quotient));
+        return distance / configuration.soundRange();
     }
 }
