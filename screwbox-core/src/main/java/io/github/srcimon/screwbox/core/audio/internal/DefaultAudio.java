@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
-    private static class ActivePlayback implements Playback {
+    static class ActivePlayback implements Playback {
 
         @Serial
         private static final long serialVersionUID = 1L;
@@ -49,25 +49,28 @@ public class DefaultAudio implements Audio, Updatable {
         public SoundOptions options() {
             return options;
         }
+
+        public SourceDataLine line() {
+            return line;
+        }
     }
 
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
-    private final AudioAdapter audioAdapter;
     private final AudioLinePool audioLinePool;
-    private final SoundOptionsSupport soundOptionsSupport;
+    private final PlaybackSupport playbackSupport;
     private final Map<Playback, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
-                        final SoundOptionsSupport soundOptionsSupport,
-                        final MicrophoneMonitor microphoneMonitor, final AudioAdapter audioAdapter, final AudioLinePool audioLinePool) {
+                        final PlaybackSupport playbackSupport,
+                        final MicrophoneMonitor microphoneMonitor,
+                        final AudioLinePool audioLinePool) {
         this.executor = executor;
-        this.soundOptionsSupport = soundOptionsSupport;
+        this.playbackSupport = playbackSupport;
         this.microphoneMonitor = microphoneMonitor;
         this.audioLinePool = audioLinePool;
         this.configuration = configuration;
-        this.audioAdapter = audioAdapter;
     }
 
     @Override
@@ -143,8 +146,7 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(sound.content());
         activePlayback.line = audioLinePool.aquireLine(format);
-        final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(activePlayback.options);
-        applyOptionsOnLine(activePlayback.line, currentOptions);
+        playbackSupport.applyOptionsOnPlayback(activePlayback);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
@@ -194,14 +196,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            applyOptionsOnLine(activePlayback.line, soundOptionsSupport.determinActualOptions(activePlayback.options));
-        }
-    }
-
-    private void applyOptionsOnLine(final SourceDataLine line, final SoundOptions options) {
-        if (nonNull(line)) {
-            audioAdapter.setVolume(line, options.volume());
-            audioAdapter.setPan(line, options.pan());
+            playbackSupport.applyOptionsOnPlayback(activePlayback);
         }
     }
 

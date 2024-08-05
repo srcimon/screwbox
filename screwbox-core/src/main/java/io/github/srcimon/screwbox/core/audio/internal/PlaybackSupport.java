@@ -7,17 +7,29 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
-public class SoundOptionsSupport {
+public class PlaybackSupport {
 
     private final Camera camera;
     private final AudioConfiguration configuration;
+    private final AudioAdapter audioAdapter;
 
-    public SoundOptionsSupport(final Camera camera, final AudioConfiguration configuration) {
+    public PlaybackSupport(final AudioAdapter audioAdapter, final Camera camera, final AudioConfiguration configuration) {
         this.camera = camera;
         this.configuration = configuration;
+        this.audioAdapter = audioAdapter;
     }
-    public SoundOptions determinActualOptions(SoundOptions options) {
+
+    public void applyOptionsOnPlayback(final DefaultAudio.ActivePlayback playback) {
+        if (nonNull(playback.line())) {
+            var actual = determinActualOptions(playback.options());
+            audioAdapter.setVolume(playback.line(), actual.volume());
+            audioAdapter.setPan(playback.line(), actual.pan());
+        }
+    }
+
+    private SoundOptions determinActualOptions(SoundOptions options) {
         SoundOptions in = calculateCurrent(options);
         return in.volume(calculateVolume(in));
     }
