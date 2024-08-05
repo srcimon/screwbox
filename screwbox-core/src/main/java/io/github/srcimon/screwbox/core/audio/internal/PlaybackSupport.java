@@ -21,7 +21,7 @@ public class PlaybackSupport {
         this.audioAdapter = audioAdapter;
     }
 
-    public void applyOptionsOnPlayback(final DefaultAudio.ActivePlayback playback) {
+    public void applyOptionsOnPlayback(final ActivePlayback playback) {
         if (nonNull(playback.line())) {
             var actual = determinActualOptions(playback.options());
             audioAdapter.setVolume(playback.line(), actual.volume());
