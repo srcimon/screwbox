@@ -50,6 +50,8 @@ class AudioLinePoolTest {
 
     @Test
     void prepareLine_noLinesYet_createsLine() {
+        when(audioAdapter.createSourceLine(STEREO_FORMAT)).thenReturn(mock(SourceDataLine.class));
+
         audioLinePool.prepareLine(STEREO_FORMAT);
 
         assertThat(audioLinePool.size()).isOne();
