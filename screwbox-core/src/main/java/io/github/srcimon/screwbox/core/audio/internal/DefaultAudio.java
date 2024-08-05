@@ -33,13 +33,11 @@ public class DefaultAudio implements Audio, Updatable {
         private final Sound sound;
         private SoundOptions options;
         private SourceDataLine line;
-        private SoundOptions currentOptions;
 
-        public ActivePlayback(final Sound sound, final SoundOptions options, final SoundOptions currentOptions) {
+        public ActivePlayback(final Sound sound, final SoundOptions options) {
             this.id = UUID.randomUUID();
             this.sound = sound;
             this.options = options;
-            this.currentOptions = currentOptions;
         }
 
         @Override
@@ -116,8 +114,7 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
 
-        final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(options);
-        ActivePlayback activePlayback = new ActivePlayback(sound, options, currentOptions);
+        ActivePlayback activePlayback = new ActivePlayback(sound, options);
         activePlaybacks.put(activePlayback, activePlayback);
         executor.execute(() -> play(sound, activePlayback));
         return activePlayback;
@@ -130,7 +127,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean updatePlaybackOptions(final Playback playback,final SoundOptions options) {
+    public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
         requireNonNull(playback, "playback must not be null");
         requireNonNull(options, "options must not be null");
 
@@ -146,7 +143,8 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(sound.content());
         activePlayback.line = audioLinePool.aquireLine(format);
-        applyOptionsOnLine(activePlayback.line, activePlayback.currentOptions);
+        final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(activePlayback.options);
+        applyOptionsOnLine(activePlayback.line, currentOptions);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(sound.content())) {
@@ -159,7 +157,7 @@ public class DefaultAudio implements Audio, Updatable {
             } catch (IOException e) {
                 throw new IllegalStateException("could not close audio stream", e);
             }
-        } while (loop++ < activePlayback.currentOptions.times() && activePlaybacks.containsKey(activePlayback));
+        } while (loop++ < activePlayback.options.times() && activePlaybacks.containsKey(activePlayback));
         audioLinePool.releaseLine(activePlayback.line);
         activePlaybacks.remove(activePlayback);
     }
@@ -196,11 +194,7 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
-            final SoundOptions currentOptions = soundOptionsSupport.determinActualOptions(activePlayback.options);
-            if (!activePlayback.currentOptions.equals(currentOptions)) {
-                applyOptionsOnLine(activePlayback.line, currentOptions);
-                activePlayback.currentOptions = currentOptions;
-            }
+            applyOptionsOnLine(activePlayback.line, soundOptionsSupport.determinActualOptions(activePlayback.options));
         }
     }
 
