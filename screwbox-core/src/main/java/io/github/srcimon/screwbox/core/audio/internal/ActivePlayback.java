@@ -4,9 +4,7 @@ import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
-import java.io.Serial;
 import java.util.UUID;
 
 class ActivePlayback {

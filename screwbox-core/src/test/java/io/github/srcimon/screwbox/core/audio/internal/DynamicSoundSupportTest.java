@@ -1,0 +1,36 @@
+package io.github.srcimon.screwbox.core.audio.internal;
+
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
+import io.github.srcimon.screwbox.core.graphics.Camera;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.sound.sampled.SourceDataLine;
+
+@ExtendWith(MockitoExtension.class)
+class DynamicSoundSupportTest {
+
+    @Mock
+    Camera camera;
+
+    @Mock
+    AudioConfiguration configuration;
+
+    @Mock
+    AudioAdapter audioAdapter;
+
+    @Mock
+    SourceDataLine line;
+
+    @InjectMocks
+    DynamicSoundSupport dynamicSoundSupport;
+
+    @Test
+    void xxx() {
+
+    }
+}

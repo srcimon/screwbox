@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -71,4 +73,7 @@ public class AudioLinePool {
         }
     }
 
+    public List<SourceDataLine> lines() {
+        return new ArrayList<>(lines.keySet());
+    }
 }

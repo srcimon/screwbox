@@ -26,15 +26,15 @@ public class DefaultAudio implements Audio, Updatable {
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
     private final AudioLinePool audioLinePool;
-    private final PlaybackSupport playbackSupport;
+    private final DynamicSoundSupport dynamicSoundSupport;
     private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
-                        final PlaybackSupport playbackSupport,
+                        final DynamicSoundSupport dynamicSoundSupport,
                         final MicrophoneMonitor microphoneMonitor,
                         final AudioLinePool audioLinePool) {
         this.executor = executor;
-        this.playbackSupport = playbackSupport;
+        this.dynamicSoundSupport = dynamicSoundSupport;
         this.microphoneMonitor = microphoneMonitor;
         this.audioLinePool = audioLinePool;
         this.configuration = configuration;
@@ -42,10 +42,10 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopAllSounds() {
-        for (final var activePlayback : allActivePlaybacks()) {
-            activePlayback.line().flush();
-        }
         activePlaybacks.clear();
+        for (final var line : audioLinePool.lines()) {
+            line.flush();
+        }
         return this;
     }
 
@@ -117,7 +117,7 @@ public class DefaultAudio implements Audio, Updatable {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(activePlayback.sound().content());
         activePlayback.setLine(audioLinePool.aquireLine(format));
-        playbackSupport.refreshPlaybackOptions(activePlayback);
+        refreshLineOptionsOfPlayback(activePlayback);
 
         do {
             try (var stream = AudioAdapter.getAudioInputStream(activePlayback.sound().content())) {
@@ -168,9 +168,15 @@ public class DefaultAudio implements Audio, Updatable {
     public void update() {
         for (var activePlayback : allActivePlaybacks()) {
             if (nonNull(activePlayback.line())) {
-                playbackSupport.refreshPlaybackOptions(activePlayback);
+                refreshLineOptionsOfPlayback(activePlayback);
             }
         }
+    }
+
+    private void refreshLineOptionsOfPlayback(ActivePlayback activePlayback) {
+        var actualOptions = dynamicSoundSupport.determinActualOptions(activePlayback.options());
+        AudioAdapter.setVolume(activePlayback.line(), actualOptions.volume());
+        AudioAdapter.setPan(activePlayback.line(), actualOptions.pan());
     }
 
     private List<ActivePlayback> allActivePlaybacks() {
