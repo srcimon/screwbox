@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
+import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -71,6 +74,21 @@ class DefaultAudioTest {
         when(audioLinePool.size()).thenReturn(4);
 
         assertThat(audio.availableAudioLines()).isEqualTo(4);
+    }
+
+    @Test
+    void updatePlaybackOptions_playbackIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.updatePlaybackOptions(null, SoundOptions.playOnce()))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("playback must not be null");
+    }
+
+    @Test
+    void updatePlaybackOptions_optionsIsNull_throwsException() {
+        var playback = new Playback(UUID.randomUUID(), null, null);
+        assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("options must not be null");
     }
 //
 //    @Test
