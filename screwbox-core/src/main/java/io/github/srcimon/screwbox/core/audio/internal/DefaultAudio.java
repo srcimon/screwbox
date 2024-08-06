@@ -50,7 +50,8 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public Audio stopPlayback(Playback playback) {
+    public Audio stopPlayback(final Playback playback) {
+        requireNonNull(playback, "playback must not be null");
         var activePlayback = activePlaybacks.get(playback.id());
         if (nonNull(activePlayback)) {
             activePlayback.line().flush();

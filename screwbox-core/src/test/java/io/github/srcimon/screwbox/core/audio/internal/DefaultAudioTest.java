@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Sound;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
@@ -56,6 +57,20 @@ class DefaultAudioTest {
         assertThatThrownBy(() -> audio.playSound(sound, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
+    }
+
+    @Test
+    void stopPlayback_playbackIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.stopPlayback(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("playback must not be null");
+    }
+
+    @Test
+    void availableAudioLines_returnsLineCountFromPool() {
+        when(audioLinePool.size()).thenReturn(4);
+
+        assertThat(audio.availableAudioLines()).isEqualTo(4);
     }
 //
 //    @Test
