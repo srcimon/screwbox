@@ -1,83 +1,65 @@
-//package io.github.srcimon.screwbox.core.audio.internal;
-//
-//import io.github.srcimon.screwbox.core.Percent;
-//import io.github.srcimon.screwbox.core.Vector;
-//import io.github.srcimon.screwbox.core.audio.Playback;
-//import io.github.srcimon.screwbox.core.audio.Sound;
-//import io.github.srcimon.screwbox.core.audio.SoundOptions;
-//import io.github.srcimon.screwbox.core.graphics.Camera;
-//import io.github.srcimon.screwbox.core.test.TestUtil;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.Timeout;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import javax.sound.sampled.Clip;
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//
-//import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-//import static io.github.srcimon.screwbox.core.Percent.zero;
-//import static io.github.srcimon.screwbox.core.Vector.$;
-//import static io.github.srcimon.screwbox.core.audio.SoundOptions.playContinuously;
-//import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
-//import static io.github.srcimon.screwbox.core.test.TestUtil.await;
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
-//import static org.mockito.Mockito.any;
-//import static org.mockito.Mockito.never;
-//import static org.mockito.Mockito.verify;
-//import static org.mockito.Mockito.when;
-//
-//@Timeout(1)
-//@ExtendWith(MockitoExtension.class)
-//class DefaultAudioTest {
-//
-//    DefaultAudio audio;
-//
-//    @Mock
-//    AudioAdapter audioAdapter;
-//
-//    @Mock
-//    Clip clip;
-//
-//    @Mock
-//    Camera camera;
-//
-//    ExecutorService executor;
-//
-//    Sound sound;
-//
-//    @BeforeEach
-//    void setUp() {
-//        executor = Executors.newSingleThreadExecutor();
-//        audio = new DefaultAudio(executor, audioAdapter, camera);
-//        sound = Sound.fromFile("assets/sounds/PHASER.wav");
-//    }
-//
-//    @Test
-//    void playSound_positionIsNull_throwsException() {
-//        assertThatThrownBy(() -> audio.playSound(sound, (Vector) null))
-//                .isInstanceOf(NullPointerException.class)
-//                .hasMessage("position must not be null");
-//    }
-//
-//    @Test
-//    void playSound_soundIsNull_throwsException() {
-//        assertThatThrownBy(() -> audio.playSound((Sound) null))
-//                .isInstanceOf(NullPointerException.class)
-//                .hasMessage("sound must not be null");
-//    }
-//
-//    @Test
-//    void playSound_optionsIsNull_throwsException() {
-//        assertThatThrownBy(() -> audio.playSound(sound, (SoundOptions) null))
-//                .isInstanceOf(NullPointerException.class)
-//                .hasMessage("options must not be null");
-//    }
+package io.github.srcimon.screwbox.core.audio.internal;
+
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
+import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@Timeout(1)
+@ExtendWith(MockitoExtension.class)
+class DefaultAudioTest {
+
+    DefaultAudio audio;
+
+    @Mock
+    Camera camera;
+
+    @Mock
+    MicrophoneMonitor microphoneMonitor;
+
+    @Mock
+    DynamicSoundSupport dynamicSoundSupport;
+
+    @Mock
+    AudioLinePool audioLinePool;
+
+    ExecutorService executor;
+
+    Sound sound;
+
+    @BeforeEach
+    void setUp() {
+        AudioConfiguration configuration = new AudioConfiguration();
+        executor = Executors.newSingleThreadExecutor();
+        audio = new DefaultAudio(executor, configuration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
+        sound = Sound.fromFile("assets/sounds/PHASER.wav");
+    }
+
+    @Test
+    void playSound_soundIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.playSound((Sound) null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("sound must not be null");
+    }
+
+    @Test
+    void playSound_optionsIsNull_throwsException() {
+        assertThatThrownBy(() -> audio.playSound(sound, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("options must not be null");
+    }
 //
 //    @Test
 //    void playSound_positionInRange_appliesPanAndVolume() {
@@ -353,10 +335,10 @@
 //                .anyMatch(playback -> playback.sound().equals(sound))
 //                .anyMatch(playback -> playback.options().equals(playOnce().asMusic()));
 //    }
-//
-//    @AfterEach
-//    void tearDown() {
-//        TestUtil.shutdown(executor);
-//    }
-//
-//}
+
+    @AfterEach
+    void tearDown() {
+        TestUtil.shutdown(executor);
+    }
+
+}
