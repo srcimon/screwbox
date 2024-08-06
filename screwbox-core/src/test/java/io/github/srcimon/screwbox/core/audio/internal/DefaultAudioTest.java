@@ -24,9 +24,6 @@ class DefaultAudioTest {
     DefaultAudio audio;
 
     @Mock
-    Camera camera;
-
-    @Mock
     MicrophoneMonitor microphoneMonitor;
 
     @Mock

@@ -46,6 +46,15 @@ class DynamicSoundSupportTest {
     }
 
     @Test
+    void currentVolume_effectAndEffectIsMuted_isZero() {
+        when(configuration.areEffectsMuted()).thenReturn(true);
+
+        var volume = dynamicSoundSupport.currentVolume(SoundOptions.playOnce());
+
+        assertThat(volume).isEqualTo(Percent.zero());
+    }
+
+    @Test
     void currentVolume_asMusicAndMusicIsMuted_isZero() {
         when(configuration.isMusicMuted()).thenReturn(true);
 
@@ -62,12 +71,32 @@ class DynamicSoundSupportTest {
     }
 
     @Test
+    void currentPan_positionSetLeftOfCamera_panIsRight() {
+        when(camera.position()).thenReturn(Vector.zero());
+        when(configuration.soundRange()).thenReturn(200.0);
+
+        var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(-40, 0)));
+
+        assertThat(pan).isEqualTo(-0.2);
+    }
+
+    @Test
+    void currentPan_positionSetRightOfCamera_panIsLeft() {
+        when(camera.position()).thenReturn(Vector.zero());
+        when(configuration.soundRange()).thenReturn(200.0);
+
+        var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(80, 0)));
+
+        assertThat(pan).isEqualTo(0.4);
+    }
+
+    @Test
     void currentVolume_outOfSoundRange_isZero() {
         when(configuration.effectVolume()).thenReturn(Percent.max());
         when(configuration.soundRange()).thenReturn(200.0);
         when(camera.position()).thenReturn(Vector.zero());
 
-        var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position($(0,1000)));
+        var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position($(0, 1000)));
 
         assertThat(volume).isEqualTo(Percent.zero());
     }
