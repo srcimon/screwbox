@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -66,7 +67,7 @@ class DynamicSoundSupportTest {
         when(configuration.soundRange()).thenReturn(200.0);
         when(camera.position()).thenReturn(Vector.zero());
 
-        var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position(Vector.$(0,1000)));
+        var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position($(0,1000)));
 
         assertThat(volume).isEqualTo(Percent.zero());
     }
