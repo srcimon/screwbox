@@ -1,15 +1,14 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.SourceDataLine;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,7 +17,7 @@ import static org.mockito.Mockito.when;
 class AudioAdapterTest {
 
     @Mock
-    Clip clip;
+    SourceDataLine line;
 
     @Mock
     FloatControl floatControl;
@@ -26,30 +25,21 @@ class AudioAdapterTest {
     @InjectMocks
     AudioAdapter audioAdapter;
 
-//    @Test
-//    void setVolume_fourtyPercent_setsCalculatedFloatValueToControl() {
-//        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
-//
-//        audioAdapter.setVolume(clip, Percent.of(0.4));
-//
-//        verify(floatControl).setValue(-7.9588003f);
-//    }
-//
-//    @Test
-//    void setPan_validValue_setsValueToControl() {
-//        when(clip.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
-//
-//        audioAdapter.setPan(clip, 0.2);
-//
-//        verify(floatControl).setValue(0.2f);
-//    }
-//
-//    @Test
-//    void setBalance_validValue_setsValueToControl() {
-//        when(clip.getControl(FloatControl.Type.BALANCE)).thenReturn(floatControl);
-//
-//        audioAdapter.setBalance(clip, -0.2);
-//
-//        verify(floatControl).setValue(-0.2f);
-//    }
+    @Test
+    void setVolume_fourtyPercent_appliesCalculatedFloatValueToLine() {
+        when(line.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
+
+        audioAdapter.setVolume(line, Percent.of(0.4));
+
+        verify(floatControl).setValue(-7.9588003f);
+    }
+
+    @Test
+    void setPan_validValue_appliesValueToLine() {
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+
+        audioAdapter.setPan(line, 0.2);
+
+        verify(floatControl).setValue(0.2f);
+    }
 }
