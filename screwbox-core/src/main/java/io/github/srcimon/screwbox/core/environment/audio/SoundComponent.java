@@ -21,7 +21,7 @@ public class SoundComponent implements Component {
 
     public Sound sound;
     public Playback playback;
-
+    
     public SoundComponent(final Supplier<Sound> sound) {
         this(sound.get());
     }

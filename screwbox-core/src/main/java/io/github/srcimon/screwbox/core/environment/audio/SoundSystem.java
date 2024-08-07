@@ -6,10 +6,10 @@ import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 //TODO add System for auto enabling SoundComponent when out of reach
 
@@ -23,13 +23,29 @@ public class SoundSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(SOUNDS)) {
-            final var soundComponent = entity.get(SoundComponent.class);
-            SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
-            if (isNull(soundComponent.playback) || !engine.audio().isActive(soundComponent.playback)) {
-                soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
+            if (entity.position().distanceTo(engine.graphics().camera().position()) < engine.audio().configuration().soundRange() * 2) {
+                turnOnAudioOfEntity(entity, engine);
             } else {
-                engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);
+                turnOffAudio(entity, engine);
             }
+        }
+    }
+
+    private void turnOffAudio(final Entity entity, final Engine engine) {
+        final var soundComponent = entity.get(SoundComponent.class);
+        if (nonNull(soundComponent.playback)) {
+            engine.audio().stopPlayback(soundComponent.playback);
+            soundComponent.playback = null;
+        }
+    }
+
+    private static void turnOnAudioOfEntity(final Entity entity, final Engine engine) {
+        final var soundComponent = entity.get(SoundComponent.class);
+        final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
+        if (isNull(soundComponent.playback) || !engine.audio().isActive(soundComponent.playback)) {
+            soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
+        } else {
+            engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);
         }
     }
 }
