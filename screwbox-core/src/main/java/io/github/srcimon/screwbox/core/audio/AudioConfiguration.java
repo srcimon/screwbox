@@ -20,7 +20,7 @@ public class AudioConfiguration {
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
-    private Duration microphoneTimeout = Duration.ofSeconds(5);
+    private Duration microphoneIdleTimeout = Duration.ofSeconds(5);
     private int maxLines = 64;
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
@@ -57,7 +57,7 @@ public class AudioConfiguration {
      * Sets timeout for the microphone to turn off after no further reading via {@link Audio#microphoneLevel()}.
      */
     public AudioConfiguration setMicrophoneIdleTimeout(final Duration timeout) {
-        microphoneTimeout = requireNonNull(timeout, "timeout must not be null");
+        microphoneIdleTimeout = requireNonNull(timeout, "timeout must not be null");
         notifyListeners(ConfigurationProperty.MICROPHONE_TIMEOUT);
         return this;
     }
@@ -66,7 +66,7 @@ public class AudioConfiguration {
      * Gets the timout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
      */
     public Duration microphoneIdleTimeout() {
-        return microphoneTimeout;
+        return microphoneIdleTimeout;
     }
 
     /**
