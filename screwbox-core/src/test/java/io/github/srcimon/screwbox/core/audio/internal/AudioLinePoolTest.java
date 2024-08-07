@@ -13,6 +13,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -90,5 +91,35 @@ class AudioLinePoolTest {
 
         SourceDataLine aquireLine = audioLinePool.aquireLine(MONO_FORMAT);
         assertThat(aquireLine).isEqualTo(monoLine);
+    }
+
+    @Test
+    void aquireLine_noMoreLinesCanBeAquired_throwsException() {
+        SourceDataLine line1 = mock(SourceDataLine.class);
+        SourceDataLine line2 = mock(SourceDataLine.class);
+
+        when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
+
+        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.aquireLine(MONO_FORMAT);
+        assertThatThrownBy(() -> audioLinePool.aquireLine(MONO_FORMAT))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("audio line pool has reached max capacity of 2 lines");
+    }
+
+    @Test
+    void aquireLine_capacityReachedButOneLineCanBeCleared_returnsClearedLine() {
+        SourceDataLine line1 = mock(SourceDataLine.class);
+        SourceDataLine line2 = mock(SourceDataLine.class);
+        when(line2.getFormat()).thenReturn(MONO_FORMAT);
+
+        when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
+
+        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.releaseLine(line2);
+
+        assertThat(audioLinePool.aquireLine(MONO_FORMAT)).isEqualTo(line2);
+
     }
 }
