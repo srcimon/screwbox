@@ -85,19 +85,19 @@ public interface Audio {
     boolean updatePlaybackOptions(Playback playback, SoundOptions options);
 
     /**
-     * Stops all currently playing instances of the {@link Sound}.
+     * Stops all current {@link Playback playbacks} of the specified {@link Sound}.
      *
-     * @see #stopSound(Supplier)
+     * @see #stopAllPLaybacks(Supplier)
      */
-    Audio stopSound(Sound sound);
+    Audio stopAllPLaybacks(Sound sound);
 
     /**
      * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
      *
-     * @see #stopSound(Sound)
+     * @see #stopAllPLaybacks(Sound)
      */
-    default Audio stopSound(Supplier<Sound> sound) {
-        return stopSound(sound.get());
+    default Audio stopAllPLaybacks(Supplier<Sound> sound) {
+        return stopAllPLaybacks(sound.get());
     }
 
     /**

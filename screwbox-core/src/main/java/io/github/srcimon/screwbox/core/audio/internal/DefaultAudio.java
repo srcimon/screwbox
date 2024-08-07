@@ -144,7 +144,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public Audio stopSound(final Sound sound) {
+    public Audio stopAllPLaybacks(final Sound sound) {
         requireNonNull(sound, "sound must not be null");
         for (final var activePlayback : fetchPlaybacks(sound)) {
             activePlaybacks.remove(activePlayback.id());
@@ -154,7 +154,13 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public int activePlaybackCount(final Sound sound) {
-        return fetchPlaybacks(sound).size();
+        int count = 0;
+        for (final var activePlayback : allActivePlaybacks()) {
+            if (activePlayback.sound().equals(sound)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override

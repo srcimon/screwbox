@@ -149,6 +149,11 @@ class DefaultAudioTest {
         assertThat(audio.updatePlaybackOptions(playback, SoundOptions.playContinuously())).isFalse();
     }
 
+    @Test
+    void stopAllPLaybacks_notPlaying_noException() {
+        assertThatNoException().isThrownBy(() -> audio.stopAllPLaybacks(sound));
+    }
+
     @AfterEach
     void tearDown() {
         TestUtil.shutdown(executor);

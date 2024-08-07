@@ -40,7 +40,7 @@ public class TracerActiveState implements EntityState {
     @Override
     public void exit(Entity entity, Engine engine) {
         entity.remove(FollowPlayerComponent.class);
-        engine.audio().stopSound(SOUND);
+        engine.audio().stopAllPLaybacks(SOUND);
     }
 
 }
