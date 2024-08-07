@@ -9,6 +9,7 @@
 - Added `Size.expand(int)`
 - Added sound asset `SoundBundle.NOTIFY`
 - Added `Ease.IN_PLATEAU_OUT`
+- Added `Environment.enableSound()`
 
 ### 🪛 Bug Fixes
 

@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.environment.audio.SoundSystem;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
 import io.github.srcimon.screwbox.core.environment.light.OptimizeLightPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.logic.AreaTriggerSystem;
@@ -316,6 +317,13 @@ public interface Environment {
     Environment enableParticles();
 
     /**
+     * Adds system for playing sounds.
+     *
+     * @see SoundSystem
+     */
+    Environment enableSound();
+
+    /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
      * @see #enableParticles()
      * @see #enableLight()
@@ -323,6 +331,7 @@ public interface Environment {
      * @see #enableRendering()
      * @see #enablePhysics()
      * @see #enableTweening()
+     * @see #enableSound()
      */
     Environment enableAllFeatures();
 }
