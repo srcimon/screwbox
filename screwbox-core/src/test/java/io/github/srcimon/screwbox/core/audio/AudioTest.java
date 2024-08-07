@@ -49,14 +49,14 @@ class AudioTest {
 
 
     @Test
-    void isActive_supplierGiven_returnsStatusOfSound() {
-        when(audio.isActive(SOUND)).thenReturn(true);
+    void hasActivePlaybacks_supplierGiven_returnsStatusOfSound() {
+        when(audio.hasActivePlaybacks(SOUND)).thenReturn(true);
 
-        assertThat(audio.isActive(ASSET)).isTrue();
+        assertThat(audio.hasActivePlaybacks(ASSET)).isTrue();
     }
 
     @Test
-    void activeCount_supplierGiven_returnsActivePlaybackCountSound() {
+    void activePlaybackCount_supplierGiven_returnsActivePlaybackCountSound() {
         when(audio.activePlaybackCount(SOUND)).thenReturn(6);
 
         assertThat(audio.activePlaybackCount(ASSET)).isEqualTo(6);

@@ -22,6 +22,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
+    private static final String PLAYBACK_NULL_MESSAGE = "playback must not be null";
+
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
@@ -51,7 +53,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopPlayback(final Playback playback) {
-        requireNonNull(playback, "playback must not be null");
+        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
         var activePlayback = activePlaybacks.get(playback.id());
         if (nonNull(activePlayback)) {
             activePlayback.line().flush();
@@ -96,14 +98,14 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean isActive(final Playback playback) {
-        requireNonNull(playback, "playback must not be null");
+    public boolean playbackIsActive(final Playback playback) {
+        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
         return activePlaybacks.containsKey(playback.id());
     }
 
     @Override
     public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
-        requireNonNull(playback, "playback must not be null");
+        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
         requireNonNull(options, "options must not be null");
 
         var activePlayback = activePlaybacks.get(playback.id());
@@ -155,7 +157,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public boolean isActive(final Sound sound) {
+    public boolean hasActivePlaybacks(final Sound sound) {
         return activePlaybackCount(sound) > 0;
     }
 

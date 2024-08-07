@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,9 +24,6 @@ class AudioAdapterTest {
     @Mock
     FloatControl floatControl;
 
-    @InjectMocks
-    AudioAdapter audioAdapter;
-
     @Test
     void setVolume_fourtyPercent_appliesCalculatedFloatValueToLine() {
         when(line.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
@@ -35,6 +31,24 @@ class AudioAdapterTest {
         AudioAdapter.setVolume(line, Percent.of(0.4));
 
         verify(floatControl).setValue(-7.9588003f);
+    }
+
+    @Test
+    void setPan_valueTooLow_appliesCappedValueToLine() {
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+
+        AudioAdapter.setPan(line, -9);
+
+        verify(floatControl).setValue(-1f);
+    }
+
+    @Test
+    void setPan_valueTooHigh_appliesCappedValueToLine() {
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+
+        AudioAdapter.setPan(line, 9);
+
+        verify(floatControl).setValue(1f);
     }
 
     @Test

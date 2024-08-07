@@ -42,7 +42,7 @@ public class SoundSystem implements EntitySystem {
     private static void turnOnAudioOfEntity(final Entity entity, final Engine engine) {
         final var soundComponent = entity.get(SoundComponent.class);
         final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
-        if (isNull(soundComponent.playback) || !engine.audio().isActive(soundComponent.playback)) {
+        if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
             soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
         } else {
             engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);

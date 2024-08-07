@@ -76,7 +76,7 @@ public interface Audio {
     /**
      * Returns {@code true} if the specified {@link Playback} is active.
      */
-    boolean isActive(Playback playback);
+    boolean playbackIsActive(Playback playback);
 
     /**
      * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}
@@ -120,17 +120,17 @@ public interface Audio {
     /**
      * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
      */
-    boolean isActive(Sound sound);
+    boolean hasActivePlaybacks(Sound sound);
 
     /**
      * Returns {@code true} of there is any active playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default boolean isActive(Supplier<Sound> sound) {
-        return isActive(sound.get());
+    default boolean hasActivePlaybacks(Supplier<Sound> sound) {
+        return hasActivePlaybacks(sound.get());
     }
 
     /**
-     * Returns the count of currently playing {@link Sound}s.
+     * Returns the count of currently active {@link Playback playbacks}.
      */
     int activePlaybackCount();
 

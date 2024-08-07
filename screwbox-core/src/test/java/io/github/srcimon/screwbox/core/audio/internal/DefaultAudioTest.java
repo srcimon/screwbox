@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,8 @@ class DefaultAudioTest {
 
     @Test
     void updatePlaybackOptions_playbackIsNull_throwsException() {
-        assertThatThrownBy(() -> audio.updatePlaybackOptions(null, SoundOptions.playOnce()))
+        var options = SoundOptions.playOnce();
+        assertThatThrownBy(() -> audio.updatePlaybackOptions(null, options))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("playback must not be null");
     }
@@ -89,6 +91,20 @@ class DefaultAudioTest {
         assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
+    }
+
+    @Test
+    void playbackIsActive_playbackNull_throwsExceptionPlaybacks() {
+        assertThatThrownBy(() -> audio.playbackIsActive(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("playback must not be null");
+    }
+
+    @Test
+    void playbackIsActive_notActive_isFalse() {
+        Playback playback = new Playback(UUID.randomUUID(), null, null);
+
+        Assertions.assertThat(audio.playbackIsActive(playback)).isFalse();
     }
 //
 //    @Test
