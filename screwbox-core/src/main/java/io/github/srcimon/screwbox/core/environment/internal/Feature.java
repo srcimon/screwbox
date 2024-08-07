@@ -72,7 +72,7 @@ public enum Feature {
             new PhysicsGridUpdateSystem()
     ),
 
-    SOUND(
+    AUDIO(
             new SoundSystem()
     ),
 

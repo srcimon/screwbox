@@ -325,8 +325,8 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void enableSound_addsSoundSystem() {
-        environment.enableSound();
+    void enableAudio_addsAudioSystem() {
+        environment.enableAudio();
 
         assertThat(environment.systems()).hasSize(1)
                 .anyMatch(system -> system.getClass().equals(SoundSystem.class));

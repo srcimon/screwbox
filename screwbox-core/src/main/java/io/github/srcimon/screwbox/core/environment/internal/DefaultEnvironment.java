@@ -317,8 +317,8 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
-    public Environment enableSound() {
-        enableFeature(Feature.SOUND);
+    public Environment enableAudio() {
+        enableFeature(Feature.AUDIO);
         return this;
     }
 

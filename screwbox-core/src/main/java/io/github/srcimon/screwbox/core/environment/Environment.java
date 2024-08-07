@@ -321,7 +321,7 @@ public interface Environment {
      *
      * @see SoundSystem
      */
-    Environment enableSound();
+    Environment enableAudio();
 
     /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
@@ -331,7 +331,7 @@ public interface Environment {
      * @see #enableRendering()
      * @see #enablePhysics()
      * @see #enableTweening()
-     * @see #enableSound()
+     * @see #enableAudio()
      */
     Environment enableAllFeatures();
 }
