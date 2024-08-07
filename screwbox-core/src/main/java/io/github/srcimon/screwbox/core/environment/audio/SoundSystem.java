@@ -11,8 +11,6 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-//TODO add System for auto enabling SoundComponent when out of reach
-
 /**
  * Adds a continuously playing {@link Sound} to an {@link Entity} linked to it's position.
  */
