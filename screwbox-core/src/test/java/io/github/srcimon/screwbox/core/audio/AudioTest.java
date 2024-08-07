@@ -56,9 +56,9 @@ class AudioTest {
     }
 
     @Test
-    void activeCount_supplierGiven_returnsActiveCountSound() {
-        when(audio.activeCount(SOUND)).thenReturn(6);
+    void activeCount_supplierGiven_returnsActivePlaybackCountSound() {
+        when(audio.activePlaybackCount(SOUND)).thenReturn(6);
 
-        assertThat(audio.activeCount(ASSET)).isEqualTo(6);
+        assertThat(audio.activePlaybackCount(ASSET)).isEqualTo(6);
     }
 }

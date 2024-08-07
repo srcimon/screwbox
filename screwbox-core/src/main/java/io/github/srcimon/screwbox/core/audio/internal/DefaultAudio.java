@@ -150,17 +150,17 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public int activeCount(final Sound sound) {
+    public int activePlaybackCount(final Sound sound) {
         return fetchPlaybacks(sound).size();
     }
 
     @Override
     public boolean isActive(final Sound sound) {
-        return activeCount(sound) > 0;
+        return activePlaybackCount(sound) > 0;
     }
 
     @Override
-    public int activeCount() {
+    public int activePlaybackCount() {
         return activePlaybacks.size();
     }
 

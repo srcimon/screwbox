@@ -108,13 +108,13 @@ public interface Audio {
     /**
      * Returns the count of currently playing instances of the given {@link Sound}.
      */
-    int activeCount(Sound sound);
+    int activePlaybackCount(Sound sound);
 
     /**
      * Returns the count of currently playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default int activeCount(Supplier<Sound> sound) {
-        return activeCount(sound.get());
+    default int activePlaybackCount(Supplier<Sound> sound) {
+        return activePlaybackCount(sound.get());
     }
 
     /**
@@ -132,7 +132,7 @@ public interface Audio {
     /**
      * Returns the count of currently playing {@link Sound}s.
      */
-    int activeCount();
+    int activePlaybackCount();
 
     /**
      * Read and change the current {@link AudioConfiguration}.

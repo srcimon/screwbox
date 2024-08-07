@@ -16,7 +16,7 @@ public class AudioAdapter {
 
     public static void setPan(final SourceDataLine line, final double pan) {
         final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.PAN);
-        gainControl.setValue((float) pan);
+        gainControl.setValue((float) Math.clamp(pan, -1, 1));
     }
 
     public static AudioInputStream getAudioInputStream(final byte[] content) {
