@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -139,6 +140,13 @@ class DefaultAudioTest {
                 .anyMatch(playback -> playback.options().equals(SoundOptions.playContinuously()))
                 .anyMatch(playback -> playback.options().equals(SoundOptions.playTimes(2)))
                 .allMatch(playback -> playback.sound().equals(SoundBundle.JUMP.get()));
+    }
+
+    @Test
+    void updatePlaybackOptions_playbackIsNotActive_isFalse() {
+        Playback playback = new Playback(UUID.randomUUID(), null, null);
+
+        assertThat(audio.updatePlaybackOptions(playback, SoundOptions.playContinuously())).isFalse();
     }
 
     @AfterEach
