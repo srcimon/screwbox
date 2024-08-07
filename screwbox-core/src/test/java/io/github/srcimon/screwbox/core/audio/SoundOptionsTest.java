@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import org.junit.jupiter.api.Test;
 
 import static io.github.srcimon.screwbox.core.Vector.$;

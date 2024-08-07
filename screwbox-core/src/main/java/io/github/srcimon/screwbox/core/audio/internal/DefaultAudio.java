@@ -22,8 +22,6 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultAudio implements Audio, Updatable {
 
-    private static final String PLAYBACK_NULL_MESSAGE = "playback must not be null";
-
     private final ExecutorService executor;
     private final AudioConfiguration configuration;
     private final MicrophoneMonitor microphoneMonitor;
@@ -53,8 +51,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public Audio stopPlayback(final Playback playback) {
-        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
-        var activePlayback = activePlaybacks.get(playback.id());
+        var activePlayback = fetchActivePlayback(playback);
         if (nonNull(activePlayback)) {
             activePlayback.line().flush();
             activePlaybacks.remove(playback.id());
@@ -99,21 +96,25 @@ public class DefaultAudio implements Audio, Updatable {
 
     @Override
     public boolean playbackIsActive(final Playback playback) {
-        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
+        requireNonNull(playback, "playback must not be null");
         return activePlaybacks.containsKey(playback.id());
     }
 
     @Override
     public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
-        requireNonNull(playback, PLAYBACK_NULL_MESSAGE);
         requireNonNull(options, "options must not be null");
 
-        var activePlayback = activePlaybacks.get(playback.id());
+        var activePlayback = fetchActivePlayback(playback);
         if (isNull(activePlayback)) {
             return false;
         }
         activePlayback.setOptions(options);
         return true;
+    }
+
+    private ActivePlayback fetchActivePlayback(Playback playback) {
+        requireNonNull(playback, "playback must not be null");
+        return activePlaybacks.get(playback.id());
     }
 
     private void play(final ActivePlayback playback) {

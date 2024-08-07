@@ -117,18 +117,28 @@ class DefaultAudioTest {
 
     @Test
     void playSound_optionsNull_throwsException() {
-        var sound = SoundBundle.JUMP.get();
         assertThatThrownBy(() -> audio.playSound(sound, null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("options must not be null");
     }
 
     @Test
-    void activePlaybackCount_twoSoundsPlayed_isOne() {
+    void activePlaybackCount_twoSoundsPlayed_isTwo() {
         audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
         audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
 
         assertThat(audio.activePlaybackCount()).isEqualTo(2);
+    }
+
+    @Test
+    void activePlaybacks_twoPlaybacks_returnsBoth() {
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playContinuously());
+        audio.playSound(SoundBundle.JUMP, SoundOptions.playTimes(2));
+
+        assertThat(audio.activePlaybacks()).hasSize(2)
+                .anyMatch(playback -> playback.options().equals(SoundOptions.playContinuously()))
+                .anyMatch(playback -> playback.options().equals(SoundOptions.playTimes(2)))
+                .allMatch(playback -> playback.sound().equals(SoundBundle.JUMP.get()));
     }
 
     @AfterEach
