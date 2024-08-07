@@ -44,4 +44,18 @@ class SoundSystemTest {
 
         verify(audio).updatePlaybackOptions(soundComponent.playback, SoundOptions.playContinuously().position($(30, 20)));
     }
+
+    @Test
+    void update_entityWithInactivePlayingSound_startsAudioPlayback(DefaultEnvironment environment, Audio audio) {
+        SoundComponent soundComponent = new SoundComponent(SoundBundle.NOTIFY);
+        soundComponent.playback = new Playback(UUID.randomUUID(), SoundBundle.PHASER.get(), SoundOptions.playContinuously());
+
+        environment
+                .addEntity(new TransformComponent($(30, 20)), soundComponent)
+                .addSystem(new SoundSystem());
+
+        environment.update();
+
+        verify(audio).playSound(SoundBundle.NOTIFY.get(), SoundOptions.playContinuously().position($(30, 20)));
+    }
 }
