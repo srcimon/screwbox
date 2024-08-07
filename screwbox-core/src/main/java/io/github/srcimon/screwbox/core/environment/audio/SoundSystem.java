@@ -21,29 +21,22 @@ public class SoundSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(SOUNDS)) {
-            if (entity.position().distanceTo(engine.graphics().camera().position()) < engine.audio().configuration().soundRange() * 2) {
-                turnOnAudioOfEntity(entity, engine);
-            } else {
-                turnOffAudio(entity, engine);
+            final var soundComponent = entity.get(SoundComponent.class);
+            final double disablingRange = engine.audio().configuration().soundRange() * 2; // twice the distance on purpose to not cause flickering on edge
+            final boolean soundIsOutOfRange = entity.position().distanceTo(engine.graphics().camera().position()) < disablingRange;
+
+            if (soundIsOutOfRange) {
+                final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
+                if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
+                    soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
+                } else {
+                    engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);
+                }
+            } else if (nonNull(soundComponent.playback)) {
+                engine.audio().stopPlayback(soundComponent.playback);
+                soundComponent.playback = null;
             }
         }
     }
 
-    private void turnOffAudio(final Entity entity, final Engine engine) {
-        final var soundComponent = entity.get(SoundComponent.class);
-        if (nonNull(soundComponent.playback)) {
-            engine.audio().stopPlayback(soundComponent.playback);
-            soundComponent.playback = null;
-        }
-    }
-
-    private static void turnOnAudioOfEntity(final Entity entity, final Engine engine) {
-        final var soundComponent = entity.get(SoundComponent.class);
-        final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
-        if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
-            soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
-        } else {
-            engine.audio().updatePlaybackOptions(soundComponent.playback, soundOptions);
-        }
-    }
 }
