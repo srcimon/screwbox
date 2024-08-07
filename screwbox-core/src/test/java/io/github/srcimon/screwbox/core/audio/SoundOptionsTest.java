@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import org.junit.jupiter.api.Test;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -30,6 +32,13 @@ class SoundOptionsTest {
 
         assertThat(options.times()).isEqualTo(3);
         assertThat(options.volume()).isEqualTo(Percent.max());
+    }
+
+    @Test
+    void soundOptions_positionSet_hasPosition() {
+        var options = SoundOptions.playTimes(3).position($(20,25));
+
+        assertThat(options.position()).isEqualTo($(20,25));
     }
 
     @Test

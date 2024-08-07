@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.io.Serial;
@@ -10,7 +11,8 @@ import java.io.Serializable;
 /**
  * Sets options for the playback of a specific {@link Sound} via {@link Audio}.
  */
-public record SoundOptions(int times, Percent volume, double pan, boolean isMusic, Vector position) implements Serializable {
+public record SoundOptions(int times, Percent volume, double pan, boolean isMusic,
+                           Vector position) implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,7 +46,10 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
         return new SoundOptions(times, volume, pan, true, null);
     }
 
-    //TODO javadoc test
+    /**
+     * Sets a postion as source of the {@link Sound}. {@link #pan()} and {@link #volume()} will be dynamicly changed
+     * based upon the distance between the specified postion and the {@link Camera#position()}.
+     */
     public SoundOptions position(Vector position) {
         return new SoundOptions(times, volume, pan, isMusic, position);
     }
