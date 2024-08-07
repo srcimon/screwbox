@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
 - Completly reworked audio playback to remove any lag on playing sounds (#359)
-- Allow changes of options for already playing sounds
+- Allowed changes in volume and pan for already playing sounds
 - Added `SoundComponent`/`System` to add a constant sound to an entity
 - Added `Environment.enableAudio()` to add audio related entity systems.
 - Added support for multiline text rendering

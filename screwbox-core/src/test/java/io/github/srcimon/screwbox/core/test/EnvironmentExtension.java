@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.test;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
@@ -43,6 +44,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
         final var mouse = Mockito.mock(Mouse.class);
+        final var audio = Mockito.mock(Audio.class);
         final var entities = new DefaultEnvironment(engine);
 
         // resolve a real entity engine with many mocked subsystems
@@ -57,6 +59,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(engine.mouse()).thenReturn(mouse);
         when(engine.window()).thenReturn(window);
         when(engine.particles()).thenReturn(particles);
+        when(engine.audio()).thenReturn(audio);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
         when(graphics.camera()).thenReturn(camera);
@@ -74,6 +77,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Keyboard.class, keyboard);
         parameters.put(Engine.class, engine);
         parameters.put(Particles.class, particles);
+        parameters.put(Audio.class, audio);
         parameters.put(DefaultEnvironment.class, entities);
     }
 
