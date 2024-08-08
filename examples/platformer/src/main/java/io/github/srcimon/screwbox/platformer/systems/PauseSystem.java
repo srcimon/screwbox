@@ -15,7 +15,7 @@ public class PauseSystem implements EntitySystem {
                 || engine.keyboard().isPressed(Key.ESCAPE)
                 || !engine.window().hasFocus())) {
 
-            engine.audio().stopAllSounds();
+            engine.audio().stopAllPlaybacks();
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
                     .introAnimation(new SpriteFadeAnimation(engine.graphics().screen().takeScreenshot()))
                     .introDurationMillis(500));

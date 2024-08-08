@@ -279,7 +279,7 @@ class DefaultEngine implements Engine {
                 ui.closeMenu();
                 loop.stop();
                 loop.awaitTermination();
-                audio.stopAllSounds();
+                audio.stopAllPlaybacks();
                 window.close();
                 executor.shutdown();
             });

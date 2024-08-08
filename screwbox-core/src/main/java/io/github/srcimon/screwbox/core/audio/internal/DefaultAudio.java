@@ -41,7 +41,7 @@ public class DefaultAudio implements Audio, Updatable {
     }
 
     @Override
-    public Audio stopAllSounds() {
+    public Audio stopAllPlaybacks() {
         activePlaybacks.clear();
         for (final var line : audioLinePool.lines()) {
             line.flush();

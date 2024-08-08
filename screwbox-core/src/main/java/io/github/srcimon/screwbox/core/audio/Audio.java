@@ -101,9 +101,9 @@ public interface Audio {
     }
 
     /**
-     * Stops all currently playing {@link Sound}s.
+     * Stops all currently {@link #activePlaybacks()}.
      */
-    Audio stopAllSounds();
+    Audio stopAllPlaybacks();
 
     /**
      * Returns the count of currently playing instances of the given {@link Sound}.

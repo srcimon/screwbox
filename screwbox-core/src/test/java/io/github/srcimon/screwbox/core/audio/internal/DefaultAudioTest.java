@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.sound.sampled.SourceDataLine;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,6 +23,8 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @Timeout(1)
@@ -150,8 +154,20 @@ class DefaultAudioTest {
     }
 
     @Test
-    void stopAllPlaybacks_notPlaying_noException() {
+    void stopAllPlaybacks_noPlayback_noException() {
         assertThatNoException().isThrownBy(() -> audio.stopAllPlaybacks(sound));
+    }
+
+    @Test
+    void stopAllPlaybacks_twoPlaybacks_usedLinesFlushedAndActivePlaybackCleared() {
+        SourceDataLine line = mock(SourceDataLine.class);
+        when(audioLinePool.lines()).thenReturn(List.of(line));
+        audio.playSound(sound);
+
+        audio.stopAllPlaybacks();
+
+        verify(line).flush();
+        assertThat(audio.activePlaybacks()).isEmpty();
     }
 
     @AfterEach
