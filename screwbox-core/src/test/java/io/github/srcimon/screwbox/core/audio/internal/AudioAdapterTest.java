@@ -26,6 +26,8 @@ class AudioAdapterTest {
 
     @Test
     void setVolume_fourtyPercent_appliesCalculatedFloatValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-10f);
+        when(floatControl.getMaximum()).thenReturn(10f);
         when(line.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
 
         AudioAdapter.setVolume(line, Percent.of(0.4));
@@ -35,6 +37,8 @@ class AudioAdapterTest {
 
     @Test
     void setPan_valueTooLow_appliesCappedValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
         when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
 
         AudioAdapter.setPan(line, -9);
@@ -44,6 +48,8 @@ class AudioAdapterTest {
 
     @Test
     void setPan_valueTooHigh_appliesCappedValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
         when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
 
         AudioAdapter.setPan(line, 9);
@@ -53,6 +59,8 @@ class AudioAdapterTest {
 
     @Test
     void setPan_validValue_appliesValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
         when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
 
         AudioAdapter.setPan(line, 0.2);
