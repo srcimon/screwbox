@@ -126,6 +126,7 @@ public class DefaultAudio implements Audio, Updatable {
         do {
             writePlaybackDateToAudioLine(playback);
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
+        playback.line().drain();
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
     }
@@ -137,7 +138,6 @@ public class DefaultAudio implements Audio, Updatable {
             while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
                 playback.line().write(bufferBytes, 0, readBytes);
             }
-            playback.line().drain();
         } catch (IOException e) {
             throw new IllegalStateException("could not close audio stream", e);
         }

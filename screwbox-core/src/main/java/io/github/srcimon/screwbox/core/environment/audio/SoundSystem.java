@@ -22,10 +22,10 @@ public class SoundSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(SOUNDS)) {
             final var soundComponent = entity.get(SoundComponent.class);
-            final double disablingRange = engine.audio().configuration().soundRange() * 2; // twice the distance on purpose to not cause flickering on edge
-            final boolean soundIsOutOfRange = entity.position().distanceTo(engine.graphics().camera().position()) < disablingRange;
+            final double enableRange = engine.audio().configuration().soundRange() * 2; // twice the distance on purpose to not cause flickering on edge
+            final boolean isInRange = entity.position().distanceTo(engine.graphics().camera().position()) < enableRange;
 
-            if (soundIsOutOfRange) {
+            if (isInRange) {
                 final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
                 if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
                     soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
