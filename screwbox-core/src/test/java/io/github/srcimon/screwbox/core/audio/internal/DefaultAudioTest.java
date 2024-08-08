@@ -150,8 +150,8 @@ class DefaultAudioTest {
     }
 
     @Test
-    void stopAllPLaybacks_notPlaying_noException() {
-        assertThatNoException().isThrownBy(() -> audio.stopAllPLaybacks(sound));
+    void stopAllPlaybacks_notPlaying_noException() {
+        assertThatNoException().isThrownBy(() -> audio.stopAllPlaybacks(sound));
     }
 
     @AfterEach

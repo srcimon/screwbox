@@ -87,17 +87,17 @@ public interface Audio {
     /**
      * Stops all current {@link Playback playbacks} of the specified {@link Sound}.
      *
-     * @see #stopAllPLaybacks(Supplier)
+     * @see #stopAllPlaybacks(Supplier)
      */
-    Audio stopAllPLaybacks(Sound sound);
+    Audio stopAllPlaybacks(Sound sound);
 
     /**
      * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
      *
-     * @see #stopAllPLaybacks(Sound)
+     * @see #stopAllPlaybacks(Sound)
      */
-    default Audio stopAllPLaybacks(Supplier<Sound> sound) {
-        return stopAllPLaybacks(sound.get());
+    default Audio stopAllPlaybacks(Supplier<Sound> sound) {
+        return stopAllPlaybacks(sound.get());
     }
 
     /**

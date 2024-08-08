@@ -18,7 +18,7 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
     private static final long serialVersionUID = 1L;
 
     /**
-     * Playback {@link Sound} until stopped via {@link Audio#stopAllPLaybacks(Sound)}.
+     * Playback {@link Sound} until stopped via {@link Audio#stopAllPlaybacks(Sound)}.
      */
     public static SoundOptions playContinuously() {
         return playTimes(Integer.MAX_VALUE);

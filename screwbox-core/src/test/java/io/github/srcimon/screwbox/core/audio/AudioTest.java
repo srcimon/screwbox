@@ -42,9 +42,9 @@ class AudioTest {
 
     @Test
     void stopSound_assetGiven_stopsAllPLaybacksFromAsset() {
-        audio.stopAllPLaybacks(ASSET);
+        audio.stopAllPlaybacks(ASSET);
 
-        verify(audio).stopAllPLaybacks(SOUND);
+        verify(audio).stopAllPlaybacks(SOUND);
     }
 
 
