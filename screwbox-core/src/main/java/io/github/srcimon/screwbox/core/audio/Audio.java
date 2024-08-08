@@ -15,12 +15,12 @@ import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 public interface Audio {
 
     /**
-     * Returns the count of currently available audio lines. Lines will be automatically created when needed. To reduce
-     * system load use a common audio format for all your sounds, because an audio line ist only available for a specific format.
+     * Returns the count of currently started audio lines. Lines will be automatically created when needed. To reduce
+     * system load use a common audio format for all your sounds, because an audio line can only play one specific format.
      *
      * @see AudioConfiguration#maxLines()
      */
-    int availableAudioLines();
+    int lineCount();
 
     /**
      * Returns the current microphone input volume. Microphone will turn on automatically when calling this method. Will turn off after

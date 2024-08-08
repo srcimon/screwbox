@@ -78,10 +78,10 @@ class DefaultAudioTest {
     }
 
     @Test
-    void availableAudioLines_returnsLineCountFromPool() {
+    void lineCount_returnsLineCountFromPool() {
         when(audioLinePool.size()).thenReturn(4);
 
-        assertThat(audio.availableAudioLines()).isEqualTo(4);
+        assertThat(audio.lineCount()).isEqualTo(4);
     }
 
     @Test
