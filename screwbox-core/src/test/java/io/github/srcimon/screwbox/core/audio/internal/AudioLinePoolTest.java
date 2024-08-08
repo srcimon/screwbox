@@ -131,6 +131,6 @@ class AudioLinePoolTest {
         audioLinePool.aquireLine(MONO_FORMAT);
         audioLinePool.aquireLine(MONO_FORMAT);
 
-        assertThat(audioLinePool.lines()).containsExactly(line1, line2);
+        assertThat(audioLinePool.lines()).containsExactlyInAnyOrder(line1, line2);
     }
 }

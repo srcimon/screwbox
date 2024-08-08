@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
@@ -170,6 +171,20 @@ class DefaultAudioTest {
 
         verify(line).flush();
         assertThat(audio.activePlaybacks()).isEmpty();
+    }
+
+    @Test
+    void microphoneLevel_levelHalf_returnsHalf() {
+        when(microphoneMonitor.level()).thenReturn(Percent.half());
+
+        assertThat(audio.microphoneLevel()).isEqualTo(Percent.half());
+    }
+
+    @Test
+    void isMicrophoneActive_isActive_isTrue() {
+        when(microphoneMonitor.isActive()).thenReturn(true);
+
+        assertThat(audio.isMicrophoneActive()).isTrue();
     }
 
     @AfterEach
