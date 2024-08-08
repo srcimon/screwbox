@@ -120,6 +120,17 @@ class AudioLinePoolTest {
         audioLinePool.releaseLine(line2);
 
         assertThat(audioLinePool.aquireLine(MONO_FORMAT)).isEqualTo(line2);
+    }
 
+    @Test
+    void lines_linesWereCreated_returnsCreatedLines() {
+        SourceDataLine line1 = mock(SourceDataLine.class);
+        SourceDataLine line2 = mock(SourceDataLine.class);
+        when(audioAdapter.createSourceLine(MONO_FORMAT)).thenReturn(line1, line2);
+
+        audioLinePool.aquireLine(MONO_FORMAT);
+        audioLinePool.aquireLine(MONO_FORMAT);
+
+        assertThat(audioLinePool.lines()).containsExactly(line1, line2);
     }
 }

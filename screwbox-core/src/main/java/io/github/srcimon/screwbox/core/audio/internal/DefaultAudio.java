@@ -119,7 +119,6 @@ public class DefaultAudio implements Audio, Updatable {
 
     private void play(final ActivePlayback playback) {
         int loop = 1;
-        //TODO playback.remainingLoops()
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
         playback.setLine(audioLinePool.aquireLine(format));
         refreshLineSettingsOfPlayback(playback);
