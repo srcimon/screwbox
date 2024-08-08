@@ -4,9 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
-import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.audio.SoundBundle;
-import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
 import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
@@ -39,13 +36,7 @@ public class HelloWorldApp {
                     var screen = engine.graphics().screen();
                     var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
                     screen.fillWith(Color.hex("#125d7e"));
-                    screen.drawText(screen.center(), "Sounds " + engine.audio().activePlaybackCount() + " ( " + engine.audio().lineCount() + ")", drawOptions);
-                    if(engine.mouse().isPressedRight()) {
-                        engine.audio().stopAllPlaybacks();
-                    }
-                    if(engine.mouse().isPressedLeft()) {
-                        engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playTimes(3).position(Vector.$(300,0)));
-                    }
+                    screen.drawText(screen.center(), "Hello World!", drawOptions);
                 })
 
                 // add light spot to create nice sunlight effect
