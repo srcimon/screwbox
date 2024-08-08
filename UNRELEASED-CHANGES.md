@@ -2,7 +2,7 @@
 
 - Completly reworked audio playback to remove any lag on playing sounds (#359)
 - Allowed changes in volume and pan for already playing sounds
-- Added `SoundComponent`/`System` to add a continuously repeated playback to an entity
+- Added `SoundComponent`/`System` to add a continuously repeated playback to an entity (#361)
 - Added `Environment.enableAudio()` to add audio related entity systems
 - Rendering now support multiline text rendering
 - Added `Async.taskCount()`
