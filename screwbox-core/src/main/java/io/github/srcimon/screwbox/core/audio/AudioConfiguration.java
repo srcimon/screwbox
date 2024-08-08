@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
@@ -21,13 +20,31 @@ public class AudioConfiguration {
     private boolean isMusicMuted = false;
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
-    private Duration microphoneTimeout = Duration.ofSeconds(5);
+    private Duration microphoneIdleTimeout = Duration.ofSeconds(5);
+    private int maxLines = 64;
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
     /**
+     * Sets the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
+     */
+    public AudioConfiguration setMaxLines(final int maxLines) {
+        Validate.positive(maxLines, "max lines must be positive");
+        this.maxLines = maxLines;
+        notifyListeners(ConfigurationProperty.MAX_LINES);
+        return this;
+    }
+
+    /**
+     * Returns the maximum number of audio lines used by the engine. This specifies the max count of parallel sounds.
+     */
+    public int maxLines() {
+        return maxLines;
+    }
+
+    /**
      * Sets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
-     * when using {@link Audio#playSound(Sound, Vector)}.
+     * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public AudioConfiguration setSoundRange(final double soundRange) {
         Validate.positive(soundRange, "sound range must be positive");
@@ -40,7 +57,7 @@ public class AudioConfiguration {
      * Sets timeout for the microphone to turn off after no further reading via {@link Audio#microphoneLevel()}.
      */
     public AudioConfiguration setMicrophoneIdleTimeout(final Duration timeout) {
-        microphoneTimeout = requireNonNull(timeout, "timeout must not be null");
+        microphoneIdleTimeout = requireNonNull(timeout, "timeout must not be null");
         notifyListeners(ConfigurationProperty.MICROPHONE_TIMEOUT);
         return this;
     }
@@ -49,12 +66,12 @@ public class AudioConfiguration {
      * Gets the timout after that the microphone turns off after no further reading via {@link Audio#microphoneLevel()}.
      */
     public Duration microphoneIdleTimeout() {
-        return microphoneTimeout;
+        return microphoneIdleTimeout;
     }
 
     /**
      * Gets the sound range that is used to determin {@link SoundOptions#pan()} and {@link SoundOptions#volume()}
-     * when using {@link Audio#playSound(Sound, Vector)}.
+     * when {@link Sound} is played based on {@link SoundOptions#position()}.
      */
     public double soundRange() {
         return soundRange;

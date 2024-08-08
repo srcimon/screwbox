@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import javax.sound.sampled.AudioFormat;
 import java.util.concurrent.ExecutorService;
 
-public class VolumeMonitor {
+public class MicrophoneMonitor {
 
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 8000, 16, 1, 2, 100, false);
     private final ExecutorService executor;
@@ -19,7 +19,7 @@ public class VolumeMonitor {
     private boolean isUsed = false;
     private Time lastUsed = Time.now();
 
-    public VolumeMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
+    public MicrophoneMonitor(final ExecutorService executor, final AudioAdapter audioAdapter, final AudioConfiguration configuration) {
         this.executor = executor;
         this.coniguration = configuration;
         this.audioAdapter = audioAdapter;
@@ -34,8 +34,14 @@ public class VolumeMonitor {
         return level;
     }
 
+    public boolean isActive() {
+        synchronized (this) {
+            return isActive;
+        }
+    }
+
     private void continuouslyMonitorMicrophoneLevel() {
-        try (final var line = audioAdapter.getStartedTargetDataLine(AUDIO_FORMAT)) {
+        try (final var line = audioAdapter.createTargetLine(AUDIO_FORMAT)) {
             lastUsed = Time.now();
             final byte[] buffer = new byte[line.getBufferSize()];
 
@@ -68,12 +74,6 @@ public class VolumeMonitor {
 
         double averageMeanSquare = sumMeanSquare / buffer.length;
         return Percent.of((Math.pow(averageMeanSquare, 0.5)) / 128.0);
-    }
-
-    public boolean isActive() {
-        synchronized (this) {
-            return isActive;
-        }
     }
 
     private boolean isIdleForTooLong() {

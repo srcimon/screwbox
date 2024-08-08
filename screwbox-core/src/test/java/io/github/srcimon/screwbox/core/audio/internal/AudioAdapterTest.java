@@ -1,15 +1,17 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.SourceDataLine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,38 +19,71 @@ import static org.mockito.Mockito.when;
 class AudioAdapterTest {
 
     @Mock
-    Clip clip;
+    SourceDataLine line;
 
     @Mock
     FloatControl floatControl;
 
-    @InjectMocks
-    AudioAdapter audioAdapter;
-
     @Test
-    void setVolume_fourtyPercent_setsCalculatedFloatValueToControl() {
-        when(clip.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
+    void setVolume_fourtyPercent_appliesCalculatedFloatValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-10f);
+        when(floatControl.getMaximum()).thenReturn(10f);
+        when(line.getControl(FloatControl.Type.MASTER_GAIN)).thenReturn(floatControl);
 
-        audioAdapter.setVolume(clip, Percent.of(0.4));
+        AudioAdapter.setVolume(line, Percent.of(0.4));
 
         verify(floatControl).setValue(-7.9588003f);
     }
 
     @Test
-    void setPan_validValue_setsValueToControl() {
-        when(clip.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+    void setPan_valueTooLow_appliesCappedValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
 
-        audioAdapter.setPan(clip, 0.2);
+        AudioAdapter.setPan(line, -9);
+
+        verify(floatControl).setValue(-1f);
+    }
+
+    @Test
+    void setPan_valueTooHigh_appliesCappedValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+
+        AudioAdapter.setPan(line, 9);
+
+        verify(floatControl).setValue(1f);
+    }
+
+    @Test
+    void setPan_validValue_appliesValueToLine() {
+        when(floatControl.getMinimum()).thenReturn(-1f);
+        when(floatControl.getMaximum()).thenReturn(1f);
+        when(line.getControl(FloatControl.Type.PAN)).thenReturn(floatControl);
+
+        AudioAdapter.setPan(line, 0.2);
 
         verify(floatControl).setValue(0.2f);
     }
 
     @Test
-    void setBalance_validValue_setsValueToControl() {
-        when(clip.getControl(FloatControl.Type.BALANCE)).thenReturn(floatControl);
+    void getAudioFormat_validSound_returnsFormat() {
+        byte[] sound = SoundBundle.JUMP.get().content();
 
-        audioAdapter.setBalance(clip, -0.2);
+        var audioFormat = AudioAdapter.getAudioFormat(sound);
 
-        verify(floatControl).setValue(-0.2f);
+        assertThat(audioFormat.getFrameRate()).isEqualTo(44100.0f);
+        assertThat(audioFormat.getChannels()).isEqualTo(2);
+    }
+
+    @Test
+    void getAudioFormat_noSoundData_throwsException() {
+        byte[] noSound = "no-sound".getBytes();
+
+        assertThatThrownBy(() -> AudioAdapter.getAudioFormat(noSound))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("could not load audio content");
     }
 }

@@ -317,6 +317,12 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Environment enableAudio() {
+        enableFeature(Feature.AUDIO);
+        return this;
+    }
+
+    @Override
     public Environment enableAllFeatures() {
         for (final var feature : Feature.values()) {
             enableFeature(feature);

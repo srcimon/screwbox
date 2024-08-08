@@ -1,143 +1,176 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
-import io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent;
-import io.github.srcimon.screwbox.core.audio.AudioConfigurationListener;
 import io.github.srcimon.screwbox.core.audio.Playback;
 import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
-import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultAudio implements Audio, AudioConfigurationListener {
+public class DefaultAudio implements Audio, Updatable {
 
     private final ExecutorService executor;
-    private final AudioAdapter audioAdapter;
-    private final Camera camera;
-    private final Map<Clip, Playback> playbacks = new ConcurrentHashMap<>();
-    private final AudioConfiguration configuration = new AudioConfiguration().addListener(this);
-    private final VolumeMonitor volumeMonitor;
+    private final AudioConfiguration configuration;
+    private final MicrophoneMonitor microphoneMonitor;
+    private final AudioLinePool audioLinePool;
+    private final DynamicSoundSupport dynamicSoundSupport;
+    private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
 
-    public DefaultAudio(final ExecutorService executor, final AudioAdapter audioAdapter, final Camera camera) {
+    public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
+                        final DynamicSoundSupport dynamicSoundSupport,
+                        final MicrophoneMonitor microphoneMonitor,
+                        final AudioLinePool audioLinePool) {
         this.executor = executor;
-        this.audioAdapter = audioAdapter;
-        this.camera = camera;
-        this.volumeMonitor = new VolumeMonitor(executor, audioAdapter, configuration);
+        this.dynamicSoundSupport = dynamicSoundSupport;
+        this.microphoneMonitor = microphoneMonitor;
+        this.audioLinePool = audioLinePool;
+        this.configuration = configuration;
     }
 
     @Override
-    public Audio stopAllSounds() {
-        if (!executor.isShutdown()) {
-            executor.execute(() -> {
-                final List<Clip> activeClips = new ArrayList<>(playbacks.keySet());
-                for (final Clip clip : activeClips) {
-                    clip.stop();
-                }
-                playbacks.clear();
-            });
+    public Audio stopAllPlaybacks() {
+        activePlaybacks.clear();
+        for (final var line : audioLinePool.lines()) {
+            line.flush();
         }
         return this;
+    }
+
+    @Override
+    public Audio stopPlayback(final Playback playback) {
+        var activePlayback = fetchActivePlayback(playback);
+        if (nonNull(activePlayback)) {
+            activePlayback.line().flush();
+            activePlaybacks.remove(playback.id());
+        }
+        return this;
+    }
+
+    @Override
+    public int lineCount() {
+        return audioLinePool.size();
     }
 
     @Override
     public Percent microphoneLevel() {
-        return volumeMonitor.level();
+        return microphoneMonitor.level();
     }
 
     @Override
     public boolean isMicrophoneActive() {
-        return volumeMonitor.isActive();
-    }
-
-    @Override
-    public Audio playSound(final Sound sound, final Vector position) {
-        requireNonNull(position, "position must not be null");
-        final var distance = camera.position().distanceTo(position);
-        final var direction = modifier(position.x() - camera.position().x());
-        final var quotient = distance / configuration.soundRange();
-        final var options = SoundOptions.playOnce()
-                .pan(direction * quotient)
-                .volume(Percent.of(1 - quotient));
-
-        playSound(sound, options, position);
-        return this;
+        return microphoneMonitor.isActive();
     }
 
     @Override
     public List<Playback> activePlaybacks() {
-        return new ArrayList<>(playbacks.values());
-    }
-
-    @Override
-    public Audio playSound(final Sound sound, final SoundOptions options) {
-        playSound(sound, options, null);
-        return this;
-    }
-
-    @Override
-    public Audio stopSound(final Sound sound) {
-        for (final Clip clip : fetchClipsFor(sound)) {
-            executor.execute(clip::stop);
+        final List<Playback> playbacks = new ArrayList<>();
+        for (var activePlayback : new ArrayList<>(activePlaybacks.values())) {
+            playbacks.add(activePlayback.toPlayback());
         }
-        return this;
+        return playbacks;
     }
 
-    private void playSound(final Sound sound, final SoundOptions options, final Vector position) {
+    @Override
+    public Playback playSound(final Sound sound, final SoundOptions options) {
         requireNonNull(sound, "sound must not be null");
         requireNonNull(options, "options must not be null");
-        final Percent configVolume = options.isMusic() ? musicVolume() : effectVolume();
-        final Percent volume = configVolume.multiply(options.volume().value());
-        if (!volume.isZero()) {
-            executor.execute(() -> {
-                final Clip clip = audioAdapter.createClip(sound);
-                audioAdapter.setVolume(clip, volume);
-                audioAdapter.setBalance(clip, options.balance());
-                audioAdapter.setPan(clip, options.pan());
-                playbacks.put(clip, new Playback(sound, options, position));
-                clip.setFramePosition(0);
-                clip.addLineListener(event -> {
-                    if (event.getType().equals(LineEvent.Type.STOP)) {
-                        playbacks.remove(event.getSource());
-                    }
-                });
-                clip.loop(options.times() - 1);
-            });
+
+        ActivePlayback activePlayback = new ActivePlayback(sound, options);
+        activePlaybacks.put(activePlayback.id(), activePlayback);
+        executor.execute(() -> play(activePlayback));
+        return activePlayback.toPlayback();
+    }
+
+    @Override
+    public boolean playbackIsActive(final Playback playback) {
+        requireNonNull(playback, "playback must not be null");
+        return activePlaybacks.containsKey(playback.id());
+    }
+
+    @Override
+    public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
+        requireNonNull(options, "options must not be null");
+
+        var activePlayback = fetchActivePlayback(playback);
+        if (isNull(activePlayback)) {
+            return false;
+        }
+        activePlayback.setOptions(options);
+        return true;
+    }
+
+    private ActivePlayback fetchActivePlayback(Playback playback) {
+        requireNonNull(playback, "playback must not be null");
+        return activePlaybacks.get(playback.id());
+    }
+
+    private void play(final ActivePlayback playback) {
+        int loop = 1;
+        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
+        playback.setLine(audioLinePool.aquireLine(format));
+        refreshLineSettingsOfPlayback(playback);
+
+        do {
+            writePlaybackDateToAudioLine(playback);
+        } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
+        playback.line().drain();
+        audioLinePool.releaseLine(playback.line());
+        activePlaybacks.remove(playback.id());
+    }
+
+    private void writePlaybackDateToAudioLine(ActivePlayback playback) {
+        try (var stream = AudioAdapter.getAudioInputStream(playback.sound().content())) {
+            final byte[] bufferBytes = new byte[4096];
+            int readBytes;
+            while ((readBytes = stream.read(bufferBytes)) != -1 && activePlaybacks.containsKey(playback.id())) {
+                playback.line().write(bufferBytes, 0, readBytes);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("could not close audio stream", e);
         }
     }
 
     @Override
-    public int activeCount(final Sound sound) {
-        return fetchClipsFor(sound).size();
+    public Audio stopAllPlaybacks(final Sound sound) {
+        requireNonNull(sound, "sound must not be null");
+        for (final var activePlayback : fetchPlaybacks(sound)) {
+            activePlaybacks.remove(activePlayback.id());
+        }
+        return this;
     }
 
     @Override
-    public boolean isActive(final Sound sound) {
-        for (final var activeSound : playbacks.entrySet()) {
-            if (activeSound.getValue().sound().equals(sound)) {
-                return true;
+    public int activePlaybackCount(final Sound sound) {
+        int count = 0;
+        for (final var activePlayback : allActivePlaybacks()) {
+            if (activePlayback.sound().equals(sound)) {
+                count++;
             }
         }
-        return false;
+        return count;
     }
 
     @Override
-    public int activeCount() {
-        return playbacks.size();
+    public boolean hasActivePlaybacks(final Sound sound) {
+        return activePlaybackCount(sound) > 0;
+    }
+
+    @Override
+    public int activePlaybackCount() {
+        return activePlaybacks.size();
     }
 
     @Override
@@ -146,38 +179,30 @@ public class DefaultAudio implements Audio, AudioConfigurationListener {
     }
 
     @Override
-    public void configurationChanged(final AudioConfigurationEvent event) {
-        if (MUSIC_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().options().isMusic()) {
-                    audioAdapter.setVolume(activeSound.getKey(), musicVolume().multiply(activeSound.getValue().options().volume().value()));
-                }
-            }
-        } else if (EFFECTS_VOLUME.equals(event.changedProperty())) {
-            for (final var activeSound : playbacks.entrySet()) {
-                if (activeSound.getValue().options().isEffect()) {
-                    audioAdapter.setVolume(activeSound.getKey(), effectVolume().multiply(activeSound.getValue().options().volume().value()));
-                }
+    public void update() {
+        for (var activePlayback : allActivePlaybacks()) {
+            if (nonNull(activePlayback.line())) {
+                refreshLineSettingsOfPlayback(activePlayback);
             }
         }
     }
 
-    private List<Clip> fetchClipsFor(final Sound sound) {
-        final List<Clip> clips = new ArrayList<>();
-        for (final var activeSound : playbacks.entrySet()) {
-            if (activeSound.getValue().sound().equals(sound)) {
-                clips.add(activeSound.getKey());
+    private void refreshLineSettingsOfPlayback(ActivePlayback activePlayback) {
+        AudioAdapter.setVolume(activePlayback.line(), dynamicSoundSupport.currentVolume(activePlayback.options()));
+        AudioAdapter.setPan(activePlayback.line(), dynamicSoundSupport.currentPan(activePlayback.options()));
+    }
+
+    private List<ActivePlayback> allActivePlaybacks() {
+        return new ArrayList<>(activePlaybacks.values());
+    }
+
+    private List<ActivePlayback> fetchPlaybacks(final Sound sound) {
+        final var active = new ArrayList<ActivePlayback>();
+        for (final var activePlayback : allActivePlaybacks()) {
+            if (activePlayback.sound().equals(sound)) {
+                active.add(activePlayback);
             }
         }
-        return clips;
+        return active;
     }
-
-    private Percent musicVolume() {
-        return configuration.isMusicMuted() ? Percent.zero() : configuration.musicVolume();
-    }
-
-    private Percent effectVolume() {
-        return configuration.areEffectsMuted() ? Percent.zero() : configuration.effectVolume();
-    }
-
 }

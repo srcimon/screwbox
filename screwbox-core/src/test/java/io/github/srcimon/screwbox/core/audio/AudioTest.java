@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,36 +35,30 @@ class AudioTest {
 
     @Test
     void playSound_soundAssetWithOptions_playsSoundFromAssetWithOptions() {
-        audio.playSound(ASSET, SoundOptions.playLooped());
+        audio.playSound(ASSET, SoundOptions.playContinuously());
 
-        verify(audio).playSound(SOUND, SoundOptions.playLooped());
+        verify(audio).playSound(SOUND, SoundOptions.playContinuously());
     }
 
     @Test
-    void stopSound_assetGiven_stopsSoundFromAsset() {
-        audio.stopSound(ASSET);
+    void stopSound_assetGiven_stopsAllPLaybacksFromAsset() {
+        audio.stopAllPlaybacks(ASSET);
 
-        verify(audio).stopSound(SOUND);
+        verify(audio).stopAllPlaybacks(SOUND);
+    }
+
+
+    @Test
+    void hasActivePlaybacks_supplierGiven_returnsStatusOfSound() {
+        when(audio.hasActivePlaybacks(SOUND)).thenReturn(true);
+
+        assertThat(audio.hasActivePlaybacks(ASSET)).isTrue();
     }
 
     @Test
-    void playSound_soundAssetAndPosition_playsSoundAtPosition() {
-        audio.playSound(ASSET, $(10, 20));
+    void activePlaybackCount_supplierGiven_returnsActivePlaybackCountSound() {
+        when(audio.activePlaybackCount(SOUND)).thenReturn(6);
 
-        verify(audio).playSound(SOUND, $(10, 20));
-    }
-
-    @Test
-    void isActive_supplierGiven_returnsIsActiveOfSound() {
-        when(audio.isActive(SOUND)).thenReturn(true);
-
-        assertThat(audio.isActive(ASSET)).isTrue();
-    }
-
-    @Test
-    void activeCount_supplierGiven_returnsActiveCountSound() {
-        when(audio.activeCount(SOUND)).thenReturn(6);
-
-        assertThat(audio.activeCount(ASSET)).isEqualTo(6);
+        assertThat(audio.activePlaybackCount(ASSET)).isEqualTo(6);
     }
 }

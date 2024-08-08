@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.audio;
 import io.github.srcimon.screwbox.core.Percent;
 import org.junit.jupiter.api.Test;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,7 +11,7 @@ class SoundOptionsTest {
 
     @Test
     void soundOptions_loopedWithHalfVolume_hasInfinitePlaybacksAtHalfVolume() {
-        var options = SoundOptions.playLooped().volume(Percent.half());
+        var options = SoundOptions.playContinuously().volume(Percent.half());
 
         assertThat(options.times()).isEqualTo(Integer.MAX_VALUE);
         assertThat(options.volume()).isEqualTo(Percent.half());
@@ -33,27 +34,31 @@ class SoundOptionsTest {
     }
 
     @Test
-    void soundOptions_panAndBalanceOutOfLowerBounds_hasValidPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(-4).balance(-9);
+    void soundOptions_positionSet_hasPosition() {
+        var options = SoundOptions.playTimes(3).position($(20,25));
+
+        assertThat(options.position()).isEqualTo($(20,25));
+    }
+
+    @Test
+    void soundOptions_panOutOfLowerBounds_hasValidPan() {
+        var options = SoundOptions.playOnce().pan(-4);
 
         assertThat(options.pan()).isEqualTo(-1);
-        assertThat(options.balance()).isEqualTo(-1);
     }
 
     @Test
-    void soundOptions_panAndBalanceOutOfUpperBounds_hasValidPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(4).balance(9);
+    void soundOptions_panOutOfUpperBounds_hasValidPan() {
+        var options = SoundOptions.playOnce().pan(4);
 
         assertThat(options.pan()).isEqualTo(1);
-        assertThat(options.balance()).isEqualTo(1);
     }
 
     @Test
-    void soundOptions_validInputForPanAndBalance_hasPanAndBalance() {
-        var options = SoundOptions.playOnce().pan(0.2).balance(-0.3);
+    void soundOptions_validInputForPan_hasPan() {
+        var options = SoundOptions.playOnce().pan(0.2);
 
         assertThat(options.pan()).isEqualTo(0.2);
-        assertThat(options.balance()).isEqualTo(-0.3);
     }
 
     @Test
@@ -77,11 +82,5 @@ class SoundOptionsTest {
         assertThatThrownBy(() -> SoundOptions.playTimes(0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("sound must be played at least once");
-    }
-
-    @Test
-    void toString_valuesSet_containsReadableString() {
-        assertThat(SoundOptions.playTimes(5).balance(2).asMusic())
-                .hasToString("SoundOptions[times=5, volume=Percentage [value=1.0], balance=1.0, pan=0.0, isMusic=true]");
     }
 }

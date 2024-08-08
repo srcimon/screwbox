@@ -85,7 +85,7 @@ public final class Sound implements Serializable {
     }
 
     /**
-     * The binary content of the sound.
+     * The binary sound data.
      */
     public byte[] content() {
         return content;
@@ -104,5 +104,4 @@ public final class Sound implements Serializable {
     public Duration duration() {
         return duration;
     }
-
 }

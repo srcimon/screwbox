@@ -25,12 +25,11 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
   effects.
 - **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
 - **Particle Effects** Add particle effects to create some nice visuals.
-- **Asset Management** Load game assets without interrupting the game.
+- **Asset Management** Load game assets without interrupting the game flow.
 - **Basic UI** Create an animated interactive game ui in an instant.
 - **Input Support** Receive player interactions via keyboard and mouse.
 - **Game Scenes** Use scenes to structure different game situations. Add animated transitions to smoothly switch between the scenes.
-- **Audio Support** Play wav and midi sounds. Control the volume, pan and balance. Get information on whats currently
-  playing. That's it. Only the basics.
+- **Audio Support** Play wav and midi sounds. Control the volume and pan manually or automatically based on the position of the sound source. Get information on whats currently playing.
 - **Support for Tiled Editior** Import your game map and tilesets in Json format from
   the [Tiled Editor](https://www.mapeditor.org)
 

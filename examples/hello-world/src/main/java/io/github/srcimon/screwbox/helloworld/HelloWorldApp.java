@@ -21,7 +21,6 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
-
         // set ambient light to nearly full brightness
         screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 
@@ -29,7 +28,6 @@ public class HelloWorldApp {
         screwBox.graphics().configuration().setLightmapScale(2);
 
         screwBox.environment()
-
                 // enable all features that are used below...
                 .enableAllFeatures()
 
@@ -38,7 +36,7 @@ public class HelloWorldApp {
                     var screen = engine.graphics().screen();
                     var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
                     screen.fillWith(Color.hex("#125d7e"));
-                    screen.drawText(screen.center(), "Hello world!", drawOptions);
+                    screen.drawText(screen.center(), "Hello World!", drawOptions);
                 })
 
                 // add light spot to create nice sunlight effect

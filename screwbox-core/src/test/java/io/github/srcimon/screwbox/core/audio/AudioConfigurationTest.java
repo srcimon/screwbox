@@ -8,10 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Percent.max;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.EFFECTS_VOLUME;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MICROPHONE_TIMEOUT;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.MUSIC_VOLUME;
-import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.SOUND_RANGE;
+import static io.github.srcimon.screwbox.core.audio.AudioConfigurationEvent.ConfigurationProperty.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -191,5 +188,20 @@ class AudioConfigurationTest {
         assertThatThrownBy(() -> configuration.addListener(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("listener must not be null");
+    }
+
+    @Test
+    void setMaxLines_zeroLines_throwsException() {
+        assertThatThrownBy(() -> configuration.setMaxLines(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("max lines must be positive");
+    }
+
+    @Test
+    void setMaxLines_positive_setMaxLinesAndNotifiesListeners() {
+        configuration.setMaxLines(4);
+
+        assertThat(configuration.maxLines()).isEqualTo(4);
+        verify(listener).configurationChanged(argThat(event -> event.changedProperty().equals(MAX_LINES)));
     }
 }

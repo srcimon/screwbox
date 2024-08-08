@@ -2,9 +2,7 @@ package io.github.srcimon.screwbox.core.audio;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -12,9 +10,17 @@ import java.util.function.Supplier;
 import static io.github.srcimon.screwbox.core.audio.SoundOptions.playOnce;
 
 /**
- * Controls the audio playback of the {@link Engine} and gives information to the currently {@link #activePlaybacks()}.
+ * Controls the audio playback of the {@link Engine}.
  */
 public interface Audio {
+
+    /**
+     * Returns the count of currently started audio lines. Lines will be automatically created when needed. To reduce
+     * system load use a common audio format for all your sounds, because an audio line can only play one specific format.
+     *
+     * @see AudioConfiguration#maxLines()
+     */
+    int lineCount();
 
     /**
      * Returns the current microphone input volume. Microphone will turn on automatically when calling this method. Will turn off after
@@ -28,110 +34,105 @@ public interface Audio {
     boolean isMicrophoneActive();
 
     /**
-     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
-     * direction between the given position and the {@link Camera#position()} ()}.
-     *
-     * @see #playSound(Supplier, Vector)
-     */
-    Audio playSound(Sound sound, Vector position);
-
-    /**
-     * Plays a {@link Sound} and calculates the corresponding {@link SoundOptions} used by considering distance and
-     * direction between the given position and the {@link Camera#position()}.
-     *
-     * @see #playSound(Sound, Vector)
-     */
-    default Audio playSound(final Supplier<Sound> sound, final Vector position) {
-        return playSound(sound.get(), position);
-    }
-
-    /**
-     * Returns a list of all currently active {@link Playback}s.
-     *
-     * @see #activeCount()
-     * @see #activeCount(Sound)
+     * Returns a list of all currently active {@link Playback playbacks}.
      */
     List<Playback> activePlaybacks();
 
     /**
-     * Plays a {@link Sound} using the given {@link SoundOptions}.
+     * Plays a {@link Sound} using the given {@link SoundOptions}. Returns a reference to the {@link Playback} created.
      *
      * @see #playSound(Supplier, SoundOptions)
      */
-    Audio playSound(Sound sound, SoundOptions options);
+    Playback playSound(Sound sound, SoundOptions options);
+
+    /**
+     * Stops a single {@link Playback}. If the {@link Playback} has already ended won't do anything.
+     */
+    Audio stopPlayback(Playback playback);
 
     /**
      * Plays a {@link Sound} using the given {@link SoundOptions}.
      *
      * @see #playSound(Sound, SoundOptions)
      */
-    default Audio playSound(final Supplier<Sound> sound, final SoundOptions options) {
+    default Playback playSound(final Supplier<Sound> sound, final SoundOptions options) {
         return playSound(sound.get(), options);
     }
 
     /**
      * Plays a {@link Sound} a single time.
      */
-    default Audio playSound(final Sound sound) {
+    default Playback playSound(final Sound sound) {
         return playSound(sound, playOnce());
     }
 
     /**
      * Plays a {@link Sound} from an {@link Asset} a single time.
      */
-    default Audio playSound(final Supplier<Sound> sound) {
+    default Playback playSound(final Supplier<Sound> sound) {
         return playSound(sound.get());
     }
 
     /**
-     * Stops all currently playing instances of the {@link Sound}.
-     *
-     * @see #stopSound(Supplier)
+     * Returns {@code true} if the specified {@link Playback} is active.
      */
-    Audio stopSound(Sound sound);
+    boolean playbackIsActive(Playback playback);
+
+    /**
+     * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}
+     * is still active and could be changed. Otherwise return value will be {@code false}.
+     */
+    boolean updatePlaybackOptions(Playback playback, SoundOptions options);
+
+    /**
+     * Stops all current {@link Playback playbacks} of the specified {@link Sound}.
+     *
+     * @see #stopAllPlaybacks(Supplier)
+     */
+    Audio stopAllPlaybacks(Sound sound);
 
     /**
      * Stops all currently playing instances of the {@link Sound} that is provied by the {@link Supplier}.
      *
-     * @see #stopSound(Sound)
+     * @see #stopAllPlaybacks(Sound)
      */
-    default Audio stopSound(Supplier<Sound> sound) {
-        return stopSound(sound.get());
+    default Audio stopAllPlaybacks(Supplier<Sound> sound) {
+        return stopAllPlaybacks(sound.get());
     }
 
     /**
-     * Stops all currently playing {@link Sound}s.
+     * Stops all currently {@link #activePlaybacks()}.
      */
-    Audio stopAllSounds();
+    Audio stopAllPlaybacks();
 
     /**
      * Returns the count of currently playing instances of the given {@link Sound}.
      */
-    int activeCount(Sound sound);
+    int activePlaybackCount(Sound sound);
 
     /**
      * Returns the count of currently playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default int activeCount(Supplier<Sound> sound) {
-        return activeCount(sound.get());
+    default int activePlaybackCount(Supplier<Sound> sound) {
+        return activePlaybackCount(sound.get());
     }
 
     /**
      * Returns {@code true} of there is any active playing instances of the given {@link Sound}.
      */
-    boolean isActive(Sound sound);
+    boolean hasActivePlaybacks(Sound sound);
 
     /**
      * Returns {@code true} of there is any active playing instances of the {@link Sound} given by the {@link Supplier}.
      */
-    default boolean isActive(Supplier<Sound> sound) {
-        return isActive(sound.get());
+    default boolean hasActivePlaybacks(Supplier<Sound> sound) {
+        return hasActivePlaybacks(sound.get());
     }
 
     /**
-     * Returns the count of currently playing {@link Sound}s.
+     * Returns the count of currently active {@link Playback playbacks}.
      */
-    int activeCount();
+    int activePlaybackCount();
 
     /**
      * Read and change the current {@link AudioConfiguration}.

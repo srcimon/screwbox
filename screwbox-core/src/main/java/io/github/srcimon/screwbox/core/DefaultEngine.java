@@ -5,8 +5,13 @@ import io.github.srcimon.screwbox.core.assets.internal.DefaultAssets;
 import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.audio.Audio;
+import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
+import io.github.srcimon.screwbox.core.audio.internal.AudioLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
+import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
+import io.github.srcimon.screwbox.core.audio.internal.DynamicSoundSupport;
+import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
@@ -119,14 +124,19 @@ class DefaultEngine implements Engine {
 
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world);
-        audio = new DefaultAudio(executor, new AudioAdapter(), camera);
+        final AudioAdapter audioAdapter = new AudioAdapter();
+        final AudioConfiguration audioConfiguration = new AudioConfiguration();
+        final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
+        final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
+        final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(camera, audioConfiguration);
+        audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);
-        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles));
+        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
@@ -138,6 +148,7 @@ class DefaultEngine implements Engine {
             component.addKeyListener(keyboard);
         }
         executor.execute(new InitializeFontDrawingTask());
+        executor.execute(new WarmupAudioTask(audioLinePool));
         this.name = name;
         this.version = detectVersion();
         window.setTitle(name);
@@ -265,10 +276,10 @@ class DefaultEngine implements Engine {
         if (!stopCalled) {
             stopCalled = true;
             executor.execute(() -> {
-                audio.stopAllSounds();
                 ui.closeMenu();
                 loop.stop();
                 loop.awaitTermination();
+                audio.stopAllPlaybacks();
                 window.close();
                 executor.shutdown();
             });
