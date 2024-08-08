@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -162,6 +163,7 @@ class DefaultAudioTest {
     void stopAllPlaybacks_twoPlaybacks_usedLinesFlushedAndActivePlaybackCleared() {
         SourceDataLine line = mock(SourceDataLine.class);
         when(audioLinePool.lines()).thenReturn(List.of(line));
+        when(audioLinePool.aquireLine(any())).thenReturn(line);
         audio.playSound(sound);
 
         audio.stopAllPlaybacks();
