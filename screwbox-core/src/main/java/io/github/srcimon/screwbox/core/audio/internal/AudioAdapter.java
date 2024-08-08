@@ -11,12 +11,13 @@ public class AudioAdapter {
 
     public static void setVolume(final SourceDataLine line, final Percent volume) {
         final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume.value()));
+
+        gainControl.setValue(Math.clamp(20f * (float) Math.log10(volume.value()), gainControl.getMinimum(), gainControl.getMaximum()));
     }
 
     public static void setPan(final SourceDataLine line, final double pan) {
         final FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.PAN);
-        gainControl.setValue((float) Math.clamp(pan, -1, 1));
+        gainControl.setValue((float) Math.clamp(pan, gainControl.getMinimum(), gainControl.getMaximum()));
     }
 
     public static AudioInputStream getAudioInputStream(final byte[] content) {
