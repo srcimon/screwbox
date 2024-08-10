@@ -44,6 +44,8 @@ public interface Window extends Sizeable {
 
     /**
      * Sets the title of the {@link Window}.
+     * <p>
+     * Warning: Changing the window title may result in default mouse cursor.
      *
      * @see #title()
      */

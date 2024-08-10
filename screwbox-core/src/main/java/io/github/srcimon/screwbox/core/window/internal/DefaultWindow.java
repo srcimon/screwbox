@@ -16,10 +16,12 @@ import io.github.srcimon.screwbox.core.window.Window;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultWindow implements Window, Updatable {
 
@@ -31,8 +33,8 @@ public class DefaultWindow implements Window, Updatable {
     private final Latch<FilesDropedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
 
     private DisplayMode lastDisplayMode;
-    private Cursor windowCursor = cursorFrom(MouseCursor.DEFAULT);
-    private Cursor fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
+    private Supplier<Cursor> windowCursor = cursorFrom(MouseCursor.DEFAULT);
+    private Supplier<Cursor> fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
 
     public DefaultWindow(final WindowFrame frame,
@@ -63,7 +65,11 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window setTitle(final String title) {
-        frame.setTitle(title);
+        requireNonNull(title, "window title must not be null");
+        if (!title().equals(title)) {
+            frame.setTitle(title);
+            updateCursor();
+        }
         return this;
     }
 
@@ -173,7 +179,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window setCursor(final Sprite cursor) {
-        final Cursor customCursor = createCustomCursor(cursor);
+        final var customCursor = createCustomCursor(cursor);
         windowCursor = customCursor;
         fullscreenCursor = customCursor;
         updateCursor();
@@ -210,9 +216,9 @@ public class DefaultWindow implements Window, Updatable {
         filesDroppedOnWindow.assignActive(null);
     }
 
-    private Cursor cursorFrom(final MouseCursor cursor) {
+    private Supplier<Cursor> cursorFrom(final MouseCursor cursor) {
         if (MouseCursor.DEFAULT == cursor) {
-            return Cursor.getDefaultCursor();
+            return Cursor::getDefaultCursor;
         }
         if (MouseCursor.HIDDEN == cursor) {
             return createCustomCursor(Sprite.invisible());
@@ -221,12 +227,13 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     private void updateCursor() {
-        this.frame.setCursor(configuration.isFullscreen() ? fullscreenCursor : windowCursor);
+        final var cursor = configuration.isFullscreen() ? fullscreenCursor : windowCursor;
+        this.frame.setCursor(cursor.get());
 
     }
 
-    private Cursor createCustomCursor(final Sprite sprite) {
-        return Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
-                "custom cursor");
+    private Supplier<Cursor> createCustomCursor(final Sprite sprite) {
+        return () -> Toolkit.getDefaultToolkit()
+                .createCustomCursor(sprite.singleImage(), new Point(0, 0), "custom cursor");
     }
 }
