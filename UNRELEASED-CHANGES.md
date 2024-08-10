@@ -9,7 +9,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Changing window title only happens when text is different
 
 ### 📦 Dependency updates
 
