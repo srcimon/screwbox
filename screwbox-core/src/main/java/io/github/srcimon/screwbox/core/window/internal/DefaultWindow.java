@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.window.internal;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static io.github.srcimon.screwbox.core.Duration.oneSecond;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
@@ -35,6 +38,7 @@ public class DefaultWindow implements Window, Updatable {
     private Supplier<Cursor> windowCursor = cursorFrom(MouseCursor.DEFAULT);
     private Supplier<Cursor> fullscreenCursor = cursorFrom(MouseCursor.HIDDEN);
     private Offset lastOffset;
+    private Time windowChanged = Time.now();
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
@@ -65,6 +69,7 @@ public class DefaultWindow implements Window, Updatable {
     @Override
     public Window setTitle(final String title) {
         frame.setTitle(title);
+        windowChanged = Time.now();
         updateCursor();
         return this;
     }
@@ -116,6 +121,7 @@ public class DefaultWindow implements Window, Updatable {
         frame.getCanvas().createBufferStrategy(2);
         screen.setRenderer(renderer);
         updateCursor();
+        windowChanged = Time.now();
         return this;
     }
 
@@ -210,6 +216,9 @@ public class DefaultWindow implements Window, Updatable {
     public void update() {
         filesDroppedOnWindow.toggle();
         filesDroppedOnWindow.assignActive(null);
+        if (Duration.since(windowChanged).isLessThan(oneSecond())) {
+            updateCursor();
+        }
     }
 
     private Supplier<Cursor> cursorFrom(final MouseCursor cursor) {

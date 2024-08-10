@@ -5,7 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Fixed crash when adding a `ParticleEmitterComponent` to an entity without `TransformComponent`
-- Reduced unwanted cursor changes when changing the window title
+- Enhanced reliability of cursor changes
 
 ### 🧽 Cleanup & refactoring
 
