@@ -88,17 +88,13 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
-        final var particle = createParticle(position, options);
         if (particleLimit > particleCount() && isInSpawnDistance(position)) {
+            final var particle = createParticle(position, options);
             particleSpawnCount++;
             particleCount++;
             scenes.activeEnvironment().addEntity(particle);
         }
         return this;
-    }
-
-    private boolean isInSpawnDistance(final Vector position) {
-        return spawnArea().contains(position);
     }
 
     @Override
@@ -130,14 +126,17 @@ public class DefaultParticles implements Particles, Updatable {
         particleCountRefreshed = false;
     }
 
+    private boolean isInSpawnDistance(final Vector position) {
+        return spawnArea().contains(position);
+    }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
-        var physicsComponent = new PhysicsComponent();
+        final var physicsComponent = new PhysicsComponent();
         physicsComponent.ignoreCollisions = true;
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
-        TransformComponent transfrom = new TransformComponent(position, 1, 1);
-        RenderComponent render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
+        final var transfrom = new TransformComponent(position, 1, 1);
+        final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
