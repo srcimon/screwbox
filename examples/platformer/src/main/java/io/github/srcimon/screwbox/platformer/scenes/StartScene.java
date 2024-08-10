@@ -60,7 +60,6 @@ public class StartScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.ui().openMenu(new StartGameMenu());
-        engine.window().setTitle("Platformer (Menu)");
     }
 
     @Override

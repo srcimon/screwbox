@@ -11,7 +11,6 @@ public class PauseScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.ui().openMenu(new PauseMenu());
-        engine.window().setTitle("Platformer (Pause)");
     }
 
     @Override
