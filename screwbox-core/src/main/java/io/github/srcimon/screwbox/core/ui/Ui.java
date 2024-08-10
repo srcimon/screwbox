@@ -11,10 +11,17 @@ public interface Ui {
     /**
      * Opens a {@link UiMenu}.
      *
+     * @see #openMenu(Consumer)
      * @see #closeMenu()
      */
     Ui openMenu(UiMenu menu);
 
+    /**
+     * Opens a {@link UiMenu}. Allows inline definition of menu.
+     *
+     * @see #openMenu(UiMenu)
+     * @see #closeMenu()
+     */
     Ui openMenu(Consumer<UiMenu> menu);
 
     /**
