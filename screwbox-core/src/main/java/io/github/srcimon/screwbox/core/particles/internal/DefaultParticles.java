@@ -131,23 +131,21 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
-        final var physicsComponent = new PhysicsComponent();
-        physicsComponent.ignoreCollisions = true;
-        physicsComponent.gravityModifier = 0;
-        physicsComponent.magnetModifier = 0;
         final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
-        final var transfrom = new TransformComponent(position,
-                render.sprite.width() * render.options.scale(),
-                render.sprite.height() * render.options.scale());
-
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
                 .add(new TweenComponent(Duration.ofSeconds(1), Ease.LINEAR_OUT))
                 .add(new TweenDestroyComponent())
-                .add(physicsComponent)
-                .add(transfrom)
-                .add(render);
+                .add(new TransformComponent(position,
+                        render.sprite.width() * render.options.scale(),
+                        render.sprite.height() * render.options.scale()))
+                .add(render)
+                .addCustomized(new PhysicsComponent(), physics -> {
+                    physics.ignoreCollisions = true;
+                    physics.gravityModifier = 0;
+                    physics.magnetModifier = 0;
+                });
         for (final var entityCustomizer : options.modifiers()) {
             entityCustomizer.accept(entity);
         }

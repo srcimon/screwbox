@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.utils.Resources;
 
-import javax.sound.sampled.AudioInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -63,7 +62,7 @@ public final class Sound implements Serializable {
 
     private Sound(final byte[] content) {
         requireNonNull(content, "content must not be null");
-        try (AudioInputStream audioInputStream = AudioAdapter.getAudioInputStream(content)) {
+        try (final var audioInputStream = AudioAdapter.getAudioInputStream(content)) {
             final var length = 1000.0 * audioInputStream.getFrameLength() / audioInputStream.getFormat().getFrameRate();
             this.duration = Duration.ofMillis((int) length);
             final var isMono = audioInputStream.getFormat().getFrameSize() <= 2;
@@ -74,7 +73,7 @@ public final class Sound implements Serializable {
         }
     }
 
-    private SourceFormat detectSourceFormat(byte[] content, boolean isMono) {
+    private SourceFormat detectSourceFormat(final byte[] content, final boolean isMono) {
         final boolean startsWithMidiHeader = content.length >= 4
                 && content[0] == 0x4D && content[1] == 0x54 && content[2] == 0x68 && content[3] == 0x64;
 
