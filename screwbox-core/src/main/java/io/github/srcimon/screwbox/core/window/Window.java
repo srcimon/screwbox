@@ -135,6 +135,8 @@ public interface Window extends Sizeable {
 
     /**
      * Returns the title of the {@link Window}.
+     * <p>
+     * Warning: Changing the window title may result in change of mouse cursor to default cursor as well.
      *
      * @see #setTitle(String) ()
      */

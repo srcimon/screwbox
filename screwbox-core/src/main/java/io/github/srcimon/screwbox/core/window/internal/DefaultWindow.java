@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION;
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultWindow implements Window, Updatable {
 
@@ -64,8 +65,11 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window setTitle(final String title) {
-        frame.setTitle(title);
-        updateCursor();
+        requireNonNull(title, "window title must not be null");
+        if (!title().equals(title)) {
+            frame.setTitle(title);
+            updateCursor();
+        }
         return this;
     }
 
@@ -229,7 +233,7 @@ public class DefaultWindow implements Window, Updatable {
     }
 
     private Supplier<Cursor> createCustomCursor(final Sprite sprite) {
-        return () -> Toolkit.getDefaultToolkit().createCustomCursor(sprite.singleImage(), new Point(0, 0),
-                "custom cursor");
+        return () -> Toolkit.getDefaultToolkit()
+                .createCustomCursor(sprite.singleImage(), new Point(0, 0), "custom cursor");
     }
 }
