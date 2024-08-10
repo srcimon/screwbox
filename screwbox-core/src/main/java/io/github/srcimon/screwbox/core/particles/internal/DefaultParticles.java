@@ -2,8 +2,8 @@ package io.github.srcimon.screwbox.core.particles.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -135,8 +135,11 @@ public class DefaultParticles implements Particles, Updatable {
         physicsComponent.ignoreCollisions = true;
         physicsComponent.gravityModifier = 0;
         physicsComponent.magnetModifier = 0;
-        final var transfrom = new TransformComponent(position, 1, 1);
         final var render = new RenderComponent(SpriteBundle.DOT_BLUE, -1, SpriteDrawOptions.originalSize());
+        final var transfrom = new TransformComponent(position,
+                render.sprite.width() * render.options.scale(),
+                render.sprite.height() * render.options.scale());
+
         final var entity = new Entity()
                 .name("particle-" + (particleSpawnCount + 1))
                 .add(new ParticleComponent())
@@ -158,8 +161,6 @@ public class DefaultParticles implements Particles, Updatable {
                 render.drawOrder = 0;
             }
         }
-        transfrom.bounds = Bounds.atPosition(position, render.sprite.width() * render.options.scale(), render.sprite.height() * render.options.scale());
         return entity;
-
     }
 }

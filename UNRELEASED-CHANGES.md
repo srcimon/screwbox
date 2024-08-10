@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Changing window title only happens when text is different
+- Slightly improved performance of particle creation
 
 ### 📦 Dependency updates
 
