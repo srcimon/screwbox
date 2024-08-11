@@ -106,7 +106,9 @@ public class DefaultAudio implements Audio, Updatable {
         requireNonNull(options, "options must not be null");
 //TODO add documentation and code to prevent change of audio playback speed
         var activePlayback = fetchActivePlayback(playback);
-
+        if (activePlayback.options().speed() != options.speed()) {
+            throw new IllegalStateException("cannot change speed of playback once it has started");
+        }
         if (isNull(activePlayback)) {
             return false;
         }
@@ -121,16 +123,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     private void play(final ActivePlayback playback) {
         int loop = 1;
-        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        //TODO Refactor and test
-        final var speedFormat = new AudioFormat(
-                format.getEncoding(),
-                (float)(format.getSampleRate() * playback.options().speed()),
-                format.getSampleSizeInBits(),
-                format.getChannels(),
-                format.getFrameSize(),
-                (float)(format.getFrameRate() * playback.options().speed()),
-                format.isBigEndian());
+        final var speedFormat = formatFittingFor(playback);
 
         playback.setLine(audioLinePool.aquireLine(speedFormat));
         refreshLineSettingsOfPlayback(playback);
@@ -141,6 +134,22 @@ public class DefaultAudio implements Audio, Updatable {
         playback.line().drain();
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
+    }
+
+    private static AudioFormat formatFittingFor(ActivePlayback playback) {
+        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
+        if(playback.options().speed() == 1) {
+            return format;
+        }
+        //TODO Refactor and test
+        return new AudioFormat(
+                format.getEncoding(),
+                (float) (format.getSampleRate() * playback.options().speed()),
+                format.getSampleSizeInBits(),
+                format.getChannels(),
+                format.getFrameSize(),
+                (float) (format.getFrameRate() * playback.options().speed()),
+                format.isBigEndian());
     }
 
     private void writePlaybackDateToAudioLine(ActivePlayback playback) {
