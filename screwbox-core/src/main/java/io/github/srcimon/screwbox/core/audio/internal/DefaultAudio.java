@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
+import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,10 +104,12 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
         requireNonNull(options, "options must not be null");
-
-        var activePlayback = fetchActivePlayback(playback);
+        final var activePlayback = fetchActivePlayback(playback);
         if (isNull(activePlayback)) {
             return false;
+        }
+        if (activePlayback.options().speed() != options.speed()) {
+            throw new IllegalArgumentException("cannot change speed of playback once it has started");
         }
         activePlayback.setOptions(options);
         return true;
@@ -119,8 +122,9 @@ public class DefaultAudio implements Audio, Updatable {
 
     private void play(final ActivePlayback playback) {
         int loop = 1;
-        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        playback.setLine(audioLinePool.aquireLine(format));
+        final var speedFormat = getFormatMatching(playback);
+
+        playback.setLine(audioLinePool.aquireLine(speedFormat));
         refreshLineSettingsOfPlayback(playback);
 
         do {
@@ -129,6 +133,20 @@ public class DefaultAudio implements Audio, Updatable {
         playback.line().drain();
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
+    }
+
+    private AudioFormat getFormatMatching(final ActivePlayback playback) {
+        final var format = AudioAdapter.getAudioFormat(playback.sound().content());
+        return playback.options().speed() == 1
+                ? format
+                : new AudioFormat(
+                format.getEncoding(),
+                (float) (format.getSampleRate() * playback.options().speed()),
+                format.getSampleSizeInBits(),
+                format.getChannels(),
+                format.getFrameSize(),
+                (float) (format.getFrameRate() * playback.options().speed()),
+                format.isBigEndian());
     }
 
     private void writePlaybackDateToAudioLine(ActivePlayback playback) {

@@ -11,10 +11,11 @@ class SoundOptionsTest {
 
     @Test
     void soundOptions_loopedWithHalfVolume_hasInfinitePlaybacksAtHalfVolume() {
-        var options = SoundOptions.playContinuously().volume(Percent.half());
+        var options = SoundOptions.playContinuously().volume(Percent.half()).speed(0.4);
 
         assertThat(options.times()).isEqualTo(Integer.MAX_VALUE);
         assertThat(options.volume()).isEqualTo(Percent.half());
+        assertThat(options.speed()).isEqualTo(0.4);
     }
 
     @Test
@@ -35,23 +36,45 @@ class SoundOptionsTest {
 
     @Test
     void soundOptions_positionSet_hasPosition() {
-        var options = SoundOptions.playTimes(3).position($(20,25));
+        var options = SoundOptions.playTimes(3).position($(20, 25));
 
-        assertThat(options.position()).isEqualTo($(20,25));
+        assertThat(options.position()).isEqualTo($(20, 25));
     }
 
     @Test
-    void soundOptions_panOutOfLowerBounds_hasValidPan() {
-        var options = SoundOptions.playOnce().pan(-4);
+    void soundOptions_panOutOfLowerBounds_throwsException() {
+        var options = SoundOptions.playOnce();
 
-        assertThat(options.pan()).isEqualTo(-1);
+        assertThatThrownBy(() -> options.pan(-4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("pan is out of valid range (-1 to 1): -4.0");
     }
 
     @Test
-    void soundOptions_panOutOfUpperBounds_hasValidPan() {
-        var options = SoundOptions.playOnce().pan(4);
+    void soundOptions_panOutOfUpperBounds_throwsException() {
+        var options = SoundOptions.playOnce();
 
-        assertThat(options.pan()).isEqualTo(1);
+        assertThatThrownBy(() -> options.pan(4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("pan is out of valid range (-1 to 1): 4.0");
+    }
+
+    @Test
+    void soundOptions_speedOutOfLowerBounds_throwsException() {
+        var options = SoundOptions.playOnce();
+
+        assertThatThrownBy(() -> options.speed(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("speed is out of valid range (0.1 to 10.0): -1.0");
+    }
+
+    @Test
+    void soundOptions_speedOutOfUpperBounds_throwsException() {
+        var options = SoundOptions.playOnce();
+
+        assertThatThrownBy(() -> options.speed(41))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("speed is out of valid range (0.1 to 10.0): 41.0");
     }
 
     @Test

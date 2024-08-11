@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added support for changin audio playback speed `SoundOptions.speed()` (#364)
 
 ### 🪛 Bug Fixes
 
