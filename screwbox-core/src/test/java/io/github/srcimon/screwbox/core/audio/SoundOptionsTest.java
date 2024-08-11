@@ -35,23 +35,27 @@ class SoundOptionsTest {
 
     @Test
     void soundOptions_positionSet_hasPosition() {
-        var options = SoundOptions.playTimes(3).position($(20,25));
+        var options = SoundOptions.playTimes(3).position($(20, 25));
 
-        assertThat(options.position()).isEqualTo($(20,25));
+        assertThat(options.position()).isEqualTo($(20, 25));
     }
 
     @Test
-    void soundOptions_panOutOfLowerBounds_hasValidPan() {
-        var options = SoundOptions.playOnce().pan(-4);
+    void soundOptions_panOutOfLowerBounds_throwsException() {
+        var options = SoundOptions.playOnce();
 
-        assertThat(options.pan()).isEqualTo(-1);
+        assertThatThrownBy(() -> options.pan(-4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("pan is out of valid range (-1 to 1): -4.0");
     }
 
     @Test
-    void soundOptions_panOutOfUpperBounds_hasValidPan() {
-        var options = SoundOptions.playOnce().pan(4);
+    void soundOptions_panOutOfUpperBounds_throwsException() {
+        var options = SoundOptions.playOnce();
 
-        assertThat(options.pan()).isEqualTo(1);
+        assertThatThrownBy(() -> options.pan(4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("pan is out of valid range (-1 to 1): 4.0");
     }
 
     @Test

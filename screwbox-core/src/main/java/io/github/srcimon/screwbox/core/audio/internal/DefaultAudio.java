@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.audio.Sound;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
+import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +104,9 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
         requireNonNull(options, "options must not be null");
-
+//TODO add documentation and code to prevent change of audio playback speed
         var activePlayback = fetchActivePlayback(playback);
+
         if (isNull(activePlayback)) {
             return false;
         }
@@ -120,7 +122,17 @@ public class DefaultAudio implements Audio, Updatable {
     private void play(final ActivePlayback playback) {
         int loop = 1;
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        playback.setLine(audioLinePool.aquireLine(format));
+        //TODO Refactor and test
+        final var speedFormat = new AudioFormat(
+                format.getEncoding(),
+                (float)(format.getSampleRate() * playback.options().speed()),
+                format.getSampleSizeInBits(),
+                format.getChannels(),
+                format.getFrameSize(),
+                (float)(format.getFrameRate() * playback.options().speed()),
+                format.isBigEndian());
+
+        playback.setLine(audioLinePool.aquireLine(speedFormat));
         refreshLineSettingsOfPlayback(playback);
 
         do {
