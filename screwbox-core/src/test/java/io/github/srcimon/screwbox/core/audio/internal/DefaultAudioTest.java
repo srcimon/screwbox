@@ -156,6 +156,15 @@ class DefaultAudioTest {
     }
 
     @Test
+    void updatePlaybackOptions_activePlaybackHasDistinctSpeed_throwsException() {
+        var playback = audio.playSound(sound, SoundOptions.playOnce().speed(2));
+
+        assertThatThrownBy(() -> audio.updatePlaybackOptions(playback, SoundOptions.playContinuously()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("cannot change speed of playback once it has started");
+    }
+
+    @Test
     void stopAllPlaybacks_noPlayback_noException() {
         assertThatNoException().isThrownBy(() -> audio.stopAllPlaybacks(sound));
     }

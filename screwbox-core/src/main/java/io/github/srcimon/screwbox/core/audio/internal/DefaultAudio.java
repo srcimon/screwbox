@@ -109,7 +109,7 @@ public class DefaultAudio implements Audio, Updatable {
             return false;
         }
         if (activePlayback.options().speed() != options.speed()) {
-            throw new IllegalStateException("cannot change speed of playback once it has started");
+            throw new IllegalArgumentException("cannot change speed of playback once it has started");
         }
         activePlayback.setOptions(options);
         return true;
@@ -122,7 +122,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     private void play(final ActivePlayback playback) {
         int loop = 1;
-        final var speedFormat = formatFittingFor(playback);
+        final var speedFormat = getFormatMatching(playback);
 
         playback.setLine(audioLinePool.aquireLine(speedFormat));
         refreshLineSettingsOfPlayback(playback);
@@ -135,13 +135,11 @@ public class DefaultAudio implements Audio, Updatable {
         activePlaybacks.remove(playback.id());
     }
 
-    private static AudioFormat formatFittingFor(ActivePlayback playback) {
+    private AudioFormat getFormatMatching(final ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        if (playback.options().speed() == 1) {
-            return format;
-        }
-        //TODO Refactor and test
-        return new AudioFormat(
+        return playback.options().speed() == 1
+                ? format
+                : new AudioFormat(
                 format.getEncoding(),
                 (float) (format.getSampleRate() * playback.options().speed()),
                 format.getSampleSizeInBits(),
