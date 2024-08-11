@@ -80,7 +80,8 @@ public interface Audio {
 
     /**
      * Changes the {@link SoundOptions} of the specified {@link Playback}. Will return {@code true} if {@link Playback}
-     * is still active and could be changed. Otherwise return value will be {@code false}.
+     * is still active and could be changed. Otherwise return value will be {@code false}. Be aware that the speed of an
+     * audio playback cannot be changed afterwards.
      */
     boolean updatePlaybackOptions(Playback playback, SoundOptions options);
 

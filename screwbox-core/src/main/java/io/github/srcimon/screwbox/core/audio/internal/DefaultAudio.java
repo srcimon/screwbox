@@ -104,13 +104,12 @@ public class DefaultAudio implements Audio, Updatable {
     @Override
     public boolean updatePlaybackOptions(final Playback playback, final SoundOptions options) {
         requireNonNull(options, "options must not be null");
-//TODO add documentation and code to prevent change of audio playback speed
-        var activePlayback = fetchActivePlayback(playback);
-        if (activePlayback.options().speed() != options.speed()) {
-            throw new IllegalStateException("cannot change speed of playback once it has started");
-        }
+        final var activePlayback = fetchActivePlayback(playback);
         if (isNull(activePlayback)) {
             return false;
+        }
+        if (activePlayback.options().speed() != options.speed()) {
+            throw new IllegalStateException("cannot change speed of playback once it has started");
         }
         activePlayback.setOptions(options);
         return true;
@@ -138,7 +137,7 @@ public class DefaultAudio implements Audio, Updatable {
 
     private static AudioFormat formatFittingFor(ActivePlayback playback) {
         final var format = AudioAdapter.getAudioFormat(playback.sound().content());
-        if(playback.options().speed() == 1) {
+        if (playback.options().speed() == 1) {
             return format;
         }
         //TODO Refactor and test
