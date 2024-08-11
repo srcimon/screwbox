@@ -7,6 +7,9 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 
+/**
+ * Fills the {@link Screen} with multiple circles growin in size.
+ */
 public class CirclesAnimation implements Animation {
 
     @Override

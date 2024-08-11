@@ -8,10 +8,16 @@ import io.github.srcimon.screwbox.core.scenes.Animation;
 
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.originalSize;
 
+/**
+ * Fades the {@link Screen} to the specified {@link Sprite}.
+ */
 public class SpriteFadeAnimation implements Animation {
 
     private final Sprite sprite;
 
+    /**
+     * Fades to the specified {@link Sprite}.
+     */
     public SpriteFadeAnimation(final Sprite sprite) {
         this.sprite = sprite;
     }
