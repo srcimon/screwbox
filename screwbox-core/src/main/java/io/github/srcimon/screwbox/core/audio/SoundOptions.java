@@ -19,7 +19,7 @@ public record SoundOptions(int times, Percent volume, double pan, boolean isMusi
 
     public SoundOptions {
         if (speed < 0.1 || speed > 10) {
-            throw new IllegalArgumentException("speed is out of valid range (0.1 to 10): " + speed);
+            throw new IllegalArgumentException("speed is out of valid range (0.1 to 10.0): " + speed);
         }
         if (pan < -1 || pan > 1) {
             throw new IllegalArgumentException("pan is out of valid range (-1 to 1): " + pan);
