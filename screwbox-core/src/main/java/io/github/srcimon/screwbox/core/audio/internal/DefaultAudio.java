@@ -29,6 +29,7 @@ public class DefaultAudio implements Audio, Updatable {
     private final AudioLinePool audioLinePool;
     private final DynamicSoundSupport dynamicSoundSupport;
     private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
+    private final AudioStatistics audioStatistics = new AudioStatistics();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final DynamicSoundSupport dynamicSoundSupport,
@@ -48,6 +49,16 @@ public class DefaultAudio implements Audio, Updatable {
             line.flush();
         }
         return this;
+    }
+
+    @Override
+    public int completedPlaybackCount() {
+        return audioStatistics.playbackCount();
+    }
+
+    @Override
+    public int soundsPlayedCount() {
+        return audioStatistics.soundCount();
     }
 
     @Override
@@ -129,10 +140,12 @@ public class DefaultAudio implements Audio, Updatable {
 
         do {
             writePlaybackDateToAudioLine(playback);
+            audioStatistics.increaseSounds();
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
         playback.line().drain();
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
+        audioStatistics.increasePlaybacks();
     }
 
     private AudioFormat getFormatMatching(final ActivePlayback playback) {
