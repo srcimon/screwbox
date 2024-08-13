@@ -197,6 +197,16 @@ class DefaultAudioTest {
         assertThat(audio.isMicrophoneActive()).isTrue();
     }
 
+    @Test
+    void completedPlaybackCount_noSoundPlayed_isZero() {
+        assertThat(audio.completedPlaybackCount()).isZero();
+    }
+
+    @Test
+    void soundsPlayedCount_noSoundPlayed_isZero() {
+        assertThat(audio.soundsPlayedCount()).isZero();
+    }
+
     @AfterEach
     void tearDown() {
         TestUtil.shutdown(executor);

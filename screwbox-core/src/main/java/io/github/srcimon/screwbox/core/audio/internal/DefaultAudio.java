@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -29,6 +30,8 @@ public class DefaultAudio implements Audio, Updatable {
     private final AudioLinePool audioLinePool;
     private final DynamicSoundSupport dynamicSoundSupport;
     private final Map<UUID, ActivePlayback> activePlaybacks = new ConcurrentHashMap<>();
+    private final AtomicInteger soundsPlayedCount = new AtomicInteger();
+    private final AtomicInteger completedPlaybackCount = new AtomicInteger();
 
     public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
                         final DynamicSoundSupport dynamicSoundSupport,
@@ -48,6 +51,16 @@ public class DefaultAudio implements Audio, Updatable {
             line.flush();
         }
         return this;
+    }
+
+    @Override
+    public int completedPlaybackCount() {
+        return completedPlaybackCount.get();
+    }
+
+    @Override
+    public int soundsPlayedCount() {
+        return soundsPlayedCount.get();
     }
 
     @Override
@@ -129,10 +142,12 @@ public class DefaultAudio implements Audio, Updatable {
 
         do {
             writePlaybackDateToAudioLine(playback);
+            soundsPlayedCount.incrementAndGet();
         } while (loop++ < playback.options().times() && activePlaybacks.containsKey(playback.id()));
         playback.line().drain();
         audioLinePool.releaseLine(playback.line());
         activePlaybacks.remove(playback.id());
+        completedPlaybackCount.incrementAndGet();
     }
 
     private AudioFormat getFormatMatching(final ActivePlayback playback) {

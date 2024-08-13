@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added support for changin audio playback speed `SoundOptions.speed()` (#364)
+- Added `Audio.completedPlaybackCount()` and `.soundsPlayedCount()`
 
 ### 🪛 Bug Fixes
 
@@ -9,8 +10,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Changing window title only happens when text is different
-- Slightly improved performance of particle creation
+- Changing window title only happens when text is changed
+- Reduced overhead when creating particles
 
 ### 📦 Dependency updates
 

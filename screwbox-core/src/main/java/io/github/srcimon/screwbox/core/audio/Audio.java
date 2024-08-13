@@ -107,6 +107,22 @@ public interface Audio {
     Audio stopAllPlaybacks();
 
     /**
+     * Returns the total number of finished playbacks. Playing a {@link Sound} multiple times within one {@link Playback}
+     * counts as one.
+     *
+     * @see #soundsPlayedCount()
+     */
+    int completedPlaybackCount();
+
+    /**
+     * Returns the total number of finished sounds. Playing a {@link Sound} multiple times within one {@link Playback}
+     * counts multiple times.
+     *
+     * @see #completedPlaybackCount()
+     */
+    int soundsPlayedCount();
+
+    /**
      * Returns the count of currently playing instances of the given {@link Sound}.
      */
     int activePlaybackCount(Sound sound);
@@ -139,4 +155,5 @@ public interface Audio {
      * Read and change the current {@link AudioConfiguration}.
      */
     AudioConfiguration configuration();
+
 }

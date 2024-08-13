@@ -81,9 +81,7 @@ public interface Loop {
     Time lastUpdate();
 
     /**
-     * Returns the number of the current frame (Each iteration of the game loop is
-     * called frame).
+     * Returns the number of the current frame (Each iteration of the game loop is called frame).
      */
     long frameNumber();
-
 }
