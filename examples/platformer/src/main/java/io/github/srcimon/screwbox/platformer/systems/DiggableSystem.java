@@ -61,14 +61,14 @@ public class DiggableSystem implements EntitySystem {
                 engine.particles().spawnMultiple(10, entity.bounds(), particleSource(entity)
                         .sprite(entity.get(RenderComponent.class).sprite)
                         .randomBaseSpeed(30, 80)
-                        .customize("x", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
+                        .customize("add-gravity", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
                         .randomStartRotation()
                         .randomRotation(-0.5, 0.5)
                         .animateScale(0, 0.5));
                 entity.add(new TweenComponent(ofMillis(50), Ease.SINE_OUT));
                 entity.remove(ColliderComponent.class);
-                PhysicsComponent rigidBodyComponent = digging.get(PhysicsComponent.class);
-                rigidBodyComponent.momentum = Vector.of(rigidBodyComponent.momentum.x(), -150);
+                var physicsComponent = digging.get(PhysicsComponent.class);
+                physicsComponent.momentum = Vector.of(physicsComponent.momentum.x(), -150);
                 engine.audio().playSound(DIG_SOUND);
             }
         }
