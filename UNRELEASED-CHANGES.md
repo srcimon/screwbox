@@ -13,6 +13,7 @@
 
 - Changing window title only happens when text is changed
 - Reduced overhead when creating particles
+- Renamed `MovementRotationSystem`
 
 ### 📦 Dependency updates
 

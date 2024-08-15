@@ -22,7 +22,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -357,7 +357,7 @@ class DefaultEnvironmentTest {
 
         assertThat(environment.systems()).hasSize(6)
                 .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
-                .anyMatch(system -> system.getClass().equals(RotateSpriteSystem.class))
+                .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderOverLightSystem.class))

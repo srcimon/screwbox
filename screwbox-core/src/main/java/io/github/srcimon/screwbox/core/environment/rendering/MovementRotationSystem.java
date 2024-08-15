@@ -7,10 +7,10 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 
-public class RotateSpriteSystem implements EntitySystem {
+public class MovementRotationSystem implements EntitySystem {
 
     private static final Archetype ROTATING_BODIES = Archetype.of(
-            PhysicsComponent.class, RenderComponent.class, RotateSpriteComponent.class);
+            PhysicsComponent.class, RenderComponent.class, MovementRotationComponent.class);
 
     @Override
     public void update(final Engine engine) {

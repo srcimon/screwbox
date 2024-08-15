@@ -24,7 +24,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -48,7 +48,7 @@ public enum Feature {
     RENDERING(
             new ReflectionRenderSystem(),
             new RenderOverLightSystem(),
-            new RotateSpriteSystem(),
+            new MovementRotationSystem(),
             new FlipSpriteSystem(),
             new RenderSystem(),
             new CameraSystem()

@@ -22,7 +22,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -273,7 +273,7 @@ public interface Environment {
      * Adds systems needed for rendering {@link Sprite}s.
      *
      * @see ReflectionRenderSystem
-     * @see RotateSpriteSystem
+     * @see MovementRotationSystem
      * @see FlipSpriteSystem
      * @see RenderSystem
      * @see CameraSystem

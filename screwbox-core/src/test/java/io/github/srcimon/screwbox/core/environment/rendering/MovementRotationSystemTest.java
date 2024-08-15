@@ -12,17 +12,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(EnvironmentExtension.class)
-class RotateSpriteSystemTest {
+class MovementRotationSystemTest {
 
     @Test
     void update_rotationNonZero_updatesSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
-                new RotateSpriteComponent(),
+                new MovementRotationComponent(),
                 new PhysicsComponent(Vector.of(4, 4)));
 
         environment.addEntity(body)
-                .addSystem(new RotateSpriteSystem());
+                .addSystem(new MovementRotationSystem());
 
         environment.update();
 
@@ -34,16 +34,15 @@ class RotateSpriteSystemTest {
     void update_rotationIsZero_doesntUpdateSpriteRotation(DefaultEnvironment environment) {
         Entity body = new Entity().add(
                 new RenderComponent(Sprite.invisible()),
-                new RotateSpriteComponent(),
+                new MovementRotationComponent(),
                 new PhysicsComponent(Vector.zero()));
 
         environment.addEntity(body)
-                .addSystem(new RotateSpriteSystem());
+                .addSystem(new MovementRotationSystem());
 
         environment.update();
 
         var rotation = body.get(RenderComponent.class).options.rotation();
         assertThat(rotation.isNone()).isTrue();
     }
-
 }
