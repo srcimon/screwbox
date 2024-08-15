@@ -241,4 +241,9 @@ class DurationTest {
 
         assertThat(progress).isEqualTo(Percent.max());
     }
+
+    @Test
+    void infinite_createsInstance_withNearlyInfiniteLength(){
+        assertThat(Duration.infinite().nanos()).isEqualTo(Long.MAX_VALUE);
+    }
 }
