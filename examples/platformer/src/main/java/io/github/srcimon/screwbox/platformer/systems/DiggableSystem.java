@@ -27,6 +27,7 @@ import io.github.srcimon.screwbox.platformer.components.DiggingComponent;
 import java.util.Optional;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
 
 @Order(Order.SystemOrder.SIMULATION_BEGIN)
 public class DiggableSystem implements EntitySystem {
@@ -57,11 +58,12 @@ public class DiggableSystem implements EntitySystem {
                 engine.graphics().camera().shake(CameraShakeOptions.lastingForDuration(Duration.oneSecond()).strength(5));
                 entity.add(new TweenOpacityComponent(Percent.zero(), Percent.max()));
                 entity.add(new TweenDestroyComponent());
-                engine.particles().spawnMultiple(10, entity.bounds(), ParticleOptions.particleSource(entity)
+                engine.particles().spawnMultiple(10, entity.bounds(), particleSource(entity)
                         .sprite(entity.get(RenderComponent.class).sprite)
-                        .chaoticMovement(40, Duration.ofMillis(10000))
-                        .baseSpeed(Vector.y(30))
+                        .randomBaseSpeed(30, 80)
+                        .customize("x", e -> e.get(PhysicsComponent.class).gravityModifier = 0.4)
                         .randomStartRotation()
+                        .randomRotation(-0.5, 0.5)
                         .animateScale(0, 0.5));
                 entity.add(new TweenComponent(ofMillis(50), Ease.SINE_OUT));
                 entity.remove(ColliderComponent.class);
