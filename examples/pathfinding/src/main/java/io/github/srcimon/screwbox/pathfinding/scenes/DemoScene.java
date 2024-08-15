@@ -62,6 +62,8 @@ public class DemoScene implements Scene {
                 .enablePhysics()
                 .enableRendering()
                 .enableLogic()
+                .enableTweening()
+                .enableParticles()
                 .addSystem(new PlayerControlSystem())
                 .addSystem(new AutomovementDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))

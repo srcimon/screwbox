@@ -18,6 +18,7 @@ import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
 
 public class BombExplosionState implements EntityState {
 
@@ -41,6 +42,14 @@ public class BombExplosionState implements EntityState {
                 .searchInRange(bounds)
                 .ignoringEntitiesHaving(PlayerMovementComponent.class)
                 .selectAll();
+
+        for (var entityInExplosionRange : entitiesInExplosionRange) {
+            engine.particles().spawnMultiple(4, entityInExplosionRange.position(), particleSource(entityInExplosionRange)
+                    .randomBaseSpeed(8)
+                    .sprite(entityInExplosionRange.get(RenderComponent.class).sprite)
+                    .animateScale(0.0, 1)
+                    .lifetimeSeconds(1));
+        }
 
         engine.environment().remove(entitiesInExplosionRange);
     }
