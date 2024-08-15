@@ -16,8 +16,6 @@ public class Duration implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final Duration INFINITE = Duration.ofNanos(Long.MAX_VALUE / 100); // avoid large number edge cases
-
     private final long nanos;
 
     private Duration(final long nanos) {
@@ -97,15 +95,6 @@ public class Duration implements Serializable {
      */
     public static Duration none() {
         return new Duration(0);
-    }
-
-    /**
-     * Creates a new instance with (nearly) infinite length.
-     *
-     * @see #isNone()
-     */
-    public static Duration infinite() {
-        return INFINITE;
     }
 
     /**
@@ -248,7 +237,7 @@ public class Duration implements Serializable {
      * Calculates the progress that has been made from a start time towards the {@link Duration}.
      */
     public Percent progress(final Time started, final Time now) {
-        if(started.isAfter(now)) {
+        if (started.isAfter(now)) {
             return Percent.zero();
         }
         final var timePassed = Duration.between(started, now);
