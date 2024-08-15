@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 
 class DurationTest {
 
@@ -244,6 +245,9 @@ class DurationTest {
 
     @Test
     void infinite_createsInstance_withNearlyInfiniteLength(){
-        assertThat(Duration.infinite().nanos()).isEqualTo(Long.MAX_VALUE);
+        long longerThanEngineWillEverRun = Duration.ofSeconds(10_000_000).nanos();
+
+        assertThat(Duration.infinite().nanos()).isGreaterThan(longerThanEngineWillEverRun);
+        assertThat(10.0 / Duration.infinite().nanos()).isPositive(); // test agaist great number edge cases
     }
 }

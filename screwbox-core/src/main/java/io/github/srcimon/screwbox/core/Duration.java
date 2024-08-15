@@ -16,6 +16,8 @@ public class Duration implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private static final Duration INFINITE = Duration.ofNanos(Long.MAX_VALUE / 100); // avoid large number edge cases
+
     private final long nanos;
 
     private Duration(final long nanos) {
@@ -103,7 +105,7 @@ public class Duration implements Serializable {
      * @see #isNone()
      */
     public static Duration infinite() {
-        return Duration.ofNanos(Long.MAX_VALUE);
+        return INFINITE;
     }
 
     /**
