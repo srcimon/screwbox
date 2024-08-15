@@ -2,6 +2,8 @@
 
 - Added support for changing audio playback speed `SoundOptions.speed()` (#364)
 - Added `Audio.completedPlaybackCount()` and `.soundsPlayedCount()`
+- Added `FixedRotationSystem` / `Component`
+- Added methods to apply fixed rotation on `ParticleOptions`
 - Added `Duration.infinit()`
 
 ### 🪛 Bug Fixes

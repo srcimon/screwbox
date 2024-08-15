@@ -18,6 +18,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleInteraction
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
@@ -355,9 +356,10 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(6)
+        assertThat(environment.systems()).hasSize(7)
                 .anyMatch(system -> system.getClass().equals(ReflectionRenderSystem.class))
                 .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
+                .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(CameraSystem.class))
                 .anyMatch(system -> system.getClass().equals(FlipSpriteSystem.class))
                 .anyMatch(system -> system.getClass().equals(RenderOverLightSystem.class))
@@ -549,7 +551,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(30)
+        assertThat(environment.systems()).hasSize(31)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
