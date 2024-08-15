@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.particles;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -129,6 +130,23 @@ class ParticleOptionsTest {
         assertThat(particle.hasComponent(ShadowCasterComponent.class)).isTrue();
         assertThat(particle.get(ShadowCasterComponent.class).selfShadow).isFalse();
     }
+
+    @Test
+    void rotation_addsContinuousRotationComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.randomRotation(4));
+
+        assertThat(particle.hasComponent(FixedRotationComponent.class)).isTrue();
+        assertThat(particle.get(FixedRotationComponent.class).clockwiseRotationsPerSecond).isEqualTo(4);
+    }
+
+    @Test
+    void randomRotation_addsContinuousRotationComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.randomRotation(-2, 4));
+
+        assertThat(particle.hasComponent(FixedRotationComponent.class)).isTrue();
+        assertThat(particle.get(FixedRotationComponent.class).clockwiseRotationsPerSecond).isBetween(-2.0, 4.0);
+    }
+
 
     private Entity applyOptionsOnTemplateParticle(ParticleOptions result) {
         Entity particle = templateParticle();

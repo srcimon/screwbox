@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
-public class RotateSpriteComponent implements Component {
+public class MovementRotationComponent implements Component {
 
     @Serial
     private static final long serialVersionUID = 1L;

@@ -241,4 +241,5 @@ class DurationTest {
 
         assertThat(progress).isEqualTo(Percent.max());
     }
+
 }

@@ -16,7 +16,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridObstacleCo
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.RotateSpriteComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -76,7 +76,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(PLAYER_STANDING.get(), PLAYER_WALKING.get()))
                 .add(new PlayerMovementComponent())
                 .add(new PhysicsComponent())
-                .add(new RotateSpriteComponent())
+                .add(new MovementRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }
@@ -86,7 +86,7 @@ public class DemoScene implements Scene {
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsComponent())
                 .add(new AutomovementComponent(30))
-                .add(new RotateSpriteComponent())
+                .add(new MovementRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));
     }

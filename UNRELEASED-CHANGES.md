@@ -2,6 +2,8 @@
 
 - Added support for changing audio playback speed `SoundOptions.speed()` (#364)
 - Added `Audio.completedPlaybackCount()` and `.soundsPlayedCount()`
+- Added `FixedRotationSystem` / `Component`
+- Added methods to apply fixed rotation on `ParticleOptions`
 
 ### 🪛 Bug Fixes
 
@@ -12,6 +14,7 @@
 
 - Changing window title only happens when text is changed
 - Reduced overhead when creating particles
+- Renamed `MovementRotationSystem`
 
 ### 📦 Dependency updates
 

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
@@ -10,9 +11,9 @@ import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -62,6 +63,23 @@ public class ParticleOptions implements Serializable {
     public ParticleOptions startOpacity(final Percent opacity) {
         return customize(PREFIX + "start-render-opacity",
                 entity -> entity.get(RenderComponent.class).options = entity.get(RenderComponent.class).options.opacity(opacity));
+    }
+
+    /**
+     * Adds continuous rotation to the {@link Sprite}.
+     */
+    public ParticleOptions randomRotation(final double speed) {
+        return customize(PREFIX + "sprite-rotation", entity -> entity.add(new FixedRotationComponent(speed)));
+    }
+
+    /**
+     * Adds random continuous rotation to the {@link Sprite}.
+     */
+    public ParticleOptions randomRotation(final double minSpeed, final  double maxSpeed) {
+        return customize(PREFIX + "sprite-rotation", entity -> {
+            final var speed = RANDOM.nextDouble(minSpeed, maxSpeed);
+            entity.add(new FixedRotationComponent(speed));
+        });
     }
 
     /**
