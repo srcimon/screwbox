@@ -89,12 +89,21 @@ public class Duration implements Serializable {
     }
 
     /**
-     * Creates a new instance with no duration at all.
+     * Creates a new instance with no length at all.
      *
      * @see #isNone()
      */
     public static Duration none() {
         return new Duration(0);
+    }
+
+    /**
+     * Creates a new instance with (nearly) infinite length.
+     *
+     * @see #isNone()
+     */
+    public static Duration infinite() {
+        return Duration.ofNanos(Long.MAX_VALUE);
     }
 
     /**

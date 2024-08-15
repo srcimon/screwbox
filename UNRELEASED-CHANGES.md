@@ -2,6 +2,7 @@
 
 - Added support for changing audio playback speed `SoundOptions.speed()` (#364)
 - Added `Audio.completedPlaybackCount()` and `.soundsPlayedCount()`
+- Added `Duration.infinit()`
 
 ### 🪛 Bug Fixes
 
