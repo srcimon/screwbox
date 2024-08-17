@@ -1,6 +1,6 @@
 package io.github.srcimon.screwbox.platformer.effects;
 
-import io.github.srcimon.screwbox.core.audio.Sound;
+import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.audio.SoundComponent;
@@ -14,6 +14,6 @@ public class WaterfallSound implements SourceImport.Converter<GameObject> {
         return new Entity(object.id())
                 .name("waterfall-sound")
                 .add(new TransformComponent(object.bounds()))
-                .add(new SoundComponent(Sound.fromFile("sounds/water.wav")));
+                .add(new SoundComponent(SoundBundle.WATER));
     }
 }

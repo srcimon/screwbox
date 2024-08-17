@@ -16,6 +16,7 @@ public enum SoundBundle implements AssetBundle<Sound> {
     STEAM,
     ZISCH,
     NOTIFY,
+    WATER,
     SPLASH;
 
     private final Asset<Sound> sound;
