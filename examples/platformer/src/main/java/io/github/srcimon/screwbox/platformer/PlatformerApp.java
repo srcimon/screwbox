@@ -11,7 +11,7 @@ public class PlatformerApp {
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer");
 
-        engine.audio().configuration().setSoundRange(80);
+        engine.audio().configuration().setSoundRange(200);
 
         engine.graphics().camera()
                 .setZoomRestriction(2, 5)
