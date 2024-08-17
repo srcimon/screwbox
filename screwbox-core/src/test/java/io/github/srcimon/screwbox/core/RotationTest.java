@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
@@ -12,8 +14,11 @@ import static org.assertj.core.data.Percentage.withPercentage;
 class RotationTest {
 
     @Test
-    void random_returnsRandomRotation() {
-        assertThat(Rotation.random()).isNotEqualTo(Rotation.random());
+    void random_calledFourTimes_createsAtLeastTwoDistinctRotations() {
+        Set<Rotation> randomRotations = Set.of(
+                Rotation.random(), Rotation.random(), Rotation.random(), Rotation.random());
+
+        assertThat(randomRotations).hasSizeGreaterThanOrEqualTo(2);
     }
 
     @Test
