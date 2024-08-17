@@ -453,6 +453,42 @@
                  "template":"..\/templates\/enemies\/slime.json",
                  "x":539,
                  "y":159
+                }, 
+                {
+                 "height":0,
+                 "id":28,
+                 "name":"waterfall",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":250,
+                 "y":116
+                }, 
+                {
+                 "height":0,
+                 "id":29,
+                 "name":"waterfall",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":462,
+                 "y":305
+                }, 
+                {
+                 "height":0,
+                 "id":30,
+                 "name":"waterfall",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":248,
+                 "y":296
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -617,7 +653,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":28,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "properties":[
         {
