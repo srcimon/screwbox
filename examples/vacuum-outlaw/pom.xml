@@ -4,7 +4,7 @@
         <groupId>io.github.srcimon</groupId>
         <artifactId>screwbox</artifactId>
         <relativePath>../../pom.xml</relativePath>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.1.1-SNAPSHOT</version>
     </parent>
     <artifactId>vacuum-outlaw</artifactId>
     <properties>
