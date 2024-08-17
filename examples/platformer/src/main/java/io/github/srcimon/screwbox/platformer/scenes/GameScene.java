@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.platformer.collectables.DeboE;
 import io.github.srcimon.screwbox.platformer.collectables.DeboO;
 import io.github.srcimon.screwbox.platformer.components.CurrentLevelComponent;
 import io.github.srcimon.screwbox.platformer.effects.Background;
+import io.github.srcimon.screwbox.platformer.effects.WaterfallSound;
 import io.github.srcimon.screwbox.platformer.enemies.MovingSpikes;
 import io.github.srcimon.screwbox.platformer.enemies.slime.Slime;
 import io.github.srcimon.screwbox.platformer.enemies.tracer.Tracer;
@@ -128,6 +129,7 @@ public class GameScene implements Scene {
                 .when("platform").as(new Platfom())
                 .when("waypoint").as(new Waypoint())
                 .when("smoke-emitter").as(new SmokeEmitter())
+                .when("waterfall").as(new WaterfallSound())
                 .when("player").as(new Player())
                 .when("debo-d").as(new DeboD())
                 .when("debo-e").as(new DeboE())

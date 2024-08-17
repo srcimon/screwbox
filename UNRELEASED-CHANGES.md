@@ -4,6 +4,7 @@
 - Added `Audio.completedPlaybackCount()` and `.soundsPlayedCount()`
 - Added `FixedRotationSystem` / `Component`
 - Added methods to apply fixed rotation on `ParticleOptions`
+- Added `SoundBundle.WATER`
 
 ### 🪛 Bug Fixes
 
@@ -18,4 +19,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump junit-jupiter to 5.11.0
