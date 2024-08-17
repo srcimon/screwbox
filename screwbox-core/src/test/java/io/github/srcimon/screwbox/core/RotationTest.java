@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Set;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
@@ -22,15 +23,15 @@ class RotationTest {
     }
 
     @Test
-    void of_segmentIsNull_throwsException() {
+    void of_lineIsNull_throwsException() {
         assertThatThrownBy(() -> Rotation.of(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("line must not be null");
     }
 
     @Test
-    void of_someSegment_returnsRotation() {
-        Line line = Line.between(Vector.$(20, 10.5), Vector.$(12.1, -19));
+    void of_someLine_returnsRotation() {
+        Line line = Line.between($(20, 10.5), $(12.1, -19));
 
         Rotation result = Rotation.of(line);
 
@@ -103,7 +104,7 @@ class RotationTest {
     }
 
     @Test
-    void applyOn_segmentNull_throwsExceptions() {
+    void applyOn_lineNull_throwsExceptions() {
         var rotation = Rotation.degrees(90);
 
         assertThatThrownBy(() -> rotation.applyOn(null))
@@ -116,7 +117,7 @@ class RotationTest {
             "12.4,33.9,-33.9,12.4,90",
             "12.4,33.9,23.2,27.6,-20"})
     void applyOn_validInput_returnsNewSegment(double x, double y, double toX, double toY, double degrees) {
-        Line input = Line.between(Vector.zero(), Vector.$(x, y));
+        Line input = Line.between(Vector.zero(), $(x, y));
 
         Line rotated = Rotation.degrees(degrees).applyOn(input);
 
