@@ -19,4 +19,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump junit-jupiter to 5.11.0
