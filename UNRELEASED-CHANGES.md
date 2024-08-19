@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `Environment.saveToFile`, `.deleteSavegameFile`, `.savegameFileExists`
 
 ### 📦 Dependency updates
 

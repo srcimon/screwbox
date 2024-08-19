@@ -159,98 +159,98 @@ class DefaultEnvironmentTest {
     }
 
     @Test
-    void createSavegamenameNull_throwsException() {
-        assertThatThrownBy(() -> environment.createSavegame(null))
+    void saveToFile_nameNull_throwsException() {
+        assertThatThrownBy(() -> environment.saveToFile(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("name must not be null");
     }
 
     @Test
-    void createSavegame_validName_createsSaveFile() {
-        environment.createSavegame(SAVEGAME_NAME);
+    void saveToFile_validName_createsSaveFile() {
+        environment.saveToFile(SAVEGAME_NAME);
 
         assertThat(Path.of(SAVEGAME_NAME)).exists();
     }
 
     @Test
-    void savegameExists_nameNull_throwsException() {
-        assertThatThrownBy(() -> environment.savegameExists(null))
+    void savegameFileExists_nameNull_throwsException() {
+        assertThatThrownBy(() -> environment.savegameFileExists(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("name must not be null");
     }
 
     @Test
-    void savegameExists_doesntExist_false() {
-        boolean exists = environment.savegameExists(SAVEGAME_NAME);
+    void savegameFileExists_doesntExist_false() {
+        boolean exists = environment.savegameFileExists(SAVEGAME_NAME);
 
         assertThat(exists).isFalse();
     }
 
     @Test
-    void savegameExists_invalidName_throwsException() {
-        assertThatThrownBy(() -> environment.savegameExists("test."))
+    void savegameFileExists_invalidName_throwsException() {
+        assertThatThrownBy(() -> environment.savegameFileExists("test."))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("savegame name is invalid: test.");
 
-        assertThatThrownBy(() -> environment.savegameExists("test" + File.separator))
+        assertThatThrownBy(() -> environment.savegameFileExists("test" + File.separator))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("savegame name is invalid: test" + File.separator);
     }
 
     @Test
-    void savegameExists_exists_isTrue() {
-        environment.createSavegame(SAVEGAME_NAME);
+    void savegameExists_File_exists_isTrue() {
+        environment.saveToFile(SAVEGAME_NAME);
 
-        boolean exists = environment.savegameExists(SAVEGAME_NAME);
+        boolean exists = environment.savegameFileExists(SAVEGAME_NAME);
 
         assertThat(exists).isTrue();
     }
 
     @Test
-    void loadSavegame_nameNull_throwsException() {
-        assertThatThrownBy(() -> environment.loadSavegame(null))
+    void loadFromFile_nameNull_throwsException() {
+        assertThatThrownBy(() -> environment.loadFromFile(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("name must not be null");
     }
 
     @Test
-    void loadSavegame_doesntExist_throwsException() {
-        assertThatThrownBy(() -> environment.loadSavegame("not-there.sav"))
+    void loadFromFile_doesntExist_throwsException() {
+        assertThatThrownBy(() -> environment.loadFromFile("not-there.sav"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("could not load savegame: not-there.sav");
     }
 
     @Test
-    void deleteSavegame_nameIsNull_throwsException() {
-        assertThatThrownBy(() -> environment.deleteSavegame(null))
+    void deleteSavegame_File_nameIsNull_throwsException() {
+        assertThatThrownBy(() -> environment.deleteSavegameFile(null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("name must not be null");
     }
 
     @Test
-    void deleteSavegame_savegameDoesntExist_throwsException() {
-        assertThatThrownBy(() -> environment.deleteSavegame("not-there.sav"))
+    void deleteSavegame_savegameFileDoesntExist_throwsException() {
+        assertThatThrownBy(() -> environment.deleteSavegameFile("not-there.sav"))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("could not delete savegame: not-there.sav");
     }
 
     @Test
-    void deleteSavegame_savegameExists_deletesSAve() {
-        environment.createSavegame(SAVEGAME_NAME);
+    void deleteSavegame_savegameFileExists_deletesSAve() {
+        environment.saveToFile(SAVEGAME_NAME);
 
-        environment.deleteSavegame(SAVEGAME_NAME);
+        environment.deleteSavegameFile(SAVEGAME_NAME);
 
-        assertThat(environment.savegameExists(SAVEGAME_NAME)).isFalse();
+        assertThat(environment.savegameFileExists(SAVEGAME_NAME)).isFalse();
     }
 
     @Test
-    void loadSavegame_saveExists_replacesExistingEntitiesWithSavedOnes() {
+    void loadFromFile_saveExists_replacesExistingEntitiesWithSavedOnes() {
         environment.addEntity(1, new TransformComponent($$(0, 0, 32, 32)));
-        environment.createSavegame(SAVEGAME_NAME);
+        environment.saveToFile(SAVEGAME_NAME);
         environment.clearEntities();
         environment.addEntity(2, new TransformComponent($$(0, 0, 32, 32)));
 
-        environment.loadSavegame(SAVEGAME_NAME);
+        environment.loadFromFile(SAVEGAME_NAME);
 
         assertThat(environment.tryFetchById(1)).isPresent();
         assertThat(environment.tryFetchById(2)).isEmpty();

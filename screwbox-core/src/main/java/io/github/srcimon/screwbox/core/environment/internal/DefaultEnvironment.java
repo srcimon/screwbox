@@ -256,27 +256,27 @@ public class DefaultEnvironment implements Environment {
 
 
     @Override
-    public Environment createSavegame(final String name) {
+    public Environment saveToFile(final String name) {
         savegameManager.createSavegame(entities(), name);
         return this;
     }
 
     @Override
-    public Environment loadSavegame(final String name) {
+    public Environment loadFromFile(final String name) {
         clearEntities();
         addEntities(savegameManager.loadSavegame(name));
         return this;
     }
 
     @Override
-    public Environment deleteSavegame(final String name) {
+    public Environment deleteSavegameFile(final String name) {
         savegameManager.deleteSavegame(name);
         return this;
 
     }
 
     @Override
-    public boolean savegameExists(String name) {
+    public boolean savegameFileExists(String name) {
         return savegameManager.savegameExists(name);
     }
 

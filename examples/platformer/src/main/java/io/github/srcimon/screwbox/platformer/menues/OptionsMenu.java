@@ -45,8 +45,8 @@ public class OptionsMenu extends UiMenu {
                         : Percent.of(engine.audio().configuration().effectVolume().value() + 0.25)));
 
         addItem("delete savegame")
-                .activeCondition(engine -> engine.environment().savegameExists("savegame.sav"))
-                .onActivate(engine -> engine.environment().deleteSavegame("savegame.sav"));
+                .activeCondition(engine -> engine.environment().savegameFileExists("savegame.sav"))
+                .onActivate(engine -> engine.environment().deleteSavegameFile("savegame.sav"));
 
         addItem("back").onActivate(this::onExit);
     }
