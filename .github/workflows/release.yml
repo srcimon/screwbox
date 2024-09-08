@@ -20,7 +20,7 @@ jobs:
     - name: "Set up Maven Central Repository"
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '21.0.3'
         distribution: 'temurin'
         java-package: 'jdk'
         cache: 'maven'
