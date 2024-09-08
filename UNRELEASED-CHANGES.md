@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Pinned Ubuntu version for github actions because of build error with latest version
 
 ### 🧽 Cleanup & refactoring
 

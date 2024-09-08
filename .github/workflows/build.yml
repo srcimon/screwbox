@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04 # ubuntu-latest issue with mockito
     steps:
     - uses: actions/checkout@v4
       with:
