@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.internal.AwtMapper;
-import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -73,22 +72,8 @@ public class Sprite implements Serializable, Sizeable {
      * specified {@link Color}.
      */
     public static Sprite pixel(final Color color) {
-        return pixel(color, 1);
-    }
-
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
-    public static Sprite pixel(final Color color, int size) {
-        Validate.positive(size, "size must be positive");
-        //TODO validate maxsize
-        int rgb = AwtMapper.toAwtColor(color).getRGB();
-        final var image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        for(int x = 0; x < size; x++) {
-            for(int y = 0; y < size; y++) {
-                image.setRGB(x, y, rgb);
-            }
-        }
+        final var image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        image.setRGB(0, 0, AwtMapper.toAwtColor(color).getRGB());
         return Sprite.fromImage(image);
     }
 
