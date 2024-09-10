@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Pinned Ubuntu version for github actions because of build error with latest version
+- Fixed missing duration when replacing color of fram
 
 ### 🧽 Cleanup & refactoring
 

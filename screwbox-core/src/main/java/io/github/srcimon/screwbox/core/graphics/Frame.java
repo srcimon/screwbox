@@ -141,7 +141,7 @@ public final class Frame implements Serializable, Sizeable {
     public Frame replaceColor(final Color oldColor, final Color newColor) {
         final Image oldImage = imageStorage.getImage();
         final Image newImage = ImageUtil.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
-        return new Frame(newImage);
+        return new Frame(newImage, duration);
     }
 
     /**
