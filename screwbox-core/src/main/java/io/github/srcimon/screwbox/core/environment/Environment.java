@@ -198,7 +198,6 @@ public interface Environment {
     /**
      * Returns the count of entities matching the given {@link Archetype} in this environment.
      */
-    //TODO test
     long entityCount(Archetype archetype);
 
     boolean contains(Archetype archetype);
