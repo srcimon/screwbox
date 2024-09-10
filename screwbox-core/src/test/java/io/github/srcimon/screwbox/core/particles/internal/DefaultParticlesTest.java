@@ -51,7 +51,7 @@ class DefaultParticlesTest {
     @Test
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(environment.fetchAll(Archetype.of(ParticleComponent.class))).thenReturn(List.of(new Entity(), new Entity()));
+        when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
         when(world.visibleArea()).thenReturn($$(0, 0, 100, 100));
 
         particles.update();
