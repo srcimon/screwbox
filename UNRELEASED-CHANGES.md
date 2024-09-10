@@ -1,7 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added `Environment.entityCount(Archetype)`
-- Added `Validate.notNull(Object, String)`
+- Added `Environment.enableCoreFeatures()` to enable all featues but light.
+- Added `Environment.entityCount(Archetype)` to count entities matching a specified archetype.
 
 ### 🪛 Bug Fixes
 
@@ -10,6 +10,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Environment.saveToFile`, `.deleteSavegameFile`, `.savegameFileExists`
+- Added `Validate.notNull(Object, String)`
 
 ### 📦 Dependency updates
 

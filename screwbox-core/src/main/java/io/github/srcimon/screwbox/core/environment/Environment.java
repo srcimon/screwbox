@@ -346,4 +346,15 @@ public interface Environment {
      */
     Environment enableAllFeatures();
 
+    /**
+     * Adds all systems including particle effects, tweening, logic, rendering, physics but not light.
+     * @see #enableParticles()
+     * @see #enableLogic()
+     * @see #enableRendering()
+     * @see #enablePhysics()
+     * @see #enableTweening()
+     * @see #enableAudio()
+     */
+    //TODO test
+    Environment enableCoreFeatures();
 }
