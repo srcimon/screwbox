@@ -190,7 +190,16 @@ public interface Environment {
 
     void remove(Class<? extends EntitySystem> systemType);
 
+    /**
+     * Returns the total count of entities in this environment.
+     */
     long entityCount();
+
+    /**
+     * Returns the count of entities matching the given {@link Archetype} in this environment.
+     */
+    //TODO test
+    long entityCount(Archetype archetype);
 
     boolean contains(Archetype archetype);
 
@@ -336,4 +345,5 @@ public interface Environment {
      * @see #enableAudio()
      */
     Environment enableAllFeatures();
+
 }

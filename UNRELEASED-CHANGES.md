@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Environment.entityCount(Archetype)`
 
 ### 🪛 Bug Fixes
 

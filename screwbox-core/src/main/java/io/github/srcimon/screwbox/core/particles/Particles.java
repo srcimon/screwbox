@@ -24,7 +24,7 @@ public interface Particles {
     /**
      * Returns the current count of particles in the {@link Environment#entities()}.
      */
-    int particleCount();
+    long particleCount();
 
     /**
      * Returns the count of particles spawned within the runtime of the engine.
