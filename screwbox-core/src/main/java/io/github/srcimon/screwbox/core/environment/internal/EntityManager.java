@@ -110,8 +110,7 @@ public class EntityManager implements EntityListener {
                 cacheEntry.remove(entity);
             }
             this.entities.remove(entity);
-            final var id = entity.id();
-            id.ifPresent(entitiesById::remove);
+            entity.id().ifPresent(entitiesById::remove);
         }
     }
 
