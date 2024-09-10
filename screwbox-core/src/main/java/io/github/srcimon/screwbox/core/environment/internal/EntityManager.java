@@ -45,7 +45,7 @@ public class EntityManager implements EntityListener {
     }
 
     public List<Entity> entitiesMatching(final Archetype archetype) {
-        Objects.requireNonNull(archetype, "archetype must not be null");//TODO add test
+        Objects.requireNonNull(archetype, "archetype must not be null");
         final List<Entity> cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
             return cacheResult;

@@ -10,7 +10,6 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `Environment.saveToFile`, `.deleteSavegameFile`, `.savegameFileExists`
-- Added `Validate.notNull(Object, String)`
 
 ### 📦 Dependency updates
 

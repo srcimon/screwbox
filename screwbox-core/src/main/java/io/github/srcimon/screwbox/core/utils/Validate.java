@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.utils;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.containsDuplicates;
-import static java.util.Objects.isNull;
 
 /**
  * Used for validating input values.
@@ -75,18 +74,6 @@ public final class Validate {
      */
     public static <T> void noDuplicates(final List<T> list, final String message) {
         if (containsDuplicates(list)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    /**
-     * Value must not be null.
-     *
-     * @throws IllegalArgumentException using specified message when null
-     */
-    //TODO Tests
-    public static void notNull(Object value, final String message) {
-        if (isNull(value)) {
             throw new IllegalArgumentException(message);
         }
     }
