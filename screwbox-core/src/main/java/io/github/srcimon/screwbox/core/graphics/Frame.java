@@ -23,6 +23,10 @@ import java.util.Set;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
+/**
+ * Represents a single image within a {@link Sprite}. Every {@link Frame} also contains the {@link Duration} of it's
+ * visibility within the {@link Sprite}.
+ */
 public final class Frame implements Serializable, Sizeable {
 
     @Serial
@@ -31,7 +35,7 @@ public final class Frame implements Serializable, Sizeable {
     private static final Frame INVISIBLE = new Frame(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 
     private final Duration duration;
-    private final ImageIcon imageCont;
+    private final ImageIcon imageStorage;
 
     /**
      * Returns an invisible {@link Frame}.
@@ -68,7 +72,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Frame(final Image image, final Duration duration) {
-        this.imageCont = new ImageIcon(image);
+        this.imageStorage = new ImageIcon(image);
         this.duration = duration;
     }
 
@@ -88,7 +92,7 @@ public final class Frame implements Serializable, Sizeable {
     }
 
     public Image image() {
-        return imageCont.getImage();
+        return imageStorage.getImage();
     }
 
     public Duration duration() {
@@ -100,7 +104,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     @Override
     public Size size() {
-        return Size.of(imageCont.getIconWidth(), imageCont.getIconHeight());
+        return Size.of(imageStorage.getIconWidth(), imageStorage.getIconHeight());
     }
 
     /**
@@ -135,7 +139,7 @@ public final class Frame implements Serializable, Sizeable {
      * with a new one. This method is quite slow.
      */
     public Frame replaceColor(final Color oldColor, final Color newColor) {
-        final Image oldImage = imageCont.getImage();
+        final Image oldImage = imageStorage.getImage();
         final Image newImage = ImageUtil.applyFilter(oldImage, new ReplaceColorFilter(oldColor, newColor));
         return new Frame(newImage);
     }
@@ -194,7 +198,7 @@ public final class Frame implements Serializable, Sizeable {
      */
     public Set<Color> colors() {
         final Set<Color> colors = new HashSet<>();
-        for (var offset : size().allPixels()) {
+        for (final var offset : size().allPixels()) {
             colors.add(colorAt(offset));
         }
         return colors;
