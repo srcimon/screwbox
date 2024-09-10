@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Environment.entityCount(Archetype)`
+- Added `Validate.notNull(Object, String)`
 
 ### 🪛 Bug Fixes
 
