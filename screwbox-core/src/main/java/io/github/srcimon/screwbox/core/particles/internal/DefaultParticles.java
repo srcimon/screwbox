@@ -31,7 +31,7 @@ public class DefaultParticles implements Particles, Updatable {
     private final World world;
 
     private boolean particleCountRefreshed = false;
-    private int particleCount = 0;
+    private long particleCount = 0;
     private int particleLimit = 10000;
     private double spawnDistance = 1000;
     private long particleSpawnCount = 0;
@@ -47,12 +47,12 @@ public class DefaultParticles implements Particles, Updatable {
     }
 
     @Override
-    public int particleCount() {
+    public long particleCount() {
         if (particleCountRefreshed) {
             return particleCount;
         }
         particleCountRefreshed = true;
-        particleCount = scenes.activeEnvironment().fetchAll(PARTICLES).size();
+        particleCount = scenes.activeEnvironment().entityCount(PARTICLES);
         return particleCount;
     }
 

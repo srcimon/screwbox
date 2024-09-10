@@ -146,6 +146,11 @@ public class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public long entityCount(final Archetype archetype) {
+        return entityManager.entitiesMatching(archetype).size();
+    }
+
+    @Override
     public boolean contains(final Archetype archetype) {
         return !entityManager.entitiesMatching(archetype).isEmpty();
     }

@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Environment.entityCount(Archetype)` to count entities matching a specified archetype.
 
 ### 🪛 Bug Fixes
 

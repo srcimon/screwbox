@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EntityManagerTest {
 
@@ -80,6 +81,13 @@ class EntityManagerTest {
         entityManager.pickUpChanges();
 
         assertThat(entityManager.allEntities()).hasSize(2);
+    }
+
+    @Test
+    void entitiesMatching_archetypeNull_throwsException() {
+        assertThatThrownBy(() -> entityManager.entitiesMatching(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("archetype must not be null");
     }
 
     @Test

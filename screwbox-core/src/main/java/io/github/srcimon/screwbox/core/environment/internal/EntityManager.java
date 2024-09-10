@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
@@ -44,6 +45,7 @@ public class EntityManager implements EntityListener {
     }
 
     public List<Entity> entitiesMatching(final Archetype archetype) {
+        Objects.requireNonNull(archetype, "archetype must not be null");
         final List<Entity> cacheResult = archetypeCache.get(archetype);
         if (nonNull(cacheResult)) {
             return cacheResult;
@@ -108,8 +110,7 @@ public class EntityManager implements EntityListener {
                 cacheEntry.remove(entity);
             }
             this.entities.remove(entity);
-            final var id = entity.id();
-            id.ifPresent(entitiesById::remove);
+            entity.id().ifPresent(entitiesById::remove);
         }
     }
 

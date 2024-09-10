@@ -77,7 +77,6 @@ public class Sprite implements Serializable, Sizeable {
         return Sprite.fromImage(image);
     }
 
-
     public static Asset<Sprite> animatedAssetFromFile(final String fileName, final Size size, final Duration duration) {
         return Asset.asset(() -> animatedFromFile(fileName, size, duration));
     }

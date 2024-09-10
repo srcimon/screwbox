@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetCompone
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
@@ -103,6 +104,14 @@ class DefaultEnvironmentTest {
 
         assertThat(environment.entities()).allMatch(entity -> entity.hasComponent(TransformComponent.class));
         assertThat(environment.entityCount()).isEqualTo(1);
+    }
+
+    @Test
+    void entityCount_oneEntityOfTwoMatchesArchetype_returnsOne() {
+        environment.addEntity(new TransformComponent());
+        environment.addEntity(new RenderComponent());
+
+        assertThat(environment.entityCount(Archetype.of(TransformComponent.class))).isOne();
     }
 
     @Test
