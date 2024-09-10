@@ -1,6 +1,5 @@
 ### 🚀 Features & improvements
 
-- Added `Environment.enableCoreFeatures()` to enable all featues but light. (#355)
 - Added `Environment.entityCount(Archetype)` to count entities matching a specified archetype.
 
 ### 🪛 Bug Fixes

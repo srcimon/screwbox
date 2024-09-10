@@ -8,22 +8,13 @@ import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -344,16 +335,4 @@ public interface Environment {
      * @see #enableAudio()
      */
     Environment enableAllFeatures();
-
-    /**
-     * Adds all systems including particle effects, tweening, logic, rendering, physics but not light.
-     * @see #enableParticles()
-     * @see #enableLogic()
-     * @see #enableRendering()
-     * @see #enablePhysics()
-     * @see #enableTweening()
-     * @see #enableAudio()
-     */
-    //TODO test
-    Environment enableCoreFeatures(); //TODO im not happy with this
 }
