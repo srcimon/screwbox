@@ -356,5 +356,5 @@ public interface Environment {
      * @see #enableAudio()
      */
     //TODO test
-    Environment enableCoreFeatures();
+    Environment enableCoreFeatures(); //TODO im not happy with this
 }
