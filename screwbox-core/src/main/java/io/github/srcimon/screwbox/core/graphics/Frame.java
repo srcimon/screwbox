@@ -185,7 +185,7 @@ public final class Frame implements Serializable, Sizeable {
             throw new IllegalArgumentException("other frame must have identical size to compare pixels");
         }
         var distinct = new ArrayList<Offset>();
-        for (var offset : size().allPixels()) {
+        for (final var offset : size().allPixels()) {
             if (!colorAt(offset).equals(other.colorAt(offset))) {
                 distinct.add(offset);
             }
