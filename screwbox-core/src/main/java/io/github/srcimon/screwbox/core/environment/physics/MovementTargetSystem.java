@@ -21,7 +21,9 @@ public class MovementTargetSystem implements EntitySystem {
 
             physics.momentum = physics.momentum.add(acceleration);
             double maxSpeed = Math.min(physics.momentum.length(), target.maxSpeed);
-            double desiredSpeed = Math.min(maxSpeed, entity.position().distanceTo(target.position));
+
+            double distance = entity.position().distanceTo(target.position);
+            double desiredSpeed = Math.min(maxSpeed, distance);
             physics.momentum = physics.momentum.length(desiredSpeed);
             engine.graphics().world()
                     .drawLine(entity.position(), entity.position().add(physics.momentum), LineDrawOptions.color(Color.BLUE).strokeWidth(2))
