@@ -20,8 +20,11 @@ public class MovementTargetSystem implements EntitySystem {
             final var acceleration = target.position.substract(entity.position()).length(engine.loop().delta(target.acceleration));
 
             physics.momentum = physics.momentum.add(acceleration);
-            physics.momentum = physics.momentum.length(Math.min(physics.momentum.length(), target.maxSpeed));
-            engine.graphics().world().drawLine(entity.position(), entity.position().add(physics.momentum), LineDrawOptions.color(Color.BLUE).strokeWidth(2))
+            double maxSpeed = Math.min(physics.momentum.length(), target.maxSpeed);
+            double desiredSpeed = Math.min(maxSpeed, entity.position().distanceTo(target.position));
+            physics.momentum = physics.momentum.length(desiredSpeed);
+            engine.graphics().world()
+                    .drawLine(entity.position(), entity.position().add(physics.momentum), LineDrawOptions.color(Color.BLUE).strokeWidth(2))
                     .drawCircle(target.position, 4, CircleDrawOptions.filled(Color.YELLOW));
         }
     }
