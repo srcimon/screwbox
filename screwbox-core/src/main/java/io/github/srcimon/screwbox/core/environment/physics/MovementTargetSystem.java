@@ -18,16 +18,13 @@ public class MovementTargetSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(TARGETS)) {
             final var physics = entity.get(PhysicsComponent.class);
             final var target = entity.get(MovementTargetComponent.class);
-            final var acceleration = target.position.substract(entity.position()).length(engine.loop().delta(target.acceleration));
+            var destinationVector = target.position.substract(entity.position());
 
-            Vector newMomentum = physics.momentum.add(acceleration);
-
-            double maxSpeed = Math.min(newMomentum.length(), target.maxSpeed);
-
-            double distance = entity.position().distanceTo(target.position);
-            double actualSpeed = Math.clamp(distance, physics.momentum.length() - target.acceleration, maxSpeed);
-            physics.momentum = newMomentum.length(actualSpeed);
+            Vector speedChange = destinationVector.length(engine.loop().delta(target.acceleration));
+            Vector newMomentum = physics.momentum.add(speedChange);
+            physics.momentum = newMomentum.length(Math.min(newMomentum.length(), target.maxSpeed));
             engine.graphics().world()
+                    .drawLine(entity.position(), entity.position().add(destinationVector), LineDrawOptions.color(Color.RED).strokeWidth(1))
                     .drawLine(entity.position(), entity.position().add(physics.momentum), LineDrawOptions.color(Color.BLUE).strokeWidth(2))
                     .drawCircle(target.position, 4, CircleDrawOptions.filled(Color.YELLOW));
         }
