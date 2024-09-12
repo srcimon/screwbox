@@ -12,10 +12,10 @@ public class MovementTargetComponent implements Component {
 
     public Vector position;
     public double maxSpeed;
-    public double acceleration = 5;
+    public double acceleration = 800;
 
     public MovementTargetComponent(final Vector position) {
-        this(position, 50);
+        this(position, 400);
     }
 
     public MovementTargetComponent(final Vector position, final double maxSpeed) {
