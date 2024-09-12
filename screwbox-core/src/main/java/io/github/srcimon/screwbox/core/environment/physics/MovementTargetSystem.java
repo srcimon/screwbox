@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -19,12 +20,13 @@ public class MovementTargetSystem implements EntitySystem {
             final var target = entity.get(MovementTargetComponent.class);
             final var acceleration = target.position.substract(entity.position()).length(engine.loop().delta(target.acceleration));
 
-            physics.momentum = physics.momentum.add(acceleration);
-            double maxSpeed = Math.min(physics.momentum.length(), target.maxSpeed);
+            Vector newMomentum = physics.momentum.add(acceleration);
+
+            double maxSpeed = Math.min(newMomentum.length(), target.maxSpeed);
 
             double distance = entity.position().distanceTo(target.position);
             double desiredSpeed = Math.min(maxSpeed, distance);
-            physics.momentum = physics.momentum.length(desiredSpeed);
+            physics.momentum = newMomentum.length(desiredSpeed);
             engine.graphics().world()
                     .drawLine(entity.position(), entity.position().add(physics.momentum), LineDrawOptions.color(Color.BLUE).strokeWidth(2))
                     .drawCircle(target.position, 4, CircleDrawOptions.filled(Color.YELLOW));
