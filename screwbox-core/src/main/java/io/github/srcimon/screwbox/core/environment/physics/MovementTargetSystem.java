@@ -20,7 +20,8 @@ public class MovementTargetSystem implements EntitySystem {
             final var target = entity.get(MovementTargetComponent.class);
             var destinationVector = target.position.substract(entity.position());
 
-            Vector speedChange = destinationVector.length(engine.loop().delta(target.acceleration));
+            double deltaAcceleration = engine.loop().delta(target.acceleration);
+            Vector speedChange = destinationVector.length(deltaAcceleration);
             Vector newMomentum = physics.momentum.add(speedChange);
             physics.momentum = newMomentum.length(Math.min(newMomentum.length(), target.maxSpeed));
             engine.graphics().world()
