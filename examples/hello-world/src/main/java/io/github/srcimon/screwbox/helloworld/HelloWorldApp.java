@@ -5,8 +5,6 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
-import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.environment.physics.MovementTargetComponent;
 import io.github.srcimon.screwbox.core.environment.physics.MovementTargetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
@@ -25,7 +23,7 @@ public class HelloWorldApp {
                 .enableAllFeatures()
                 .addSystem(new MovementTargetSystem())
                 .addSystem(engine -> {
-                    if(engine.mouse().isPressedLeft()) {
+                    if (engine.mouse().isPressedLeft()) {
                         engine.environment().fetchAllHaving(MovementTargetComponent.class).forEach(e -> e.get(MovementTargetComponent.class).position = engine.mouse().position());
                     }
                 })
