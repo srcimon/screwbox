@@ -9,14 +9,14 @@ import io.github.srcimon.screwbox.core.Vector;
 public interface Camera {
 
     /**
-     * Moves the camera within the given {@link Bounds}.
+     * Moves the camera within the specified {@link Bounds}.
      *
      * @return the actual camera position after movement is applied
      */
     Vector moveWithinVisualBounds(Vector delta, Bounds bounds);
 
     /**
-     * Updates the camera zoom nearly to the given value. The actual zoom value may
+     * Updates the camera zoom nearly to the specified value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
      *
@@ -32,7 +32,7 @@ public interface Camera {
     Camera setPosition(Vector position);
 
     /**
-     * Updates the camera zoom nearly by the given value. The actual zoom value may
+     * Updates the camera zoom nearly by the specified value. The actual zoom value may
      * be slightly different to avoid graphic glitches because of floating point
      * imprecisions. The actual zoom value is returned.
      *
@@ -48,7 +48,7 @@ public interface Camera {
     }
 
     /**
-     * Shakes the {@link Camera} with the given {@link CameraShakeOptions}. Shaking has no effect
+     * Shakes the {@link Camera} with the specified {@link CameraShakeOptions}. Shaking has no effect
      * on {@link Camera#position()}. Shake only afflicts {@link Camera#focus()} and the rendering of {@link World}.
      *
      * @see #stopShaking()
