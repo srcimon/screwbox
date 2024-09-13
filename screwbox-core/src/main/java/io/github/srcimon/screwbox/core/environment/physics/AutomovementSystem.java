@@ -18,7 +18,7 @@ public class AutomovementSystem implements EntitySystem {
             final var automovement = mover.get(AutomovementComponent.class);
             if (automovement.path != null) {
                 final Vector position = mover.position();
-                if (automovement.path.nodeCount() == 1 && position.distanceTo(automovement.path.lastNode()) < 1) {
+                if (position.distanceTo(automovement.path.lastNode()) < 1) {
                     mover.get(PhysicsComponent.class).momentum = Vector.zero();
                     mover.remove(MovementTargetComponent.class);
                 } else {
