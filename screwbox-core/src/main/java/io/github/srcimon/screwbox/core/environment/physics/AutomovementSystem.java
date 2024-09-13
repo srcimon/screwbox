@@ -21,11 +21,15 @@ public class AutomovementSystem implements EntitySystem {
                 if (position.distanceTo(automovement.path.lastNode()) < 1) {
                     mover.get(PhysicsComponent.class).momentum = Vector.zero();
                 } else {
-                    if (automovement.path.nodeCount() > 1 && position.distanceTo(automovement.path.firstNode()) < 1) {
+                    if (automovement.path.nodeCount() > 1 && position.distanceTo(automovement.path.firstNode()) < mover.bounds().extents().length()) {
                         automovement.path = automovement.path.removeNode(0);
                     }
+                    MovementTargetComponent component = new MovementTargetComponent(automovement.path.firstNode());
+                    component.acceleration = automovement.acceleration;
+                    component.maxSpeed = automovement.speed;
+                    mover.addOrReplace(component);
                     final Vector direction = automovement.path.firstNode().substract(position);
-                    mover.get(PhysicsComponent.class).momentum = direction.length(automovement.speed);
+//                    mover.get(PhysicsComponent.class).momentum = direction.length(automovement.speed);
                 }
             }
         }

@@ -22,7 +22,7 @@ public class MovementTargetSystem implements EntitySystem {
 
             double deltaAcceleration = engine.loop().delta(target.acceleration);
             Vector speedChange = destinationVector.length(deltaAcceleration);
-            if(physics.momentum.length() > destinationVector.length() * 4.0) {
+            if(physics.momentum.length() > destinationVector.length() * 10.0) {
                 speedChange = physics.momentum.invert().length(deltaAcceleration);
             }
             Vector newMomentum = physics.momentum.add(speedChange);

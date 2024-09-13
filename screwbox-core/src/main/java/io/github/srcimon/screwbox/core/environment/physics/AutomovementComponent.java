@@ -11,9 +11,11 @@ public class AutomovementComponent implements Component {
     private static final long serialVersionUID = 1L;
 
     public double speed;
+    public double acceleration;
     public Path path;
 
-    public AutomovementComponent(final double speed) {
+    public AutomovementComponent(final double speed, final  double acceleration) {
         this.speed = speed;
+        this.acceleration = acceleration;
     }
 }
