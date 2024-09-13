@@ -2,13 +2,12 @@ package io.github.srcimon.screwbox.vacuum.enemies.slime;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -38,6 +37,6 @@ public class Slime implements SourceImport.Converter<Entity> {
                         .drawOrder(drawOrder - 1)))
                 .add(new RunAtPlayerComponent())
                 .add(new ShadowCasterComponent(false))
-                .add(new AutomovementComponent(40, 160));
+                .add(new MovementPathComponent(40, 160));
     }
 }

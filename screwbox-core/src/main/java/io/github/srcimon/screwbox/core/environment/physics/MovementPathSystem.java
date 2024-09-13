@@ -9,15 +9,15 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
 import static java.util.Objects.nonNull;
 
-public class AutomovementSystem implements EntitySystem {
+public class MovementPathSystem implements EntitySystem {
 
-    private static final Archetype AUTO_MOVERS = Archetype.of(AutomovementComponent.class, PhysicsComponent.class,
+    private static final Archetype AUTO_MOVERS = Archetype.of(MovementPathComponent.class, PhysicsComponent.class,
             TransformComponent.class);
 
     @Override
     public void update(final Engine engine) {
         for (final Entity mover : engine.environment().fetchAll(AUTO_MOVERS)) {
-            final var automovement = mover.get(AutomovementComponent.class);
+            final var automovement = mover.get(MovementPathComponent.class);
             if (nonNull(automovement.path)) {
                 if (mover.position().distanceTo(automovement.path.lastNode()) < 1) {
                     mover.get(PhysicsComponent.class).momentum = Vector.zero();

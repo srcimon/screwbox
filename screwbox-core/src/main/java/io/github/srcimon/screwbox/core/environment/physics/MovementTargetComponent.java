@@ -5,6 +5,10 @@ import io.github.srcimon.screwbox.core.environment.Component;
 
 import java.io.Serial;
 
+/**
+ * Moves the entity towards the specified postion. Does not avoid obstacles. Use {@link MovementPathComponent} instead
+ * when more intelligent wayfinding is needed.
+ */
 public class MovementTargetComponent implements Component {
 
     @Serial
@@ -12,7 +16,7 @@ public class MovementTargetComponent implements Component {
 
     public Vector position;
     public double maxSpeed;
-    public double acceleration = 1000;
+    public double acceleration;
 
     public MovementTargetComponent(final Vector position) {
         this(position, 100);
@@ -21,5 +25,6 @@ public class MovementTargetComponent implements Component {
     public MovementTargetComponent(final Vector position, final double maxSpeed) {
         this.position = position;
         this.maxSpeed = maxSpeed;
+        this.acceleration = maxSpeed * 10;
     }
 }

@@ -6,9 +6,9 @@ import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.QuitOnKeySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementDebugSystem;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathDebugSystem;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
@@ -65,7 +65,7 @@ public class DemoScene implements Scene {
                 .enableTweening()
                 .enableParticles()
                 .addSystem(new PlayerControlSystem())
-                .addSystem(new AutomovementDebugSystem())
+                .addSystem(new MovementPathDebugSystem())
                 .addSystem(new QuitOnKeySystem(Key.ESCAPE))
                 .addSystem(new LogFpsSystem())
                 .addSystem(new EnemyMovementSystem())
@@ -87,7 +87,7 @@ public class DemoScene implements Scene {
         return object -> new Entity()
                 .add(new SpriteChangeComponent(ENEMY_STANDING.get(), ENEMY_WALKING.get()))
                 .add(new PhysicsComponent())
-                .add(new AutomovementComponent(50, 1000))
+                .add(new MovementPathComponent(50, 1000))
                 .add(new MovementRotationComponent())
                 .add(new RenderComponent(object.layer().order()))
                 .add(new TransformComponent(atPosition(object.position(), 8, 8)));

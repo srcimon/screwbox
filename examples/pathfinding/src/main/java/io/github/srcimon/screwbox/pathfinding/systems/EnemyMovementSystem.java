@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementComponent;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -19,7 +19,7 @@ public class EnemyMovementSystem implements EntitySystem {
             PlayerMovementComponent.class, TransformComponent.class);
 
     private static final Archetype ENEMIES = Archetype.of(
-            PhysicsComponent.class, RenderComponent.class, AutomovementComponent.class);
+            PhysicsComponent.class, RenderComponent.class, MovementPathComponent.class);
 
     private final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(250));
 
@@ -30,7 +30,7 @@ public class EnemyMovementSystem implements EntitySystem {
             final Vector playerPosition = player.position();
             for (final Entity enemy : engine.environment().fetchAll(ENEMIES)) {
                 final Vector enemyPosition = enemy.position();
-                final var automovement = enemy.get(AutomovementComponent.class);
+                final var automovement = enemy.get(MovementPathComponent.class);
                 engine.async().runExclusive(automovement, () -> engine.physics().findPath(enemyPosition, playerPosition).ifPresent(value -> automovement.path = value));
             }
         }

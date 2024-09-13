@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.AutomovementSystem;
+import io.github.srcimon.screwbox.core.environment.physics.MovementPathSystem;
 import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
@@ -267,7 +267,7 @@ public interface Environment {
     /**
      * Adds all systems needed for physics support in this {@link Environment}.
      *
-     * @see AutomovementSystem
+     * @see MovementPathSystem
      * @see MovementTargetSystem
      * @see CollisionDetectionSystem
      * @see GravitySystem

@@ -53,7 +53,7 @@ public enum Feature {
     ),
 
     PHYSICS(
-            new AutomovementSystem(),
+            new MovementPathSystem(),
             new MovementTargetSystem(),
             new CollisionDetectionSystem(),
             new AttachmentSystem(),

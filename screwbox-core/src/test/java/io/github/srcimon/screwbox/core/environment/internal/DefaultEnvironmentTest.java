@@ -380,7 +380,7 @@ class DefaultEnvironmentTest {
         environment.enablePhysics();
 
         assertThat(environment.systems()).hasSize(11)
-                .anyMatch(system -> system.getClass().equals(AutomovementSystem.class))
+                .anyMatch(system -> system.getClass().equals(MovementPathSystem.class))
                 .anyMatch(system -> system.getClass().equals(GravitySystem.class))
                 .anyMatch(system -> system.getClass().equals(AttachmentSystem.class))
                 .anyMatch(system -> system.getClass().equals(MovementTargetSystem.class))
