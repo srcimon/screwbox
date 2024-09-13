@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.environment;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.physics.MovementTargetComponent;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -223,14 +222,6 @@ public final class Entity implements Serializable {
         if (!hasComponent(component.getClass())) {
             add(component);
         }
-    }
-
-    //TODO changelog
-    //TODO test
-    //TODO javadoc
-    public void addOrReplace(final Component component) {
-        remove(component.getClass());
-        add(component);
     }
 
     private List<EntityListener> getListeners() {

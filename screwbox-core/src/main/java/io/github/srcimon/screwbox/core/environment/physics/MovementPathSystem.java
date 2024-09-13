@@ -26,10 +26,11 @@ public class MovementPathSystem implements EntitySystem {
                     if (automovement.path.nodeCount() > 1 && mover.position().distanceTo(automovement.path.firstNode()) < mover.bounds().extents().length()) {
                         automovement.path = automovement.path.removeNode(0);
                     }
-                    final var movementComponent = new MovementTargetComponent(automovement.path.firstNode());
-                    movementComponent.acceleration = automovement.acceleration;
-                    movementComponent.maxSpeed = automovement.speed;
-                    mover.addOrReplace(movementComponent);
+                    mover.remove(MovementTargetComponent.class);
+                    mover.addCustomized(new MovementTargetComponent(automovement.path.firstNode()), target -> {
+                        target.acceleration = automovement.acceleration;
+                        target.maxSpeed = automovement.speed;
+                    });
                 }
             }
         }
