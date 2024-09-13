@@ -25,6 +25,11 @@ public enum Ease {
     IN_PLATEAU_OUT(in -> Percent.of(in.value() < 0.9 ? 10 * in.value() : 1 - 10 * (in.value() - 0.9))),
 
     /**
+     * Plateu at 1, linear fade out.
+     */
+    PLATEAU_OUT(in -> Percent.of(in.value() < 0.9 ? 1 : 1 - 10 * (in.value() - 0.9))),
+
+    /**
      * Sinus fade in: 0 to 1
      */
     SINE_IN(in -> Percent.of(Math.sin((in.value() * Math.PI) / 2.0))),

@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
 - Added `Environment.entityCount(Archetype)` to count entities matching a specified archetype.
+- Added `Ease.PLATEAU_OUT`
 
 ### 🪛 Bug Fixes
 
