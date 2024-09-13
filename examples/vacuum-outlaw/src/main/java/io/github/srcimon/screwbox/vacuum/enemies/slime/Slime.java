@@ -25,6 +25,6 @@ public class Slime implements SourceImport.Converter<Entity> {
                 .add(new EnemyComponent())
                 .add(new RunAtPlayerComponent())
                 .add(new ShadowCasterComponent(false))
-                .add(new AutomovementComponent(40));
+                .add(new AutomovementComponent(40, 160));
     }
 }
