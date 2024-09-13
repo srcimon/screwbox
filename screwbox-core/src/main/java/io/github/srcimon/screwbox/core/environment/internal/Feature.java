@@ -54,7 +54,7 @@ public enum Feature {
 
     PHYSICS(
             new AutomovementSystem(),
-            new MovementTargetSystem(),//TODO test, javadoc
+            new MovementTargetSystem(),
             new CollisionDetectionSystem(),
             new AttachmentSystem(),
             new GravitySystem(),

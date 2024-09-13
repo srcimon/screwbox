@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSys
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
 import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
+import io.github.srcimon.screwbox.core.environment.physics.MovementTargetSystem;
 import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
@@ -267,6 +268,7 @@ public interface Environment {
      * Adds all systems needed for physics support in this {@link Environment}.
      *
      * @see AutomovementSystem
+     * @see MovementTargetSystem
      * @see CollisionDetectionSystem
      * @see GravitySystem
      * @see MagnetSystem
