@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.pathfinding.systems;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -20,7 +21,7 @@ public class EnemyMovementSystem implements EntitySystem {
     private static final Archetype ENEMIES = Archetype.of(
             PhysicsComponent.class, RenderComponent.class, AutomovementComponent.class);
 
-    private final Sheduler sheduler = Sheduler.everySecond();
+    private final Sheduler sheduler = Sheduler.withInterval(Duration.ofMillis(250));
 
     @Override
     public void update(final Engine engine) {
