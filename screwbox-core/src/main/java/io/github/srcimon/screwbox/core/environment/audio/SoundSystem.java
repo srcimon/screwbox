@@ -28,7 +28,7 @@ public class SoundSystem implements EntitySystem {
             final boolean isInRange = entity.position().distanceTo(engine.graphics().camera().position()) < enableRange;
 
             if (isInRange) {
-                final SoundOptions soundOptions = SoundOptions.playContinuously().position(entity.position());
+                final SoundOptions soundOptions = SoundOptions.playOnce().position(entity.position());
                 if (isNull(soundComponent.playback) || !engine.audio().playbackIsActive(soundComponent.playback)) {
                     soundComponent.playback = engine.audio().playSound(soundComponent.sound, soundOptions);
                 } else {

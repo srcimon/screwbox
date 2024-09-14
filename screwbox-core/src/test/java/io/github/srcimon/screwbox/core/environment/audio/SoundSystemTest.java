@@ -45,7 +45,7 @@ class SoundSystemTest {
 
         environment.update();
 
-        verify(audio).playSound(SoundBundle.NOTIFY.get(), SoundOptions.playContinuously().position($(30, 20)));
+        verify(audio).playSound(SoundBundle.NOTIFY.get(), SoundOptions.playOnce().position($(30, 20)));
     }
 
     @Test
@@ -61,7 +61,7 @@ class SoundSystemTest {
 
         environment.update();
 
-        verify(audio).updatePlaybackOptions(soundComponent.playback, SoundOptions.playContinuously().position($(30, 20)));
+        verify(audio).updatePlaybackOptions(soundComponent.playback, SoundOptions.playOnce().position($(30, 20)));
     }
 
     @Test
@@ -76,7 +76,7 @@ class SoundSystemTest {
 
         environment.update();
 
-        verify(audio).playSound(SoundBundle.NOTIFY.get(), SoundOptions.playContinuously().position($(30, 20)));
+        verify(audio).playSound(SoundBundle.NOTIFY.get(), SoundOptions.playOnce().position($(30, 20)));
     }
 
     @Test
