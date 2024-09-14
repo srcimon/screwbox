@@ -8,6 +8,7 @@
 
 - Pinned Ubuntu version for github actions because of build error with latest version
 - Fixed missing duration when replacing color of fram
+- Fixed playback not stopped when `SoundComponent` is removed
 
 ### 🧽 Cleanup & refactoring
 
