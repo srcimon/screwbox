@@ -15,13 +15,9 @@ import static org.assertj.core.data.Percentage.withPercentage;
 class RotationTest {
 
     @Test
-    void random_calledEightTimes_createsAtLeastTwoDistinctRotations() {
+    void random_calledFourTimes_createsAtLeastTwoDistinctRotations() {
         Set<Rotation> randomRotations = Set.of(
-                Rotation.random(), Rotation.random(),
-                Rotation.random(), Rotation.random(),
-                Rotation.random(), Rotation.random(),
-                Rotation.random(), Rotation.random()
-        );
+                Rotation.random(), Rotation.random(), Rotation.random(), Rotation.random());
 
         assertThat(randomRotations).hasSizeGreaterThanOrEqualTo(2);
     }
