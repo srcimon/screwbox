@@ -49,23 +49,24 @@ class LightPhysics {
 
     public List<Vector> calculateArea(final Bounds lightBox, double minAngle, double maxAngle) {
         final var relevantShadowCasters = lightBox.allIntersecting(shadowCasters);
-        final var relevantTopLightShadowCasters = lightBox.allIntersecting(noSelfShadowShadowCasters);
+        final var relevantNoSelfShadowCasters = lightBox.allIntersecting(noSelfShadowShadowCasters);
         final List<Vector> area = new ArrayList<>();
         final Line normal = Line.normal(lightBox.position(), -lightBox.height() / 2.0);
         final List<Line> shadowCasterLines = extractLines(relevantShadowCasters);
-        shadowCasterLines.addAll(extractFarDistanceLines(relevantTopLightShadowCasters, lightBox.position()));
+        shadowCasterLines.addAll(extractFarDistanceLines(relevantNoSelfShadowCasters, lightBox.position()));
         if (minAngle != 0 || maxAngle != 360) {
             area.add(lightBox.position());
         }
         for (long angle = Math.round(minAngle); angle < maxAngle; angle += 1) {
             final Line raycast = Rotation.degrees(angle).applyOn(normal);
             Vector nearestPoint = raycast.to();
+            double nearestDistance = raycast.to().distanceTo(lightBox.position());
             for (final var line : shadowCasterLines) {
                 final Vector intersectionPoint = line.intersectionPoint(raycast);
                 if (nonNull(intersectionPoint)
-                        && intersectionPoint.distanceTo(lightBox.position()) < nearestPoint
-                        .distanceTo(lightBox.position())) {
+                        && intersectionPoint.distanceTo(lightBox.position()) < nearestDistance) {
                     nearestPoint = intersectionPoint;
+                    nearestDistance = nearestPoint.distanceTo(lightBox.position());
                 }
             }
             area.add(nearestPoint);
