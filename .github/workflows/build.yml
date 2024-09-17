@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # ubuntu-latest issue with mockito
     steps:
     - uses: actions/checkout@v4
       with:
@@ -19,11 +19,6 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Install Java
-      run: |
-        apk update && \
-        apk upgrade
-        apk add openjdk21=21.0.4_p7-r0
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Cache SonarCloud packages
