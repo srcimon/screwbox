@@ -69,10 +69,10 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
-        area.intersection(world.visibleArea()).ifPresent(visibleArea -> {
-            final ScreenBounds bounds = world.toScreen(visibleArea);
+        if (isVisible(area)) {
+            final ScreenBounds bounds = world.toScreen(area);
             lightmap.add(bounds);
-        });
+        }
         return this;
     }
 
@@ -96,16 +96,16 @@ public class DefaultLight implements Light {
         tasks.add(() -> {
             if (!lightPhysics.isCoveredByShadowCasters(position)) {
                 final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-                lightBox.intersection(world.visibleArea()).ifPresent(visibleLightbox -> {
+                if (isVisible(lightBox)) {
                     final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(visibleLightbox, minAngle, maxAngle);
+                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {
                         area.add(world.toOffset(vector));
                     }
                     final Offset offset = world.toOffset(position);
                     final int screenRadius = world.toDistance(radius);
                     lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
-                });
+                }
             }
         });
     }
@@ -114,11 +114,11 @@ public class DefaultLight implements Light {
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
         tasks.add(() -> {
             final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-            lightBox.intersection(world.visibleArea()).ifPresent(visibleLightbox -> {
+            if (isVisible(lightBox)) {
                 final Offset offset = world.toOffset(position);
                 final int distance = world.toDistance(radius);
                 lightmap.add(new Lightmap.SpotLight(offset, distance, color));
-            });
+            }
         });
         return this;
     }
@@ -127,9 +127,10 @@ public class DefaultLight implements Light {
     public Light addGlow(final Vector position, final double radius, final Color color) {
         if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
-            final var lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-            lightBox.intersection(world.visibleArea()).ifPresent(
-                    visibleLightbox -> postDrawingTasks.add(() -> world.drawCircle(position, radius, options)));
+            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+            if (isVisible(lightBox)) {
+                postDrawingTasks.add(() -> world.drawCircle(position, radius, options));
+            }
         }
         return this;
     }
@@ -188,6 +189,10 @@ public class DefaultLight implements Light {
         tasks.clear();
         postDrawingTasks.clear();
         lightPhysics.clear();
+    }
+
+    private boolean isVisible(final Bounds lightBox) {
+        return screen.isVisible(world.toScreen(lightBox));
     }
 
     private void initLightmap() {
