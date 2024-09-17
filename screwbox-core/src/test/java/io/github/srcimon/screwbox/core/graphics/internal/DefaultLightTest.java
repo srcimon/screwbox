@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
@@ -64,7 +63,6 @@ class DefaultLightTest {
 
     @Test
     void render_fullBrigthnessAreaPresent_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addFullBrightnessArea($$(20, 20, 50, 50));
 
         light.render();
@@ -82,7 +80,6 @@ class DefaultLightTest {
 
     @Test
     void render_pointLightAndShadowPresent_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addPointLight($(40, 80), 140, Color.RED);
 
@@ -108,7 +105,6 @@ class DefaultLightTest {
 
     @Test
     void render_spotlightAndShadowCaster_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addSpotLight($(40, 80), 140, Color.RED);
 
