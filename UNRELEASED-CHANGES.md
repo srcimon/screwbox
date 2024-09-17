@@ -8,7 +8,8 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Small performance improvement for calculating light areas
+- Improved performance for calculating light areas.
+- Reduced size of light areas when bordering on edge of screen.
 
 ### 📦 Dependency updates
 
