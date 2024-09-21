@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Small performance improvement for calculating light areas
+- Improved performance for calculating light areas
 
 ### 📦 Dependency updates
 
