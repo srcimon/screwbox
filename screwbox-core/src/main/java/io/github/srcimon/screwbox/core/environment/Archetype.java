@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.environment;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 
@@ -57,7 +59,9 @@ public class Archetype implements Serializable {
         for (final var componentClass : componentClasses) {
             names.add(componentClass.getName());
         }
-        Collections.sort(names);
+        if(names.size() > 1) {
+            Collections.sort(names);
+        }
         return names.hashCode();
     }
 
