@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Improved performance for calculating light areas
+- Time used for Calculating Archetype hashes reduced by 25% 
 
 ### 📦 Dependency updates
 
