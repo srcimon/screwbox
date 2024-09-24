@@ -54,8 +54,7 @@ public class Archetype implements Serializable {
 
     private int calculateHash(final List<Class<? extends Component>> componentClasses) {
         if(componentClasses.size() == 1) {
-            var singleComponent = componentClasses.getFirst();
-            return List.of(singleComponent.getName()).hashCode();
+            return List.of(componentClasses.getFirst().getName()).hashCode();
         }
         final List<String> names = new ArrayList<>();
         for (final var componentClass : componentClasses) {
