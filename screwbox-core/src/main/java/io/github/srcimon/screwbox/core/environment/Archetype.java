@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.environment;
 
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.ReflectionComponent;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class Archetype implements Serializable {
         return new Archetype(List.of(componentClasses));
     }
 
-    private Archetype(final Collection<Class<? extends Component>> componentClasses) {
+    private Archetype(final List<Class<? extends Component>> componentClasses) {
         this.componentClasses = componentClasses;
         this.hash = calculateHash(componentClasses);
     }
@@ -52,7 +52,11 @@ public class Archetype implements Serializable {
         return other.hash == this.hash;
     }
 
-    private int calculateHash(final Collection<Class<? extends Component>> componentClasses) {
+    private int calculateHash(final List<Class<? extends Component>> componentClasses) {
+        if(componentClasses.size() == 1) {
+            var singleComponent = componentClasses.getFirst();
+            return List.of(singleComponent.getName()).hashCode();
+        }
         final List<String> names = new ArrayList<>();
         for (final var componentClass : componentClasses) {
             names.add(componentClass.getName());
