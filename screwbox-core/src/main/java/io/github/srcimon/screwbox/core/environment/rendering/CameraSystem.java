@@ -16,7 +16,7 @@ public class CameraSystem implements EntitySystem {
     public void update(final Engine engine) {
         engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
             final var cameraPosition = engine.graphics().camera().position();
-            final var targetBounds = targetEntity.get(TransformComponent.class).bounds;
+            final var targetBounds = targetEntity.bounds();
 
             final var target = targetEntity.get(CameraTargetComponent.class);
             final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
