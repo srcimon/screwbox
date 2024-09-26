@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -22,6 +24,7 @@ public class PhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
+        Time t = Time.now();
         final double factor = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
@@ -35,14 +38,15 @@ public class PhysicsSystem implements EntitySystem {
                 applyCollisions(entity, colliders, factor);
             }
         }
+        System.out.println(Duration.since(t).nanos());
     }
 
     private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
-        final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
+        final List<CollisionCheck> collisionPairs = new ArrayList<>();
         for (final var collider : colliders) {
-            if (entity != collider) {
+            if (entity != collider && entity.bounds().intersects(collider.bounds())) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
-                if (check.bodiesIntersect() && check.isNoOneWayFalsePositive()) {
+                if (check.isNoOneWayFalsePositive()) {
                     collisionPairs.add(check);
                 }
             }
