@@ -24,21 +24,20 @@ public class PhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-//        Time t = Time.now();
+        Time t = Time.now();
         final double factor = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsBody = entity.get(PhysicsComponent.class);
-            final var transform = entity.get(TransformComponent.class);
 
             final Vector momentum = physicsBody.momentum.multiply(factor);
-            transform.bounds = transform.bounds.moveBy(momentum);
+            entity.moveBy(momentum);
 
             if (!physicsBody.ignoreCollisions) {
                 applyCollisions(entity, colliders, factor);
             }
         }
-//        System.out.println(Duration.since(t).nanos());
+        System.out.println(Duration.since(t).nanos());
     }
 
     private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
