@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.physics;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -26,10 +25,7 @@ public class PhysicsSystem implements EntitySystem {
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsBody = entity.get(PhysicsComponent.class);
-            final var transform = entity.get(TransformComponent.class);
-
-            final Vector momentum = physicsBody.momentum.multiply(factor);
-            transform.bounds = transform.bounds.moveBy(momentum);
+            entity.moveBy(physicsBody.momentum.multiply(factor));
 
             if (!physicsBody.ignoreCollisions) {
                 applyCollisions(entity, colliders, factor);
@@ -38,21 +34,21 @@ public class PhysicsSystem implements EntitySystem {
     }
 
     private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
-        final List<CollisionCheck> collisionPairs = new ArrayList<>(colliders.size());
+        final List<CollisionCheck> collisionChecks = new ArrayList<>();
         for (final var collider : colliders) {
-            if (entity != collider) {
+            if (entity != collider && entity.bounds().intersects(collider.bounds())) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
-                if (check.bodiesIntersect() && check.isNoOneWayFalsePositive()) {
-                    collisionPairs.add(check);
+                if (check.isNoOneWayFalsePositive()) {
+                    collisionChecks.add(check);
                 }
             }
         }
-        if (collisionPairs.size() > 1) {
-            Collections.sort(collisionPairs);
+        if (collisionChecks.size() > 1) {
+            Collections.sort(collisionChecks);
         }
-        for (final var collisionPair : collisionPairs) {
-            if (collisionPair.bodiesIntersect()) {
-                CollisionResolver.resolveCollision(collisionPair, factor);
+        for (final var collisionCheck : collisionChecks) {
+            if (collisionCheck.bodiesIntersect()) {
+                CollisionResolver.resolveCollision(collisionCheck, factor);
             }
         }
     }

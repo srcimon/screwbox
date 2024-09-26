@@ -9,7 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Improved performance for calculating light areas
-- Avoid unnecessary sorting to improve physics performance
+- Significant performance improvement of collision detection/resolve and magnets
 - Time used for calculating Archetype hashes reduced by 25% 
 
 ### 📦 Dependency updates

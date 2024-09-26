@@ -16,7 +16,7 @@ public class FlipSpriteSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var entity : engine.environment().fetchAll(SPRITE_BODIES)) {
             final var momentum = entity.get(PhysicsComponent.class).momentum;
-            RenderComponent renderComponent = entity.get(RenderComponent.class);
+            final var renderComponent = entity.get(RenderComponent.class);
             if (momentum.x() > 0) {
                 renderComponent.options = renderComponent.options.flipHorizontal(false);
             } else if (momentum.x() < 0) {

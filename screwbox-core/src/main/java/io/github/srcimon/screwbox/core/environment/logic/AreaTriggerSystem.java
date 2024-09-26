@@ -13,17 +13,16 @@ public class AreaTriggerSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        for (Entity entity : engine.environment().fetchAll(TRIGGER_AREAS)) {
-            var triggeredBy = entity.get(TriggerAreaComponent.class).triggeredBy;
+        for (final Entity entity : engine.environment().fetchAll(TRIGGER_AREAS)) {
+            final var triggeredBy = entity.get(TriggerAreaComponent.class).triggeredBy;
             entity.get(SignalComponent.class).isTriggered = isTriggerd(entity, triggeredBy, engine);
         }
     }
 
-    private boolean isTriggerd(Entity entity, Archetype triggeredBy, Engine engine) {
-        var areaBounds = entity.get(TransformComponent.class).bounds;
+    private boolean isTriggerd(final Entity entity, final Archetype triggeredBy, final Engine engine) {
+        final var areaBounds = entity.bounds();
         for (var trigger : engine.environment().fetchAll(triggeredBy)) {
-            var triggerBounds = trigger.get(TransformComponent.class).bounds;
-            if (triggerBounds.touches(areaBounds)) {
+            if (trigger.bounds().touches(areaBounds)) {
                 return true;
             }
         }
