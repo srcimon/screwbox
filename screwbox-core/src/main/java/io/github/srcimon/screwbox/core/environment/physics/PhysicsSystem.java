@@ -24,7 +24,7 @@ public class PhysicsSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        Time t = Time.now();
+//        Time t = Time.now();
         final double factor = engine.loop().delta();
         final var colliders = engine.environment().fetchAll(COLLIDERS);
         for (final Entity entity : engine.environment().fetchAll(PHYSICS)) {
@@ -38,7 +38,7 @@ public class PhysicsSystem implements EntitySystem {
                 applyCollisions(entity, colliders, factor);
             }
         }
-        System.out.println(Duration.since(t).nanos());
+//        System.out.println(Duration.since(t).nanos());
     }
 
     private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
