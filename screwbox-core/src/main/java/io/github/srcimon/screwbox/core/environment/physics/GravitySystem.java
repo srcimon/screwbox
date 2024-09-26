@@ -14,9 +14,9 @@ public class GravitySystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         engine.environment().tryFetchSingleton(GravityComponent.class).ifPresent(gravityEntity -> {
-            Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
-            Vector gravityDelta = gravity.multiply(engine.loop().delta());
-            for (var entity : engine.environment().fetchAll(GRAVITY_AFFECTED)) {
+            final Vector gravity = gravityEntity.get(GravityComponent.class).gravity;
+            final Vector gravityDelta = gravity.multiply(engine.loop().delta());
+            for (final var entity : engine.environment().fetchAll(GRAVITY_AFFECTED)) {
                 var physicsBodyComponent = entity.get(PhysicsComponent.class);
                 physicsBodyComponent.momentum = physicsBodyComponent.momentum
                         .add(gravityDelta.multiply(physicsBodyComponent.gravityModifier));

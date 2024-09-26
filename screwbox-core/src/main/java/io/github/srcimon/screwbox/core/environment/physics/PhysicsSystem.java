@@ -34,21 +34,21 @@ public class PhysicsSystem implements EntitySystem {
     }
 
     private void applyCollisions(final Entity entity, final List<Entity> colliders, final double factor) {
-        final List<CollisionCheck> collisionPairs = new ArrayList<>();
+        final List<CollisionCheck> collisionChecks = new ArrayList<>();
         for (final var collider : colliders) {
             if (entity != collider && entity.bounds().intersects(collider.bounds())) {
                 final CollisionCheck check = new CollisionCheck(entity, collider);
                 if (check.isNoOneWayFalsePositive()) {
-                    collisionPairs.add(check);
+                    collisionChecks.add(check);
                 }
             }
         }
-        if (collisionPairs.size() > 1) {
-            Collections.sort(collisionPairs);
+        if (collisionChecks.size() > 1) {
+            Collections.sort(collisionChecks);
         }
-        for (final var collisionPair : collisionPairs) {
-            if (collisionPair.bodiesIntersect()) {
-                CollisionResolver.resolveCollision(collisionPair, factor);
+        for (final var collisionCheck : collisionChecks) {
+            if (collisionCheck.bodiesIntersect()) {
+                CollisionResolver.resolveCollision(collisionCheck, factor);
             }
         }
     }
