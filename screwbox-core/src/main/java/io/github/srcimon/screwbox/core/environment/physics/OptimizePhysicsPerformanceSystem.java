@@ -45,8 +45,7 @@ public class OptimizePhysicsPerformanceSystem implements EntitySystem {
             return false;
         }
 
-        final Optional<Bounds> combined = GeometryUtil.tryToCombine(check.colliderBounds(),
-                check.physics().get(TransformComponent.class).bounds);
+        final Optional<Bounds> combined = GeometryUtil.tryToCombine(check.colliderBounds(), check.physics().bounds());
         if (combined.isEmpty()) {
             return false;
         }
