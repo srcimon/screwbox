@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
 
 @Order(Order.SystemOrder.PREPARATION)
@@ -26,9 +25,9 @@ public class GroundDetectorSystem implements EntitySystem {
             return false;
         }
 
-        Bounds entityBounds = entity.get(TransformComponent.class).bounds;
+        Bounds entityBounds = entity.bounds();
         for (final Entity other : sensor.collidedEntities) {
-            Bounds otherBounds = other.get(TransformComponent.class).bounds;
+            Bounds otherBounds = other.bounds();
             if (otherBounds.minY() + 1 >= entityBounds.maxY()
                     && otherBounds.minX() <= entityBounds.maxX() - 1
                     && otherBounds.maxX() >= entityBounds.minX() + 1) {

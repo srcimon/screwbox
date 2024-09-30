@@ -22,7 +22,7 @@ public class KilledFromAboveSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final Entity player = engine.environment().fetchSingleton(PLAYER);
-        final var playerBounds = player.get(TransformComponent.class).bounds;
+        final var playerBounds = player.bounds();
 
         final List<Entity> enemiesBelow = merge(
                 engine.physics()

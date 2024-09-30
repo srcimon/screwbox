@@ -3,9 +3,12 @@ package io.github.srcimon.screwbox.platformer.systems;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.environment.*;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.platformer.components.FollowPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
@@ -29,16 +32,13 @@ public class FollowPlayerSystem implements EntitySystem {
 
         for (Entity followEntity : engine.environment().fetchAll(FOLLOWING)) {
             var followComponent = followEntity.get(FollowPlayerComponent.class);
-            final TransformComponent followTransform = followEntity.get(TransformComponent.class);
-
-            Line lineBetweenFollowerAndPlayer = Line.between(followTransform.bounds.position(),
-                    playerPosition);
+            Line lineBetweenFollowerAndPlayer = Line.between(followEntity.position(), playerPosition);
             double x = Math.clamp(lineBetweenFollowerAndPlayer.to().x() - lineBetweenFollowerAndPlayer.from().x(), followComponent.speed * -1, followComponent.speed);
 
             double y = Math.clamp(lineBetweenFollowerAndPlayer.to().y() - lineBetweenFollowerAndPlayer.from().y(), followComponent.speed * -1, followComponent.speed);
 
             Vector movement = Vector.of(x, y).multiply(engine.loop().delta());
-            followTransform.bounds = followTransform.bounds.moveBy(movement);
+            followEntity.moveBy(movement);
         }
     }
 }

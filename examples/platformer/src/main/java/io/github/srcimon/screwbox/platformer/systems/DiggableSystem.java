@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
@@ -11,13 +12,11 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.physics.Borders;
@@ -42,8 +41,7 @@ public class DiggableSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         for (final var digging : engine.environment().fetchAll(DIGGINGS)) {
-            var diggingBody = digging.get(TransformComponent.class);
-            Optional<Entity> hitEntity = engine.physics().raycastFrom(diggingBody.bounds.position())
+            Optional<Entity> hitEntity = engine.physics().raycastFrom(digging.position())
                     .checkingFor(DIGGABLES)
                     .checkingBorders(Borders.TOP_ONLY)
                     .castingVertical(14)

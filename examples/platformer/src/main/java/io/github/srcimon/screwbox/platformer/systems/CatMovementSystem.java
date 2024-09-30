@@ -91,8 +91,7 @@ public class CatMovementSystem implements EntitySystem {
             return;
         }
         Entity cat = catEntity.get();
-        TransformComponent catBounds = cat.get(TransformComponent.class);
-        catBounds.bounds = Bounds.atPosition(nextPosition, catBounds.bounds.width(), catBounds.bounds.height());
+        cat.moveTo(nextPosition);
         RenderComponent renderComponent = cat.get(RenderComponent.class);
         renderComponent.sprite = nextSprite;
         renderComponent.options = renderComponent.options.flipHorizontal(navpointComponent.isFlippedHorizontally);
