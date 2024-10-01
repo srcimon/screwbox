@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04 # ubuntu-latest issue with mockito
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: "Set up Maven Central Repository"
