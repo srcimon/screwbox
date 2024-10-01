@@ -5,6 +5,7 @@
 ### 🪛 Bug Fixes
 
 - Changed min delta on loop on very high load to 0.01 to prevent stalling of engine
+- Moved back to ubuntu-latest for Github action build (#374)
 
 ### 🧽 Cleanup & refactoring
 
