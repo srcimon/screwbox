@@ -107,8 +107,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Duration renderingDuration() {
-        return asyncRenderer.renderingDuration();
+    public Duration renderDuration() {
+        return asyncRenderer.renderDuration();
     }
 
     @Override

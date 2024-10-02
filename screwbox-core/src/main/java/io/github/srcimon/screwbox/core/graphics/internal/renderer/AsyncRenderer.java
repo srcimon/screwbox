@@ -117,7 +117,7 @@ public class AsyncRenderer implements Renderer {
         }
     }
 
-    public Duration renderingDuration() {
+    public Duration renderDuration() {
         return renderingDuration;
     }
 }
