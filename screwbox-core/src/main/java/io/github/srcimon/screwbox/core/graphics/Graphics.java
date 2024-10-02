@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 
 import java.util.List;
@@ -86,4 +87,10 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
+
+    //TODO test
+    //TODO changelog
+    //TODO javadoc
+    Duration renderingDuration();
+
 }
