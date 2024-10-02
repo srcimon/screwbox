@@ -1,8 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +29,15 @@ class DefaultGraphicsTest {
 
     @Mock
     DefaultWorld world;
+
+    @Mock
+    AsyncRenderer asyncRenderer;
+
+    @Test
+    void render_renderDuration_returnsRenderDurationOfAsyncRenderer() {
+        when(asyncRenderer.renderDuration()).thenReturn(Duration.ofMicros(20));
+        assertThat(graphics.renderDuration()).isEqualTo(Duration.ofMicros(20));
+    }
 
     @Test
     void supportedResolutions_threeDisplayModes_returnsReverseOrderedListOfDistinctModes() {

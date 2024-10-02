@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added `Graphics.renderDuration()` (#265)
 
 ### 🪛 Bug Fixes
 

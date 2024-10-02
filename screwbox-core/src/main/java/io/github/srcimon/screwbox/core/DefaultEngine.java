@@ -113,9 +113,9 @@ class DefaultEngine implements Engine {
             thread.getThreadGroup().uncaughtException(thread, throwable);
         });
 
-        final DefaultRenderer defaultRenderer = new DefaultRenderer();
-        final AsyncRenderer asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
-        final FirewallRenderer firewallRenderer = new FirewallRenderer(asyncRenderer);
+        final var defaultRenderer = new DefaultRenderer();
+        final var asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
+        final var firewallRenderer = new FirewallRenderer(asyncRenderer);
 
         final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -132,7 +132,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(graphics);

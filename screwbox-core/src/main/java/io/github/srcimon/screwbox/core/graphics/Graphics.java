@@ -1,7 +1,10 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
 
@@ -86,4 +89,11 @@ public interface Graphics {
      * Returns a list of all font names that can were found on the current system.
      */
     List<String> availableFonts();
+
+    /**
+     * Returns the duration of the last rendering on the screen. Rendering happens asynchronus to the main {@link Loop} and
+     * will only slow down the {@link Engine} if the {@link Duration} is longer than the update of all other engine components.
+     */
+    Duration renderDuration();
+
 }

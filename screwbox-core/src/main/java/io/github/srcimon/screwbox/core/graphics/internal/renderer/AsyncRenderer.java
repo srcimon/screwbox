@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
@@ -22,6 +24,8 @@ public class AsyncRenderer implements Renderer {
     private final Latch<List<Runnable>> renderTasks = Latch.of(new ArrayList<>(), new ArrayList<>());
     private final Renderer next;
     private final ExecutorService executor;
+    private Duration renderingDuration = Duration.none();
+
     private Future<?> currentRendering = null;
 
     public AsyncRenderer(final Renderer next, final ExecutorService executor) {
@@ -90,6 +94,7 @@ public class AsyncRenderer implements Renderer {
 
     private FutureTask<Void> finishRenderTasks() {
         return new FutureTask<>(() -> {
+            final Time startOfRendering = Time.now();
             try {
                 for (final var task : renderTasks.inactive()) {
                     task.run();
@@ -98,6 +103,7 @@ public class AsyncRenderer implements Renderer {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(null, e);
             }
             renderTasks.inactive().clear();
+            renderingDuration = Duration.since(startOfRendering);
         }, null);
     }
 
@@ -109,5 +115,9 @@ public class AsyncRenderer implements Renderer {
                 currentThread().interrupt();
             }
         }
+    }
+
+    public Duration renderDuration() {
+        return renderingDuration;
     }
 }

@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
@@ -22,19 +24,22 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
     private final DefaultCamera camera;
+    private final AsyncRenderer asyncRenderer;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
-                           final DefaultCamera camera) {
+                           final DefaultCamera camera,
+                           final AsyncRenderer asyncRenderer) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.camera = camera;
+        this.asyncRenderer = asyncRenderer;
     }
 
     @Override
@@ -99,6 +104,11 @@ public class DefaultGraphics implements Graphics, Updatable {
                 .map(Font::getFontName)
                 .toList();
 
+    }
+
+    @Override
+    public Duration renderDuration() {
+        return asyncRenderer.renderDuration();
     }
 
     @Override

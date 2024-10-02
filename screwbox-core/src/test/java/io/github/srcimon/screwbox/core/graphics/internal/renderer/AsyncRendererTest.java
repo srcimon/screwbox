@@ -17,7 +17,11 @@ import java.util.concurrent.Executors;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AsyncRendererTest {
@@ -32,6 +36,15 @@ class AsyncRendererTest {
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
         asyncRenderer = new AsyncRenderer(renderer, executor);
+    }
+
+    @Test
+    void renderDuration_renderingDone_hasDuration() {
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
+        asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
+
+        assertThat(asyncRenderer.renderDuration().nanos()).isNotZero();
     }
 
     @Test

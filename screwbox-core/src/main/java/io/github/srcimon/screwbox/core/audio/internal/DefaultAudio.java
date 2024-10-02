@@ -33,7 +33,8 @@ public class DefaultAudio implements Audio, Updatable {
     private final AtomicInteger soundsPlayedCount = new AtomicInteger();
     private final AtomicInteger completedPlaybackCount = new AtomicInteger();
 
-    public DefaultAudio(final ExecutorService executor, final AudioConfiguration configuration,
+    public DefaultAudio(final ExecutorService executor,
+                        final AudioConfiguration configuration,
                         final DynamicSoundSupport dynamicSoundSupport,
                         final MicrophoneMonitor microphoneMonitor,
                         final AudioLinePool audioLinePool) {
