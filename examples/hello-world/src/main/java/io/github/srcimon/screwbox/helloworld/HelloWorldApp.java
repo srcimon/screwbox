@@ -48,13 +48,13 @@ public class HelloWorldApp {
                 .addSystem(engine -> {
                     engine.environment().fetchAllHaving(TweenComponent.class).forEach(e -> {
                         final var render = e.get(RenderComponent.class);
-                        Rotation degrees = Rotation.degrees(Time.now().milliseconds() / 8.0);
+                        Rotation degrees = Rotation.degrees(Time.now().milliseconds() / 4.0);
                         render.options = render.options.rotateX(degrees);
                         engine.graphics().world().drawLine(degrees.applyOn(Line.normal(e.position().addY(40), 20)), LineDrawOptions.color(Color.WHITE).strokeWidth(2));
                     });
                 })
                 .addEntity(
-                        new RenderComponent(SpriteBundle.MAN_STAND, SpriteDrawOptions.originalSize().rotateX(Rotation.degrees(40))),
+                        new RenderComponent(SpriteBundle.BOX_STRIPED, SpriteDrawOptions.originalSize().rotateX(Rotation.degrees(40))),
                         new TweenComponent(Duration.oneSecond(), Ease.LINEAR_IN, true),
                         new TransformComponent(0, 0, 16, 16))
 
