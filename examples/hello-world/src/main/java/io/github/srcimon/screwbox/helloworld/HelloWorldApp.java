@@ -9,23 +9,17 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.light.GlowComponent;
-import io.github.srcimon.screwbox.core.environment.light.PointLightComponent;
-import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenHorizontalSpinComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
-import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
 import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
-import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
 
@@ -45,17 +39,11 @@ public class HelloWorldApp {
 
                 // add light spot to create nice sunlight effect
 
-                .addSystem(engine -> {
-                    engine.environment().fetchAllHaving(TweenComponent.class).forEach(e -> {
-                        final var render = e.get(RenderComponent.class);
-                        Rotation degrees = Rotation.degrees(Time.now().milliseconds() / 4.0);
-                        render.options = render.options.rotateX(degrees);
-                        engine.graphics().world().drawLine(degrees.applyOn(Line.normal(e.position().addY(40), 20)), LineDrawOptions.color(Color.WHITE).strokeWidth(2));
-                    });
-                })
+
                 .addEntity(
-                        new RenderComponent(SpriteBundle.BOX_STRIPED, SpriteDrawOptions.originalSize().rotateX(Rotation.degrees(0))),
-                        new TweenComponent(Duration.oneSecond(), Ease.LINEAR_IN, true),
+                        new RenderComponent(SpriteBundle.BOX_STRIPED, SpriteDrawOptions.originalSize().horizontalSpin(Rotation.degrees(0))),
+                        new TweenComponent(Duration.ofSeconds(4), Ease.LINEAR_IN, true),
+                        new TweenHorizontalSpinComponent(),
                         new TransformComponent(0, 0, 16, 16))
 
                 // let the mouse interact with the falling leaves
