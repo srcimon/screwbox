@@ -103,9 +103,7 @@ public class DefaultRenderer implements Renderer {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
-        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
-        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
-        transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        transform.translate(origin.x() , origin.y());
 
         if(!options.horizontalSpin().isNone()) {
             Percent rotationPErcent = Percent.of(options.horizontalSpin().degrees() / 360.0);
@@ -114,6 +112,9 @@ public class DefaultRenderer implements Renderer {
             transform.scale(xDistort, 1); // rotate in 3d horizontal
             transform.translate(options.scale() * size.width() / -2.0, 0);
         }
+        final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
+        final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
+        transform.translate(xCorrect, yCorrect);
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
