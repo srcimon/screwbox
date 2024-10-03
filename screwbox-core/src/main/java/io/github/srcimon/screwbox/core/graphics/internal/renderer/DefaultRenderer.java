@@ -99,20 +99,21 @@ public class DefaultRenderer implements Renderer {
         double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
         System.out.println(xDistort);
     }
+
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
-        transform.translate(origin.x() , origin.y());
+        transform.translate(origin.x(), origin.y());
 
-        if(!options.horizontalSpin().isNone()) {
+        if (!options.horizontalSpin().isNone()) {
             Percent rotationPErcent = Percent.of(options.horizontalSpin().degrees() / 360.0);
             double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
             transform.translate(options.scale() * size.width() / 2.0, 0);
             transform.scale(xDistort, 1); // rotate in 3d horizontal
             transform.translate(options.scale() * size.width() / -2.0, 0);
         }
-        if(!options.verticalSpin().isNone()) {
+        if (!options.verticalSpin().isNone()) {
             Percent rotationPErcent = Percent.of(options.verticalSpin().degrees() / 360.0);
             double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
             transform.translate(0, options.scale() * size.height() / 2.0);
