@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -98,7 +99,9 @@ public class DefaultRenderer implements Renderer {
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
-        transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
+        double scaleX = options.scale() * (options.isFlipHorizontal() ? -1 : 1)
+                * Ease.SINE_IN_OUT.applyOn(Percent.of((options.xRotation().degrees() + 180) / 360.0)).value();
+        transform.scale(scaleX, options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
 

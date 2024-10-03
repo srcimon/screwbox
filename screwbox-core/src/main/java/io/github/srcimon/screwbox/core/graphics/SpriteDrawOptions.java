@@ -89,7 +89,7 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
     }
     //TODO javadoc
     //TODO better name for xRotation rotate3dHorizontal?
-    public SpriteDrawOptions rotateX(final Rotation rotation) {
+    public SpriteDrawOptions rotateX(final Rotation xRotation) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, xRotation);
     }
 }
