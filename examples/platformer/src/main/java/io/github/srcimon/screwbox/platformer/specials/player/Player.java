@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.platformer.specials.player;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
@@ -18,6 +19,8 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenHorizontalSpinComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.platformer.components.CastShadowComponent;
 import io.github.srcimon.screwbox.platformer.components.GroundDetectorComponent;
@@ -47,6 +50,9 @@ public class Player implements Converter<GameObject> {
                         new StateComponent(new PlayerStandingState()),
                         new PhysicsComponent(),
                         new GroundDetectorComponent(),
+                        //TODO remove after fixing flip bug
+                        new TweenHorizontalSpinComponent(),
+                        new TweenComponent(Duration.ofSeconds(2), Ease.LINEAR_IN, true),
                         new ColliderComponent(),
                         new PlayerMarkerComponent(),
                         new RenderComponent(object.layer().order()),
