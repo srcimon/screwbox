@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -92,13 +93,20 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
+    public static void main(String[] args) {
+        var rotationPErcent = Percent.of(Rotation.degrees(0).degrees() / 360.0);
+        System.out.println(rotationPErcent);
+        double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
+        System.out.println(xDistort);
+    }
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
-        double xDistort = Ease.SINE_IN_OUT.applyOn(Percent.of(options.xRotation().degrees() / 360.0)).value() * 2 - 1;
+        Percent rotationPErcent = Percent.of(options.xRotation().degrees() / 360.0);
+        double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
         transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y() );
         transform.scale(xDistort, 1); // rotate in 3d horizontal
         transform.translate(size.width() * -2, 0);
