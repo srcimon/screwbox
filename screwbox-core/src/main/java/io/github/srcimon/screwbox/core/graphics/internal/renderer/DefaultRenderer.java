@@ -99,12 +99,10 @@ public class DefaultRenderer implements Renderer {
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
         double xDistort = Ease.SINE_IN_OUT.applyOn(Percent.of(options.xRotation().degrees() / 360.0)).value() * 2 - 1;
-        double tx = (1.0 - Math.abs(xDistort)) * sprite.width();
-        transform.translate(origin.x() + xCorrect - size.width() * 2, origin.y() + yCorrect);
+        transform.translate(origin.x() + xCorrect + options.scale() * size.width() / 2.0, origin.y() + yCorrect);
         transform.scale(xDistort, 1); // rotate in 3d horizontal
-        transform.translate(-size.width() * 2, 0);
+        transform.translate(size.width() * -2, 0);
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
-        System.out.println(tx);
         graphics.drawImage(image, transform, null);
     }
 
