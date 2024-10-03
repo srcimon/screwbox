@@ -91,7 +91,7 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();

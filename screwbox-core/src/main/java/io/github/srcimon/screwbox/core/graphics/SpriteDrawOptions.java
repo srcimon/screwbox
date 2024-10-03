@@ -15,11 +15,14 @@ import java.io.Serializable;
  * @param isFlipVertical   is the {@link Sprite} flipped vertically
  * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
+//TODO document xRotation
+//TODO changelog xRotation
+//TODO test xRotation
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
-                                boolean isFlipVertical) implements Serializable {
+                                boolean isFlipVertical, Rotation xRotation) implements Serializable {
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Rotation.none(), false, false);
+        this(scale, Percent.max(), Rotation.none(), false, false, Rotation.none());
     }
 
     /**
@@ -40,14 +43,14 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #scale()}.
      */
     public SpriteDrawOptions scale(final double scale) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, xRotation);
     }
 
     /**
      * Creates a new instance with updated {@link #opacity()}.
      */
     public SpriteDrawOptions opacity(final Percent opacity) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, xRotation);
     }
 
     /**
@@ -61,27 +64,32 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #rotation()}.
      */
     public SpriteDrawOptions rotation(final Rotation rotation) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, xRotation);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipHorizontal()}.
      */
-    public SpriteDrawOptions flipHorizontal(boolean flipHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical);
+    public SpriteDrawOptions flipHorizontal(final boolean flipHorizontal) {
+        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, xRotation);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipVertical()}.
      */
-    public SpriteDrawOptions flipVertical(boolean flipVertical) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical);
+    public SpriteDrawOptions flipVertical(final boolean flipVertical) {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, xRotation);
     }
 
     /**
      * Creates a new instance with inverted value for {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions invertVerticalFlip() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, xRotation);
+    }
+    //TODO javadoc
+    //TODO better name for xRotation rotate3dHorizontal?
+    public SpriteDrawOptions rotateX(final Rotation rotation) {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, xRotation);
     }
 }
