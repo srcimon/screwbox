@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.platformer.scenes.PauseScene;
 import io.github.srcimon.screwbox.platformer.scenes.StartScene;
 
 public class PlatformerApp {
-
+//TODO add HorizontalSpinComponent
     public static void main(String[] args) {
         Engine engine = ScrewBox.createEngine("Platformer");
 

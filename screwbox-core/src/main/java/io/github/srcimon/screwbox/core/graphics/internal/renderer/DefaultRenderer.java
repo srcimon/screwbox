@@ -114,6 +114,7 @@ public class DefaultRenderer implements Renderer {
         }
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
+        //TODO reduce number of translates for peformance
         transform.translate(xCorrect, yCorrect);
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
