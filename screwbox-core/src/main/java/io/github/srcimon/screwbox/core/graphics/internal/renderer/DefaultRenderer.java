@@ -105,14 +105,15 @@ public class DefaultRenderer implements Renderer {
         final Size size = sprite.size();
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
-        Percent rotationPErcent = Percent.of(options.xRotation().degrees() / 360.0);
-        double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
         transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
 
-        transform.translate(options.scale() * size.width() / 2.0, 0);
-        transform.scale(xDistort, 1); // rotate in 3d horizontal
-        transform.translate(options.scale() * size.width() / -2.0, 0);
-
+        if(!options.xRotation().isNone()) {
+            Percent rotationPErcent = Percent.of(options.xRotation().degrees() / 360.0);
+            double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
+            transform.translate(options.scale() * size.width() / 2.0, 0);
+            transform.scale(xDistort, 1); // rotate in 3d horizontal
+            transform.translate(options.scale() * size.width() / -2.0, 0);
+        }
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
