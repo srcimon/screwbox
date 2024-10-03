@@ -54,7 +54,7 @@ public class HelloWorldApp {
                     });
                 })
                 .addEntity(
-                        new RenderComponent(SpriteBundle.BOX_STRIPED, SpriteDrawOptions.originalSize().rotateX(Rotation.degrees(40))),
+                        new RenderComponent(SpriteBundle.BOX_STRIPED, SpriteDrawOptions.originalSize().rotateX(Rotation.degrees(0))),
                         new TweenComponent(Duration.oneSecond(), Ease.LINEAR_IN, true),
                         new TransformComponent(0, 0, 16, 16))
 
