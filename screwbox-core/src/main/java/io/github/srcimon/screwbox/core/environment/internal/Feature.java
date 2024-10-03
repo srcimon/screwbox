@@ -18,7 +18,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSyst
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenHorizontalSpinSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
@@ -35,7 +35,7 @@ public enum Feature {
             new TweenDestroySystem(),
             new TweenScaleSystem(),
             new TweenOpacitySystem(),//TODO test and javadoc and changelog
-            new TweenHorizontalSpinSystem(),
+            new TweenSpinSystem(),
             new TweenLightSystem()
     ),
 

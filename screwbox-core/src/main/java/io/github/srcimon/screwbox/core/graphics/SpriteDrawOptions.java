@@ -20,10 +20,10 @@ import java.io.Serializable;
 //TODO test horizontalSpin
 //TODO support verticalSpin
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
-                                boolean isFlipVertical, Rotation horizontalSpin) implements Serializable {
+                                boolean isFlipVertical, Rotation horizontalSpin, Rotation verticalSpin) implements Serializable {
 
     private SpriteDrawOptions(final double scale) {
-        this(scale, Percent.max(), Rotation.none(), false, false, Rotation.none());
+        this(scale, Percent.max(), Rotation.none(), false, false, Rotation.none(), Rotation.none());
     }
 
     /**
@@ -44,14 +44,14 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #scale()}.
      */
     public SpriteDrawOptions scale(final double scale) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
     }
 
     /**
      * Creates a new instance with updated {@link #opacity()}.
      */
     public SpriteDrawOptions opacity(final Percent opacity) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
     }
 
     /**
@@ -65,31 +65,36 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
      * Creates a new instance with updated {@link #rotation()}.
      */
     public SpriteDrawOptions rotation(final Rotation rotation) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipHorizontal()}.
      */
     public SpriteDrawOptions flipHorizontal(final boolean flipHorizontal) {
-        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, flipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
     }
 
     /**
      * Creates a new instance with updated {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions flipVertical(final boolean flipVertical) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, flipVertical, horizontalSpin, verticalSpin);
     }
 
     /**
      * Creates a new instance with inverted value for {@link #isFlipVertical()}.
      */
     public SpriteDrawOptions invertVerticalFlip() {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, horizontalSpin, verticalSpin);
     }
     //TODO javadoc
     public SpriteDrawOptions horizontalSpin(final Rotation horizontalSpin) {
-        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin);
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
+    }
+
+    //TODO javadoc
+    public SpriteDrawOptions verticalSpin(final Rotation verticalSpin) {
+        return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, horizontalSpin, verticalSpin);
     }
 }

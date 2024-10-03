@@ -9,7 +9,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionCom
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenHorizontalSpinComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.CollectableComponent;
 import io.github.srcimon.screwbox.tiled.GameObject;
@@ -25,7 +25,7 @@ public class DeboO implements Converter<GameObject> {
         return new Entity().add(
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
-                new TweenHorizontalSpinComponent(),
+                new TweenSpinComponent(),
                 new TweenComponent(Duration.ofSeconds(2), Ease.LINEAR_IN, true),
                 new CollisionDetectionComponent(),
                 new CollectableComponent());

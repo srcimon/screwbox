@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionCom
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.Ease;
-import io.github.srcimon.screwbox.core.environment.tweening.TweenHorizontalSpinComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOrbitPositionComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -29,7 +29,7 @@ public class Cherries implements Converter<GameObject> {
         return new Entity().add(
                 new TweenOrbitPositionComponent(object.position(), 2),
                 new TweenComponent(ofSeconds(2), Ease.LINEAR_IN, true, false),
-                new TweenHorizontalSpinComponent(),
+                new TweenSpinComponent(),
                 new PointLightComponent(20, Color.RED),
                 new GlowComponent(60, Color.RED.opacity(0.5)),
                 new TransformComponent(object.bounds()),
