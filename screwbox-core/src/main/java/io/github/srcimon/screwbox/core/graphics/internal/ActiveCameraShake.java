@@ -12,28 +12,29 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 
 class ActiveCameraShake {
 
-    private final Noise noiseX;
-    private final Noise noiseY;
+    private final Noise xNoise;
+    private final Noise yNoise;
+    private final Noise shakeNoise;
     private final Time start = Time.now();
     private final Duration duration;
     private final double xStrength;
     private final double yStrength;
-    private final Rotation screenRotation;
-
+    private final Rotation screenShake;
     public ActiveCameraShake(final CameraShakeOptions options) {
-        noiseX = Noise.variableInterval(options.interval());
-        noiseY = Noise.variableInterval(options.interval());
+        xNoise = Noise.variableInterval(options.interval());
+        yNoise = Noise.variableInterval(options.interval());
+        shakeNoise = Noise.variableInterval(options.interval());
         duration = options.duration();
         xStrength = options.xStrength();
         yStrength = options.yStrength();
-        screenRotation = options.screenShake();//TODO reduce variables?
+        screenShake = options.screenShake();//TODO reduce variables?
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {
         final var progress = calculateProgress(now);
 
-        return $(noiseX.value(now) * xStrength * progress.invert().value() / zoom,
-                noiseY.value(now) * yStrength * progress.invert().value() / zoom);
+        return $(xNoise.value(now) * xStrength * progress.invert().value() / zoom,
+                yNoise.value(now) * yStrength * progress.invert().value() / zoom);
     }
 
     boolean hasEnded(final Time now) {
@@ -49,11 +50,9 @@ class ActiveCameraShake {
         return Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
     }
 
-    static Noise noise = Noise.variableInterval(Duration.ofMillis(250));
-
     //TODO test
     public Rotation caclulateRotation(final Time now) {
         final var progress = calculateProgress(now);
-        return Rotation.degrees(screenRotation.degrees() * noise.value(now) * progress.invert().value());
+        return Rotation.degrees(screenShake.degrees() * shakeNoise.value(now) * progress.invert().value());
     }
 }
