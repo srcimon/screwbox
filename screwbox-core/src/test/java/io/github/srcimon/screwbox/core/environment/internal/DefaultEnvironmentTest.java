@@ -325,9 +325,10 @@ class DefaultEnvironmentTest {
     void enableTweening_addsTweeningSystems() {
         environment.enableTweening();
 
-        assertThat(environment.systems()).hasSize(6)
+        assertThat(environment.systems()).hasSize(7)
                 .anyMatch(system -> system.getClass().equals(TweenSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenDestroySystem.class))
+                .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenScaleSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenLightSystem.class))
                 .anyMatch(system -> system.getClass().equals(TweenPositionSystem.class))
@@ -561,7 +562,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(32)
+        assertThat(environment.systems()).hasSize(33)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 
