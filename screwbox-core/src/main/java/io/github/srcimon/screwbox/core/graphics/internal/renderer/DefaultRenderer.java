@@ -96,25 +96,24 @@ public class DefaultRenderer implements Renderer {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
-        transform.translate(origin.x(), origin.y());
-
-        if (!options.spin().isZero()) {
-            //TODO refactor
-            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
-            if (options.isSpinHorizontal()) {
-                transform.translate(options.scale() * size.width() / 2.0, 0);
-                transform.scale(distort, 1);
-                transform.translate(options.scale() * size.width() / -2.0, 0);
-            } else {
-                transform.translate(0, options.scale() * size.height() / 2.0);
-                transform.scale(1, distort);
-                transform.translate(0, options.scale() * size.height() / -2.0);
-            }
-        }
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
-        //TODO reduce number of translates for peformance
-        transform.translate(xCorrect, yCorrect);
+
+        if (options.spin().isZero()) {
+            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        } else {
+            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
+            if (options.isSpinHorizontal()) {
+                transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y());
+                transform.scale(distort, 1);
+                transform.translate(options.scale() * size.width() / -2.0 + xCorrect, yCorrect);
+            } else {
+                transform.translate(origin.x(), origin.y() + options.scale() * size.height() / 2.0);
+                transform.scale(1, distort);
+                transform.translate(xCorrect, options.scale() * size.height() / -2.0 + yCorrect);
+            }
+        }
+
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
