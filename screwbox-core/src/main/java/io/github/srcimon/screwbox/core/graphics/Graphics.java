@@ -45,19 +45,8 @@ public interface Graphics {
 
     /**
      * Returns the position the given {@link Offset} in the {@link World} not considering {@link Camera#rotation()}.
-     *
-     * @see #screenToPosition(Offset)
      */
     Vector toPosition(Offset offset);
-
-    //TODO Test
-    //TODO changelog
-    /**
-     * Returns the position the given {@link Offset} in the {@link World} considering {@link Camera#rotation()}.
-     *
-     * @see #toPosition(Offset)
-     */
-    Vector screenToPosition(Offset offset);
 
     /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.

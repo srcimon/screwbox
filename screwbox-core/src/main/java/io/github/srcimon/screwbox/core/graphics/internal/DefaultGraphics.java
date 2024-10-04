@@ -64,16 +64,6 @@ public class DefaultGraphics implements Graphics, Updatable {
         return world.toPosition(offset);
     }
 
-    //TODO Test
-    @Override
-    public Vector screenToPosition(final Offset offset) {
-        if(camera.rotation().isNone()) {
-            return toPosition(offset);
-        }
-        final var delta = Line.between(toPosition(screen().center()), toPosition(offset));
-        return Rotation.degrees(360 - camera.rotation().degrees()).applyOn(delta).to();
-    }
-
     @Override
     public ScreenBounds toScreen(final Bounds bounds) {
         return world.toScreen(bounds);

@@ -174,9 +174,12 @@ public class DefaultScreen implements Screen {
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
-
-    void setRotation(Rotation rotation) {
+    void setRotation(final Rotation rotation) {
         this.rotation = rotation;
+    }
+
+    public Rotation rotation() {
+        return this.rotation;
     }
 
     private ScreenBounds screenBounds() {

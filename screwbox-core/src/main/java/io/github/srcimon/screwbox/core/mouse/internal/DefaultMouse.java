@@ -1,8 +1,11 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
+import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -28,20 +31,22 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final Set<MouseButton> downButtons = new HashSet<>();
     private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
-    private final Graphics graphics;
+    private final DefaultScreen screen;
+    private final DefaultWorld world;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final Graphics graphics) {
-        this.graphics = graphics;
+    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world) {
+        this.screen = screen;
+        this.world = world;
     }
 
     @Override
     public Vector drag() {
         final Vector current = position();
-        final Vector last = graphics.screenToPosition(lastPosition);
+        final Vector last = toPositionConsideringRotation(lastPosition);
         return last.substract(current);
     }
 
@@ -52,7 +57,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Vector position() {
-        return graphics.screenToPosition(offset);
+        return toPositionConsideringRotation(offset);
     }
 
     @Override
@@ -142,6 +147,14 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(graphics.screen().position());
+        offset =  windowPosition.substract(screen.position());
+    }
+
+    private Vector toPositionConsideringRotation(final Offset offset) {
+        if (screen.rotation().isNone()) {
+            return world.toPosition(offset);
+        }
+        final var delta = Line.between(world.toPosition(screen.center()), world.toPosition(offset));
+        return Rotation.degrees(360 - screen.rotation().degrees()).applyOn(delta).to();
     }
 }
