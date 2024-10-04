@@ -32,19 +32,19 @@ class CameraShakeOptionsTest {
     }
 
     @Test
-    void strength_xStrengthZero_throwsException() {
+    void strength_xStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
-        assertThatThrownBy(() -> options.xStrength(0))
+        assertThatThrownBy(() -> options.xStrength(-2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
     }
 
     @Test
-    void strength_yStrengthZero_throwsException() {
+    void strength_yStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
-        assertThatThrownBy(() -> options.yStrength(0))
+        assertThatThrownBy(() -> options.yStrength(-10))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
     }

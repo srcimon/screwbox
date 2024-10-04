@@ -11,6 +11,7 @@
 
 - Changed min delta on loop on very high load to 0.01 to prevent stalling of engine
 - Moved back to ubuntu-latest for Github action build (#374)
+- Allowed zero camera shake for x- and y-axis
 
 ### 🧽 Cleanup & refactoring
 

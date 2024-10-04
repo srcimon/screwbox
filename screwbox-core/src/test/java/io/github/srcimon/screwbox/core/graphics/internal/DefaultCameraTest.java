@@ -26,6 +26,9 @@ class DefaultCameraTest {
     @Mock
     DefaultWorld world;
 
+    @Mock
+    DefaultScreen screen;
+    
     @InjectMocks
     DefaultCamera camera;
 
