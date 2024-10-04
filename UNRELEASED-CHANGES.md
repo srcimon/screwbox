@@ -2,7 +2,8 @@
 
 - Added `Graphics.renderDuration()` (#265)
 - Support for horizontal and vertical spinning sprites (#311)
-- Added `TweenSpinComponent` / `System` to animate spinning sprites
+- Added `TweenSpinComponent` / `System` to link spin of a sprite to the entities tween
+- Added `FixedSpinComponent` / `System` to add constant spin animation to a sprite
 
 ### 🪛 Bug Fixes
 

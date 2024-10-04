@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSyst
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
@@ -289,6 +290,7 @@ public interface Environment {
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
      * @see RenderSystem
+     * @see FixedSpinSystem
      * @see CameraSystem
      */
     Environment enableRendering();

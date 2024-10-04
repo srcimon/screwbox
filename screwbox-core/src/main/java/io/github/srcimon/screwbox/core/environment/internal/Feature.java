@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleInteraction
 import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderOverLightSystem;
@@ -45,6 +46,7 @@ public enum Feature {
             new MovementRotationSystem(),
             new FixedRotationSystem(),
             new FlipSpriteSystem(),
+            new FixedSpinSystem(),
             new RenderSystem(),
             new CameraSystem()
     ),

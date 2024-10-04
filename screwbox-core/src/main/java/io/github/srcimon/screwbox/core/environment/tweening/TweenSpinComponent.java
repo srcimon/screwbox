@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 
 import java.io.Serial;
 
-//TODO javadoc
 //TODO test
 /**
  * Links tweening to the spin of the {@link RenderComponent} of an {@link Entity}.
@@ -16,7 +15,7 @@ public class TweenSpinComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public boolean isSpinHorizontal;
+    public final boolean isSpinHorizontal;
 
     public TweenSpinComponent() {
         this(true);
