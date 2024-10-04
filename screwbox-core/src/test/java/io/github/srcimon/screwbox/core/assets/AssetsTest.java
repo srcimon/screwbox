@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.assets;
 
-import io.github.srcimon.screwbox.core.ScrewBox;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -14,20 +13,6 @@ class AssetsTest {
 
     @Spy
     Assets assets;
-
-    @Test
-    void prepareEngineAssets_callsPrepareClassPackage() {
-        assets.prepareEngineAssets();
-
-        verify(assets).prepareClassPackage(ScrewBox.class);
-    }
-
-    @Test
-    void prepareEngineAssetsAsync_callsPrepareClassPackageAsync() {
-        assets.prepareEngineAssetsAsync();
-
-        verify(assets).prepareClassPackageAsync(ScrewBox.class);
-    }
 
     @Test
     void prepareClassPackageAsync_classNotNull_callsPreparePackageAsync() {
