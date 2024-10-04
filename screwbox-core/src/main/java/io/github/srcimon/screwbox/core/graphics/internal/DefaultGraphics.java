@@ -70,8 +70,8 @@ public class DefaultGraphics implements Graphics, Updatable {
         if(camera.rotation().isNone()) {
             return toPosition(offset);
         }
-        final var line = Line.between(toPosition(screen().center()), toPosition(offset));
-        return Rotation.degrees(360 - camera.rotation().degrees()).applyOn(line).to();
+        final var delta = Line.between(toPosition(screen().center()), toPosition(offset));
+        return Rotation.degrees(360 - camera.rotation().degrees()).applyOn(delta).to();
     }
 
     @Override
