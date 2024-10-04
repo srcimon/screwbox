@@ -5,6 +5,7 @@
 - Added `TweenSpinComponent` / `System` to link spin of a sprite to the entities tween
 - Added `FixedSpinComponent` / `System` to add constant spin animation to a sprite
 - Added `Percent.addWithOverflow(double)`
+- Added `ParticleOptions.animateHorizontalSpin()`, `.animateVerticalSpin()`
 
 ### 🪛 Bug Fixes
 

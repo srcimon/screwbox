@@ -158,12 +158,20 @@ public class ParticleOptions implements Serializable {
     }
 
     /**
-     * Adds a {@link TweenSpinComponent} to the particle entities.
+     * Adds a horizontal spin via {@link TweenSpinComponent} to the particle entities.
      */
     public ParticleOptions animateHorizontalSpin() {
-        return customize(PREFIX + "horizontal-spin", entity -> entity.add(new TweenSpinComponent()));
+        return customize(PREFIX + "spin", entity -> entity.add(new TweenSpinComponent()));
     }
-    //TODO test, javadoc and changelog
+
+    /**
+     * Adds a vertical spin via {@link TweenSpinComponent} to the particle entities.
+     */
+    public ParticleOptions animateVerticalSpin() {
+        return customize(PREFIX + "spin", entity -> entity.add(new TweenSpinComponent(false)));
+    }
+
+    //TODO  changelog
 
     /**
      * Sets the {@link Ease} for animation.
