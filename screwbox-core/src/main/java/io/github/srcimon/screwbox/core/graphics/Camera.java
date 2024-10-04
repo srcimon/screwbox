@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.window.Window;
 
 /**
  * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.
@@ -10,8 +11,11 @@ import io.github.srcimon.screwbox.core.Vector;
 public interface Camera {
 
     //TODO mouse.position()-> is it a bug?
-    //TODO javadoc
     //TODO changelog
+    /**
+     * Sets the rotation of the {@link Camera}. Please note that this costs a lot of drawing performance and really only
+     * rotates the current {@link Screen} out of the {@link Window} area.
+     */
     Camera setRotation(Rotation rotation);
 
     //TODO javadoc

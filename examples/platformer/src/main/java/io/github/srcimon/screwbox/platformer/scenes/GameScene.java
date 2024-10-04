@@ -2,8 +2,10 @@ package io.github.srcimon.screwbox.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -86,6 +88,13 @@ public class GameScene implements Scene {
                 .addSystem(new DiggableSystem())
                 .addSystem(new FollowPlayerSystem())
                 .addSystem(new PlayerControlSystem())
+                .addSystem(engine -> {
+                    if(engine.mouse().isDown(MouseButton.LEFT)) {
+                        engine.graphics().camera().setRotation(Rotation.degrees((engine.mouse().offset().x() - engine.graphics().screen().center().x()) / 10.0));
+                    } else {
+                        engine.graphics().camera().setRotation(Rotation.none());
+                    }
+                })
                 .addSystem(new ShowLabelSystem())
                 .addSystem(new LetsGoSystem())
                 .addSystem(new PrintSystem())
