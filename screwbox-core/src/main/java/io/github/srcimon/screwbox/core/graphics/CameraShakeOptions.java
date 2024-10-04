@@ -68,7 +68,7 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
     }
 
     //TODO javadoc test changelog
-    public CameraShakeOptions screenRotation(final Rotation screenShake) {
+    public CameraShakeOptions screenShake(final Rotation screenShake) {
         return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenShake);
     }
 }
