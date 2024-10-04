@@ -21,7 +21,7 @@ public class DefaultScreen implements Screen {
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
-    private Rotation rotationFromShake = Rotation.none();
+    private Rotation shake = Rotation.none();
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
@@ -47,7 +47,7 @@ public class DefaultScreen implements Screen {
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation.add(rotationFromShake));
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation.add(shake));
         renderer.fillWith(Color.BLACK);
     }
 
@@ -183,11 +183,16 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Rotation rotation() {
-        return this.rotation;
+        return rotation;
     }
 
-    public void setRotationFromShake(final Rotation rotationFromShake) {
-        this.rotationFromShake = rotationFromShake;
+    @Override
+    public Rotation shake() {
+        return shake;
+    }
+
+    public void setShake(final Rotation shake) {
+        this.shake = shake;
     }
 
     private ScreenBounds screenBounds() {

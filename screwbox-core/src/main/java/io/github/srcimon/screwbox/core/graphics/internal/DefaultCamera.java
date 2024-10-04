@@ -126,13 +126,13 @@ public class DefaultCamera implements Camera, Updatable {
         final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
-            screen.setRotationFromShake(activeShake.caclulateRotation(now));
+            screen.setShake(activeShake.caclulateRotation(now));
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
-            screen.setRotationFromShake(Rotation.none());
+            screen.setShake(Rotation.none());
         }
     }
 }

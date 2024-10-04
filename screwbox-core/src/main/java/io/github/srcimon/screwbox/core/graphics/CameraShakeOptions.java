@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  */
 //TODO test
     //TODO document roation
-public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval, Rotation screenRotation) {
+public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval, Rotation screenShake) {
 
     public CameraShakeOptions {
         Validate.zeroOrPositive(xStrength, "strength must be positive");
@@ -43,32 +43,32 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
      * Set the x-strength of the shake. Default: 10.
      */
     public CameraShakeOptions xStrength(final double xStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenShake);
     }
 
     /**
      * Set the y-strength of the shake. Default: 10.
      */
     public CameraShakeOptions yStrength(final double yStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenShake);
     }
 
     /**
      * Set the x- and the y-strength of the shake. Default: 10.
      */
     public CameraShakeOptions strength(final double strength) {
-        return new CameraShakeOptions(duration, strength, strength, interval, screenRotation);
+        return new CameraShakeOptions(duration, strength, strength, interval, screenShake);
     }
 
     /**
      * Set the {@link Duration} between direction changes. Default 50s.
      */
     public CameraShakeOptions interval(final Duration interval) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenShake);
     }
 
     //TODO javadoc test changelog
-    public CameraShakeOptions screenRotation(final Rotation screenRotation) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation);
+    public CameraShakeOptions screenRotation(final Rotation screenShake) {
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenShake);
     }
 }

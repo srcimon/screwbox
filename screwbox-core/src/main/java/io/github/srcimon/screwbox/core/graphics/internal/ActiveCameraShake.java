@@ -26,7 +26,7 @@ class ActiveCameraShake {
         duration = options.duration();
         xStrength = options.xStrength();
         yStrength = options.yStrength();
-        screenRotation = options.screenRotation();//TODO reduce variables?
+        screenRotation = options.screenShake();//TODO reduce variables?
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {
