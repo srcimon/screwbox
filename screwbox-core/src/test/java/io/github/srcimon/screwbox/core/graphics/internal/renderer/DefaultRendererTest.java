@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -30,7 +31,7 @@ class DefaultRendererTest {
 
     @BeforeEach
     void setUp() {
-        renderer.updateGraphicsContext(() -> graphics, Size.of(640, 480));
+        renderer.updateGraphicsContext(() -> graphics, Size.of(640, 480), Rotation.none());
     }
 
     @Test

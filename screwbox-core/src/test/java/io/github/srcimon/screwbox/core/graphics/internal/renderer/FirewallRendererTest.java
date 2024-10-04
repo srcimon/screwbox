@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
@@ -31,7 +32,7 @@ class FirewallRendererTest {
 
     @BeforeEach
     void setUp() {
-        renderer.updateGraphicsContext(() -> null, Size.of(640, 480));
+        renderer.updateGraphicsContext(() -> null, Size.of(640, 480), Rotation.none());
         Mockito.reset(next);
     }
 

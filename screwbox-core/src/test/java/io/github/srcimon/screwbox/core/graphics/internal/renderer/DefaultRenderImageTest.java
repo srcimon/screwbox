@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
@@ -40,7 +41,7 @@ class DefaultRenderImageTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         renderer = new DefaultRenderer();
-        renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40));
+        renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40), Rotation.none());
         renderer.fillWith(Color.BLACK);
     }
 
