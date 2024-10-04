@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.srcimon</groupId>
     <artifactId>screwbox</artifactId>
@@ -31,37 +32,36 @@
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6, e7</sonar.issue.ignore.multicriteria>
 
         <!-- public accessibility in components by intention -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
-        <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*Component.java
-        </sonar.issue.ignore.multicriteria.e1.resourceKey>
+        <sonar.issue.ignore.multicriteria.e1.resourceKey>**/*Component.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
 
         <!-- ConsoleLoggingAdapter is allowed to use System.out -->
         <sonar.issue.ignore.multicriteria.e2.ruleKey>java:S106</sonar.issue.ignore.multicriteria.e2.ruleKey>
-        <sonar.issue.ignore.multicriteria.e2.resourceKey>**/ConsoleLoggingAdapter.java
-        </sonar.issue.ignore.multicriteria.e2.resourceKey>
+        <sonar.issue.ignore.multicriteria.e2.resourceKey>**/ConsoleLoggingAdapter.java</sonar.issue.ignore.multicriteria.e2.resourceKey>
 
         <!-- disable false-positive in CollisionSensorComponent -->
         <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S1948</sonar.issue.ignore.multicriteria.e3.ruleKey>
-        <sonar.issue.ignore.multicriteria.e3.resourceKey>**/CollisionDetectionComponent.java
-        </sonar.issue.ignore.multicriteria.e3.resourceKey>
+        <sonar.issue.ignore.multicriteria.e3.resourceKey>**/CollisionDetectionComponent.java</sonar.issue.ignore.multicriteria.e3.resourceKey>
 
         <!-- disable false-positive naming convention for Vector.$ -->
         <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e4.ruleKey>
-        <sonar.issue.ignore.multicriteria.e4.resourceKey>**/Vector.java
-        </sonar.issue.ignore.multicriteria.e4.resourceKey>
+        <sonar.issue.ignore.multicriteria.e4.resourceKey>**/Vector.java</sonar.issue.ignore.multicriteria.e4.resourceKey>
 
         <!-- disable false-positive naming convention for Bounds.$$ -->
         <sonar.issue.ignore.multicriteria.e5.ruleKey>java:S100</sonar.issue.ignore.multicriteria.e5.ruleKey>
-        <sonar.issue.ignore.multicriteria.e5.resourceKey>**/Bounds.java
-        </sonar.issue.ignore.multicriteria.e5.resourceKey>
+        <sonar.issue.ignore.multicriteria.e5.resourceKey>**/Bounds.java</sonar.issue.ignore.multicriteria.e5.resourceKey>
 
         <!-- disable false-positive security sensitive usages of Random -->
         <sonar.issue.ignore.multicriteria.e6.ruleKey>java:S2245</sonar.issue.ignore.multicriteria.e6.ruleKey>
-        <sonar.issue.ignore.multicriteria.e6.resourceKey>**.java
-        </sonar.issue.ignore.multicriteria.e6.resourceKey>
+        <sonar.issue.ignore.multicriteria.e6.resourceKey>**.java</sonar.issue.ignore.multicriteria.e6.resourceKey>
+
+        <!-- disable cycle detection: some choices were made that cannot be undone -->
+        <sonar.issue.ignore.multicriteria.e7.ruleKey>java:S7027</sonar.issue.ignore.multicriteria.e7.ruleKey>
+        <sonar.issue.ignore.multicriteria.e7.resourceKey>**.java</sonar.issue.ignore.multicriteria.e7.resourceKey>
+
     </properties>
     <dependencyManagement>
         <dependencies>
