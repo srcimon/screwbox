@@ -41,7 +41,9 @@ public interface Assets {
      *
      * @see #prepareEngineAssetsAsync()
      */
-    List<AssetLocation> prepareEngineAssets();
+    default List<AssetLocation> prepareEngineAssets() {
+        return prepareClassPackage(ScrewBox.class);
+    }
 
     /**
      * Start asynchronous loading of all prepacked {@link AssetBundle}s in the {@link ScrewBox} game engine. Recommended
@@ -49,7 +51,9 @@ public interface Assets {
      *
      * @see #prepareEngineAssets()
      */
-    Assets prepareEngineAssetsAsync();
+    default Assets prepareEngineAssetsAsync() {
+        return prepareClassPackageAsync(ScrewBox.class);
+    }
 
     /**
      * Start asynchronous loading of all unloaded {@link Asset}s in the given

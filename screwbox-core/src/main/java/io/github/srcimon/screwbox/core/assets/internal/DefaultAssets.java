@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.assets.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.ScrewBox;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.assets.AssetBundle;
 import io.github.srcimon.screwbox.core.assets.AssetLocation;
@@ -54,16 +53,6 @@ public class DefaultAssets implements Assets {
         }
 
         return loadedAssets;
-    }
-
-    @Override
-    public List<AssetLocation> prepareEngineAssets() {
-        return prepareClassPackage(ScrewBox.class);
-    }
-
-    @Override
-    public Assets prepareEngineAssetsAsync() {
-        return prepareClassPackageAsync(ScrewBox.class);
     }
 
     @Override

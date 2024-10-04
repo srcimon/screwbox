@@ -46,6 +46,7 @@ class DefaultAssetsTest {
         assets = new DefaultAssets(async, log);
     }
 
+
     @Test
     void listAssetLocationsInPackage_packageContainsAssetBundles_listAssetBundles() {
         var locations = assets.listAssetLocationsInPackage("io.github.srcimon.screwbox.core.audio");
