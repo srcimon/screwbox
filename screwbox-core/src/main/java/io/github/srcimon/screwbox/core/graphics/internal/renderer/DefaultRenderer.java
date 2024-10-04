@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -26,7 +27,7 @@ public class DefaultRenderer implements Renderer {
     private Color lastUsedColor;
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
         lastUpdateTime = Time.now();
         this.canvasSize = canvasSize;
         this.graphics = graphicsSupplier.get();

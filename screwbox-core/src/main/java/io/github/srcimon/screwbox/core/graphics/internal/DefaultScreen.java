@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -19,6 +20,7 @@ public class DefaultScreen implements Screen {
     private final Robot robot;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
+    private Rotation rotation = Rotation.none();
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
@@ -44,7 +46,7 @@ public class DefaultScreen implements Screen {
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation);
         renderer.fillWith(Color.BLACK);
     }
 
@@ -164,6 +166,17 @@ public class DefaultScreen implements Screen {
     @Override
     public Optional<Sprite> lastScreenshot() {
         return Optional.ofNullable(lastScreenshot);
+    }
+
+    @Override
+    public Screen setRotation(Rotation rotation) {
+        this.rotation = rotation;
+        return this;
+    }
+
+    @Override
+    public Rotation rotation() {
+        return rotation;
     }
 
     @Override

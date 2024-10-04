@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
@@ -23,8 +24,8 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
-        next.updateGraphicsContext(graphicsSupplier, canvasSize);
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
+        next.updateGraphicsContext(graphicsSupplier, canvasSize, rotation);
         screen = new ScreenBounds(Offset.origin(), canvasSize);
     }
 

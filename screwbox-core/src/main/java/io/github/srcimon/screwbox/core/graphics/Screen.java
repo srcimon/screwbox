@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
 import java.util.Optional;
@@ -11,6 +12,15 @@ import java.util.function.Supplier;
  * @see World
  */
 public interface Screen extends Sizeable {
+
+    //TODO mouse.position()-> is it a bug?
+    //TODO javadoc
+    //TODO changelog
+    Screen setRotation(Rotation rotation);
+
+    //TODO javadoc
+    //TODO changelog
+    Rotation rotation();
 
     /**
      * Returns the position of the {@link Screen} relative to the monitor.
