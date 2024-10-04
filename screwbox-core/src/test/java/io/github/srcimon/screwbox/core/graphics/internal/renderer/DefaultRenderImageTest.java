@@ -139,7 +139,7 @@ class DefaultRenderImageTest {
     @Test
     void drawSprite_spriteHasSpin_drawsSpriteWithSpin() {
         renderer.drawSprite(SpriteBundle.ICON, Offset.at(40, 12), SpriteDrawOptions.originalSize().spin(Percent.of(0.8)));
-        renderer.drawSprite(SpriteBundle.ICON, Offset.at(10, 12), SpriteDrawOptions.scaled(0.4).flipVertical(true).spin(Percent.of(0.6)).isSpinHorizontal(false));
+        renderer.drawSprite(SpriteBundle.ICON, Offset.at(10, 12), SpriteDrawOptions.scaled(0.4).flipVertical(true).spin(Percent.of(0.6)).spinHorizontal(false));
 
         verifyIsIdenticalWithReferenceImage("drawSprite_spriteHasSpin_drawsSpriteWithSpin.png");
     }

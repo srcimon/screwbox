@@ -89,13 +89,25 @@ public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, !isFlipVertical, spin, isSpinHorizontal);
     }
 
-    //TODO javadoc
+    //TODO test
+    /**
+     * Creates a new instance with specified value for {@link #spin()}. Spin is used to create a pseudo 3d rotation effect.
+     * A {@link Sprite} can eighter spin horizontal or vertical.
+     *
+     * @see #spinHorizontal(boolean)
+     */
     public SpriteDrawOptions spin(final Percent spin) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal);
     }
 
-    //TODO javadoc
-    public SpriteDrawOptions isSpinHorizontal(final boolean isSpinHorizontal) {
+    //TODO test
+    /**
+     * Creates a new instance with specified direction of spin. Spin is used to create a pseudo 3d rotation effect.
+     * A {@link Sprite} can eighter spin horizontal or vertical.
+     *
+     * @see #spin(Percent)
+     */
+    public SpriteDrawOptions spinHorizontal(final boolean isSpinHorizontal) {
         return new SpriteDrawOptions(scale, opacity, rotation, isFlipHorizontal, isFlipVertical, spin, isSpinHorizontal);
     }
 }

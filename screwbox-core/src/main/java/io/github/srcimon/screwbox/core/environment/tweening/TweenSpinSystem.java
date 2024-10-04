@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 //TODO test
 /**
- * Updates the {@link SpriteDrawOptions#spin()} and {@link SpriteDrawOptions#isSpinHorizontal()} of all
+ * Updates the {@link SpriteDrawOptions#spin()} and {@link SpriteDrawOptions#spinHorizontal()} of all
  * {@link Entity entities} that use tweening and have an {@link TweenOpacityComponent}.
  */
 @Order(Order.SystemOrder.PRESENTATION_PREPARE)
@@ -24,7 +24,7 @@ public class TweenSpinSystem implements EntitySystem {
             final var renderComponent = tweenEntity.get(RenderComponent.class);
             final var spinComponent = tweenEntity.get(TweenSpinComponent.class);
             final var spin = tweenEntity.get(TweenComponent.class).value;
-            renderComponent.options = renderComponent.options.spin(spin).isSpinHorizontal(spinComponent.isSpinHorizontal);
+            renderComponent.options = renderComponent.options.spin(spin).spinHorizontal(spinComponent.isSpinHorizontal);
         }
     }
 }
