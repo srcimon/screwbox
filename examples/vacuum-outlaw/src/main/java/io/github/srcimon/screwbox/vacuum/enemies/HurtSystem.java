@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.vacuum.enemies;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.audio.SoundBundle;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.Archetype;
@@ -21,7 +20,7 @@ public class HurtSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var enemy : engine.environment().fetchAll(HURT_ENEMIES)) {
             engine.audio().playSound(SoundBundle.SPLASH, SoundOptions.playOnce().position(enemy.position()));
-            engine.graphics().camera().shake(lastingForDuration(ofMillis(2200)).strength(20).screenShake(Rotation.degrees(40)));
+            engine.graphics().camera().shake(lastingForDuration(ofMillis(200)).strength(20));
             engine.particles().spawnMultiple(8, enemy.position(), ParticleOptions.particleSource(enemy)
                     .lifetimeSeconds(1)
                     .randomBaseSpeed(20)

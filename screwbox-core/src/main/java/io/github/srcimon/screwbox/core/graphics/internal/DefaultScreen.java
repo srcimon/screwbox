@@ -182,6 +182,11 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Rotation rotationIncludingShake() {
+        return rotation.add(shake);
+    }
+
+    @Override
     public Rotation rotation() {
         return rotation;
     }

@@ -147,11 +147,11 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset =  windowPosition.substract(screen.position());
+        offset = windowPosition.substract(screen.position());
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
-        final Rotation rotationIncludingShake = screen.rotation().add(screen.shake());
+        final Rotation rotationIncludingShake = screen.rotationIncludingShake();
         if (rotationIncludingShake.isNone()) {
             return world.toPosition(offset);
         }
