@@ -44,7 +44,7 @@ public interface Graphics {
     Light light();
 
     /**
-     * Returns the position the given {@link Offset} in the {@link World} not considering {@link Screen#rotation()}.
+     * Returns the position the given {@link Offset} in the {@link World} not considering {@link Camera#rotation()}.
      *
      * @see #screenToPosition(Offset)
      */
@@ -53,7 +53,7 @@ public interface Graphics {
     //TODO Test
     //TODO changelog
     /**
-     * Returns the position the given {@link Offset} in the {@link World} considering {@link Screen#rotation()}.
+     * Returns the position the given {@link Offset} in the {@link World} considering {@link Camera#rotation()}.
      *
      * @see #toPosition(Offset)
      */
