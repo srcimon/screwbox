@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -16,13 +15,10 @@ public class TweenSpinSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
         for (final var tweenEntity : engine.environment().fetchAll(TWEENS)) {
-            final var advance = tweenEntity.get(TweenComponent.class).value.value();
             final var renderComponent = tweenEntity.get(RenderComponent.class);
-            final var spin = tweenEntity.get(TweenSpinComponent.class);
-            renderComponent.options = renderComponent.options
-                    .horizontalSpin(Rotation.degrees(spin.horizontal * 360 * advance))
-                    .verticalSpin(Rotation.degrees(spin.vertical * 360 * advance));
-
+            final var spinComponent = tweenEntity.get(TweenSpinComponent.class);
+            final var spin = tweenEntity.get(TweenComponent.class).value;
+            renderComponent.options = renderComponent.options.spin(spin).isSpinHorizontal(spinComponent.isSpinHorizontal);
         }
     }
 }

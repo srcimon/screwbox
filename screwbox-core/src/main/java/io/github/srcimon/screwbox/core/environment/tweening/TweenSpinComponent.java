@@ -12,19 +12,14 @@ public class TweenSpinComponent implements Component {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public double horizontal;
-    public double vertical;
+    public boolean isSpinHorizontal;
 
     public TweenSpinComponent() {
-        this(1);
+        this(true);
     }
 
-    public TweenSpinComponent(final double horizontal) {
-        this(horizontal, 0);
+    public TweenSpinComponent(final boolean isSpinHorizontal) {
+        this.isSpinHorizontal = isSpinHorizontal;
     }
 
-    public TweenSpinComponent(final double horizontal, final double vertical) {
-        this.horizontal = horizontal;
-        this.vertical = vertical;
-    }
 }
