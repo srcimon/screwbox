@@ -25,7 +25,7 @@ public class TweenComponent implements Component {
     public boolean isLooped;
     public Ease mode;
     public boolean usePingPong;
-//TODO change tween loopt to default true
+
     public TweenComponent(final Duration duration) {
         this(duration, Ease.LINEAR_OUT);
     }

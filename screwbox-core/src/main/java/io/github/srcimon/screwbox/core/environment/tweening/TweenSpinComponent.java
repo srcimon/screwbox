@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 
 import java.io.Serial;
 
-//TODO test
 /**
  * Links tweening to the spin of the {@link RenderComponent} of an {@link Entity}.
  */

@@ -18,7 +18,7 @@ public class FixedSpinSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(SPINNING)) {
             final var render = entity.get(RenderComponent.class);
             final var fixedSpinComponent = entity.get(FixedSpinComponent.class);
-            final double additionalRotation = engine.loop().delta(fixedSpinComponent.spinsPerSecond);
+            final double additionalRotation = engine.loop().delta() * fixedSpinComponent.spinsPerSecond;
             final var spinValue = render.options.spin().addWithOverflow(additionalRotation);
             render.options = render.options.spin(spinValue).spinHorizontal(fixedSpinComponent.isSpinHorizontal);
         }
