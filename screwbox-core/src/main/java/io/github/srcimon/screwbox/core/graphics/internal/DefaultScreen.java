@@ -167,16 +167,10 @@ public class DefaultScreen implements Screen {
         return Optional.ofNullable(lastScreenshot);
     }
 
-    @Override
-    public Screen setRotation(Rotation rotation) {
+    void setRotation(Rotation rotation) {
         this.rotation = rotation;
-        return this;
     }
 
-    @Override
-    public Rotation rotation() {
-        return rotation;
-    }
 
     @Override
     public Offset position() {

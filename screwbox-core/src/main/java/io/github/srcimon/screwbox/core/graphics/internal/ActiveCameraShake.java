@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
@@ -44,5 +45,13 @@ class ActiveCameraShake {
         final Duration elapsed = Duration.between(start, now);
         final var end = duration.addTo(start);
         return Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
+    }
+
+    static Noise noise = Noise.variableInterval(Duration.ofMillis(250));
+    public Rotation caclulateRotation(final Time now) {
+        final var progress = calculateProgress(now);
+final double strength = 4;
+
+        return Rotation.degrees(noise.value(now) * strength * progress.invert().value());
     }
 }

@@ -68,7 +68,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Vector screenToPosition(Offset offset) {
         final var line = Line.between(toPosition(screen().center()), toPosition(offset));
-        return Rotation.degrees(360 - screen().rotation().degrees()).applyOn(line).to();
+        return Rotation.degrees(360 - camera.rotation().degrees()).applyOn(line).to();
     }
 
     @Override

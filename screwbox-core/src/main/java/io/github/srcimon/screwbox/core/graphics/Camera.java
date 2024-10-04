@@ -1,12 +1,22 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 
 /**
  * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.
  */
 public interface Camera {
+
+    //TODO mouse.position()-> is it a bug?
+    //TODO javadoc
+    //TODO changelog
+    Camera setRotation(Rotation rotation);
+
+    //TODO javadoc
+    //TODO changelog
+    Rotation rotation();
 
     /**
      * Moves the camera within the specified {@link Bounds}.

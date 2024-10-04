@@ -148,6 +148,11 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         return Line.between(line.from(), Vector.$(xNew, yNew));
     }
 
+    //TODO javadoc, changelog and test
+    public Rotation add(final Rotation other) {
+        return Rotation.degrees(degrees + other.degrees);
+    }
+
     @Override
     public int compareTo(final Rotation other) {
         return Double.compare(degrees, other.degrees);
