@@ -10,11 +10,11 @@ import io.github.srcimon.screwbox.core.window.Window;
  */
 public interface Camera {
 
-    //TODO mouse.position()-> is it a bug?
     //TODO changelog
+
     /**
-     * Sets the rotation of the {@link Camera}. Please note that this costs a lot of drawing performance and really only
-     * rotates the current {@link Screen} out of the {@link Window} area.
+     * Sets the rotation of the {@link Camera}. This is a very limited feature resulting in quite some frame drop and
+     * does move rendered area outside of the game {@link Window}.
      */
     Camera setRotation(Rotation rotation);
 
