@@ -8,8 +8,6 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
-//TODO test
-
 /**
  * Updates the {@link SpriteDrawOptions#spin()} and {@link SpriteDrawOptions#isSpinHorizontal()} of all
  * {@link Entity entities} that use tweening and have an {@link TweenOpacityComponent}.

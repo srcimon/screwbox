@@ -13,12 +13,11 @@ import java.io.Serializable;
  * @param rotation         the {@link Rotation} of the {@link Sprite}
  * @param isFlipHorizontal is the {@link Sprite} flipped horizontally
  * @param isFlipVertical   is the {@link Sprite} flipped vertically
+ * @param spin             spins the {@link Sprite} with a pseudo 3d effect
+ * @param isSpinHorizontal switch spin of the {@link Sprite} between vertical or horizontal
+ *
  * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
-//TODO document horizontalSpin
-//TODO changelog horizontalSpin
-//TODO test horizontalSpin
-//TODO support verticalSpin
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
                                 boolean isFlipVertical, Percent spin, boolean isSpinHorizontal) implements Serializable {
 
