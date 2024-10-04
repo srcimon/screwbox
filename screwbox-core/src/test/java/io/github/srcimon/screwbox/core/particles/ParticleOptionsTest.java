@@ -2,16 +2,17 @@ package io.github.srcimon.screwbox.core.particles;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.light.ShadowCasterComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -145,6 +146,22 @@ class ParticleOptionsTest {
 
         assertThat(particle.hasComponent(FixedRotationComponent.class)).isTrue();
         assertThat(particle.get(FixedRotationComponent.class).clockwiseRotationsPerSecond).isBetween(-2.0, 4.0);
+    }
+
+    @Test
+    void animateHorizontalSpin_addsSpinComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.animateHorizontalSpin());
+
+        assertThat(particle.hasComponent(TweenSpinComponent.class)).isTrue();
+        assertThat(particle.get(TweenSpinComponent.class).isSpinHorizontal).isTrue();
+    }
+
+    @Test
+    void animateVerticalSpin_addsSpinComponent() {
+        Entity particle = applyOptionsOnTemplateParticle(options.animateVerticalSpin());
+
+        assertThat(particle.hasComponent(TweenSpinComponent.class)).isTrue();
+        assertThat(particle.get(TweenSpinComponent.class).isSpinHorizontal).isFalse();
     }
 
 

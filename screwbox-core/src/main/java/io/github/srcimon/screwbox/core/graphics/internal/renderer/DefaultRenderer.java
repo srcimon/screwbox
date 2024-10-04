@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
@@ -91,13 +92,28 @@ public class DefaultRenderer implements Renderer {
         }
     }
 
-    private void drawSpriteInContext(final Sprite sprite, final Offset origin, SpriteDrawOptions options) {
+    private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         final Image image = sprite.image(lastUpdateTime);
         final AffineTransform transform = new AffineTransform();
         final Size size = sprite.size();
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
-        transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+
+        if (options.spin().isZero()) {
+            transform.translate(origin.x() + xCorrect, origin.y() + yCorrect);
+        } else {
+            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
+            if (options.isSpinHorizontal()) {
+                transform.translate(origin.x() + options.scale() * size.width() / 2.0, origin.y());
+                transform.scale(distort, 1);
+                transform.translate(options.scale() * size.width() / -2.0 + xCorrect, yCorrect);
+            } else {
+                transform.translate(origin.x(), origin.y() + options.scale() * size.height() / 2.0);
+                transform.scale(1, distort);
+                transform.translate(xCorrect, options.scale() * size.height() / -2.0 + yCorrect);
+            }
+        }
+
         transform.scale(options.scale() * (options.isFlipHorizontal() ? -1 : 1), options.scale() * (options.isFlipVertical() ? -1 : 1));
         graphics.drawImage(image, transform, null);
     }
@@ -231,7 +247,7 @@ public class DefaultRenderer implements Renderer {
             for (final var sprite : allSprites) {
                 final Image image = sprite.image(lastUpdateTime);
                 final AffineTransform transform = new AffineTransform();
-                transform.translate(x, (double)offset.y() + y);
+                transform.translate(x, (double) offset.y() + y);
                 transform.scale(options.scale(), options.scale());
                 graphics.drawImage(image, transform, null);
                 final int distanceX = (int) ((sprite.width() + options.padding()) * options.scale());

@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacityComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -154,6 +155,20 @@ public class ParticleOptions implements Serializable {
      */
     public Collection<ParticleModifiers> modifiers() {
         return modifiers.values();
+    }
+
+    /**
+     * Adds a horizontal spin via {@link TweenSpinComponent} to the particle entities.
+     */
+    public ParticleOptions animateHorizontalSpin() {
+        return customize(PREFIX + "spin", entity -> entity.add(new TweenSpinComponent()));
+    }
+
+    /**
+     * Adds a vertical spin via {@link TweenSpinComponent} to the particle entities.
+     */
+    public ParticleOptions animateVerticalSpin() {
+        return customize(PREFIX + "spin", entity -> entity.add(new TweenSpinComponent(false)));
     }
 
     /**

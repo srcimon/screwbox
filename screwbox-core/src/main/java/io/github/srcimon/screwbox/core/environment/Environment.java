@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSyst
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
@@ -29,6 +30,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
+import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -288,6 +290,7 @@ public interface Environment {
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
      * @see RenderSystem
+     * @see FixedSpinSystem
      * @see CameraSystem
      */
     Environment enableRendering();
@@ -300,6 +303,7 @@ public interface Environment {
      * @see TweenPositionSystem
      * @see TweenOpacitySystem
      * @see TweenLightSystem
+     * @see TweenSpinSystem
      */
     Environment enableTweening();
 

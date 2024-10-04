@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.SourceImport.Converter;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.platformer.components.CollectableComponent;
@@ -21,6 +22,7 @@ public class DeboD implements Converter<GameObject> {
         return new Entity().add(
                 new RenderComponent(SPRITE.get(), object.layer().order()),
                 new TransformComponent(object.bounds()),
+                new FixedSpinComponent(0.4),
                 new CollisionDetectionComponent(),
                 new CollectableComponent());
     }

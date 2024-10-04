@@ -43,6 +43,7 @@ public enum ParticleOptionsBundle implements AssetBundle<ParticleOptions> {
     FALLING_LEAVES(ParticleOptions.unknownSource()
             .sprite(SpriteBundle.LEAVE_FALLING)
             .randomStartScale(1, 2)
+            .animateHorizontalSpin()
             .randomStartRotation()
             .baseSpeed(Vector.$(60, 10))
             .chaoticMovement(50, ofSeconds(1))

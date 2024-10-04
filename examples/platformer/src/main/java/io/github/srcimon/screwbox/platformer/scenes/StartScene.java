@@ -48,6 +48,7 @@ public class StartScene implements Scene {
                                 .animateOpacity(Percent.zero(), Percent.of(0.1))
                                 .chaoticMovement(50, ofSeconds(1))
                                 .drawOrder(2)
+                                .animateHorizontalSpin()
                                 .randomStartRotation()
                                 .randomLifeTimeSeconds(2, 4)
                                 .animateScale(0.5, 1.5)
