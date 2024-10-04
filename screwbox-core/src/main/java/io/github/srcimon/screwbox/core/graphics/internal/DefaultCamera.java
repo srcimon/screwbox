@@ -87,7 +87,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera shake(CameraShakeOptions options) {
+    public Camera shake(final CameraShakeOptions options) {
         activeShake = new ActiveCameraShake(options);
         return this;
     }
