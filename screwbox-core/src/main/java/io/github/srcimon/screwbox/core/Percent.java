@@ -130,6 +130,16 @@ public class Percent implements Serializable {
     }
 
     /**
+     * Returns a new instance with the sum of both values. Does not cap on max or min value but
+     * cicles in valid range.
+     */
+    public Percent addWithOverflow(final double value) {
+        final double addedValue = this.value + value;
+        final double clamp = addedValue >= 0 ? 0 : 1;
+        return new Percent(addedValue % 1.0 + clamp);
+    }
+
+    /**
      * Returns a new instance with the current value minus the given value. Returns
      * {@link Percent#zero()} when the sum is below 0 percent.
      */

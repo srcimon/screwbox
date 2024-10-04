@@ -1,10 +1,30 @@
 package io.github.srcimon.screwbox.core;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 
 class PercentTest {
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.9,0.2,0.1",
+            "0.9,1.2,0.1",
+            "0.9,2.2,0.1",
+            "0.9,0.0,0.9",
+            "0.1,-0.2,0.9",
+            "0.1,-1.2,0.9",
+            "0.1,-2.2,0.9",
+            "0.1,-4.2,0.9",
+            "0.1,4.2,0.3",
+            "0.9,0.9,0.8"})
+    void addWithOverflow_valueAddsResultsInOverflow_returnsValidResult(double initial, double value, double expected) {
+        var result = Percent.of(initial).addWithOverflow(value);
+        assertThat(result.value()).isEqualTo(expected, offset(0.001));
+    }
 
     @Test
     void of_valueOutOfRange_returnsClampedValue() {

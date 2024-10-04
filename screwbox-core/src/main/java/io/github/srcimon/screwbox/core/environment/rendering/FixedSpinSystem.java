@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
@@ -21,20 +19,9 @@ public class FixedSpinSystem implements EntitySystem {
             final var render = entity.get(RenderComponent.class);
             final var fixedSpinComponent = entity.get(FixedSpinComponent.class);
             final double additionalRotation = engine.loop().delta(fixedSpinComponent.spinsPerSecond);
-            final double spin = calculateSpin(render, additionalRotation);
-            render.options = render.options.spin(Percent.of(spin)).spinHorizontal(fixedSpinComponent.isSpinHorizontal);
+            final var spinValue = render.options.spin().addWithOverflow(additionalRotation);
+            render.options = render.options.spin(spinValue).spinHorizontal(fixedSpinComponent.isSpinHorizontal);
         }
-    }
-
-    private static double calculateSpin(RenderComponent render, double additionalRotation) {
-        final var spin =  render.options.spin().value() + additionalRotation;
-        if(spin < 0) {
-            return spin + 1;
-        }
-        if(spin > 1) {
-            return spin - 1;
-        }
-        return spin;
     }
 
 }
