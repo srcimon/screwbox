@@ -171,8 +171,6 @@ public class ParticleOptions implements Serializable {
         return customize(PREFIX + "spin", entity -> entity.add(new TweenSpinComponent(false)));
     }
 
-    //TODO  changelog
-
     /**
      * Sets the {@link Ease} for animation.
      */
