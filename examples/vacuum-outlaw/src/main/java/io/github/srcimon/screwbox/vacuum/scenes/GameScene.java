@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.vacuum.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
@@ -55,6 +56,7 @@ public class GameScene implements Scene {
                 .addSystem(new MovementControlSystem())
                 .addSystem(new LogFpsSystem())
                 .addSystem(new PhysicsGridUpdateSystem())
+                .addSystem(e -> e.graphics().screen().setRotation(Rotation.degrees(e.graphics().screen().rotation().degrees() + 0.1)))
                 .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())

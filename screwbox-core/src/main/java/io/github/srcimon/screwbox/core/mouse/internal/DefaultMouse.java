@@ -9,7 +9,11 @@ import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +29,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final Graphics graphics;
-    private Offset position = Offset.origin();
+    private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
@@ -43,12 +47,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Offset offset() {
-        return position;
+        return offset;
     }
 
     @Override
     public Vector position() {
-        return graphics.toPosition(position);
+        return graphics.screenToPosition(offset);
     }
 
     @Override
@@ -94,7 +98,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public void update() {
         unitsScrolled.toggle();
         unitsScrolled.assignActive(0);
-        lastPosition = position;
+        lastPosition = offset;
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
     }
@@ -138,6 +142,6 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        position = windowPosition.substract(graphics.screen().position());
+        offset = windowPosition.substract(graphics.screen().position());
     }
 }

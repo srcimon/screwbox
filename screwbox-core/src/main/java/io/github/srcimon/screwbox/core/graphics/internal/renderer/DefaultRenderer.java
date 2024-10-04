@@ -34,8 +34,10 @@ public class DefaultRenderer implements Renderer {
         lastUsedColor = null;
         fillWith(Color.BLACK);
         //TODO: graphics toWorld toOffset not working correctly in mouse
-        this.graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
-        this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+        if(!rotation.isNone()) {
+            this.graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
+            this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+        }
     }
 
     @Override
