@@ -18,6 +18,7 @@ class ActiveCameraShake {
     private final Duration duration;
     private final double xStrength;
     private final double yStrength;
+    private final Rotation rotation;
 
     public ActiveCameraShake(final CameraShakeOptions options) {
         noiseX = Noise.variableInterval(options.interval());
@@ -25,6 +26,7 @@ class ActiveCameraShake {
         duration = options.duration();
         xStrength = options.xStrength();
         yStrength = options.yStrength();
+        rotation = options.rotation();//TODO reduce variables?
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {
@@ -48,10 +50,10 @@ class ActiveCameraShake {
     }
 
     static Noise noise = Noise.variableInterval(Duration.ofMillis(250));
+
+    //TODO test
     public Rotation caclulateRotation(final Time now) {
         final var progress = calculateProgress(now);
-final double strength = 4;
-
-        return Rotation.degrees(noise.value(now) * strength * progress.invert().value());
+        return Rotation.degrees(rotation.degrees() * noise.value(now) * progress.invert().value());
     }
 }

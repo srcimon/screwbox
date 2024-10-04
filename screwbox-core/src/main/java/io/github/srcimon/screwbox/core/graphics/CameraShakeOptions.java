@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
@@ -11,15 +12,17 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param yStrength the y-strength of the shake
  * @param interval  the {@link Duration} between direction changes (may very to make it more realisitc)
  */
-public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval) {
+//TODO test
+    //TODO document roation
+public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval, Rotation rotation) {
 
     public CameraShakeOptions {
-        Validate.positive(xStrength, "strength must be positive");
-        Validate.positive(yStrength, "strength must be positive");
+        Validate.zeroOrPositive(xStrength, "strength must be positive");
+        Validate.zeroOrPositive(yStrength, "strength must be positive");
     }
 
     private CameraShakeOptions(final Duration duration) {
-        this(duration, 10, 10, Duration.ofMillis(50));
+        this(duration, 10, 10, Duration.ofMillis(50), Rotation.none());
     }
 
     /**
@@ -40,27 +43,32 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
      * Set the x-strength of the shake. Default: 10.
      */
     public CameraShakeOptions xStrength(final double xStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, rotation);
     }
 
     /**
      * Set the y-strength of the shake. Default: 10.
      */
     public CameraShakeOptions yStrength(final double yStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, rotation);
     }
 
     /**
      * Set the x- and the y-strength of the shake. Default: 10.
      */
     public CameraShakeOptions strength(final double strength) {
-        return new CameraShakeOptions(duration, strength, strength, interval);
+        return new CameraShakeOptions(duration, strength, strength, interval, rotation);
     }
 
     /**
      * Set the {@link Duration} between direction changes. Default 50s.
      */
     public CameraShakeOptions interval(final Duration interval) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, rotation);
+    }
+
+    //TODO javadoc test changelog
+    public CameraShakeOptions rotation(final Rotation rotation) {
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, rotation);
     }
 }
