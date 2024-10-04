@@ -20,4 +20,6 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Junit to 5.11.1
+- Bump Mockito to 5.14.1
+- Bump Jackson to 2.18.0
