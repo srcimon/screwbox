@@ -19,7 +19,6 @@ public class DefaultCamera implements Camera, Updatable {
     private final DefaultScreen screen;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
-    private Rotation rotation = Rotation.none();
     private double zoom = 1;
     private double requestedZoom = zoom;
     private double minZoom = 1;
@@ -69,17 +68,6 @@ public class DefaultCamera implements Camera, Updatable {
         this.zoom = Pixelperfect.value(requestedZoom);
         world.updateZoom(this.zoom);
         return this.zoom;
-    }
-
-    @Override
-    public Camera setRotation(Rotation rotation) {
-        this.rotation = rotation;
-        return this;
-    }
-
-    @Override
-    public Rotation rotation() {
-        return rotation;
     }
 
     @Override
@@ -138,13 +126,13 @@ public class DefaultCamera implements Camera, Updatable {
         final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
-            screen.setRotation(rotation.add(activeShake.caclulateRotation(now)));
+            screen.setRotationFromShake(activeShake.caclulateRotation(now));
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
-            screen.setRotation(rotation);
+            screen.setRotationFromShake(Rotation.none());
         }
     }
 }

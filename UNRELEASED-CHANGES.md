@@ -1,3 +1,5 @@
+This release adds a lot of rotation, to your sprites, to your screen and to your brain.
+
 ### 🚀 Features & improvements
 
 - Added `Graphics.renderDuration()` (#265)

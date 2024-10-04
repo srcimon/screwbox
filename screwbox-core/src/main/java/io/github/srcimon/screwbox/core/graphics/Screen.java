@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
+import io.github.srcimon.screwbox.core.window.Window;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -11,6 +13,18 @@ import java.util.function.Supplier;
  * @see World
  */
 public interface Screen extends Sizeable {
+
+    //TODO changelog
+
+    /**
+     * Sets the rotation of the {@link Camera}. This is a very limited feature resulting in quite some frame drop and
+     * does move rendered area outside of the game {@link Window}.
+     */
+    Screen setRotation(Rotation rotation);
+
+    //TODO javadoc
+    //TODO changelog
+    Rotation rotation();
 
     /**
      * Returns the position of the {@link Screen} relative to the monitor.

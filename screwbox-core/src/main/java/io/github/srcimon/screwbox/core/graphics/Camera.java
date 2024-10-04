@@ -1,26 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.window.Window;
 
 /**
  * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.
  */
 public interface Camera {
-
-    //TODO changelog
-
-    /**
-     * Sets the rotation of the {@link Camera}. This is a very limited feature resulting in quite some frame drop and
-     * does move rendered area outside of the game {@link Window}.
-     */
-    Camera setRotation(Rotation rotation);
-
-    //TODO javadoc
-    //TODO changelog
-    Rotation rotation();
 
     /**
      * Moves the camera within the specified {@link Bounds}.
