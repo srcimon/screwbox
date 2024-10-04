@@ -44,7 +44,7 @@ public class ParticleDebugSystem implements EntitySystem {
             final var rotation = particle.get(RenderComponent.class).options.rotation();
             for (int i = 0; i <= 3; i++) {
                 final Line line = Line.between(particle.position(), particle.position().addX(5));
-                world.drawLine(rotation.add(Rotation.degrees(i * 90)).applyOn(line), PARTICLE_DRAW_OPTIONS);
+                world.drawLine(rotation.add(Rotation.degrees(i * 90.0)).applyOn(line), PARTICLE_DRAW_OPTIONS);
             }
         }
     }

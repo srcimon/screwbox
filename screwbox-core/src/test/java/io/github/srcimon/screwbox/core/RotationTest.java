@@ -125,4 +125,10 @@ class RotationTest {
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.to().y()).isEqualTo(toY, offset(0.1));
     }
+
+    @Test
+    void add_otherHasDegrees_returnsSum() {
+        var result = Rotation.degrees(40).add(Rotation.degrees(340));
+        assertThat(result.degrees()).isEqualTo(20);
+    }
 }
