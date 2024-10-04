@@ -22,7 +22,7 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
     }
 
     private CameraShakeOptions(final Duration duration) {
-        this(duration, 10, 10, Duration.ofMillis(50), Rotation.none());
+        this(duration, 0, 0, Duration.ofMillis(50), Rotation.none());
     }
 
     /**
