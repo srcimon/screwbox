@@ -47,7 +47,6 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation);
-        renderer.fillWith(Color.BLACK);
     }
 
     private Graphics2D getDrawGraphics() {

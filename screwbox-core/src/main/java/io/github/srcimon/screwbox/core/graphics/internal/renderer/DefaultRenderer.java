@@ -30,8 +30,12 @@ public class DefaultRenderer implements Renderer {
     public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
         lastUpdateTime = Time.now();
         this.canvasSize = canvasSize;
-        this.graphics = graphicsSupplier.get();
+        graphics = graphicsSupplier.get();
         lastUsedColor = null;
+        fillWith(Color.BLACK);
+        //TODO: graphics toWorld toOffset not working correctly in mouse
+        this.graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
+        this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
     }
 
     @Override
