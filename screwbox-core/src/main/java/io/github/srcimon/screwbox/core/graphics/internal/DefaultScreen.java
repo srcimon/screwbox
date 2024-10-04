@@ -168,15 +168,15 @@ public class DefaultScreen implements Screen {
         return Optional.ofNullable(lastScreenshot);
     }
 
-    void setRotation(Rotation rotation) {
-        this.rotation = rotation;
-    }
-
-
     @Override
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+    }
+
+
+    void setRotation(Rotation rotation) {
+        this.rotation = rotation;
     }
 
     private ScreenBounds screenBounds() {
