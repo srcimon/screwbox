@@ -17,6 +17,7 @@
 - Improved performance for calculating light areas
 - Significant performance improvement of collision detection, resolve and magnets
 - Time used for calculating Archetype hashes reduced by 25%
+- Renamed `Rotation.ofMovement(double, double)`
 
 ### 📦 Dependency updates
 
