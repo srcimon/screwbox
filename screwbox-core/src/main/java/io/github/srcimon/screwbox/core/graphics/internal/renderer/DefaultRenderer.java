@@ -100,20 +100,16 @@ public class DefaultRenderer implements Renderer {
 
         if (!options.spin().isZero()) {
             //TODO refactor
-            if (!options.isSpinHorizontal()) {
-                Percent rotationPErcent = options.spin();
-                double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
-                transform.translate(0, options.scale() * size.height() / 2.0);
-                transform.scale(1, xDistort); // rotate in 3d horizontal
-                transform.translate(0, options.scale() * size.height() / -2.0);
-            } else {
-                Percent rotationPErcent = options.spin();
-                double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
+            double distort = Ease.SINE_IN_OUT.applyOn(options.spin()).value() * -2 + 1;
+            if (options.isSpinHorizontal()) {
                 transform.translate(options.scale() * size.width() / 2.0, 0);
-                transform.scale(xDistort, 1); // rotate in 3d horizontal
+                transform.scale(distort, 1);
                 transform.translate(options.scale() * size.width() / -2.0, 0);
+            } else {
+                transform.translate(0, options.scale() * size.height() / 2.0);
+                transform.scale(1, distort);
+                transform.translate(0, options.scale() * size.height() / -2.0);
             }
-
         }
         final double xCorrect = options.isFlipHorizontal() ? options.scale() * size.width() : 0;
         final double yCorrect = options.isFlipVertical() ? options.scale() * size.height() : 0;
