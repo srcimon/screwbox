@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
 - Added `Graphics.renderDuration()` (#265)
+- Support for horizontal and vertical spinning sprites (#311)
+- Added `TweenSpinComponent` / `System` to animate spinning sprites
 
 ### 🪛 Bug Fixes
 

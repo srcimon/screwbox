@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -91,13 +90,6 @@ public class DefaultRenderer implements Renderer {
         if (!opacity.isMax()) {
             graphics.setComposite(AlphaComposite.SrcOver);
         }
-    }
-
-    public static void main(String[] args) {
-        var rotationPErcent = Percent.of(Rotation.degrees(0).degrees() / 360.0);
-        System.out.println(rotationPErcent);
-        double xDistort = Ease.SINE_IN_OUT.applyOn(rotationPErcent).value() * -2 + 1;
-        System.out.println(xDistort);
     }
 
     private void drawSpriteInContext(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {

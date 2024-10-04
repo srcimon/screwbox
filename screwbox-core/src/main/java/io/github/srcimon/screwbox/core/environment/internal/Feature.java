@@ -34,7 +34,7 @@ public enum Feature {
             new TweenPositionSystem(),
             new TweenDestroySystem(),
             new TweenScaleSystem(),
-            new TweenOpacitySystem(),//TODO test and javadoc and changelog
+            new TweenOpacitySystem(),
             new TweenSpinSystem(),
             new TweenLightSystem()
     ),

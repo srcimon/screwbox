@@ -2,12 +2,16 @@ package io.github.srcimon.screwbox.core.environment.tweening;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
 
 /**
- * Updates the {@link SpriteDrawOptions#opacity()} of all {@link Entity}s that use tweening and have an {@link TweenOpacityComponent}.
+ * Updates the {@link SpriteDrawOptions#opacity()} of all {@link Entity entities} that use tweening and have an
+ * {@link TweenOpacityComponent}.
  */
 @Order(Order.SystemOrder.PRESENTATION_PREPARE)
 public class TweenOpacitySystem implements EntitySystem {
