@@ -36,7 +36,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
-    private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(2);
+    private UnaryOperator<BufferedImage> postFilter;
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -47,14 +47,19 @@ public class DefaultLight implements Light {
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
+        createPostFilter(configuration);
         configuration.addListener(event -> {
             if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
-                postFilter = configuration.lightmapBlur() == 0
-                        ? doNothing -> doNothing
-                        : new BlurImageFilter(configuration.lightmapBlur());
+                createPostFilter(configuration);
             }
         });
         initLightmap();
+    }
+
+    private void createPostFilter(GraphicsConfiguration configuration) {
+        postFilter = configuration.lightmapBlur() == 0
+                ? doNothing -> doNothing
+                : new BlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override

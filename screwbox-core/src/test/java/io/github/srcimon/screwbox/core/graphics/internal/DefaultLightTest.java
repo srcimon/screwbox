@@ -100,7 +100,7 @@ class DefaultLightTest {
         assertThat(colorInShadow).isEqualTo(Color.BLACK);
 
         Color colorInLight = resultImage.colorAt(93, 83);
-        assertThat(colorInLight.r()).isEqualTo(198);
+        assertThat(colorInLight.r()).isEqualTo(248);
         assertThat(colorInLight.g()).isZero();
         assertThat(colorInLight.b()).isZero();
         assertThat(colorInLight.opacity().value()).isPositive();
@@ -125,7 +125,7 @@ class DefaultLightTest {
         assertThat(colorInShadow).isNotEqualTo(Color.BLACK);
 
         Color colorInLight = resultImage.colorAt(93, 83);
-        assertThat(colorInLight.r()).isEqualTo(255);
+        assertThat(colorInLight.r()).isEqualTo(248);
         assertThat(colorInLight.g()).isZero();
         assertThat(colorInLight.b()).isZero();
         assertThat(colorInLight.opacity().value()).isPositive();

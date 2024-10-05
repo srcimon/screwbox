@@ -28,13 +28,6 @@ class GraphicsConfigurationTest {
     }
 
     @Test
-    void setLightmapBlur_blurIsZero_throwsException() {
-        assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("blur cannot be negative");
-    }
-
-    @Test
     void setLightmapBlur_blurIsTooHigh_throwsException() {
         assertThatThrownBy(() -> graphicsConfiguration.setLightmapBlur(7))
                 .isInstanceOf(IllegalArgumentException.class)
