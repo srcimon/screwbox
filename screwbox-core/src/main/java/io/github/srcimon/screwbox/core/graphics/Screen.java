@@ -25,7 +25,7 @@ public interface Screen extends Sizeable {
      *
      * @see #setRotation(Rotation)
      * @see #shake()
-     * @see #rotationIncludingShake()
+     * @see #absoluteRotation()
      */
     Rotation rotation();
 
@@ -35,7 +35,7 @@ public interface Screen extends Sizeable {
      *
      * @see #setRotation(Rotation)
      * @see #rotation()
-     * @see #rotationIncludingShake()
+     * @see #absoluteRotation()
      */
     Rotation shake();
 
@@ -46,7 +46,7 @@ public interface Screen extends Sizeable {
      * @see #shake()
      * @see #rotation()
      */
-    default Rotation rotationIncludingShake() {
+    default Rotation absoluteRotation() {
         return rotation().add(shake());
     }
 

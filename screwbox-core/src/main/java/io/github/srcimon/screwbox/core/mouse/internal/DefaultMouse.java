@@ -151,7 +151,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
-        final Rotation rotationIncludingShake = screen.rotationIncludingShake();
+        final Rotation rotationIncludingShake = screen.absoluteRotation();
         if (rotationIncludingShake.isNone()) {
             return world.toPosition(offset);
         }

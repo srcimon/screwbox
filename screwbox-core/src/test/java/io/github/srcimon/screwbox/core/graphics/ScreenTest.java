@@ -24,10 +24,10 @@ class ScreenTest {
     }
 
     @Test
-    void rotationIncludingShake_screenIsRotatedAndShaking_returnsSumOfBoth() {
+    void absoluteRotation_screenIsRotatedAndShaking_returnsSumOfBoth() {
         when(screen.shake()).thenReturn(Rotation.degrees(20));
         when(screen.rotation()).thenReturn(Rotation.degrees(100));
 
-        assertThat(screen.rotationIncludingShake()).isEqualTo(Rotation.degrees(120));
+        assertThat(screen.absoluteRotation()).isEqualTo(Rotation.degrees(120));
     }
 }
