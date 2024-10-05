@@ -13,10 +13,10 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param yStrength      the y-strength of the shake
  * @param interval       the {@link Duration} between direction changes (may very to make it more realisitc)
  * @param screenRotation the maximum {@link Rotation} applied to the {@link Screen}
+ * @param ease           the {@link Ease} used to calculate the strength of the shake at a specific time
  */
-//TODO test
 public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval,
-                                 Rotation screenRotation, Ease ease) {//TODO test and document ease
+                                 Rotation screenRotation, Ease ease) {
 
     public CameraShakeOptions {
         Validate.zeroOrPositive(xStrength, "strength must be positive");
