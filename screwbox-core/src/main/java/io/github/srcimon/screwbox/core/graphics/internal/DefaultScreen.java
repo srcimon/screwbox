@@ -7,7 +7,6 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
