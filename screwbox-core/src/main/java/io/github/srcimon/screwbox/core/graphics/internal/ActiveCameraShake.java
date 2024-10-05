@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
@@ -25,6 +24,12 @@ class ActiveCameraShake {
         this.options = options;
     }
 
+    //TODO test
+    Rotation caclulateRotation(final Time now) {
+        final var progress = calculateProgress(now);
+        return Rotation.degrees(options.screenRotation().degrees() * shakeNoise.value(now) * progress.invert().value());
+    }
+
     Vector calculateDistortion(final Time now, final double zoom) {
         final var progress = calculateProgress(now);
 
@@ -37,17 +42,10 @@ class ActiveCameraShake {
     }
 
     private Percent calculateProgress(final Time now) {
-        if (options.duration().isNone()) {
-            return Percent.zero();
-        }
-        final Duration elapsed = Duration.between(start, now);
-        final var end = options.duration().addTo(start);
-        return Percent.of(1.0 * elapsed.nanos() / Duration.between(start, end).nanos());
+        return options.duration().isNone()
+                ? Percent.zero()
+                : options.duration().progress(start, now);
     }
 
-    //TODO test
-    public Rotation caclulateRotation(final Time now) {
-        final var progress = calculateProgress(now);
-        return Rotation.degrees(options.screenRotation().degrees() * shakeNoise.value(now) * progress.invert().value());
-    }
+
 }
