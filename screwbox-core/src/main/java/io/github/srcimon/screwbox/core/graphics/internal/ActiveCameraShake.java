@@ -43,6 +43,6 @@ class ActiveCameraShake {
                 ? Percent.zero()
                 : options.duration().progress(start, now);
 
-        return Ease.LINEAR_OUT.applyOn(progress).value();
+        return options.ease().applyOn(progress).value();
     }
 }

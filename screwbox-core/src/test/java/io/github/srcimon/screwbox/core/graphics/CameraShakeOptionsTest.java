@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Rotation;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,7 @@ class CameraShakeOptionsTest {
         assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
         assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
     @Test
@@ -32,6 +34,7 @@ class CameraShakeOptionsTest {
         assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
         assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
     @Test
@@ -53,10 +56,18 @@ class CameraShakeOptionsTest {
     }
 
     @Test
-    void screenRotation_positiveRotation_setsScreenRotation() {
+    void screenRotation_rotationNotNull_setsScreenRotation() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
                 .screenRotation(Rotation.degrees(40));
 
         assertThat(options.screenRotation()).isEqualTo(Rotation.degrees(40));
+    }
+
+    @Test
+    void ease_easeNotNull_setsEase() {
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
+                .ease(Ease.SIN_IN_OUT_TWICE);
+
+        assertThat(options.ease()).isEqualTo(Ease.SIN_IN_OUT_TWICE);
     }
 }
