@@ -173,7 +173,13 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        // LightMap is always a little larger than screen to avoid flickering
+        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
+        screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Math.round(0.5));
     }
 
     @Override
