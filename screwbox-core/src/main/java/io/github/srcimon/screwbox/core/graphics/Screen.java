@@ -30,7 +30,8 @@ public interface Screen extends Sizeable {
     Rotation rotation();
 
     /**
-     * Returns current shake of the {@link Screen} without current {@link #rotation()}.
+     * Returns current shake of the {@link Screen} without current {@link #rotation()}. Shake is also a {@link Rotation}
+     * that is applied via {@link Camera#shake(CameraShakeOptions)}.
      *
      * @see #setRotation(Rotation)
      * @see #rotation()
