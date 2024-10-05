@@ -43,7 +43,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      *
      * @see #ofMovement(Vector)
      */
-    public static Rotation ofMomentum(final double x, final double y) {
+    public static Rotation ofMovement(final double x, final double y) {
         final double degrees = Math.toDegrees(Math.atan2(x, -1 * y));
         final double inRangeDegrees = degrees + Math.ceil(-degrees / 360) * 360;
 
@@ -55,10 +55,10 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
      * angle between a vertical line and the {@link Vector} starting on the button
      * of this line.
      *
-     * @see #ofMomentum(double, double)
+     * @see #ofMovement(double, double)
      */
     public static Rotation ofMovement(final Vector momentum) {
-        return ofMomentum(momentum.x(), momentum.y());
+        return ofMovement(momentum.x(), momentum.y());
     }
 
     /**
@@ -146,6 +146,13 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         final double yNew = translated.x() * sinus + translated.y() * cosinus + line.from().y();
 
         return Line.between(line.from(), Vector.$(xNew, yNew));
+    }
+
+    /**
+     * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
+     */
+    public Rotation add(final Rotation other) {
+        return Rotation.degrees(degrees + other.degrees);
     }
 
     @Override

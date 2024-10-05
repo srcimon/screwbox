@@ -18,9 +18,9 @@ public class FixedRotationSystem implements EntitySystem {
     public void update(Engine engine) {
         for (final var entity : engine.environment().fetchAll(ROTATING)) {
             final var render = entity.get(RenderComponent.class);
-            double additionalRotation = 360 * engine.loop().delta() * entity.get(FixedRotationComponent.class).clockwiseRotationsPerSecond;
-            final double rotation = render.options.rotation().degrees() + additionalRotation;
-            render.options = render.options.rotation(Rotation.degrees(rotation));
+            final Rotation additionalRotation = Rotation.degrees(360 * engine.loop().delta() * entity.get(FixedRotationComponent.class).clockwiseRotationsPerSecond);
+            final Rotation rotation = render.options.rotation().add(additionalRotation);
+            render.options = render.options.rotation(rotation);
         }
     }
 }

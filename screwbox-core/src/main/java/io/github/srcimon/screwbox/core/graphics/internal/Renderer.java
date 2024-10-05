@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 
@@ -8,7 +9,7 @@ import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateGraphicsContext(Supplier<Graphics2D> graphicsSupplier, final Size canvasSize);
+    void updateGraphicsContext(Supplier<Graphics2D> graphicsSupplier, Size canvasSize, Rotation rotation);
 
     void fillWith(Color color);
 

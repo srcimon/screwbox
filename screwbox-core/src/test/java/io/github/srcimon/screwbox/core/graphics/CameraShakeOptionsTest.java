@@ -1,5 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Ease;
+import io.github.srcimon.screwbox.core.Rotation;
 import org.junit.jupiter.api.Test;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
@@ -19,6 +21,8 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(30);
         assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
+        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
     @Test
@@ -29,23 +33,41 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(20);
         assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
+        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
     @Test
-    void strength_xStrengthZero_throwsException() {
+    void xStrength_xStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
-        assertThatThrownBy(() -> options.xStrength(0))
+        assertThatThrownBy(() -> options.xStrength(-2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
     }
 
     @Test
-    void strength_yStrengthZero_throwsException() {
+    void yStrength_yStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
-        assertThatThrownBy(() -> options.yStrength(0))
+        assertThatThrownBy(() -> options.yStrength(-10))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
+    }
+
+    @Test
+    void screenRotation_rotationNotNull_setsScreenRotation() {
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
+                .screenRotation(Rotation.degrees(40));
+
+        assertThat(options.screenRotation()).isEqualTo(Rotation.degrees(40));
+    }
+
+    @Test
+    void ease_easeNotNull_setsEase() {
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
+                .ease(Ease.SIN_IN_OUT_TWICE);
+
+        assertThat(options.ease()).isEqualTo(Ease.SIN_IN_OUT_TWICE);
     }
 }

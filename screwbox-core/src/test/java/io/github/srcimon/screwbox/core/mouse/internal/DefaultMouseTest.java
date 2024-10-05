@@ -1,9 +1,10 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,10 +24,10 @@ import static org.mockito.Mockito.when;
 class DefaultMouseTest {
 
     @Mock
-    Screen screen;
+    DefaultScreen screen;
 
     @Mock
-    Graphics graphics;
+    DefaultWorld world;
 
     @InjectMocks
     DefaultMouse mouse;
@@ -79,7 +81,6 @@ class DefaultMouseTest {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151);
         when(mouseEvent.getYOnScreen()).thenReturn(242);
-        when(graphics.screen()).thenReturn(screen);
         when(screen.position()).thenReturn(Offset.at(40, 12));
 
         mouse.mouseMoved(mouseEvent);
@@ -88,14 +89,14 @@ class DefaultMouseTest {
     }
 
     @Test
-    void position_returnsTheLatestPosition() {
+    void position_noScreenRotation_returnsTheLatestPosition() {
         MouseEvent mouseEvent = mock(MouseEvent.class);
         when(mouseEvent.getXOnScreen()).thenReturn(151, 219);
         when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
-        when(graphics.screen()).thenReturn(screen);
         when(screen.position()).thenReturn(Offset.at(40, 12));
-        when(graphics.toPosition(Offset.at(111, 230))).thenReturn(Vector.$(40, 90));
-        when(graphics.toPosition(Offset.at(179, 8))).thenReturn(Vector.$(10, 30));
+        when(screen.absoluteRotation()).thenReturn(Rotation.none());
+        when(world.toPosition(Offset.at(111, 230))).thenReturn(Vector.$(40, 90));
+        when(world.toPosition(Offset.at(179, 8))).thenReturn(Vector.$(10, 30));
         mouse.mouseMoved(mouseEvent);
 
         assertThat(mouse.position()).isEqualTo(Vector.$(40, 90));
@@ -106,8 +107,30 @@ class DefaultMouseTest {
     }
 
     @Test
+    void position_screenRotationPresent_returnsTheLatestPosition() {
+        MouseEvent mouseEvent = mock(MouseEvent.class);
+        when(mouseEvent.getXOnScreen()).thenReturn(151, 219);
+        when(mouseEvent.getYOnScreen()).thenReturn(242, 20);
+        when(screen.position()).thenReturn(Offset.at(40, 12));
+        when(screen.center()).thenReturn(Offset.at(21, 33));
+        when(screen.absoluteRotation()).thenReturn(Rotation.degrees(45));
+        when(world.toPosition(Offset.at(21, 33))).thenReturn(Vector.$(40, 90));
+        when(world.toPosition(Offset.at(111, 230))).thenReturn(Vector.$(40, 90));
+        when(world.toPosition(Offset.at(179, 8))).thenReturn(Vector.$(10, 30));
+        mouse.mouseMoved(mouseEvent);
+
+        assertThat(mouse.position()).isEqualTo(Vector.$(40, 90));
+
+        mouse.mouseDragged(mouseEvent);
+
+        assertThat(mouse.position().x()).isEqualTo(-23.63, offset(0.01));
+        assertThat(mouse.position().y()).isEqualTo(68.78, offset(0.01));
+    }
+
+    @Test
     void drag_noMovement_isZero() {
-        when(graphics.toPosition(Offset.origin())).thenReturn(Vector.$(40, 90));
+        when(world.toPosition(Offset.origin())).thenReturn(Vector.$(40, 90));
+        when(screen.absoluteRotation()).thenReturn(Rotation.none());
 
         assertThat(mouse.drag()).isEqualTo(Vector.zero());
     }

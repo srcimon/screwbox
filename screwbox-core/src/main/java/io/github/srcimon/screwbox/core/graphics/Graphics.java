@@ -44,7 +44,7 @@ public interface Graphics {
     Light light();
 
     /**
-     * Returns the position the given {@link Offset} in the {@link World}.
+     * Returns the position the given {@link Offset} in the {@link World} not considering {@link Screen#rotation()}.
      */
     Vector toPosition(Offset offset);
 

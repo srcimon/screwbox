@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -11,6 +12,7 @@ import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen {
 
@@ -19,6 +21,8 @@ public class DefaultScreen implements Screen {
     private final Robot robot;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
+    private Rotation rotation = Rotation.none();
+    private Rotation shake = Rotation.none();
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
         this.renderer = renderer;
@@ -44,7 +48,7 @@ public class DefaultScreen implements Screen {
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation.add(shake));
         renderer.fillWith(Color.BLACK);
     }
 
@@ -172,8 +176,27 @@ public class DefaultScreen implements Screen {
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
     }
 
+    @Override
+    public Screen setRotation(final Rotation rotation) {
+        this.rotation = requireNonNull(rotation, "rotation must not be null");
+        return this;
+    }
+
+    @Override
+    public Rotation rotation() {
+        return rotation;
+    }
+
+    @Override
+    public Rotation shake() {
+        return shake;
+    }
+
+    public void setShake(final Rotation shake) {
+        this.shake = requireNonNull(shake, "shake must not be null");
+    }
+
     private ScreenBounds screenBounds() {
         return new ScreenBounds(Offset.origin(), size());
     }
-
 }

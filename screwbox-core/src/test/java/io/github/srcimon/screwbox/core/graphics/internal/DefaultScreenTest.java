@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
@@ -164,5 +165,33 @@ class DefaultScreenTest {
         var result = screen.takeScreenshot();
 
         assertThat(result.image(now())).isEqualTo(screenshot);
+    }
+
+    @Test
+    void setRotation_rotationNotNull_setsRotation() {
+        screen.setRotation(Rotation.degrees(20));
+
+        assertThat(screen.rotation()).isEqualTo(Rotation.degrees(20));
+    }
+
+    @Test
+    void setRotation_rotationNull_throwsException() {
+        assertThatThrownBy(() -> screen.setRotation(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("rotation must not be null");
+    }
+
+    @Test
+    void setShake_shakeNotNull_setsShake() {
+        screen.setShake(Rotation.degrees(4));
+
+        assertThat(screen.shake()).isEqualTo(Rotation.degrees(4));
+    }
+
+    @Test
+    void setShake_shakeNull_throwsException() {
+        assertThatThrownBy(() -> screen.setShake(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("shake must not be null");
     }
 }

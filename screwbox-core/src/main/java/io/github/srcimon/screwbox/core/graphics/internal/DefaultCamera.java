@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
@@ -15,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 public class DefaultCamera implements Camera, Updatable {
 
     private final DefaultWorld world;
+    private final DefaultScreen screen;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
     private double zoom = 1;
@@ -24,8 +26,9 @@ public class DefaultCamera implements Camera, Updatable {
 
     private ActiveCameraShake activeShake;
 
-    public DefaultCamera(final DefaultWorld world) {
+    public DefaultCamera(final DefaultWorld world, final DefaultScreen screen) {
         this.world = world;
+        this.screen = screen;
     }
 
     @Override
@@ -87,7 +90,7 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
-    public Camera shake(CameraShakeOptions options) {
+    public Camera shake(final CameraShakeOptions options) {
         activeShake = new ActiveCameraShake(options);
         return this;
     }
@@ -120,15 +123,16 @@ public class DefaultCamera implements Camera, Updatable {
 
     @Override
     public void update() {
-        Time now = Time.now();
-
+        final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
+            screen.setShake(activeShake.caclulateRotation(now));
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
+            screen.setShake(Rotation.none());
         }
     }
 }

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -34,9 +35,9 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
         waitForCurrentRenderingToEnd();
-        next.updateGraphicsContext(graphicsSupplier, canvasSize);
+        next.updateGraphicsContext(graphicsSupplier, canvasSize, rotation);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());

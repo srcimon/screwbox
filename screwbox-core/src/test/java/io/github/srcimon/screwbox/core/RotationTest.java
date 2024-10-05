@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
@@ -16,9 +18,12 @@ class RotationTest {
 
     @Test
     void random_calledFourTimes_createsAtLeastTwoDistinctRotations() {
-        Set<Rotation> randomRotations = Set.of(
-                Rotation.random(), Rotation.random(), Rotation.random(), Rotation.random());
+        Set<Rotation> randomRotations = new HashSet<>();
 
+        for (int i = 0; i < 4; i++) {
+            randomRotations.add(Rotation.random());
+            TestUtil.sleep(Duration.ofMillis(100));
+        }
         assertThat(randomRotations).hasSizeGreaterThanOrEqualTo(2);
     }
 
@@ -90,15 +95,15 @@ class RotationTest {
 
     @ParameterizedTest
     @CsvSource({"100,100,135", "0,100,180", "-100,0,270"})
-    void ofMomentum_returnsNewInstance(double x, double y, double value) {
+    void ofMovement_returnsNewInstance(double x, double y, double value) {
         Rotation rotation = Rotation.ofMovement(Vector.of(x, y));
 
         assertThat(rotation.degrees()).isEqualTo(value);
     }
 
     @Test
-    void ofMomentum_returnsNewInstance() {
-        Rotation rotation = Rotation.ofMomentum(10, 20);
+    void ofMovement_returnsNewInstance() {
+        Rotation rotation = Rotation.ofMovement(10, 20);
 
         assertThat(rotation.degrees()).isCloseTo(153.4, offset(0.2));
     }
@@ -124,5 +129,11 @@ class RotationTest {
         assertThat(rotated.from()).isEqualTo(Vector.zero());
         assertThat(rotated.to().x()).isEqualTo(toX, offset(0.1));
         assertThat(rotated.to().y()).isEqualTo(toY, offset(0.1));
+    }
+
+    @Test
+    void add_otherHasDegrees_returnsSum() {
+        var result = Rotation.degrees(40).add(Rotation.degrees(340));
+        assertThat(result.degrees()).isEqualTo(20);
     }
 }
