@@ -14,7 +14,6 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageAndIncreaseSizeFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 
 import java.awt.image.BufferedImage;
@@ -37,7 +36,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
-    private UnaryOperator<BufferedImage> postFilter = new BlurImageAndIncreaseSizeFilter(2);
+    private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(2);
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -52,7 +51,7 @@ public class DefaultLight implements Light {
             if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 postFilter = configuration.lightmapBlur() == 0
                         ? doNothing -> doNothing
-                        : new BlurImageAndIncreaseSizeFilter(configuration.lightmapBlur());
+                        : new BlurImageFilter(configuration.lightmapBlur());
             }
         });
         initLightmap();
@@ -166,7 +165,7 @@ public class DefaultLight implements Light {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
                 Thread.currentThread().interrupt();
-                throw new IllegalStateException("error receiving lightmap sprite");
+                throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
         Offset at = Offset.at(-configuration.lightmapBlur() * configuration.lightmapScale(), -configuration.lightmapBlur() * configuration.lightmapScale());
