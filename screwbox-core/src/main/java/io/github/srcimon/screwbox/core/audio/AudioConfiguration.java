@@ -21,7 +21,7 @@ public class AudioConfiguration {
     private boolean areEffectsMuted = false;
     private double soundRange = 1024;
     private Duration microphoneIdleTimeout = Duration.ofSeconds(5);
-    private int maxLines = 64;
+    private int maxLines = 24;
 
     private final List<AudioConfigurationListener> listeners = new ArrayList<>();
 
