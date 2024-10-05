@@ -6,6 +6,7 @@ This release adds a lot of rotation: to your sprites, to your screen and to your
 - Support for horizontal and vertical spinning sprites (#311)
 - Added `TweenSpinComponent` / `System` to link spin of a sprite to the entities tween
 - Added `FixedSpinComponent` / `System` to add constant spin animation to a sprite
+- Support for rotating the whole screen within the game window (#388)
 - Support for screen rotation and custom ease within `CameraShakeOptions` (#391)
 - Added `Percent.addWithOverflow(double)`
 - Added `ParticleOptions.animateHorizontalSpin()`, `.animateVerticalSpin()`

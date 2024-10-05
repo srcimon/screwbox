@@ -148,8 +148,6 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         return Line.between(line.from(), Vector.$(xNew, yNew));
     }
 
-    //TODO and test
-
     /**
      * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
      */
