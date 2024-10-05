@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import org.junit.jupiter.api.Test;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
@@ -19,6 +20,7 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(30);
         assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
+        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
     }
 
     @Test
@@ -29,10 +31,11 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(20);
         assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
+        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
     }
 
     @Test
-    void strength_xStrengthNegative_throwsException() {
+    void xStrength_xStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
         assertThatThrownBy(() -> options.xStrength(-2))
@@ -41,11 +44,19 @@ class CameraShakeOptionsTest {
     }
 
     @Test
-    void strength_yStrengthNegative_throwsException() {
+    void yStrength_yStrengthNegative_throwsException() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2));
 
         assertThatThrownBy(() -> options.yStrength(-10))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("strength must be positive");
+    }
+
+    @Test
+    void screenRotation_positiveRotation_setsScreenRotation() {
+        var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
+                .screenRotation(Rotation.degrees(40));
+
+        assertThat(options.screenRotation()).isEqualTo(Rotation.degrees(40));
     }
 }

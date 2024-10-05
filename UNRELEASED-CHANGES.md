@@ -9,6 +9,7 @@ This release adds a lot of rotation: to your sprites, to your screen and to your
 - Added `Percent.addWithOverflow(double)`
 - Added `ParticleOptions.animateHorizontalSpin()`, `.animateVerticalSpin()`
 - Added `Rotation.add(Rotation)`
+- Camera shake now supports parameter for maximum screen rotation applied
 
 ### 🪛 Bug Fixes
 
