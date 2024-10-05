@@ -48,6 +48,6 @@ class ActiveCameraShake {
     //TODO test
     public Rotation caclulateRotation(final Time now) {
         final var progress = calculateProgress(now);
-        return Rotation.degrees(options.screenShake().degrees() * shakeNoise.value(now) * progress.invert().value());
+        return Rotation.degrees(options.shake().degrees() * shakeNoise.value(now) * progress.invert().value());
     }
 }
