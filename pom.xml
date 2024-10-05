@@ -32,7 +32,7 @@
         <sonar.organization>srcimon</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6, e7</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2, e3, e4, e5, e6, e7, e8</sonar.issue.ignore.multicriteria>
 
         <!-- public accessibility in components by intention -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S1104</sonar.issue.ignore.multicriteria.e1.ruleKey>
@@ -63,8 +63,8 @@
         <sonar.issue.ignore.multicriteria.e7.resourceKey>**.java</sonar.issue.ignore.multicriteria.e7.resourceKey>
 
         <!-- disable cycle detection: some choices were made that cannot be undone -->
-        <sonar.issue.ignore.multicriteria.e7.ruleKey>javaarchitecture:S7091</sonar.issue.ignore.multicriteria.e7.ruleKey>
-        <sonar.issue.ignore.multicriteria.e7.resourceKey>**.java</sonar.issue.ignore.multicriteria.e7.resourceKey>
+        <sonar.issue.ignore.multicriteria.e8.ruleKey>javaarchitecture:S7091</sonar.issue.ignore.multicriteria.e8.ruleKey>
+        <sonar.issue.ignore.multicriteria.e8.resourceKey>**.java</sonar.issue.ignore.multicriteria.e8.resourceKey>
 
     </properties>
     <dependencyManagement>
