@@ -25,7 +25,7 @@ public class OptionsMenu extends UiMenu {
                 ? "light quality low"
                 : "light quality high").onActivate(engine ->
                 engine.graphics().configuration().setLightmapScale(engine.graphics().configuration().lightmapScale() == 4
-                        ? 1 : 6));
+                        ? 2 : 4));
 
         addItem("change resolution").onActivate(engine -> {
             List<Size> resolutions = engine.graphics().supportedResolutions();
