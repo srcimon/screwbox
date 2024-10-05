@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageAndIncreaseSizeFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
 
 import java.awt.image.BufferedImage;
@@ -36,7 +37,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
-    private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
+    private UnaryOperator<BufferedImage> postFilter = new BlurImageAndIncreaseSizeFilter(3);
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -51,7 +52,7 @@ public class DefaultLight implements Light {
             if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 postFilter = configuration.lightmapBlur() == 0
                         ? doNothing -> doNothing
-                        : new BlurImageFilter(configuration.lightmapBlur());
+                        : new BlurImageAndIncreaseSizeFilter(configuration.lightmapBlur());
             }
         });
         initLightmap();
@@ -168,7 +169,7 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite");
             }
         });
-        screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        screen.drawSprite(sprite, Offset.at(-configuration.lightmapBlur(), -configuration.lightmapBlur()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
