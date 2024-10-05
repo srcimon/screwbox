@@ -7,11 +7,13 @@ import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen {
 
@@ -177,7 +179,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen setRotation(final Rotation rotation) {
-        this.rotation = rotation;
+        this.rotation = requireNonNull(rotation, "rotation must not be null");
         return this;
     }
 
@@ -192,7 +194,7 @@ public class DefaultScreen implements Screen {
     }
 
     public void setShake(final Rotation shake) {
-        this.shake = shake;
+        this.shake = requireNonNull(shake, "shake must not be null");
     }
 
     private ScreenBounds screenBounds() {
