@@ -54,7 +54,7 @@ public class GraphicsConfiguration {
      * @param lightmapBlur blur value from 0 (no blur) to 6.
      */
     public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        Validate.positive(lightmapBlur, "blur cannot be negative");
+        Validate.zeroOrPositive(lightmapBlur, "blur cannot be negative");
         if (lightmapBlur > 6) {
             throw new IllegalArgumentException("blur only supports values 0 (no blur) to 6 (heavy blur)");
         }
