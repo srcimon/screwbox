@@ -168,8 +168,7 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        Offset at = Offset.at(-configuration.lightmapBlur() * configuration.lightmapScale(), -configuration.lightmapBlur() * configuration.lightmapScale());
-        screen.drawSprite(sprite, at, scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
