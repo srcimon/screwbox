@@ -37,7 +37,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
-    private UnaryOperator<BufferedImage> postFilter = new BlurImageAndIncreaseSizeFilter(3);
+    private UnaryOperator<BufferedImage> postFilter = new BlurImageAndIncreaseSizeFilter(2);
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -169,7 +169,8 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite");
             }
         });
-        screen.drawSprite(sprite, Offset.at(-configuration.lightmapBlur(), -configuration.lightmapBlur()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        Offset at = Offset.at(-configuration.lightmapBlur() * configuration.lightmapScale(), -configuration.lightmapBlur() * configuration.lightmapScale());
+        screen.drawSprite(sprite, at, scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
