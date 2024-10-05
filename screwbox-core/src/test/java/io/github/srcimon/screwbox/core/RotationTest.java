@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
@@ -16,9 +18,12 @@ class RotationTest {
 
     @Test
     void random_calledFourTimes_createsAtLeastTwoDistinctRotations() {
-        Set<Rotation> randomRotations = Set.of(
-                Rotation.random(), Rotation.random(), Rotation.random(), Rotation.random());
+        Set<Rotation> randomRotations = new HashSet<>();
 
+        for (int i = 0; i < 4; i++) {
+            randomRotations.add(Rotation.random());
+            TestUtil.sleep(Duration.ofMillis(100));
+        }
         assertThat(randomRotations).hasSizeGreaterThanOrEqualTo(2);
     }
 
