@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
@@ -24,28 +25,24 @@ class ActiveCameraShake {
         this.options = options;
     }
 
-    //TODO test
     Rotation caclulateRotation(final Time now) {
-        final var progress = calculateProgress(now);
-        return Rotation.degrees(options.screenRotation().degrees() * shakeNoise.value(now) * progress.invert().value());
+        return Rotation.degrees(options.screenRotation().degrees() * shakeNoise.value(now) * strengthAtTime(now));
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {
-        final var progress = calculateProgress(now);
-
-        return $(xNoise.value(now) * options.xStrength() * progress.invert().value() / zoom,
-                yNoise.value(now) * options.yStrength() * progress.invert().value() / zoom);
+        return $(xNoise.value(now) * options.xStrength() * strengthAtTime(now) / zoom,
+                yNoise.value(now) * options.yStrength() * strengthAtTime(now) / zoom);
     }
 
     boolean hasEnded(final Time now) {
         return !options.duration().isNone() && now.isAfter(options.duration().addTo(start));
     }
 
-    private Percent calculateProgress(final Time now) {
-        return options.duration().isNone()
+    private double strengthAtTime(final Time now) {
+        final var progress = options.duration().isNone()
                 ? Percent.zero()
                 : options.duration().progress(start, now);
+
+        return Ease.LINEAR_OUT.applyOn(progress).value();
     }
-
-
 }
