@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -156,6 +158,24 @@ class DefaultCameraTest {
 
         assertThat(camera.focus().distanceTo(camera.position())).isLessThan(6);
         assertThat(camera.focus()).isNotEqualTo(camera.position());
+    }
+
+    @Test
+    void update_noActiveScreenShake_setsScreenShakeNone() {
+        camera.update();
+
+        verify(screen).setShake(Rotation.none());
+    }
+
+    @Test
+    void update_activeScreenShake_setsScreenShake() {
+        camera.shake(CameraShakeOptions.infinite().strength(0).screenRotation(Rotation.degrees(45)));
+
+        camera.update();
+
+        var shakeCaptor = ArgumentCaptor.forClass(Rotation.class);
+        verify(screen).setShake(shakeCaptor.capture());
+        assertThat(shakeCaptor.getValue()).isNotEqualTo(Rotation.none());
     }
 
 }
