@@ -25,6 +25,7 @@ This release adds a lot of rotation: to your sprites, to your screen and to your
 - Time used for calculating Archetype hashes reduced by 25%
 - Renamed `Rotation.ofMovement(double, double)`
 - Defaulted strength of `CameraShakeOptions` to zero
+- Explicitly configured inline mocking for Mockito
 
 ### 📦 Dependency updates
 
