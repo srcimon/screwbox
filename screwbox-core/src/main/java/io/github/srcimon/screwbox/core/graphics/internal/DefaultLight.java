@@ -36,7 +36,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
-    private UnaryOperator<BufferedImage> postFilter = new BlurImageFilter(3);
+    private UnaryOperator<BufferedImage> postFilter;
     private boolean renderInProgress = false;
 
     private final List<Runnable> tasks = new ArrayList<>();
@@ -47,14 +47,19 @@ public class DefaultLight implements Light {
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
+        createPostFilter(configuration);
         configuration.addListener(event -> {
             if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
-                postFilter = configuration.lightmapBlur() == 0
-                        ? doNothing -> doNothing
-                        : new BlurImageFilter(configuration.lightmapBlur());
+                createPostFilter(configuration);
             }
         });
         initLightmap();
+    }
+
+    private void createPostFilter(GraphicsConfiguration configuration) {
+        postFilter = configuration.lightmapBlur() == 0
+                ? doNothing -> doNothing
+                : new BlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override
@@ -165,10 +170,16 @@ public class DefaultLight implements Light {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
                 Thread.currentThread().interrupt();
-                throw new IllegalStateException("error receiving lightmap sprite");
+                throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        screen.drawSprite(sprite, Offset.origin(), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        // LightMap is always a little larger than screen to avoid flickering
+        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
+        screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Math.round(0.5));
     }
 
     @Override

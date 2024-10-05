@@ -16,7 +16,7 @@ public class GraphicsConfiguration {
     private Size resolution = Size.of(1280, 720);
     private boolean fullscreen = false;
     private boolean useAntialiasing = false;
-    private int lightmapBlur = 2;
+    private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
 
@@ -54,7 +54,7 @@ public class GraphicsConfiguration {
      * @param lightmapBlur blur value from 0 (no blur) to 6.
      */
     public GraphicsConfiguration setLightmapBlur(final int lightmapBlur) {
-        Validate.positive(lightmapBlur, "blur cannot be negative");
+        Validate.zeroOrPositive(lightmapBlur, "blur cannot be negative");
         if (lightmapBlur > 6) {
             throw new IllegalArgumentException("blur only supports values 0 (no blur) to 6 (heavy blur)");
         }

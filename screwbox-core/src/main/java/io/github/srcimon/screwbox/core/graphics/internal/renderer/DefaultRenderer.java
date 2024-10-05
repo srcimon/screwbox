@@ -32,10 +32,10 @@ public class DefaultRenderer implements Renderer {
         this.canvasSize = canvasSize;
         graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        if(!rotation.isNone()) {
+        if (!rotation.isNone()) {
             fillWith(Color.BLACK);
             this.graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
-            this.graphics.setClip(1, 1, canvasSize.width()-1, canvasSize.height()-1);
+            this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
         }
     }
 
