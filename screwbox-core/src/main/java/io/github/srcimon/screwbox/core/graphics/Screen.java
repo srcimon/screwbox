@@ -15,18 +15,36 @@ import java.util.function.Supplier;
 public interface Screen extends Sizeable {
 
     /**
-     * Sets the rotation of the {@link Camera}. This is a very limited feature resulting in quite some frame drop and
+     * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
      * does move rendered area outside of the game {@link Window}.
      */
     Screen setRotation(Rotation rotation);
 
-    //TODO javadoc
+    /**
+     * Returns the current rotation of the {@link Screen} without current {@link #shake()}.
+     *
+     * @see #setRotation(Rotation)
+     * @see #shake()
+     * @see #rotationIncludingShake()
+     */
     Rotation rotation();
 
-    //TODO javadoc
+    /**
+     * Returns current shake of the {@link Screen} without current {@link #rotation()}.
+     *
+     * @see #setRotation(Rotation)
+     * @see #rotation()
+     * @see #rotationIncludingShake()
+     */
     Rotation shake();
 
-    //TODO javadoc
+    /**
+     * Returns the current rotation of the {@link Screen} including the current {@link #shake()}.
+     *
+     * @see #setRotation(Rotation)
+     * @see #shake()
+     * @see #rotation()
+     */
     default Rotation rotationIncludingShake() {
         return rotation().add(shake());
     }
