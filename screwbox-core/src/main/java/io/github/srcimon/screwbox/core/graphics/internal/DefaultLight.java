@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
 import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -23,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
+import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
@@ -49,7 +49,7 @@ public class DefaultLight implements Light {
         this.configuration = configuration;
         postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
         configuration.addListener(event -> {
-            if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
+            if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
             }
         });
