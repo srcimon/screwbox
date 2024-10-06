@@ -1,15 +1,15 @@
-# 🚀 Features & improvements
+### 🚀 Features & improvements
 
 - ...
 
-# 🪛 Bug Fixes
+### 🪛 Bug Fixes
 
 - ...
 
-# 🧽 Cleanup & refactoring
+### 🧽 Cleanup & refactoring
 
 - Reduced lightmap size and used optimzed blur filter to slightly reduce memory transfer rate (#393)
 
-# 📦 Dependency updates
+### 📦 Dependency updates
 
 - ...
