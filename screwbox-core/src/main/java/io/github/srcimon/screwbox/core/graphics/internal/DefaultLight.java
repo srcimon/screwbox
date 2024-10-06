@@ -47,13 +47,19 @@ public class DefaultLight implements Light {
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
-        postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
+        updatePostFilter();
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
-                postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
+                updatePostFilter();
             }
         });
         initLightmap();
+    }
+
+    private void updatePostFilter() {
+        postFilter = configuration.lightmapBlur() == 0
+                ? image -> image // do nothing
+                : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override
@@ -170,6 +176,7 @@ public class DefaultLight implements Light {
         // LightMap is always a little larger than screen to avoid flickering
 //        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
         final var overlap = -configuration.lightmapBlur() * configuration.lightmapScale();
+        System.out.println(overlap);
         screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 

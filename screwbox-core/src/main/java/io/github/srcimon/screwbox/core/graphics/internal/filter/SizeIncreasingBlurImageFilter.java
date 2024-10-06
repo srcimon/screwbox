@@ -13,7 +13,7 @@ public class SizeIncreasingBlurImageFilter implements UnaryOperator<BufferedImag
     private final ConvolveOp convolveOperation;
 
     public SizeIncreasingBlurImageFilter(final int radius) {
-        if (radius < 1 || radius > 6) {//TODO handle 0 radius
+        if (radius < 1 || radius > 6) {
             throw new IllegalArgumentException("radius must be in range 1 to 6");
         }
         this.radius = radius;
