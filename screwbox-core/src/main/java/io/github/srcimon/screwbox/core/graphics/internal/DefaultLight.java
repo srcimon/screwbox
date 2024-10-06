@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -47,19 +47,13 @@ public class DefaultLight implements Light {
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
-        createPostFilter(configuration);
+        postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
         configuration.addListener(event -> {
             if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
-                createPostFilter(configuration);
+                postFilter = new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
             }
         });
         initLightmap();
-    }
-
-    private void createPostFilter(GraphicsConfiguration configuration) {
-        postFilter = configuration.lightmapBlur() == 0
-                ? doNothing -> doNothing
-                : new BlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override
@@ -174,12 +168,9 @@ public class DefaultLight implements Light {
             }
         });
         // LightMap is always a little larger than screen to avoid flickering
-        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
+//        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
+        final var overlap = -configuration.lightmapBlur() * configuration.lightmapScale();
         screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Math.round(0.5));
     }
 
     @Override
