@@ -8,13 +8,13 @@ import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent;
 import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.filter.BlurImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
+import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
 import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
@@ -47,19 +48,19 @@ public class DefaultLight implements Light {
         this.screen = screen;
         this.world = world;
         this.configuration = configuration;
-        createPostFilter(configuration);
+        updatePostFilter();
         configuration.addListener(event -> {
-            if (GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR.equals(event.changedProperty())) {
-                createPostFilter(configuration);
+            if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
+                updatePostFilter();
             }
         });
         initLightmap();
     }
 
-    private void createPostFilter(GraphicsConfiguration configuration) {
+    private void updatePostFilter() {
         postFilter = configuration.lightmapBlur() == 0
-                ? doNothing -> doNothing
-                : new BlurImageFilter(configuration.lightmapBlur());
+                ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
+                : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
     }
 
     @Override
@@ -173,13 +174,9 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        // LightMap is always a little larger than screen to avoid flickering
-        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
+        // Avoid flickering by overdraw at last by one pixel
+        final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
         screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Math.round(0.5));
     }
 
     @Override
