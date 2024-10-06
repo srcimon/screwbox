@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Reduced lightmap size and used optimzed blur filter to slightly enhance light performance.
+- Reduced lightmap size and used optimzed blur filter to slightly reduce memory transfer rate (#393)
 
 ### 📦 Dependency updates
 
