@@ -56,10 +56,6 @@ class Lightmap {
         spotLights.add(spotLight);
     }
 
-    public int width() {
-        return image.getWidth();
-    }
-
     public void addFullBrightnessArea(final ScreenBounds bounds) {
         graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
         applyOpacityConfig(Color.BLACK);

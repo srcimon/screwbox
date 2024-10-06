@@ -14,6 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
+import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class DefaultLight implements Light {
 
     private void updatePostFilter() {
         postFilter = configuration.lightmapBlur() == 0
-                ? image -> image // do nothing
+                ? new SizeIncreasingImageFilter(1) // overdraw is needed to avoid issue with rotating screen
                 : new SizeIncreasingBlurImageFilter(configuration.lightmapBlur());
     }
 
@@ -173,10 +174,8 @@ public class DefaultLight implements Light {
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        // LightMap is always a little larger than screen to avoid flickering
-//        final var overlap = -1 * Math.round((lightmap.width() * configuration.lightmapScale() - screen.size().width()) / 2.0);
-        final var overlap = -configuration.lightmapBlur() * configuration.lightmapScale();
-        System.out.println(overlap);
+        // Avoid flickering by overdraw at last by one pixel
+        final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
         screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
