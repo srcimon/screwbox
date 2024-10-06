@@ -32,7 +32,7 @@ class Lightmap {
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<ScreenBounds> fullBrigthnessAreas = new ArrayList<>();
 
-    public Lightmap(final Size size, final int resolution, Percent lightFade) {
+    public Lightmap(final Size size, final int resolution, final Percent lightFade) {
         this.image = new BufferedImage(
                 size.width() / resolution,
                 size.height() / resolution,
