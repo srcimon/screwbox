@@ -34,9 +34,9 @@ public class DefaultRenderer implements Renderer {
         lastUsedColor = null;
         if (!rotation.isNone()) {
             fillWith(Color.BLACK);
-            this.graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
+            graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
         }
-        this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+        graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
     }
 
     @Override
