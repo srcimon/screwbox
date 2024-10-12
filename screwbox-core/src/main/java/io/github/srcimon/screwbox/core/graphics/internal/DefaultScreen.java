@@ -2,7 +2,13 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -21,20 +27,22 @@ import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultScreen implements Screen {
+public class DefaultScreen implements Screen, Viewport {
 
     private Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
+    private final Viewport viewport;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final Viewport viewport) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
+        this.viewport = viewport;
     }
 
     public void updateScreen(final boolean antialiased) {

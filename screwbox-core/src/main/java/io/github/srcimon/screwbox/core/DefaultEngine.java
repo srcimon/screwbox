@@ -15,10 +15,12 @@ import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultCamera;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
@@ -117,7 +119,8 @@ class DefaultEngine implements Engine {
         final var asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
 
-        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
+        final Viewport primaryViewport = new DefaultViewport(firewallRenderer);
+        final var screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot(), primaryViewport);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, screen, graphicsDevice, firewallRenderer);
         final DefaultWorld world = new DefaultWorld(screen);
