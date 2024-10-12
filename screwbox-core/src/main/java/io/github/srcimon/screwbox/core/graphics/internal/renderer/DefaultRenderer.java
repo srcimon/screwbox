@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -31,23 +32,28 @@ public class DefaultRenderer implements Renderer {
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
-    private Size canvasSize;
+    private ScreenBounds clip;
     private Graphics2D graphics;
     private Color lastUsedColor;
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
+    public void updateContext(final Supplier<Graphics2D> graphics) {
         lastUpdateTime = Time.now();
-        this.canvasSize = canvasSize;
         this.graphics = graphics.get();
         lastUsedColor = null;
-        this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+    }
+
+
+    @Override
+    public void updateClip(final ScreenBounds clip) {
+        this.clip = clip;
+        this.graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
     public void fillWith(final Color color) {
         applyNewColor(color);
-        graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
+        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
@@ -58,8 +64,9 @@ public class DefaultRenderer implements Renderer {
         final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        for (int x = xStart; x <= canvasSize.width(); x += spriteWidth) {
-            for (int y = yStart; y <= canvasSize.height(); y += spriteHeight) {
+        //TODO fix bug because offset is not considered
+        for (int x = xStart; x <= clip.width(); x += spriteWidth) {
+            for (int y = yStart; y <= clip.height(); y += spriteHeight) {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
@@ -275,5 +282,4 @@ public class DefaultRenderer implements Renderer {
             drawSprite(entry.sprite(), entry.offset(), entry.options());
         }
     }
-
 }

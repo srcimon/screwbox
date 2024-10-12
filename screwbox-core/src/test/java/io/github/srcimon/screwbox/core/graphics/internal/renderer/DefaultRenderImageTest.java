@@ -47,7 +47,7 @@ class DefaultRenderImageTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         renderer = new DefaultRenderer();
-        renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40), Rotation.none());
+        renderer.updateContext(() -> graphics, Size.of(80, 40), Rotation.none());
         renderer.fillWith(Color.BLACK);
     }
 

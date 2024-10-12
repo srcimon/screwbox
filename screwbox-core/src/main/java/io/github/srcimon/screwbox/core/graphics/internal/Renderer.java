@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -18,7 +19,9 @@ import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateGraphicsContext(Supplier<Graphics2D> graphics, Size canvasSize);
+    void updateContext(Supplier<Graphics2D> graphics);
+
+    void updateClip(ScreenBounds clip);
 
     void fillWith(Color color);
 

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -44,12 +45,17 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
+    public void updateContext(final Supplier<Graphics2D> graphics) {
         waitForCurrentRenderingToEnd();
-        next.updateGraphicsContext(graphics, canvasSize);
+        next.updateContext(graphics);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());
+    }
+
+    @Override
+    public void updateClip(final ScreenBounds clip) {
+        next.updateClip(clip);
     }
 
     @Override
