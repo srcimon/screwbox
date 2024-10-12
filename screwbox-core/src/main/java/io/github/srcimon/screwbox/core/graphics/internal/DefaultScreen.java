@@ -82,49 +82,49 @@ public class DefaultScreen implements Screen, Viewport {
 
     @Override
     public Screen fillWith(final Color color) {
-        renderer.fillWith(color);
+        viewport.fillWith(color);
         return this;
     }
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        renderer.drawRectangle(origin, size, options);
+        viewport.drawRectangle(origin, size, options);
         return this;
     }
 
     @Override
     public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderer.drawLine(from, to, options);
+        viewport.drawLine(from, to, options);
         return this;
     }
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(offset, radius, options);
+        viewport.drawCircle(offset, radius, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options);
+        viewport.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options);
+        viewport.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderer.drawText(offset, text, options);
+        viewport.drawText(offset, text, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderer.drawText(offset, text, options);
+        viewport.drawText(offset, text, options);
         return this;
     }
 
@@ -146,7 +146,7 @@ public class DefaultScreen implements Screen, Viewport {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.fillWith(sprite, options);
+        viewport.fillWith(sprite, options);
         return this;
     }
 
@@ -176,8 +176,9 @@ public class DefaultScreen implements Screen, Viewport {
     }
 
     @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch) {
-        renderer.drawSpriteBatch(spriteBatch);
+    public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
+        viewport.drawSpriteBatch(spriteBatch);
+        return this;
     }
 
     @Override
