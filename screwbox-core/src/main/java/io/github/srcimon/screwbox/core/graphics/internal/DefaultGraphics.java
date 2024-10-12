@@ -151,7 +151,6 @@ public class DefaultGraphics implements Graphics, Updatable {
             return graphics;
         };
         renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), screen.rotation().add(screen.shake()));
-        renderer.fillWith(Color.BLACK);
         world.updateCameraPosition(camera.focus());
         light.update();
     }
