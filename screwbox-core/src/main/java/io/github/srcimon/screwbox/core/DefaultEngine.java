@@ -21,6 +21,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewports;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
@@ -136,7 +137,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, frame, standbyProxyRender);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, frame, standbyProxyRender, new DefaultViewports());
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, world);
