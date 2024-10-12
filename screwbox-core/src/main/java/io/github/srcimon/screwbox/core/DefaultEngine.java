@@ -25,6 +25,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRender;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
 import io.github.srcimon.screwbox.core.log.ConsoleLoggingAdapter;
@@ -117,11 +118,12 @@ class DefaultEngine implements Engine {
         final var defaultRenderer = new DefaultRenderer();
         final var asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
+        final var standbyProxyRender = new StandbyProxyRender(firewallRenderer);
 
-        final Viewport primaryViewport = new DefaultViewport(firewallRenderer);
+        final Viewport primaryViewport = new DefaultViewport(standbyProxyRender);
         final var screen = new DefaultScreen(frame, createRobot(), primaryViewport);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, firewallRenderer);
+        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, standbyProxyRender);
         final DefaultWorld world = new DefaultWorld(screen);
 
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
@@ -134,7 +136,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, frame);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, frame, standbyProxyRender);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, world);
