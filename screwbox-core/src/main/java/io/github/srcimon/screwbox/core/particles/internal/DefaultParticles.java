@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;

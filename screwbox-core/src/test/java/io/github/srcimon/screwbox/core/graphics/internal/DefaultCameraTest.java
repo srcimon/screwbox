@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Vector.$;
-import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.infinite;
-import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions.infinite;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions.lastingForDuration;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

@@ -1,4 +1,4 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import org.junit.jupiter.api.Test;
 

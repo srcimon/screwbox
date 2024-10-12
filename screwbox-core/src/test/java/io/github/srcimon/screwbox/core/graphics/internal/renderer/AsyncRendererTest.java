@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
-import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions.color;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.never;

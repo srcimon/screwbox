@@ -52,7 +52,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     import io.github.srcimon.screwbox.core.ScrewBox;
     
     import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-    import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+    import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
     
     public class HelloWorldApp {
 

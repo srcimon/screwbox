@@ -17,7 +17,7 @@ import java.io.Serial;
 import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions.lastingForDuration;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
 
 public class BombExplosionState implements EntityState {

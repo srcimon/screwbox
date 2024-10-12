@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.tiled.Tile;
 
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.originalSize;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.originalSize;
 
 public class NonSolidTile implements Converter<Tile> {
 

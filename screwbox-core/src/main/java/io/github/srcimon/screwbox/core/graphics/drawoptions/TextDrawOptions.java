@@ -1,6 +1,9 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.utils.TextUtil;
 import io.github.srcimon.screwbox.core.utils.Validate;
 

@@ -1,8 +1,10 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**

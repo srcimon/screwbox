@@ -1,7 +1,13 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**

@@ -9,12 +9,12 @@ import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.World;
 
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
 
 /**
  * Can be used to mark particles and particle emitters on the {@link Screen}.

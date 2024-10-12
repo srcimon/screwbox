@@ -1,7 +1,10 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.io.Serializable;
 

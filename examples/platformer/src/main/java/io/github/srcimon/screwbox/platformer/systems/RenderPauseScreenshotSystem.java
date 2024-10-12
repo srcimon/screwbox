@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.originalSize;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.originalSize;
 
 public class RenderPauseScreenshotSystem implements EntitySystem {
 

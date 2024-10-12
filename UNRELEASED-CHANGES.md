@@ -9,6 +9,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Reduced lightmap size and used optimzed blur filter to slightly reduce memory transfer rate (#393)
+- Moved all draw options to dedicated package
 
 ### 📦 Dependency updates
 

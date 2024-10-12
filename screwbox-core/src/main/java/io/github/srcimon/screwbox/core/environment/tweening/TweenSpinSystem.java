@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 
 /**
  * Updates the {@link SpriteDrawOptions#spin()} and {@link SpriteDrawOptions#isSpinHorizontal()} of all

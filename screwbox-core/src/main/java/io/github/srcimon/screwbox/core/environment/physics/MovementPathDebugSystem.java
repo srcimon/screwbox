@@ -7,15 +7,15 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.GREEN;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
-import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
-import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.systemFont;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions.systemFont;
 import static java.util.Objects.nonNull;
 
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)

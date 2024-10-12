@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {

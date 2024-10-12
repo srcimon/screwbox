@@ -1,6 +1,10 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**

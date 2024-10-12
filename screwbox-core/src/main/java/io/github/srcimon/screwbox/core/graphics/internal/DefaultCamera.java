@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.CameraShakeOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 

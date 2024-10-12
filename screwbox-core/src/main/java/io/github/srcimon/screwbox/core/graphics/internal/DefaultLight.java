@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.scaled;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {

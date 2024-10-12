@@ -1,6 +1,8 @@
-package io.github.srcimon.screwbox.core.graphics;
+package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.assets.FontBundle;
+import io.github.srcimon.screwbox.core.graphics.Pixelfont;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

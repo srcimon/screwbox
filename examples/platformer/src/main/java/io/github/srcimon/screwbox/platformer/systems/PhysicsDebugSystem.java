@@ -9,8 +9,8 @@ import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionCom
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 
-import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.filled;
 
 @Order(Order.SystemOrder.PRESENTATION_OVERLAY)
 public class PhysicsDebugSystem implements EntitySystem {

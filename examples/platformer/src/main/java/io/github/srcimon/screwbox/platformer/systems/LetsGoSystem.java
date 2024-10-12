@@ -22,8 +22,8 @@ import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.Duration.ofSeconds;
 import static io.github.srcimon.screwbox.core.Duration.oneSecond;
-import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 
 @Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {

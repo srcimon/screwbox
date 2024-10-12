@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
-import static io.github.srcimon.screwbox.core.graphics.CameraShakeOptions.lastingForDuration;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions.lastingForDuration;
 
 public class HurtSystem implements EntitySystem {
 

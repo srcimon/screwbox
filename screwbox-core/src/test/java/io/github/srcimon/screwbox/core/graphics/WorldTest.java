@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;

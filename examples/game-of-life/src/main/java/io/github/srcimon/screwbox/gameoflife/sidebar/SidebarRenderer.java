@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.gameoflife.sidebar;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.ui.UiRenderer;
 
 import static io.github.srcimon.screwbox.core.graphics.Color.GREY;

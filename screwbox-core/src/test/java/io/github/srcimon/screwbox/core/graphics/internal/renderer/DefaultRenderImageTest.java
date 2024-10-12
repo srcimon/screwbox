@@ -6,6 +6,12 @@ import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +27,9 @@ import static io.github.srcimon.screwbox.core.graphics.Color.BLUE;
 import static io.github.srcimon.screwbox.core.graphics.Color.ORANGE;
 import static io.github.srcimon.screwbox.core.graphics.Color.RED;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
-import static io.github.srcimon.screwbox.core.graphics.LineDrawOptions.color;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.filled;
-import static io.github.srcimon.screwbox.core.graphics.RectangleDrawOptions.outline;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions.color;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.filled;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions.outline;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)

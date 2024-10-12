@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.*;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.platformer.components.BackgroundComponent;
 
 import java.util.Comparator;

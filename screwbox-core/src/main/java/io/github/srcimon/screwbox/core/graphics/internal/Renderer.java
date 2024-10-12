@@ -3,6 +3,13 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 import java.awt.*;
 import java.util.function.Supplier;

@@ -8,7 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.platformer.components.TextComponent;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-import static io.github.srcimon.screwbox.core.graphics.TextDrawOptions.font;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 
 @Order(Order.SystemOrder.PRESENTATION_UI)
 public class PrintSystem implements EntitySystem {

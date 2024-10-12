@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 
-import static io.github.srcimon.screwbox.core.graphics.SpriteDrawOptions.originalSize;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.originalSize;
 
 /**
  * Fades the {@link Screen} to the specified {@link Sprite}.

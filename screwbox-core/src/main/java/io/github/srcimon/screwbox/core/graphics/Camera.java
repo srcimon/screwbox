@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 
 /**
  * Get information abound the {@link Camera} like {@link Camera#position()}. Change {@link Camera} settings like {@link Camera#zoom()}.

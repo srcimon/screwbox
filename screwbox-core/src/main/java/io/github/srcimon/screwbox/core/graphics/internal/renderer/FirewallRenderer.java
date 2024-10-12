@@ -3,13 +3,20 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 
 import java.awt.*;
 import java.util.function.Supplier;
 
-import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.Alignment.LEFT;
-import static io.github.srcimon.screwbox.core.graphics.SystemTextDrawOptions.Alignment.RIGHT;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions.Alignment.LEFT;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions.Alignment.RIGHT;
 
 /**
  * Prevent uneccesary and invalid rendering tasks hitting the actual render.
