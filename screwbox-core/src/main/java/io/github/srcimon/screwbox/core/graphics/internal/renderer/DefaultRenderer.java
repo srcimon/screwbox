@@ -64,9 +64,8 @@ public class DefaultRenderer implements Renderer {
         final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        //TODO fix bug because offset is not considered
-        for (int x = xStart; x <= clip.width(); x += spriteWidth) {
-            for (int y = yStart; y <= clip.height(); y += spriteHeight) {
+        for (int x = clip.offset().x() + xStart; x <= clip.width() + clip.offset().x(); x += spriteWidth) {
+            for (int y = clip.offset().y() + yStart; y <= clip.height() + clip.offset().y(); y += spriteHeight) {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
