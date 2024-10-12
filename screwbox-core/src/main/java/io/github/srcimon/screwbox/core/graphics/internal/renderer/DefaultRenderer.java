@@ -32,7 +32,6 @@ public class DefaultRenderer implements Renderer {
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
-    private ScreenBounds clip;
     private Graphics2D graphics;
     private Color lastUsedColor;
 
@@ -43,21 +42,16 @@ public class DefaultRenderer implements Renderer {
         lastUsedColor = null;
     }
 
-
     @Override
-    public void updateClip(final ScreenBounds clip) {
-        this.clip = clip;
-        this.graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
-    }
-
-    @Override
-    public void fillWith(final Color color) {
+    public void fillWith(final Color color, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(color);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
 
         final int spriteWidth = (int) (sprite.width() * options.scale());
@@ -76,7 +70,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(options.color());
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
@@ -143,7 +138,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(options.color());
 
         if (options.rotation().isNone()) {
@@ -173,7 +169,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(options.color());
         if (options.strokeWidth() == 1) {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
@@ -186,7 +183,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         final int x = offset.x() - radius;
         final int y = offset.y() - radius;
         final int diameter = radius * 2;
@@ -226,12 +224,13 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        drawSprite(sprite.get(), origin, options);
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        drawSprite(sprite.get(), origin, options, clip);
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
 
         if (!options.rotation().isNone()) {
@@ -249,7 +248,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
 
         int y = 0;
@@ -276,9 +276,14 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
         for (final var entry : spriteBatch.entriesInOrder()) {
-            drawSprite(entry.sprite(), entry.offset(), entry.options());
+            drawSprite(entry.sprite(), entry.offset(), entry.options(), clip);
         }
     }
+
+    private void applyClip(final ScreenBounds clip) {
+        graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+    }
+
 }

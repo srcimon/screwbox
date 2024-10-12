@@ -22,17 +22,21 @@ public class ViewportSupport implements Updatable {
     private final WindowFrame frame;
     private final Renderer renderer;
     private final GraphicsConfiguration configuration;
-    private final Screen screen;
+    private final DefaultScreen screen;
     private final List<Viewport> viewports;
     private Graphics2D lastGraphics;
     private boolean isSplitscreenActive = false;
 
-    public ViewportSupport(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final Screen screen) {
+    public ViewportSupport(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final DefaultScreen screen) {
         this.frame = frame;
         this.renderer = renderer;
         this.configuration = configuration;
         this.screen = screen;
-        this.viewports = List.of(new DefaultViewport(renderer), new DefaultViewport(renderer));
+        DefaultViewport e1 = new DefaultViewport(renderer);
+        e1.updateClip(new ScreenBounds(0, 0, 400, 400));
+        DefaultViewport e2 = new DefaultViewport(renderer);
+        e2.updateClip(new ScreenBounds(400, 0, 400, 400));
+        this.viewports = List.of(e1, e2);
     }
 
     public boolean isSplitscreenActive() {
@@ -61,15 +65,15 @@ public class ViewportSupport implements Updatable {
             }
             lastGraphics = graphics;
             graphics.setColor(Color.BLACK);
-            graphics.fillRect(0,0, frame.getCanvasSize().width(), frame.getCanvasSize().height());
+            graphics.fillRect(0, 0, frame.getCanvasSize().width(), frame.getCanvasSize().height());
             var rotation = screen.rotation().add(screen.shake());
             if (!rotation.isNone()) {
                 graphics.rotate(rotation.radians(), frame.getCanvasSize().width() / 2.0, frame.getCanvasSize().height() / 2.0);
             }
             return graphics;
         };
+        screen.updateClip(new ScreenBounds(0,0,frame.getCanvasSize().width(), frame.getCanvasSize().height()));
         renderer.updateContext(graphicsSupplier);
-        renderer.updateClip(new ScreenBounds(0, 0, frame.getCanvasSize().width(), frame.getCanvasSize().height()));
     }
 
     private Graphics2D getDrawGraphics() {

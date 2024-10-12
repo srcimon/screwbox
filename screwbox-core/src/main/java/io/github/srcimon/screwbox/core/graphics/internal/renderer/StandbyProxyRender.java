@@ -20,104 +20,74 @@ import java.util.function.Supplier;
 
 public class StandbyProxyRender implements Renderer {
 
-    private final Renderer next;
-
-    private boolean isStandby = true;
+    private Renderer next;
+    private final Renderer actualNext;
 
     public StandbyProxyRender(final Renderer next) {
         this.next = next;
+        this.actualNext = next;
     }
 
     public void standBy() {
-        isStandby = true;
+        next = new StandByRenderer();
     }
 
     public void wakeUp() {
-        isStandby = false;
+        next = actualNext;
     }
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
-        if (!isStandby) {
-            next.updateContext(graphics);
-        }
+        next.updateContext(graphics);
     }
 
     @Override
-    public void updateClip(final ScreenBounds clip) {
-        if (!isStandby) {
-            next.updateClip(clip);
-        }
-    }
-
-
-    @Override
-    public void fillWith(final Color color) {
-        if (!isStandby) {
-            next.fillWith(color);
-        }
+    public void fillWith(final Color color, final ScreenBounds clip) {
+        next.fillWith(color, clip);
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        if (!isStandby) {
-            next.fillWith(sprite, options);
-        }
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        next.fillWith(sprite, options, clip);
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        if (!isStandby) {
-            next.drawText(offset, text, options);
-        }
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        next.drawText(offset, text, options, clip);
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        if (!isStandby) {
-            next.drawRectangle(offset, size, options);
-        }
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+        next.drawRectangle(offset, size, options, clip);
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        if (!isStandby) {
-            next.drawLine(from, to, options);
-        }
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+        next.drawLine(from, to, options, clip);
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        if (!isStandby) {
-            next.drawCircle(offset, radius, options);
-        }
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+        next.drawCircle(offset, radius, options, clip);
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        if (!isStandby) {
-            next.drawSprite(sprite, origin, options);
-        }
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        next.drawSprite(sprite, origin, options, clip);
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        if (!isStandby) {
-            next.drawSprite(sprite, origin, options);
-        }
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        next.drawSprite(sprite, origin, options, clip);
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        if (!isStandby) {
-            next.drawText(offset, text, options);
-        }
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        next.drawText(offset, text, options, clip);
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        if (!isStandby) {
-            next.drawSpriteBatch(spriteBatch);
-        }
+    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
+        next.drawSpriteBatch(spriteBatch, clip);
     }
 }

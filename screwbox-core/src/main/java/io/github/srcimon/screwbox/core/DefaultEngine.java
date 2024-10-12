@@ -15,6 +15,7 @@ import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultCamera;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
@@ -121,7 +122,7 @@ class DefaultEngine implements Engine {
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
         final var standbyProxyRender = new StandbyProxyRender(firewallRenderer);
 
-        final Viewport primaryViewport = new DefaultViewport(standbyProxyRender);
+        final DefaultViewport primaryViewport = new DefaultViewport(standbyProxyRender);
         final var screen = new DefaultScreen(frame, createRobot(), primaryViewport);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, graphicsConfiguration, screen, graphicsDevice, standbyProxyRender);
