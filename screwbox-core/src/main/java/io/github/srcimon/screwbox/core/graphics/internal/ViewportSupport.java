@@ -2,10 +2,12 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
@@ -20,13 +22,24 @@ public class ViewportSupport implements Updatable {
     private final Renderer renderer;
     private final GraphicsConfiguration configuration;
     private final Screen screen;
+    private final List<Viewport> viewports;
     private Graphics2D lastGraphics;
+    private boolean isSplitscreenActive = false;
 
     public ViewportSupport(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final Screen screen) {
         this.frame = frame;
         this.renderer = renderer;
         this.configuration = configuration;
         this.screen = screen;
+        this.viewports = List.of(new DefaultViewport(renderer), new DefaultViewport(renderer));
+    }
+
+    public boolean isSplitscreenActive() {
+        return isSplitscreenActive;
+    }
+
+    public List<Viewport> viewports() {
+        return viewports;
     }
 
     @Override
@@ -58,5 +71,9 @@ public class ViewportSupport implements Updatable {
         } catch (IllegalStateException ignored) {
             return lastGraphics;
         }
+    }
+
+    public void setSplitscreenEnabled(boolean splitscreenEnabled) {
+        this.isSplitscreenActive = splitscreenEnabled;
     }
 }

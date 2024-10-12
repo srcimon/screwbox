@@ -46,6 +46,25 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public List<Viewport> activeViewports() {
+        return viewportSupport.isSplitscreenActive()
+                ? viewportSupport.viewports()
+                : List.of(screen);
+    }
+
+    @Override
+    public Graphics enableSplitscreen() {
+        viewportSupport.setSplitscreenEnabled(true);
+        return this;
+    }
+
+    @Override
+    public Graphics disableSplitScreen() {
+        viewportSupport.setSplitscreenEnabled(false);
+        return this;
+    }
+
+    @Override
     public GraphicsConfiguration configuration() {
         return configuration;
     }
