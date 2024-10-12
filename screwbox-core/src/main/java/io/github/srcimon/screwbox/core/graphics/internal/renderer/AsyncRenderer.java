@@ -1,10 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -42,9 +44,9 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         waitForCurrentRenderingToEnd();
-        next.updateGraphicsContext(graphicsSupplier, canvasSize, rotation);
+        next.updateGraphicsContext(graphicsSupplier, canvasSize);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());

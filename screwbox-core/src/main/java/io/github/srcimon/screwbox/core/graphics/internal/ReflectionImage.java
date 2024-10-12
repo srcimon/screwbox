@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
@@ -62,7 +61,7 @@ public final class ReflectionImage {
         final var image = new BufferedImage(imageSize.width(), imageSize.height(), BufferedImage.TYPE_INT_ARGB);
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
-        renderer.updateGraphicsContext(() -> graphics2d, imageSize, Rotation.none());
+        renderer.updateGraphicsContext(() -> graphics2d, imageSize);
         renderer.drawSpriteBatch(spriteBatch);
         graphics2d.dispose();
         return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
