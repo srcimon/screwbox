@@ -4,7 +4,7 @@
 
 ### 🪛 Bug Fixes
 
-- ...
+- Fixed wrong info in JavaDoc
 
 ### 🧽 Cleanup & refactoring
 

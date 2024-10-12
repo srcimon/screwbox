@@ -133,7 +133,7 @@ public interface Screen extends Sizeable {
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**
-     * Returns {@code true} if the given {@link ScreenBounds} is within the{@link Screen} area.
+     * Returns {@code true} if the given {@link ScreenBounds} is within the {@link Screen} area.
      */
     boolean isVisible(ScreenBounds bounds);
 
@@ -156,8 +156,7 @@ public interface Screen extends Sizeable {
     void drawSpriteBatch(SpriteBatch spriteBatch);
 
     /**
-     * Returns the last taken screenshot. Will be empty if no screenshot has been taken. Every change of {@link Scenes}
-     * automatically creates a screenshot.
+     * Returns the last taken screenshot. Will be empty if no screenshot has been taken.
      */
     Optional<Sprite> lastScreenshot();
 }
