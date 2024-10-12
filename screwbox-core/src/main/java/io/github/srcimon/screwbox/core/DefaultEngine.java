@@ -93,10 +93,10 @@ class DefaultEngine implements Engine {
             log.warn("Please run application with the following JVM option to add full MacOs support: " + MacOsSupport.FULLSCREEN_JVM_OPTION);
         }
 
-        final GraphicsConfiguration configuration = new GraphicsConfiguration();
+        final GraphicsConfiguration graphicsConfiguration = new GraphicsConfiguration();
         final WindowFrame frame = MacOsSupport.isMacOs()
-                ? new MacOsWindowFrame(configuration.resolution())
-                : new WindowFrame(configuration.resolution());
+                ? new MacOsWindowFrame(graphicsConfiguration.resolution())
+                : new WindowFrame(graphicsConfiguration.resolution());
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -124,10 +124,10 @@ class DefaultEngine implements Engine {
         final Viewport primaryViewport = new DefaultViewport(standbyProxyRender);
         final var screen = new DefaultScreen(frame, createRobot(), primaryViewport);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, standbyProxyRender);
+        window = new DefaultWindow(frame, graphicsConfiguration, screen, graphicsDevice, standbyProxyRender);
         final DefaultWorld world = new DefaultWorld(screen);
 
-        final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
+        final DefaultLight light = new DefaultLight(screen, world, graphicsConfiguration, executor);
         final DefaultCamera camera = new DefaultCamera(world, screen);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
@@ -137,11 +137,12 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, frame, standbyProxyRender, new DefaultViewports());
+        final DefaultViewports viewports = new DefaultViewports(frame, standbyProxyRender, graphicsConfiguration, screen);
+        graphics = new DefaultGraphics(graphicsConfiguration, screen, world, light, graphicsDevice, camera, asyncRenderer, viewports);
         ui = new DefaultUi(this, scenes);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, world);
-        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
+        loop = new DefaultLoop(List.of(keyboard, viewports, graphics, scenes, ui, mouse, window, camera, particles, audio));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
