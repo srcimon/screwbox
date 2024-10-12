@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Viewports;
@@ -11,9 +10,6 @@ import java.awt.*;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
-import static java.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import static java.util.Objects.nonNull;
 
 public class DefaultViewports implements Viewports, Updatable {
@@ -25,12 +21,8 @@ public class DefaultViewports implements Viewports, Updatable {
 
     private Graphics2D lastGraphics;
 
-    public DefaultViewports(
-            final WindowFrame frame,
-            final Renderer renderer,
-            final GraphicsConfiguration configuration,
-            final Screen screen) {
-        this.frame =frame;
+    public DefaultViewports(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final Screen screen) {
+        this.frame = frame;
         this.renderer = renderer;
         this.configuration = configuration;
         this.screen = screen;
