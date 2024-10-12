@@ -46,6 +46,7 @@ public class HelloWorldApp {
                 .addSystem(PRESENTATION_UI_FOREGROUND, engine -> {
                     if (engine.keyboard().isPressed(Key.SPACE)) {
                         engine.graphics().enableSplitscreen();
+                        engine.log().info("splitscreen enabled");
                     }
                     for (var view : engine.graphics().activeViewports()) {
                         view.drawCircle(Offset.at(20, 20), 14, CircleDrawOptions.filled(Color.DARK_BLUE));

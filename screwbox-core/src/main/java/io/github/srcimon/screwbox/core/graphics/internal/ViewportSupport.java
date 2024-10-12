@@ -33,9 +33,9 @@ public class ViewportSupport implements Updatable {
         this.configuration = configuration;
         this.screen = screen;
         DefaultViewport e1 = new DefaultViewport(renderer);
-        e1.updateClip(new ScreenBounds(0, 0, 400, 400));
         DefaultViewport e2 = new DefaultViewport(renderer);
-        e2.updateClip(new ScreenBounds(400, 0, 400, 400));
+        e1.updateClip(new ScreenBounds(30, 0, 400, 400));
+        e2.updateClip(new ScreenBounds(100, 0, 400, 400));
         this.viewports = List.of(e1, e2);
     }
 
