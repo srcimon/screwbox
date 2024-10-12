@@ -70,8 +70,8 @@ public class ViewportSupport implements Updatable {
             }
             return graphics;
         };
-        screen.updateClip(new ScreenBounds(0, 0, frame.getCanvasSize().width(), frame.getCanvasSize().height()));
-
+        screen.updateClip(screen.bounds());
+//TODO something is weird when shaking - lower body does not shake
         e1.updateClip(new ScreenBounds(400, 0, 800, 800));
         e2.updateClip(new ScreenBounds(0, 0, 800, 800));
         renderer.updateContext(graphicsSupplier);
