@@ -21,23 +21,25 @@ public interface Renderer {
 
     void updateContext(Supplier<Graphics2D> graphics);
 
-    void fillWith(Color color, ScreenBounds clip);
+    void updateClip(ScreenBounds clip);
 
-    void fillWith(Sprite sprite, SpriteFillOptions options, ScreenBounds clip);
+    void fillWith(Color color);
 
-    void drawText(Offset offset, String text, SystemTextDrawOptions options, ScreenBounds clip);
+    void fillWith(Sprite sprite, SpriteFillOptions options);
 
-    void drawRectangle(Offset offset, Size size, RectangleDrawOptions options, ScreenBounds clip);
+    void drawText(Offset offset, String text, SystemTextDrawOptions options);
 
-    void drawLine(Offset from, Offset to, LineDrawOptions options, ScreenBounds clip);
+    void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
 
-    void drawCircle(Offset offset, int radius, CircleDrawOptions options, ScreenBounds clip);
+    void drawLine(Offset from, Offset to, LineDrawOptions options);
 
-    void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
+    void drawCircle(Offset offset, int radius, CircleDrawOptions options);
 
-    void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
+    void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
 
-    void drawText(Offset offset, String text, TextDrawOptions options, ScreenBounds clip);
+    void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
 
-    void drawSpriteBatch(SpriteBatch spriteBatch, ScreenBounds clip);
+    void drawText(Offset offset, String text, TextDrawOptions options);
+
+    void drawSpriteBatch(SpriteBatch spriteBatch);
 }

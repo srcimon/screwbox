@@ -29,12 +29,12 @@ public class DefaultScreen implements Screen, Viewport {
 
     private final WindowFrame frame;
     private final Robot robot;
-    private final DefaultViewport viewport;
+    private final Viewport viewport;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
 
-    public DefaultScreen(final WindowFrame frame, final Robot robot, final DefaultViewport viewport) {
+    public DefaultScreen(final WindowFrame frame, final Robot robot, final Viewport viewport) {
         this.frame = frame;
         this.robot = robot;
         this.viewport = viewport;
@@ -174,9 +174,5 @@ public class DefaultScreen implements Screen, Viewport {
 
     private ScreenBounds screenBounds() {
         return new ScreenBounds(Offset.origin(), size());
-    }
-
-    public void updateClip(ScreenBounds clip) {
-        viewport.updateClip(clip);
     }
 }

@@ -62,7 +62,8 @@ public final class ReflectionImage {
         final var graphics2d = (Graphics2D) image.getGraphics();
         final var renderer = new DefaultRenderer();
         renderer.updateContext(() -> graphics2d);
-        renderer.drawSpriteBatch(spriteBatch, new ScreenBounds(0, 0, imageSize.width(), imageSize.height()));
+        renderer.updateClip(new ScreenBounds(0,0, imageSize.width(), imageSize.height()));
+        renderer.drawSpriteBatch(spriteBatch);
         graphics2d.dispose();
         return Sprite.fromImage(blur > 1 ? new BlurImageFilter(blur).apply(image) : image);
     }

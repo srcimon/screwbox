@@ -27,6 +27,7 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDra
 public class FirewallRenderer implements Renderer {
 
     private final Renderer next;
+    private ScreenBounds clip;
 
     public FirewallRenderer(final Renderer next) {
         this.next = next;
@@ -39,80 +40,86 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void fillWith(final Color color, final ScreenBounds clip) {
+    public void updateClip(final ScreenBounds clip) {
+        this.clip = clip;
+        next.updateClip(clip);
+    }
+
+    @Override
+    public void fillWith(final Color color) {
         if (!color.opacity().isZero()) {
-            next.fillWith(color, clip);
+            next.fillWith(color);
         }
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
         if (!options.opacity().isZero()) {
-            next.fillWith(sprite, options, clip);
+            next.fillWith(sprite, options);
         }
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         if (!options.color().opacity().isZero() && !text.isEmpty()
                 && !(RIGHT.equals(options.alignment()) && offset.x() < 0)
                 && !(LEFT.equals(options.alignment()) && offset.x() > clip.width())) {
-            next.drawText(offset, text, options, clip);
+            next.drawText(offset, text, options);
         }
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         final var rectangleBounds = new ScreenBounds(offset, size);
         if (!options.color().opacity().isZero() && size.isValid() && clip.intersects(rectangleBounds)) {
-            next.drawRectangle(offset, size, options, clip);
+            next.drawRectangle(offset, size, options);
         }
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
         final int minX = Math.min(from.x(), to.x());
         final int minY = Math.min(from.y(), to.y());
         final var size = Size.definedBy(from, to);
         final var screenBounds = new ScreenBounds(Offset.at(minX, minY), size);
         if (!options.color().opacity().isZero() && screenBounds.intersects(clip)) {
-            next.drawLine(from, to, options, clip);
+            next.drawLine(from, to, options);
         }
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
         final var circleBounds = new ScreenBounds(offset.x() - radius, offset.y() - radius, radius * 2, radius * 2);
         if (!options.color().opacity().isZero() && radius > 0 && circleBounds.intersects(clip)) {
-            next.drawCircle(offset, radius, options, clip);
+            next.drawCircle(offset, radius, options);
         }
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
         if (!options.opacity().isZero()) {
-            next.drawSprite(sprite, origin, options, clip);
+            next.drawSprite(sprite, origin, options);
         }
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         if (!options.opacity().isZero()) {
-            next.drawSprite(sprite, origin, options, clip);
+            next.drawSprite(sprite, origin, options);
         }
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
         if (!options.opacity().isZero() && !text.isEmpty() && options.scale() > 0) {
-            next.drawText(offset, text, options, clip);
+            next.drawText(offset, text, options);
         }
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
+    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
         if (!spriteBatch.isEmpty()) {
-            next.drawSpriteBatch(spriteBatch, clip);
+            next.drawSpriteBatch(spriteBatch);
         }
     }
 }
