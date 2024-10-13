@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -31,57 +32,57 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
-        renderer.active().updateGraphicsContext(graphicsSupplier, canvasSize);
+    public void updateContext(final Supplier<Graphics2D> graphics) {
+        renderer.active().updateContext(graphics);
     }
 
     @Override
-    public void fillWith(final Color color) {
-        renderer.active().fillWith(color);
+    public void fillWith(final Color color, final ScreenBounds clip) {
+        renderer.active().fillWith(color, clip);
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.active().fillWith(sprite, options);
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        renderer.active().fillWith(sprite, options, clip);
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderer.active().drawText(offset, text, options);
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawText(offset, text, options, clip);
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        renderer.active().drawRectangle(offset, size, options);
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawRectangle(offset, size, options, clip);
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderer.active().drawLine(from, to, options);
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawLine(from, to, options, clip);
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.active().drawCircle(offset, radius, options);
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawCircle(offset, radius, options, clip);
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.active().drawSprite(sprite, origin, options);
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawSprite(sprite, origin, options, clip);
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.active().drawSprite(sprite, origin, options);
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawSprite(sprite, origin, options, clip);
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderer.active().drawText(offset, text, options);
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        renderer.active().drawText(offset, text, options, clip);
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        renderer.active().drawSpriteBatch(spriteBatch);
+    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
+        renderer.active().drawSpriteBatch(spriteBatch, clip);
     }
 }

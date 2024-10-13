@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -18,25 +19,25 @@ import java.util.function.Supplier;
 
 public interface Renderer {
 
-    void updateGraphicsContext(Supplier<Graphics2D> graphicsSupplier, Size canvasSize);
+    void updateContext(Supplier<Graphics2D> graphics);
 
-    void fillWith(Color color);
+    void fillWith(Color color, ScreenBounds clip);
 
-    void fillWith(Sprite sprite, SpriteFillOptions options);
+    void fillWith(Sprite sprite, SpriteFillOptions options, ScreenBounds clip);
 
-    void drawText(Offset offset, String text, SystemTextDrawOptions options);
+    void drawText(Offset offset, String text, SystemTextDrawOptions options, ScreenBounds clip);
 
-    void drawRectangle(Offset offset, Size size, RectangleDrawOptions options);
+    void drawRectangle(Offset offset, Size size, RectangleDrawOptions options, ScreenBounds clip);
 
-    void drawLine(Offset from, Offset to, LineDrawOptions options);
+    void drawLine(Offset from, Offset to, LineDrawOptions options, ScreenBounds clip);
 
-    void drawCircle(Offset offset, int radius, CircleDrawOptions options);
+    void drawCircle(Offset offset, int radius, CircleDrawOptions options, ScreenBounds clip);
 
-    void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options);
+    void drawSprite(Supplier<Sprite> sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
-    void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options);
+    void drawSprite(Sprite sprite, Offset origin, SpriteDrawOptions options, ScreenBounds clip);
 
-    void drawText(Offset offset, String text, TextDrawOptions options);
+    void drawText(Offset offset, String text, TextDrawOptions options, ScreenBounds clip);
 
-    void drawSpriteBatch(SpriteBatch spriteBatch);
+    void drawSpriteBatch(SpriteBatch spriteBatch, ScreenBounds clip);
 }

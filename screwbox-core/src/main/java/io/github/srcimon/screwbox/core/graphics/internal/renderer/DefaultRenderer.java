@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -31,35 +32,34 @@ public class DefaultRenderer implements Renderer {
     private static final java.awt.Color FADEOUT_COLOR = toAwtColor(Color.TRANSPARENT);
 
     private Time lastUpdateTime = Time.now();
-    private Size canvasSize;
     private Graphics2D graphics;
     private Color lastUsedColor;
+    private ScreenBounds lastUsedClip;
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
+    public void updateContext(final Supplier<Graphics2D> graphics) {
         lastUpdateTime = Time.now();
-        this.canvasSize = canvasSize;
-        graphics = graphicsSupplier.get();
+        this.graphics = graphics.get();
         lastUsedColor = null;
-        graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+        lastUsedClip = null;
     }
 
     @Override
-    public void fillWith(final Color color) {
+    public void fillWith(final Color color, final ScreenBounds clip) {
         applyNewColor(color);
-        graphics.fillRect(0, 0, canvasSize.width(), canvasSize.height());
+        graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
-
         final int spriteWidth = (int) (sprite.width() * options.scale());
         final int spriteHeight = (int) (sprite.height() * options.scale());
         final int xStart = options.offset().x() % spriteWidth == 0 ? 0 : options.offset().x() % spriteWidth - spriteWidth;
         final int yStart = options.offset().y() % spriteHeight == 0 ? 0 : options.offset().y() % spriteHeight - spriteHeight;
-        for (int x = xStart; x <= canvasSize.width(); x += spriteWidth) {
-            for (int y = yStart; y <= canvasSize.height(); y += spriteHeight) {
+        for (int x = xStart; x <= clip.width(); x += spriteWidth) {
+            for (int y = yStart; y <= clip.height(); y += spriteHeight) {
                 final AffineTransform transform = new AffineTransform();
                 transform.translate(x, y);
                 transform.scale(options.scale(), options.scale());
@@ -70,7 +70,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(options.color());
         final var font = toAwtFont(options);
         final var fontMetrics = graphics.getFontMetrics(font);
@@ -137,8 +138,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         applyNewColor(options.color());
+        applyClip(clip);
 
         if (options.rotation().isNone()) {
             if (options.style() == RectangleDrawOptions.Style.FILLED) {
@@ -167,8 +169,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
         applyNewColor(options.color());
+        applyClip(clip);
         if (options.strokeWidth() == 1) {
             graphics.drawLine(from.x(), from.y(), to.x(), to.y());
         } else {
@@ -180,7 +183,8 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         final int x = offset.x() - radius;
         final int y = offset.y() - radius;
         final int diameter = radius * 2;
@@ -220,12 +224,13 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        drawSprite(sprite.get(), origin, options);
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        drawSprite(sprite.get(), origin, options, clip);
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
 
         if (!options.rotation().isNone()) {
@@ -243,9 +248,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        applyClip(clip);
         applyOpacityConfig(options.opacity());
-
         int y = 0;
         for (final String line : TextUtil.lineWrap(text, options.charactersPerLine())) {
             final List<Sprite> allSprites = options.font().spritesFor(options.isUppercase() ? line.toUpperCase() : line);
@@ -270,10 +275,16 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
         for (final var entry : spriteBatch.entriesInOrder()) {
-            drawSprite(entry.sprite(), entry.offset(), entry.options());
+            drawSprite(entry.sprite(), entry.offset(), entry.options(), clip);
         }
     }
 
+    private void applyClip(final ScreenBounds clip) {
+        if (!clip.equals(lastUsedClip)) {
+            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+            lastUsedClip = clip;
+        }
+    }
 }

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -44,62 +45,62 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
+    public void updateContext(final Supplier<Graphics2D> graphics) {
         waitForCurrentRenderingToEnd();
-        next.updateGraphicsContext(graphicsSupplier, canvasSize);
+        next.updateContext(graphics);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());
     }
 
     @Override
-    public void fillWith(final Color color) {
-        renderTasks.active().add(() -> next.fillWith(color));
+    public void fillWith(final Color color, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.fillWith(color, clip));
     }
 
     @Override
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderTasks.active().add(() -> next.fillWith(sprite, options));
+    public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.fillWith(sprite, options, clip));
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderTasks.active().add(() -> next.drawText(offset, text, options));
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        renderTasks.active().add(() -> next.drawRectangle(offset, size, options));
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawRectangle(offset, size, options, clip));
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderTasks.active().add(() -> next.drawLine(from, to, options));
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawLine(from, to, options, clip));
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderTasks.active().add(() -> next.drawCircle(offset, radius, options));
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawCircle(offset, radius, options, clip));
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options));
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSprite(sprite, origin, options, clip));
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderTasks.active().add(() -> next.drawText(offset, text, options));
+    public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawText(offset, text, options, clip));
     }
 
     @Override
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        renderTasks.active().add(() -> next.drawSpriteBatch(spriteBatch));
+    public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.drawSpriteBatch(spriteBatch, clip));
     }
 
     private FutureTask<Void> finishRenderTasks() {

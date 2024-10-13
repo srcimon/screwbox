@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -20,57 +21,57 @@ import java.util.function.Supplier;
 public class StandbyRenderer implements Renderer {
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
+    public void updateContext(final Supplier<Graphics2D> graphics) {
         // does nothing
     }
 
     @Override
-    public void fillWith(final Color color) {
+    public void fillWith(final Color color, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void fillWith(Sprite sprite, SpriteFillOptions options) {
+    public void fillWith(Sprite sprite, SpriteFillOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
+    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
+    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawText(Offset offset, String text, TextDrawOptions options) {
+    public void drawText(Offset offset, String text, TextDrawOptions options, final ScreenBounds clip) {
         // does nothing
     }
 
     @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch) {
+    public void drawSpriteBatch(SpriteBatch spriteBatch, final ScreenBounds clip) {
         // does nothing
     }
 

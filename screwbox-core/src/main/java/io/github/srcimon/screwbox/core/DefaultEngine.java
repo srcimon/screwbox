@@ -20,6 +20,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.Rendertarget;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
@@ -118,7 +119,7 @@ class DefaultEngine implements Engine {
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
         final var standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
 
-        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot());
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), new Rendertarget(standbyProxyRenderer));
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
         final DefaultWorld world = new DefaultWorld(screen);
