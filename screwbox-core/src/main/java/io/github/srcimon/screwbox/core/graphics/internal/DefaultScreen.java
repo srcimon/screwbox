@@ -57,11 +57,10 @@ public class DefaultScreen implements Screen {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
-            final var totalRotation = rotation().add(shake);
-            if (!totalRotation.isNone()) {
+            if (!absoluteRotation().isNone()) {
                 graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
                 graphics.fillRect(0, 0, width(), height());
-                graphics.rotate(totalRotation.radians(), width() / 2.0, height() / 2.0);
+                graphics.rotate(absoluteRotation().radians(), width() / 2.0, height() / 2.0);
             }
             lastGraphics = graphics;
             return graphics;
