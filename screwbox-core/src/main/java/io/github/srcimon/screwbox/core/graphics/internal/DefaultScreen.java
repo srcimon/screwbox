@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -70,7 +71,9 @@ public class DefaultScreen implements Screen {
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
 //        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-        rendertarget.updateClip(new ScreenBounds(40, 40, frame.getCanvasSize().width() - 80, frame.getCanvasSize().height() - 80));
+        int x =(int)( Math.sin(Time.now().milliseconds() / 1000.0 ) * 40);
+        int y =(int)( Math.sin(Time.now().milliseconds() / 800.0 ) * 30);
+        rendertarget.updateClip(new ScreenBounds(40 + x, 40 + y, frame.getCanvasSize().width() - 80, frame.getCanvasSize().height() - 80));
     }
 
     private Graphics2D getDrawGraphics() {

@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -73,7 +72,7 @@ public class Rendertarget implements Sizeable {
         } else {
             //TODO refactor into spritebatch.translate()
             SpriteBatch translatedSpriteBatch = new SpriteBatch();
-            for(var entry : spriteBatch.entries()) {
+            for (var entry : spriteBatch.entries()) {
                 translatedSpriteBatch.add(entry.sprite(), entry.offset().add(clip.offset()), entry.options(), entry.drawOrder());
             }
             renderer.drawSpriteBatch(spriteBatch, clip);
