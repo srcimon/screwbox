@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface Graphics {
 
-    Viewports viewports();
-
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */
