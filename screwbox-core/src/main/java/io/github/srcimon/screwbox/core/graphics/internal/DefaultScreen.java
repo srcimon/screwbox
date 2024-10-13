@@ -2,7 +2,12 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -52,10 +57,16 @@ public class DefaultScreen implements Screen {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
+            final var totalRotation = rotation().add(shake);
+            if (!totalRotation.isNone()) {
+                graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
+                graphics.fillRect(0,0, width(), height());
+                graphics.rotate(totalRotation.radians(), width() / 2.0, height() / 2.0);
+            }
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation.add(shake));
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
         renderer.fillWith(Color.BLACK);
     }
 

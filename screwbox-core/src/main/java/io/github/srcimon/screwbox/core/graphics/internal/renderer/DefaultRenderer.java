@@ -2,10 +2,12 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -34,15 +36,11 @@ public class DefaultRenderer implements Renderer {
     private Color lastUsedColor;
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize, final Rotation rotation) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         lastUpdateTime = Time.now();
         this.canvasSize = canvasSize;
         graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        if (!rotation.isNone()) {
-            fillWith(Color.BLACK);
-            graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
-        }
         graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
     }
 
