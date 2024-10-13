@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Viewports;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -11,18 +12,16 @@ import java.util.function.Supplier;
 import static java.awt.RenderingHints.*;
 import static java.util.Objects.nonNull;
 
-public class ViewportSupport implements Updatable {
-
-    //TODO boolean arrangeHorizontally();
-    //TODO boolean arrangeVertically();
+public class DefaultViewports implements Viewports, Updatable {
 
     private final WindowFrame frame;
     private final Renderer renderer;
     private final GraphicsConfiguration configuration;
     private final Screen screen;
+
     private Graphics2D lastGraphics;
 
-    public ViewportSupport(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final Screen screen) {
+    public DefaultViewports(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final Screen screen) {
         this.frame = frame;
         this.renderer = renderer;
         this.configuration = configuration;
