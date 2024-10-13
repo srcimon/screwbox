@@ -105,9 +105,9 @@ public class DefaultLight implements Light {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {
-                        area.add(world.toOffset(vector));
+                        area.add(world.toRenderOffset(vector));
                     }
-                    final Offset offset = world.toOffset(position);
+                    final Offset offset = world.toRenderOffset(position);
                     final int screenRadius = world.toDistance(radius);
                     lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
                 }
@@ -120,7 +120,7 @@ public class DefaultLight implements Light {
         tasks.add(() -> {
             final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
-                final Offset offset = world.toOffset(position);
+                final Offset offset = world.toRenderOffset(position);
                 final int distance = world.toDistance(radius);
                 lightmap.add(new Lightmap.SpotLight(offset, distance, color));
             }
