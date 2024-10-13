@@ -28,7 +28,7 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen {
 
-    private Renderer renderer;
+    private final Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
     private Graphics2D lastGraphics;
@@ -76,10 +76,6 @@ public class DefaultScreen implements Screen {
         } catch (IllegalStateException ignored) {
             return lastGraphics;
         }
-    }
-
-    public void setRenderer(final Renderer renderer) {
-        this.renderer = renderer;
     }
 
     @Override
