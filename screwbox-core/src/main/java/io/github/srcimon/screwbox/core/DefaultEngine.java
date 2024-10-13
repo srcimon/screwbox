@@ -125,7 +125,7 @@ class DefaultEngine implements Engine {
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
         final DefaultWorld world = new DefaultWorld(screenRendertarget);
 
-        final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
+        final DefaultLight light = new DefaultLight(screenRendertarget, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world, screen);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();

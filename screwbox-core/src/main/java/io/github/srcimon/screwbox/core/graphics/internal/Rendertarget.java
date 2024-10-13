@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public class Rendertarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
-    private ScreenBounds clip = new ScreenBounds(0, 0, 0, 0);
+    private ScreenBounds clip = new ScreenBounds(0, 0, 4, 4);
 
     public Rendertarget(final Renderer renderer) {
         this.renderer = renderer;
@@ -88,5 +88,9 @@ public class Rendertarget implements Sizeable {
     //TODO Positionable interface .x(), .y()
     public Offset offset() {
         return clip.offset();
+    }
+
+    public ScreenBounds screenBounds() {
+        return clip;
     }
 }

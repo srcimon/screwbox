@@ -5,14 +5,13 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
@@ -31,7 +30,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final Screen screen;
+    private final Rendertarget rendertarget;
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
@@ -42,10 +41,10 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final Screen screen, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final Rendertarget rendertarget, final DefaultWorld world, final GraphicsConfiguration configuration,
                         final ExecutorService executor) {
         this.executor = executor;
-        this.screen = screen;
+        this.rendertarget = rendertarget;
         this.world = world;
         this.configuration = configuration;
         updatePostFilter();
@@ -176,7 +175,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        screen.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        rendertarget.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -200,10 +199,11 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return screen.isVisible(world.toScreen(lightBox));
+        return rendertarget.screenBounds().intersects(world.toScreen(lightBox));
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(screen.size(), configuration.lightmapScale(), configuration.lightFalloff());
+        //TODO bug: lightmap misses offset
+        lightmap = new Lightmap(rendertarget.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }
