@@ -70,8 +70,8 @@ public class DefaultWorld implements World {
     }
 
     public Offset toOffset(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (rendertarget.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (rendertarget.height() / 2.0);
+        final double x = (position.x() - cameraPosition.x()) * zoom + (rendertarget.width() / 2.0) + rendertarget.offset().x();
+        final double y = (position.y() - cameraPosition.y()) * zoom + (rendertarget.height() / 2.0) + rendertarget.offset().y();
         return Offset.at(x, y);
     }
 
