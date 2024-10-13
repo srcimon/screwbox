@@ -55,7 +55,7 @@ public class AsyncRenderer implements Renderer {
 
     @Override
     public void updateClip(final ScreenBounds clip) {
-        renderTasks.active().add(() -> next.updateClip(clip));
+        next.updateClip(clip);
     }
 
     @Override
