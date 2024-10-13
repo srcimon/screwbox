@@ -11,12 +11,9 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
-import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_UI_FOREGROUND;
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 

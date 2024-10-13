@@ -156,9 +156,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private Vector toPositionConsideringRotation(final Offset offset) {
         final Rotation rotationIncludingShake = screen.absoluteRotation();
         if (rotationIncludingShake.isNone()) {
-            return world.toPositionBasedOnSize(offset, screen.size());
+            return world.toRenderPositionByTargetSize(offset);
         }
-        final var delta = Line.between(world.toPositionBasedOnSize(screen.center(), screen.size()), world.toPosition(offset));
+        final var delta = Line.between(world.toRenderPositionByTargetSize(renderTarget.size().center()), world.toPosition(offset));
         return Rotation.degrees(360 - rotationIncludingShake.degrees()).applyOn(delta).to();
     }
 }
