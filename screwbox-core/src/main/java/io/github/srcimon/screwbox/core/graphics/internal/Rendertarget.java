@@ -17,8 +17,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 import java.util.function.Supplier;
 
-//TODO apply offset change here
-public class Rendertarget implements Sizeable {//TODO implement renderer?
+public class Rendertarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
     private ScreenBounds clip = new ScreenBounds(0, 0, 0, 0);
