@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -68,8 +67,7 @@ public class ViewportSupport implements Updatable {
             }
             return graphics;
         };
-        renderer.updateContext(graphicsSupplier);
-        renderer.updateClip(new ScreenBounds(40, 40, frame.getCanvasSize().width()-80, frame.getCanvasSize().height()-80));
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
     }
 
     private Graphics2D getDrawGraphics() {

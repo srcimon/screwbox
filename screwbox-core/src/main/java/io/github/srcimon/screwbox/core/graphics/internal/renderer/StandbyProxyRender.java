@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -37,19 +36,11 @@ public class StandbyProxyRender implements Renderer {
     }
 
     @Override
-    public void updateContext(final Supplier<Graphics2D> graphics) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
         if (!isStandby) {
-            next.updateContext(graphics);
+            next.updateGraphicsContext(graphics, canvasSize);
         }
     }
-
-    @Override
-    public void updateClip(final ScreenBounds clip) {
-        if (!isStandby) {
-            next.updateClip(clip);
-        }
-    }
-
 
     @Override
     public void fillWith(final Color color) {
