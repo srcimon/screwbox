@@ -187,8 +187,9 @@ public class DefaultRenderer implements Renderer {
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
         applyClip(clip);
-        final int x = offset.x() - radius;
-        final int y = offset.y() - radius;
+        final Offset actualOffset = offset.add(clip.offset());
+        final int x = actualOffset.x() - radius;
+        final int y = actualOffset.y() - radius;
         final int diameter = radius * 2;
 
         if (options.style() == CircleDrawOptions.Style.FILLED) {

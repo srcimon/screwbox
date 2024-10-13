@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
+import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -25,15 +26,16 @@ public class ViewportSupport implements Updatable {
     private final List<Viewport> viewports;
     private Graphics2D lastGraphics;
     private boolean isSplitscreenActive = false;
-    DefaultViewport e1;
-    DefaultViewport e2;
+
     public ViewportSupport(final WindowFrame frame, final Renderer renderer, final GraphicsConfiguration configuration, final DefaultScreen screen) {
         this.frame = frame;
         this.renderer = renderer;
         this.configuration = configuration;
         this.screen = screen;
-        e1 = new DefaultViewport(renderer);
-        e2 = new DefaultViewport(renderer);
+        DefaultViewport e1 = new DefaultViewport(renderer);
+        DefaultViewport e2 = new DefaultViewport(renderer);
+        e1.updateClip(new ScreenBounds(30, 0, 400, 400));
+        e2.updateClip(new ScreenBounds(100, 0, 400, 400));
         this.viewports = List.of(e1, e2);
     }
 
@@ -70,10 +72,7 @@ public class ViewportSupport implements Updatable {
             }
             return graphics;
         };
-        screen.updateClip(new ScreenBounds(0, 0, frame.getCanvasSize().width(), frame.getCanvasSize().height()));
-
-        e1.updateClip(new ScreenBounds(400, 0, 800, 800));
-        e2.updateClip(new ScreenBounds(0, 0, 800, 800));
+        screen.updateClip(new ScreenBounds(0,0,frame.getCanvasSize().width(), frame.getCanvasSize().height()));
         renderer.updateContext(graphicsSupplier);
     }
 

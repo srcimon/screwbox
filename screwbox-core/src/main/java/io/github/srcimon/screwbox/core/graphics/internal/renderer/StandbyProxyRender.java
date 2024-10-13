@@ -18,7 +18,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import java.awt.*;
 import java.util.function.Supplier;
 
-//TODO move splitscreen compensation to another batch
 public class StandbyProxyRender implements Renderer {
 
     private Renderer next;
@@ -54,55 +53,41 @@ public class StandbyProxyRender implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = offset.add(clip.offset());
-        next.drawText(actualOffset, text, options, clip);
+        next.drawText(offset, text, options, clip);
     }
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = offset.add(clip.offset());
-        next.drawRectangle(actualOffset, size, options, clip);
+        next.drawRectangle(offset, size, options, clip);
     }
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        next.drawLine(from.add(clip.offset()), to.add(clip.offset()), options, clip);
+        next.drawLine(from, to, options, clip);
     }
 
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = offset.add(clip.offset());
-        next.drawCircle(actualOffset, radius, options, clip);
+        next.drawCircle(offset, radius, options, clip);
     }
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = origin.add(clip.offset());
-        next.drawSprite(sprite, actualOffset, options, clip);
+        next.drawSprite(sprite, origin, options, clip);
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = origin.add(clip.offset());
-        next.drawSprite(sprite, actualOffset, options, clip);
+        next.drawSprite(sprite, origin, options, clip);
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
-        final Offset actualOffset = offset.add(clip.offset());
-        next.drawText(actualOffset, text, options, clip);
+        next.drawText(offset, text, options, clip);
     }
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        if (clip.offset().equals(Offset.origin())) {
-            next.drawSpriteBatch(spriteBatch, clip);
-        } else {
-            SpriteBatch actualBatch = new SpriteBatch();
-            for (var e : spriteBatch.entries()) {
-                actualBatch.add(e.sprite(), clip.offset().add(e.offset()), e.options(), e.drawOrder());
-            }
-            next.drawSpriteBatch(actualBatch, clip);
-        }
+        next.drawSpriteBatch(spriteBatch, clip);
     }
 }

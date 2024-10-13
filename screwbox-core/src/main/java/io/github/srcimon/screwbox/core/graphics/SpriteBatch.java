@@ -42,10 +42,6 @@ public class SpriteBatch {
         return entries;
     }
 
-    public List<SpriteBatchEntry> entries() {
-        return entries;
-    }
-
     /**
      * Returns {@code true} if batch has no entries.
      */
