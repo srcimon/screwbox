@@ -119,10 +119,11 @@ class DefaultEngine implements Engine {
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
         final var standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
 
-        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), new Rendertarget(standbyProxyRenderer));
+        final Rendertarget screenRendertarget = new Rendertarget(standbyProxyRenderer);
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenRendertarget);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-        final DefaultWorld world = new DefaultWorld(screen);
+        final DefaultWorld world = new DefaultWorld(screenRendertarget);
 
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world, screen);

@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
@@ -17,10 +18,10 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import java.util.function.Supplier;
 
 //TODO apply offset change here
-public class Rendertarget {
+public class Rendertarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
-    private ScreenBounds clip;
+    private ScreenBounds clip = new ScreenBounds(0, 0, 0, 0);
 
     public Rendertarget(final Renderer renderer) {
         this.renderer = renderer;
@@ -68,5 +69,10 @@ public class Rendertarget {
 
     public void drawSpriteBatch(final SpriteBatch spriteBatch) {
         renderer.drawSpriteBatch(spriteBatch, clip);
+    }
+
+    @Override
+    public Size size() {
+        return clip.size();
     }
 }

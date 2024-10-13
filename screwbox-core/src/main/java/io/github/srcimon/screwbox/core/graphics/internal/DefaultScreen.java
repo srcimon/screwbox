@@ -69,7 +69,8 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
+//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
+        rendertarget.updateClip(new ScreenBounds(0,0,400,400));
     }
 
     private Graphics2D getDrawGraphics() {
