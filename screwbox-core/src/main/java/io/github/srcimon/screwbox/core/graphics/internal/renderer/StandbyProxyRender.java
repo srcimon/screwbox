@@ -36,9 +36,9 @@ public class StandbyProxyRender implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         if (!isStandby) {
-            next.updateGraphicsContext(graphics, canvasSize);
+            next.updateGraphicsContext(graphicsSupplier, canvasSize);
         }
     }
 

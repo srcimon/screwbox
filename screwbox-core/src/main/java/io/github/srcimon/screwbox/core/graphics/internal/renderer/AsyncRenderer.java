@@ -44,9 +44,9 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         waitForCurrentRenderingToEnd();
-        next.updateGraphicsContext(graphics, canvasSize);
+        next.updateGraphicsContext(graphicsSupplier, canvasSize);
 
         renderTasks.toggle();
         currentRendering = executor.submit(finishRenderTasks());

@@ -36,12 +36,12 @@ public class DefaultRenderer implements Renderer {
     private Color lastUsedColor;
 
     @Override
-    public void updateGraphicsContext(final Supplier<Graphics2D> graphics, final Size canvasSize) {
+    public void updateGraphicsContext(final Supplier<Graphics2D> graphicsSupplier, final Size canvasSize) {
         lastUpdateTime = Time.now();
         this.canvasSize = canvasSize;
-        this.graphics = graphics.get();
+        graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        this.graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
+        graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
     }
 
     @Override
