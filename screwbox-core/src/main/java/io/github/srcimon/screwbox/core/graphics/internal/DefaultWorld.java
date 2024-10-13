@@ -76,8 +76,8 @@ public class DefaultWorld implements World {
     }
 
     public Vector toPosition(final Offset offset) {
-        final double x = (offset.x() - (rendertarget.width() / 2.0)) / zoom + cameraPosition.x() - rendertarget.offset().x();
-        final double y = (offset.y() - (rendertarget.height() / 2.0)) / zoom + cameraPosition.y() - rendertarget.offset().y();
+        final double x = (offset.x() - rendertarget.offset().x() - (rendertarget.width() / 2.0)) / zoom + cameraPosition.x();
+        final double y = (offset.y() - rendertarget.offset().y() - (rendertarget.height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
     }
