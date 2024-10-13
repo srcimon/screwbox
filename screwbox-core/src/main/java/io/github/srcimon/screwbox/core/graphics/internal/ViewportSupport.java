@@ -59,15 +59,9 @@ public class ViewportSupport implements Updatable {
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
             lastGraphics = graphics;
-            graphics.setColor(Color.BLACK);
-            graphics.fillRect(0,0, frame.getCanvasSize().width(), frame.getCanvasSize().height());
-            var rotation = screen.rotation().add(screen.shake());
-            if (!rotation.isNone()) {
-                graphics.rotate(rotation.radians(), frame.getCanvasSize().width() / 2.0, frame.getCanvasSize().height() / 2.0);
-            }
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), screen.rotation().add(screen.shake()));
     }
 
     private Graphics2D getDrawGraphics() {
