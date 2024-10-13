@@ -3,24 +3,18 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static java.awt.RenderingHints.*;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
-import static java.util.Objects.nonNull;
 
 public class DefaultGraphics implements Graphics, Updatable {
 
@@ -31,9 +25,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final DefaultCamera camera;
     private final AsyncRenderer asyncRenderer;
-    private final WindowFrame frame;
-    private Renderer renderer = new StandbyRenderer();
-    private Graphics2D lastGraphics;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -41,8 +32,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final DefaultCamera camera,
-                           final AsyncRenderer asyncRenderer,
-                           final WindowFrame frame) {
+                           final AsyncRenderer asyncRenderer) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -50,7 +40,6 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.graphicsDevice = graphicsDevice;
         this.camera = camera;
         this.asyncRenderer = asyncRenderer;
-        this.frame = frame;
     }
 
     @Override
@@ -124,25 +113,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public void update() {
-        final Supplier<Graphics2D> graphicsSupplier = () -> {
-            frame.getCanvas().getBufferStrategy().show();
-            final Graphics2D graphics = getDrawGraphics();
-            if (nonNull(lastGraphics)) {
-                lastGraphics.dispose();
-            }
-            graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
-            graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
-            graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
-            graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
-            if (configuration.isUseAntialising()) {
-                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
-                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
-            }
-            lastGraphics = graphics;
-            return graphics;
-        };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), screen.rotation().add(screen.shake()));
-        renderer.fillWith(Color.BLACK);
+        screen.updateScreen(configuration.isUseAntialising());
         world.updateCameraPosition(camera.focus());
         light.update();
     }
@@ -160,18 +131,5 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Screen screen() {
         return screen;
-    }
-
-    private Graphics2D getDrawGraphics() {
-        try {
-            return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
-            // avoid Component must have a valid peer while closing the Window
-        } catch (IllegalStateException ignored) {
-            return lastGraphics;
-        }
-    }
-
-    public void setRenderer(final Renderer renderer) {
-        this.renderer = renderer;
     }
 }

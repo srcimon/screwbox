@@ -23,21 +23,61 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.awt.RenderingHints.*;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultScreen implements Screen, Viewport {
 
+    private Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
     private final Viewport viewport;
+    private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
 
-    public DefaultScreen(final WindowFrame frame, final Robot robot, final Viewport viewport) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final Viewport viewport) {
+        this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.viewport = viewport;
+    }
+
+    public void updateScreen(final boolean antialiased) {
+        final Supplier<Graphics2D> graphicsSupplier = () -> {
+            frame.getCanvas().getBufferStrategy().show();
+            final Graphics2D graphics = getDrawGraphics();
+            if (nonNull(lastGraphics)) {
+                lastGraphics.dispose();
+            }
+            graphics.setRenderingHint(KEY_DITHERING, VALUE_DITHER_DISABLE);
+            graphics.setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
+            graphics.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
+            graphics.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
+            if (antialiased) {
+                graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+                graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
+            }
+            lastGraphics = graphics;
+            return graphics;
+        };
+        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize(), rotation.add(shake));
+        renderer.fillWith(Color.BLACK);
+    }
+
+    private Graphics2D getDrawGraphics() {
+        try {
+            return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
+            // avoid Component must have a valid peer while closing the Window
+        } catch (IllegalStateException ignored) {
+            return lastGraphics;
+        }
+    }
+
+    public void setRenderer(final Renderer renderer) {
+        this.renderer = renderer;
     }
 
     @Override
