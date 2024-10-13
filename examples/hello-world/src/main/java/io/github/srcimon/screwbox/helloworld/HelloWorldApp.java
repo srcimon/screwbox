@@ -11,13 +11,9 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.keyboard.Key;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
-import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_UI_FOREGROUND;
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
@@ -43,14 +39,6 @@ public class HelloWorldApp {
                     screen.drawText(screen.center(), "Hello World!", drawOptions);
                 })
 
-                .addSystem(PRESENTATION_UI_FOREGROUND, engine -> {
-                    if (engine.keyboard().isPressed(Key.SPACE)) {
-                        engine.graphics().enableSplitscreen();
-                    }
-                    for (var view : engine.graphics().activeViewports()) {
-                        view.drawCircle(Offset.at(20, 20), 14, CircleDrawOptions.filled(Color.DARK_BLUE));
-                    }
-                })
                 // add light spot to create nice sunlight effect
                 .addEntity("sun", new PointLightComponent(800, Color.BLACK),
                         new GlowComponent(800, Color.YELLOW.opacity(0.1)),
