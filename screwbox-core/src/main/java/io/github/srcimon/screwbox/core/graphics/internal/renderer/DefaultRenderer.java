@@ -39,8 +39,8 @@ public class DefaultRenderer implements Renderer {
         this.canvasSize = canvasSize;
         graphics = graphicsSupplier.get();
         lastUsedColor = null;
-        fillWith(Color.BLACK);
         if (!rotation.isNone()) {
+            fillWith(Color.BLACK);
             graphics.rotate(rotation.radians(), canvasSize.width() / 2.0, canvasSize.height() / 2.0);
         }
         graphics.setClip(0, 0, canvasSize.width(), canvasSize.height());
