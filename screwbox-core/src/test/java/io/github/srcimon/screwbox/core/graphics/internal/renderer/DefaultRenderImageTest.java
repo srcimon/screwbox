@@ -1,11 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
@@ -47,7 +49,7 @@ class DefaultRenderImageTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
 
         renderer = new DefaultRenderer();
-        renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40), Rotation.none());
+        renderer.updateGraphicsContext(() -> graphics, Size.of(80, 40));
         renderer.fillWith(Color.BLACK);
     }
 

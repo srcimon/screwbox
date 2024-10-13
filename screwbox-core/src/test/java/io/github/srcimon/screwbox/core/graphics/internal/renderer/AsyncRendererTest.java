@@ -1,10 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
-import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,9 +40,9 @@ class AsyncRendererTest {
 
     @Test
     void renderDuration_renderingDone_hasDuration() {
-        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10), Rotation.none());
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
-        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10), Rotation.none());
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
 
         assertThat(asyncRenderer.renderDuration().nanos()).isNotZero();
     }
@@ -53,7 +52,7 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
 
         verify(renderer, never()).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
-        verify(renderer, never()).updateGraphicsContext(any(), any(), any());
+        verify(renderer, never()).updateGraphicsContext(any(), any());
     }
 
     @Test
@@ -61,18 +60,18 @@ class AsyncRendererTest {
         asyncRenderer.drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
         asyncRenderer.drawCircle(Offset.origin(), 25, CircleDrawOptions.filled(Color.BLUE));
 
-        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10), Rotation.none());
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
 
         verify(renderer, timeout(1000)).drawLine(Offset.origin(), Offset.at(10, 20), color(YELLOW));
         verify(renderer, timeout(1000)).drawCircle(Offset.origin(), 25, CircleDrawOptions.filled(Color.BLUE));
-        verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10), Rotation.none());
+        verify(renderer, timeout(1000)).updateGraphicsContext(null, Size.of(10, 10));
     }
 
     @Test
     void fillWith_afterUpdateOfGraphicsContext_callsNextRenderer() {
         asyncRenderer.fillWith(Color.BLUE);
 
-        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10), Rotation.none());
+        asyncRenderer.updateGraphicsContext(null, Size.of(10, 10));
         verify(renderer, timeout(1000)).fillWith(Color.BLUE);
     }
 

@@ -1,9 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.assets.FontBundle;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -39,7 +43,7 @@ class FirewallRendererTest {
 
     @BeforeEach
     void setUp() {
-        renderer.updateGraphicsContext(() -> null, Size.of(640, 480), Rotation.none());
+        renderer.updateGraphicsContext(() -> null, Size.of(640, 480));
         Mockito.reset(next);
     }
 
