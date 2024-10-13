@@ -8,6 +8,7 @@ import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
@@ -31,7 +32,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultCamera camera;
     private final AsyncRenderer asyncRenderer;
     private final WindowFrame frame;
-    private final Renderer renderer;
+    private Renderer renderer = new StandbyRenderer();
     private Graphics2D lastGraphics;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
@@ -41,8 +42,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final DefaultCamera camera,
                            final AsyncRenderer asyncRenderer,
-                           final WindowFrame frame,
-                           final Renderer renderer) {
+                           final WindowFrame frame) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -51,7 +51,6 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.camera = camera;
         this.asyncRenderer = asyncRenderer;
         this.frame = frame;
-        this.renderer = renderer;
     }
 
     @Override
@@ -170,5 +169,9 @@ public class DefaultGraphics implements Graphics, Updatable {
         } catch (IllegalStateException ignored) {
             return lastGraphics;
         }
+    }
+
+    public void setRenderer(final Renderer renderer) {
+        this.renderer = renderer;
     }
 }

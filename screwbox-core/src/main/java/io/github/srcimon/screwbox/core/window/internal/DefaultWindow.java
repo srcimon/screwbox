@@ -7,7 +7,8 @@ import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRender;
+import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -30,7 +31,7 @@ public class DefaultWindow implements Window, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
     private final DefaultScreen screen;
-    private final StandbyProxyRender renderer;
+    private final Renderer renderer;
     private final Latch<FilesDropedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
 
     private DisplayMode lastDisplayMode;
@@ -43,7 +44,7 @@ public class DefaultWindow implements Window, Updatable {
                          final GraphicsConfiguration configuration,
                          final DefaultScreen screen,
                          final GraphicsDevice graphicsDevice,
-                         final StandbyProxyRender renderer) {
+                         final Renderer renderer) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
@@ -118,7 +119,7 @@ public class DefaultWindow implements Window, Updatable {
             }
         }
         frame.getCanvas().createBufferStrategy(2);
-        renderer.wakeUp();
+        screen.setRenderer(renderer);
         updateCursor();
         windowChanged = Time.now();
         return this;
@@ -126,7 +127,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
-        renderer.standBy();
+        screen.setRenderer(new StandbyRenderer());
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
 
