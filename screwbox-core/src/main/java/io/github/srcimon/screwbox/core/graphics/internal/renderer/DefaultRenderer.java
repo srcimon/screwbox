@@ -34,7 +34,6 @@ public class DefaultRenderer implements Renderer {
     private Time lastUpdateTime = Time.now();
     private Graphics2D graphics;
     private Color lastUsedColor;
-    private ScreenBounds lastClip = null;
 
     @Override
     public void updateContext(final Supplier<Graphics2D> graphics) {
@@ -284,10 +283,7 @@ public class DefaultRenderer implements Renderer {
     }
 
     private void applyClip(final ScreenBounds clip) {
-        if(!clip.equals(lastClip)) {
-            graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
-            lastClip = clip;
-        }
+        graphics.setClip(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
 }
