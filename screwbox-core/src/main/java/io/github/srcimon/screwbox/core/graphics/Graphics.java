@@ -13,12 +13,6 @@ import java.util.List;
  */
 public interface Graphics {
 
-    List<Viewport> activeViewports();
-
-    Graphics enableSplitscreen();
-
-    Graphics disableSplitScreen();
-
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */
