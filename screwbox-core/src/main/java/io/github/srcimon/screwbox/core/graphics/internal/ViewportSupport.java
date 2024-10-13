@@ -69,7 +69,7 @@ public class ViewportSupport implements Updatable {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.updateClip(new ScreenBounds(0, 0, frame.getCanvasSize().width(), frame.getCanvasSize().height()));
+        renderer.updateClip(new ScreenBounds(40, 40, frame.getCanvasSize().width()-80, frame.getCanvasSize().height()-80));
     }
 
     private Graphics2D getDrawGraphics() {
