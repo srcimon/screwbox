@@ -48,4 +48,8 @@ public class SpriteBatch {
     public boolean isEmpty() {
         return entries.isEmpty();
     }
+
+    public List<SpriteBatchEntry> entries() {
+        return entries;
+    }
 }
