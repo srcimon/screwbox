@@ -71,7 +71,7 @@ public class DefaultScreen implements Screen {
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
 //        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-        rendertarget.updateClip(new ScreenBounds(400, 80, 880, 600));
+        rendertarget.updateClip(new ScreenBounds(80, 80, 600, 300));
     }
 
     private Graphics2D getDrawGraphics() {
