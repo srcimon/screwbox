@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -82,5 +83,10 @@ public class Rendertarget implements Sizeable {
     @Override
     public Size size() {
         return clip.size();
+    }
+
+    //TODO Positionable interface .x(), .y()
+    public Offset offset() {
+        return clip.offset();
     }
 }

@@ -2,7 +2,11 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -66,14 +70,14 @@ public class DefaultWorld implements World {
     }
 
     public Offset toOffset(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (rendertarget.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (rendertarget.height() / 2.0);
+        final double x = (position.x() - cameraPosition.x()) * zoom + (rendertarget.width() / 2.0) + rendertarget.offset().x();
+        final double y = (position.y() - cameraPosition.y()) * zoom + (rendertarget.height() / 2.0) + rendertarget.offset().y();
         return Offset.at(x, y);
     }
 
     public Vector toPosition(final Offset offset) {
-        final double x = (offset.x() - (rendertarget.width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() - (rendertarget.height() / 2.0)) / zoom + cameraPosition.y();
+        final double x = (offset.x() - (rendertarget.width() / 2.0)) / zoom + cameraPosition.x() - rendertarget.offset().x();
+        final double y = (offset.y() - (rendertarget.height() / 2.0)) / zoom + cameraPosition.y() - rendertarget.offset().y();
 
         return Vector.of(x, y);
     }
@@ -117,8 +121,8 @@ public class DefaultWorld implements World {
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final Vector position = bounds.origin();
         final var offset = Offset.at(
-                (position.x() - parallaxX * cameraPosition.x()) * zoom + (rendertarget.width() / 2.0),
-                (position.y() - parallaxY * cameraPosition.y()) * zoom + (rendertarget.height() / 2.0));
+                (position.x() - parallaxX * cameraPosition.x()) * zoom + (rendertarget.width() / 2.0) + rendertarget.offset().x(),
+                (position.y() - parallaxY * cameraPosition.y()) * zoom + (rendertarget.height() / 2.0) + rendertarget.offset().y());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }
