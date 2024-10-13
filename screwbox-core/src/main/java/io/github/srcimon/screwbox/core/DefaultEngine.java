@@ -9,8 +9,8 @@ import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.audio.internal.AudioLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
-import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.DynamicSoundSupport;
+import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
@@ -23,7 +23,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.keyboard.internal.DefaultKeyboard;
 import io.github.srcimon.screwbox.core.log.ConsoleLoggingAdapter;
@@ -116,10 +116,11 @@ class DefaultEngine implements Engine {
         final var defaultRenderer = new DefaultRenderer();
         final var asyncRenderer = new AsyncRenderer(defaultRenderer, executor);
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
+        final var standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
 
-        final DefaultScreen screen = new DefaultScreen(frame, new StandbyRenderer(), createRobot());
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot());
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        window = new DefaultWindow(frame, configuration, screen, graphicsDevice, firewallRenderer);
+        window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
         final DefaultWorld world = new DefaultWorld(screen);
 
         final DefaultLight light = new DefaultLight(screen, world, configuration, executor);

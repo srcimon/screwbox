@@ -60,7 +60,7 @@ public class DefaultScreen implements Screen {
             final var totalRotation = rotation().add(shake);
             if (!totalRotation.isNone()) {
                 graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
-                graphics.fillRect(0,0, width(), height());
+                graphics.fillRect(0, 0, width(), height());
                 graphics.rotate(totalRotation.radians(), width() / 2.0, height() / 2.0);
             }
             lastGraphics = graphics;

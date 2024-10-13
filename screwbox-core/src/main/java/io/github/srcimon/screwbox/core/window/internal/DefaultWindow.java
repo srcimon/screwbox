@@ -6,9 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.StandbyProxyRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import io.github.srcimon.screwbox.core.window.FilesDropedOnWindow;
@@ -30,8 +28,7 @@ public class DefaultWindow implements Window, Updatable {
     private final WindowFrame frame;
     private final GraphicsDevice graphicsDevice;
     private final GraphicsConfiguration configuration;
-    private final DefaultScreen screen;
-    private final Renderer renderer;
+    private final StandbyProxyRenderer renderer;
     private final Latch<FilesDropedOnWindow> filesDroppedOnWindow = Latch.of(null, null);
 
     private DisplayMode lastDisplayMode;
@@ -42,13 +39,11 @@ public class DefaultWindow implements Window, Updatable {
 
     public DefaultWindow(final WindowFrame frame,
                          final GraphicsConfiguration configuration,
-                         final DefaultScreen screen,
                          final GraphicsDevice graphicsDevice,
-                         final Renderer renderer) {
+                         final StandbyProxyRenderer renderer) {
         this.graphicsDevice = graphicsDevice;
         this.frame = frame;
         this.configuration = configuration;
-        this.screen = screen;
         this.renderer = renderer;
         new DragAndDropSupport(frame, (files, position) -> filesDroppedOnWindow.assignActive(new FilesDropedOnWindow(files, position)));
         configuration.addListener(event -> {
@@ -119,7 +114,7 @@ public class DefaultWindow implements Window, Updatable {
             }
         }
         frame.getCanvas().createBufferStrategy(2);
-        screen.setRenderer(renderer);
+        renderer.toggle();
         updateCursor();
         windowChanged = Time.now();
         return this;
@@ -127,7 +122,7 @@ public class DefaultWindow implements Window, Updatable {
 
     @Override
     public Window close() {
-        screen.setRenderer(new StandbyRenderer());
+        renderer.toggle();
         frame.setCursor(Cursor.getDefaultCursor());
         frame.dispose();
 
