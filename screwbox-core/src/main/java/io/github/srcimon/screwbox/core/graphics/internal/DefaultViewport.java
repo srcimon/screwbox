@@ -16,7 +16,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 import java.util.function.Supplier;
 
-//TODO if this only delegates -> delete it
 //TODO add finals
 public class DefaultViewport implements Viewport {
 
