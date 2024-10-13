@@ -136,7 +136,7 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer);
-        ui = new DefaultUi(this, scenes);
+        ui = new DefaultUi(this, scenes, screenRendertarget);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, world, screenRendertarget);
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
