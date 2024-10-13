@@ -153,6 +153,7 @@ public interface Screen extends Sizeable {
      * Returns the current {@link ScreenBounds}.
      */
     ScreenBounds bounds();
+    ScreenBounds visibleBounds();//TODO viewport.visibleBounds()
 
     /**
      * Draws multiple sorted {@link Sprite sprites} at once. May have slightly better performance than drawing them

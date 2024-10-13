@@ -20,7 +20,7 @@ public class RenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
-        final ScreenBounds visibleBounds = graphics.screen().bounds();
+        final ScreenBounds visibleBounds = graphics.screen().visibleBounds();
         double zoom = graphics.camera().zoom();
 
         for (final Entity entity : engine.environment().fetchAll(RENDERS)) {

@@ -71,9 +71,7 @@ public class DefaultScreen implements Screen {
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
 //        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-        int x =(int)( Math.sin(Time.now().milliseconds() / 1000.0 ) * 40);
-        int y =(int)( Math.sin(Time.now().milliseconds() / 800.0 ) * 30);
-        rendertarget.updateClip(new ScreenBounds(40 + x, 40 + y, frame.getCanvasSize().width() - 80, frame.getCanvasSize().height() - 80));
+        rendertarget.updateClip(new ScreenBounds(400, 80, 880, 600));
     }
 
     private Graphics2D getDrawGraphics() {
@@ -178,6 +176,11 @@ public class DefaultScreen implements Screen {
     @Override
     public ScreenBounds bounds() {
         return new ScreenBounds(Offset.origin(), size());
+    }
+
+    @Override
+    public ScreenBounds visibleBounds() {
+        return rendertarget.screenBounds();
     }
 
     @Override
