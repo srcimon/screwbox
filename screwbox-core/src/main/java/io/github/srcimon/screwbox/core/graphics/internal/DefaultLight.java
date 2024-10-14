@@ -30,7 +30,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final Rendertarget rendertarget;
+    private final RenderTarget rendertarget;
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
@@ -41,7 +41,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final Rendertarget rendertarget, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final RenderTarget rendertarget, final DefaultWorld world, final GraphicsConfiguration configuration,
                         final ExecutorService executor) {
         this.executor = executor;
         this.rendertarget = rendertarget;

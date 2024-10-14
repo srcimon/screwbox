@@ -1,8 +1,7 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.internal.Rendertarget;
+import io.github.srcimon.screwbox.core.graphics.internal.RenderTarget;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
@@ -24,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final Rendertarget rendertarget;
+    private final RenderTarget rendertarget;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -35,7 +34,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, Rendertarget rendertarget) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, RenderTarget rendertarget) {
         this.engine = engine;
         this.scenes = scenes;
         this.rendertarget = rendertarget;
@@ -76,7 +75,7 @@ public class DefaultUi implements Ui, Updatable {
         }
     }
 
-    private void renderMenu(final UiMenu menu, final Rendertarget rendertarget) {
+    private void renderMenu(final UiMenu menu, final RenderTarget rendertarget) {
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, rendertarget.screenBounds());
             if (rendertarget.screenBounds().intersects(bounds)) {//TODO screentarget.isVisible() & screentarget.center()

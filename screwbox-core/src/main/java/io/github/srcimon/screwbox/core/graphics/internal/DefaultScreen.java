@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -36,9 +35,9 @@ public class DefaultScreen implements Screen {
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
-    private final Rendertarget rendertarget;
+    private final RenderTarget rendertarget;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final Rendertarget rendertarget) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final RenderTarget rendertarget) {
         this.renderer = renderer;//TODO remove rederer and replace with rendertarget
         this.frame = frame;
         this.robot = robot;

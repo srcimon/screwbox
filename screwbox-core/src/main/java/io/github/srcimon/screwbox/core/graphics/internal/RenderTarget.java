@@ -18,13 +18,13 @@ import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetTranslat
 
 import java.util.function.Supplier;
 
-public class Rendertarget implements Sizeable {
+public class RenderTarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
     private Renderer usedRenderer;
     private ScreenBounds clip = new ScreenBounds(0, 0, 4, 4);//TODO initialize better
 
-    public Rendertarget(final Renderer renderer) {
+    public RenderTarget(final Renderer renderer) {
         this.renderer = renderer;
     }
 

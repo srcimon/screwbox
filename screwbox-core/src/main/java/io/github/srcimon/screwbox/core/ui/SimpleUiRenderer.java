@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.ui;
 
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.Rendertarget;
+import io.github.srcimon.screwbox.core.graphics.internal.RenderTarget;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
@@ -16,17 +16,17 @@ public class SimpleUiRenderer implements UiRenderer {
     private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColor(WHITE.opacity(0.2))).scale(2).alignCenter();
 
     @Override
-    public void renderSelectableItem(String label, ScreenBounds bounds, Rendertarget rendertarget) {
+    public void renderSelectableItem(String label, ScreenBounds bounds, RenderTarget rendertarget) {
         rendertarget.drawText(bounds.center(), label, SELECTABLE);
     }
 
     @Override
-    public void renderSelectedItem(String label, ScreenBounds bounds, Rendertarget rendertarget) {
+    public void renderSelectedItem(String label, ScreenBounds bounds, RenderTarget rendertarget) {
         rendertarget.drawText(bounds.center(), label, SELECTED);
     }
 
     @Override
-    public void renderInactiveItem(String label, ScreenBounds bounds, Rendertarget rendertarget) {
+    public void renderInactiveItem(String label, ScreenBounds bounds, RenderTarget rendertarget) {
         rendertarget.drawText(bounds.center(), label, INACTIVE);
     }
 
