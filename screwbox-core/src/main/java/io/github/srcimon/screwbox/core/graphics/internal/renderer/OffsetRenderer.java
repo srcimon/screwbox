@@ -18,12 +18,12 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import java.awt.*;
 import java.util.function.Supplier;
 
-public class OffsetTranslatingRenderer implements Renderer {
+public class OffsetRenderer implements Renderer {
 
     private final Renderer next;
     private final Offset offset;
 
-    public OffsetTranslatingRenderer(final Offset offset, final Renderer next) {
+    public OffsetRenderer(final Offset offset, final Renderer next) {
         this.next = next;
         this.offset = offset;
     }
