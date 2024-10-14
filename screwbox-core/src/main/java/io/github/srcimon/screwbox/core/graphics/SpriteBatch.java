@@ -49,7 +49,11 @@ public class SpriteBatch {
         return entries.isEmpty();
     }
 
-    public List<SpriteBatchEntry> entries() {
-        return entries;
+    public SpriteBatch translate(Offset offset) {
+        final var translated = new SpriteBatch();
+        for (final var entry : entries) {
+            translated.add(entry.sprite, entry.offset.add(offset), entry.options, entry.drawOrder);
+        }
+        return translated;
     }
 }

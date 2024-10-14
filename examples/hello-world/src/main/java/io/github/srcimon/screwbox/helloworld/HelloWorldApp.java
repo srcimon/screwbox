@@ -11,6 +11,10 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComp
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionComponent;
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 
 import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_BACKGROUND;
@@ -31,29 +35,13 @@ public class HelloWorldApp {
                 // enable all features that are used below...
                 .enableAllFeatures()
 
-                // draw Hello World
-                .addSystem(PRESENTATION_BACKGROUND, engine -> {
-                    var screen = engine.graphics().screen();
-                    var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
-                    screen.fillWith(Color.hex("#125d7e"));
-                    screen.drawText(screen.center(), "Hello World!", drawOptions);
-                })
-
-                // add light spot to create nice sunlight effect
-                .addEntity("sun", new PointLightComponent(800, Color.BLACK),
-                        new GlowComponent(800, Color.YELLOW.opacity(0.1)),
-                        new TransformComponent())
-
-                // add falling leaves
-                .addEntity("falling leaves",
-                        new TransformComponent(0, 0, 1280, 720),
-                        new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
-
-                // let the mouse interact with the falling leaves
-                .addEntity("cursor",
-                        new TransformComponent(),
-                        new CursorAttachmentComponent(),
-                        new ParticleInteractionComponent(80, Percent.max()));
+                        .addSystem(engine -> {
+                            engine.graphics().screen().fillWith(Color.YELLOW);
+                            SpriteBatch spriteBatch = new SpriteBatch();
+                            spriteBatch.add(SpriteBundle.EXPLOSION.get(), Offset.at(90,90), SpriteDrawOptions.originalSize(),1);
+                            engine.graphics().screen().drawSpriteBatch(spriteBatch);
+                            engine.graphics().screen().drawSprite(SpriteBundle.MAN_STAND.get(), Offset.at(90,95), SpriteDrawOptions.originalSize());
+                        });
 
         screwBox.start();
     }

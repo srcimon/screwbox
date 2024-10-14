@@ -80,6 +80,6 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        next.drawSpriteBatch(spriteBatch, clip);
+        next.drawSpriteBatch(spriteBatch.translate(clip.offset()), clip);
     }
 }
