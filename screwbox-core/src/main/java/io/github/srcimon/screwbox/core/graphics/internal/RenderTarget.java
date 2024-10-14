@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetTranslatingRenderer;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
 
 import java.util.function.Supplier;
 
@@ -33,7 +33,7 @@ public class RenderTarget implements Sizeable {
         //TODO when this is called every frame (not sure jet) make sure renderer is only changed on ofset change
         usedRenderer = Offset.origin().equals(clip.offset())
                 ? renderer
-                : new OffsetTranslatingRenderer(clip.offset(), renderer);
+                : new OffsetRenderer(clip.offset(), renderer);
     }
 
     public void fillWith(final Color color) {

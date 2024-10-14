@@ -80,11 +80,6 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        //TODO refactor into spritebatch.translate()
-        SpriteBatch translatedSpriteBatch = new SpriteBatch();
-        for (var entry : spriteBatch.entries()) {
-            translatedSpriteBatch.add(entry.sprite(), entry.offset().add(clip.offset()), entry.options(), entry.drawOrder());
-        }
         next.drawSpriteBatch(spriteBatch, clip);
     }
 }
