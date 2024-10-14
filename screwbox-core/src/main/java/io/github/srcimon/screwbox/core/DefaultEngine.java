@@ -20,7 +20,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
-import io.github.srcimon.screwbox.core.graphics.internal.Rendertarget;
+import io.github.srcimon.screwbox.core.graphics.internal.RenderTarget;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
@@ -119,13 +119,13 @@ class DefaultEngine implements Engine {
         final var firewallRenderer = new FirewallRenderer(asyncRenderer);
         final var standbyProxyRenderer = new StandbyProxyRenderer(firewallRenderer);
 
-        final Rendertarget screenRendertarget = new Rendertarget(standbyProxyRenderer);
-        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenRendertarget);
+        final RenderTarget screenRenderTarget = new RenderTarget(standbyProxyRenderer);
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenRenderTarget);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-        final DefaultWorld world = new DefaultWorld(screenRendertarget);
+        final DefaultWorld world = new DefaultWorld(screenRenderTarget);
 
-        final DefaultLight light = new DefaultLight(screenRendertarget, world, configuration, executor);
+        final DefaultLight light = new DefaultLight(screenRenderTarget, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world, screen);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
@@ -136,9 +136,9 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer);
-        ui = new DefaultUi(this, scenes, screenRendertarget);
+        ui = new DefaultUi(this, scenes, screenRenderTarget);
         keyboard = new DefaultKeyboard();
-        mouse = new DefaultMouse(screen, world, screenRendertarget);
+        mouse = new DefaultMouse(screen, world, screenRenderTarget);
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
