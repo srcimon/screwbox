@@ -14,13 +14,15 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetTranslatingRenderer;
 
 import java.util.function.Supplier;
 
 public class Rendertarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
-    private ScreenBounds clip = new ScreenBounds(0, 0, 4, 4);
+    private Renderer usedRenderer;
+    private ScreenBounds clip = new ScreenBounds(0, 0, 4, 4);//TODO initialize better
 
     public Rendertarget(final Renderer renderer) {
         this.renderer = renderer;
@@ -28,55 +30,50 @@ public class Rendertarget implements Sizeable {
 
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
+        //TODO when this is called every frame (not sure jet) make sure renderer is only changed on ofset change
+        usedRenderer = Offset.origin().equals(clip.offset())
+                ? renderer
+                : new OffsetTranslatingRenderer(clip.offset(), renderer);
     }
 
     public void fillWith(final Color color) {
-        renderer.fillWith(color, clip);
+        usedRenderer.fillWith(color, clip);
     }
 
     public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.fillWith(sprite, options.offset(options.offset().add(clip.offset())), clip);
+        usedRenderer.fillWith(sprite, options, clip);
     }
 
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderer.drawText(offset.add(clip.offset()), text, options, clip);
+        usedRenderer.drawText(offset, text, options, clip);
     }
 
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        renderer.drawRectangle(offset.add(clip.offset()), size, options, clip);
+        usedRenderer.drawRectangle(offset, size, options, clip);
     }
 
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderer.drawLine(from.add(clip.offset()), to.add(clip.offset()), options, clip);
+        usedRenderer.drawLine(from, to, options, clip);
     }
 
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(offset.add(clip.offset()), radius, options, clip);
+        usedRenderer.drawCircle(offset, radius, options, clip);
     }
 
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin.add(clip.offset()), options, clip);
+        usedRenderer.drawSprite(sprite, origin, options, clip);
     }
 
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin.add(clip.offset()), options, clip);
+        usedRenderer.drawSprite(sprite, origin, options, clip);
     }
 
     public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderer.drawText(offset.add(clip.offset()), text, options, clip);
+        usedRenderer.drawText(offset, text, options, clip);
     }
 
     public void drawSpriteBatch(final SpriteBatch spriteBatch) {
-        if (clip.offset().equals(Offset.origin())) {
-            renderer.drawSpriteBatch(spriteBatch, clip);
-        } else {
-            //TODO refactor into spritebatch.translate()
-            SpriteBatch translatedSpriteBatch = new SpriteBatch();
-            for (var entry : spriteBatch.entries()) {
-                translatedSpriteBatch.add(entry.sprite(), entry.offset().add(clip.offset()), entry.options(), entry.drawOrder());
-            }
-            renderer.drawSpriteBatch(spriteBatch, clip);
-        }
+        usedRenderer.drawSpriteBatch(spriteBatch, clip);
     }
 
     @Override
