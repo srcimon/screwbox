@@ -78,7 +78,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private void renderMenu(final UiMenu menu, final Rendertarget rendertarget) {
         for (final var item : menu.items()) {
-            final var bounds = layouter.calculateBounds(item, menu, rendertarget.size());
+            final var bounds = layouter.calculateBounds(item, menu, rendertarget.screenBounds());
             if (rendertarget.screenBounds().intersects(bounds)) {//TODO screentarget.isVisible() & screentarget.center()
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
