@@ -81,7 +81,6 @@ public class Rendertarget implements Sizeable {
         return clip.size();
     }
 
-    //TODO Positionable interface .x(), .y()
     public Offset offset() {
         return clip.offset();
     }

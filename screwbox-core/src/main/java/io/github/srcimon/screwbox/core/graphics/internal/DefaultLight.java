@@ -203,7 +203,6 @@ public class DefaultLight implements Light {
     }
 
     private void initLightmap() {
-        //TODO bug: lightmap misses offset
         lightmap = new Lightmap(rendertarget.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }
