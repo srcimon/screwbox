@@ -69,8 +69,8 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-//            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
+//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
 
@@ -139,8 +139,7 @@ public class DefaultScreen implements Screen {
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
         final Rectangle rectangle = new Rectangle(frame.getX(),
                 frame.getY() + frame.getInsets().top + menuBarHeight,
-                rendertarget.width() + rendertarget.offset().x(),
-                rendertarget.height() + rendertarget.offset().y());
+                width() , height());
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);

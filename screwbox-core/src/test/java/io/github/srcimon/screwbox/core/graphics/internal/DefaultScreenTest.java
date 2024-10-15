@@ -1,14 +1,13 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +36,7 @@ class DefaultScreenTest {
     WindowFrame frame;
 
     @Mock
-    Renderer renderer;
+    RenderTarget renderTarget;
 
     @Mock
     Robot robot;
@@ -46,7 +45,7 @@ class DefaultScreenTest {
     void fillWith_callsRendererFillWith() {
         screen.fillWith(Color.BLUE);
 
-        verify(renderer).fillWith(Color.BLUE);
+        verify(renderTarget).fillWith(Color.BLUE);
     }
 
     @Test
@@ -58,59 +57,24 @@ class DefaultScreenTest {
     }
 
     @Test
-    void isVisible_insideCanvas_isTrue() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
-
-        assertThat(screen.isVisible(Offset.at(20, 40))).isTrue();
-    }
-
-    @Test
-    void isVisible_boundsPartiallyInsideCanvas_isTrue() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
-
-        assertThat(screen.isVisible(new ScreenBounds(200, 0, 100, 200))).isTrue();
-    }
-
-    @Test
-    void isVisible_boundsInsideCanvas_isTrue() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
-
-        assertThat(screen.isVisible(new ScreenBounds(45, 45, 50, 50))).isTrue();
-    }
-
-    @Test
-    void isVisible_boundsOutsideCanvas_isFalse() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
-
-        assertThat(screen.isVisible(new ScreenBounds(450, 450, 50, 50))).isFalse();
-    }
-
-    @Test
-    void isVisible_outsideCanvas_isFalse() {
-        when(frame.getCanvasSize()).thenReturn(Size.of(300, 400));
-
-        assertThat(screen.isVisible(Offset.at(-20, 40))).isFalse();
-    }
-
-    @Test
     void drawRectangle_callsRenderer() {
         screen.drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
 
-        verify(renderer).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
+        verify(renderTarget).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
     }
 
     @Test
     void drawLine_callsRenderer() {
         screen.drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
 
-        verify(renderer).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
+        verify(renderTarget).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
     }
 
     @Test
     void drawCircle_radiusPositive_callsRender() {
         screen.drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
 
-        verify(renderer).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
+        verify(renderTarget).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
     }
 
     @Test
@@ -126,21 +90,19 @@ class DefaultScreenTest {
 
         screen.drawSpriteBatch(spriteBatch);
 
-        verify(renderer).drawSpriteBatch(spriteBatch);
+        verify(renderTarget).drawSpriteBatch(spriteBatch);
     }
 
     @Test
     void takeScreenshot_noMenuBar_createsScreenshotFromWholeWindow() {
-        Canvas canvas = mock(Canvas.class);
-        when(canvas.getWidth()).thenReturn(640);
         var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
         when(frame.isVisible()).thenReturn(true);
         when(frame.getX()).thenReturn(120);
         when(frame.getY()).thenReturn(200);
         when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(frame.getCanvas()).thenReturn(canvas);
-        when(frame.canvasHeight()).thenReturn(480);
         when(robot.createScreenCapture(new Rectangle(120, 240, 640, 480))).thenReturn(screenshot);
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
+
         var result = screen.takeScreenshot();
 
         assertThat(result.image(now())).isEqualTo(screenshot);
@@ -148,8 +110,6 @@ class DefaultScreenTest {
 
     @Test
     void takeScreenshot_withMenuBar_createsScreenshoWithoutMenuBar() {
-        Canvas canvas = mock(Canvas.class);
-        when(canvas.getWidth()).thenReturn(640);
         when(frame.isVisible()).thenReturn(true);
         var screenshot = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
         JMenuBar menuBar = mock(JMenuBar.class);
@@ -158,8 +118,7 @@ class DefaultScreenTest {
         when(frame.getX()).thenReturn(120);
         when(frame.getY()).thenReturn(200);
         when(frame.getInsets()).thenReturn(new Insets(40, 0, 0, 0));
-        when(frame.getCanvas()).thenReturn(canvas);
-        when(frame.canvasHeight()).thenReturn(480);
+        when(frame.getCanvasSize()).thenReturn(Size.of(640, 480));
         when(robot.createScreenCapture(new Rectangle(120, 260, 640, 480))).thenReturn(screenshot);
 
         var result = screen.takeScreenshot();
