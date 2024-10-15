@@ -30,7 +30,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final RenderTarget rendertarget;
+    private final RenderTarget renderTarget;
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
@@ -41,10 +41,10 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final RenderTarget rendertarget, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final RenderTarget renderTarget, final DefaultWorld world, final GraphicsConfiguration configuration,
                         final ExecutorService executor) {
         this.executor = executor;
-        this.rendertarget = rendertarget;
+        this.renderTarget = renderTarget;
         this.world = world;
         this.configuration = configuration;
         updatePostFilter();
@@ -175,7 +175,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        rendertarget.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        renderTarget.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -199,10 +199,10 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return rendertarget.screenBounds().intersects(world.toScreen(lightBox));
+        return renderTarget.screenBounds().intersects(world.toScreen(lightBox));
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(rendertarget.size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(renderTarget.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }

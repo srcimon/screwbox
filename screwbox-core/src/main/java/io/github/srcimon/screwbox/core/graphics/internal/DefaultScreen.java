@@ -142,10 +142,10 @@ public class DefaultScreen implements Screen {
             throw new IllegalStateException("window must be opend first to create screenshot");
         }
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX() + rendertarget.offset().x(),
-                frame.getY() + frame.getInsets().top + menuBarHeight + rendertarget.offset().y(),
-                rendertarget.width(),
-                rendertarget.height());
+        final Rectangle rectangle = new Rectangle(frame.getX() ,
+                frame.getY() + frame.getInsets().top + menuBarHeight,
+                rendertarget.width() + rendertarget.offset().x(),
+                rendertarget.height() + rendertarget.offset().y());
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
