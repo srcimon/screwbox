@@ -73,7 +73,7 @@ class DefaultRenderImageTest {
     @Test
     void drawRectangle_rotated_fillsRectangleBlue() {
         renderer.drawRectangle(Offset.at(10, 10), Size.of(20, 40), filled(BLUE).rotation(degrees(45)), CLIP);
-        TestUtil.exportPng(result, "xxx.png");
+
         verifyIsIdenticalWithReferenceImage("drawRectangle_rotated_fillsRectangleBlue.png");
     }
 
