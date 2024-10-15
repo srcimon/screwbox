@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.environment.particles.ParticleInteraction
 import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentComponent;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
@@ -41,6 +42,7 @@ public class HelloWorldApp {
                             spriteBatch.add(SpriteBundle.EXPLOSION.get(), Offset.at(90,90), SpriteDrawOptions.originalSize(),1);
                             engine.graphics().screen().drawSpriteBatch(spriteBatch);
                             engine.graphics().screen().drawSprite(SpriteBundle.MAN_STAND.get(), Offset.at(90,95), SpriteDrawOptions.originalSize());
+                            engine.graphics().screen().drawSprite(SpriteBundle.BOX_STRIPED, engine.graphics().screen().center(), SpriteDrawOptions.originalSize());
                         });
 
         screwBox.start();

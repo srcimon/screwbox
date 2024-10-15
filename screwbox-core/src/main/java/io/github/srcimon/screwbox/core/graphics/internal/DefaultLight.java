@@ -105,9 +105,9 @@ public class DefaultLight implements Light {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {
-                        area.add(world.toOffset(vector));
+                        area.add(world.toScreen(vector));
                     }
-                    final Offset offset = world.toOffset(position);
+                    final Offset offset = world.toScreen(position);
                     final int screenRadius = world.toDistance(radius);
                     lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
                 }
@@ -120,7 +120,7 @@ public class DefaultLight implements Light {
         tasks.add(() -> {
             final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
-                final Offset offset = world.toOffset(position);
+                final Offset offset = world.toScreen(position);
                 final int distance = world.toDistance(radius);
                 lightmap.add(new Lightmap.SpotLight(offset, distance, color));
             }
@@ -175,7 +175,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        renderTarget.drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        renderTarget.drawSprite(sprite, Offset.at(overlap, overlap).add(renderTarget.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override

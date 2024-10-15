@@ -51,7 +51,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
-        final Offset offset = toOffset(bounds.origin());
+        final Offset offset = toViewport(bounds.origin());
         final Size size = toDimension(bounds.size());
         renderTarget.drawRectangle(offset, size, options);
         return this;
@@ -59,20 +59,24 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
-        renderTarget.drawLine(toOffset(from), toOffset(to), options);
+        renderTarget.drawLine(toViewport(from), toViewport(to), options);
         return this;
     }
 
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
-        renderTarget.drawCircle(toOffset(position), toDistance(radius), options);
+        renderTarget.drawCircle(toViewport(position), toDistance(radius), options);
         return this;
     }
 
-    public Offset toOffset(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (renderTarget.width() / 2.0) + renderTarget.offset().x();
-        final double y = (position.y() - cameraPosition.y()) * zoom + (renderTarget.height() / 2.0) + renderTarget.offset().y();
+    public Offset toScreen(final Vector position) {
+        final double x = (position.x() - cameraPosition.x()) * zoom + (renderTarget.width() / 2.0);
+        final double y = (position.y() - cameraPosition.y()) * zoom + (renderTarget.height() / 2.0);
         return Offset.at(x, y);
+    }
+
+    public Offset toViewport(final Vector position) {
+        return toScreen(position).add(renderTarget.offset());
     }
 
     public Vector toPosition(final Offset offset) {
@@ -91,13 +95,13 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        renderTarget.drawText(toOffset(position), text, options.scale(options.scale() * zoom));
+        renderTarget.drawText(toViewport(position), text, options.scale(options.scale() * zoom));
         return this;
     }
 
     @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
-        final Offset windowOffset = toOffset(position);
+        final Offset windowOffset = toViewport(position);
         renderTarget.drawText(windowOffset, text, options);
         return this;
     }
@@ -105,7 +109,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
         final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
-        renderTarget.drawSprite(sprite, toOffset(origin), scaledOptions);
+        renderTarget.drawSprite(sprite, toViewport(origin), scaledOptions);
         return this;
     }
 
@@ -116,7 +120,7 @@ public class DefaultWorld implements World {
     }
 
     public ScreenBounds toScreen(final Bounds bounds) {
-        final var offset = toOffset(bounds.origin());
+        final var offset = toViewport(bounds.origin());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }

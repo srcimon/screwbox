@@ -74,7 +74,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Offset toOffset(final Vector position) {
-        return world.toOffset(position);
+        return world.toViewport(position);
     }
 
     @Override
