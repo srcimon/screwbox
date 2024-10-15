@@ -20,10 +20,11 @@ import java.util.function.Supplier;
 public class RenderTarget implements Sizeable {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
-    private ScreenBounds clip = new ScreenBounds(0, 0, 4, 4);//TODO initialize better
+    private ScreenBounds clip;
 
-    public RenderTarget(final Renderer renderer) {
+    public RenderTarget(final Renderer renderer, final ScreenBounds clip) {
         this.renderer = renderer;
+        this.clip = clip;
     }
 
     public void updateClip(final ScreenBounds clip) {

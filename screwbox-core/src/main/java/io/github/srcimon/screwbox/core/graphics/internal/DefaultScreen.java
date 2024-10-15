@@ -38,7 +38,7 @@ public class DefaultScreen implements Screen {
     private final RenderTarget rendertarget;
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final RenderTarget rendertarget) {
-        this.renderer = renderer;//TODO remove rederer and replace with rendertarget
+        this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.rendertarget = rendertarget;
@@ -69,8 +69,8 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
+        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+//            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
 
