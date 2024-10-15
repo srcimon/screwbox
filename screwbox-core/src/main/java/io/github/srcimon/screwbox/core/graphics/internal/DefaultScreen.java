@@ -155,7 +155,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Offset center() {
-        return rendertarget.size().center();
+        return size().center();
     }
 
     @Override
