@@ -2,6 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -22,6 +24,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class DefaultRendererTest {
 
+    private static final ScreenBounds CLIP = new ScreenBounds(Offset.origin(), Size.of(640, 480));
+
     @Mock
     Graphics2D graphics;
 
@@ -30,12 +34,12 @@ class DefaultRendererTest {
 
     @BeforeEach
     void setUp() {
-        renderer.updateGraphicsContext(() -> graphics, Size.of(640, 480));
+        renderer.updateContext(() -> graphics);
     }
 
     @Test
     void fillWith_newColor_changesColorAndFillsRect() {
-        renderer.fillWith(Color.RED);
+        renderer.fillWith(Color.RED, CLIP);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
         verify(graphics, times(1)).fillRect(0, 0, 640, 480);
@@ -43,8 +47,8 @@ class DefaultRendererTest {
 
     @Test
     void fillWith_sameColor_changesColorOnlyOnce() {
-        renderer.fillWith(Color.RED);
-        renderer.fillWith(Color.RED);
+        renderer.fillWith(Color.RED, CLIP);
+        renderer.fillWith(Color.RED, CLIP);
 
         verify(graphics).setColor(new java.awt.Color(255, 0, 0));
         verify(graphics, times(2)).fillRect(0, 0, 640, 480);
@@ -57,7 +61,7 @@ class DefaultRendererTest {
         spriteBatch.add(Sprite.invisible(), Offset.at(20, 20), SpriteDrawOptions.originalSize(), 2);
         spriteBatch.add(Sprite.invisible(), Offset.at(30, 20), SpriteDrawOptions.originalSize(), 1);
 
-        renderer.drawSpriteBatch(spriteBatch);
+        renderer.drawSpriteBatch(spriteBatch, CLIP);
 
         verify(graphics, times(3)).drawImage(any(), any(), any());
     }
