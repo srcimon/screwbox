@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -17,7 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 import java.util.function.Supplier;
 
-public class RenderTarget implements Sizeable {
+public class RenderTarget implements Viewport {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
     private ScreenBounds clip;
@@ -77,11 +78,17 @@ public class RenderTarget implements Sizeable {
         return clip.size();
     }
 
+    @Override
     public Offset offset() {
         return clip.offset();
     }
 
     public ScreenBounds screenBounds() {
         return clip;
+    }
+
+    @Override
+    public Offset center() {
+        return clip.center();
     }
 }

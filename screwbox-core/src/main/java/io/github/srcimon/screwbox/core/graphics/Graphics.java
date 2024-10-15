@@ -49,6 +49,10 @@ public interface Graphics {
     Vector toPosition(Offset offset);
 
     /**
+     * Returns the current {@link Viewport} that is used to render {@link Graphics} on the {@link Screen}.
+     */
+    Viewport viewport();
+    /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
     ScreenBounds toViewport(Bounds bounds);
