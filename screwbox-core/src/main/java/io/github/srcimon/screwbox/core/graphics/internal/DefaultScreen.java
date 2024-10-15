@@ -69,15 +69,10 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-        if(isFirst) {
-            rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-//            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
-            isFirst = false;
-            //TODO make this on event
-        }
+//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
-    boolean isFirst = true;
 
     private Graphics2D getDrawGraphics() {
         try {
@@ -142,7 +137,7 @@ public class DefaultScreen implements Screen {
             throw new IllegalStateException("window must be opend first to create screenshot");
         }
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
-        final Rectangle rectangle = new Rectangle(frame.getX() ,
+        final Rectangle rectangle = new Rectangle(frame.getX(),
                 frame.getY() + frame.getInsets().top + menuBarHeight,
                 rendertarget.width() + rendertarget.offset().x(),
                 rendertarget.height() + rendertarget.offset().y());
