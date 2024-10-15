@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Completly reworkt graphics and introduced the concept of viewports to modify the drawing within the screen.
 
 ### 🪛 Bug Fixes
 
