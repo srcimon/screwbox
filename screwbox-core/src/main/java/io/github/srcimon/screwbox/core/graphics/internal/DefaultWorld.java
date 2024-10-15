@@ -119,7 +119,7 @@ public class DefaultWorld implements World {
         return Size.of(x, y);
     }
 
-    public ScreenBounds toScreen(final Bounds bounds) {
+    public ScreenBounds toViewport(final Bounds bounds) {
         final var offset = toViewport(bounds.origin());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);

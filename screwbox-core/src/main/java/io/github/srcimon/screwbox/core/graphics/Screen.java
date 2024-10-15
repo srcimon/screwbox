@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOption
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.window.Window;
 
+import javax.swing.text.View;
 import java.util.Optional;
 import java.util.function.Supplier;
 
