@@ -91,4 +91,9 @@ public class RenderTarget implements Viewport {
     public Offset center() {
         return clip.center();
     }
+
+    @Override
+    public ScreenBounds bounds() {
+        return clip;
+    }
 }

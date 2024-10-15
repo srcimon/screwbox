@@ -16,4 +16,6 @@ public interface Viewport extends Sizeable {
      * Returns the center of the {@link Viewport}.
      */
     Offset center();
+
+    ScreenBounds bounds();
 }

@@ -141,20 +141,9 @@ public interface Screen extends Sizeable {
     Screen fillWith(Sprite sprite, SpriteFillOptions options);
 
     /**
-     * Returns {@code true} if the given {@link ScreenBounds} is within the {@link Screen} area.
-     */
-    boolean isVisible(ScreenBounds bounds);
-
-    /**
-     * Returns {@code true} if the given {@link Offset} is within the {@link Screen} area.
-     */
-    boolean isVisible(Offset offset);
-
-    /**
      * Returns the current {@link ScreenBounds}.
      */
     ScreenBounds bounds();
-    ScreenBounds visibleBounds();//TODO viewport.visibleBounds()
 
     /**
      * Draws multiple sorted {@link Sprite sprites} at once. May have slightly better performance than drawing them

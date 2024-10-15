@@ -69,8 +69,8 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
+        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+//            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
 
@@ -164,23 +164,8 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public boolean isVisible(final ScreenBounds bounds) {
-        return screenBounds().intersects(bounds);
-    }
-
-    @Override
-    public boolean isVisible(final Offset offset) {
-        return screenBounds().contains(offset);
-    }
-
-    @Override
     public ScreenBounds bounds() {
         return new ScreenBounds(Offset.origin(), size());
-    }
-
-    @Override
-    public ScreenBounds visibleBounds() {
-        return rendertarget.screenBounds();
     }
 
     @Override
