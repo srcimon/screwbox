@@ -7,7 +7,13 @@ package io.github.srcimon.screwbox.core.graphics;
 //TODO: document how to change the viewport
 public interface Viewport extends Sizeable {
 
+    /**
+     * Returns the left upper edge of the {@link Viewport}.
+     */
     Offset offset();
 
+    /**
+     * Returns the center of the {@link Viewport}.
+     */
     Offset center();
 }
