@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -31,10 +30,10 @@ class RenderSystemTest {
     ArgumentCaptor<SpriteBatch> spriteBatch;
 
     @Test
-    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Camera camera, Canvas canvas, Screen screen, Graphics graphics) {
+    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
-        when(canvas.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
+        when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
         when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
 
         environment
