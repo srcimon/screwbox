@@ -47,16 +47,15 @@ public class DefaultRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
+        applyClip(clip);
         applyNewColor(color);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
     }
 
     @Override
-    public void rotate(Rotation rotation, final ScreenBounds clip) {
-
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
         fillWith(Color.BLACK, clip);
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
-//            }
     }
 
     @Override
