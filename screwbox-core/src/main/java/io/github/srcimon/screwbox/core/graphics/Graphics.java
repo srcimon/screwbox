@@ -51,13 +51,9 @@ public interface Graphics {
     Vector toPosition(Offset offset);
 
     /**
-     * Returns the current {@link Canvas} that is used to render {@link Graphics} on the {@link Screen}.
-     */
-    Canvas viewport();
-    /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
-    ScreenBounds toViewport(Bounds bounds);
+    ScreenBounds toCanvas(Bounds bounds);
 
     /**
      * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.
@@ -70,7 +66,7 @@ public interface Graphics {
      * @param position the position that will be translated
      * @return the {@link Offset} on the viewport
      */
-    Offset toViewport(Vector position);
+    Offset toCanvas(Vector position);
 
     /**
      * Returns a list of all supported resolutions.

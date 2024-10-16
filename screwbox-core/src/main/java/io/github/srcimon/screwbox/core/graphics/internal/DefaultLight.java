@@ -75,7 +75,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
-            final ScreenBounds bounds = world.toViewport(area);
+            final ScreenBounds bounds = world.toCanvas(area);
             lightmap.add(bounds);
         }
         return this;
@@ -199,7 +199,7 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return defaultCanvas.bounds().intersects(world.toViewport(lightBox));
+        return defaultCanvas.bounds().intersects(world.toCanvas(lightBox));
     }
 
     private void initLightmap() {

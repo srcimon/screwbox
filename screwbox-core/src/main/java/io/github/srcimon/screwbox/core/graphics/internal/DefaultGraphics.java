@@ -67,13 +67,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Canvas viewport() {
-        return canvas;
-    }
-
-    @Override
-    public ScreenBounds toViewport(final Bounds bounds) {
-        return world.toViewport(bounds);
+    public ScreenBounds toCanvas(final Bounds bounds) {
+        return world.toCanvas(bounds);
     }
 
     @Override
@@ -82,8 +77,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Offset toViewport(final Vector position) {
-        return world.toViewport(position);
+    public Offset toCanvas(final Vector position) {
+        return world.toCanvas(position);
     }
 
     @Override

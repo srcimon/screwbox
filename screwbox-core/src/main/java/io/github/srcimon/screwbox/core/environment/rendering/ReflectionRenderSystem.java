@@ -29,11 +29,11 @@ public class ReflectionRenderSystem implements EntitySystem {
         engine.environment().removeAll(REFLECTION_RENDERERS);
         final var reflectableEntities = engine.environment().fetchAll(RELECTED_ENTITIES);
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
-            final var expansionToMitigrateDrawingIssues = Math.max(0, -engine.graphics().toViewport(mirror.bounds()).offset().y());
+            final var expansionToMitigrateDrawingIssues = Math.max(0, -engine.graphics().toCanvas(mirror.bounds()).offset().y());
             final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea().expandTop(expansionToMitigrateDrawingIssues));
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(reflection -> {
-                var reflectionOnScreen = engine.graphics().toViewport(reflection);
+                var reflectionOnScreen = engine.graphics().toCanvas(reflection);
                 final Size size = Size.of(
                         ceil(reflectionOnScreen.width() / engine.graphics().camera().zoom()),
                         ceil(reflectionOnScreen.height() / engine.graphics().camera().zoom()));
@@ -46,7 +46,7 @@ public class ReflectionRenderSystem implements EntitySystem {
                             Math.sin((seed + bounds.position().x() * 50) / 500) * 2)
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
-                    final var reflectedAreaOnSreen = engine.graphics().toViewport(reflectedBounds);
+                    final var reflectedAreaOnSreen = engine.graphics().toCanvas(reflectedBounds);
                     final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
                     for (final var entity : reflectableEntities) {
                         reflectionImage.addEntity(entity);

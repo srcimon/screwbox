@@ -51,7 +51,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
-        final Offset offset = toViewport(bounds.origin());
+        final Offset offset = toCanvas(bounds.origin());
         final Size size = toDimension(bounds.size());
         defaultCanvas.drawRectangle(offset, size, options);
         return this;
@@ -59,13 +59,13 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
-        defaultCanvas.drawLine(toViewport(from), toViewport(to), options);
+        defaultCanvas.drawLine(toCanvas(from), toCanvas(to), options);
         return this;
     }
 
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
-        defaultCanvas.drawCircle(toViewport(position), toDistance(radius), options);
+        defaultCanvas.drawCircle(toCanvas(position), toDistance(radius), options);
         return this;
     }
 
@@ -75,7 +75,7 @@ public class DefaultWorld implements World {
         return Offset.at(x, y);
     }
 
-    public Offset toViewport(final Vector position) {
+    public Offset toCanvas(final Vector position) {
         return toScreen(position).add(defaultCanvas.offset());
     }
 
@@ -95,13 +95,13 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        defaultCanvas.drawText(toViewport(position), text, options.scale(options.scale() * zoom));
+        defaultCanvas.drawText(toCanvas(position), text, options.scale(options.scale() * zoom));
         return this;
     }
 
     @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
-        final Offset windowOffset = toViewport(position);
+        final Offset windowOffset = toCanvas(position);
         defaultCanvas.drawText(windowOffset, text, options);
         return this;
     }
@@ -109,7 +109,7 @@ public class DefaultWorld implements World {
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
         final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
-        defaultCanvas.drawSprite(sprite, toViewport(origin), scaledOptions);
+        defaultCanvas.drawSprite(sprite, toCanvas(origin), scaledOptions);
         return this;
     }
 
@@ -119,8 +119,8 @@ public class DefaultWorld implements World {
         return Size.of(x, y);
     }
 
-    public ScreenBounds toViewport(final Bounds bounds) {
-        final var offset = toViewport(bounds.origin());
+    public ScreenBounds toCanvas(final Bounds bounds) {
+        final var offset = toCanvas(bounds.origin());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }
