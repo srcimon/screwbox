@@ -34,7 +34,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, Canvas canvas) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, final Canvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;

@@ -3,10 +3,10 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -34,13 +34,13 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
     private final DefaultWorld world;
-    private final DefaultCanvas canvas;
+    private final Canvas canvas;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final DefaultCanvas canvas) {
+    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final Canvas canvas) {
         this.screen = screen;
         this.world = world;
         this.canvas = canvas;
