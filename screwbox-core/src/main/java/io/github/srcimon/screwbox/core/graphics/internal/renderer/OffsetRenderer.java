@@ -49,46 +49,46 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void fillWith(final Sprite sprite, final SpriteFillOptions options, final ScreenBounds clip) {
-        next.fillWith(sprite, options.offset(options.offset().add(clip.offset())), clip);
+        next.fillWith(sprite, options.offset(options.offset().add(offset)), clip);
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
-        next.drawText(offset.add(clip.offset()), text, options, clip);
+        next.drawText(offset.add(offset), text, options, clip);
     }
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        next.drawRectangle(offset.add(clip.offset()), size, options, clip);
+        next.drawRectangle(offset.add(offset), size, options, clip);
     }
 
     @Override
     public void drawLine(final Offset from, final Offset to, final LineDrawOptions options, final ScreenBounds clip) {
-        next.drawLine(from.add(clip.offset()), to.add(clip.offset()), options, clip);
+        next.drawLine(from.add(offset), to.add(offset), options, clip);
     }
 
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
-        next.drawCircle(offset.add(clip.offset()), radius, options, clip);
+        next.drawCircle(offset.add(offset), radius, options, clip);
     }
 
     @Override
     public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        next.drawSprite(sprite, origin.add(clip.offset()), options, clip);
+        next.drawSprite(sprite, origin.add(offset), options, clip);
     }
 
     @Override
     public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options, final ScreenBounds clip) {
-        next.drawSprite(sprite, origin.add(clip.offset()), options, clip);
+        next.drawSprite(sprite, origin.add(offset), options, clip);
     }
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
-        next.drawText(offset.add(clip.offset()), text, options, clip);
+        next.drawText(offset.add(offset), text, options, clip);
     }
 
     @Override
     public void drawSpriteBatch(final SpriteBatch spriteBatch, final ScreenBounds clip) {
-        next.drawSpriteBatch(spriteBatch.translate(clip.offset()), clip);
+        next.drawSpriteBatch(spriteBatch.translate(offset), clip);
     }
 }
