@@ -23,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final DefaultCanvas rendertarget;
+    private final DefaultCanvas canvas;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -34,10 +34,10 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, DefaultCanvas rendertarget) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, DefaultCanvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
-        this.rendertarget = rendertarget;
+        this.canvas = canvas;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DefaultUi implements Ui, Updatable {
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
             }
-            renderMenu(menu, rendertarget);
+            renderMenu(menu, canvas);
         }
     }
 

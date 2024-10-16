@@ -37,13 +37,13 @@ public class DefaultScreen implements Screen {
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
-    private final DefaultCanvas rendertarget;
+    private final DefaultCanvas canvas;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas rendertarget) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
-        this.rendertarget = rendertarget;
+        this.canvas = canvas;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -67,7 +67,7 @@ public class DefaultScreen implements Screen {
         renderer.updateContext(graphicsSupplier);
         renderer.rotate(absoluteRotation(), new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+        canvas.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
 //            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
@@ -83,49 +83,49 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Color color) {
-        rendertarget.fillWith(color);
+        canvas.fillWith(color);
         return this;
     }
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        rendertarget.drawRectangle(origin, size, options);
+        canvas.drawRectangle(origin, size, options);
         return this;
     }
 
     @Override
     public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        rendertarget.drawLine(from, to, options);
+        canvas.drawLine(from, to, options);
         return this;
     }
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        rendertarget.drawCircle(offset, radius, options);
+        canvas.drawCircle(offset, radius, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        rendertarget.drawSprite(sprite, origin, options);
+        canvas.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        rendertarget.drawSprite(sprite, origin, options);
+        canvas.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        rendertarget.drawText(offset, text, options);
+        canvas.drawText(offset, text, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        rendertarget.drawText(offset, text, options);
+        canvas.drawText(offset, text, options);
         return this;
     }
 
@@ -146,7 +146,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        rendertarget.fillWith(sprite, options);
+        canvas.fillWith(sprite, options);
         return this;
     }
 
@@ -172,7 +172,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
-        rendertarget.drawSpriteBatch(spriteBatch);
+        canvas.drawSpriteBatch(spriteBatch);
         return this;
     }
 

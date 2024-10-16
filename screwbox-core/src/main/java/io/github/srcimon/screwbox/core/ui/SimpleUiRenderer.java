@@ -16,18 +16,18 @@ public class SimpleUiRenderer implements UiRenderer {
     private static final TextDrawOptions INACTIVE = font(BOLDZILLA.customColor(WHITE.opacity(0.2))).scale(2).alignCenter();
 
     @Override
-    public void renderSelectableItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
-        rendertarget.drawText(bounds.center(), label, SELECTABLE);
+    public void renderSelectableItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
+        canvas.drawText(bounds.center(), label, SELECTABLE);
     }
 
     @Override
-    public void renderSelectedItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
-        rendertarget.drawText(bounds.center(), label, SELECTED);
+    public void renderSelectedItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
+        canvas.drawText(bounds.center(), label, SELECTED);
     }
 
     @Override
-    public void renderInactiveItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
-        rendertarget.drawText(bounds.center(), label, INACTIVE);
+    public void renderInactiveItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
+        canvas.drawText(bounds.center(), label, INACTIVE);
     }
 
 }

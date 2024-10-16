@@ -22,23 +22,23 @@ public class SidebarRenderer implements UiRenderer {
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Arial", 18).bold();
 
     @Override
-    public void renderSelectableItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
+    public void renderSelectableItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
         if (!opacity.isZero()) {
-            rendertarget.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(WHITE.opacity(opacity)));
+            canvas.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(WHITE.opacity(opacity)));
         }
     }
 
     @Override
-    public void renderSelectedItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
+    public void renderSelectedItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
         if (!opacity.isZero()) {
-            rendertarget.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(RED.opacity(opacity)));
+            canvas.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(RED.opacity(opacity)));
         }
     }
 
     @Override
-    public void renderInactiveItem(String label, ScreenBounds bounds, DefaultCanvas rendertarget) {
+    public void renderInactiveItem(String label, ScreenBounds bounds, DefaultCanvas canvas) {
         if (!opacity.isZero()) {
-            rendertarget.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(GREY.opacity(opacity)));
+            canvas.drawText(at(bounds.offset().x(), bounds.center().y()), label, OPTIONS.color(GREY.opacity(opacity)));
         }
     }
 
