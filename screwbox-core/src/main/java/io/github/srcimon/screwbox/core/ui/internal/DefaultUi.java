@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
@@ -23,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final DefaultCanvas canvas;
+    private final Canvas canvas;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -34,7 +34,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, DefaultCanvas canvas) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, Canvas canvas) {
         this.engine = engine;
         this.scenes = scenes;
         this.canvas = canvas;
@@ -75,10 +75,10 @@ public class DefaultUi implements Ui, Updatable {
         }
     }
 
-    private void renderMenu(final UiMenu menu, final DefaultCanvas canvas) {
+    private void renderMenu(final UiMenu menu, final Canvas canvas) {
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
-            if (canvas.bounds().intersects(bounds)) {//TODO canvas.isVisible()
+            if (canvas.isVisible(bounds)) {
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
                     renderer.renderSelectedItem(label, bounds, canvas);
