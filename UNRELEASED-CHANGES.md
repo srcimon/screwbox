@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- Completly reworkt graphics and introduced the concept of viewports to modify the drawing within the screen.
+- Added concept of `Canvas` to allow drawing relative to another offset and size than the `Screen`.
 
 ### 🪛 Bug Fixes
 

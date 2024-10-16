@@ -153,6 +153,11 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
+    public Offset offset() {
+        return Offset.origin();
+    }
+
+    @Override
     public Offset center() {
         return size().center();
     }
@@ -164,12 +169,13 @@ public class DefaultScreen implements Screen {
 
     @Override
     public ScreenBounds bounds() {
-        return new ScreenBounds(Offset.origin(), size());
+        return new ScreenBounds(offset(), size());
     }
 
     @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch) {
+    public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
         rendertarget.drawSpriteBatch(spriteBatch);
+        return this;
     }
 
     @Override
