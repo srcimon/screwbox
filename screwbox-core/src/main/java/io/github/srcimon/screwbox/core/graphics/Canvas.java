@@ -24,6 +24,9 @@ public interface Canvas extends Sizeable {
 
     ScreenBounds bounds();
 
+    default boolean isVisible(final ScreenBounds other) {
+        return bounds().intersects(other);
+    }
     /**
      * Fills the whole {@link Canvas} with the given {@link Color}.
      */

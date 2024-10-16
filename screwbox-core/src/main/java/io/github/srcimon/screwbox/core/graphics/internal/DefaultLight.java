@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
@@ -30,7 +31,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final DefaultCanvas defaultCanvas;
+    private final Canvas canvas;
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
@@ -41,10 +42,10 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final DefaultCanvas defaultCanvas, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final Canvas canvas, final DefaultWorld world, final GraphicsConfiguration configuration,
                         final ExecutorService executor) {
         this.executor = executor;
-        this.defaultCanvas = defaultCanvas;
+        this.canvas = canvas;
         this.world = world;
         this.configuration = configuration;
         updatePostFilter();
@@ -175,7 +176,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        defaultCanvas.drawSprite(sprite, Offset.at(overlap, overlap).add(defaultCanvas.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        canvas.drawSprite(sprite, Offset.at(overlap, overlap).add(canvas.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -199,10 +200,10 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return defaultCanvas.bounds().intersects(world.toCanvas(lightBox));
+        return canvas.bounds().intersects(world.toCanvas(lightBox));
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(defaultCanvas.size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(canvas.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }

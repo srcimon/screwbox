@@ -1,9 +1,17 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.*;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.ui.*;
+import io.github.srcimon.screwbox.core.ui.UiInteractor;
+import io.github.srcimon.screwbox.core.ui.UiLayouter;
+import io.github.srcimon.screwbox.core.ui.UiMenu;
+import io.github.srcimon.screwbox.core.ui.UiMenuItem;
+import io.github.srcimon.screwbox.core.ui.UiRenderer;
 import io.github.srcimon.screwbox.core.utils.Latch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +79,7 @@ class DefaultUiTest {
         menu.addItem("some button");
         ScreenBounds layoutBounds = new ScreenBounds(Offset.at(20, 40), Size.of(100, 20));
         when(screen.isVisible(layoutBounds)).thenReturn(true);
-        when(layouter.calculateBounds(firstItem, menu, screen)).thenReturn(layoutBounds);
+        when(layouter.calculateBounds(firstItem, menu, new ScreenBounds(0, 0, 640, 480))).thenReturn(layoutBounds);
         ui.openMenu(menu);
 
         assertThat(menu.activeItemIndex()).isZero();
@@ -92,7 +100,7 @@ class DefaultUiTest {
         UiMenuItem item = menu.addItem("some button");
         ScreenBounds layoutBounds = new ScreenBounds(Offset.at(20, 40), Size.of(100, 20));
         when(screen.isVisible(layoutBounds)).thenReturn(true);
-        when(layouter.calculateBounds(item, menu, screen)).thenReturn(layoutBounds);
+        when(layouter.calculateBounds(item, menu, new ScreenBounds(0, 0, 640, 480))).thenReturn(layoutBounds);
         ui.openMenu(menu);
 
         ui.update();
