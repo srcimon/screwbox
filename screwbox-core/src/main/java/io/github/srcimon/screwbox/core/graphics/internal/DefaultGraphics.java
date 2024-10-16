@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -25,7 +26,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final DefaultCamera camera;
     private final AsyncRenderer asyncRenderer;
-    private final Viewport viewport;
+    private final Canvas canvas;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -34,7 +35,7 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final GraphicsDevice graphicsDevice,
                            final DefaultCamera camera,
                            final AsyncRenderer asyncRenderer,
-                           final Viewport viewport) {
+                           final Canvas canvas) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -42,7 +43,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.graphicsDevice = graphicsDevice;
         this.camera = camera;
         this.asyncRenderer = asyncRenderer;
-        this.viewport = viewport;
+        this.canvas = canvas;
     }
 
     @Override
@@ -66,8 +67,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Viewport viewport() {
-        return viewport;
+    public Canvas viewport() {
+        return canvas;
     }
 
     @Override

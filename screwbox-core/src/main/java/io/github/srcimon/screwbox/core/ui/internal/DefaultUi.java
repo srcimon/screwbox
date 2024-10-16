@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.internal.RenderTarget;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import io.github.srcimon.screwbox.core.ui.KeyboardInteractor;
@@ -23,7 +23,7 @@ public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
-    private final RenderTarget rendertarget;
+    private final DefaultCanvas rendertarget;
 
     private UiRenderer renderer = new SimpleUiRenderer();
     private UiInteractor interactor = new KeyboardInteractor();
@@ -34,7 +34,7 @@ public class DefaultUi implements Ui, Updatable {
     private record OpenMenu(UiMenu menu, OpenMenu previous) {
     }
 
-    public DefaultUi(final Engine engine, final DefaultScenes scenes, RenderTarget rendertarget) {
+    public DefaultUi(final Engine engine, final DefaultScenes scenes, DefaultCanvas rendertarget) {
         this.engine = engine;
         this.scenes = scenes;
         this.rendertarget = rendertarget;
@@ -75,17 +75,17 @@ public class DefaultUi implements Ui, Updatable {
         }
     }
 
-    private void renderMenu(final UiMenu menu, final RenderTarget rendertarget) {
+    private void renderMenu(final UiMenu menu, final DefaultCanvas canvas) {
         for (final var item : menu.items()) {
-            final var bounds = layouter.calculateBounds(item, menu, rendertarget.screenBounds());
-            if (rendertarget.screenBounds().intersects(bounds)) {//TODO screentarget.isVisible() & screentarget.center()
+            final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
+            if (canvas.bounds().intersects(bounds)) {//TODO canvas.isVisible()
                 String label = item.label(engine);
                 if (menu.isSelectedItem(item)) {
-                    renderer.renderSelectedItem(label, bounds, rendertarget);
+                    renderer.renderSelectedItem(label, bounds, canvas);
                 } else if (menu.isActive(item, engine)) {
-                    renderer.renderSelectableItem(label, bounds, rendertarget);
+                    renderer.renderSelectableItem(label, bounds, canvas);
                 } else {
-                    renderer.renderInactiveItem(label, bounds, rendertarget);
+                    renderer.renderInactiveItem(label, bounds, canvas);
                 }
             }
         }

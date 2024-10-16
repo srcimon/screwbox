@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
-import io.github.srcimon.screwbox.core.graphics.internal.RenderTarget;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -34,16 +34,16 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
     private final DefaultWorld world;
-    private final RenderTarget renderTarget;
+    private final DefaultCanvas defaultCanvas;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final RenderTarget rendertarget) {
+    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final DefaultCanvas rendertarget) {
         this.screen = screen;
         this.world = world;
-        this.renderTarget = rendertarget;
+        this.defaultCanvas = rendertarget;
     }
 
     @Override
@@ -150,7 +150,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position()).substract(renderTarget.offset());
+        offset = windowPosition.substract(screen.position()).substract(defaultCanvas.offset());
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
@@ -158,7 +158,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         if (rotationIncludingShake.isNone()) {
             return world.toRenderPositionByTargetSize(offset);
         }
-        final var delta = Line.between(world.toRenderPositionByTargetSize(renderTarget.size().center()), world.toPosition(offset));
+        final var delta = Line.between(world.toRenderPositionByTargetSize(defaultCanvas.size().center()), world.toPosition(offset));
         return Rotation.degrees(360 - rotationIncludingShake.degrees()).applyOn(delta).to();
     }
 }

@@ -36,7 +36,7 @@ class DefaultScreenTest {
     WindowFrame frame;
 
     @Mock
-    RenderTarget renderTarget;
+    DefaultCanvas defaultCanvas;
 
     @Mock
     Robot robot;
@@ -45,7 +45,7 @@ class DefaultScreenTest {
     void fillWith_callsRendererFillWith() {
         screen.fillWith(Color.BLUE);
 
-        verify(renderTarget).fillWith(Color.BLUE);
+        verify(defaultCanvas).fillWith(Color.BLUE);
     }
 
     @Test
@@ -60,21 +60,21 @@ class DefaultScreenTest {
     void drawRectangle_callsRenderer() {
         screen.drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
 
-        verify(renderTarget).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
+        verify(defaultCanvas).drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
     }
 
     @Test
     void drawLine_callsRenderer() {
         screen.drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
 
-        verify(renderTarget).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
+        verify(defaultCanvas).drawLine(Offset.at(10, 3), Offset.at(21, 9), LineDrawOptions.color(Color.BLUE));
     }
 
     @Test
     void drawCircle_radiusPositive_callsRender() {
         screen.drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
 
-        verify(renderTarget).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
+        verify(defaultCanvas).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED));
     }
 
     @Test
@@ -90,7 +90,7 @@ class DefaultScreenTest {
 
         screen.drawSpriteBatch(spriteBatch);
 
-        verify(renderTarget).drawSpriteBatch(spriteBatch);
+        verify(defaultCanvas).drawSpriteBatch(spriteBatch);
     }
 
     @Test

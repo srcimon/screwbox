@@ -16,15 +16,15 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 public class DefaultWorld implements World {
 
-    private final RenderTarget renderTarget;
+    private final DefaultCanvas defaultCanvas;
 
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
 
     private Bounds visibleArea;
 
-    public DefaultWorld(final RenderTarget renderTarget) {
-        this.renderTarget = renderTarget;
+    public DefaultWorld(final DefaultCanvas defaultCanvas) {
+        this.defaultCanvas = defaultCanvas;
         recalculateVisibleArea();
     }
 
@@ -40,8 +40,8 @@ public class DefaultWorld implements World {
 
     public void recalculateVisibleArea() {
         visibleArea = Bounds.atPosition(cameraPosition,
-                renderTarget.width() / zoom,
-                renderTarget.height() / zoom);
+                defaultCanvas.width() / zoom,
+                defaultCanvas.height() / zoom);
     }
 
     @Override
@@ -53,63 +53,63 @@ public class DefaultWorld implements World {
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
         final Offset offset = toViewport(bounds.origin());
         final Size size = toDimension(bounds.size());
-        renderTarget.drawRectangle(offset, size, options);
+        defaultCanvas.drawRectangle(offset, size, options);
         return this;
     }
 
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
-        renderTarget.drawLine(toViewport(from), toViewport(to), options);
+        defaultCanvas.drawLine(toViewport(from), toViewport(to), options);
         return this;
     }
 
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
-        renderTarget.drawCircle(toViewport(position), toDistance(radius), options);
+        defaultCanvas.drawCircle(toViewport(position), toDistance(radius), options);
         return this;
     }
 
     public Offset toScreen(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (renderTarget.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (renderTarget.height() / 2.0);
+        final double x = (position.x() - cameraPosition.x()) * zoom + (defaultCanvas.width() / 2.0);
+        final double y = (position.y() - cameraPosition.y()) * zoom + (defaultCanvas.height() / 2.0);
         return Offset.at(x, y);
     }
 
     public Offset toViewport(final Vector position) {
-        return toScreen(position).add(renderTarget.offset());
+        return toScreen(position).add(defaultCanvas.offset());
     }
 
     public Vector toPosition(final Offset offset) {
-        final double x = (offset.x() + renderTarget.offset().x() - (renderTarget.width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() + renderTarget.offset().y() - (renderTarget.height() / 2.0)) / zoom + cameraPosition.y();
+        final double x = (offset.x() + defaultCanvas.offset().x() - (defaultCanvas.width() / 2.0)) / zoom + cameraPosition.x();
+        final double y = (offset.y() + defaultCanvas.offset().y() - (defaultCanvas.height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
     }
 
     public Vector toRenderPositionByTargetSize(final Offset offset) {//TODO better name
-        final double x = (offset.x() - (renderTarget.width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() - (renderTarget.height() / 2.0)) / zoom + cameraPosition.y();
+        final double x = (offset.x() - (defaultCanvas.width() / 2.0)) / zoom + cameraPosition.x();
+        final double y = (offset.y() - (defaultCanvas.height() / 2.0)) / zoom + cameraPosition.y();
 
         return Vector.of(x, y);
     }
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        renderTarget.drawText(toViewport(position), text, options.scale(options.scale() * zoom));
+        defaultCanvas.drawText(toViewport(position), text, options.scale(options.scale() * zoom));
         return this;
     }
 
     @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
         final Offset windowOffset = toViewport(position);
-        renderTarget.drawText(windowOffset, text, options);
+        defaultCanvas.drawText(windowOffset, text, options);
         return this;
     }
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
         final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
-        renderTarget.drawSprite(sprite, toViewport(origin), scaledOptions);
+        defaultCanvas.drawSprite(sprite, toViewport(origin), scaledOptions);
         return this;
     }
 
@@ -132,8 +132,8 @@ public class DefaultWorld implements World {
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final Vector position = bounds.origin();
         final var offset = Offset.at(
-                (position.x() - parallaxX * cameraPosition.x()) * zoom + (renderTarget.width() / 2.0) + renderTarget.offset().x(),
-                (position.y() - parallaxY * cameraPosition.y()) * zoom + (renderTarget.height() / 2.0) + renderTarget.offset().y());
+                (position.x() - parallaxX * cameraPosition.x()) * zoom + (defaultCanvas.width() / 2.0) + defaultCanvas.offset().x(),
+                (position.y() - parallaxY * cameraPosition.y()) * zoom + (defaultCanvas.height() / 2.0) + defaultCanvas.offset().y());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }

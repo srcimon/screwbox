@@ -35,9 +35,9 @@ public class DefaultScreen implements Screen {
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
-    private final RenderTarget rendertarget;
+    private final DefaultCanvas rendertarget;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final RenderTarget rendertarget) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas rendertarget) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;

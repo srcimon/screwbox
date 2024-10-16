@@ -4,10 +4,9 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.Sizeable;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -18,12 +17,12 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 
 import java.util.function.Supplier;
 
-public class RenderTarget implements Viewport {
+public class DefaultCanvas implements Canvas {
     //TODO feature = reduce screen size within window
     private final Renderer renderer;
     private ScreenBounds clip;
 
-    public RenderTarget(final Renderer renderer, final ScreenBounds clip) {
+    public DefaultCanvas(final Renderer renderer, final ScreenBounds clip) {
         this.renderer = renderer;
         this.clip = clip;
     }
@@ -33,44 +32,64 @@ public class RenderTarget implements Viewport {
         //TODO when this is called every frame (not sure jet) make sure renderer is only changed on ofset change
     }
 
-    public void fillWith(final Color color) {
+    @Override
+    public Canvas fillWith(final Color color) {
         renderer.fillWith(color, clip);
+        return this;
     }
 
-    public void fillWith(final Sprite sprite, final SpriteFillOptions options) {
+    @Override
+    public Canvas fillWith(final Sprite sprite, final SpriteFillOptions options) {
         renderer.fillWith(sprite, options, clip);
+        return this;
     }
 
-    public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
+    @Override
+    public Canvas drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
         renderer.drawText(offset, text, options, clip);
+        return this;
     }
 
-    public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
+    @Override
+    public Canvas drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
         renderer.drawRectangle(offset, size, options, clip);
+        return this;
     }
 
-    public void drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
+    @Override
+    public Canvas drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
         renderer.drawLine(from, to, options, clip);
+        return this;
     }
 
-    public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
+    @Override
+    public Canvas drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
         renderer.drawCircle(offset, radius, options, clip);
+        return this;
     }
 
-    public void drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
+    @Override
+    public Canvas drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
         renderer.drawSprite(sprite, origin, options, clip);
+        return this;
     }
 
-    public void drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
+    @Override
+    public Canvas drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
         renderer.drawSprite(sprite, origin, options, clip);
+        return this;
     }
 
-    public void drawText(final Offset offset, final String text, final TextDrawOptions options) {
+    @Override
+    public Canvas drawText(final Offset offset, final String text, final TextDrawOptions options) {
         renderer.drawText(offset, text, options, clip);
+        return this;
     }
 
-    public void drawSpriteBatch(final SpriteBatch spriteBatch) {
+    @Override
+    public Canvas drawSpriteBatch(final SpriteBatch spriteBatch) {
         renderer.drawSpriteBatch(spriteBatch, clip);
+        return this;
     }
 
     @Override
@@ -81,10 +100,6 @@ public class RenderTarget implements Viewport {
     @Override
     public Offset offset() {
         return clip.offset();
-    }
-
-    public ScreenBounds screenBounds() {
-        return clip;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final RenderTarget renderTarget;
+    private final DefaultCanvas defaultCanvas;
     private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
@@ -41,10 +41,10 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final RenderTarget renderTarget, final DefaultWorld world, final GraphicsConfiguration configuration,
+    public DefaultLight(final DefaultCanvas defaultCanvas, final DefaultWorld world, final GraphicsConfiguration configuration,
                         final ExecutorService executor) {
         this.executor = executor;
-        this.renderTarget = renderTarget;
+        this.defaultCanvas = defaultCanvas;
         this.world = world;
         this.configuration = configuration;
         updatePostFilter();
@@ -175,7 +175,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        renderTarget.drawSprite(sprite, Offset.at(overlap, overlap).add(renderTarget.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        defaultCanvas.drawSprite(sprite, Offset.at(overlap, overlap).add(defaultCanvas.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -199,10 +199,10 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return renderTarget.screenBounds().intersects(world.toViewport(lightBox));
+        return defaultCanvas.bounds().intersects(world.toViewport(lightBox));
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(renderTarget.size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(defaultCanvas.size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 }
