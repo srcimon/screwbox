@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -48,6 +49,14 @@ public class DefaultRenderer implements Renderer {
     public void fillWith(final Color color, final ScreenBounds clip) {
         applyNewColor(color);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
+    }
+
+    @Override
+    public void rotate(Rotation rotation, final ScreenBounds clip) {
+
+        fillWith(Color.BLACK, clip);
+        graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
+//            }
     }
 
     @Override

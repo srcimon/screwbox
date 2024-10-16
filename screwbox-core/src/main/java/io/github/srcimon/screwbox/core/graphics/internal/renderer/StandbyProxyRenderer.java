@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -17,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.awt.*;
+import java.util.concurrent.RunnableFuture;
 import java.util.function.Supplier;
 
 public class StandbyProxyRenderer implements Renderer {
@@ -39,6 +41,11 @@ public class StandbyProxyRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         renderer.active().fillWith(color, clip);
+    }
+
+    @Override
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+        renderer.active().rotate(rotation, clip);
     }
 
     @Override

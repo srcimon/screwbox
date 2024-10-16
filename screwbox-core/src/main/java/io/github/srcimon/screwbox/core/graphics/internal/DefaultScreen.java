@@ -61,15 +61,11 @@ public class DefaultScreen implements Screen {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
-            if (!absoluteRotation().isNone()) {
-                graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
-                graphics.fillRect(0, 0, width(), height());
-                graphics.rotate(absoluteRotation().radians(), width() / 2.0, height() / 2.0);
-            }
             lastGraphics = graphics;
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
+        renderer.rotate(absoluteRotation(), new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
         rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
 //            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));

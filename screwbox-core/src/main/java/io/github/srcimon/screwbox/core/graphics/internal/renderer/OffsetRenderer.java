@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -39,6 +40,11 @@ public class OffsetRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         next.fillWith(color, clip);
+    }
+
+    @Override
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+        next.rotate(rotation, clip);
     }
 
     @Override

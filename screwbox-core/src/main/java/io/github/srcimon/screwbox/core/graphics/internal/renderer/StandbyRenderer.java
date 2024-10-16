@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -27,6 +28,11 @@ public class StandbyRenderer implements Renderer {
 
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
+        // does nothing
+    }
+
+    @Override
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
         // does nothing
     }
 

@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -20,6 +21,8 @@ import java.util.function.Supplier;
 public interface Renderer {
 
     void updateContext(Supplier<Graphics2D> graphics);
+
+    void rotate(Rotation rotation, ScreenBounds clip);
 
     void fillWith(Color color, ScreenBounds clip);
 

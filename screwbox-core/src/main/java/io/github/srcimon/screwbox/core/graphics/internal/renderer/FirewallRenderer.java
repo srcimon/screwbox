@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -41,6 +42,13 @@ public class FirewallRenderer implements Renderer {
     public void fillWith(final Color color, final ScreenBounds clip) {
         if (!color.opacity().isZero()) {
             next.fillWith(color, clip);
+        }
+    }
+
+    @Override
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+        if (!rotation.isNone()) {
+            next.rotate(rotation, clip);
         }
     }
 

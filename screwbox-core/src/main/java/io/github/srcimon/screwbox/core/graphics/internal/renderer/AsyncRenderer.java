@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal.renderer;
 
 import io.github.srcimon.screwbox.core.Duration;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -56,6 +57,11 @@ public class AsyncRenderer implements Renderer {
     @Override
     public void fillWith(final Color color, final ScreenBounds clip) {
         renderTasks.active().add(() -> next.fillWith(color, clip));
+    }
+
+    @Override
+    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+        renderTasks.active().add(() -> next.rotate(rotation, clip));
     }
 
     @Override
