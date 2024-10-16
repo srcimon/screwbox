@@ -2,11 +2,11 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -42,7 +42,7 @@ class DefaultLightTest {
     ExecutorService executor;
 
     @Mock
-    Screen screen;
+    Canvas canvas;
 
     @Captor
     ArgumentCaptor<Asset<Sprite>> spriteCaptor;
@@ -53,23 +53,24 @@ class DefaultLightTest {
 
     @BeforeEach
     void beforeEach() {
-        when(screen.size()).thenReturn(Size.of(640, 480));
-        when(screen.width()).thenReturn(640);
-        when(screen.height()).thenReturn(480);
-        world = new DefaultWorld(screen);
+        when(canvas.size()).thenReturn(Size.of(640, 480));
+        when(canvas.width()).thenReturn(640);
+        when(canvas.height()).thenReturn(480);
+        world = new DefaultWorld(canvas);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(screen, world, configuration, executor);
+        light = new DefaultLight(canvas, world, configuration, executor);
     }
 
     @Test
     void render_fullBrigthnessAreaPresent_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
+        when(canvas.offset()).thenReturn(Offset.origin());
+        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addFullBrightnessArea($$(20, 20, 50, 50));
 
         light.render();
 
-        verify(screen).drawSprite(spriteCaptor.capture(), any(Offset.class), any(SpriteDrawOptions.class));
+        verify(canvas).drawSprite(spriteCaptor.capture(), any(Offset.class), any(SpriteDrawOptions.class));
 
         Frame resultImage = spriteCaptor.getValue().get().singleFrame();
 
@@ -82,14 +83,15 @@ class DefaultLightTest {
 
     @Test
     void render_pointLightAndShadowPresent_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
+        when(canvas.offset()).thenReturn(Offset.origin());
+        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addPointLight($(40, 80), 140, Color.RED);
 
         light.render();
         var offset = ArgumentCaptor.forClass(Offset.class);
 
-        verify(screen).drawSprite(
+        verify(canvas).drawSprite(
                 spriteCaptor.capture(),
                 offset.capture(),
                 Mockito.any(SpriteDrawOptions.class));
@@ -108,13 +110,14 @@ class DefaultLightTest {
 
     @Test
     void render_spotlightAndShadowCaster_rendersImage() {
-        when(screen.isVisible(any(ScreenBounds.class))).thenReturn(true);
+        when(canvas.offset()).thenReturn(Offset.origin());
+        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
         light.addShadowCaster($$(30, 75, 6, 6));
         light.addSpotLight($(40, 80), 140, Color.RED);
 
         light.render();
 
-        verify(screen).drawSprite(
+        verify(canvas).drawSprite(
                 spriteCaptor.capture(),
                 any(Offset.class),
                 any(SpriteDrawOptions.class));
@@ -137,11 +140,12 @@ class DefaultLightTest {
 
         light.render();
 
-        verify(screen, never()).drawSprite(any(Sprite.class), any(), any());
+        verify(canvas, never()).drawSprite(any(Sprite.class), any(), any());
     }
 
     @Test
     void render_renderAlreadyCalled_throwsException() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         light.render();
 
         assertThatThrownBy(() -> light.render())

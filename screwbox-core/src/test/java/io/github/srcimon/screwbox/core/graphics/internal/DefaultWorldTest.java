@@ -30,13 +30,13 @@ class DefaultWorldTest {
     DefaultWorld world;
 
     @Mock
-    DefaultCanvas defaultCanvas;
+    DefaultCanvas canvas;
 
     @BeforeEach
     void setUp() {
-        when(defaultCanvas.width()).thenReturn(1024);
-        when(defaultCanvas.height()).thenReturn(768);
-        world = new DefaultWorld(defaultCanvas);
+        when(canvas.width()).thenReturn(1024);
+        when(canvas.height()).thenReturn(768);
+        world = new DefaultWorld(canvas);
     }
 
     @Test
@@ -54,41 +54,45 @@ class DefaultWorldTest {
 
     @Test
     void drawCircle_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateCameraPosition($(4, 2));
         world.updateZoom(2);
 
         world.drawCircle($(20, 19), 10, CircleDrawOptions.fading(RED));
-        verify(defaultCanvas).drawCircle(Offset.at(544, 418), 20, CircleDrawOptions.fading(RED));
+        verify(canvas).drawCircle(Offset.at(544, 418), 20, CircleDrawOptions.fading(RED));
     }
 
     @Test
     void drawRectangle_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateCameraPosition(zero());
         world.updateZoom(2.5);
 
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleDrawOptions.filled(RED));
 
-        verify(defaultCanvas).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
+        verify(canvas).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
     }
 
     @Test
     void drawText_systemText_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.at(4,3));
         world.drawText($(20, 19), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
 
-        verify(defaultCanvas).drawText(Offset.at(532, 403), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
+        verify(canvas).drawText(Offset.at(536, 406), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
     }
 
     @Test
     void drawText_pixelfont_callsScreen() {
         world.updateZoom(2);
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(4));
 
-        verify(defaultCanvas).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
+        verify(canvas).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
     }
 
     @Test
     void toScreen_usingParallax_returnsScreenBounds() {
-        when(defaultCanvas.offset()).thenReturn(Offset.origin());
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateZoom(2);
 
         var result = world.toScreen($$(10, 20, 40, 80), 1.4, 1.2);

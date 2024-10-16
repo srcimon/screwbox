@@ -200,7 +200,7 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return canvas.bounds().intersects(world.toCanvas(lightBox));
+        return canvas.isVisible(world.toCanvas(lightBox));
     }
 
     private void initLightmap() {
