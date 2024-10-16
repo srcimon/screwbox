@@ -65,8 +65,8 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-        renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
+        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));
+        renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
 //        canvas.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
         canvas.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
