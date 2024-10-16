@@ -141,4 +141,9 @@ public class DefaultGraphics implements Graphics, Updatable {
     public Screen screen() {
         return screen;
     }
+
+    @Override
+    public Canvas createCanvas(final Offset offset, final Size size) {
+        return screen.createCanvas(offset, size);
+    }
 }

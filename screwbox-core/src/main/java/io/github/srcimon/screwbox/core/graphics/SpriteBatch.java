@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Container for multiple sorted {@link Sprite sprites}.
- * 
+ *
  * @see Screen#drawSpriteBatch(SpriteBatch)
  */
 public class SpriteBatch {
@@ -49,7 +49,7 @@ public class SpriteBatch {
         return entries.isEmpty();
     }
 
-    public SpriteBatch translate(Offset offset) {
+    public SpriteBatch translate(final Offset offset) {
         final var translated = new SpriteBatch();
         for (final var entry : entries) {
             translated.add(entry.sprite, entry.offset.add(offset), entry.options, entry.drawOrder);

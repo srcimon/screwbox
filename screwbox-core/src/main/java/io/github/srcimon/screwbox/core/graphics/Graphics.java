@@ -25,6 +25,8 @@ public interface Graphics {
      */
     Screen screen();
 
+    Canvas createCanvas(Offset offset, Size size);
+
     /**
      * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right postion
      * on the {@link Screen}.

@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -15,6 +16,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -69,8 +71,8 @@ public class DefaultScreen implements Screen {
         };
         renderer.updateContext(graphicsSupplier);
         renderer.fillWith(Color.BLACK, new ScreenBounds(Offset.origin(), frame.getCanvasSize()));
-//        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
-            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
+        rendertarget.updateClip(new ScreenBounds(Offset.origin(), frame.getCanvasSize()));//TODO make border configurabel
+//            rendertarget.updateClip(new ScreenBounds(80, 10, 800, 650));
     }
 
 
@@ -209,7 +211,9 @@ public class DefaultScreen implements Screen {
         this.shake = requireNonNull(shake, "shake must not be null");
     }
 
-    private ScreenBounds screenBounds() {
-        return new ScreenBounds(Offset.origin(), size());
+    public Canvas createCanvas(final Offset offset, final Size size) {
+        //TODO: validate on screen;
+        final var offsetRenderer = new OffsetRenderer(offset, renderer);
+        return new DefaultCanvas(offsetRenderer, new ScreenBounds(offset, size));
     }
 }
