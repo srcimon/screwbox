@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,5 +37,14 @@ class OffsetRendererTest {
         offsetRenderer.drawCircle(Offset.at(10, 10), 4, options, CLIP);
 
         verify(next).drawCircle(Offset.at(20, 12), 4, options, CLIP);
+    }
+
+    @Test
+    void drawLine_drawsLineWithTranslatedOffset() {
+        var options = LineDrawOptions.color(Color.BLACK);
+
+        offsetRenderer.drawLine(Offset.at(10, 10), Offset.at(24, -4), options, CLIP);
+
+        verify(next).drawLine(Offset.at(20, 12), Offset.at(34, -2), options, CLIP);
     }
 }
