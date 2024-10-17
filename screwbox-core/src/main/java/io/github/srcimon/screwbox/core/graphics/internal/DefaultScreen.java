@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -45,7 +46,6 @@ public class DefaultScreen implements Screen {
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
-        this.canvasBounds = new ScreenBounds(frame.getCanvasSize());
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -66,10 +66,12 @@ public class DefaultScreen implements Screen {
             lastGraphics = graphics;
             return graphics;
         };
+        if (isNull(canvasBounds)) { // cannot be updated at startup because canvas gets resized by showing menu
+            canvasBounds = new ScreenBounds(frame.getCanvasSize());
+        }
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));
+        renderer.rotate(absoluteRotation(), canvasBounds);
         renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
-//        canvas.updateClip(new ScreenBounds(frame.getCanvasSize()));
         canvas.updateClip(canvasBounds);
     }
 
@@ -139,7 +141,7 @@ public class DefaultScreen implements Screen {
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
         final Rectangle rectangle = new Rectangle(frame.getX(),
                 frame.getY() + frame.getInsets().top + menuBarHeight,
-                width() , height());
+                width(), height());
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
