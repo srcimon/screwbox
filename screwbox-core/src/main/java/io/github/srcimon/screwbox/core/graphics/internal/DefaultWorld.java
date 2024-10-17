@@ -87,7 +87,7 @@ public class DefaultWorld implements World {
         return Vector.of(x, y);
     }
 
-    public Vector toRenderPositionByTargetSize(final Offset offset) {//TODO better name
+    public Vector canvasToWorld(final Offset offset) {
         final double x = (offset.x() - (canvas.width() / 2.0)) / zoom + cameraPosition.x();
         final double y = (offset.y() - (canvas.height() / 2.0)) / zoom + cameraPosition.y();
 

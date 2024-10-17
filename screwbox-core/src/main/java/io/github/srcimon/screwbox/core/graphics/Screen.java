@@ -7,11 +7,16 @@ import io.github.srcimon.screwbox.core.window.Window;
 import java.util.Optional;
 
 /**
- * Access drawing operations on the game screen.
+ * Access drawing operations on the game {@link Screen}.
  *
  * @see World
  */
 public interface Screen extends Canvas {
+
+    /**
+     * Restricts the drawing {@link Canvas} to the specified {@link ScreenBounds}.
+     */
+    Screen setCanvasBounds(ScreenBounds bounds);
 
     /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and

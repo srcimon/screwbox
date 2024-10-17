@@ -18,7 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import java.util.function.Supplier;
 
 public class DefaultCanvas implements Canvas {
-    //TODO feature = reduce screen size within window
+    
     private final Renderer renderer;
     private ScreenBounds clip;
 
@@ -29,7 +29,6 @@ public class DefaultCanvas implements Canvas {
 
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
-        //TODO when this is called every frame (not sure jet) make sure renderer is only changed on ofset change
     }
 
     @Override

@@ -38,12 +38,14 @@ public class DefaultScreen implements Screen {
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
     private final DefaultCanvas canvas;
+    private ScreenBounds canvasBounds;
 
     public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
+        this.canvasBounds = new ScreenBounds(frame.getCanvasSize());
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -68,8 +70,8 @@ public class DefaultScreen implements Screen {
         final var clip = new ScreenBounds(frame.getCanvasSize());
         renderer.rotate(absoluteRotation(), clip);
         renderer.fillWith(Color.BLACK, clip);
-        canvas.updateClip(clip);//TODO make border configurabel
-//        canvas.updateClip(new ScreenBounds(80, 10, 600, 300));
+        canvas.updateClip(canvasBounds);
+//        canvas.updateClip(new ScreenBounds(40, 40, 400, 400));
     }
 
 
@@ -186,6 +188,14 @@ public class DefaultScreen implements Screen {
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+    }
+
+    @Override
+    public Screen setCanvasBounds(final ScreenBounds bounds) {
+        //TODO implement
+        //TODO verify on screen and has minimal size
+        canvasBounds = bounds;
+        return this;
     }
 
     @Override
