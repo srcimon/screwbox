@@ -67,13 +67,13 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), getCanvasBounds());
+        renderer.rotate(absoluteRotation(), canvasBounds());
         renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
-        canvas.updateClip(getCanvasBounds());
+        canvas.updateClip(canvasBounds());
     }
 
-    //TODO export
-    private ScreenBounds getCanvasBounds() {
+    @Override
+    public ScreenBounds canvasBounds() {
         return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
     }
 
@@ -198,7 +198,13 @@ public class DefaultScreen implements Screen {
         //TODO implement
         //TODO verify on screen and has minimal size
         //TODO after resolution change ->ensure canvas size is still up to date ( alternative: reset canvas size on resolution change?)
-        canvasBounds = bounds;
+        canvasBounds = requireNonNull(bounds, "bounds must not be null");
+        return this;
+    }
+
+    @Override
+    public Screen resetCanvasBounds() {
+        canvasBounds = null;
         return this;
     }
 

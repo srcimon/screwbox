@@ -14,9 +14,20 @@ import java.util.Optional;
 public interface Screen extends Canvas {
 
     /**
-     * Restricts the drawing {@link Canvas} to the specified {@link ScreenBounds}.
+     * Restricts the drawing {@link Canvas} to the specified {@link ScreenBounds}. This stops the canvas from being
+     * resized when resolution changes.
      */
     Screen setCanvasBounds(ScreenBounds bounds);
+
+    /**
+     * Resets the {@link #canvasBounds()}. Automatically changes @link #canvasBounds()} with resolution.
+     */
+    Screen resetCanvasBounds();
+
+    /**
+     * Returns the current canvas bounds.
+     */
+    ScreenBounds canvasBounds();
 
     /**
      * Sets the rotation of the {@link Screen}. This is a very limited feature resulting in quite some frame drop and
