@@ -54,7 +54,7 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final SystemTextDrawOptions options, final ScreenBounds clip) {
-        next.drawText(offset.add(offset), text, options, clip);
+        next.drawText(this.offset.add(offset), text, options, clip);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawCircle(final Offset offset, final int radius, final CircleDrawOptions options, final ScreenBounds clip) {
-        next.drawCircle(offset.add(offset), radius, options, clip);
+        next.drawCircle(this.offset.add(offset), radius, options, clip);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawText(final Offset offset, final String text, final TextDrawOptions options, final ScreenBounds clip) {
-        next.drawText(offset.add(offset), text, options, clip);
+        next.drawText(offset.add(this.offset), text, options, clip);
     }
 
     @Override
