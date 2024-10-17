@@ -2,15 +2,8 @@ package io.github.srcimon.screwbox.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Pixelfont;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -85,10 +78,6 @@ public class GameScene implements Scene {
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(new GroundDetectorSystem())
-
-                .addSystem(Order.SystemOrder.PRESENTATION_ON_TOP_OF_LIGHT, engine -> {
-                    engine.graphics().createCanvas(Offset.at(100,600), Size.of(500,500)).drawText(Offset.origin(), "current frame: " + engine.loop().frameNumber(), TextDrawOptions.font(FontBundle.BOLDZILLA).scale(3));
-                })
                 .addSystem(new KillZoneSystem())
                 .addSystem(new DebugConfigSystem())
                 .addSystem(new PauseSystem())
