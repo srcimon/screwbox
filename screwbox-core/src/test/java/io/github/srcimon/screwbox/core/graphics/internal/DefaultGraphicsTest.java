@@ -67,10 +67,10 @@ class DefaultGraphicsTest {
     }
 
     @Test
-    void toScreen_returnsTranslatedBounds() {
-        when(world.toScreen(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
+    void toCanvas_returnsTranslatedBounds() {
+        when(world.toCanvas(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
 
-        var result = graphics.toScreen(Bounds.$$(20, 20, 10, 2));
+        var result = graphics.toCanvas(Bounds.$$(20, 20, 10, 2));
 
         assertThat(result).isEqualTo(new ScreenBounds(4, 1, 10, 10));
     }

@@ -89,6 +89,11 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         return degrees;
     }
 
+    //TODO javadoc and test
+    public Rotation invert() {
+        return Rotation.degrees(360 - degrees);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(degrees);

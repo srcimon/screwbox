@@ -5,6 +5,10 @@ package io.github.srcimon.screwbox.core.graphics;
  */
 public record ScreenBounds(Offset offset, Size size) implements Sizeable {
 
+    public ScreenBounds(final Size size) {
+        this(Offset.origin(), size);
+    }
+
     public ScreenBounds(final int x, final int y, final int width, final int height) {
         this(Offset.at(x, y), Size.of(width, height));
     }
@@ -18,7 +22,7 @@ public record ScreenBounds(Offset offset, Size size) implements Sizeable {
     /**
      * Returns {@code true} if the given {@link Offset} is within the
      * {@link ScreenBounds}.
-     * 
+     *
      * @param offset the {@link Offset} that is checked
      * @return {@code true} if the {@link Offset} is within
      */

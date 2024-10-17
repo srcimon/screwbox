@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.*;
@@ -63,8 +64,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public ScreenBounds toScreen(final Bounds bounds) {
-        return world.toScreen(bounds);
+    public ScreenBounds toCanvas(final Bounds bounds) {
+        return world.toCanvas(bounds);
     }
 
     @Override
@@ -73,8 +74,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Offset toOffset(final Vector position) {
-        return world.toOffset(position);
+    public Offset toCanvas(final Vector position) {
+        return world.toCanvas(position);
     }
 
     @Override
@@ -131,5 +132,10 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Screen screen() {
         return screen;
+    }
+
+    @Override
+    public Canvas createCanvas(final Offset offset, final Size size) {
+        return screen.createCanvas(offset, size);
     }
 }

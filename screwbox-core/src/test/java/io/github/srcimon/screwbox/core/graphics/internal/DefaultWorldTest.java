@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.assets.FontBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
@@ -31,13 +30,13 @@ class DefaultWorldTest {
     DefaultWorld world;
 
     @Mock
-    Screen screen;
+    DefaultCanvas canvas;
 
     @BeforeEach
     void setUp() {
-        when(screen.width()).thenReturn(1024);
-        when(screen.height()).thenReturn(768);
-        world = new DefaultWorld(screen);
+        when(canvas.width()).thenReturn(1024);
+        when(canvas.height()).thenReturn(768);
+        world = new DefaultWorld(canvas);
     }
 
     @Test
@@ -55,40 +54,45 @@ class DefaultWorldTest {
 
     @Test
     void drawCircle_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateCameraPosition($(4, 2));
         world.updateZoom(2);
 
         world.drawCircle($(20, 19), 10, CircleDrawOptions.fading(RED));
-        verify(screen).drawCircle(Offset.at(544, 418), 20, CircleDrawOptions.fading(RED));
+        verify(canvas).drawCircle(Offset.at(544, 418), 20, CircleDrawOptions.fading(RED));
     }
 
     @Test
     void drawRectangle_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateCameraPosition(zero());
         world.updateZoom(2.5);
 
         world.drawRectangle(Bounds.atPosition(0, 0, 100, 100), RectangleDrawOptions.filled(RED));
 
-        verify(screen).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
+        verify(canvas).drawRectangle(Offset.at(387, 259), Size.of(250, 250), RectangleDrawOptions.filled(RED));
     }
 
     @Test
     void drawText_systemText_callsScreen() {
+        when(canvas.offset()).thenReturn(Offset.at(4,3));
         world.drawText($(20, 19), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
 
-        verify(screen).drawText(Offset.at(532, 403), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
+        verify(canvas).drawText(Offset.at(536, 406), "Hello World", SystemTextDrawOptions.systemFont("Arial").bold());
     }
 
     @Test
     void drawText_pixelfont_callsScreen() {
         world.updateZoom(2);
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.drawText($(20, 19), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(4));
 
-        verify(screen).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
+        verify(canvas).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
     }
 
     @Test
     void toScreen_usingParallax_returnsScreenBounds() {
+        when(canvas.offset()).thenReturn(Offset.origin());
         world.updateZoom(2);
 
         var result = world.toScreen($$(10, 20, 40, 80), 1.4, 1.2);

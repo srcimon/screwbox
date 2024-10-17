@@ -25,6 +25,8 @@ public interface Graphics {
      */
     Screen screen();
 
+    Canvas createCanvas(Offset offset, Size size);
+
     /**
      * Access drawing operations on the game world. So you don't have to use a calculator to draw on the right postion
      * on the {@link Screen}.
@@ -51,7 +53,7 @@ public interface Graphics {
     /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
      */
-    ScreenBounds toScreen(Bounds bounds);
+    ScreenBounds toCanvas(Bounds bounds);
 
     /**
      * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.
@@ -59,12 +61,12 @@ public interface Graphics {
     ScreenBounds toScreenUsingParallax(Bounds bounds, double parallaxX, double parallaxY);
 
     /**
-     * Returns the {@link Offset} on the {@link Screen} of the given {@link Vector} in the {@link World}.
+     * Returns the {@link Offset} on the viewport of the given {@link Vector} in the {@link World}.
      *
      * @param position the position that will be translated
-     * @return the {@link Offset} on the {@link Screen}
+     * @return the {@link Offset} on the viewport
      */
-    Offset toOffset(Vector position);
+    Offset toCanvas(Vector position);
 
     /**
      * Returns a list of all supported resolutions.

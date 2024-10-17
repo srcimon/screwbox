@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added concept of `Canvas` to allow drawing relative to another offset and size than the `Screen`
 
 ### 🪛 Bug Fixes
 
