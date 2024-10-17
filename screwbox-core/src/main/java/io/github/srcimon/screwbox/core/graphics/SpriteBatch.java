@@ -49,7 +49,13 @@ public class SpriteBatch {
         return entries.isEmpty();
     }
 
+    /**
+     * Returns a new instance of the batch where all {@link Sprite sprites} were translated by the specified {@link Offset}.
+     */
     public SpriteBatch translate(final Offset offset) {
+        if(Offset.origin().equals(offset) || entries.isEmpty()) {
+            return this;
+        }
         final var translated = new SpriteBatch();
         for (final var entry : entries) {
             translated.add(entry.sprite, entry.offset.add(offset), entry.options, entry.drawOrder);
