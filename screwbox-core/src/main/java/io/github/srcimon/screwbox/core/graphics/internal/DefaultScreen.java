@@ -67,11 +67,10 @@ public class DefaultScreen implements Screen {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        final var clip = new ScreenBounds(frame.getCanvasSize());
-        renderer.rotate(absoluteRotation(), clip);
-        renderer.fillWith(Color.BLACK, clip);
+        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));
+        renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
+//        canvas.updateClip(new ScreenBounds(frame.getCanvasSize()));
         canvas.updateClip(canvasBounds);
-//        canvas.updateClip(new ScreenBounds(40, 40, 400, 400));
     }
 
 
@@ -194,6 +193,7 @@ public class DefaultScreen implements Screen {
     public Screen setCanvasBounds(final ScreenBounds bounds) {
         //TODO implement
         //TODO verify on screen and has minimal size
+        //TODO after resolution change ->ensure canvas size is still up to date ( alternative: reset canvas size on resolution change?)
         canvasBounds = bounds;
         return this;
     }
