@@ -66,13 +66,15 @@ public class DefaultScreen implements Screen {
             lastGraphics = graphics;
             return graphics;
         };
-        if (isNull(canvasBounds)) { // cannot be updated at startup because canvas gets resized by showing menu
-            canvasBounds = new ScreenBounds(frame.getCanvasSize());
-        }
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), canvasBounds);
+        renderer.rotate(absoluteRotation(), getCanvasBounds());
         renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
-        canvas.updateClip(canvasBounds);
+        canvas.updateClip(getCanvasBounds());
+    }
+
+    //TODO export
+    private ScreenBounds getCanvasBounds() {
+        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
     }
 
 
