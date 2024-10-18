@@ -17,7 +17,6 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
-import io.github.srcimon.screwbox.core.utils.Validate;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -236,7 +235,7 @@ public class DefaultScreen implements Screen {
 
     void validateCanvasBounds(final ScreenBounds canvasBounds) {
         requireNonNull(canvasBounds, "bounds must not be null");
-        if(!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
+        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
             throw new IllegalArgumentException("bounds must be on screen");
         }
     }
