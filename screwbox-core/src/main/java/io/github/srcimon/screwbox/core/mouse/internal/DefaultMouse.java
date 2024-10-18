@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
@@ -33,14 +33,16 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
     private final DefaultWorld world;
+    private final Canvas canvas;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world) {
+    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final Canvas canvas) {
         this.screen = screen;
         this.world = world;
+        this.canvas = canvas;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Offset offset() {
-        return offset;
+        return offset.add(canvas.offset());
     }
 
     @Override
@@ -147,15 +149,14 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position());
+        offset = windowPosition.substract(screen.position()).substract(canvas.offset());
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
-        final Rotation rotationIncludingShake = screen.absoluteRotation();
-        if (rotationIncludingShake.isNone()) {
-            return world.toPosition(offset);
+        if (screen.absoluteRotation().isNone()) {
+            return world.canvasToWorld(offset);
         }
-        final var delta = Line.between(world.toPosition(screen.center()), world.toPosition(offset));
-        return Rotation.degrees(360 - rotationIncludingShake.degrees()).applyOn(delta).to();
+        final var delta = Line.between(world.canvasToWorld(screen.center().substract(canvas.offset())), world.canvasToWorld(offset));
+        return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 }

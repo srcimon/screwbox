@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
@@ -15,6 +16,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -23,6 +25,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.awt.RenderingHints.*;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -35,11 +38,14 @@ public class DefaultScreen implements Screen {
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
     private Rotation shake = Rotation.none();
+    private final DefaultCanvas canvas;
+    private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
+        this.canvas = canvas;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -57,17 +63,20 @@ public class DefaultScreen implements Screen {
                 graphics.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
                 graphics.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
             }
-            if (!absoluteRotation().isNone()) {
-                graphics.setColor(AwtMapper.toAwtColor(Color.BLACK));
-                graphics.fillRect(0, 0, width(), height());
-                graphics.rotate(absoluteRotation().radians(), width() / 2.0, height() / 2.0);
-            }
             lastGraphics = graphics;
             return graphics;
         };
-        renderer.updateGraphicsContext(graphicsSupplier, frame.getCanvasSize());
-        renderer.fillWith(Color.BLACK);
+        renderer.updateContext(graphicsSupplier);
+        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));
+        renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
+        canvas.updateClip(canvasBounds());
     }
+
+    @Override
+    public ScreenBounds canvasBounds() {
+        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
+    }
+
 
     private Graphics2D getDrawGraphics() {
         try {
@@ -80,49 +89,49 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Color color) {
-        renderer.fillWith(color);
+        canvas.fillWith(color);
         return this;
     }
 
     @Override
     public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        renderer.drawRectangle(origin, size, options);
+        canvas.drawRectangle(origin, size, options);
         return this;
     }
 
     @Override
     public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderer.drawLine(from, to, options);
+        canvas.drawLine(from, to, options);
         return this;
     }
 
     @Override
     public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(offset, radius, options);
+        canvas.drawCircle(offset, radius, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options);
+        canvas.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options);
+        canvas.drawSprite(sprite, origin, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderer.drawText(offset, text, options);
+        canvas.drawText(offset, text, options);
         return this;
     }
 
     @Override
     public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderer.drawText(offset, text, options);
+        canvas.drawText(offset, text, options);
         return this;
     }
 
@@ -134,8 +143,7 @@ public class DefaultScreen implements Screen {
         final int menuBarHeight = frame.getJMenuBar() == null ? 0 : frame.getJMenuBar().getHeight();
         final Rectangle rectangle = new Rectangle(frame.getX(),
                 frame.getY() + frame.getInsets().top + menuBarHeight,
-                frame.getCanvas().getWidth(),
-                frame.canvasHeight());
+                width(), height());
 
         final BufferedImage screenCapture = robot.createScreenCapture(rectangle);
         lastScreenshot = Sprite.fromImage(screenCapture);
@@ -144,8 +152,13 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.fillWith(sprite, options);
+        canvas.fillWith(sprite, options);
         return this;
+    }
+
+    @Override
+    public Offset offset() {
+        return Offset.origin();
     }
 
     @Override
@@ -159,23 +172,14 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public boolean isVisible(final ScreenBounds bounds) {
-        return screenBounds().intersects(bounds);
-    }
-
-    @Override
-    public boolean isVisible(final Offset offset) {
-        return screenBounds().contains(offset);
-    }
-
-    @Override
     public ScreenBounds bounds() {
-        return new ScreenBounds(Offset.origin(), size());
+        return new ScreenBounds(offset(), size());
     }
 
     @Override
-    public void drawSpriteBatch(SpriteBatch spriteBatch) {
-        renderer.drawSpriteBatch(spriteBatch);
+    public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
+        canvas.drawSpriteBatch(spriteBatch);
+        return this;
     }
 
     @Override
@@ -187,6 +191,19 @@ public class DefaultScreen implements Screen {
     public Offset position() {
         final var bounds = frame.getBounds();
         return Offset.at(bounds.x, bounds.y - frame.canvasHeight() + bounds.height);
+    }
+
+    @Override
+    public Screen setCanvasBounds(final ScreenBounds bounds) {
+        validateCanvasBounds(bounds);
+        canvasBounds = bounds;
+        return this;
+    }
+
+    @Override
+    public Screen resetCanvasBounds() {
+        canvasBounds = null;
+        return this;
     }
 
     @Override
@@ -209,7 +226,17 @@ public class DefaultScreen implements Screen {
         this.shake = requireNonNull(shake, "shake must not be null");
     }
 
-    private ScreenBounds screenBounds() {
-        return new ScreenBounds(Offset.origin(), size());
+    public Canvas createCanvas(final Offset offset, final Size size) {
+        final ScreenBounds bounds = new ScreenBounds(offset, size);
+        validateCanvasBounds(bounds);
+        final var offsetRenderer = new OffsetRenderer(offset, renderer);
+        return new DefaultCanvas(offsetRenderer, bounds);
+    }
+
+    void validateCanvasBounds(final ScreenBounds canvasBounds) {
+        requireNonNull(canvasBounds, "bounds must not be null");
+        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
+            throw new IllegalArgumentException("bounds must be on screen");
+        }
     }
 }

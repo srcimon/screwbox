@@ -136,4 +136,11 @@ class RotationTest {
         var result = Rotation.degrees(40).add(Rotation.degrees(340));
         assertThat(result.degrees()).isEqualTo(20);
     }
+
+    @Test
+    void invert_returnsInvertedRotation() {
+        var result = Rotation.degrees(20).invert();
+
+        assertThat(result.degrees()).isEqualTo(340);
+    }
 }
