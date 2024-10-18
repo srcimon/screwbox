@@ -141,7 +141,7 @@ class DefaultEngine implements Engine {
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
         final var screenViewport = new Viewport(screenCanvas, camera);
-        final var viewportManager = new ViewportManager(screenViewport);
+        final var viewportManager = new ViewportManager(screenViewport, standbyProxyRenderer, screen);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, viewportManager);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();

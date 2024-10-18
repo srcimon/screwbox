@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface Graphics {
 
+    void enableSplitScreen();
     List<Viewport> viewports();
 
     /**
