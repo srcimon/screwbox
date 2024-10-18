@@ -9,7 +9,6 @@ import static io.github.srcimon.screwbox.core.graphics.Color.WHITE;
 import static io.github.srcimon.screwbox.core.graphics.Color.YELLOW;
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
 
-//TODO reimplement KeyboardAndMouseInteractor
 public class SimpleUiRenderer implements UiRenderer {
 
     private static final TextDrawOptions SELECTABLE = font(BOLDZILLA).scale(2).alignCenter();

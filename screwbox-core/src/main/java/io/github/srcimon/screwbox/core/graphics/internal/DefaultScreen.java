@@ -195,9 +195,7 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen setCanvasBounds(final ScreenBounds bounds) {
-        //TODO implement
         //TODO verify on screen and has minimal size
-        //TODO after resolution change ->ensure canvas size is still up to date ( alternative: reset canvas size on resolution change?)
         canvasBounds = requireNonNull(bounds, "bounds must not be null");
         return this;
     }
