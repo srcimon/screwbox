@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
@@ -40,6 +41,23 @@ class DefaultScreenTest {
 
     @Mock
     Robot robot;
+
+    @Test
+    void setCanvasBounds_cavasNotOnScreen_throwsException() {
+        when(frame.getCanvasSize()).thenReturn(Size.of(100, 100));
+
+        var outOfBounds = new ScreenBounds(-100, -200, 40, 40);
+        assertThatThrownBy(() -> screen.setCanvasBounds(outOfBounds))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bounds must be on screen");
+    }
+
+    @Test
+    void setCanvasBounds_cavasNNull_throwsException() {
+        assertThatThrownBy(() -> screen.setCanvasBounds(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("bounds must not be null");
+    }
 
     @Test
     void fillWith_callsRendererFillWith() {

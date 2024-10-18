@@ -17,6 +17,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
+import io.github.srcimon.screwbox.core.utils.Validate;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -195,8 +196,8 @@ public class DefaultScreen implements Screen {
 
     @Override
     public Screen setCanvasBounds(final ScreenBounds bounds) {
-        //TODO verify on screen and has minimal size
-        canvasBounds = requireNonNull(bounds, "bounds must not be null");
+        validateCanvasBounds(bounds);
+        canvasBounds = bounds;
         return this;
     }
 
@@ -227,8 +228,16 @@ public class DefaultScreen implements Screen {
     }
 
     public Canvas createCanvas(final Offset offset, final Size size) {
-        //TODO: validate on screen;
+        final ScreenBounds bounds = new ScreenBounds(offset, size);
+        validateCanvasBounds(bounds);
         final var offsetRenderer = new OffsetRenderer(offset, renderer);
-        return new DefaultCanvas(offsetRenderer, new ScreenBounds(offset, size));
+        return new DefaultCanvas(offsetRenderer, bounds);
+    }
+
+    void validateCanvasBounds(final ScreenBounds canvasBounds) {
+        requireNonNull(canvasBounds, "bounds must not be null");
+        if(!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
+            throw new IllegalArgumentException("bounds must be on screen");
+        }
     }
 }
