@@ -28,12 +28,14 @@ public class ViewportManager {
     public void enableSPlitscreen() {
         ScreenBounds clip = new ScreenBounds(0, 0, 600, 720);
         DefaultCanvas canvas = new DefaultCanvas(renderer, clip);
-        Viewport left = new Viewport(canvas, new DefaultCamera(new DefaultWorld(canvas), screen));
+        var w = new DefaultWorld(canvas);
+        Viewport left = new Viewport(canvas, new DefaultCamera(w, screen), w);
         additionalViewports.add(left);
 
         ScreenBounds clip2 = new ScreenBounds(600, 0, 600, 720);
         DefaultCanvas canvas2 = new DefaultCanvas(renderer, clip2);
-        Viewport right = new Viewport(canvas2, new DefaultCamera(new DefaultWorld(canvas2), screen));
+        var ws = new DefaultWorld(canvas2);
+        Viewport right = new Viewport(canvas2, new DefaultCamera(ws, screen), ws);
         additionalViewports.add(right);
     }
 }

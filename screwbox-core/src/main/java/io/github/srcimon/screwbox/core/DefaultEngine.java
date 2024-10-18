@@ -140,7 +140,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        final var screenViewport = new Viewport(screenCanvas, camera);
+        final var screenViewport = new Viewport(screenCanvas, camera, world);
         final var viewportManager = new ViewportManager(screenViewport, standbyProxyRenderer, screen);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, viewportManager);
         ui = new DefaultUi(this, scenes, screenCanvas);

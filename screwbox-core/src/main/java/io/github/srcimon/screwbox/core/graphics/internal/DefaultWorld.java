@@ -130,6 +130,7 @@ public class DefaultWorld implements World {
         return (int) Math.round(distance * zoom);
     }
 
+    @Override
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
         final Vector position = bounds.origin();
         final var offset = Offset.at(

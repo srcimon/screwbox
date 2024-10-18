@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 
 public interface World {
 
+    ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY);
     /**
      * Draws text on the {@link World} using {@link SystemTextDrawOptions}. Be warned: The used fonts are system specific and
      * drawing text is kind of slow. Text size does not change with {@link Camera#zoom()}.
