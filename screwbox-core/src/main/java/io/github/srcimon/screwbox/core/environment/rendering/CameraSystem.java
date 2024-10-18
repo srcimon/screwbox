@@ -15,22 +15,26 @@ public class CameraSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
+            int i = -1;
             for(final var viewport : engine.graphics().viewports()) {
+                i++;
+
                 final var cameraPosition =viewport.camera().position();
                 final var targetBounds = targetEntity.bounds();
 
                 final var target = targetEntity.get(CameraTargetComponent.class);
                 final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
+                Vector targetPosition = targetBounds.position().addX(i * 400);
                 if (target.allowJumping
-                        && targetBounds.position().distanceTo(cameraPosition) > viewport.world().visibleArea().width() / 2.0
+                        && targetPosition.distanceTo(cameraPosition) > viewport.world().visibleArea().width() / 2.0
                         && (configuration.isEmpty()
-                        || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
-                    viewport.camera().setPosition(targetBounds.position());
+                        || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetPosition))) {
+                    viewport.camera().setPosition(targetPosition);
                     return;
                 }
 
                 final Vector distance = cameraPosition
-                        .substract(targetBounds.position())
+                        .substract(targetPosition)
                         .substract(target.shift);
 
                 final double value = engine.loop().delta(-1 * target.followSpeed);
