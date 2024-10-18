@@ -36,6 +36,9 @@ public class ViewportManager {
         DefaultCanvas canvas2 = new DefaultCanvas(renderer, clip2);
         var ws = new DefaultWorld(canvas2);
         Viewport right = new Viewport(canvas2, new DefaultCamera(ws, screen), ws);
+
         additionalViewports.add(right);
+        left.camera().setZoom(4);
+        right.camera().setZoom(4);
     }
 }
