@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 

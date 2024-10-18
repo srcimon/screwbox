@@ -89,7 +89,9 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         return degrees;
     }
 
-    //TODO javadoc and test
+    /**
+     * Returns the inverted {@link Rotation} ( 360° - current rotation).
+     */
     public Rotation invert() {
         return Rotation.degrees(360 - degrees);
     }
