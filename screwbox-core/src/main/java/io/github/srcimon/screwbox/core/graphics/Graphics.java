@@ -6,12 +6,15 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
+import javax.swing.text.View;
 import java.util.List;
 
 /**
  * Gives access to all graphics related configuration and operations.
  */
 public interface Graphics {
+
+    List<Viewport> viewports();
 
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.

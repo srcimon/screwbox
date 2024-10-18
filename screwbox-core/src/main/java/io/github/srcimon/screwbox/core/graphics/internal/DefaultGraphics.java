@@ -26,6 +26,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final DefaultCamera camera;
     private final AsyncRenderer asyncRenderer;
+    private final ViewportManager viewportManager;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -33,14 +34,22 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final DefaultCamera camera,
-                           final AsyncRenderer asyncRenderer) {
+                           final AsyncRenderer asyncRenderer,
+                           final ViewportManager viewportManager) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.camera = camera;
+        this.viewportManager = viewportManager;
         this.asyncRenderer = asyncRenderer;
+    }
+
+    @Override
+    public List<Viewport> viewports() {
+
+        return viewportManager.viewports();
     }
 
     @Override
