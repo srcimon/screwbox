@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;

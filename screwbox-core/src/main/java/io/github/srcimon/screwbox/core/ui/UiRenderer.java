@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.ui;
 
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 
 public interface UiRenderer {
 
