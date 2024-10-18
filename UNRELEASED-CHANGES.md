@@ -1,6 +1,7 @@
 ### 🚀 Features & improvements
 
-- Added concept of `Canvas` to allow drawing relative to another offset and size than the `Screen`
+- Completly reworked the rendering systems. Rendering now happens on the `Canvas` and not on the `Screen`.
+This adds some flexibility when setting the actual rendering area.
 - Added `Rotation.invert()`
 
 ### 🪛 Bug Fixes
@@ -13,6 +14,7 @@
 - Moved all draw options to dedicated package
 - Simplified renderer interface
 - Added proxy renderer reduce cuppling between window and screen
+- Renamed lots of methods translating `Screen`, `Canvas` and `World` positions.
 
 ### 📦 Dependency updates
 
