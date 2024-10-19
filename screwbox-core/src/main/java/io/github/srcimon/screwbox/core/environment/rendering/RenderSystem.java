@@ -17,6 +17,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
@@ -34,15 +35,21 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final SpriteBatch spriteBatch = new SpriteBatch();
 
+        final SpriteBatch spriteBatch = createRenderBatch(engine, render -> !render.renderOverLight);
+        addReflectionsToSpriteBatch(engine, spriteBatch);
+        engine.graphics().screen().drawSpriteBatch(spriteBatch);
+    }
+
+    protected SpriteBatch createRenderBatch(final Engine engine, Predicate<RenderComponent> renderCondition) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+        final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         double zoom = graphics.camera().zoom();
         final ScreenBounds visibleBounds = graphics.screen().bounds();
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
-            if (mustRenderEntity(render)) {
+            if (renderCondition.test(render)) {
                 final double width = render.sprite.width() * render.options.scale();
                 final double height = render.sprite.height() * render.options.scale();
                 final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
@@ -53,15 +60,13 @@ public class RenderSystem implements EntitySystem {
                 }
             }
         }
-        graphics.screen().drawSpriteBatch(spriteBatch);
-
-        drawReflections(engine, renderEntities, spriteBatch);
+        return spriteBatch;
     }
 
-    protected void drawReflections(Engine engine, List<Entity> renderEntities, SpriteBatch spriteBatch) {
+    private void addReflectionsToSpriteBatch(final Engine engine, final SpriteBatch spriteBatch) {
+        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
         final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
-        final var graphics = engine.graphics();
-        final var zoom = graphics.camera().zoom();
+        final var zoom = engine.graphics().camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(reflection -> {
@@ -84,13 +89,9 @@ public class RenderSystem implements EntitySystem {
                         reflectionImage.addEntity(entity);
                     }
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), graphics.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), engine.graphics().toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
-    }
-
-    protected boolean mustRenderEntity(final RenderComponent render) {
-        return !render.renderOverLight;
     }
 }
