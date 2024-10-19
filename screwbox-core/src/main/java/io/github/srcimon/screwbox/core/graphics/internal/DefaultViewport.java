@@ -57,6 +57,21 @@ public class DefaultViewport implements Viewport {
         return (int) Math.round(worldDistance * camera.zoom());
     }
 
+    @Override
+    public ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY) {
+        final Vector position = bounds.origin();
+        final var offset = Offset.at(
+                (position.x() - parallaxX * camera.position().x()) * camera.zoom() + (canvas.width() / 2.0) + canvas.offset().x(),
+                (position.y() - parallaxY * camera.position().y()) * camera.zoom() + (canvas.height() / 2.0) + canvas.offset().y());
+        final var size = toDimension(bounds.size());
+        return new ScreenBounds(offset, size);
+    }
+
+    @Override
+    public Camera camera() {
+        return camera;
+    }
+
     private Size toDimension(final Vector size) {
         final long x = Math.round(size.x() * camera.zoom());
         final long y = Math.round(size.y() * camera.zoom());

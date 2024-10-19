@@ -21,20 +21,9 @@ public class DefaultWorld implements World {
     private final Canvas canvas;
     private final Viewport viewport;
 
-    private Vector cameraPosition = Vector.zero();
-    private double zoom = 1;
-
     public DefaultWorld(final Canvas canvas, final Viewport viewport) {
         this.canvas = canvas;
         this.viewport = viewport;
-    }
-
-    public void updateZoom(final double zoom) {
-        this.zoom = zoom;
-    }
-
-    public void updateCameraPosition(final Vector position) {
-        this.cameraPosition = position;
     }
 
     @Override
@@ -76,7 +65,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        canvas.drawText(toCanvas(position), text, options.scale(options.scale() * zoom));
+        canvas.drawText(toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));
         return this;
     }
 
@@ -89,14 +78,15 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
-        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * zoom);
+        final SpriteDrawOptions scaledOptions = options.scale(options.scale() * viewport.camera().zoom());
         canvas.drawSprite(sprite, toCanvas(origin), scaledOptions);
         return this;
     }
 
+    //TODO move to viewport
     private Size toDimension(final Vector size) {
-        final long x = Math.round(size.x() * zoom);
-        final long y = Math.round(size.y() * zoom);
+        final long x = Math.round(size.x() * viewport.camera().zoom());
+        final long y = Math.round(size.y() * viewport.camera().zoom());
         return Size.of(x, y);
     }
 
@@ -109,11 +99,6 @@ public class DefaultWorld implements World {
     }
 
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        final Vector position = bounds.origin();
-        final var offset = Offset.at(
-                (position.x() - parallaxX * cameraPosition.x()) * zoom + (canvas.width() / 2.0) + canvas.offset().x(),
-                (position.y() - parallaxY * cameraPosition.y()) * zoom + (canvas.height() / 2.0) + canvas.offset().y());
-        final var size = toDimension(bounds.size());
-        return new ScreenBounds(offset, size);
+       return viewport.toCanvas(bounds, parallaxX, parallaxY);
     }
 }

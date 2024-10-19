@@ -14,4 +14,8 @@ public interface Viewport {
     ScreenBounds toCanvas(Bounds bounds);
 
     int toCanvasDistance(double worldDistance);
+
+    ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY);
+
+    Camera camera();
 }
