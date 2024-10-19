@@ -24,28 +24,17 @@ public class DefaultWorld implements World {
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
 
-    private Bounds visibleArea;
-
     public DefaultWorld(final Canvas canvas, final Viewport viewport) {
         this.canvas = canvas;
         this.viewport = viewport;
-        recalculateVisibleArea();
     }
 
     public void updateZoom(final double zoom) {
         this.zoom = zoom;
-        recalculateVisibleArea();
     }
 
     public void updateCameraPosition(final Vector position) {
         this.cameraPosition = position;
-        recalculateVisibleArea();
-    }
-
-    public void recalculateVisibleArea() {
-        visibleArea = Bounds.atPosition(cameraPosition,
-                canvas.width() / zoom,
-                canvas.height() / zoom);//TODO migrate last / camera is null workaround in the way
     }
 
     @Override
@@ -82,10 +71,7 @@ public class DefaultWorld implements World {
     }
 
     public Vector canvasToWorld(final Offset offset) {
-        final double x = (offset.x() - (canvas.width() / 2.0)) / zoom + cameraPosition.x();
-        final double y = (offset.y() - (canvas.height() / 2.0)) / zoom + cameraPosition.y();
-
-        return Vector.of(x, y);
+        return viewport.toWorld(offset);
     }
 
     @Override
