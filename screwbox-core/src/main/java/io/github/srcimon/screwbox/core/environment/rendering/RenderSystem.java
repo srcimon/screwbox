@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -78,7 +80,6 @@ public class RenderSystem implements EntitySystem {
                 }
             });
         }
-
         graphics.screen().drawSpriteBatch(spriteBatch);
     }
 
