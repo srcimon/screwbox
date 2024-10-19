@@ -143,7 +143,7 @@ class DefaultEngine implements Engine {
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, screenViewport);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
-        mouse = new DefaultMouse(screen, world, screenCanvas);
+        mouse = new DefaultMouse(screen, screenViewport, screenCanvas);
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

@@ -41,7 +41,7 @@ public interface World {
     /**
      * Returns the area currently visible on the {@link Screen}.
      */
-    Bounds visibleArea();
+    Bounds visibleArea();//TODO REMOVE FROM WORLD AND MOVE TO GRAPHICS
 
     /**
      * Draw a rectangle on the {@link World} using {@link RectangleDrawOptions}.

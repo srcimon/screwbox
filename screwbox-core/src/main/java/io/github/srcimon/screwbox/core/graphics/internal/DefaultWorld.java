@@ -48,11 +48,6 @@ public class DefaultWorld implements World {
         return this;
     }
 
-    //TODO move viewport dependency to mouse
-    public Vector canvasToWorld(final Offset offset) {
-        return viewport.toWorld(offset);
-    }
-
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
         canvas.drawText(viewport.toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));

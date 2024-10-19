@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -32,16 +32,16 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
-    private final DefaultWorld world;
+    private final Viewport viewport;
     private final Canvas canvas;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final DefaultScreen screen, final DefaultWorld world, final Canvas canvas) {
+    public DefaultMouse(final DefaultScreen screen, final Viewport viewport, final Canvas canvas) {
         this.screen = screen;
-        this.world = world;
+        this.viewport = viewport;
         this.canvas = canvas;
     }
 
@@ -154,9 +154,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private Vector toPositionConsideringRotation(final Offset offset) {
         if (screen.absoluteRotation().isNone()) {
-            return world.canvasToWorld(offset);
+            return viewport.toWorld(offset);
         }
-        final var delta = Line.between(world.canvasToWorld(screen.center().substract(canvas.offset())), world.canvasToWorld(offset));
+        final var delta = Line.between(viewport.toWorld(screen.center().substract(canvas.offset())), viewport.toWorld(offset));
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 }
