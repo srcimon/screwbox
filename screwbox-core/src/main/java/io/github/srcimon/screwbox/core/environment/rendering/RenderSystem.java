@@ -35,11 +35,11 @@ public class RenderSystem implements EntitySystem {
     @Override
     public void update(final Engine engine) {
         final SpriteBatch spriteBatch = new SpriteBatch();
-        final Graphics graphics = engine.graphics();
-        final ScreenBounds visibleBounds = graphics.screen().bounds();
 
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+        final Graphics graphics = engine.graphics();
         double zoom = graphics.camera().zoom();
+        final ScreenBounds visibleBounds = graphics.screen().bounds();
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (mustRenderEntity(render)) {
@@ -55,11 +55,12 @@ public class RenderSystem implements EntitySystem {
         }
         graphics.screen().drawSpriteBatch(spriteBatch);
 
-        drawReflections(engine, renderEntities, spriteBatch, graphics);
+        drawReflections(engine, renderEntities, spriteBatch);
     }
 
-    protected void drawReflections(Engine engine, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
+    protected void drawReflections(Engine engine, List<Entity> renderEntities, SpriteBatch spriteBatch) {
         final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+        final var graphics = engine.graphics();
         final var zoom = graphics.camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
