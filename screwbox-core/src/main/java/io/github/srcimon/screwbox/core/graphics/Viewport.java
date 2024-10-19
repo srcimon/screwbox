@@ -10,4 +10,8 @@ public interface Viewport {
     Bounds visibleArea();
 
     Vector toWorld(Offset offset);
+
+    ScreenBounds toCanvas(Bounds bounds);
+
+    int toCanvasDistance(double worldDistance);
 }

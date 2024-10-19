@@ -67,7 +67,7 @@ public class DefaultWorld implements World {
     }
 
     public Vector toPosition(final Offset offset) {
-     return viewport.toWorld(offset);
+        return viewport.toWorld(offset);
     }
 
     public Vector canvasToWorld(final Offset offset) {
@@ -101,13 +101,11 @@ public class DefaultWorld implements World {
     }
 
     public ScreenBounds toCanvas(final Bounds bounds) {
-        final var offset = toCanvas(bounds.origin());
-        final var size = toDimension(bounds.size());
-        return new ScreenBounds(offset, size);
+        return viewport.toCanvas(bounds);
     }
 
     public int toDistance(final double distance) {
-        return (int) Math.round(distance * zoom);
+        return viewport.toCanvasDistance(distance);
     }
 
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
