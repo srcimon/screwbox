@@ -128,8 +128,6 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas, camera);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-
-        //TODO screen must pull swing!!
         //TODO: each canvas should have individual swing!
         final var screenViewport = new DefaultViewport(screenCanvas, camera);
         final DefaultWorld world = new DefaultWorld(screenCanvas, screenViewport);
