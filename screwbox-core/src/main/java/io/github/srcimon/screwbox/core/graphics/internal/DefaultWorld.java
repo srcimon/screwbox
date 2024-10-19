@@ -33,9 +33,8 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
-        final Offset offset = toCanvas(bounds.origin());
-        final Size size = toDimension(bounds.size());
-        canvas.drawRectangle(offset, size, options);
+        var sb = toCanvas(bounds);
+        canvas.drawRectangle(sb.offset(), sb.size(), options);
         return this;
     }
 

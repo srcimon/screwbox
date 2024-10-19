@@ -34,7 +34,6 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public Camera setPosition(final Vector position) {
         this.position = requireNonNull(position, "position must not be NULL");
-        world.updateCameraPosition(focus());
         return this;
     }
 
@@ -66,7 +65,6 @@ public class DefaultCamera implements Camera, Updatable {
     public double setZoom(final double zoom) {
         this.requestedZoom = Math.clamp(zoom, minZoom, maxZoom);
         this.zoom = Pixelperfect.value(requestedZoom);
-        world.updateZoom(this.zoom);
         return this.zoom;
     }
 
