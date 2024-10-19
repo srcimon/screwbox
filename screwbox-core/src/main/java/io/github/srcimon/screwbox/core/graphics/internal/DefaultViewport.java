@@ -27,4 +27,11 @@ this.camera = camera;
         final double y = (position.y() - camera.position().y()) * camera.zoom() + (canvas.height() / 2.0) + canvas.offset().y();
         return Offset.at(x, y);
     }
+
+    @Override
+    public Bounds visibleArea() {
+        return Bounds.atPosition(camera.position(),
+                canvas.width() / camera.zoom(),
+                canvas.height() / camera.zoom());
+    }
 }

@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -46,12 +45,12 @@ public class DefaultWorld implements World {
     public void recalculateVisibleArea() {
         visibleArea = Bounds.atPosition(cameraPosition,
                 canvas.width() / zoom,
-                canvas.height() / zoom);
+                canvas.height() / zoom);//TODO migrate last / camera is null workaround in the way
     }
 
     @Override
     public Bounds visibleArea() {
-        return visibleArea;
+        return viewport.visibleArea();
     }
 
     @Override
@@ -72,12 +71,6 @@ public class DefaultWorld implements World {
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
         canvas.drawCircle(toCanvas(position), toDistance(radius), options);
         return this;
-    }
-
-    public Offset toScreen(final Vector position) {
-        final double x = (position.x() - cameraPosition.x()) * zoom + (canvas.width() / 2.0);
-        final double y = (position.y() - cameraPosition.y()) * zoom + (canvas.height() / 2.0);
-        return Offset.at(x, y);
     }
 
     public Offset toCanvas(final Vector position) {
