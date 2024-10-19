@@ -24,7 +24,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem
 import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.ReflectionRenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
