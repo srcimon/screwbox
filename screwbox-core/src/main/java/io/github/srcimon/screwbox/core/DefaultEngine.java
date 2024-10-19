@@ -138,7 +138,7 @@ class DefaultEngine implements Engine {
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(camera, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
-        particles = new DefaultParticles(scenes, world);
+        particles = new DefaultParticles(scenes, screenViewport);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, screenViewport);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();

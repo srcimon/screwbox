@@ -14,6 +14,11 @@ import java.util.List;
 public interface Graphics {
 
     /**
+     * Returns the area currently visible on the {@link Screen}.
+     */
+    Bounds visibleArea();
+
+    /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */
     GraphicsConfiguration configuration();

@@ -65,7 +65,7 @@ public class RenderSystem implements EntitySystem {
 
     private void addReflectionsToSpriteBatch(final Engine engine, final SpriteBatch spriteBatch) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
-        final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+        final var visibleArea = Pixelperfect.bounds(engine.graphics().visibleArea());
         final var zoom = engine.graphics().camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);

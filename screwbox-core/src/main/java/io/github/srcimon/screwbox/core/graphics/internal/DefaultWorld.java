@@ -25,11 +25,6 @@ public class DefaultWorld implements World {
     }
 
     @Override
-    public Bounds visibleArea() {
-        return viewport.visibleArea();
-    }
-
-    @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
         final var screenBounds = viewport.toCanvas(bounds);
         canvas.drawRectangle(screenBounds.offset(), screenBounds.size(), options);

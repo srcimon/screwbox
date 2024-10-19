@@ -21,7 +21,7 @@ public class CameraSystem implements EntitySystem {
             final var target = targetEntity.get(CameraTargetComponent.class);
             final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
             if (target.allowJumping
-                    && targetBounds.position().distanceTo(cameraPosition) > engine.graphics().world().visibleArea().width() / 2.0
+                    && targetBounds.position().distanceTo(cameraPosition) > engine.graphics().visibleArea().width() / 2.0
                     && (configuration.isEmpty()
                     || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
                 engine.graphics().camera().setPosition(targetBounds.position());

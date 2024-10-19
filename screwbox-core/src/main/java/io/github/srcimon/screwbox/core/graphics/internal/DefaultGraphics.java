@@ -47,6 +47,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Bounds visibleArea() {
+        return viewport.visibleArea();
+    }
+
+    @Override
     public GraphicsConfiguration configuration() {
         return configuration;
     }

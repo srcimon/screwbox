@@ -39,11 +39,6 @@ public interface World {
     World drawText(Vector position, String text, TextDrawOptions options);
 
     /**
-     * Returns the area currently visible on the {@link Screen}.
-     */
-    Bounds visibleArea();//TODO REMOVE FROM WORLD AND MOVE TO GRAPHICS
-
-    /**
      * Draw a rectangle on the {@link World} using {@link RectangleDrawOptions}.
      */
     World drawRectangle(Bounds bounds, RectangleDrawOptions options);

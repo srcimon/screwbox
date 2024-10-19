@@ -46,7 +46,7 @@ public class HelloWorldApp {
 
                 // add falling leaves
                 .addEntity("falling leaves",
-                        new TransformComponent(screwBox.graphics().world().visibleArea()),
+                        new TransformComponent(screwBox.graphics().visibleArea()),
                         new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
 
                 // let the mouse interact with the falling leaves
