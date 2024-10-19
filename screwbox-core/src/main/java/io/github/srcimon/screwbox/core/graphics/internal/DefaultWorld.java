@@ -4,8 +4,6 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -33,44 +31,37 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
-        var sb = toCanvas(bounds);
-        canvas.drawRectangle(sb.offset(), sb.size(), options);
+        final var screenBounds = viewport.toCanvas(bounds);
+        canvas.drawRectangle(screenBounds.offset(), screenBounds.size(), options);
         return this;
     }
 
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
-        canvas.drawLine(toCanvas(from), toCanvas(to), options);
+        canvas.drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options);
         return this;
     }
 
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
-        canvas.drawCircle(toCanvas(position), toDistance(radius), options);
+        canvas.drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options);
         return this;
     }
 
-    public Offset toCanvas(final Vector position) {
-        return viewport.toCanvas(position);
-    }
-
-    public Vector toPosition(final Offset offset) {
-        return viewport.toWorld(offset);
-    }
-
+    //TODO move viewport dependency to mouse
     public Vector canvasToWorld(final Offset offset) {
         return viewport.toWorld(offset);
     }
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        canvas.drawText(toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));
+        canvas.drawText(viewport.toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));
         return this;
     }
 
     @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
-        final Offset windowOffset = toCanvas(position);
+        final Offset windowOffset = viewport.toCanvas(position);
         canvas.drawText(windowOffset, text, options);
         return this;
     }
@@ -78,26 +69,8 @@ public class DefaultWorld implements World {
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
         final SpriteDrawOptions scaledOptions = options.scale(options.scale() * viewport.camera().zoom());
-        canvas.drawSprite(sprite, toCanvas(origin), scaledOptions);
+        canvas.drawSprite(sprite, viewport.toCanvas(origin), scaledOptions);
         return this;
     }
 
-    //TODO move to viewport
-    private Size toDimension(final Vector size) {
-        final long x = Math.round(size.x() * viewport.camera().zoom());
-        final long y = Math.round(size.y() * viewport.camera().zoom());
-        return Size.of(x, y);
-    }
-
-    public ScreenBounds toCanvas(final Bounds bounds) {
-        return viewport.toCanvas(bounds);
-    }
-
-    public int toDistance(final double distance) {
-        return viewport.toCanvas(distance);
-    }
-
-    public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
-       return viewport.toCanvas(bounds, parallaxX, parallaxY);
-    }
 }

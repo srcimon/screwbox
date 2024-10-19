@@ -66,13 +66,4 @@ class DefaultGraphicsTest {
         assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
     }
 
-    @Test
-    void toCanvas_returnsTranslatedBounds() {
-        when(world.toCanvas(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
-
-        var result = graphics.toCanvas(Bounds.$$(20, 20, 10, 2));
-
-        assertThat(result).isEqualTo(new ScreenBounds(4, 1, 10, 10));
-    }
-
 }

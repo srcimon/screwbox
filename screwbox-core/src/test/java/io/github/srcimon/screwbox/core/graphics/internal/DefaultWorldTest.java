@@ -90,13 +90,4 @@ class DefaultWorldTest {
         verify(canvas).drawText(Offset.at(552, 422), "Hello World", TextDrawOptions.font(FontBundle.BOLDZILLA).scale(8));
     }
 
-    @Test
-    void toScreen_usingParallax_returnsScreenBounds() {
-        when(canvas.offset()).thenReturn(Offset.origin());
-        world.updateZoom(2);
-
-        var result = world.toScreen($$(10, 20, 40, 80), 1.4, 1.2);
-
-        assertThat(result).isEqualTo(new ScreenBounds(532, 424, 80, 160));
-    }
 }

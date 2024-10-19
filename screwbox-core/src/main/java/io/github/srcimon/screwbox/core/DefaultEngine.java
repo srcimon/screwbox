@@ -140,7 +140,7 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         scenes = new DefaultScenes(this, screen, executor);
         particles = new DefaultParticles(scenes, world);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, camera, asyncRenderer, screenViewport);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, world, screenCanvas);
