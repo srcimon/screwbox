@@ -27,7 +27,7 @@ public class DefaultCamera implements Camera, Updatable {
 
     private ActiveCameraShake activeShake;
 
-    public DefaultCamera(final DefaultScreen screen, final Canvas canvas) {
+    public DefaultCamera(final DefaultScreen screen, final Canvas canvas) {//TODO get rid of screen dependency here
         this.screen = screen;
         this.canvas = canvas;
     }
