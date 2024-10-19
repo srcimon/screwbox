@@ -10,6 +10,7 @@ This adds some flexibility when setting the actual rendering area.
 
 ### 🧽 Cleanup & refactoring
 
+- Combined `ReflectionRenderSystem` and `RenderSystem` to avoid the performance implications and complexity off adding and removing entities to communicate between both systems.
 - Reduced lightmap size and used optimzed blur filter to slightly reduce memory transfer rate (#393)
 - Moved all draw options to dedicated package
 - Simplified renderer interface

@@ -1,12 +1,17 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 
 import java.io.Serial;
 import java.util.function.Supplier;
 
+/**
+ * Adds {@link Sprite} rendering to the {@link Entity}. Supports parralax rendering with draw order.
+ * Gets processed by {@link RenderSystem}.
+ */
 public class RenderComponent implements Component {
 
     @Serial
