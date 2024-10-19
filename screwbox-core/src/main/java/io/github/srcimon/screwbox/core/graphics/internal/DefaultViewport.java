@@ -19,7 +19,6 @@ public class DefaultViewport implements Viewport {
         this.camera = camera;
     }
 
-
     @Override
     public Offset toCanvas(final Vector position) {
         final double x = (position.x() - camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0) + canvas.offset().x();
@@ -49,7 +48,7 @@ public class DefaultViewport implements Viewport {
     }
 
     @Override
-    public int toCanvasDistance(final double worldDistance) {
+    public int toCanvas(final double worldDistance) {
         return (int) Math.round(worldDistance * camera.zoom());
     }
 
@@ -66,6 +65,11 @@ public class DefaultViewport implements Viewport {
     @Override
     public Camera camera() {
         return camera;
+    }
+
+    @Override
+    public Canvas canvas() {
+        return canvas;
     }
 
     private Size toDimension(final Vector size) {

@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
@@ -28,6 +27,7 @@ public interface Canvas extends Sizeable {
     default boolean isVisible(final ScreenBounds other) {
         return bounds().intersects(other);
     }
+
     /**
      * Fills the whole {@link Canvas} with the given {@link Color}.
      */

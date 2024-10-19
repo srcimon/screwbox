@@ -129,9 +129,9 @@ class DefaultEngine implements Engine {
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
 
         final DefaultCamera camera = new DefaultCamera(screen, screenCanvas);//TODO maybe redundant
-        final var viewport = new DefaultViewport(screenCanvas, camera);
-        final DefaultWorld world = new DefaultWorld(screenCanvas, viewport);
-        final DefaultLight light = new DefaultLight(screenCanvas, world, configuration, executor);
+        final var screenViewport = new DefaultViewport(screenCanvas, camera);
+        final DefaultWorld world = new DefaultWorld(screenCanvas, screenViewport);
+        final DefaultLight light = new DefaultLight(configuration, executor, screenViewport);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);

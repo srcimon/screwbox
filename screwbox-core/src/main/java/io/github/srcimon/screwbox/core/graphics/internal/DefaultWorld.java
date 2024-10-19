@@ -94,7 +94,7 @@ public class DefaultWorld implements World {
     }
 
     public int toDistance(final double distance) {
-        return viewport.toCanvasDistance(distance);
+        return viewport.toCanvas(distance);
     }
 
     public ScreenBounds toScreen(final Bounds bounds, final double parallaxX, final double parallaxY) {
