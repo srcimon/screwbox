@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
@@ -15,8 +16,8 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultCamera implements Camera, Updatable {
 
-    private final DefaultWorld world;
     private final DefaultScreen screen;
+    private final Canvas canvas;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
     private double zoom = 1;
@@ -26,9 +27,9 @@ public class DefaultCamera implements Camera, Updatable {
 
     private ActiveCameraShake activeShake;
 
-    public DefaultCamera(final DefaultWorld world, final DefaultScreen screen) {
-        this.world = world;
+    public DefaultCamera(final DefaultScreen screen, final Canvas canvas) {
         this.screen = screen;
+        this.canvas = canvas;
     }
 
     @Override
@@ -71,8 +72,8 @@ public class DefaultCamera implements Camera, Updatable {
     @Override
     public Vector moveWithinVisualBounds(final Vector delta, final Bounds bounds) {
         final var legalPostionArea = Bounds.atPosition(bounds.position(),
-                Math.max(1, bounds.width() - world.visibleArea().width()),
-                Math.max(1, bounds.height() - world.visibleArea().height()));
+                Math.max(1, bounds.width() - visibleArea().width()),
+                Math.max(1, bounds.height() - visibleArea().height()));
 
         final double movementX = Math.clamp(delta.x(), legalPostionArea.minX() - position().x(), legalPostionArea.maxX() - position().x());
 
@@ -80,6 +81,12 @@ public class DefaultCamera implements Camera, Updatable {
 
         move($(movementX, movementY));
         return position();
+    }
+
+    private Bounds visibleArea() {
+        return Bounds.atPosition(focus(),
+                canvas.width() / zoom(),
+                canvas.height() / zoom());
     }
 
     @Override

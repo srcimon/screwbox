@@ -12,17 +12,13 @@ import io.github.srcimon.screwbox.core.graphics.Viewport;
 public class DefaultViewport implements Viewport {
 
     private final Canvas canvas;
-    private Camera camera;
+    private final Camera camera;
 
-    public DefaultViewport(final Canvas canvas) {
+    public DefaultViewport(final Canvas canvas, final Camera camera) {
         this.canvas = canvas;
-        this.camera = null;//FIXME
-    }
-
-    //TODO remove me
-    public void setCameraWorkaround(final Camera camera) {
         this.camera = camera;
     }
+
 
     @Override
     public Offset toCanvas(final Vector position) {
