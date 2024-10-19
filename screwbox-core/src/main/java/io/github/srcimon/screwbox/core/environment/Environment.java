@@ -284,7 +284,6 @@ public interface Environment {
     /**
      * Adds systems needed for rendering {@link Sprite}s.
      *
-     * @see ReflectionRenderSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
