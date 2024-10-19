@@ -9,14 +9,6 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
@@ -81,7 +73,6 @@ public class DefaultScreen implements Screen, Updatable {
         return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
     }
 
-
     private Graphics2D getDrawGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
@@ -89,54 +80,6 @@ public class DefaultScreen implements Screen, Updatable {
         } catch (IllegalStateException ignored) {
             return lastGraphics;
         }
-    }
-
-    @Override
-    public Screen fillWith(final Color color) {
-        canvas.fillWith(color);
-        return this;
-    }
-
-    @Override
-    public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        canvas.drawRectangle(origin, size, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        canvas.drawLine(from, to, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        canvas.drawCircle(offset, radius, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        canvas.drawSprite(sprite, origin, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        canvas.drawSprite(sprite, origin, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        canvas.drawText(offset, text, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        canvas.drawText(offset, text, options);
-        return this;
     }
 
     @Override
@@ -155,35 +98,8 @@ public class DefaultScreen implements Screen, Updatable {
     }
 
     @Override
-    public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        canvas.fillWith(sprite, options);
-        return this;
-    }
-
-    @Override
-    public Offset offset() {
-        return Offset.origin();
-    }
-
-    @Override
-    public Offset center() {
-        return size().center();
-    }
-
-    @Override
     public Size size() {
         return frame.getCanvasSize();
-    }
-
-    @Override
-    public ScreenBounds bounds() {
-        return new ScreenBounds(offset(), size());
-    }
-
-    @Override
-    public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
-        canvas.drawSpriteBatch(spriteBatch);
-        return this;
     }
 
     @Override

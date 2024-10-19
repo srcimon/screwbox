@@ -11,7 +11,7 @@ import java.util.Optional;
  *
  * @see World
  */
-public interface Screen extends Canvas {
+public interface Screen extends Sizeable {
 
     /**
      * Restricts the drawing {@link Canvas} to the specified {@link ScreenBounds}. This stops the canvas from being

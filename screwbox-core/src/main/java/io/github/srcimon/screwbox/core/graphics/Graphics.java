@@ -1,9 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
@@ -11,12 +9,7 @@ import java.util.List;
 /**
  * Gives access to all graphics related configuration and operations.
  */
-public interface Graphics {
-
-    /**
-     * Returns the area currently visible on the {@link Screen}.
-     */
-    Bounds visibleArea();
+public interface Graphics extends Viewport {
 
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
@@ -49,31 +42,6 @@ public interface Graphics {
      * Subsystem for creating and rendering light effects to the screen.
      */
     Light light();
-
-    /**
-     * Returns the position of the specified {@link Offset} in the {@link World}.
-     */
-    Vector toWorld(Offset offset);
-
-    int toCanvas(double worldDistance);
-
-    /**
-     * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
-     */
-    ScreenBounds toCanvas(Bounds bounds);
-
-    /**
-     * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.
-     */
-    ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY);
-
-    /**
-     * Returns the {@link Offset} on the viewport of the given {@link Vector} in the {@link World}.
-     *
-     * @param position the position that will be translated
-     * @return the {@link Offset} on the viewport
-     */
-    Offset toCanvas(Vector position);
 
     /**
      * Returns a list of all supported resolutions.
