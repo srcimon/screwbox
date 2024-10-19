@@ -51,9 +51,11 @@ public interface Graphics {
     Light light();
 
     /**
-     * Returns the position the given {@link Offset} in the {@link World} not considering {@link Screen#rotation()}.
+     * Returns the position of the specified {@link Offset} in the {@link World}.
      */
-    Vector toPosition(Offset offset);
+    Vector toWorld(Offset offset);
+
+    int toCanvas(double worldDistance);
 
     /**
      * Returns the {@link ScreenBounds} of the {@link Bounds} in the {@link World}.
@@ -63,7 +65,7 @@ public interface Graphics {
     /**
      * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.
      */
-    ScreenBounds toScreenUsingParallax(Bounds bounds, double parallaxX, double parallaxY);
+    ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY);
 
     /**
      * Returns the {@link Offset} on the viewport of the given {@link Vector} in the {@link World}.

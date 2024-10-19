@@ -67,8 +67,13 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Vector toPosition(final Offset offset) {
+    public Vector toWorld(final Offset offset) {
         return viewport.toWorld(offset);
+    }
+
+    @Override
+    public int toCanvas(double worldDistance) {
+        return viewport.toCanvas(worldDistance);
     }
 
     @Override
@@ -77,7 +82,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public ScreenBounds toScreenUsingParallax(final Bounds bounds, final double parallaxX, final double parallaxY) {
+    public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
         return viewport.toCanvas(bounds, parallaxX, parallaxY);
     }
 

@@ -35,7 +35,7 @@ class RenderSystemTest {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
-        when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(graphics.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
         when(world.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
 
         environment
@@ -57,7 +57,7 @@ class RenderSystemTest {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
-        when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(graphics.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
         when(world.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
 
         environment

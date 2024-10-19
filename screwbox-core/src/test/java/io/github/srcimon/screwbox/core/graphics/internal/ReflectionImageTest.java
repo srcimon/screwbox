@@ -50,7 +50,7 @@ class ReflectionImageTest {
                 .add(new RenderComponent(SpriteBundle.ICON, 4));
 
         when(graphics.camera()).thenReturn(camera);
-        when(graphics.toScreenUsingParallax(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
+        when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(2, 4, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
         var result = reflectionImage.create(0);
 
@@ -64,7 +64,7 @@ class ReflectionImageTest {
                 .add(new TransformComponent(200, 100, 40, 50))
                 .add(new RenderComponent(SpriteBundle.ICON, 4));
 
-        when(graphics.toScreenUsingParallax(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
+        when(graphics.toCanvas(Bounds.$$(180, 75, 40, 50), 1, 1)).thenReturn(new ScreenBounds(200, 400, 16, 16));
         reflectionImage.addEntity(reflectableSprite);
         var result = reflectionImage.create(0);
 
