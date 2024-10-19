@@ -21,9 +21,14 @@ import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
+import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
 import static java.lang.Math.ceil;
 
-@Order(Order.SystemOrder.PRESENTATION_WORLD)
+/**
+ * Renders {@link Entity entities} having a {@link RenderComponent} and also adds refections for {@link Entity entities}
+ * having a {@link ReflectionComponent}.
+ */
+@Order(PRESENTATION_WORLD)
 public class RenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);

@@ -2,9 +2,15 @@ package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Component;
+import io.github.srcimon.screwbox.core.environment.Entity;
 
 import java.io.Serial;
 
+/**
+ * Adds a reflection effect to the {@link Entity}. Refects only {@link Entity entities} having a {@link RenderComponent}
+ * which are above the refection area having a draw order below the specified value. Gets processed by
+ * {@link RenderSystem}.
+ */
 public class ReflectionComponent implements Component {
 
     @Serial
@@ -14,14 +20,6 @@ public class ReflectionComponent implements Component {
     public int drawOrder;
     public int blur = 0;
     public boolean useWaveEffect = false;
-
-    public ReflectionComponent() {
-        this(Percent.quater());
-    }
-
-    public ReflectionComponent(final Percent opacityModifier) {
-        this(opacityModifier, Integer.MAX_VALUE);
-    }
 
     public ReflectionComponent(final Percent opacityModifier, final int drawOrder) {
         this.opacityModifier = opacityModifier;
