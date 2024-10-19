@@ -22,6 +22,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
@@ -126,10 +127,12 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-        final DefaultWorld world = new DefaultWorld(screenCanvas);
+        final var viewport = new DefaultViewport(screenCanvas);
+        final DefaultWorld world = new DefaultWorld(screenCanvas, viewport);
 
-        final DefaultLight light = new DefaultLight(screenCanvas, world, configuration, executor);
         final DefaultCamera camera = new DefaultCamera(world, screen);
+        viewport.setCameraWorkaround(camera);
+        final DefaultLight light = new DefaultLight(screenCanvas, world, configuration, executor);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);

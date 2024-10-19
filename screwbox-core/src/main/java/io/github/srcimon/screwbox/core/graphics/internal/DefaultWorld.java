@@ -2,11 +2,13 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
@@ -18,14 +20,16 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 public class DefaultWorld implements World {
 
     private final Canvas canvas;
+    private final Viewport viewport;
 
     private Vector cameraPosition = Vector.zero();
     private double zoom = 1;
 
     private Bounds visibleArea;
 
-    public DefaultWorld(final Canvas canvas) {
+    public DefaultWorld(final Canvas canvas, final Viewport viewport) {
         this.canvas = canvas;
+        this.viewport = viewport;
         recalculateVisibleArea();
     }
 
@@ -77,7 +81,7 @@ public class DefaultWorld implements World {
     }
 
     public Offset toCanvas(final Vector position) {
-        return toScreen(position).add(canvas.offset());
+        return viewport.toCanvas(position);
     }
 
     public Vector toPosition(final Offset offset) {
