@@ -1,9 +1,7 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
@@ -32,7 +30,6 @@ import static java.lang.Math.ceil;
 public class RenderSystem implements EntitySystem {
 
     private static final Archetype RENDERS = Archetype.of(RenderComponent.class, TransformComponent.class);
-
     private static final Archetype MIRRORS = Archetype.of(ReflectionComponent.class, TransformComponent.class);
 
     @Override
@@ -40,9 +37,9 @@ public class RenderSystem implements EntitySystem {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         final ScreenBounds visibleBounds = graphics.screen().bounds();
-        double zoom = graphics.camera().zoom();
 
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+        double zoom = graphics.camera().zoom();
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (mustRenderEntity(render)) {
@@ -56,13 +53,14 @@ public class RenderSystem implements EntitySystem {
                 }
             }
         }
-
-        drawReflections(engine, zoom, renderEntities, spriteBatch, graphics);
         graphics.screen().drawSpriteBatch(spriteBatch);
+
+        drawReflections(engine, renderEntities, spriteBatch, graphics);
     }
 
-    protected void drawReflections(Engine engine, double zoom, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
+    protected void drawReflections(Engine engine, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
         final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+        final var zoom = graphics.camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(reflection -> {
@@ -85,7 +83,7 @@ public class RenderSystem implements EntitySystem {
                         reflectionImage.addEntity(entity);
                     }
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), graphics.toCanvas( reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), graphics.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }

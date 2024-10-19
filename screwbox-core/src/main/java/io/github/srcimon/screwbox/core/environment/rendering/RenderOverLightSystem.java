@@ -17,7 +17,7 @@ public class RenderOverLightSystem extends RenderSystem {
     }
 
     @Override
-    protected void drawReflections(Engine engine, double zoom, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
+    protected void drawReflections(Engine engine, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
 
     }
 }
