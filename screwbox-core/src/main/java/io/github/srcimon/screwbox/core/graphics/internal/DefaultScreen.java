@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -17,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -29,11 +31,12 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultScreen implements Screen {
+public class DefaultScreen implements Screen, Updatable {
 
     private final Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
+    private final Camera camera;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
@@ -41,11 +44,12 @@ public class DefaultScreen implements Screen {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final Camera camera) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
+        this.camera = camera;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -222,10 +226,6 @@ public class DefaultScreen implements Screen {
         return shake;
     }
 
-    public void setShake(final Rotation shake) {
-        this.shake = requireNonNull(shake, "shake must not be null");
-    }
-
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         validateCanvasBounds(bounds);
@@ -238,5 +238,10 @@ public class DefaultScreen implements Screen {
         if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
             throw new IllegalArgumentException("bounds must be on screen");
         }
+    }
+
+    @Override
+    public void update() {
+        this.shake = camera.swing();
     }
 }

@@ -16,7 +16,6 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultCamera implements Camera, Updatable {
 
-    private final DefaultScreen screen;
     private final Canvas canvas;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
@@ -24,11 +23,11 @@ public class DefaultCamera implements Camera, Updatable {
     private double requestedZoom = zoom;
     private double minZoom = 1;
     private double maxZoom = 5;
+    private Rotation swing;
 
     private ActiveCameraShake activeShake;
 
-    public DefaultCamera(final DefaultScreen screen, final Canvas canvas) {//TODO get rid of screen dependency here
-        this.screen = screen;
+    public DefaultCamera(final Canvas canvas) {//TODO get rid of screen dependency here
         this.canvas = canvas;
     }
 
@@ -127,17 +126,22 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
+    public Rotation swing() {
+        return swing;
+    }
+
+    @Override
     public void update() {
         final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
-            screen.setShake(activeShake.caclulateRotation(now));
+            swing = activeShake.caclulateSwing(now);
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
-            screen.setShake(Rotation.none());
+            swing = Rotation.none();
         }
     }
 }

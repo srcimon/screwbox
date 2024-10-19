@@ -24,8 +24,8 @@ class ActiveCameraShake {
         this.options = options;
     }
 
-    Rotation caclulateRotation(final Time now) {
-        return Rotation.degrees(options.screenRotation().degrees() * shakeNoise.value(now) * strengthAtTime(now));
+    Rotation caclulateSwing(final Time now) {
+        return Rotation.degrees(options.swing().degrees() * shakeNoise.value(now) * strengthAtTime(now));
     }
 
     Vector calculateDistortion(final Time now, final double zoom) {

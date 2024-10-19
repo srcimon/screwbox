@@ -169,7 +169,7 @@ class DefaultCameraTest {
 
     @Test
     void update_activeScreenShake_setsScreenShake() {
-        camera.shake(CameraShakeOptions.infinite().strength(0).screenRotation(Rotation.degrees(45)));
+        camera.shake(CameraShakeOptions.infinite().strength(0).swing(Rotation.degrees(45)));
 
         camera.update();
 

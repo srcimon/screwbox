@@ -124,11 +124,13 @@ class DefaultEngine implements Engine {
 
         final var clip = new ScreenBounds(Offset.origin(), configuration.resolution());
         final DefaultCanvas screenCanvas = new DefaultCanvas(standbyProxyRenderer, clip);
-        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas);
+        final DefaultCamera camera = new DefaultCamera(screenCanvas);//TODO maybe redundant
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas, camera);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
 
-        final DefaultCamera camera = new DefaultCamera(screen, screenCanvas);//TODO maybe redundant
+        //TODO screen must pull swing!!
+        //TODO: each canvas should have individual swing!
         final var screenViewport = new DefaultViewport(screenCanvas, camera);
         final DefaultWorld world = new DefaultWorld(screenCanvas, screenViewport);
         final DefaultLight light = new DefaultLight(configuration, executor, screenViewport);
@@ -144,7 +146,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, screenViewport, screenCanvas);
-        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio));
+        loop = new DefaultLoop(List.of(keyboard, graphics, scenes, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);
         async = new DefaultAsync(executor);
