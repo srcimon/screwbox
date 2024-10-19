@@ -52,15 +52,19 @@ public class RenderSystem implements EntitySystem {
             }
         }
 
+        drawReflections(engine, zoom, renderEntities, spriteBatch, graphics);
+        graphics.screen().drawSpriteBatch(spriteBatch);
+    }
+
+    protected void drawReflections(Engine engine, double zoom, List<Entity> renderEntities, SpriteBatch spriteBatch, Graphics graphics) {
+        final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
-            final var expansionToMitigrateDrawingIssues = Math.max(0, -engine.graphics().toCanvas(mirror.bounds()).offset().y());
-            final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea().expandTop(expansionToMitigrateDrawingIssues));
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);
             visibleAreaOfMirror.ifPresent(reflection -> {
                 var reflectionOnScreen = engine.graphics().toCanvas(reflection);
                 final Size size = Size.of(
-                        ceil(reflectionOnScreen.width() / engine.graphics().camera().zoom()),
-                        ceil(reflectionOnScreen.height() / engine.graphics().camera().zoom()));
+                        ceil(reflectionOnScreen.width() / zoom),
+                        ceil(reflectionOnScreen.height() / zoom));
                 if (size.isValid()) {
                     final var reflectionConfig = mirror.get(ReflectionComponent.class);
                     final long seed = engine.loop().lastUpdate().milliseconds();
@@ -76,11 +80,10 @@ public class RenderSystem implements EntitySystem {
                         reflectionImage.addEntity(entity);
                     }
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur),graphics.toCanvas( reflection.origin()), SpriteDrawOptions.scaled(engine.graphics().camera().zoom()).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), graphics.toCanvas( reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
-        graphics.screen().drawSpriteBatch(spriteBatch);
     }
 
     protected boolean mustRenderEntity(final RenderComponent render) {
