@@ -11,6 +11,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,12 @@ class RenderSystemTest {
     ArgumentCaptor<SpriteBatch> spriteBatch;
 
     @Test
-    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
+    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Camera camera, Screen screen, World world, Graphics graphics) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
         when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(world.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
 
         environment
                 .addEntity(
@@ -51,11 +53,12 @@ class RenderSystemTest {
     }
 
     @Test
-    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Screen screen, Graphics graphics) {
+    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, World world, Screen screen, Graphics graphics) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
         when(screen.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
         when(graphics.toScreenUsingParallax(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(world.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
 
         environment
                 .addEntity(new Entity()
