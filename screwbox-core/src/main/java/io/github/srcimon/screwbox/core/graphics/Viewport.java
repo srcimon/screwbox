@@ -8,4 +8,6 @@ public interface Viewport {
     Offset toCanvas(Vector position);
 
     Bounds visibleArea();
+
+    Vector toWorld(Offset offset);
 }

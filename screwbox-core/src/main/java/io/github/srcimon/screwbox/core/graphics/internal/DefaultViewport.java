@@ -10,15 +10,16 @@ import io.github.srcimon.screwbox.core.graphics.Viewport;
 public class DefaultViewport implements Viewport {
 
     private final Canvas canvas;
-    private  Camera camera;
+    private Camera camera;
 
     public DefaultViewport(final Canvas canvas) {
         this.canvas = canvas;
         this.camera = null;//FIXME
     }
 
-    public void setCameraWorkaround(Camera camera) {
-this.camera = camera;
+    //TODO remove me
+    public void setCameraWorkaround(final Camera camera) {
+        this.camera = camera;
     }
 
     @Override
@@ -33,5 +34,12 @@ this.camera = camera;
         return Bounds.atPosition(camera.position(),
                 canvas.width() / camera.zoom(),
                 canvas.height() / camera.zoom());
+    }
+
+    @Override
+    public Vector toWorld(final Offset offset) {
+        final double x = (offset.x() + canvas.offset().x() - (canvas.width() / 2.0)) / camera.zoom() + camera.position().x();
+        final double y = (offset.y() + canvas.offset().y() - (canvas.height() / 2.0)) / camera.zoom() + camera.position().y();
+        return Vector.of(x, y);
     }
 }
