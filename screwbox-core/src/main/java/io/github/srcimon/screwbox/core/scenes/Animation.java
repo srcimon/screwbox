@@ -14,5 +14,5 @@ public interface Animation {
      * Draw on the {@link Screen} dependent of the leaving or entering progress.
      * On entering progress will count down not up to automatically reverse the animation.
      */
-    void draw(Canvas canvas, Percent progress);
+    void draw(Canvas canvas, Screen screen, Percent progress);
 }

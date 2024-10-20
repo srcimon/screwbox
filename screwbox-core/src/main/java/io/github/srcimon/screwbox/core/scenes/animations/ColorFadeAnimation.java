@@ -28,7 +28,7 @@ public class ColorFadeAnimation implements Animation {
     }
 
     @Override
-    public void draw(final Canvas canvas, final Percent progress) {
+    public void draw(final Canvas canvas, final Screen screen, final Percent progress) {
         canvas.fillWith(color.opacity(progress));
     }
 }

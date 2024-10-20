@@ -2,9 +2,10 @@ package io.github.srcimon.screwbox.core.scenes.animations;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 
 /**
@@ -13,7 +14,7 @@ import io.github.srcimon.screwbox.core.scenes.Animation;
 public class CirclesAnimation implements Animation {
 
     @Override
-    public void draw(final Canvas canvas, final Percent progress) {
+    public void draw(final Canvas canvas, final Screen screen, final Percent progress) {
         int size = Math.max(canvas.width(), canvas.height()) / 20;
         int xDelta = canvas.width() / (canvas.width() / size);
         int yDelta = canvas.height() / (canvas.height() / size);
