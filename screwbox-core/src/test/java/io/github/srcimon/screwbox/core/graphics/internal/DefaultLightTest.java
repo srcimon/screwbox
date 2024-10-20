@@ -69,7 +69,6 @@ class DefaultLightTest {
 
     @Test
     void render_renderAlreadyCalled_throwsException() {
-        when(canvas.offset()).thenReturn(Offset.origin());
         light.render();
 
         assertThatThrownBy(() -> light.render())

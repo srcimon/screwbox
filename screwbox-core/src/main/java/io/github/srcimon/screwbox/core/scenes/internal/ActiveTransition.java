@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 
@@ -31,14 +30,14 @@ public class ActiveTransition {
         return transition.introDuration().progress(introStartTime, time);
     }
 
-    public void drawIntro(final Canvas canvas, final Screen screen, final Time time) {
+    public void drawIntro(final Canvas canvas, final Time time) {
         final Percent progress = transition.introEase().applyOn(introProgress(time));
-        transition.introAnimation().draw(canvas, screen, progress);
+        transition.introAnimation().draw(canvas, progress);
     }
 
-    public void drawOutro(final Canvas canvas, final Screen screen, final Time time) {
+    public void drawOutro(final Canvas canvas, final Time time) {
         final Percent progress = transition.outroEase().applyOn(outroProgress(time));
-        transition.outroAnimation().draw(canvas, screen, progress);
+        transition.outroAnimation().draw(canvas, progress);
     }
 
     public Percent outroProgress(final Time time) {

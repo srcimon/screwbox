@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
@@ -74,7 +72,6 @@ class DefaultScenesTest {
     @Test
     void remove_isActiveScene_throwsException() {
         when(engine.isWarmedUp()).thenReturn(true);
-        when(engine.graphics()).thenReturn(Mockito.mock(Graphics.class));
 
         scenes.add(new GameScene());
         scenes.switchTo(GameScene.class);
@@ -138,7 +135,6 @@ class DefaultScenesTest {
     @Test
     void update_withSceneChange_initializesAndEntersScene() {
         scenes.update();
-        when(engine.graphics()).thenReturn(Mockito.mock(Graphics.class));
         when(engine.isWarmedUp()).thenReturn(true);
         var firstScene = mock(Scene.class);
         scenes.add(firstScene);
@@ -179,7 +175,6 @@ class DefaultScenesTest {
     @Test
     void resetActiveScene_repopulatesActiveScene() {
         Scene mockScene = mock(Scene.class);
-        when(engine.graphics()).thenReturn(Mockito.mock(Graphics.class));
         scenes.add(mockScene);
         scenes.switchTo(mockScene.getClass());
         scenes.update();
@@ -194,7 +189,6 @@ class DefaultScenesTest {
 
     @Test
     void setDefaultTransition_setsTransitionUsedWhenChangingScenesWithoutSpecifyingTransition() {
-        when(engine.graphics()).thenReturn(Mockito.mock(Graphics.class));
         Animation mockAnimation = mock(Animation.class);
         SceneTransition sceneTransition = SceneTransition.custom()
                 .outroDurationSeconds(4)
@@ -205,7 +199,7 @@ class DefaultScenesTest {
                 .switchTo(GameScene.class);
 
         scenes.update();
-        verify(mockAnimation).draw(any(), any(), any());
+        verify(mockAnimation).draw(any(), any());
     }
 
     @AfterEach

@@ -23,9 +23,10 @@ public class SpriteFadeAnimation implements Animation {
         this.sprite = sprite;
         this.options = options;
     }
-//TODO remove screen from interface
+
+    //TODO remove screen from interface
     @Override
-    public void draw(final Canvas canvas, final Screen screen, final Percent progress) {
+    public void draw(final Canvas canvas, final Percent progress) {
         canvas.drawSprite(sprite, Offset.origin().substract(canvas.offset()), options.opacity(progress));
     }
 }
