@@ -15,7 +15,6 @@ public interface Graphics extends Viewport {
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */
     GraphicsConfiguration configuration();
-    //TODO takeScreenshotOfCanvas()
 
     /**
      * Access drawing operations on the game screen.
