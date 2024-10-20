@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSyst
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
+import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
@@ -37,6 +38,7 @@ public class GameScene implements Scene {
 
     @Override
     public void onEnter(Engine engine) {
+        engine.window().setCursor(MouseCursor.HIDDEN);
         engine.graphics().camera().setZoom(3.5);
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
     }
