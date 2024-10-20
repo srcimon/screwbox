@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.animations;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -23,7 +24,7 @@ public class SpriteFadeAnimation implements Animation {
     }
 
     @Override
-    public void draw(final Screen screen, final Percent progress) {
-        screen.drawSprite(sprite, Offset.origin(), originalSize().opacity(progress).rotation(screen.rotation().invert()));
+    public void draw(final Canvas canvas, final Percent progress) {
+        canvas.drawSprite(sprite, Offset.origin(), originalSize().opacity(progress));
     }
 }

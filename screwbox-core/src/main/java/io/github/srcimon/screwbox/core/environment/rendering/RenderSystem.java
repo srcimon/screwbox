@@ -38,7 +38,7 @@ public class RenderSystem implements EntitySystem {
 
         final SpriteBatch spriteBatch = createRenderBatch(engine, render -> !render.renderOverLight);
         addReflectionsToSpriteBatch(engine, spriteBatch);
-        engine.graphics().screen().drawSpriteBatch(spriteBatch);
+        engine.graphics().canvas().drawSpriteBatch(spriteBatch);
     }
 
     protected SpriteBatch createRenderBatch(final Engine engine, Predicate<RenderComponent> renderCondition) {
@@ -46,7 +46,7 @@ public class RenderSystem implements EntitySystem {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         double zoom = graphics.camera().zoom();
-        final ScreenBounds visibleBounds = graphics.screen().bounds();
+        final ScreenBounds visibleBounds = graphics.canvas().bounds();
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (renderCondition.test(render)) {
