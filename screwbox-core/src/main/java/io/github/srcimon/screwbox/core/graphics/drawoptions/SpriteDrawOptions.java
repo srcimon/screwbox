@@ -2,8 +2,8 @@ package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 
 import java.io.Serializable;
@@ -18,11 +18,11 @@ import java.io.Serializable;
  * @param isFlipVertical   is the {@link Sprite} flipped vertically
  * @param spin             spins the {@link Sprite} with a pseudo 3d effect
  * @param isSpinHorizontal switch spin of the {@link Sprite} between vertical or horizontal
- *
- * @see Screen#drawSprite(Sprite, Offset, SpriteDrawOptions)
+ * @see Canvas#drawSprite(Sprite, Offset, SpriteDrawOptions)
  */
 public record SpriteDrawOptions(double scale, Percent opacity, Rotation rotation, boolean isFlipHorizontal,
-                                boolean isFlipVertical, Percent spin, boolean isSpinHorizontal) implements Serializable {
+                                boolean isFlipVertical, Percent spin,
+                                boolean isSpinHorizontal) implements Serializable {
 
     private SpriteDrawOptions(final double scale) {
         this(scale, Percent.max(), Rotation.none(), false, false, Percent.zero(), true);

@@ -136,10 +136,8 @@ public final class Vector implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        long temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        return prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + Double.hashCode(x);
+        return prime * result + Double.hashCode(y);
     }
 
     @Override

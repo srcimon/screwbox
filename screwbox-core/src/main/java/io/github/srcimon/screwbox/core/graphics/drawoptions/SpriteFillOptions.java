@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -13,12 +14,12 @@ import static java.util.Objects.requireNonNull;
  * @param offset  the {@link Offset} used to fill the {@link Screen}
  * @param scale   the scale of the {@link Sprite}s used to fill the {@link Screen}
  * @param opacity the opacity used to fill the {@link Screen}
- * @see Screen#fillWith(Sprite, SpriteFillOptions)
+ * @see Canvas#fillWith(Sprite, SpriteFillOptions)
  */
 public record SpriteFillOptions(Offset offset, double scale, Percent opacity) {
 
     public SpriteFillOptions {
-        if(scale <= 0) {
+        if (scale <= 0) {
             throw new IllegalArgumentException("scale must be positive");
         }
         requireNonNull(offset, "offset must not be null");

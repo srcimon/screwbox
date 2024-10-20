@@ -172,7 +172,7 @@ public class Duration implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31 + (int) (nanos ^ (nanos >>> 32));
+        return 31 + Long.hashCode(nanos);
     }
 
     @Override
