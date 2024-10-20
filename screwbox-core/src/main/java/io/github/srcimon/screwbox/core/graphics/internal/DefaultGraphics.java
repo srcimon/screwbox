@@ -92,6 +92,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public Vector xxxxxxxx(Offset offset) {
+        return null;
+    }
+
+    @Override
     public Offset toCanvas(final Vector position) {
         return viewport.toCanvas(position);
     }

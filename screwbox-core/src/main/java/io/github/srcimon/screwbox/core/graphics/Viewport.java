@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 
 public interface Viewport {
 
+    public Vector xxxxxxxx(final Offset offset);
     /**
      * Returns the {@link Offset} on the viewport of the given {@link Vector} in the {@link World}.
      *

@@ -34,6 +34,15 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
     }
 
     @Override
+    public Vector xxxxxxxx(final Offset offset) {
+        final double x = (offset.x() - (canvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
+        final double y = (offset.y() - (canvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
+
+        return Vector.of(x, y);
+    }
+
+
+    @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
         final var offset = toCanvas(bounds.origin());
         final var size = toDimension(bounds.size());
