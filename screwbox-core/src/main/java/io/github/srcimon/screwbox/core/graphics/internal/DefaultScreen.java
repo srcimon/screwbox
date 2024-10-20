@@ -145,8 +145,7 @@ public class DefaultScreen implements Screen, Updatable {
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         validateCanvasBounds(bounds);
-        final var offsetRenderer = new OffsetRenderer(offset, renderer);
-        return new DefaultCanvas(offsetRenderer, bounds);
+        return new DefaultCanvas(renderer, bounds);
     }
 
     void validateCanvasBounds(final ScreenBounds canvasBounds) {

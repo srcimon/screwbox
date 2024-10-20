@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.ui;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 
 public class WobblyUiLayouter implements UiLayouter {
 
@@ -18,7 +18,7 @@ public class WobblyUiLayouter implements UiLayouter {
         int heightOfItem = 50;
         int heightOfMenu = menu.itemCount() * heightOfItem;
         int y = renderArea.center().y() - heightOfMenu / 2 + (int) (waveSeed * 10);
-        var offset = Offset.at(x, y + itemIndex * heightOfItem).add(renderArea.offset());
+        var offset = Offset.at(x, y + itemIndex * heightOfItem);
         var dimension = Size.of(renderArea.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }

@@ -19,8 +19,8 @@ public class CirclesAnimation implements Animation {
         int xDelta = canvas.width() / (canvas.width() / size);
         int yDelta = canvas.height() / (canvas.height() / size);
 
-        for (int x = canvas.offset().x(); x < canvas.width() + xDelta + canvas.offset().x(); x += xDelta) {
-            for (int y = canvas.offset().y(); y < canvas.height() + yDelta + canvas.offset().y(); y += yDelta) {
+        for (int x = 0; x < canvas.width() + xDelta; x += xDelta) {
+            for (int y = 0; y < canvas.height() + yDelta; y += yDelta) {
                 canvas.drawCircle(Offset.at(x, y), (int) (progress.value() * size), CircleDrawOptions.filled(Color.BLACK));
             }
         }
