@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.ui;
 
-import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 
@@ -12,7 +11,7 @@ public class ScrollingUiLayouter implements UiLayouter {
         int heightOfItem = 50;
         int y = renderArea.center().y() + (itemIndex - menu.activeItemIndex()) * heightOfItem;
 
-        var offset = Offset.at(0, y);
+        var offset = renderArea.offset().addY(y);
         var dimension = Size.of(renderArea.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }

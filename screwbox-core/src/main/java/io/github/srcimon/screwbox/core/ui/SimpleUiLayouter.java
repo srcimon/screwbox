@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.ui;
 
-import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 
@@ -13,7 +12,7 @@ public class SimpleUiLayouter implements UiLayouter {
         final int heightOfMenu = menu.itemCount() * heightOfItem;
         final int y = renderArea.center().y() - heightOfMenu / 2;
 
-        final var offset = Offset.at(0, y + itemIndex * heightOfItem);
+        final var offset = renderArea.offset().addY(y + itemIndex * heightOfItem);
         final var dimension = Size.of(renderArea.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }

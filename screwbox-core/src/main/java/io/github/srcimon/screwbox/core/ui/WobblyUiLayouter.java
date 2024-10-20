@@ -18,7 +18,7 @@ public class WobblyUiLayouter implements UiLayouter {
         int heightOfItem = 50;
         int heightOfMenu = menu.itemCount() * heightOfItem;
         int y = renderArea.center().y() - heightOfMenu / 2 + (int) (waveSeed * 10);
-        var offset = Offset.at(x, y + itemIndex * heightOfItem);
+        var offset = Offset.at(x, y + itemIndex * heightOfItem).add(renderArea.offset());
         var dimension = Size.of(renderArea.width(), heightOfItem);
         return new ScreenBounds(offset, dimension);
     }

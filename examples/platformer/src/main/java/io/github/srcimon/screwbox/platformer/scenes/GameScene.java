@@ -2,8 +2,10 @@ package io.github.srcimon.screwbox.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -61,6 +63,8 @@ public class GameScene implements Scene {
     @Override
     public void onEnter(final Engine engine) {
         engine.graphics().light().setAmbientLight(Percent.of(0.06));
+//        engine.graphics().screen().setRotation(Rotation.degrees(20));
+        engine.graphics().screen().setCanvasBounds(new ScreenBounds(400, 100, 700, 300));
     }
 
     @Override
