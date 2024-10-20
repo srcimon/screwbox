@@ -1,22 +1,15 @@
 package io.github.srcimon.screwbox.vacuum.scenes;
 
-import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.keyboard.Key;
-import io.github.srcimon.screwbox.core.mouse.internal.DefaultMouse;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.Noise;
-import io.github.srcimon.screwbox.core.window.MouseCursor;
 import io.github.srcimon.screwbox.tiled.GameObject;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.vacuum.cursor.Cursor;
@@ -48,7 +41,6 @@ public class GameScene implements Scene {
         engine.graphics().light().setAmbientLight(Percent.of(0.2));
     }
 
-    static Noise n = Noise.variableInterval(Duration.ofSeconds(1));
     @Override
     public void populate(Environment environment) {
         environment.addSystem(engine -> {
@@ -62,9 +54,6 @@ public class GameScene implements Scene {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new PhysicsGridUpdateSystem())
                 .addSystem(new HurtSystem())
-                .addSystem(engine -> {
-                    engine.graphics().screen().setRotation(Rotation.degrees(n.value(Time.now()) * 20)).setCanvasBounds(new ScreenBounds(30, 30, 600, 400));
-                })
                 .addSystem(new RunAtPlayerSystem())
                 .addSystem(new EnemySpawnSystem())
                 .addSystem(new DeathpitSystem())
