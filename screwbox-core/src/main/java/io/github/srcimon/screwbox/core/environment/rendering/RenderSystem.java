@@ -35,7 +35,6 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-
         final SpriteBatch spriteBatch = createRenderBatch(engine, render -> !render.renderOverLight);
         addReflectionsToSpriteBatch(engine, spriteBatch);
         engine.graphics().canvas().drawSpriteBatch(spriteBatch);

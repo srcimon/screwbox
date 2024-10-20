@@ -6,10 +6,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Size;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 
 @Order(Order.SystemOrder.PRESENTATION_UI_FOREGROUND)
@@ -27,7 +24,6 @@ public class ShowFpsSystem implements EntitySystem {
                 engine.environment().fetchAll(COLLIDERS).size(),
                 engine.environment().systems().size(),
                 engine.loop().updateDuration().humanReadable());
-        engine.graphics().canvas().drawText(TEXT_POSITION, text, OPTIONS)
-                .drawRectangle(Offset.at(4, 4), Size.of(100, 100), RectangleDrawOptions.filled(Color.RED));
+        engine.graphics().canvas().drawText(TEXT_POSITION, text, OPTIONS);
     }
 }
