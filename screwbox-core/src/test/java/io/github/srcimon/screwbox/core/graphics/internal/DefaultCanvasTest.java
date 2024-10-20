@@ -69,4 +69,11 @@ class DefaultCanvasTest {
 
         verify(renderer).drawSpriteBatch(spriteBatch, CLIP);
     }
+
+    @Test
+    void drawRectangle_usingBounds_callsRenderer() {
+        canvas.drawRectangle(new ScreenBounds(10, 4, 13, 20), RectangleDrawOptions.filled(Color.RED));
+
+        verify(renderer).drawRectangle(Offset.at(10, 4), Size.of(13, 20), RectangleDrawOptions.filled(Color.RED), CLIP);
+    }
 }
