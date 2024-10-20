@@ -15,8 +15,7 @@ public class RenderPauseScreenshotSystem implements EntitySystem {
             final var croppedScreenshot = new Sprite(screenshot.singleFrame()
                     .extractArea(engine.graphics().canvas().offset(), engine.graphics().canvas().size()));
 
-            engine.graphics().canvas().drawSprite(croppedScreenshot, Offset.origin(), originalSize().opacity(0.5)
-                    .rotation(engine.graphics().screen().rotation().invert()));
+            engine.graphics().canvas().drawSprite(croppedScreenshot, Offset.origin(), originalSize().opacity(0.5));
         });
     }
 

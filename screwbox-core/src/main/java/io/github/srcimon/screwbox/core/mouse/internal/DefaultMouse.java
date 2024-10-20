@@ -54,7 +54,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Offset offset() {
-        return offset.add(canvas.offset());
+        return offset;
     }
 
     @Override
