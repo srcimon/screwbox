@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.SpriteFadeAnimation;
@@ -16,8 +17,11 @@ public class PauseSystem implements EntitySystem {
                 || !engine.window().hasFocus())) {
 
             engine.audio().stopAllPlaybacks();
+            final var croppedScreenshot = new Sprite(engine.graphics().screen().takeScreenshot().singleFrame()
+                    .extractArea(engine.graphics().canvas().offset(), engine.graphics().canvas().size()));
+
             engine.scenes().switchTo(PauseScene.class, SceneTransition.custom()
-                    .introAnimation(new SpriteFadeAnimation(engine.graphics().screen().takeScreenshot()))
+                    .introAnimation(new SpriteFadeAnimation(croppedScreenshot))
                     .introDurationMillis(500));
         }
     }
