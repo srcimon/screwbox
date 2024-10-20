@@ -1,7 +1,9 @@
 package io.github.srcimon.screwbox.vacuum;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.ScrewBox;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.animations.CirclesAnimation;
 import io.github.srcimon.screwbox.vacuum.scenes.GameScene;
