@@ -59,7 +59,7 @@ public class OffsetRenderer implements Renderer {
 
     @Override
     public void drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options, final ScreenBounds clip) {
-        next.drawRectangle(offset.add(offset), size, options, clip);
+        next.drawRectangle(this.offset.add(offset), size, options, clip);
     }
 
     @Override
