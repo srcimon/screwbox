@@ -3,8 +3,10 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
@@ -156,7 +158,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         if (screen.absoluteRotation().isNone()) {
             return screenToWorld(offset);
         }
-        final var delta = Line.between(screenToWorld(screen.size().center()), screenToWorld(offset));
+
+        final var delta = Line.between(screenToWorld(screen.size().center().substract(viewport.canvas().offset())), screenToWorld(offset));
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
