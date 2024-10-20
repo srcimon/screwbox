@@ -154,16 +154,18 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private Vector toPositionConsideringRotation(final Offset offset) {
         if (screen.absoluteRotation().isNone()) {
-            return toWorld(offset);
+            return screenToWorld(offset);
         }
-        final var delta = Line.between(toWorld(viewport.canvas().size().center()), toWorld(offset));
+        final var delta = Line.between(screenToWorld(viewport.canvas().size().center()), screenToWorld(offset));
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
-    private Vector toWorld(final Offset offset) {
+    private Vector screenToWorld(final Offset offset) {
         final double x = (offset.x() - (canvas.width() / 2.0)) / viewport.camera().zoom() + viewport.camera().focus().x();
         final double y = (offset.y() - (canvas.height() / 2.0)) / viewport.camera().zoom() + viewport.camera().focus().y();
 
         return Vector.of(x, y);
     }
+
+
 }
