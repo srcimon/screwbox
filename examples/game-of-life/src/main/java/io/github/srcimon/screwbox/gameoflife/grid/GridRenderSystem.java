@@ -16,7 +16,7 @@ public class GridRenderSystem implements EntitySystem {
     public void update(final Engine engine) {
         final var gridComponent = engine.environment().fetchSingletonComponent(GridComponent.class);
         final World world = engine.graphics().world();
-        Bounds visibleArea = engine.graphics().world().visibleArea();
+        Bounds visibleArea = engine.graphics().visibleArea();
         for (final var node : gridComponent.grid.nodes()) {
             if (gridComponent.grid.isBlocked(node)) {
                 final Bounds worldBounds = gridComponent.grid.worldArea(node);

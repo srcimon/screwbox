@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -34,7 +34,7 @@ class DefaultScenesTest {
     Engine engine;
 
     @Mock
-    Screen screen;
+    Canvas canvas;
 
     ExecutorService executor;
 
@@ -43,7 +43,7 @@ class DefaultScenesTest {
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        scenes = new DefaultScenes(engine, screen, executor);
+        scenes = new DefaultScenes(engine, canvas, executor);
         scenes.setLoadingScene(environment -> {
         });
     }

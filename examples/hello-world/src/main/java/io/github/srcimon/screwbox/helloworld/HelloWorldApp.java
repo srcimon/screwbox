@@ -18,7 +18,7 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptio
 import static io.github.srcimon.screwbox.core.particles.ParticleOptionsBundle.FALLING_LEAVES;
 
 public class HelloWorldApp {
-
+//TODO fix readme example
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
         // set ambient light to nearly full brightness
@@ -33,10 +33,10 @@ public class HelloWorldApp {
 
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
-                    var screen = engine.graphics().screen();
+                    var canvas = engine.graphics().canvas();
                     var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
-                    screen.fillWith(Color.hex("#125d7e"));
-                    screen.drawText(screen.center(), "Hello World!", drawOptions);
+                    canvas.fillWith(Color.hex("#125d7e"));
+                    canvas.drawText(canvas.center(), "Hello World!", drawOptions);
                 })
 
                 // add light spot to create nice sunlight effect

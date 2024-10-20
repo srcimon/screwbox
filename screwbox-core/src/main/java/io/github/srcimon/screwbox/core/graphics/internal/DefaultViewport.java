@@ -9,15 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 
-public class DefaultViewport implements Viewport {
-
-    private final Canvas canvas;
-    private final Camera camera;
-
-    public DefaultViewport(final Canvas canvas, final Camera camera) {
-        this.canvas = canvas;
-        this.camera = camera;
-    }
+public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport {
 
     @Override
     public Offset toCanvas(final Vector position) {
@@ -61,16 +53,6 @@ public class DefaultViewport implements Viewport {
                 (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0) + canvas.offset().y());
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
-    }
-
-    @Override
-    public Camera camera() {
-        return camera;
-    }
-
-    @Override
-    public Canvas canvas() {
-        return canvas;
     }
 
     private Size toDimension(final Vector size) {
