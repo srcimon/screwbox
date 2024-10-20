@@ -27,6 +27,7 @@ public class OffsetRenderer implements Renderer {
     private final Renderer next;
     private final Offset offset;
 
+    //TODO merge with vieport?
     public OffsetRenderer(final Offset offset, final Renderer next) {
         this.next = next;
         this.offset = offset;
