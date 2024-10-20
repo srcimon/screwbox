@@ -156,7 +156,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         if (screen.absoluteRotation().isNone()) {
             return screenToWorld(offset);
         }
-        final var delta = Line.between(screenToWorld(viewport.canvas().size().center()), screenToWorld(offset));
+        final var delta = Line.between(screenToWorld(screen.size().center()), screenToWorld(offset));
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
