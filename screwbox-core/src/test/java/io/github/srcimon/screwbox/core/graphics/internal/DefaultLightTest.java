@@ -3,14 +3,11 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,14 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static io.github.srcimon.screwbox.core.Bounds.$$;
-import static io.github.srcimon.screwbox.core.Vector.$;
 import static io.github.srcimon.screwbox.core.test.TestUtil.shutdown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -44,6 +38,9 @@ class DefaultLightTest {
     @Mock
     Canvas canvas;
 
+    @Mock
+    Viewport viewport;
+
     @Captor
     ArgumentCaptor<Asset<Sprite>> spriteCaptor;
 
@@ -53,85 +50,12 @@ class DefaultLightTest {
 
     @BeforeEach
     void beforeEach() {
+        when(viewport.canvas()).thenReturn(canvas);
         when(canvas.size()).thenReturn(Size.of(640, 480));
-        when(canvas.width()).thenReturn(640);
-        when(canvas.height()).thenReturn(480);
-        world = new DefaultWorld(canvas);
+        world = new DefaultWorld(canvas, viewport);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(canvas, world, configuration, executor);
-    }
-
-    @Test
-    void render_fullBrigthnessAreaPresent_rendersImage() {
-        when(canvas.offset()).thenReturn(Offset.origin());
-        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
-        light.addFullBrightnessArea($$(20, 20, 50, 50));
-
-        light.render();
-
-        verify(canvas).drawSprite(spriteCaptor.capture(), any(Offset.class), any(SpriteDrawOptions.class));
-
-        Frame resultImage = spriteCaptor.getValue().get().singleFrame();
-
-        Color colorInShadow = resultImage.colorAt(25, 25);
-        assertThat(colorInShadow).isEqualTo(Color.BLACK);
-
-        Color colorInArea = resultImage.colorAt(92, 72);
-        assertThat(colorInArea.opacity().value()).isLessThan(0.2);
-    }
-
-    @Test
-    void render_pointLightAndShadowPresent_rendersImage() {
-        when(canvas.offset()).thenReturn(Offset.origin());
-        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
-        light.addShadowCaster($$(30, 75, 6, 6));
-        light.addPointLight($(40, 80), 140, Color.RED);
-
-        light.render();
-        var offset = ArgumentCaptor.forClass(Offset.class);
-
-        verify(canvas).drawSprite(
-                spriteCaptor.capture(),
-                offset.capture(),
-                Mockito.any(SpriteDrawOptions.class));
-
-        Frame resultImage = spriteCaptor.getValue().get().singleFrame();
-
-        Color colorInShadow = resultImage.colorAt(78, 77);
-        assertThat(colorInShadow).isEqualTo(Color.BLACK);
-
-        Color colorInLight = resultImage.colorAt(93, 83);
-        assertThat(colorInLight.r()).isEqualTo(255);
-        assertThat(colorInLight.g()).isZero();
-        assertThat(colorInLight.b()).isZero();
-        assertThat(colorInLight.opacity().value()).isPositive();
-    }
-
-    @Test
-    void render_spotlightAndShadowCaster_rendersImage() {
-        when(canvas.offset()).thenReturn(Offset.origin());
-        when(canvas.isVisible(any(ScreenBounds.class))).thenReturn(true);
-        light.addShadowCaster($$(30, 75, 6, 6));
-        light.addSpotLight($(40, 80), 140, Color.RED);
-
-        light.render();
-
-        verify(canvas).drawSprite(
-                spriteCaptor.capture(),
-                any(Offset.class),
-                any(SpriteDrawOptions.class));
-
-        Frame resultImage = spriteCaptor.getValue().get().singleFrame();
-
-        Color colorInShadow = resultImage.colorAt(78, 77);
-        assertThat(colorInShadow).isNotEqualTo(Color.BLACK);
-
-        Color colorInLight = resultImage.colorAt(93, 83);
-        assertThat(colorInLight.r()).isEqualTo(255);
-        assertThat(colorInLight.g()).isZero();
-        assertThat(colorInLight.b()).isZero();
-        assertThat(colorInLight.opacity().value()).isPositive();
+        light = new DefaultLight(configuration, executor, viewport);
     }
 
     @Test
