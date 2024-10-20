@@ -24,6 +24,7 @@ public class SpriteFadeAnimation implements Animation {
 
     @Override
     public void draw(final Canvas canvas, final Screen screen, final Percent progress) {
-        canvas.drawSprite(sprite, canvas.offset(), originalSize().opacity(progress).rotation(screen.absoluteRotation().invert()));
+        var drawOptions = originalSize().opacity(progress).rotation(screen.absoluteRotation().invert());
+        canvas.drawSprite(sprite, canvas.offset(), drawOptions);
     }
 }
