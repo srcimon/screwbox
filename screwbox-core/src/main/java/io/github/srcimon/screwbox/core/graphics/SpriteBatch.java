@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Container for multiple sorted {@link Sprite sprites}.
  *
- * @see Screen#drawSpriteBatch(SpriteBatch)
+ * @see Canvas#drawSpriteBatch(SpriteBatch)
  */
 public class SpriteBatch {
 
@@ -53,7 +53,7 @@ public class SpriteBatch {
      * Returns a new instance of the batch where all {@link Sprite sprites} were translated by the specified {@link Offset}.
      */
     public SpriteBatch translate(final Offset offset) {
-        if(Offset.origin().equals(offset) || entries.isEmpty()) {
+        if (Offset.origin().equals(offset) || entries.isEmpty()) {
             return this;
         }
         final var translated = new SpriteBatch();
