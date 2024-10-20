@@ -13,8 +13,8 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
 
     @Override
     public Offset toCanvas(final Vector position) {
-        final double x = (position.x() - camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0) + canvas.offset().x();
-        final double y = (position.y() - camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0) + canvas.offset().y();
+        final double x = (position.x() - camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0);
+        final double y = (position.y() - camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0);
         return Offset.at(x, y);
     }
 
@@ -27,8 +27,8 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
 
     @Override
     public Vector toWorld(final Offset offset) {
-        final double x = (offset.x() - (canvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
-        final double y = (offset.y() - (canvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
+        final double x = ((canvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
+        final double y = ((canvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
@@ -49,8 +49,8 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
     public ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY) {
         final Vector position = bounds.origin();
         final var offset = Offset.at(
-                (position.x() - parallaxX * camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0) + canvas.offset().x(),
-                (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0) + canvas.offset().y());
+                (position.x() - parallaxX * camera.focus().x()) * camera.zoom() + (canvas.width() / 2.0),
+                (position.y() - parallaxY * camera.focus().y()) * camera.zoom() + (canvas.height() / 2.0));
         final var size = toDimension(bounds.size());
         return new ScreenBounds(offset, size);
     }

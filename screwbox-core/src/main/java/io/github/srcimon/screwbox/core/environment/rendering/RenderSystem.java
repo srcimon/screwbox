@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -45,7 +46,7 @@ public class RenderSystem implements EntitySystem {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         double zoom = graphics.camera().zoom();
-        final ScreenBounds visibleBounds = graphics.canvas().bounds();
+        final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), graphics.canvas().size());
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (renderCondition.test(render)) {
