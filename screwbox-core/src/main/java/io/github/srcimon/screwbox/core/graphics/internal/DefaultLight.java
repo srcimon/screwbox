@@ -174,7 +174,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap).add(viewport.canvas().offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -206,6 +206,6 @@ public class DefaultLight implements Light {
     }
 
     private Offset toScreen(final Vector vector) {
-        return viewport.toCanvas(vector).substract(viewport.canvas().offset());
+        return viewport.toCanvas(vector);
     }
 }

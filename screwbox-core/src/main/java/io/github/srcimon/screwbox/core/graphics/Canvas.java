@@ -25,7 +25,7 @@ public interface Canvas extends Sizeable {
     ScreenBounds bounds();
 
     default boolean isVisible(final ScreenBounds other) {
-        return bounds().intersects(other);
+        return new ScreenBounds(size()).intersects(other);
     }
 
     /**
