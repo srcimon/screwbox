@@ -63,7 +63,7 @@ public class DefaultScreen implements Screen, Updatable {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));//TODO rotate around itself would be better > fix sprite fade animation then
+        renderer.rotate(absoluteRotation(), canvasBounds());
         renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
         canvas.updateClip(canvasBounds());
     }
