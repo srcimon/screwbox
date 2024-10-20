@@ -77,8 +77,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public int toCanvas(double worldDistance) {
-        return viewport.toCanvas(worldDistance);
+    public int toCanvas(double distance) {
+        return viewport.toCanvas(distance);
     }
 
     @Override

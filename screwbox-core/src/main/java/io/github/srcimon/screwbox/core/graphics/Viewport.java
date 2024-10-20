@@ -28,7 +28,7 @@ public interface Viewport {
      */
     ScreenBounds toCanvas(Bounds bounds);
 
-    int toCanvas(double worldDistance);
+    int toCanvas(double distance);
 
     /**
      * Retruns the corresponding {@link ScreenBounds} of the specified {@link Bounds} using a parallax-effect.

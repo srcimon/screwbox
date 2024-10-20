@@ -41,8 +41,8 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
     }
 
     @Override
-    public int toCanvas(final double worldDistance) {
-        return (int) Math.round(worldDistance * camera.zoom());
+    public int toCanvas(final double distance) {
+        return (int) Math.round(distance * camera.zoom());
     }
 
     @Override
