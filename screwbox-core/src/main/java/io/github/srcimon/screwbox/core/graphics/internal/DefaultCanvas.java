@@ -14,24 +14,23 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
 
 import java.util.function.Supplier;
 
 public class DefaultCanvas implements Canvas {
 
-    private final Renderer origRenderer;
-    private Renderer renderer;
+    private final Renderer renderer;
     private ScreenBounds clip;
+    private Offset offset;
 
     public DefaultCanvas(final Renderer renderer, final ScreenBounds clip) {
-        this.origRenderer = renderer;
+        this.renderer = renderer;
         updateClip(clip);
     }
 
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
-        this.renderer = new OffsetRenderer(clip.offset(), origRenderer);
+        this.offset = clip.offset();
     }
 
     @Override
@@ -42,55 +41,55 @@ public class DefaultCanvas implements Canvas {
 
     @Override
     public Canvas fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        renderer.fillWith(sprite, options, clip);
+        renderer.fillWith(sprite, options.offset(options.offset().add(offset)), clip);
         return this;
     }
 
     @Override
     public Canvas drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        renderer.drawText(offset, text, options, clip);
+        renderer.drawText(this.offset.add(offset), text, options, clip);
         return this;
     }
 
     @Override
     public Canvas drawRectangle(final Offset offset, final Size size, final RectangleDrawOptions options) {
-        renderer.drawRectangle(offset, size, options, clip);
+        renderer.drawRectangle(this.offset.add(offset), size, options, clip);
         return this;
     }
 
     @Override
     public Canvas drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        renderer.drawLine(from, to, options, clip);
+        renderer.drawLine(from.add(offset), to.add(offset), options, clip);
         return this;
     }
 
     @Override
     public Canvas drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        renderer.drawCircle(offset, radius, options, clip);
+        renderer.drawCircle(this.offset.add(offset), radius, options, clip);
         return this;
     }
 
     @Override
     public Canvas drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options, clip);
+        renderer.drawSprite(sprite, origin.add(offset), options, clip);
         return this;
     }
 
     @Override
     public Canvas drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        renderer.drawSprite(sprite, origin, options, clip);
+        renderer.drawSprite(sprite, origin.add(offset), options, clip);
         return this;
     }
 
     @Override
     public Canvas drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        renderer.drawText(offset, text, options, clip);
+        renderer.drawText(offset.add(this.offset), text, options, clip);
         return this;
     }
 
     @Override
     public Canvas drawSpriteBatch(final SpriteBatch spriteBatch) {
-        renderer.drawSpriteBatch(spriteBatch, clip);
+        renderer.drawSpriteBatch(spriteBatch.translate(offset), clip);
         return this;
     }
 
