@@ -5,13 +5,13 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
@@ -31,10 +31,9 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
-    private final Canvas canvas;
-    private final DefaultWorld world;
     private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
+    private final Viewport viewport;
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
     private UnaryOperator<BufferedImage> postFilter;
@@ -42,12 +41,11 @@ public class DefaultLight implements Light {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public DefaultLight(final Canvas canvas, final DefaultWorld world, final GraphicsConfiguration configuration,
-                        final ExecutorService executor) {
+    public DefaultLight(final GraphicsConfiguration configuration,
+                        final ExecutorService executor, final Viewport viewport) {
         this.executor = executor;
-        this.canvas = canvas;
-        this.world = world;
         this.configuration = configuration;
+        this.viewport = viewport;
         updatePostFilter();
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
@@ -76,7 +74,7 @@ public class DefaultLight implements Light {
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
-            final ScreenBounds bounds = world.toCanvas(area);
+            final ScreenBounds bounds = viewport.toCanvas(area);
             lightmap.add(bounds);
         }
         return this;
@@ -106,10 +104,10 @@ public class DefaultLight implements Light {
                     final List<Offset> area = new ArrayList<>();
                     final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
                     for (final var vector : worldArea) {
-                        area.add(world.toScreen(vector));
+                        area.add(toScreen(vector));
                     }
-                    final Offset offset = world.toScreen(position);
-                    final int screenRadius = world.toDistance(radius);
+                    final Offset offset = toScreen(position);
+                    final int screenRadius = viewport.toCanvas(radius);
                     lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
                 }
             }
@@ -121,8 +119,8 @@ public class DefaultLight implements Light {
         tasks.add(() -> {
             final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
-                final Offset offset = world.toScreen(position);
-                final int distance = world.toDistance(radius);
+                final Offset offset = toScreen(position);
+                final int distance = viewport.toCanvas(radius);
                 lightmap.add(new Lightmap.SpotLight(offset, distance, color));
             }
         });
@@ -135,7 +133,7 @@ public class DefaultLight implements Light {
             final CircleDrawOptions options = CircleDrawOptions.fading(color);
             final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
             if (isVisible(lightBox)) {
-                postDrawingTasks.add(() -> world.drawCircle(position, radius, options));
+                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
             }
         }
         return this;
@@ -176,7 +174,7 @@ public class DefaultLight implements Light {
         });
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        canvas.drawSprite(sprite, Offset.at(overlap, overlap).add(canvas.offset()), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+        viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     @Override
@@ -200,10 +198,14 @@ public class DefaultLight implements Light {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return canvas.isVisible(world.toCanvas(lightBox));
+        return viewport.canvas().isVisible(viewport.toCanvas(lightBox));
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(canvas.size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(viewport.canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
+    }
+
+    private Offset toScreen(final Vector vector) {
+        return viewport.toCanvas(vector);
     }
 }

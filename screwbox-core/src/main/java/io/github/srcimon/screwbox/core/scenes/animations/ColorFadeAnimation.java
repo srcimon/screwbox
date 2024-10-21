@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.scenes.animations;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.scenes.Animation;
@@ -27,7 +28,7 @@ public class ColorFadeAnimation implements Animation {
     }
 
     @Override
-    public void draw(final Screen screen, final Percent progress) {
-        screen.fillWith(color.opacity(progress));
+    public void draw(final Canvas canvas, final Percent progress) {
+        canvas.fillWith(color.opacity(progress));
     }
 }

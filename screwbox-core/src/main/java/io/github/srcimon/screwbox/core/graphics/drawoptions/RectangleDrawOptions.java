@@ -2,9 +2,9 @@ package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -13,8 +13,8 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 /**
  * Customize the drawing of rectangles.
  *
- * @see Screen#drawRectangle(ScreenBounds, RectangleDrawOptions)
- * @see Screen#drawRectangle(Offset, Size, RectangleDrawOptions)
+ * @see Canvas#drawRectangle(ScreenBounds, RectangleDrawOptions)
+ * @see Canvas#drawRectangle(Offset, Size, RectangleDrawOptions)
  * @see World#drawRectangle(Bounds, RectangleDrawOptions)
  */
 public record RectangleDrawOptions(Style style, Color color, int strokeWidth, Rotation rotation) {

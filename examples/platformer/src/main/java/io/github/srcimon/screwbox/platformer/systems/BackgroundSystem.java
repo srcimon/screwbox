@@ -1,7 +1,10 @@
 package io.github.srcimon.screwbox.platformer.systems;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.*;
+import io.github.srcimon.screwbox.core.environment.Archetype;
+import io.github.srcimon.screwbox.core.environment.Entity;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
@@ -30,7 +33,7 @@ public class BackgroundSystem implements EntitySystem {
             final Offset offset = Offset.at(
                     cameraPosition.x() * -1 * (background.parallaxX - 1),
                     cameraPosition.y() * -1 * (background.parallaxY - 1));
-            engine.graphics().screen().fillWith(sprite.sprite, options.offset(offset));
+            engine.graphics().canvas().fillWith(sprite.sprite, options.offset(offset));
         }
     }
 }

@@ -24,23 +24,28 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultLight light;
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
-    private final DefaultCamera camera;
     private final AsyncRenderer asyncRenderer;
+    private final Viewport viewport;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
                            final DefaultWorld world,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
-                           final DefaultCamera camera,
-                           final AsyncRenderer asyncRenderer) {
+                           final AsyncRenderer asyncRenderer,
+                           final Viewport viewport) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
-        this.camera = camera;
         this.asyncRenderer = asyncRenderer;
+        this.viewport = viewport;
+    }
+
+    @Override
+    public Bounds visibleArea() {
+        return viewport.visibleArea();
     }
 
     @Override
@@ -55,27 +60,37 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Camera camera() {
-        return camera;
+        return viewport.camera();
     }
 
     @Override
-    public Vector toPosition(final Offset offset) {
-        return world.toPosition(offset);
+    public Canvas canvas() {
+        return viewport.canvas();
+    }
+
+    @Override
+    public Vector toWorld(final Offset offset) {
+        return viewport.toWorld(offset);
+    }
+
+    @Override
+    public int toCanvas(double distance) {
+        return viewport.toCanvas(distance);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
-        return world.toCanvas(bounds);
+        return viewport.toCanvas(bounds);
     }
 
     @Override
-    public ScreenBounds toScreenUsingParallax(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        return world.toScreen(bounds, parallaxX, parallaxY);
+    public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
+        return viewport.toCanvas(bounds, parallaxX, parallaxY);
     }
 
     @Override
     public Offset toCanvas(final Vector position) {
-        return world.toCanvas(position);
+        return viewport.toCanvas(position);
     }
 
     @Override
@@ -104,7 +119,6 @@ public class DefaultGraphics implements Graphics, Updatable {
         return Stream.of(allFonts)
                 .map(Font::getFontName)
                 .toList();
-
     }
 
     @Override
@@ -115,7 +129,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public void update() {
         screen.updateScreen(configuration.isUseAntialising());
-        world.updateCameraPosition(camera.focus());
         light.update();
     }
 

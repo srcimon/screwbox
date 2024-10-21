@@ -21,7 +21,7 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(30);
         assertThat(options.yStrength()).isEqualTo(30);
         assertThat(options.interval()).isEqualTo(ofMillis(10));
-        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.swing()).isEqualTo(Rotation.none());
         assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
@@ -33,7 +33,7 @@ class CameraShakeOptionsTest {
         assertThat(options.xStrength()).isEqualTo(20);
         assertThat(options.yStrength()).isEqualTo(5);
         assertThat(options.interval()).isEqualTo(ofMillis(50));
-        assertThat(options.screenRotation()).isEqualTo(Rotation.none());
+        assertThat(options.swing()).isEqualTo(Rotation.none());
         assertThat(options.ease()).isEqualTo(Ease.LINEAR_OUT);
     }
 
@@ -56,11 +56,11 @@ class CameraShakeOptionsTest {
     }
 
     @Test
-    void screenRotation_rotationNotNull_setsScreenRotation() {
+    void screenRotation_rotationNotNull_setsSwing() {
         var options = CameraShakeOptions.lastingForDuration(ofSeconds(2))
-                .screenRotation(Rotation.degrees(40));
+                .swing(Rotation.degrees(40));
 
-        assertThat(options.screenRotation()).isEqualTo(Rotation.degrees(40));
+        assertThat(options.swing()).isEqualTo(Rotation.degrees(40));
     }
 
     @Test

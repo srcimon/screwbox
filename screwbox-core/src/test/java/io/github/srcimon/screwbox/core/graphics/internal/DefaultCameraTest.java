@@ -1,12 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,18 +19,14 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOp
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultCameraTest {
 
     @Mock
-    DefaultWorld world;
+    Canvas canvas;
 
-    @Mock
-    DefaultScreen screen;
-    
     @InjectMocks
     DefaultCamera camera;
 
@@ -53,11 +49,11 @@ class DefaultCameraTest {
     @Test
     void moveCameraWithinVisualBounds_cameraIsWithinBounds_updatesCameraPosition() {
         camera.setPosition($(10, 10));
-        when(world.visibleArea()).thenReturn($$(-50, -50, 100, 100));
+        when(canvas.width()).thenReturn(100);
+        when(canvas.height()).thenReturn(100);
 
         var result = camera.moveWithinVisualBounds($(20, 20), $$(-200, -20, 400, 400));
 
-        verify(world).updateCameraPosition($(30, 30));
         assertThat(result).isEqualTo($(30, 30));
     }
 
@@ -126,7 +122,6 @@ class DefaultCameraTest {
     void setZoom_notPixelperfect_setsPixelperfectValueAndUpdatesWorld() {
         var result = camera.setZoom(3.2);
 
-        verify(world).updateZoom(3.1875);
         assertThat(camera.zoom()).isEqualTo(3.1875);
         assertThat(result).isEqualTo(3.1875);
     }
@@ -161,21 +156,20 @@ class DefaultCameraTest {
     }
 
     @Test
-    void update_noActiveScreenShake_setsScreenShakeNone() {
+    void update_noActiveScreenShake_resetsSwing() {
         camera.update();
 
-        verify(screen).setShake(Rotation.none());
+        assertThat(camera.swing()).isEqualTo(Rotation.none());
     }
 
     @Test
     void update_activeScreenShake_setsScreenShake() {
-        camera.shake(CameraShakeOptions.infinite().strength(0).screenRotation(Rotation.degrees(45)));
+        camera.shake(CameraShakeOptions.infinite().strength(40).swing(Rotation.degrees(45)));
 
         camera.update();
 
-        var shakeCaptor = ArgumentCaptor.forClass(Rotation.class);
-        verify(screen).setShake(shakeCaptor.capture());
-        assertThat(shakeCaptor.getValue()).isNotEqualTo(Rotation.none());
+        assertThat(camera.focus()).isNotEqualTo(camera.position());
+        assertThat(camera.swing()).isNotEqualTo(Rotation.none());
     }
 
 }

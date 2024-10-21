@@ -33,10 +33,10 @@ public class HelloWorldApp {
 
                 // draw Hello World
                 .addSystem(PRESENTATION_BACKGROUND, engine -> {
-                    var screen = engine.graphics().screen();
+                    var canvas = engine.graphics().canvas();
                     var drawOptions = font(BOLDZILLA).scale(6).alignCenter();
-                    screen.fillWith(Color.hex("#125d7e"));
-                    screen.drawText(screen.center(), "Hello World!", drawOptions);
+                    canvas.fillWith(Color.hex("#125d7e"));
+                    canvas.drawText(canvas.center(), "Hello World!", drawOptions);
                 })
 
                 // add light spot to create nice sunlight effect
@@ -46,7 +46,7 @@ public class HelloWorldApp {
 
                 // add falling leaves
                 .addEntity("falling leaves",
-                        new TransformComponent(screwBox.graphics().world().visibleArea()),
+                        new TransformComponent(screwBox.graphics().visibleArea()),
                         new ParticleEmitterComponent(Duration.ofMillis(250), FALLING_LEAVES))
 
                 // let the mouse interact with the falling leaves

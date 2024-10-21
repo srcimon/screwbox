@@ -45,7 +45,7 @@ public final class ReflectionImage {
                 entityBounds.width() * render.options.scale(),
                 entityBounds.height() * render.options.scale());
 
-        final ScreenBounds screenBounds = graphics.toScreenUsingParallax(entityRenderArea, render.parallaxX, render.parallaxY);
+        final ScreenBounds screenBounds = graphics.toCanvas(entityRenderArea, render.parallaxX, render.parallaxY);
 
         if (screenBounds.intersects(screenArea)) {
             var localDistance = screenBounds.center().substract(screenArea.offset());

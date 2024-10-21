@@ -1,7 +1,10 @@
+This upgrade is huge for the internals of ScrewBox.
+
 ### 🚀 Features & improvements
 
 - Completly reworked the rendering systems. Rendering now happens on the `Canvas` and not on the `Screen`.
 This adds some flexibility when setting the actual rendering area.
+- Added `Viewport` class to do all the calculation bewtween `Canvas` and `Screen`. (#404)
 - Added `Rotation.invert()`
 
 ### 🪛 Bug Fixes

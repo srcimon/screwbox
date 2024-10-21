@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Bounds;
+import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 
@@ -107,4 +108,6 @@ public interface Camera {
      * @see #setZoomRestriction(double, double)
      */
     double maxZoom();
+
+    Rotation swing();
 }

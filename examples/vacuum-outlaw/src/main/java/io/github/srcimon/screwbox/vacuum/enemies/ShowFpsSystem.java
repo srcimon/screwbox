@@ -24,6 +24,6 @@ public class ShowFpsSystem implements EntitySystem {
                 engine.environment().fetchAll(COLLIDERS).size(),
                 engine.environment().systems().size(),
                 engine.loop().updateDuration().humanReadable());
-        engine.graphics().screen().drawText(TEXT_POSITION, text, OPTIONS);
+        engine.graphics().canvas().drawText(TEXT_POSITION, text, OPTIONS);
     }
 }

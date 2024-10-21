@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
@@ -25,7 +25,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     private final Executor executor;
     private final Engine engine;
-    private final Screen screen;
+    private final Canvas canvas;
 
     private SceneData activeScene;
     private SceneData loadingScene;
@@ -33,10 +33,10 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
 
-    public DefaultScenes(final Engine engine, final Screen screen, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
-        this.screen = screen;
+        this.canvas = canvas;
         SceneData defaultSceneData = new SceneData(new DefaultScene(), engine);
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
@@ -165,9 +165,9 @@ public class DefaultScenes implements Scenes, Updatable {
                 hasChangedToTargetScene = true;
             }
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(screen, time);
+                activeTransition.drawIntro(canvas, time);
             } else {
-                activeTransition.drawOutro(screen, time);
+                activeTransition.drawOutro(canvas, time);
             }
 
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {

@@ -24,9 +24,8 @@ public interface Canvas extends Sizeable {
 
     ScreenBounds bounds();
 
-    default boolean isVisible(final ScreenBounds other) {
-        return bounds().intersects(other);
-    }
+    boolean isVisible(final ScreenBounds other);
+
     /**
      * Fills the whole {@link Canvas} with the given {@link Color}.
      */
@@ -95,4 +94,5 @@ public interface Canvas extends Sizeable {
      * @since 1.11.0
      */
     Canvas drawSpriteBatch(SpriteBatch spriteBatch);
+
 }

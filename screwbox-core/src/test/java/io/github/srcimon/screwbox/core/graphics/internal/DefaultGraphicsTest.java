@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import org.junit.jupiter.api.Test;
@@ -64,15 +62,6 @@ class DefaultGraphicsTest {
         List<Size> supportedResolutions = graphics.supportedResolutions(WIDESCREEN);
 
         assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
-    }
-
-    @Test
-    void toCanvas_returnsTranslatedBounds() {
-        when(world.toCanvas(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
-
-        var result = graphics.toCanvas(Bounds.$$(20, 20, 10, 2));
-
-        assertThat(result).isEqualTo(new ScreenBounds(4, 1, 10, 10));
     }
 
 }

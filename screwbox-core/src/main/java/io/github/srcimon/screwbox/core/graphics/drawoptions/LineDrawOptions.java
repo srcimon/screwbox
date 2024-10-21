@@ -1,14 +1,14 @@
 package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Customize the drawing of lines.
  *
- * @see Screen#drawLine(Offset, Offset, LineDrawOptions)
+ * @see Canvas#drawLine(Offset, Offset, LineDrawOptions)
  */
 public record LineDrawOptions(Color color, int strokeWidth) {
 

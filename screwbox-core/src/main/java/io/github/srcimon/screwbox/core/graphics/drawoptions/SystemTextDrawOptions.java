@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 
 import static java.util.Objects.requireNonNull;
 
@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
  * @param isItalic  draw italic text
  * @param color     the {@link Color} used to draw the text
  * @param alignment the direction to draw from given offset
- * @see Screen#drawText(Offset, String, SystemTextDrawOptions)
+ * @see Canvas#drawText(Offset, String, SystemTextDrawOptions)
  */
 public record SystemTextDrawOptions(String fontName, int size, boolean isBold, boolean isItalic, Color color,
                                     Alignment alignment) {
