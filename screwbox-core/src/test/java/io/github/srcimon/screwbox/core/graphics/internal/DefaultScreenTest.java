@@ -116,8 +116,10 @@ class DefaultScreenTest {
     void createCanvas_invalidSize_throwsException() {
         when(screen.size()).thenReturn(Size.of(640, 480));
 
-        assertThatThrownBy(() ->
-                screen.createCanvas(Offset.at(700, 500), Size.of(5, 5)))
+        var offset = Offset.at(700, 500);
+        var size = Size.of(5, 5);
+
+        assertThatThrownBy(() -> screen.createCanvas(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bounds must be on screen");
     }

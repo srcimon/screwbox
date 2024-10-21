@@ -12,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import org.junit.jupiter.api.Test;

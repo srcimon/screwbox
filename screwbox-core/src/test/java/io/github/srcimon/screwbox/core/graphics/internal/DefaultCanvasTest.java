@@ -38,7 +38,6 @@ class DefaultCanvasTest {
         verify(renderer).fillWith(Color.BLUE, CLIP);
     }
 
-
     @Test
     void drawRectangle_callsRenderer() {
         canvas.drawRectangle(Offset.at(4, 10), Size.of(20, 20), RectangleDrawOptions.outline(Color.RED));
@@ -59,7 +58,6 @@ class DefaultCanvasTest {
 
         verify(renderer).drawCircle(Offset.at(10, 20), 4, CircleDrawOptions.fading(Color.RED), CLIP);
     }
-
 
     @Test
     void drawSpriteBatch_callsRenderer() {

@@ -48,4 +48,16 @@ class DefaultViewportTest {
         assertThat(viewport.toCanvas(100.50))
                 .isEqualTo(151);
     }
+
+    @Test
+    void toCanvas_usingParallax_returnsBounds() {
+        when(camera.focus()).thenReturn($(100, 90));
+        when(camera.zoom()).thenReturn(2.0);
+        when(canvas.width()).thenReturn(640);
+        when(canvas.height()).thenReturn(480);
+
+        var result = viewport.toCanvas($$(40, 100, 100, 400), 1.5, 2.0);
+
+        assertThat(result).isEqualTo(new ScreenBounds(100, 80, 200, 800));
+    }
 }
