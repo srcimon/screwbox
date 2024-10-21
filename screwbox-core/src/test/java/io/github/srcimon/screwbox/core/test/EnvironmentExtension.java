@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Screen;
-import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
 import io.github.srcimon.screwbox.core.log.Log;
@@ -48,7 +47,6 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
         final var mouse = Mockito.mock(Mouse.class);
-        final var viewport = Mockito.mock(Viewport.class);
         final var audio = Mockito.mock(Audio.class);
         final var audioConfiguration = Mockito.mock(AudioConfiguration.class);
         final var entities = new DefaultEnvironment(engine);
