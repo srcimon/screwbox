@@ -56,8 +56,6 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
     }
 
     private Size toDimension(final Vector size) {
-        final long x = Math.round(size.x() * camera.zoom());
-        final long y = Math.round(size.y() * camera.zoom());
-        return Size.of(x, y);
+        return Size.of(toCanvas(size.x()), toCanvas(size.y()));
     }
 }

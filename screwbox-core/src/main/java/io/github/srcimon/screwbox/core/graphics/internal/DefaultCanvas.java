@@ -116,7 +116,7 @@ public class DefaultCanvas implements Canvas {
     }
 
     @Override
-    public boolean isVisible(ScreenBounds other) {
+    public boolean isVisible(final ScreenBounds other) {
         return visibleArea.intersects(other);
     }
 }
