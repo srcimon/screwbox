@@ -3,10 +3,13 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 
+/**
+ * Combines a {@link Camera} with a {@link Canvas} and translates coordinates and distances between both of them.
+ */
 public interface Viewport {
 
     /**
-     * Returns the {@link Offset} on the viewport of the given {@link Vector} in the {@link World}.
+     * Returns the {@link Offset} on the viewport of the specified {@link Vector} in the {@link World}.
      *
      * @param position the position that will be translated
      * @return the {@link Offset} on the viewport
@@ -28,6 +31,12 @@ public interface Viewport {
      */
     ScreenBounds toCanvas(Bounds bounds);
 
+    /**
+     * Translates a distance in the {@link World} to a distance on the {@link Canvas}.
+     *
+     * @param distance distance in the {@link World}
+     * @return distance on the {@link Canvas}
+     */
     int toCanvas(double distance);
 
     /**
@@ -35,7 +44,13 @@ public interface Viewport {
      */
     ScreenBounds toCanvas(Bounds bounds, double parallaxX, double parallaxY);
 
+    /**
+     * Returns the {@link Camera} associated with the {@link Viewport}.
+     */
     Camera camera();
 
+    /**
+     * Returns the {@link Canvas} associated withe the {@link Viewport}.
+     */
     Canvas canvas();
 }

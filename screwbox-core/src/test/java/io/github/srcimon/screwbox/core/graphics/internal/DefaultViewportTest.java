@@ -37,8 +37,15 @@ class DefaultViewportTest {
         when(canvas.width()).thenReturn(90);
         when(canvas.height()).thenReturn(50);
 
-        var result = viewport.toCanvas($$(40, 100, 100, 400));
+        assertThat(viewport.toCanvas($$(40, 100, 100, 400)))
+                .isEqualTo(new ScreenBounds(0, -95, 150, 600));
+    }
 
-        assertThat(result).isEqualTo(new ScreenBounds(0, -95, 150, 600));
+    @Test
+    void toCanvas_usingZoom_returnsDistance() {
+        when(camera.zoom()).thenReturn(1.5);
+
+        assertThat(viewport.toCanvas(100.50))
+                .isEqualTo(151);
     }
 }
