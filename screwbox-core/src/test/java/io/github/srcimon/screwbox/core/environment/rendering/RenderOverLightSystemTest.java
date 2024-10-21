@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
@@ -35,6 +36,7 @@ class RenderOverLightSystemTest {
         when(camera.zoom()).thenReturn(2.0);
         when(canvas.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
         when(graphics.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(canvas.size()).thenReturn(Size.of(800, 800));
 
         environment
                 .addEntity(new Entity()
