@@ -22,6 +22,7 @@ public class DefaultCanvas implements Canvas {
     private final Renderer renderer;
     private ScreenBounds clip;
     private Offset offset;
+    private ScreenBounds visibleArea;
 
     public DefaultCanvas(final Renderer renderer, final ScreenBounds clip) {
         this.renderer = renderer;
@@ -31,6 +32,7 @@ public class DefaultCanvas implements Canvas {
     public void updateClip(final ScreenBounds clip) {
         this.clip = clip;
         this.offset = clip.offset();
+        this.visibleArea = new ScreenBounds(size());
     }
 
     @Override
@@ -111,5 +113,10 @@ public class DefaultCanvas implements Canvas {
     @Override
     public ScreenBounds bounds() {
         return clip;
+    }
+
+    @Override
+    public boolean isVisible(ScreenBounds other) {
+        return visibleArea.intersects(other);
     }
 }

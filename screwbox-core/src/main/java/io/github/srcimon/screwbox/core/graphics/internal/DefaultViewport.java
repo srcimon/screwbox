@@ -27,8 +27,8 @@ public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport 
 
     @Override
     public Vector toWorld(final Offset offset) {
-        final double x = ((canvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
-        final double y = ((canvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
+        final double x = (canvas.width() / 2.0) / camera.zoom() + camera.focus().x();
+        final double y = (canvas.height() / 2.0) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
