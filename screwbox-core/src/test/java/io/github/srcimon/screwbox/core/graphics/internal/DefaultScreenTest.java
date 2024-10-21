@@ -112,4 +112,13 @@ class DefaultScreenTest {
                 .hasMessage("rotation must not be null");
     }
 
+    @Test
+    void createCanvas_invalidSize_throwsException() {
+        when(screen.size()).thenReturn(Size.of(640, 480));
+
+        assertThatThrownBy(() ->
+                screen.createCanvas(Offset.at(700, 500), Size.of(5, 5)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bounds must be on screen");
+    }
 }
