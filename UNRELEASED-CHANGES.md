@@ -4,7 +4,7 @@ This upgrade is huge for the internals of ScrewBox.
 
 - Completly reworked the rendering systems. Rendering now happens on the `Canvas` and not on the `Screen`.
 This adds some flexibility when setting the actual rendering area.
-- Added `Viewport` class to do all the calculation bewtween `Canvas` and `Screen`. (#404)
+- Added `Viewport` class to do all the calculation bewtween `Canvas` and `Screen` (#404)
 - Added `Rotation.invert()`
 
 ### 🪛 Bug Fixes
@@ -18,7 +18,8 @@ This adds some flexibility when setting the actual rendering area.
 - Moved all draw options to dedicated package
 - Simplified renderer interface
 - Added proxy renderer reduce cuppling between window and screen
-- Renamed lots of methods translating `Screen`, `Canvas` and `World` positions.
+- Renamed lots of methods translating `Screen`, `Canvas` and `World` positions
+- `Camera` implementation is no longer dependent on `Screen` (#406)
 
 ### 📦 Dependency updates
 
