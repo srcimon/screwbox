@@ -14,11 +14,11 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param xStrength      the x-strength of the shake
  * @param yStrength      the y-strength of the shake
  * @param interval       the {@link Duration} between direction changes (may very to make it more realisitc)
- * @param screenRotation the maximum {@link Rotation} applied to the {@link Screen}
+ * @param swing the maximum {@link Rotation} applied to the {@link Screen}
  * @param ease           the {@link Ease} used to calculate the strength of the shake at a specific time
  */
 public record CameraShakeOptions(Duration duration, double xStrength, double yStrength, Duration interval,
-                                 Rotation screenRotation, Ease ease) {
+                                 Rotation swing, Ease ease) {
 
     public CameraShakeOptions {
         Validate.zeroOrPositive(xStrength, "strength must be positive");
@@ -47,41 +47,41 @@ public record CameraShakeOptions(Duration duration, double xStrength, double ySt
      * Sets the x-strength of the shake.
      */
     public CameraShakeOptions xStrength(final double xStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation, ease);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 
     /**
      * Sets the y-strength of the shake.
      */
     public CameraShakeOptions yStrength(final double yStrength) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation, ease);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 
     /**
      * Sets the x- and the y-strength of the shake. Default: 10.
      */
     public CameraShakeOptions strength(final double strength) {
-        return new CameraShakeOptions(duration, strength, strength, interval, screenRotation, ease);
+        return new CameraShakeOptions(duration, strength, strength, interval, swing, ease);
     }
 
     /**
      * Sets the {@link Duration} between direction changes. Default 50s.
      */
     public CameraShakeOptions interval(final Duration interval) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation, ease);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 
     /**
      * Sets the maximum {@link Screen#shake()} applied. {@link Screen#shake()} comes with quite a fps drop.
      */
-    public CameraShakeOptions screenRotation(final Rotation screenRotation) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation, ease);
+    public CameraShakeOptions swing(final Rotation swing) {
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 
     /**
      * Sets the {@link Ease} used to calculate the strength of the shake at a specific time.
      */
     public CameraShakeOptions ease(final Ease ease) {
-        return new CameraShakeOptions(duration, xStrength, yStrength, interval, screenRotation, ease);
+        return new CameraShakeOptions(duration, xStrength, yStrength, interval, swing, ease);
     }
 }

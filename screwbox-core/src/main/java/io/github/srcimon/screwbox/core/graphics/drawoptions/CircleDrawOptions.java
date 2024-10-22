@@ -1,16 +1,16 @@
 package io.github.srcimon.screwbox.core.graphics.drawoptions;
 
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
  * Customize the drawing of circles.
  *
- * @see Screen#drawCircle(Offset, int, CircleDrawOptions)
+ * @see Canvas#drawCircle(Offset, int, CircleDrawOptions)
  * @see World#drawCircle(Vector, double, CircleDrawOptions)
  */
 public record CircleDrawOptions(Style style, Color color, int strokeWidth) {

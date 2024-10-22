@@ -57,7 +57,7 @@ public class DefaultRenderer implements Renderer {
         // not invoking fillWith(color) here to prevent setting clip
         applyNewColor(Color.BLACK);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
-        graphics.rotate(rotation.radians(), clip.offset().x() + clip.width() / 2.0, clip.offset().y() + clip.height() / 2.0);
+        graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }
 
     @Override

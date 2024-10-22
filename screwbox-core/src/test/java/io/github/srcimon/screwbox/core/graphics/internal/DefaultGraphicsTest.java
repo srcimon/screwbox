@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import org.junit.jupiter.api.Test;
@@ -26,9 +24,6 @@ class DefaultGraphicsTest {
 
     @Mock
     GraphicsDevice graphicsDevice;
-
-    @Mock
-    DefaultWorld world;
 
     @Mock
     AsyncRenderer asyncRenderer;
@@ -67,12 +62,10 @@ class DefaultGraphicsTest {
     }
 
     @Test
-    void toCanvas_returnsTranslatedBounds() {
-        when(world.toCanvas(Bounds.$$(20, 20, 10, 2))).thenReturn(new ScreenBounds(4, 1, 10, 10));
-
-        var result = graphics.toCanvas(Bounds.$$(20, 20, 10, 2));
-
-        assertThat(result).isEqualTo(new ScreenBounds(4, 1, 10, 10));
+    void currentResolution_returnsResolutionFromGraphicsDevice() {
+        when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
+        
+        assertThat(graphics.currentResolution()).isEqualTo(Size.of(640, 480));
     }
 
 }

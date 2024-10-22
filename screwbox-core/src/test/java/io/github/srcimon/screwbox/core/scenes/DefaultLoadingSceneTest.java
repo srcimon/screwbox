@@ -1,8 +1,8 @@
 package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,12 @@ import static org.mockito.Mockito.when;
 class DefaultLoadingSceneTest {
 
     @Test
-    void runDefaultLoadingScene_onUpdate_drawsFiveteenCharacters(DefaultEnvironment environment, Screen screen) {
+    void runDefaultLoadingScene_onUpdate_drawsFiveteenCharacters(DefaultEnvironment environment, Canvas canvas) {
         new DefaultLoadingScene().populate(environment);
-        when(screen.center()).thenReturn(Offset.at(120, 50));
+        when(canvas.center()).thenReturn(Offset.at(120, 50));
 
         environment.update();
 
-        verify(screen, times(15)).drawText(any(), any(), any(TextDrawOptions.class));
+        verify(canvas, times(15)).drawText(any(), any(), any(TextDrawOptions.class));
     }
 }

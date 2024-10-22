@@ -38,7 +38,7 @@ public class StartScene implements Scene {
                 .enableParticles()
                 .enableRendering()
                 .addSystem(engine -> {
-                    Bounds visibleArea = engine.graphics().world().visibleArea();
+                    Bounds visibleArea = engine.graphics().visibleArea();
                     if (sheduler.isTick()) {
                         engine.particles().spawnMultiple(1, visibleArea.moveBy(0, visibleArea.height()), ParticleOptions.unknownSource()
                                 .baseSpeed(Vector.y(-60))

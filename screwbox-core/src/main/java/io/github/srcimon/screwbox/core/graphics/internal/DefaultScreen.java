@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -8,15 +9,7 @@ import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.RectangleDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteFillOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.internal.renderer.OffsetRenderer;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 
 import java.awt.*;
@@ -29,11 +22,12 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultScreen implements Screen {
+public class DefaultScreen implements Screen, Updatable {
 
     private final Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
+    private final Camera camera;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
@@ -41,11 +35,12 @@ public class DefaultScreen implements Screen {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final Camera camera) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
+        this.camera = camera;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -72,12 +67,6 @@ public class DefaultScreen implements Screen {
         canvas.updateClip(canvasBounds());
     }
 
-    @Override
-    public ScreenBounds canvasBounds() {
-        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
-    }
-
-
     private Graphics2D getDrawGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
@@ -85,54 +74,6 @@ public class DefaultScreen implements Screen {
         } catch (IllegalStateException ignored) {
             return lastGraphics;
         }
-    }
-
-    @Override
-    public Screen fillWith(final Color color) {
-        canvas.fillWith(color);
-        return this;
-    }
-
-    @Override
-    public Screen drawRectangle(final Offset origin, final Size size, final RectangleDrawOptions options) {
-        canvas.drawRectangle(origin, size, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawLine(final Offset from, final Offset to, final LineDrawOptions options) {
-        canvas.drawLine(from, to, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawCircle(final Offset offset, final int radius, final CircleDrawOptions options) {
-        canvas.drawCircle(offset, radius, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Supplier<Sprite> sprite, final Offset origin, final SpriteDrawOptions options) {
-        canvas.drawSprite(sprite, origin, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawSprite(final Sprite sprite, final Offset origin, final SpriteDrawOptions options) {
-        canvas.drawSprite(sprite, origin, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final SystemTextDrawOptions options) {
-        canvas.drawText(offset, text, options);
-        return this;
-    }
-
-    @Override
-    public Screen drawText(final Offset offset, final String text, final TextDrawOptions options) {
-        canvas.drawText(offset, text, options);
-        return this;
     }
 
     @Override
@@ -151,35 +92,8 @@ public class DefaultScreen implements Screen {
     }
 
     @Override
-    public Screen fillWith(final Sprite sprite, final SpriteFillOptions options) {
-        canvas.fillWith(sprite, options);
-        return this;
-    }
-
-    @Override
-    public Offset offset() {
-        return Offset.origin();
-    }
-
-    @Override
-    public Offset center() {
-        return size().center();
-    }
-
-    @Override
     public Size size() {
         return frame.getCanvasSize();
-    }
-
-    @Override
-    public ScreenBounds bounds() {
-        return new ScreenBounds(offset(), size());
-    }
-
-    @Override
-    public Screen drawSpriteBatch(SpriteBatch spriteBatch) {
-        canvas.drawSpriteBatch(spriteBatch);
-        return this;
     }
 
     @Override
@@ -222,15 +136,10 @@ public class DefaultScreen implements Screen {
         return shake;
     }
 
-    public void setShake(final Rotation shake) {
-        this.shake = requireNonNull(shake, "shake must not be null");
-    }
-
     public Canvas createCanvas(final Offset offset, final Size size) {
         final ScreenBounds bounds = new ScreenBounds(offset, size);
         validateCanvasBounds(bounds);
-        final var offsetRenderer = new OffsetRenderer(offset, renderer);
-        return new DefaultCanvas(offsetRenderer, bounds);
+        return new DefaultCanvas(renderer, bounds);
     }
 
     void validateCanvasBounds(final ScreenBounds canvasBounds) {
@@ -238,5 +147,14 @@ public class DefaultScreen implements Screen {
         if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
             throw new IllegalArgumentException("bounds must be on screen");
         }
+    }
+
+    @Override
+    public void update() {
+        this.shake = camera.swing();
+    }
+
+    private ScreenBounds canvasBounds() {
+        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
     }
 }

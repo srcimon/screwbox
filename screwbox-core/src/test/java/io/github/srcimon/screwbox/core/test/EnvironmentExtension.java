@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.World;
@@ -41,6 +42,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var physics = Mockito.mock(Physics.class);
         final var keyboard = Mockito.mock(Keyboard.class);
         final var particles = Mockito.mock(Particles.class);
+        final var canvas = Mockito.mock(Canvas.class);
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
@@ -65,6 +67,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(audio.configuration()).thenReturn(audioConfiguration);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
+        when(graphics.canvas()).thenReturn(canvas);
         when(graphics.camera()).thenReturn(camera);
 
         // resolve test method parameters
@@ -72,6 +75,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Graphics.class, graphics);
         parameters.put(Camera.class, camera);
         parameters.put(Screen.class, screen);
+        parameters.put(Canvas.class, canvas);
         parameters.put(Mouse.class, mouse);
         parameters.put(World.class, world);
         parameters.put(Window.class, window);

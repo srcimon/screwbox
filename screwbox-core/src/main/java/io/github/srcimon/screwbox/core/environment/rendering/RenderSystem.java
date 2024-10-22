@@ -9,6 +9,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
@@ -35,10 +36,9 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-
         final SpriteBatch spriteBatch = createRenderBatch(engine, render -> !render.renderOverLight);
         addReflectionsToSpriteBatch(engine, spriteBatch);
-        engine.graphics().screen().drawSpriteBatch(spriteBatch);
+        engine.graphics().canvas().drawSpriteBatch(spriteBatch);
     }
 
     protected SpriteBatch createRenderBatch(final Engine engine, Predicate<RenderComponent> renderCondition) {
@@ -46,7 +46,7 @@ public class RenderSystem implements EntitySystem {
         final SpriteBatch spriteBatch = new SpriteBatch();
         final Graphics graphics = engine.graphics();
         double zoom = graphics.camera().zoom();
-        final ScreenBounds visibleBounds = graphics.screen().bounds();
+        final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), graphics.canvas().size());
         for (final Entity entity : renderEntities) {
             final RenderComponent render = entity.get(RenderComponent.class);
             if (renderCondition.test(render)) {
@@ -54,7 +54,7 @@ public class RenderSystem implements EntitySystem {
                 final double height = render.sprite.height() * render.options.scale();
                 final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
 
-                final var entityScreenBounds = graphics.toScreenUsingParallax(spriteBounds, render.parallaxX, render.parallaxY);
+                final var entityScreenBounds = graphics.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
                 if (visibleBounds.intersects(entityScreenBounds)) {
                     spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
                 }
@@ -65,7 +65,7 @@ public class RenderSystem implements EntitySystem {
 
     private void addReflectionsToSpriteBatch(final Engine engine, final SpriteBatch spriteBatch) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
-        final var visibleArea = Pixelperfect.bounds(engine.graphics().world().visibleArea());
+        final var visibleArea = Pixelperfect.bounds(engine.graphics().visibleArea());
         final var zoom = engine.graphics().camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
             final var visibleAreaOfMirror = mirror.bounds().intersection(visibleArea);

@@ -13,8 +13,8 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.World;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.particles.Particles;
@@ -28,7 +28,7 @@ public class DefaultParticles implements Particles, Updatable {
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
 
     private final DefaultScenes scenes;
-    private final World world;
+    private final Viewport viewport;
 
     private boolean particleCountRefreshed = false;
     private long particleCount = 0;
@@ -36,14 +36,14 @@ public class DefaultParticles implements Particles, Updatable {
     private double spawnDistance = 1000;
     private long particleSpawnCount = 0;
 
-    public DefaultParticles(final DefaultScenes scenes, final World world) {
+    public DefaultParticles(final DefaultScenes scenes, final Viewport viewport) {
         this.scenes = scenes;
-        this.world = world;
+        this.viewport = viewport;
     }
 
     @Override
     public Bounds spawnArea() {
-        return world.visibleArea().expand(spawnDistance);
+        return viewport.visibleArea().expand(spawnDistance);
     }
 
     @Override

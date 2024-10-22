@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.CameraShakeOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
@@ -15,26 +16,24 @@ import static java.util.Objects.requireNonNull;
 
 public class DefaultCamera implements Camera, Updatable {
 
-    private final DefaultWorld world;
-    private final DefaultScreen screen;
+    private final Canvas canvas;
     private Vector shake = Vector.zero();
     private Vector position = Vector.zero();
     private double zoom = 1;
     private double requestedZoom = zoom;
     private double minZoom = 1;
     private double maxZoom = 5;
+    private Rotation swing;
 
     private ActiveCameraShake activeShake;
 
-    public DefaultCamera(final DefaultWorld world, final DefaultScreen screen) {
-        this.world = world;
-        this.screen = screen;
+    public DefaultCamera(final Canvas canvas) {
+        this.canvas = canvas;
     }
 
     @Override
     public Camera setPosition(final Vector position) {
         this.position = requireNonNull(position, "position must not be NULL");
-        world.updateCameraPosition(focus());
         return this;
     }
 
@@ -66,15 +65,14 @@ public class DefaultCamera implements Camera, Updatable {
     public double setZoom(final double zoom) {
         this.requestedZoom = Math.clamp(zoom, minZoom, maxZoom);
         this.zoom = Pixelperfect.value(requestedZoom);
-        world.updateZoom(this.zoom);
         return this.zoom;
     }
 
     @Override
     public Vector moveWithinVisualBounds(final Vector delta, final Bounds bounds) {
         final var legalPostionArea = Bounds.atPosition(bounds.position(),
-                Math.max(1, bounds.width() - world.visibleArea().width()),
-                Math.max(1, bounds.height() - world.visibleArea().height()));
+                Math.max(1, bounds.width() - visibleArea().width()),
+                Math.max(1, bounds.height() - visibleArea().height()));
 
         final double movementX = Math.clamp(delta.x(), legalPostionArea.minX() - position().x(), legalPostionArea.maxX() - position().x());
 
@@ -82,6 +80,12 @@ public class DefaultCamera implements Camera, Updatable {
 
         move($(movementX, movementY));
         return position();
+    }
+
+    private Bounds visibleArea() {
+        return Bounds.atPosition(focus(),
+                canvas.width() / zoom(),
+                canvas.height() / zoom());
     }
 
     @Override
@@ -122,17 +126,22 @@ public class DefaultCamera implements Camera, Updatable {
     }
 
     @Override
+    public Rotation swing() {
+        return swing;
+    }
+
+    @Override
     public void update() {
         final Time now = Time.now();
         if (nonNull(activeShake)) {
             shake = activeShake.calculateDistortion(now, zoom);
-            screen.setShake(activeShake.caclulateRotation(now));
+            swing = activeShake.caclulateSwing(now);
             if (activeShake.hasEnded(now)) {
                 activeShake = null;
             }
         } else {
             shake = Vector.zero();
-            screen.setShake(Rotation.none());
+            swing = Rotation.none();
         }
     }
 }

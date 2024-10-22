@@ -11,7 +11,7 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.World;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class DefaultParticlesTest {
     DefaultScenes scenes;
 
     @Mock
-    World world;
+    Viewport viewport;
 
     @InjectMocks
     DefaultParticles particles;
@@ -50,7 +50,7 @@ class DefaultParticlesTest {
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
-        when(world.visibleArea()).thenReturn($$(0, 0, 100, 100));
+        when(viewport.visibleArea()).thenReturn($$(0, 0, 100, 100));
 
         particles.update();
         particles.spawn($(20, 10), ParticleOptions.unknownSource());
@@ -79,12 +79,12 @@ class DefaultParticlesTest {
 
         particles.spawn($(20, 20), ParticleOptions.unknownSource());
 
-        verifyNoInteractions(world);
+        verifyNoInteractions(viewport);
     }
 
     @Test
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
-        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
         when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20000, 20), ParticleOptions.unknownSource());
@@ -96,7 +96,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         Entity source = new Entity().add(new RenderComponent(20));
 
@@ -132,7 +132,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_noSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
 
@@ -154,7 +154,7 @@ class DefaultParticlesTest {
     @Test
     void spawnArea_returnsCurrentSpawnArea() {
         particles.setSpawnDistance(30);
-        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         assertThat(particles.spawnArea()).isEqualTo($$(5, -5, 129, 129));
     }
@@ -162,7 +162,7 @@ class DefaultParticlesTest {
     @Test
     void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(world.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
 
         particles.setParticleLimit(5);
 
