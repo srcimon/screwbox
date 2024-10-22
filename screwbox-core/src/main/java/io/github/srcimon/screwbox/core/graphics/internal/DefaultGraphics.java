@@ -111,8 +111,7 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public List<String> availableFonts() {
-        final var allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-        return Stream.of(allFonts)
+        return Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
                 .map(Font::getFontName)
                 .toList();
     }

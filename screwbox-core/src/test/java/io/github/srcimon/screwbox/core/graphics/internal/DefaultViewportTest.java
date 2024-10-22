@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,5 +60,29 @@ class DefaultViewportTest {
         var result = viewport.toCanvas($$(40, 100, 100, 400), 1.5, 2.0);
 
         assertThat(result).isEqualTo(new ScreenBounds(100, 80, 200, 800));
+    }
+
+    @Test
+    void visibleArea_usingZoom_returnsVisibleArea() {
+        when(camera.focus()).thenReturn($(100, 90));
+        when(camera.zoom()).thenReturn(2.0);
+        when(canvas.width()).thenReturn(640);
+        when(canvas.height()).thenReturn(480);
+
+        var area = viewport.visibleArea();
+
+        assertThat(area).isEqualTo($$(-60, -30, 320, 240));
+    }
+
+    @Test
+    void toWorld_usingZoom_returnsPosition() {
+        when(camera.focus()).thenReturn($(100, 90));
+        when(camera.zoom()).thenReturn(2.0);
+        when(canvas.width()).thenReturn(640);
+        when(canvas.height()).thenReturn(480);
+
+        var position = viewport.toWorld(Offset.at(100, 200));
+
+        assertThat(position).isEqualTo($(260, 210));
     }
 }
