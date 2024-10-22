@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -40,9 +37,6 @@ class DefaultLightTest {
     @Mock
     Viewport viewport;
 
-    @Captor
-    ArgumentCaptor<Asset<Sprite>> spriteCaptor;
-
     DefaultWorld world;
     GraphicsConfiguration configuration;
     DefaultLight light;
@@ -51,7 +45,7 @@ class DefaultLightTest {
     void beforeEach() {
         when(viewport.canvas()).thenReturn(canvas);
         when(canvas.size()).thenReturn(Size.of(640, 480));
-        world = new DefaultWorld(canvas, viewport);
+        world = new DefaultWorld(viewport);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
         light = new DefaultLight(configuration, executor, viewport);

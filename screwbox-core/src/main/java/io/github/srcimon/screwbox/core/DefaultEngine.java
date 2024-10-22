@@ -129,7 +129,7 @@ class DefaultEngine implements Engine {
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
         final var screenViewport = new DefaultViewport(screenCanvas, camera);
-        final DefaultWorld world = new DefaultWorld(screenCanvas, screenViewport);
+        final DefaultWorld world = new DefaultWorld(screenViewport);
         final DefaultLight light = new DefaultLight(configuration, executor, screenViewport);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
