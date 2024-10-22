@@ -26,9 +26,6 @@ class DefaultGraphicsTest {
     GraphicsDevice graphicsDevice;
 
     @Mock
-    DefaultWorld world;
-
-    @Mock
     AsyncRenderer asyncRenderer;
 
     @Test
@@ -62,6 +59,13 @@ class DefaultGraphicsTest {
         List<Size> supportedResolutions = graphics.supportedResolutions(WIDESCREEN);
 
         assertThat(supportedResolutions).containsExactly(Size.of(1600, 900));
+    }
+
+    @Test
+    void currentResolution_returnsResolutionFromGraphicsDevice() {
+        when(graphicsDevice.getDisplayMode()).thenReturn(new DisplayMode(640, 480, 32, 60));
+        
+        assertThat(graphics.currentResolution()).isEqualTo(Size.of(640, 480));
     }
 
 }

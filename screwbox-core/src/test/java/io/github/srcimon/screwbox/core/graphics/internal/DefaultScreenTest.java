@@ -123,4 +123,5 @@ class DefaultScreenTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bounds must be on screen");
     }
+
 }

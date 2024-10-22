@@ -102,10 +102,6 @@ public class DefaultGraphics implements Graphics, Updatable {
                 .toList();
     }
 
-    private Size toDimension(final DisplayMode screenSize) {
-        return Size.of(screenSize.getWidth(), screenSize.getHeight());
-    }
-
     @Override
     public List<Size> supportedResolutions(final AspectRatio ratio) {
         return supportedResolutions().stream()
@@ -150,5 +146,9 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Canvas createCanvas(final Offset offset, final Size size) {
         return screen.createCanvas(offset, size);
+    }
+
+    private Size toDimension(final DisplayMode screenSize) {
+        return Size.of(screenSize.getWidth(), screenSize.getHeight());
     }
 }

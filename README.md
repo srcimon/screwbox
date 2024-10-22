@@ -59,8 +59,8 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine();
 
-            screwBox.environment().addSystem(engine -> engine.graphics().canvas()
-                    .drawText(screen.center(), "Hello world!", font(BOLDZILLA).scale(4).alignCenter()));
+            screwBox.environment().addSystem(engine -> engine.graphics().canvas().drawText(
+                screen.center(), "Hello world!", font(BOLDZILLA).scale(4).alignCenter()));
 
             screwBox.start();
         }

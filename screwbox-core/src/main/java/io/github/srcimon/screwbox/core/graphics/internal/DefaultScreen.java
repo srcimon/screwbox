@@ -67,11 +67,6 @@ public class DefaultScreen implements Screen, Updatable {
         canvas.updateClip(canvasBounds());
     }
 
-    @Override
-    public ScreenBounds canvasBounds() {
-        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
-    }
-
     private Graphics2D getDrawGraphics() {
         try {
             return (Graphics2D) frame.getCanvas().getBufferStrategy().getDrawGraphics();
@@ -157,5 +152,9 @@ public class DefaultScreen implements Screen, Updatable {
     @Override
     public void update() {
         this.shake = camera.swing();
+    }
+
+    private ScreenBounds canvasBounds() {
+        return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
     }
 }
