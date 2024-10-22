@@ -23,4 +23,5 @@ This adds some flexibility when setting the actual rendering area.
 
 ### 📦 Dependency updates
 
-- ...
+- Bump JUnit to 5.11.3
+- Bump Mockito to 5.14.2
