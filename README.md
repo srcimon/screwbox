@@ -69,11 +69,11 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 
 ## Modules
 
-Here is a quick overview over all modules contained in this library:
+Here is a quick overview over all modules contained in this project:
 
 ### screwbox
 
-BOM to manage all library dependencies.
+BOM to manage all project dependencies.
 
 ``` xml
 <dependencyManagement>
