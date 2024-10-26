@@ -10,10 +10,10 @@ import static java.util.Objects.isNull;
 public class DynamicSoundSupport {
 
     private final AudioConfiguration configuration;
-    private final AudioListener audioListener;
+    private final VisualAttention visualAttention;
 
-    public DynamicSoundSupport(final AudioListener audioListener, final AudioConfiguration configuration) {
-        this.audioListener = audioListener;
+    public DynamicSoundSupport(final VisualAttention visualAttention, final AudioConfiguration configuration) {
+        this.visualAttention = visualAttention;
         this.configuration = configuration;
     }
 
@@ -35,11 +35,11 @@ public class DynamicSoundSupport {
     }
 
     private double panByRelativePosition(final Vector position) {
-        return audioListener.relativePosition(position) * distanceModifier(position);
+        return visualAttention.xDirection(position) * distanceModifier(position);
     }
 
     private double distanceModifier(final Vector position) {
-        return audioListener.distanceTo(position) / configuration.soundRange();
+        return visualAttention.distanceTo(position) / configuration.soundRange();
     }
 
     private Percent effectVolume() {
