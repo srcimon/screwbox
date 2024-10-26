@@ -1,10 +1,8 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +17,7 @@ import static org.mockito.Mockito.when;
 class DynamicSoundSupportTest {
 
     @Mock
-    Camera camera;
+    AudioListener audioListener;
 
     @Mock
     AudioConfiguration configuration;
@@ -72,7 +70,8 @@ class DynamicSoundSupportTest {
 
     @Test
     void currentPan_positionSetLeftOfCamera_panIsRight() {
-        when(camera.position()).thenReturn(Vector.zero());
+        when(audioListener.distanceTo($(-40, 0))).thenReturn(40.0);
+        when(audioListener.relativePosition($(-40, 0))).thenReturn(-1.0);
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(-40, 0)));
@@ -82,7 +81,8 @@ class DynamicSoundSupportTest {
 
     @Test
     void currentPan_positionSetRightOfCamera_panIsLeft() {
-        when(camera.position()).thenReturn(Vector.zero());
+        when(audioListener.distanceTo($(80, 0))).thenReturn(80.0);
+        when(audioListener.relativePosition($(80, 0))).thenReturn(1.0);
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(80, 0)));
@@ -94,7 +94,7 @@ class DynamicSoundSupportTest {
     void currentVolume_outOfSoundRange_isZero() {
         when(configuration.effectVolume()).thenReturn(Percent.max());
         when(configuration.soundRange()).thenReturn(200.0);
-        when(camera.position()).thenReturn(Vector.zero());
+        when(audioListener.distanceTo($(0, 1000.0))).thenReturn(1000.0);
 
         var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position($(0, 1000)));
 

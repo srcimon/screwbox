@@ -4,22 +4,20 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
 
 public class DynamicSoundSupport {
 
-    private final Camera camera;
     private final AudioConfiguration configuration;
+    private final AudioListener audioListener;
 
-    public DynamicSoundSupport(final Camera camera, final AudioConfiguration configuration) {
-        this.camera = camera;
+    public DynamicSoundSupport(final AudioListener audioListener, final AudioConfiguration configuration) {
+        this.audioListener = audioListener;
         this.configuration = configuration;
     }
 
-    public Percent currentVolume(SoundOptions options) {
+    public Percent currentVolume(final SoundOptions options) {
         final Vector position = options.position();
         final Percent directionalVolume = isNull(position)
                 ? options.volume()
@@ -37,11 +35,11 @@ public class DynamicSoundSupport {
     }
 
     private double panByRelativePosition(final Vector position) {
-        return modifier(position.x() - camera.position().x()) * distanceModifier(position);
+        return audioListener.relativePosition(position) * distanceModifier(position);
     }
 
     private double distanceModifier(final Vector position) {
-        return camera.position().distanceTo(position) / configuration.soundRange();
+        return audioListener.distanceTo(position) / configuration.soundRange();
     }
 
     private Percent effectVolume() {
