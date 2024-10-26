@@ -8,7 +8,9 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Decoupled audio playback from camera in preperation of multiple cameras (which may never come)
+- Decoupled audio playback from camera
+- Decoupled particles from viewport
+- Replaced `Particles.spawnArea()` with `.isWithinSpawnArea(Vector)`
 
 ### 📦 Dependency updates
 

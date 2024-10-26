@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterComponent;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 
 import java.util.function.Supplier;
 
@@ -14,12 +13,12 @@ import java.util.function.Supplier;
 public interface Particles {
 
     /**
-     * Returns the area within particles are spawned. The spawning is restricted to an area near the
-     * {@link Camera} to enhance performance.
+     * Returns {@code true} if the position is within the the where particles are spawned. The spawning is restricted
+     * near to the actually visible area.
      *
      * @see #setSpawnDistance(double)
      */
-    Bounds spawnArea();
+    boolean isWithinSpawnArea(Vector position);
 
     /**
      * Returns the current count of particles in the {@link Environment#entities()}.
@@ -51,7 +50,7 @@ public interface Particles {
      * Sets the max distance that particles will be spawened outside the field of vision.
      *
      * @see #spawnDistance()
-     * @see #spawnArea()
+     * @see #isWithinSpawnArea(Vector)
      */
     Particles setSpawnDistance(double spawnDistance);
 

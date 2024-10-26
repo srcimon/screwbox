@@ -4,6 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.audio.internal.VisualAttention;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -13,7 +14,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
-import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
@@ -28,7 +28,7 @@ public class DefaultParticles implements Particles, Updatable {
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
 
     private final DefaultScenes scenes;
-    private final Viewport viewport;
+    private final VisualAttention visualAttention;
 
     private boolean particleCountRefreshed = false;
     private long particleCount = 0;
@@ -36,14 +36,14 @@ public class DefaultParticles implements Particles, Updatable {
     private double spawnDistance = 1000;
     private long particleSpawnCount = 0;
 
-    public DefaultParticles(final DefaultScenes scenes, final Viewport viewport) {
+    public DefaultParticles(final DefaultScenes scenes, final VisualAttention visualAttention) {
         this.scenes = scenes;
-        this.viewport = viewport;
+        this.visualAttention = visualAttention;
     }
 
     @Override
-    public Bounds spawnArea() {
-        return viewport.visibleArea().expand(spawnDistance);
+    public boolean isWithinSpawnArea(Vector position) {
+        return visualAttention.distanceTo(position) <= spawnDistance;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public Particles spawn(final Vector position, final ParticleOptions options) {
-        if (particleLimit > particleCount() && isInSpawnDistance(position)) {
+        if (particleLimit > particleCount() && isWithinSpawnArea(position)) {
             final var particle = createParticle(position, options);
             particleSpawnCount++;
             particleCount++;
@@ -124,10 +124,6 @@ public class DefaultParticles implements Particles, Updatable {
     @Override
     public void update() {
         particleCountRefreshed = false;
-    }
-
-    private boolean isInSpawnDistance(final Vector position) {
-        return spawnArea().contains(position);
     }
 
     private Entity createParticle(final Vector position, final ParticleOptions options) {
