@@ -3,8 +3,6 @@ package io.github.srcimon.screwbox.core.audio.internal;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 
-import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
-
 public class AttentionFocus {
 
     private final Graphics graphics;
@@ -17,7 +15,8 @@ public class AttentionFocus {
         return graphics.camera().position().distanceTo(position);
     }
 
-    public double xDirection(final Vector position) {
-        return modifier(position.x() - graphics.camera().position().x());
+    public Vector direction(final Vector position) {
+        return position.substract(graphics.camera().position()).length(1);
     }
+
 }

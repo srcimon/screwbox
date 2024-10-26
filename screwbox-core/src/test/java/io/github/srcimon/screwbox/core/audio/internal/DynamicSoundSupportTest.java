@@ -1,6 +1,7 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
 import io.github.srcimon.screwbox.core.Percent;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import org.junit.jupiter.api.Test;
@@ -71,7 +72,7 @@ class DynamicSoundSupportTest {
     @Test
     void currentPan_positionSetLeftOfCamera_panIsRight() {
         when(attentionFocus.distanceTo($(-40, 0))).thenReturn(40.0);
-        when(attentionFocus.xDirection($(-40, 0))).thenReturn(-1.0);
+        when(attentionFocus.direction($(-40, 0))).thenReturn(Vector.x(-1));
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(-40, 0)));
@@ -82,7 +83,7 @@ class DynamicSoundSupportTest {
     @Test
     void currentPan_positionSetRightOfCamera_panIsLeft() {
         when(attentionFocus.distanceTo($(80, 0))).thenReturn(80.0);
-        when(attentionFocus.xDirection($(80, 0))).thenReturn(1.0);
+        when(attentionFocus.direction($(80, 0))).thenReturn(Vector.x(1.0));
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(80, 0)));

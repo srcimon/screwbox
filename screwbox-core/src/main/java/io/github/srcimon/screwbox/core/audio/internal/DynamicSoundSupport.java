@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 
+import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
 
 public class DynamicSoundSupport {
@@ -35,7 +36,7 @@ public class DynamicSoundSupport {
     }
 
     private double panByRelativePosition(final Vector position) {
-        return attentionFocus.xDirection(position) * distanceModifier(position);
+        return modifier(attentionFocus.direction(position).x()) * distanceModifier(position);
     }
 
     private double distanceModifier(final Vector position) {
