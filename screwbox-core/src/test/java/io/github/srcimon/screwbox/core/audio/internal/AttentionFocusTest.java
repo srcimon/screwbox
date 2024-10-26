@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AudioListenerTest {
+class AttentionFocusTest {
 
     @Mock
     Graphics graphics;
@@ -24,7 +25,7 @@ class AudioListenerTest {
     Camera camera;
 
     @InjectMocks
-    AudioListener audioListener;
+    AttentionFocus attentionFocus;
 
     @BeforeEach
     void setUp() {
@@ -35,27 +36,34 @@ class AudioListenerTest {
     void distanceTo_samePositionAsCamera_isZero() {
         when(camera.position()).thenReturn($(20, 90));
 
-        assertThat(audioListener.distanceTo($(20, 90))).isZero();
+        assertThat(attentionFocus.distanceTo($(20, 90))).isZero();
     }
 
     @Test
     void distanceTo_awayFromCamera_isDistanceToCamera() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(audioListener.distanceTo($(20, 90))).isEqualTo(50.99, offset(0.1));
+        assertThat(attentionFocus.distanceTo($(20, 90))).isEqualTo(50.99, offset(0.1));
     }
 
     @Test
-    void relativePosition_leftOfCamera_isMinusOne() {
+    void direction_leftOfCamera_isDirectionVectorToTheLeft() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(audioListener.relativePosition($(-20, 90))).isEqualTo(-1.0);
+        Vector direction = attentionFocus.direction($(-20, 90));
+
+        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
+        assertThat(direction.x()).isEqualTo(-0.51, offset(0.01));
+        assertThat(direction.y()).isEqualTo(0.86, offset(0.01));
     }
 
     @Test
-    void relativePosition_rightOfCamera_isOne() {
+    void direction_rightOfCamera_sDirectionVectorToTheRight() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(audioListener.relativePosition($(20, 90))).isEqualTo(1.0);
+        Vector direction = attentionFocus.direction($(20, 90));
+        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
+        assertThat(direction.x()).isEqualTo(0.196, offset(0.01));
+        assertThat(direction.y()).isEqualTo(0.98, offset(0.01));
     }
 }

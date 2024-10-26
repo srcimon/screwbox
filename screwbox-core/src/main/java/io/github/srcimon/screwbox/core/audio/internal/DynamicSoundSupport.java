@@ -5,15 +5,16 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
 import io.github.srcimon.screwbox.core.audio.SoundOptions;
 
+import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 import static java.util.Objects.isNull;
 
 public class DynamicSoundSupport {
 
     private final AudioConfiguration configuration;
-    private final AudioListener audioListener;
+    private final AttentionFocus attentionFocus;
 
-    public DynamicSoundSupport(final AudioListener audioListener, final AudioConfiguration configuration) {
-        this.audioListener = audioListener;
+    public DynamicSoundSupport(final AttentionFocus attentionFocus, final AudioConfiguration configuration) {
+        this.attentionFocus = attentionFocus;
         this.configuration = configuration;
     }
 
@@ -35,11 +36,11 @@ public class DynamicSoundSupport {
     }
 
     private double panByRelativePosition(final Vector position) {
-        return audioListener.relativePosition(position) * distanceModifier(position);
+        return modifier(attentionFocus.direction(position).x()) * distanceModifier(position);
     }
 
     private double distanceModifier(final Vector position) {
-        return audioListener.distanceTo(position) / configuration.soundRange();
+        return attentionFocus.distanceTo(position) / configuration.soundRange();
     }
 
     private Percent effectVolume() {

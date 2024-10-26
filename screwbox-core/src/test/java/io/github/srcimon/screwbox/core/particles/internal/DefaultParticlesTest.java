@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.particles.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.audio.internal.AttentionFocus;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
@@ -11,7 +12,6 @@ import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenComponent;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroyComponent;
-import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.particles.ParticleOptions;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
 import org.junit.jupiter.api.Test;
@@ -19,13 +19,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -41,7 +41,7 @@ class DefaultParticlesTest {
     DefaultScenes scenes;
 
     @Mock
-    Viewport viewport;
+    AttentionFocus attentionFocus;
 
     @InjectMocks
     DefaultParticles particles;
@@ -50,7 +50,7 @@ class DefaultParticlesTest {
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
-        when(viewport.visibleArea()).thenReturn($$(0, 0, 100, 100));
+        when(attentionFocus.distanceTo(any())).thenReturn(1.0);
 
         particles.update();
         particles.spawn($(20, 10), ParticleOptions.unknownSource());
@@ -79,12 +79,12 @@ class DefaultParticlesTest {
 
         particles.spawn($(20, 20), ParticleOptions.unknownSource());
 
-        verifyNoInteractions(viewport);
+        verifyNoInteractions(attentionFocus);
     }
 
     @Test
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
-        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(attentionFocus.distanceTo($(20000, 20))).thenReturn(20000.0);
         when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20000, 20), ParticleOptions.unknownSource());
@@ -96,7 +96,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(attentionFocus.distanceTo($(80, 100))).thenReturn(50.0);
 
         Entity source = new Entity().add(new RenderComponent(20));
 
@@ -132,7 +132,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_noSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(attentionFocus.distanceTo(any())).thenReturn(50.0);
 
         particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
 
@@ -152,23 +152,15 @@ class DefaultParticlesTest {
     }
 
     @Test
-    void spawnArea_returnsCurrentSpawnArea() {
-        particles.setSpawnDistance(30);
-        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
-
-        assertThat(particles.spawnArea()).isEqualTo($$(5, -5, 129, 129));
-    }
-
-    @Test
     void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(viewport.visibleArea()).thenReturn($$(20, 10, 99, 99));
+        when(attentionFocus.distanceTo(Vector.zero())).thenReturn(50.0);
 
         particles.setParticleLimit(5);
 
         particles.spawnMultiple(10, Vector.zero(), ParticleOptions.unknownSource());
 
-        verify(environment, times(5)).addEntity(Mockito.any(Entity.class));
+        verify(environment, times(5)).addEntity(any(Entity.class));
         assertThat(particles.particleCount()).isEqualTo(5);
         assertThat(particles.particlesSpawnCount()).isEqualTo(5);
     }
@@ -178,5 +170,19 @@ class DefaultParticlesTest {
         particles.setSpawnDistance(40);
 
         assertThat(particles.spawnDistance()).isEqualTo(40);
+    }
+
+    @Test
+    void isWithinSpawnArea_distanceTooBig_isFalse() {
+        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(3000.0);
+
+        assertThat(particles.isWithinSpawnArea($(100, 1000))).isFalse();
+    }
+
+    @Test
+    void isWithinSpawnArea_distanceWithinRange_isTrue() {
+        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(500.0);
+
+        assertThat(particles.isWithinSpawnArea($(100, 1000))).isTrue();
     }
 }
