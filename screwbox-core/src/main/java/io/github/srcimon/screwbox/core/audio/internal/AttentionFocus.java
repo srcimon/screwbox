@@ -5,11 +5,11 @@ import io.github.srcimon.screwbox.core.graphics.Graphics;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
 
-public class VisualAttention {
+public class AttentionFocus {
 
     private final Graphics graphics;
 
-    public VisualAttention(final Graphics graphics) {
+    public AttentionFocus(final Graphics graphics) {
         this.graphics = graphics;
     }
 

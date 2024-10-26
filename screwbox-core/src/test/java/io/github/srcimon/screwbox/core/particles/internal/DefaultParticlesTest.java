@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.particles.internal;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.audio.internal.VisualAttention;
+import io.github.srcimon.screwbox.core.audio.internal.AttentionFocus;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
@@ -41,7 +41,7 @@ class DefaultParticlesTest {
     DefaultScenes scenes;
 
     @Mock
-    VisualAttention visualAttention;
+    AttentionFocus attentionFocus;
 
     @InjectMocks
     DefaultParticles particles;
@@ -50,7 +50,7 @@ class DefaultParticlesTest {
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
-        when(visualAttention.distanceTo(any())).thenReturn(1.0);
+        when(attentionFocus.distanceTo(any())).thenReturn(1.0);
 
         particles.update();
         particles.spawn($(20, 10), ParticleOptions.unknownSource());
@@ -79,12 +79,12 @@ class DefaultParticlesTest {
 
         particles.spawn($(20, 20), ParticleOptions.unknownSource());
 
-        verifyNoInteractions(visualAttention);
+        verifyNoInteractions(attentionFocus);
     }
 
     @Test
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
-        when(visualAttention.distanceTo($(20000, 20))).thenReturn(20000.0);
+        when(attentionFocus.distanceTo($(20000, 20))).thenReturn(20000.0);
         when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20000, 20), ParticleOptions.unknownSource());
@@ -96,7 +96,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(visualAttention.distanceTo($(80, 100))).thenReturn(50.0);
+        when(attentionFocus.distanceTo($(80, 100))).thenReturn(50.0);
 
         Entity source = new Entity().add(new RenderComponent(20));
 
@@ -132,7 +132,7 @@ class DefaultParticlesTest {
     @Test
     void spawn_noSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(visualAttention.distanceTo(any())).thenReturn(50.0);
+        when(attentionFocus.distanceTo(any())).thenReturn(50.0);
 
         particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
 
@@ -154,7 +154,7 @@ class DefaultParticlesTest {
     @Test
     void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(visualAttention.distanceTo(Vector.zero())).thenReturn(50.0);
+        when(attentionFocus.distanceTo(Vector.zero())).thenReturn(50.0);
 
         particles.setParticleLimit(5);
 
@@ -174,14 +174,14 @@ class DefaultParticlesTest {
 
     @Test
     void isWithinSpawnArea_distanceTooBig_isFalse() {
-        when(visualAttention.distanceTo($(100, 1000))).thenReturn(3000.0);
+        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(3000.0);
 
         assertThat(particles.isWithinSpawnArea($(100, 1000))).isFalse();
     }
 
     @Test
     void isWithinSpawnArea_distanceWithinRange_isTrue() {
-        when(visualAttention.distanceTo($(100, 1000))).thenReturn(500.0);
+        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(500.0);
 
         assertThat(particles.isWithinSpawnArea($(100, 1000))).isTrue();
     }

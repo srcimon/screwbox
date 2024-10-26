@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Ease;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.audio.internal.VisualAttention;
+import io.github.srcimon.screwbox.core.audio.internal.AttentionFocus;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
@@ -28,7 +28,7 @@ public class DefaultParticles implements Particles, Updatable {
     private static final Archetype PARTICLES = Archetype.of(ParticleComponent.class);
 
     private final DefaultScenes scenes;
-    private final VisualAttention visualAttention;
+    private final AttentionFocus attentionFocus;
 
     private boolean particleCountRefreshed = false;
     private long particleCount = 0;
@@ -36,14 +36,14 @@ public class DefaultParticles implements Particles, Updatable {
     private double spawnDistance = 1000;
     private long particleSpawnCount = 0;
 
-    public DefaultParticles(final DefaultScenes scenes, final VisualAttention visualAttention) {
+    public DefaultParticles(final DefaultScenes scenes, final AttentionFocus attentionFocus) {
         this.scenes = scenes;
-        this.visualAttention = visualAttention;
+        this.attentionFocus = attentionFocus;
     }
 
     @Override
     public boolean isWithinSpawnArea(Vector position) {
-        return visualAttention.distanceTo(position) <= spawnDistance;
+        return attentionFocus.distanceTo(position) <= spawnDistance;
     }
 
     @Override

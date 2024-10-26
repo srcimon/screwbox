@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class DynamicSoundSupportTest {
 
     @Mock
-    VisualAttention visualAttention;
+    AttentionFocus attentionFocus;
 
     @Mock
     AudioConfiguration configuration;
@@ -70,8 +70,8 @@ class DynamicSoundSupportTest {
 
     @Test
     void currentPan_positionSetLeftOfCamera_panIsRight() {
-        when(visualAttention.distanceTo($(-40, 0))).thenReturn(40.0);
-        when(visualAttention.xDirection($(-40, 0))).thenReturn(-1.0);
+        when(attentionFocus.distanceTo($(-40, 0))).thenReturn(40.0);
+        when(attentionFocus.xDirection($(-40, 0))).thenReturn(-1.0);
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(-40, 0)));
@@ -81,8 +81,8 @@ class DynamicSoundSupportTest {
 
     @Test
     void currentPan_positionSetRightOfCamera_panIsLeft() {
-        when(visualAttention.distanceTo($(80, 0))).thenReturn(80.0);
-        when(visualAttention.xDirection($(80, 0))).thenReturn(1.0);
+        when(attentionFocus.distanceTo($(80, 0))).thenReturn(80.0);
+        when(attentionFocus.xDirection($(80, 0))).thenReturn(1.0);
         when(configuration.soundRange()).thenReturn(200.0);
 
         var pan = dynamicSoundSupport.currentPan(SoundOptions.playOnce().position($(80, 0)));
@@ -94,7 +94,7 @@ class DynamicSoundSupportTest {
     void currentVolume_outOfSoundRange_isZero() {
         when(configuration.effectVolume()).thenReturn(Percent.max());
         when(configuration.soundRange()).thenReturn(200.0);
-        when(visualAttention.distanceTo($(0, 1000.0))).thenReturn(1000.0);
+        when(attentionFocus.distanceTo($(0, 1000.0))).thenReturn(1000.0);
 
         var volume = dynamicSoundSupport.currentVolume(SoundOptions.playTimes(3).position($(0, 1000)));
 

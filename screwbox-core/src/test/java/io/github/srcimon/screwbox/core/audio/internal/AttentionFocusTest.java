@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class VisualAttentionTest {
+class AttentionFocusTest {
 
     @Mock
     Graphics graphics;
@@ -24,7 +24,7 @@ class VisualAttentionTest {
     Camera camera;
 
     @InjectMocks
-    VisualAttention visualAttention;
+    AttentionFocus attentionFocus;
 
     @BeforeEach
     void setUp() {
@@ -35,27 +35,27 @@ class VisualAttentionTest {
     void distanceTo_samePositionAsCamera_isZero() {
         when(camera.position()).thenReturn($(20, 90));
 
-        assertThat(visualAttention.distanceTo($(20, 90))).isZero();
+        assertThat(attentionFocus.distanceTo($(20, 90))).isZero();
     }
 
     @Test
     void distanceTo_awayFromCamera_isDistanceToCamera() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(visualAttention.distanceTo($(20, 90))).isEqualTo(50.99, offset(0.1));
+        assertThat(attentionFocus.distanceTo($(20, 90))).isEqualTo(50.99, offset(0.1));
     }
 
     @Test
     void xDirection_leftOfCamera_isMinusOne() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(visualAttention.xDirection($(-20, 90))).isEqualTo(-1.0);
+        assertThat(attentionFocus.xDirection($(-20, 90))).isEqualTo(-1.0);
     }
 
     @Test
     void xDirection_rightOfCamera_isOne() {
         when(camera.position()).thenReturn($(10, 40));
 
-        assertThat(visualAttention.xDirection($(20, 90))).isEqualTo(1.0);
+        assertThat(attentionFocus.xDirection($(20, 90))).isEqualTo(1.0);
     }
 }
