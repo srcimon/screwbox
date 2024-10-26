@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.audio.internal;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 
