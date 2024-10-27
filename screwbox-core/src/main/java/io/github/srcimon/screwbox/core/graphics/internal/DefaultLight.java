@@ -27,7 +27,7 @@ public class DefaultLight implements Light {
     private List<LightDelegate> delegates = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
-private Percent ambientLight = Percent.zero();
+    private Percent ambientLight = Percent.zero();
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -51,7 +51,8 @@ private Percent ambientLight = Percent.zero();
     public Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color) {
         for (final var delegate : delegates) {
             delegate.addConeLight(position, direction, cone, radius, color);
-        };
+        }
+        ;
         return this;
     }
 
@@ -67,7 +68,8 @@ private Percent ambientLight = Percent.zero();
     public Light addSpotLight(Vector position, double radius, Color color) {
         for (final var delegate : delegates) {
             delegate.addSpotLight(position, radius, color);
-        };
+        }
+        ;
         return this;
     }
 
@@ -85,7 +87,8 @@ private Percent ambientLight = Percent.zero();
     public Light addFullBrightnessArea(Bounds area) {
         for (final var delegate : delegates) {
             delegate.addFullBrightnessArea(area);
-        };
+        }
+        ;
         return this;
     }
 
@@ -94,7 +97,8 @@ private Percent ambientLight = Percent.zero();
         this.ambientLight = requireNonNull(ambientLight, "ambient light must not be null");
         for (final var delegate : delegates) {
             delegate.setAmbientLight(ambientLight);
-        };
+        }
+        ;
         return this;
     }
 
@@ -105,6 +109,10 @@ private Percent ambientLight = Percent.zero();
 
     @Override
     public Light addGlow(Vector position, double radius, Color color) {
+        for (final var delegate : delegates) {
+            delegate.addGlow(position, radius, color);
+        }
+        ;
         return this;
     }
 
@@ -112,7 +120,7 @@ private Percent ambientLight = Percent.zero();
     public Light render() {
         for (final var delegate : delegates) {
             delegate.render();
-        };
+        }
         return this;
     }
 

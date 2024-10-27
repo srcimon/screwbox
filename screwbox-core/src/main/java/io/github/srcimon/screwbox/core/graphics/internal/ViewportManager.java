@@ -84,14 +84,10 @@ private SplitScreenOptions options;
     @Override
     public void update() {
         arangeViewports();
-    }
-
-    private void arangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             switch (options.arangement()) {
                 case VERTICAL -> {
                     int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
                     if (splitScreenViewports.size() > i - 1) {
                         defaultViewport.canvas().drawLine(
                                 Offset.at(witdht * i, 0),
@@ -101,13 +97,30 @@ private SplitScreenOptions options;
                 }
                 case HORIZONTAL -> {
                     int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds(0, i * height, defaultViewport.canvas().width(), height));
                     if (splitScreenViewports.size() > i - 1) {
                         defaultViewport.canvas().drawLine(
                                 Offset.at(0, height * i),
                                 Offset.at(defaultViewport.canvas().width() * i, height * i),
                                 LineDrawOptions.color(Color.BLACK).strokeWidth(4));
                     }
+                }
+            }
+
+        }
+    }
+
+    private void arangeViewports() {
+        for (int i = 0; i < splitScreenViewports.size(); i++) {
+            switch (options.arangement()) {
+                case VERTICAL -> {
+                    int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
+
+                }
+                case HORIZONTAL -> {
+                    int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds(0, i * height, defaultViewport.canvas().width(), height));
+
                 }
             }
 
