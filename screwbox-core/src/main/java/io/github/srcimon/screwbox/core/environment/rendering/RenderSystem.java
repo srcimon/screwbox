@@ -85,12 +85,12 @@ public class RenderSystem implements EntitySystem {
                             : null;
                     final var reflectedBounds = reflection.moveBy(Vector.y(-reflection.height()));
                     final var reflectedAreaOnSreen = viewport.toCanvas(reflectedBounds);
-                    final var reflectionImage = new ReflectionImage(engine.graphics(), reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
+                    final var reflectionImage = new ReflectionImage(viewport, reflectionConfig.drawOrder, size, reflectedAreaOnSreen, entityMotion);
                     for (final var entity : renderEntities) {
                         reflectionImage.addEntity(entity);
                     }
 
-                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), engine.graphics().toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
+                    spriteBatch.add(reflectionImage.create(reflectionConfig.blur), viewport.toCanvas(reflection.origin()), SpriteDrawOptions.scaled(zoom).opacity(reflectionConfig.opacityModifier), reflectionConfig.drawOrder);
                 }
             });
         }
