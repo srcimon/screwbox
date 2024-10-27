@@ -80,6 +80,9 @@ public class GameScene implements Scene {
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(engine -> {
+                    if(engine.keyboard().isPressed(Key.T)) {
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3));
+                    }
                     if(engine.keyboard().isPressed(Key.Z)) {
                         engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2));
                     }

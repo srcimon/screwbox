@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.ViewportName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ public class ViewportManager {
 
     private final List<Viewport> defaultViewports;
     private final List<Viewport> splitScreenViewports = new ArrayList<>();
-    private final Map<ViewportName, Viewport> viewportMap = new HashMap<>();
+    private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
 
@@ -35,10 +34,10 @@ public class ViewportManager {
             throw new IllegalStateException("split screen is already enabled");
         }
         for (int i = 0; i < options.screenCount(); i++) {
-            int witdht = (int) (defaultViewport.canvas().width() / 2.0);
+            int witdht = (int) (defaultViewport.canvas().width() / options.screenCount() * 1.0);
             Viewport viewport = createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
             splitScreenViewports.add(viewport);
-            viewportMap.put(ViewportName.values()[i], viewport);
+            viewportMap.put(i, viewport);
         }
     }
 
@@ -54,7 +53,7 @@ public class ViewportManager {
     public void disableSplitScreen() {
         splitScreenViewports.clear();
         viewportMap.clear();
-        viewportMap.put(ViewportName.FIRST, defaultViewport);
+        viewportMap.put(0, defaultViewport);
     }
 
     public Viewport defaultViewport() {
@@ -67,7 +66,7 @@ public class ViewportManager {
                 : defaultViewports;
     }
 
-    public Optional<Viewport> viewport(final ViewportName viewportName) {
-        return Optional.ofNullable(viewportMap.get(viewportName));
+    public Optional<Viewport> viewport(final int id) {
+        return Optional.ofNullable(viewportMap.get(id));
     }
 }
