@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
@@ -114,13 +115,17 @@ private SplitScreenOptions options;
             switch (options.arangement()) {
                 case HORIZONTAL -> {
                     int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
+                    var offset = Offset.at( i * witdht, 0).add(defaultViewport.canvas().offset());
+                    var size = Size.of(witdht, defaultViewport.canvas().height());
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds( offset, size));
 
                 }
                 case VERTICAL -> {
                     int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds(0, i * height, defaultViewport.canvas().width(), height));
+                    var offset = Offset.at( 0, i * height).add(defaultViewport.canvas().offset());
+                    var size = Size.of(defaultViewport.canvas().width(), height);
 
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds( offset, size));
                 }
             }
 
