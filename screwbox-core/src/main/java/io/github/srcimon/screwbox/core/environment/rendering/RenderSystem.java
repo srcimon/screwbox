@@ -8,7 +8,6 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
@@ -19,7 +18,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;

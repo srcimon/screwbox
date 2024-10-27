@@ -139,7 +139,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
         graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, viewportManager);
-        final AttentionFocus attentionFocus = new AttentionFocus(graphics);
+        final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
