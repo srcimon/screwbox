@@ -42,7 +42,7 @@ private SplitScreenOptions options;
            disableSplitScreen();
         }
         for (int i = 0; i < options.screenCount(); i++) {
-            DefaultViewport viewport = createViewport();
+            DefaultViewport viewport = createViewport(i == 0);
             splitScreenViewports.add(viewport);
             splitScreenViewportsCorrectType.add(viewport);
             viewportMap.put(i, viewport);
@@ -51,13 +51,16 @@ private SplitScreenOptions options;
         arangeViewports();
     }
 
-    private DefaultViewport createViewport() {
+    private DefaultViewport createViewport(boolean isPrimary) {
         DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0,0,1,1));
-        DefaultCamera camera = new DefaultCamera(canvas);
-        camera.setPosition(defaultViewport.camera().position());
-        camera.setZoom(defaultViewport.camera().zoom());
-        camera.setZoomRestriction(defaultViewport.camera().minZoom(), defaultViewport.camera().maxZoom());
-        return new DefaultViewport(canvas, camera);
+        if(!isPrimary) {
+            DefaultCamera camera = new DefaultCamera(canvas);
+            camera.setPosition(defaultViewport.camera().position());
+            camera.setZoom(defaultViewport.camera().zoom());
+            camera.setZoomRestriction(defaultViewport.camera().minZoom(), defaultViewport.camera().maxZoom());
+            return new DefaultViewport(canvas, camera);
+        }
+        return new DefaultViewport(canvas, defaultViewport.camera());
     }
 
     public void disableSplitScreen() {

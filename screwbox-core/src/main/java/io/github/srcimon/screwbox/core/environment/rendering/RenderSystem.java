@@ -62,7 +62,7 @@ public class RenderSystem implements EntitySystem {
         return !render.renderOverLight;
     }
 
-    private void addReflectionsToSpriteBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
+    protected void addReflectionsToSpriteBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
         final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
