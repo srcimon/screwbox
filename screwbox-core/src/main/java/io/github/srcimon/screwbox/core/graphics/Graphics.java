@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface Graphics extends Viewport {
 
+    Graphics enableSplitScreen(SplitScreenOptions options);
+
+    Graphics disableSplitScreen();
+
+    boolean isSplitScreenEnabled();
+
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */

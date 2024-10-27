@@ -26,6 +26,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final AsyncRenderer asyncRenderer;
     private final Viewport viewport;
+    private final ViewportManager viewportManager;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -33,7 +34,8 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final AsyncRenderer asyncRenderer,
-                           final Viewport viewport) {
+                           final Viewport viewport,
+                           final ViewportManager viewportManager) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -41,11 +43,29 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.graphicsDevice = graphicsDevice;
         this.asyncRenderer = asyncRenderer;
         this.viewport = viewport;
+        this.viewportManager = viewportManager;
     }
 
     @Override
     public Bounds visibleArea() {
         return viewport.visibleArea();
+    }
+
+    @Override
+    public Graphics enableSplitScreen(final SplitScreenOptions options) {
+        viewportManager.enableSplitScreen(options);
+        return this;
+    }
+
+    @Override
+    public Graphics disableSplitScreen() {
+        viewportManager.disableSplitScreen();
+        return this;
+    }
+
+    @Override
+    public boolean isSplitScreenEnabled() {
+        return viewportManager.isSplitScreenEnabled();
     }
 
     @Override

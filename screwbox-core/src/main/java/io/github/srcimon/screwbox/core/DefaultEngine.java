@@ -25,6 +25,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.FirewallRenderer;
@@ -137,7 +138,8 @@ class DefaultEngine implements Engine {
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, screenViewport);
+        final var viewportManager = new ViewportManager();
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, screenViewport, viewportManager);
         final AttentionFocus attentionFocus = new AttentionFocus(graphics);
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
