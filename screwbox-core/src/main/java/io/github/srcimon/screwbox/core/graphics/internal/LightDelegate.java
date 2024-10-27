@@ -145,7 +145,6 @@ public class LightDelegate {
     }
 
     public void setAmbientLight(final Percent ambientLight) {
-        requireNonNull(ambientLight, "ambient light must not be null");
         this.ambientLight = ambientLight;
     }
 

@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
+import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
 
@@ -26,6 +27,7 @@ public class DefaultLight implements Light {
     private List<LightDelegate> delegates = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
+private Percent ambientLight = Percent.zero();
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -47,6 +49,9 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color) {
+        for (final var delegate : delegates) {
+            delegate.addConeLight(position, direction, cone, radius, color);
+        };
         return this;
     }
 
@@ -60,6 +65,9 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addSpotLight(Vector position, double radius, Color color) {
+        for (final var delegate : delegates) {
+            delegate.addSpotLight(position, radius, color);
+        };
         return this;
     }
 
@@ -75,11 +83,15 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addFullBrightnessArea(Bounds area) {
+        for (final var delegate : delegates) {
+            delegate.addFullBrightnessArea(area);
+        };
         return this;
     }
 
     @Override
-    public Light setAmbientLight(Percent ambientLight) {
+    public Light setAmbientLight(final Percent ambientLight) {
+        this.ambientLight = requireNonNull(ambientLight, "ambient light must not be null");
         for (final var delegate : delegates) {
             delegate.setAmbientLight(ambientLight);
         };
@@ -88,7 +100,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Percent ambientLight() {
-        return null;
+        return ambientLight;
     }
 
     @Override
@@ -111,7 +123,9 @@ public class DefaultLight implements Light {
         lightPhysics.clear();
         delegates.clear();
         for (var viewport : viewportManager.activeViewports()) {
-            delegates.add(new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter));
+            LightDelegate delegate = new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter);
+            delegate.setAmbientLight(ambientLight);
+            delegates.add(delegate);
         }
     }
 }
