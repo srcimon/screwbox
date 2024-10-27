@@ -1,9 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.SplitScreen;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.ViewportName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class ViewportManager {
 
     private final List<Viewport> defaultViewports;
     private final List<Viewport> splitScreenViewports = new ArrayList<>();
-    private final Map<SplitScreen, Viewport> viewportMap = new HashMap<>();
+    private final Map<ViewportName, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
 
@@ -38,7 +38,7 @@ public class ViewportManager {
             int witdht = (int) (defaultViewport.canvas().width() / 2.0);
             Viewport viewport = createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
             splitScreenViewports.add(viewport);
-            viewportMap.put(SplitScreen.values()[i], viewport);
+            viewportMap.put(ViewportName.values()[i], viewport);
         }
     }
 
@@ -54,7 +54,7 @@ public class ViewportManager {
     public void disableSplitScreen() {
         splitScreenViewports.clear();
         viewportMap.clear();
-        viewportMap.put(SplitScreen.ONE, defaultViewport);
+        viewportMap.put(ViewportName.FIRST, defaultViewport);
     }
 
     public Viewport defaultViewport() {
@@ -67,7 +67,7 @@ public class ViewportManager {
                 : defaultViewports;
     }
 
-    public Optional<Viewport> viewport(final SplitScreen splitScreen) {
-        return Optional.ofNullable(viewportMap.get(splitScreen));
+    public Optional<Viewport> viewport(final ViewportName viewportName) {
+        return Optional.ofNullable(viewportMap.get(viewportName));
     }
 }

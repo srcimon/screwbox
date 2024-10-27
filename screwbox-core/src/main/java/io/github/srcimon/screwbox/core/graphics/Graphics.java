@@ -17,7 +17,7 @@ public interface Graphics extends Viewport {
 
     Graphics disableSplitScreen();
 
-    Optional<Viewport> vieport(SplitScreen splitScreen);
+    Optional<Viewport> vieport(ViewportName viewportName);
 
     boolean isSplitScreenEnabled();
 

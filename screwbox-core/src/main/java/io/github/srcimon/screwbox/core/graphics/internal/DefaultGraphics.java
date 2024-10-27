@@ -66,8 +66,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Optional<Viewport> vieport(final SplitScreen splitScreen) {
-        return viewportManager.viewport(splitScreen);
+    public Optional<Viewport> vieport(final ViewportName viewportName) {
+        return viewportManager.viewport(viewportName);
     }
 
     @Override
