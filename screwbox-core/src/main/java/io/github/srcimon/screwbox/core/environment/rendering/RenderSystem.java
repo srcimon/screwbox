@@ -56,7 +56,7 @@ public class RenderSystem implements EntitySystem {
                 }
             }
             addReflectionsToSpriteBatch(engine, viewport, spriteBatch);
-            engine.graphics().canvas().drawSpriteBatch(spriteBatch);
+            viewport.canvas().drawSpriteBatch(spriteBatch);
         }
     }
 
