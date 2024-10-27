@@ -3,11 +3,13 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.loop.internal.Updatable;
+import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewportManager {
+public class ViewportManager  {
 
     private final List<Viewport> defaultViewports;
     private final List<Viewport> splitScreenViewports = new ArrayList<>();
@@ -29,7 +31,7 @@ public class ViewportManager {
             throw new IllegalStateException("split screen is already enabled");
         }
         for (int i = 0; i < options.screenCount(); i++) {
-            int witdht = (int)(defaultViewport.canvas().width() / 2.0);
+            int witdht = (int) (defaultViewport.canvas().width() / 2.0);
             splitScreenViewports.add(createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height())));
         }
     }
@@ -56,4 +58,5 @@ public class ViewportManager {
                 ? splitScreenViewports
                 : defaultViewports;
     }
+
 }

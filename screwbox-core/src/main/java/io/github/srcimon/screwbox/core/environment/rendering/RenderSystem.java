@@ -44,7 +44,7 @@ public class RenderSystem implements EntitySystem {
             final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), viewport.canvas().size());
             for (final Entity entity : renderEntities) {
                 final RenderComponent render = entity.get(RenderComponent.class);
-                if (((Predicate<RenderComponent>) r -> !r.renderOverLight).test(render)) {
+                if (mustRender(render)) {
                     final double width = render.sprite.width() * render.options.scale();
                     final double height = render.sprite.height() * render.options.scale();
                     final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
@@ -58,6 +58,10 @@ public class RenderSystem implements EntitySystem {
             addReflectionsToSpriteBatch(engine, viewport, spriteBatch);
             viewport.canvas().drawSpriteBatch(spriteBatch);
         }
+    }
+
+    protected boolean mustRender(final RenderComponent render) {
+        return !render.renderOverLight;
     }
 
     private void addReflectionsToSpriteBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
