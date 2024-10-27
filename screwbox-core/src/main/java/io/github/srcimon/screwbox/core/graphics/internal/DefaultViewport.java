@@ -3,13 +3,16 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 
-public record DefaultViewport(Canvas canvas, Camera camera) implements Viewport {
+public record DefaultViewport(DefaultCanvas canvas, Camera camera) implements Viewport {
+
+    public void updateClip(final ScreenBounds clip) {
+        this.canvas.updateClip(clip);
+    }
 
     @Override
     public Offset toCanvas(final Vector position) {
