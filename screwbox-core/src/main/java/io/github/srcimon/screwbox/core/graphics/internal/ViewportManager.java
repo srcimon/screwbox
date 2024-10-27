@@ -86,7 +86,7 @@ private SplitScreenOptions options;
         arangeViewports();
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             switch (options.arangement()) {
-                case VERTICAL -> {
+                case HORIZONTAL -> {
                     int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
                     if (splitScreenViewports.size() > i - 1) {
                         defaultViewport.canvas().drawLine(
@@ -95,7 +95,7 @@ private SplitScreenOptions options;
                                 LineDrawOptions.color(Color.BLACK).strokeWidth(4));
                     }
                 }
-                case HORIZONTAL -> {
+                case VERTICAL -> {
                     int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
                     if (splitScreenViewports.size() > i - 1) {
                         defaultViewport.canvas().drawLine(
@@ -112,12 +112,12 @@ private SplitScreenOptions options;
     private void arangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             switch (options.arangement()) {
-                case VERTICAL -> {
+                case HORIZONTAL -> {
                     int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
                     splitScreenViewports.get(i).updateClip(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
 
                 }
-                case HORIZONTAL -> {
+                case VERTICAL -> {
                     int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
                     splitScreenViewports.get(i).updateClip(new ScreenBounds(0, i * height, defaultViewport.canvas().width(), height));
 

@@ -81,16 +81,19 @@ public class GameScene implements Scene {
                 .addSystem(new KilledFromAboveSystem())
                 .addSystem(engine -> {
                     if(engine.keyboard().isPressed(Key.T)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3));
-                    }
-                    if(engine.keyboard().isPressed(Key.Z)) {
                         engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2));
                     }
+                    if(engine.keyboard().isPressed(Key.Z)) {
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3));
+                    }
                     if(engine.keyboard().isPressed(Key.G)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3).arangement(SplitScreenOptions.Arangement.VERTICAL));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2).arangement(SplitScreenOptions.Arangement.VERTICAL));
                     }
                     if(engine.keyboard().isPressed(Key.H)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2).arangement(SplitScreenOptions.Arangement.VERTICAL));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3).arangement(SplitScreenOptions.Arangement.VERTICAL));
+                    }
+                    if(engine.keyboard().isPressed(Key.I)) {
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(8));
                     }
                     if(engine.keyboard().isPressed(Key.U)) {
                         engine.graphics().disableSplitScreen();
