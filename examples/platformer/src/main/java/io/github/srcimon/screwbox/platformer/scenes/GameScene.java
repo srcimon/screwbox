@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
+import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
+import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
@@ -77,6 +79,14 @@ public class GameScene implements Scene {
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
+                .addSystem(engine -> {
+                    if(engine.keyboard().isPressed(Key.Z)) {
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2));
+                    }
+                    if(engine.keyboard().isPressed(Key.U)) {
+                        engine.graphics().disableSplitScreen();
+                    }
+                })
                 .addSystem(new GroundDetectorSystem())
                 .addSystem(new KillZoneSystem())
                 .addSystem(new DebugConfigSystem())

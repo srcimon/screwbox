@@ -29,13 +29,18 @@ public class ViewportManager {
             throw new IllegalStateException("split screen is already enabled");
         }
         for (int i = 0; i < options.screenCount(); i++) {
-            splitScreenViewports.add(createViewport());
+            int witdht = (int)(defaultViewport.canvas().width() / 2.0);
+            splitScreenViewports.add(createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height())));
         }
     }
 
-    private Viewport createViewport() {
-        DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 500, 500));
-        return new DefaultViewport(canvas, new DefaultCamera(canvas));
+    private Viewport createViewport(ScreenBounds bounds) {
+        DefaultCanvas canvas = new DefaultCanvas(renderer, bounds);
+        DefaultCamera camera = new DefaultCamera(canvas);
+        camera.setPosition(defaultViewport.camera().position());
+        camera.setZoom(defaultViewport.camera().zoom());
+        camera.setZoomRestriction(defaultViewport.camera().minZoom(), defaultViewport.camera().maxZoom());
+        return new DefaultViewport(canvas, camera);
     }
 
     public void disableSplitScreen() {
