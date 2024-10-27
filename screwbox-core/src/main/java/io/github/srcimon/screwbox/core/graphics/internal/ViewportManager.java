@@ -23,7 +23,7 @@ public class ViewportManager implements Updatable {
     private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
-private SplitScreenOptions options;
+    private SplitScreenOptions options;
 
     public ViewportManager(final Viewport defaultViewport, final Renderer renderer) {
         this.renderer = renderer;
@@ -39,7 +39,7 @@ private SplitScreenOptions options;
 
     public void enableSplitScreen(final SplitScreenOptions options) {
         if (isSplitScreenEnabled()) {
-           disableSplitScreen();
+            disableSplitScreen();
         }
         for (int i = 0; i < options.screenCount(); i++) {
             DefaultViewport viewport = createViewport(i == 0);
@@ -52,8 +52,8 @@ private SplitScreenOptions options;
     }
 
     private DefaultViewport createViewport(boolean isPrimary) {
-        DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0,0,1,1));
-        if(!isPrimary) {
+        DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 1, 1));
+        if (!isPrimary) {
             DefaultCamera camera = new DefaultCamera(canvas);
             camera.setPosition(defaultViewport.camera().position());
             camera.setZoom(defaultViewport.camera().zoom());
@@ -96,7 +96,7 @@ private SplitScreenOptions options;
                         defaultViewport.canvas().drawLine(
                                 Offset.at(witdht * i, 0),
                                 Offset.at(witdht * i, defaultViewport.canvas().height()),
-                                LineDrawOptions.color(Color.BLACK).strokeWidth(4));
+                                options.borderOptions());
                     }
                 }
                 case VERTICAL -> {
@@ -105,7 +105,7 @@ private SplitScreenOptions options;
                         defaultViewport.canvas().drawLine(
                                 Offset.at(0, height * i),
                                 Offset.at(defaultViewport.canvas().width() * i, height * i),
-                                LineDrawOptions.color(Color.BLACK).strokeWidth(4));
+                                options.borderOptions());
                     }
                 }
             }
@@ -118,17 +118,17 @@ private SplitScreenOptions options;
             switch (options.arangement()) {
                 case HORIZONTAL -> {
                     int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
-                    var offset = Offset.at( i * witdht, 0).add(defaultViewport.canvas().offset());
+                    var offset = Offset.at(i * witdht, 0).add(defaultViewport.canvas().offset());
                     var size = Size.of(witdht, defaultViewport.canvas().height());
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds( offset, size));
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds(offset, size));
 
                 }
                 case VERTICAL -> {
                     int height = (int) (defaultViewport.canvas().height() / splitScreenViewports.size() * 1.0);
-                    var offset = Offset.at( 0, i * height).add(defaultViewport.canvas().offset());
+                    var offset = Offset.at(0, i * height).add(defaultViewport.canvas().offset());
                     var size = Size.of(defaultViewport.canvas().width(), height);
 
-                    splitScreenViewports.get(i).updateClip(new ScreenBounds( offset, size));
+                    splitScreenViewports.get(i).updateClip(new ScreenBounds(offset, size));
                 }
             }
 
