@@ -1,18 +1,21 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.SplitScreen;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.Latch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-public class ViewportManager  {
+public class ViewportManager {
 
     private final List<Viewport> defaultViewports;
     private final List<Viewport> splitScreenViewports = new ArrayList<>();
+    private final Map<SplitScreen, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
 
@@ -20,6 +23,7 @@ public class ViewportManager  {
         this.renderer = renderer;
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
+        disableSplitScreen();
     }
 
     public boolean isSplitScreenEnabled() {
@@ -32,7 +36,9 @@ public class ViewportManager  {
         }
         for (int i = 0; i < options.screenCount(); i++) {
             int witdht = (int) (defaultViewport.canvas().width() / 2.0);
-            splitScreenViewports.add(createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height())));
+            Viewport viewport = createViewport(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
+            splitScreenViewports.add(viewport);
+            viewportMap.put(SplitScreen.values()[i], viewport);
         }
     }
 
@@ -47,6 +53,8 @@ public class ViewportManager  {
 
     public void disableSplitScreen() {
         splitScreenViewports.clear();
+        viewportMap.clear();
+        viewportMap.put(SplitScreen.ONE, defaultViewport);
     }
 
     public Viewport defaultViewport() {
@@ -59,4 +67,7 @@ public class ViewportManager  {
                 : defaultViewports;
     }
 
+    public Optional<Viewport> viewport(final SplitScreen splitScreen) {
+        return Optional.ofNullable(viewportMap.get(splitScreen));
+    }
 }

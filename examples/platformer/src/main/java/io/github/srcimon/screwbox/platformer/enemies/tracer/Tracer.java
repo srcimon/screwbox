@@ -8,7 +8,9 @@ import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.SignalComponent;
 import io.github.srcimon.screwbox.core.environment.logic.StateComponent;
 import io.github.srcimon.screwbox.core.environment.logic.TriggerAreaComponent;
+import io.github.srcimon.screwbox.core.environment.rendering.CameraTargetComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
+import io.github.srcimon.screwbox.core.graphics.SplitScreen;
 import io.github.srcimon.screwbox.platformer.components.DeathEventComponent;
 import io.github.srcimon.screwbox.platformer.components.DetectLineOfSightToPlayerComponent;
 import io.github.srcimon.screwbox.platformer.components.KillZoneComponent;
@@ -22,6 +24,7 @@ public class Tracer implements Converter<GameObject> {
         return new Entity(object.id(), "Tracer").add(
                 new TransformComponent(Bounds.atPosition(object.position(), 16, 16)),
                 new RenderComponent(object.layer().order()),
+                new CameraTargetComponent(SplitScreen.TWO, 2),
                 new TriggerAreaComponent(Archetype.of(PlayerMarkerComponent.class, TransformComponent.class)),
                 new SignalComponent(),
                 new DetectLineOfSightToPlayerComponent(140),

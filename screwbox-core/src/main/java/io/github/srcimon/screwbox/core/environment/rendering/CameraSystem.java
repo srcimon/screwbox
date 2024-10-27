@@ -14,12 +14,13 @@ public class CameraSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
-            for(final var viewport : engine.graphics().activeViewports()) {
+        for (final var targetEntity : engine.environment().fetchAll(TARGET)) {
+            final var target = targetEntity.get(CameraTargetComponent.class);
+            engine.graphics().vieport(target.splitScreen).ifPresent(viewport -> {
                 final var cameraPosition = viewport.camera().position();
                 final var targetBounds = targetEntity.bounds();
 //TODO support camera number in CameraComponent
-                final var target = targetEntity.get(CameraTargetComponent.class);
+
                 final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
                 if (target.allowJumping
                         && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0
@@ -41,7 +42,7 @@ public class CameraSystem implements EntitySystem {
                 } else {
                     viewport.camera().move(cameraMovement);
                 }
-            }
-        });
+            });
+        }
     }
 }

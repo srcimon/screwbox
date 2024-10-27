@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
@@ -62,6 +63,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     public Graphics disableSplitScreen() {
         viewportManager.disableSplitScreen();
         return this;
+    }
+
+    @Override
+    public Optional<Viewport> vieport(final SplitScreen splitScreen) {
+        return viewportManager.viewport(splitScreen);
     }
 
     @Override

@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Gives access to all graphics related configuration and operations.
@@ -15,6 +16,8 @@ public interface Graphics extends Viewport {
     Graphics enableSplitScreen(SplitScreenOptions options);
 
     Graphics disableSplitScreen();
+
+    Optional<Viewport> vieport(SplitScreen splitScreen);
 
     boolean isSplitScreenEnabled();
 
