@@ -42,7 +42,7 @@ public class ViewportManager implements Updatable {
             disableSplitScreen();
         }
         for (int i = 0; i < options.screenCount(); i++) {
-            DefaultViewport viewport = createViewport(i == 0);
+            DefaultViewport viewport = createViewport();
             splitScreenViewports.add(viewport);
             splitScreenViewportsCorrectType.add(viewport);
             viewportMap.put(i, viewport);
@@ -51,16 +51,13 @@ public class ViewportManager implements Updatable {
         arangeViewports();
     }
 
-    private DefaultViewport createViewport(boolean isPrimary) {
+    private DefaultViewport createViewport() {
         DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 1, 1));
-        if (!isPrimary) {
             DefaultCamera camera = new DefaultCamera(canvas);
             camera.setPosition(defaultViewport.camera().position());
             camera.setZoom(defaultViewport.camera().zoom());
             camera.setZoomRestriction(defaultViewport.camera().minZoom(), defaultViewport.camera().maxZoom());
             return new DefaultViewport(canvas, camera);
-        }
-        return new DefaultViewport(canvas, defaultViewport.camera());
     }
 
     public void disableSplitScreen() {
