@@ -17,6 +17,8 @@ public interface Graphics extends Viewport {
 
     boolean isSplitScreenEnabled();
 
+    List<Viewport> activeViewports();
+
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */

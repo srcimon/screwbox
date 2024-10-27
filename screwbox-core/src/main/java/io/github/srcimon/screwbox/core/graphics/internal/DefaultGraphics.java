@@ -66,6 +66,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
+    public List<Viewport> activeViewports() {
+        return viewportManager.activeViewports();
+    }
+
+    @Override
     public GraphicsConfiguration configuration() {
         return configuration;
     }
