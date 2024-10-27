@@ -27,6 +27,7 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final GraphicsDevice graphicsDevice;
     private final AsyncRenderer asyncRenderer;
     private final ViewportManager viewportManager;
+    private final AttentionFocus attentionFocus;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
@@ -34,7 +35,8 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final AsyncRenderer asyncRenderer,
-                           final ViewportManager viewportManager) {
+                           final ViewportManager viewportManager,
+                           final AttentionFocus attentionFocus) {
         this.configuration = configuration;
         this.light = light;
         this.world = world;
@@ -42,6 +44,7 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.graphicsDevice = graphicsDevice;
         this.asyncRenderer = asyncRenderer;
         this.viewportManager = viewportManager;
+        this.attentionFocus = attentionFocus;
     }
 
     @Override
@@ -142,6 +145,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Duration renderDuration() {
         return asyncRenderer.renderDuration();
+    }
+
+    @Override
+    public double distanceToAttention(Vector position) {
+        return attentionFocus.distanceTo(position);
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
@@ -81,4 +82,5 @@ public interface Graphics extends Viewport {
      */
     Duration renderDuration();
 
+    double distanceToAttention(Vector position);
 }

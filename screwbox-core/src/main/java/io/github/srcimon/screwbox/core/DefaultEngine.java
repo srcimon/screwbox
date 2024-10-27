@@ -6,7 +6,7 @@ import io.github.srcimon.screwbox.core.async.Async;
 import io.github.srcimon.screwbox.core.async.internal.DefaultAsync;
 import io.github.srcimon.screwbox.core.audio.Audio;
 import io.github.srcimon.screwbox.core.audio.AudioConfiguration;
-import io.github.srcimon.screwbox.core.audio.internal.AttentionFocus;
+import io.github.srcimon.screwbox.core.graphics.internal.AttentionFocus;
 import io.github.srcimon.screwbox.core.audio.internal.AudioAdapter;
 import io.github.srcimon.screwbox.core.audio.internal.AudioLinePool;
 import io.github.srcimon.screwbox.core.audio.internal.DefaultAudio;
@@ -138,8 +138,8 @@ class DefaultEngine implements Engine {
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, viewportManager);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
+        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

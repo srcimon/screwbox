@@ -1,7 +1,6 @@
-package io.github.srcimon.screwbox.core.audio.internal;
+package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 
 public class AttentionFocus {
 
