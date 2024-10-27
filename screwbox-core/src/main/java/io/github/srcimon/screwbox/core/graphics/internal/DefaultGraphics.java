@@ -25,7 +25,6 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
     private final AsyncRenderer asyncRenderer;
-    private final Viewport viewport;
     private final ViewportManager viewportManager;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
@@ -34,7 +33,6 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final AsyncRenderer asyncRenderer,
-                           final Viewport viewport,
                            final ViewportManager viewportManager) {
         this.configuration = configuration;
         this.light = light;
@@ -42,13 +40,12 @@ public class DefaultGraphics implements Graphics, Updatable {
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.asyncRenderer = asyncRenderer;
-        this.viewport = viewport;
         this.viewportManager = viewportManager;
     }
 
     @Override
     public Bounds visibleArea() {
-        return viewport.visibleArea();
+        return viewportManager.defaultViewport().visibleArea();
     }
 
     @Override
@@ -80,37 +77,37 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Camera camera() {
-        return viewport.camera();
+        return viewportManager.defaultViewport().camera();
     }
 
     @Override
     public Canvas canvas() {
-        return viewport.canvas();
+        return viewportManager.defaultViewport().canvas();
     }
 
     @Override
     public Vector toWorld(final Offset offset) {
-        return viewport.toWorld(offset);
+        return viewportManager.defaultViewport().toWorld(offset);
     }
 
     @Override
     public int toCanvas(double distance) {
-        return viewport.toCanvas(distance);
+        return viewportManager.defaultViewport().toCanvas(distance);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
-        return viewport.toCanvas(bounds);
+        return viewportManager.defaultViewport().toCanvas(bounds);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        return viewport.toCanvas(bounds, parallaxX, parallaxY);
+        return viewportManager.defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
     }
 
     @Override
     public Offset toCanvas(final Vector position) {
-        return viewport.toCanvas(position);
+        return viewportManager.defaultViewport().toCanvas(position);
     }
 
     @Override
