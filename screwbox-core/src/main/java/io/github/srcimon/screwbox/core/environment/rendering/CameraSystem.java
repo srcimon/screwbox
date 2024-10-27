@@ -19,11 +19,10 @@ public class CameraSystem implements EntitySystem {
             engine.graphics().vieport(target.viewportId).ifPresent(viewport -> {
                 final var cameraPosition = viewport.camera().position();
                 final var targetBounds = targetEntity.bounds();
-//TODO support camera number in CameraComponent
 
                 final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
                 if (target.allowJumping
-                        && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0
+                        && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0 * engine.graphics().activeViewports().size()
                         && (configuration.isEmpty()
                         || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
                     viewport.camera().setPosition(targetBounds.position());
