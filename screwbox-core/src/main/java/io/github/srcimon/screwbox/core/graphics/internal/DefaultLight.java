@@ -4,55 +4,39 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
-import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
-import io.github.srcimon.screwbox.core.graphics.Viewport;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.CircleDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
-import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
 
-    private final List<Runnable> postDrawingTasks = new ArrayList<>();
-    private final ExecutorService executor;
-    private final GraphicsConfiguration configuration;
     private final LightPhysics lightPhysics = new LightPhysics();
-    private final Viewport viewport;
-    private Lightmap lightmap;
-    private Percent ambientLight = Percent.zero();
+    private final ViewportManager viewportManager;
+    private final ExecutorService executor;
+    private List<LightDelegate> delegates = new ArrayList<>();
+    private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
-    private boolean renderInProgress = false;
 
-    private final List<Runnable> tasks = new ArrayList<>();
-
-    public DefaultLight(final GraphicsConfiguration configuration,
-                        final ExecutorService executor, final Viewport viewport) {
-        this.executor = executor;
+    public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
-        this.viewport = viewport;
+        this.viewportManager = viewportManager;
+        this.executor = executor;
         updatePostFilter();
         configuration.addListener(event -> {
             if (LIGHTMAP_BLUR.equals(event.changedProperty())) {
                 updatePostFilter();
             }
         });
-        initLightmap();
     }
 
     private void updatePostFilter() {
@@ -62,7 +46,25 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
+    public Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color) {
+        return this;
+    }
+
+    @Override
+    public Light addPointLight(Vector position, double radius, Color color) {
+        for (final var delegate : delegates) {
+            delegate.addPointLight(position, radius, color);
+        }
+        return this;
+    }
+
+    @Override
+    public Light addSpotLight(Vector position, double radius, Color color) {
+        return this;
+    }
+
+    @Override
+    public Light addShadowCaster(Bounds shadowCaster, boolean selfShadow) {
         if (selfShadow) {
             lightPhysics.addShadowCaster(shadowCaster);
         } else {
@@ -72,140 +74,39 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addFullBrightnessArea(final Bounds area) {
-        if (isVisible(area)) {
-            final ScreenBounds bounds = viewport.toCanvas(area);
-            lightmap.add(bounds);
-        }
+    public Light addFullBrightnessArea(Bounds area) {
         return this;
     }
 
     @Override
-    public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
-        double minRotation = direction.degrees() - cone.degrees() / 2.0;
-        double maxRotation = direction.degrees() + cone.degrees() / 2.0;
-        addPointLight(position, radius, color, minRotation, maxRotation);
-
-        return this;
-    }
-
-    @Override
-    public Light addPointLight(final Vector position, final double radius, final Color color) {
-        addPointLight(position, radius, color, 0, 360);
-
-        return this;
-    }
-
-    private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
-        tasks.add(() -> {
-            if (!lightPhysics.isCoveredByShadowCasters(position)) {
-                final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-                if (isVisible(lightBox)) {
-                    final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-                    for (final var vector : worldArea) {
-                        area.add(toScreen(vector));
-                    }
-                    final Offset offset = toScreen(position);
-                    final int screenRadius = viewport.toCanvas(radius);
-                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
-                }
-            }
-        });
-    }
-
-    @Override
-    public Light addSpotLight(final Vector position, final double radius, final Color color) {
-        tasks.add(() -> {
-            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-            if (isVisible(lightBox)) {
-                final Offset offset = toScreen(position);
-                final int distance = viewport.toCanvas(radius);
-                lightmap.add(new Lightmap.SpotLight(offset, distance, color));
-            }
-        });
-        return this;
-    }
-
-    @Override
-    public Light addGlow(final Vector position, final double radius, final Color color) {
-        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
-            final CircleDrawOptions options = CircleDrawOptions.fading(color);
-            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-            if (isVisible(lightBox)) {
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public Light render() {
-        if (renderInProgress) {
-            throw new IllegalStateException("rendering lights is already in progress");
-        }
-
-        renderInProgress = true;
-        if (!ambientLight.isMax()) {
-            renderLightmap();
-        }
-        for (final var drawingTask : postDrawingTasks) {
-            drawingTask.run();
-        }
-        return this;
-    }
-
-    private void renderLightmap() {
-        for (final var task : tasks) {
-            task.run();
-        }
-        final var spriteFuture = executor.submit(() -> {
-            final BufferedImage image = lightmap.createImage();
-            final var filtered = postFilter.apply(image);
-            return Sprite.fromImage(filtered);
-        });
-        final Asset<Sprite> sprite = Asset.asset(() -> {
-            try {
-                return spriteFuture.get();
-            } catch (InterruptedException | ExecutionException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("error receiving lightmap sprite", e);
-            }
-        });
-        // Avoid flickering by overdraw at last by one pixel
-        final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
-    }
-
-    @Override
-    public Light setAmbientLight(final Percent ambientLight) {
-        requireNonNull(ambientLight, "ambient light must not be null");
-        this.ambientLight = ambientLight;
+    public Light setAmbientLight(Percent ambientLight) {
         return this;
     }
 
     @Override
     public Percent ambientLight() {
-        return ambientLight;
+        return null;
+    }
+
+    @Override
+    public Light addGlow(Vector position, double radius, Color color) {
+        return this;
+    }
+
+    @Override
+    public Light render() {
+        return this;
     }
 
     public void update() {
-        renderInProgress = false;
-        initLightmap();
-        tasks.clear();
-        postDrawingTasks.clear();
+        System.out.println(delegates.size());
+        for (var delegate : delegates) {
+            delegate.update();
+        }
         lightPhysics.clear();
-    }
-
-    private boolean isVisible(final Bounds lightBox) {
-        return viewport.canvas().isVisible(viewport.toCanvas(lightBox));
-    }
-
-    private void initLightmap() {
-        lightmap = new Lightmap(viewport.canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
-    }
-
-    private Offset toScreen(final Vector vector) {
-        return viewport.toCanvas(vector);
+        delegates.clear();
+        for (var viewport : viewportManager.activeViewports()) {
+            delegates.add(new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter));
+        }
     }
 }

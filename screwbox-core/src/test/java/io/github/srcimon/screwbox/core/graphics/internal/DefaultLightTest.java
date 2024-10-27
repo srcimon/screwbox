@@ -39,7 +39,7 @@ class DefaultLightTest {
 
     DefaultWorld world;
     GraphicsConfiguration configuration;
-    DefaultLight light;
+    LightDelegate light;
 
     @BeforeEach
     void beforeEach() {
@@ -48,7 +48,7 @@ class DefaultLightTest {
         world = new DefaultWorld(viewport);
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
-        light = new DefaultLight(configuration, executor, viewport);
+        light = new LightDelegate(configuration, executor, viewport);
     }
 
     @Test
