@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -54,13 +55,20 @@ public class ViewportManager implements Updatable {
     private DefaultViewport createViewport() {
         DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 1, 1));
             DefaultCamera camera = new DefaultCamera(canvas);
-            camera.setPosition(defaultViewport.camera().position());
-            camera.setZoom(defaultViewport.camera().zoom());
-            camera.setZoomRestriction(defaultViewport.camera().minZoom(), defaultViewport.camera().maxZoom());
-            return new DefaultViewport(canvas, camera);
+        applyCameraSettingsToOtherCamera(defaultViewport.camera(), camera);
+        return new DefaultViewport(canvas, camera);
+    }
+
+    private void applyCameraSettingsToOtherCamera(Camera from, Camera to) {
+        to.setPosition(from.position());
+        to.setZoom(from.zoom());
+        to.setZoomRestriction(from.minZoom(), from.maxZoom());
     }
 
     public void disableSplitScreen() {
+        if(!splitScreenViewports.isEmpty()) {
+            applyCameraSettingsToOtherCamera(splitScreenViewports.getFirst().camera(), defaultViewport.camera());
+        }
         splitScreenViewports.clear();
         splitScreenViewportsCorrectType.clear();
         viewportMap.clear();
