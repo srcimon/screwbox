@@ -80,6 +80,9 @@ public class DefaultLight implements Light {
 
     @Override
     public Light setAmbientLight(Percent ambientLight) {
+        for (final var delegate : delegates) {
+            delegate.setAmbientLight(ambientLight);
+        };
         return this;
     }
 
@@ -95,11 +98,13 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
+        for (final var delegate : delegates) {
+            delegate.render();
+        };
         return this;
     }
 
     public void update() {
-        System.out.println(delegates.size());
         for (var delegate : delegates) {
             delegate.update();
         }
