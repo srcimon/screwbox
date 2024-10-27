@@ -1,18 +1,18 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewportManager {
 
     private final List<Viewport> defaultViewports;
+    private final List<Viewport> splitScreenViewports = new ArrayList<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
-    private boolean isEnabled = false;
 
     public ViewportManager(final Viewport defaultViewport, final Renderer renderer) {
         this.renderer = renderer;
@@ -21,12 +21,16 @@ public class ViewportManager {
     }
 
     public boolean isSplitScreenEnabled() {
-        return isEnabled;
+        return !splitScreenViewports.isEmpty();
     }
 
     public void enableSplitScreen(final SplitScreenOptions options) {
-        createViewport();
-        isEnabled = true;
+        if (isSplitScreenEnabled()) {
+            throw new IllegalStateException("split screen is already enabled");
+        }
+        for (int i = 0; i < options.screenCount(); i++) {
+            splitScreenViewports.add(createViewport());
+        }
     }
 
     private Viewport createViewport() {
@@ -35,7 +39,7 @@ public class ViewportManager {
     }
 
     public void disableSplitScreen() {
-        isEnabled = false;
+        splitScreenViewports.clear();
     }
 
     public Viewport defaultViewport() {
@@ -43,6 +47,8 @@ public class ViewportManager {
     }
 
     public List<Viewport> activeViewports() {
-        return defaultViewports;
+        return isSplitScreenEnabled()
+                ? splitScreenViewports
+                : defaultViewports;
     }
 }
