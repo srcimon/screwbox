@@ -1,8 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ public class ViewportManager implements Updatable {
 
     public void enableSplitScreen(final SplitScreenOptions options) {
         if (isSplitScreenEnabled()) {
-            throw new IllegalStateException("split screen is already enabled");
+           disableSplitScreen();
         }
         for (int i = 0; i < options.screenCount(); i++) {
             int witdht = (int) (defaultViewport.canvas().width() / options.screenCount() * 1.0);
@@ -79,6 +82,12 @@ public class ViewportManager implements Updatable {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             int witdht = (int) (defaultViewport.canvas().width() / splitScreenViewports.size() * 1.0);
             splitScreenViewports.get(i).updateClip(new ScreenBounds(i * witdht, 0, witdht, defaultViewport.canvas().height()));
+            if (splitScreenViewports.size() > i - 1) {
+                defaultViewport.canvas().drawLine(
+                        Offset.at(witdht * i, 0),
+                        Offset.at(witdht * i, defaultViewport.canvas().height()),
+                        LineDrawOptions.color(Color.BLACK).strokeWidth(4));
+            }
         }
     }
 }
