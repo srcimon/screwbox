@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.reverseOrder;
 
-//TODO Fix issue of camera shake only working on defaultCanvas
 public class DefaultGraphics implements Graphics, Updatable {
 
     private final GraphicsConfiguration configuration;

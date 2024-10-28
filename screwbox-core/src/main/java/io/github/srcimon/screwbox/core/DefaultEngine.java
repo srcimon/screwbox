@@ -127,10 +127,10 @@ class DefaultEngine implements Engine {
         final var clip = new ScreenBounds(Offset.origin(), configuration.resolution());
         final DefaultCanvas screenCanvas = new DefaultCanvas(standbyProxyRenderer, clip);
         final DefaultCamera camera = new DefaultCamera(screenCanvas);
-        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas, camera);
+        final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), standbyProxyRenderer);
+        final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas, viewportManager);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-        final var viewportManager = new ViewportManager(new DefaultViewport(screenCanvas, camera), standbyProxyRenderer);
         final DefaultWorld world = new DefaultWorld(viewportManager);
         final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
         final AudioAdapter audioAdapter = new AudioAdapter();

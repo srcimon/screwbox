@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -27,7 +26,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
-    private final Camera camera;
+    private final ViewportManager viewportManager;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
@@ -35,12 +34,12 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final Camera camera) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
-        this.camera = camera;
+        this.viewportManager = viewportManager;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -151,7 +150,11 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public void update() {
-        this.shake = camera.swing();
+        double degrees = 0;
+        for (var viewport : viewportManager.activeViewports()) {
+            degrees += viewport.camera().swing().degrees();
+        }
+        this.shake = Rotation.degrees(degrees);//TODO TEst
     }
 
     private ScreenBounds canvasBounds() {
