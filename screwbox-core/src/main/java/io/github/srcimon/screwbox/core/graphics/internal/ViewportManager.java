@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 public class ViewportManager implements Updatable {
 
@@ -55,7 +54,7 @@ public class ViewportManager implements Updatable {
 
     private DefaultViewport createViewport() {
         DefaultCanvas canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 1, 1));
-            DefaultCamera camera = new DefaultCamera(canvas);
+        DefaultCamera camera = new DefaultCamera(canvas);
         applyCameraSettingsToOtherCamera(defaultViewport.camera(), camera);
         return new DefaultViewport(canvas, camera);
     }
@@ -67,7 +66,7 @@ public class ViewportManager implements Updatable {
     }
 
     public void disableSplitScreen() {
-        if(!splitScreenViewports.isEmpty()) {
+        if (!splitScreenViewports.isEmpty()) {
             applyCameraSettingsToOtherCamera(splitScreenViewports.getFirst().camera(), defaultViewport.camera());
         }
         splitScreenViewports.clear();
@@ -94,24 +93,20 @@ public class ViewportManager implements Updatable {
     @Override
     public void update() {
         arangeViewports();
-        if(!splitScreenViewports.isEmpty()) {
-            List<Tupel<Offset>> duplicates = new ArrayList<>();
+        if (!splitScreenViewports.isEmpty()) {
             Set<Tupel<Offset>> borders = new HashSet<>();
             for (var viewport : splitScreenViewports) {
                 var bounds = viewport.canvas().bounds();
-                List<Tupel<Offset>> sides = new ArrayList<>();
-                sides.add(new Tupel<>(bounds.offset(), bounds.offset().addX(bounds.width())));
-                sides.add(new Tupel<>(bounds.offset(), bounds.offset().addY(bounds.height())));
-                sides.add(new Tupel<>(bounds.offset().addX(bounds.width()), bounds.offset().add(bounds.width(), bounds.height())));
-                sides.add(new Tupel<>(bounds.offset().addY(bounds.height()), bounds.offset().add(bounds.width(), bounds.height())));
-                for(var side : sides) {
-                    if(!borders.add(side)) {
-                        duplicates.add(side);
+                for (var side : List.of(
+                        new Tupel<>(bounds.offset(), bounds.offset().addX(bounds.width())),
+                        new Tupel<>(bounds.offset(), bounds.offset().addY(bounds.height())),
+                        new Tupel<>(bounds.offset().addX(bounds.width()), bounds.offset().add(bounds.width(), bounds.height())),
+                        new Tupel<>(bounds.offset().addY(bounds.height()), bounds.offset().add(bounds.width(), bounds.height())))
+                ) {
+                    if (!borders.add(side)) {
+                        defaultViewport.canvas().drawLine(side.first(), side.second(), options.border());
                     }
                 }
-            }
-            for(var side : duplicates) {
-                defaultViewport.canvas().drawLine(side.first(), side.second(), options.border());
             }
         }
     }
@@ -119,7 +114,7 @@ public class ViewportManager implements Updatable {
     private void arangeViewports() {
 
         for (int i = 0; i < splitScreenViewports.size(); i++) {
-            splitScreenViewports.get(i).updateClip(    options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds()));
+            splitScreenViewports.get(i).updateClip(options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds()));
         }
     }
 }
