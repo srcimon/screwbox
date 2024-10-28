@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
-import io.github.srcimon.screwbox.core.utils.Tupel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,11 +89,14 @@ public class ViewportManager implements Updatable {
         return Optional.ofNullable(viewportMap.get(index));
     }
 
+    private record Tupel<T>(T first, T second) {
+    }
+
     @Override
     public void update() {
         arangeViewports();
         if (!splitScreenViewports.isEmpty()) {
-            Set<Tupel<Offset>> borders = new HashSet<>();
+            Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
             for (var viewport : splitScreenViewports) {
                 var bounds = viewport.canvas().bounds();
                 for (var side : List.of(
@@ -103,7 +105,7 @@ public class ViewportManager implements Updatable {
                         new Tupel<>(bounds.offset().addX(bounds.width()), bounds.offset().add(bounds.width(), bounds.height())),
                         new Tupel<>(bounds.offset().addY(bounds.height()), bounds.offset().add(bounds.width(), bounds.height())))
                 ) {
-                    if (!borders.add(side)) {
+                    if (alreadyDrawn.add(side)) {
                         defaultViewport.canvas().drawLine(side.first(), side.second(), options.border());
                     }
                 }

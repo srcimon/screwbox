@@ -98,7 +98,7 @@ public class GameScene implements Scene {
                         engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).layout(new TableLayout(2)).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.I)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(8).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(14).layout(new TableLayout(4)).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.U)) {
                         engine.graphics().disableSplitScreen();
