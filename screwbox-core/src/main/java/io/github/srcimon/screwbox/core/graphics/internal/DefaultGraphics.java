@@ -66,8 +66,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Optional<Viewport> vieport(final int id) {
-        return viewportManager.viewport(id);
+    public Optional<Viewport> vieport(final int index) {
+        return viewportManager.viewport(index);
     }
 
     @Override

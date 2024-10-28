@@ -86,8 +86,8 @@ public class ViewportManager implements Updatable {
                 : defaultViewports;
     }
 
-    public Optional<Viewport> viewport(final int id) {
-        return Optional.ofNullable(viewportMap.get(id));
+    public Optional<Viewport> viewport(final int index) {
+        return Optional.ofNullable(viewportMap.get(index));
     }
 
     @Override
@@ -112,7 +112,6 @@ public class ViewportManager implements Updatable {
     }
 
     private void arangeViewports() {
-
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             splitScreenViewports.get(i).updateClip(options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds()));
         }

@@ -12,9 +12,9 @@ import java.util.List;
 public class VerticalLayout implements ViewportLayout {
 
     @Override
-    public ScreenBounds calculateBounds(int viewportId, int viewportCount, ScreenBounds bounds) {
-        int height = (int) (bounds.height() / viewportCount * 1.0);
-        var offset = Offset.at(0, viewportId * height).add(bounds.offset());
+    public ScreenBounds calculateBounds(int index, int count, ScreenBounds bounds) {
+        int height = (int) (bounds.height() / count * 1.0);
+        var offset = Offset.at(0, index * height).add(bounds.offset());
         var size = Size.of(bounds.width(), height);
         return new ScreenBounds(offset, size);
     }
