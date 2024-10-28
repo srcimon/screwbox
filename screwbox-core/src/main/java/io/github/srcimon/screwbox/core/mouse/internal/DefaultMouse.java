@@ -2,10 +2,12 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -32,17 +34,15 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final TrippleLatch<Set<MouseButton>> pressedButtons = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
-    private final Viewport viewport;
-    private final Canvas canvas;
+    private final ViewportManager viewportManager;
     private Offset offset = Offset.origin();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
-    public DefaultMouse(final DefaultScreen screen, final Viewport viewport, final Canvas canvas) {
+    public DefaultMouse(final DefaultScreen screen, final ViewportManager viewportManager) {
         this.screen = screen;
-        this.viewport = viewport;
-        this.canvas = canvas;
+        this.viewportManager = viewportManager;
     }
 
     @Override
@@ -146,10 +146,10 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public boolean isAnyButtonDown() {
         return !downButtons.isEmpty();
     }
-
+    
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position()).substract(canvas.offset());
+        offset = windowPosition.substract(screen.position()).substract(canvas().offset());
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
@@ -157,16 +157,26 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return screenToWorld(offset);
         }
 
-        final var delta = Line.between(screenToWorld(screen.size().center().substract(viewport.canvas().offset())), screenToWorld(offset));
+        final var delta = Line.between(screenToWorld(screen.size().center().substract(viewport().canvas().offset())), screenToWorld(offset));
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
     private Vector screenToWorld(final Offset offset) {
-        final double x = (offset.x() - (canvas.width() / 2.0)) / viewport.camera().zoom() + viewport.camera().focus().x();
-        final double y = (offset.y() - (canvas.height() / 2.0)) / viewport.camera().zoom() + viewport.camera().focus().y();
+        final double x = (offset.x() - (canvas().width() / 2.0)) / getCamera().zoom() + getCamera().focus().x();
+        final double y = (offset.y() - (canvas().height() / 2.0)) / getCamera().zoom() + getCamera().focus().y();
 
         return Vector.of(x, y);
     }
 
+    private Viewport viewport() {
+        return viewportManager.defaultViewport();
+    }
 
+    private Camera getCamera() {
+        return viewport().camera();
+    }
+
+    private Canvas canvas() {
+        return viewport().canvas();
+    }
 }
