@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 
-//TODO ViewportLayoutBundle
 public class VerticalLayout implements ViewportLayout {
 
     @Override
@@ -15,6 +14,4 @@ public class VerticalLayout implements ViewportLayout {
         var size = Size.of(bounds.width(), height);
         return new ScreenBounds(offset, size);
     }
-
-
 }
