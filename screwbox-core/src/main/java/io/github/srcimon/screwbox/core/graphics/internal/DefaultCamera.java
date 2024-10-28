@@ -23,7 +23,7 @@ public class DefaultCamera implements Camera, Updatable {
     private double requestedZoom = zoom;
     private double minZoom = 1;
     private double maxZoom = 5;
-    private Rotation swing;
+    private Rotation swing = Rotation.none();
 
     private ActiveCameraShake activeShake;
 
