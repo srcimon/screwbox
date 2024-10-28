@@ -1,27 +1,24 @@
 package io.github.srcimon.screwbox.core.graphics;
 
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
 
-public record SplitScreenOptions(int screenCount, Arangement arangement, LineDrawOptions borderOptions) {
+public record SplitScreenOptions(int screenCount, LineDrawOptions border, ViewportLayout layout) {
 
-    public enum Arangement {
-        HORIZONTAL,
-        VERTICAL
-    }
     public SplitScreenOptions {
  //TODO validations
     }
+//TODO SplitScreenOptions.horizontal(3)
 
-    public static SplitScreenOptions screenCount(final int screenCount) {
-        return new SplitScreenOptions(screenCount, Arangement.HORIZONTAL, LineDrawOptions.color(Color.BLACK).strokeWidth(4));
+    public static SplitScreenOptions horizontal(final int screenCount) {
+        return new SplitScreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout());
     }
 
-
-    public SplitScreenOptions arangement(final Arangement arangement) {
-        return new SplitScreenOptions(screenCount, arangement, borderOptions);
+    public SplitScreenOptions layout(final ViewportLayout layout) {
+        return new SplitScreenOptions(screenCount,  border, layout);
     }
 
-    public SplitScreenOptions borderOptions(final LineDrawOptions borderOptions) {
-        return new SplitScreenOptions(screenCount, arangement, borderOptions);
+    public SplitScreenOptions border(final LineDrawOptions borderOptions) {
+        return new SplitScreenOptions(screenCount,  borderOptions, layout);
     }
 }

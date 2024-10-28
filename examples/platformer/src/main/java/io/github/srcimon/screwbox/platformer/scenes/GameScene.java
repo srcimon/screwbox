@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
@@ -84,19 +85,19 @@ public class GameScene implements Scene {
                 .addSystem(engine -> {
                     LineDrawOptions options  = LineDrawOptions.color(Color.BLACK).strokeWidth(4);
                     if (engine.keyboard().isPressed(Key.T)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2).borderOptions(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(2).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.Z)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3).borderOptions(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.G)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(2).arangement(SplitScreenOptions.Arangement.VERTICAL).borderOptions(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(2).layout(new VerticalLayout()).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.H)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(3).arangement(SplitScreenOptions.Arangement.VERTICAL).borderOptions(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).layout(new VerticalLayout()).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.I)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.screenCount(8).borderOptions(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(8).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.U)) {
                         engine.graphics().disableSplitScreen();
