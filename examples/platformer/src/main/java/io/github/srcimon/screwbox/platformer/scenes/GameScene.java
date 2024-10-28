@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
+import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
@@ -91,10 +92,10 @@ public class GameScene implements Scene {
                         engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.G)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(2).layout(new VerticalLayout()).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(4).layout(new TableLayout(2)).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.H)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).layout(new VerticalLayout()).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(4).layout(new TableLayout(2)).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.I)) {
                         engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(8).border(options));

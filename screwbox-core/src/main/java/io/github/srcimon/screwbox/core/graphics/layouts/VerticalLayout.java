@@ -1,12 +1,9 @@
 package io.github.srcimon.screwbox.core.graphics.layouts;
 
-import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
-
-import java.util.List;
 
 //TODO ViewportLayoutBundle
 public class VerticalLayout implements ViewportLayout {
