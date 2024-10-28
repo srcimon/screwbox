@@ -23,7 +23,10 @@ import static org.mockito.Mockito.when;
 class DefaultWorldTest {
 
     @Mock
-    Canvas canvas;
+    DefaultCanvas canvas;
+
+    @Mock
+    Renderer renderer;
 
     @Mock
     Camera camera;
@@ -33,7 +36,7 @@ class DefaultWorldTest {
     @BeforeEach
     void setUp() {
         DefaultViewport viewport = new DefaultViewport(canvas, camera);
-        world = new DefaultWorld(viewport);
+        world = new DefaultWorld(new ViewportManager(viewport, renderer));
     }
 
     @Test
