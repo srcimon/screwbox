@@ -24,14 +24,14 @@ class ViewportManagerTest {
 
     @Test
     void enableSplitScreen_oneScreen_setsSplitScreenEnabled() {
-        viewportManager.enableSplitScreen(SplitScreenOptions.horizontal(2));
+        viewportManager.enableSplitScreen(SplitScreenOptions.viewports(2));
 
         assertThat(viewportManager.isSplitScreenEnabled()).isTrue();
     }
 
     @Test
     void disableSplitScreen_splitScreenEnabled_setsSplitScreenEnabledFalse() {
-        viewportManager.enableSplitScreen(SplitScreenOptions.horizontal(2));
+        viewportManager.enableSplitScreen(SplitScreenOptions.viewports(2));
 
         viewportManager.disableSplitScreen();
 
