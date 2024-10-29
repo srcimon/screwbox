@@ -10,14 +10,16 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 public class TableLayout implements ViewportLayout {
 
     public final int columns;
+    private final boolean fillEmptySpace;
 
     public TableLayout() {
-        this(2);
+        this(2, true);
     }
 
-    public TableLayout(final int columns) {
+    public TableLayout(final int columns, final boolean fillEmptySpace) {
         Validate.positive(columns, "columns must be positive");
         this.columns = columns;
+        this.fillEmptySpace = fillEmptySpace;
     }
 
     @Override
@@ -29,9 +31,12 @@ public class TableLayout implements ViewportLayout {
         int row = Math.floorDiv(index, columns);
 
         var offset = Offset.at(column * width, row * height);
-        var size = index == count - 1
-                ? Size.of((columns - column) * width, height)
-                : Size.of(width, height);
+        var isLastViewport = index == count - 1;
+        var widthToUse = fillEmptySpace && isLastViewport
+                ? (columns - column) * width
+                : width;
+
+        var size = Size.of(widthToUse, height);
 
         return new ScreenBounds(offset, size);
     }

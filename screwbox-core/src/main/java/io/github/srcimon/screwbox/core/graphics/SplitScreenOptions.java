@@ -10,7 +10,9 @@ public record SplitScreenOptions(int screenCount, LineDrawOptions border, Viewpo
 
     public SplitScreenOptions {
         Validate.positive(screenCount, "split screen must have at least one screen");
-        //TODO validations
+        if(screenCount > 64) {
+            throw new IllegalArgumentException("split screen supports only up to 64 screens (what is your monitor like?)");
+        }
     }
 
     public static SplitScreenOptions screens(final int screenCount) {
@@ -22,11 +24,11 @@ public record SplitScreenOptions(int screenCount, LineDrawOptions border, Viewpo
     }
 
     public SplitScreenOptions verticalLayout() {
-        return  layout(new VerticalLayout());
+        return layout(new VerticalLayout());
     }
 
     public SplitScreenOptions tableLayout() {
-        return  layout(new TableLayout());
+        return layout(new TableLayout());
     }
 
     public SplitScreenOptions border(final LineDrawOptions borderOptions) {
