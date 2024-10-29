@@ -40,7 +40,7 @@ public class ViewportManager implements Updatable {
         if (isSplitScreenEnabled()) {
             disableSplitScreen();
         }
-        for (int i = 0; i < options.screenCount(); i++) {
+        for (int i = 0; i < options.viewportCount(); i++) {
             DefaultViewport viewport = createViewport();
             splitScreenViewports.add(viewport);
             splitScreenViewportsCorrectType.add(viewport);

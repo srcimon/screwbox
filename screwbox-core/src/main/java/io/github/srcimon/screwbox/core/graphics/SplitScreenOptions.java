@@ -6,21 +6,21 @@ import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
-public record SplitScreenOptions(int screenCount, LineDrawOptions border, ViewportLayout layout) {
+public record SplitScreenOptions(int viewportCount, LineDrawOptions border, ViewportLayout layout) {
 
     public SplitScreenOptions {
-        Validate.positive(screenCount, "split screen must have at least one screen");
-        if(screenCount > 64) {
-            throw new IllegalArgumentException("split screen supports only up to 64 screens (what is your monitor like?)");
+        Validate.positive(viewportCount, "split screen must have at least one viewport");
+        if(viewportCount > 64) {
+            throw new IllegalArgumentException("split screen supports only up to 64 viewports (what is your monitor like?)");
         }
     }
 
-    public static SplitScreenOptions screens(final int screenCount) {
+    public static SplitScreenOptions viewports(final int screenCount) {
         return new SplitScreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout());
     }
 
     public SplitScreenOptions layout(final ViewportLayout layout) {
-        return new SplitScreenOptions(screenCount, border, layout);
+        return new SplitScreenOptions(viewportCount, border, layout);
     }
 
     public SplitScreenOptions verticalLayout() {
@@ -32,6 +32,6 @@ public record SplitScreenOptions(int screenCount, LineDrawOptions border, Viewpo
     }
 
     public SplitScreenOptions border(final LineDrawOptions borderOptions) {
-        return new SplitScreenOptions(screenCount, borderOptions, layout);
+        return new SplitScreenOptions(viewportCount, borderOptions, layout);
     }
 }
