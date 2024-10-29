@@ -13,20 +13,20 @@ public record SplitScreenOptions(int screenCount, LineDrawOptions border, Viewpo
         //TODO validations
     }
 
-    public static SplitScreenOptions horizontal(final int screenCount) {
+    public static SplitScreenOptions screens(final int screenCount) {
         return new SplitScreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout());
-    }
-
-    public static SplitScreenOptions vertical(final int screenCount) {
-        return new SplitScreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new VerticalLayout());
-    }
-
-    public static SplitScreenOptions squares(final int screenCount) {
-        return new SplitScreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new TableLayout());
     }
 
     public SplitScreenOptions layout(final ViewportLayout layout) {
         return new SplitScreenOptions(screenCount, border, layout);
+    }
+
+    public SplitScreenOptions verticalLayout() {
+        return  layout(new VerticalLayout());
+    }
+
+    public SplitScreenOptions tableLayout() {
+        return  layout(new TableLayout());
     }
 
     public SplitScreenOptions border(final LineDrawOptions borderOptions) {

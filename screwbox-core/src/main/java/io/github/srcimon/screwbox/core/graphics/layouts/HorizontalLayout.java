@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 
-//TODO ViewportLayoutBundle
 public class HorizontalLayout implements ViewportLayout {
 
     @Override

@@ -100,19 +100,19 @@ public class GameScene implements Scene {
                         }
                     }
                     if (engine.keyboard().isPressed(Key.T)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(2).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screens(2).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.Z)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screens(3).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.G)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(3).layout(new TableLayout(2)).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screens(3).tableLayout().border(options));
                     }
                     if (engine.keyboard().isPressed(Key.H)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(2).layout(new VerticalLayout()).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screens(2).layout(new VerticalLayout()).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.I)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.horizontal(120).layout(new TableLayout(20)).border(options));
+                        engine.graphics().enableSplitScreen(SplitScreenOptions.screens(120).layout(new TableLayout(20)).border(options));
                     }
                     if (engine.keyboard().isPressed(Key.U)) {
                         engine.graphics().disableSplitScreen();
