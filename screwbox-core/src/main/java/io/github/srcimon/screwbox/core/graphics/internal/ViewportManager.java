@@ -100,11 +100,14 @@ public class ViewportManager implements Updatable {
         Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
         for (var viewport : splitScreenViewports) {
             var bounds = viewport.canvas().bounds();
+            final Offset topRight = bounds.offset().addX(bounds.width());
+            final Offset bottomLeft = bounds.offset().addY(bounds.height());
+            final Offset bottomRight = bounds.offset().add(bounds.width(), bounds.height());
             for (var side : List.of(
-                    new Tupel<>(bounds.offset(), bounds.offset().addX(bounds.width())),
-                    new Tupel<>(bounds.offset(), bounds.offset().addY(bounds.height())),
-                    new Tupel<>(bounds.offset().addX(bounds.width()), bounds.offset().add(bounds.width(), bounds.height())),
-                    new Tupel<>(bounds.offset().addY(bounds.height()), bounds.offset().add(bounds.width(), bounds.height())))
+                    new Tupel<>(bounds.offset(), topRight),
+                    new Tupel<>(bounds.offset(), bottomLeft),
+                    new Tupel<>(topRight, bottomRight),
+                    new Tupel<>(bottomLeft, bottomRight))
             ) {
                 if (alreadyDrawn.add(side)) {
                     defaultViewport.canvas().drawLine(side.first(), side.second(), options.border());
