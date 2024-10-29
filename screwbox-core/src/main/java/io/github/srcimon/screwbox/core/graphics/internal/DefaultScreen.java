@@ -150,7 +150,7 @@ public class DefaultScreen implements Screen, Updatable {
 
     @Override
     public void update() {
-        double degrees = 0;
+        double degrees = viewportManager.defaultViewport().camera().swing().degrees();
         for (var viewport : viewportManager.activeViewports()) {
             degrees += viewport.camera().swing().degrees();
         }
