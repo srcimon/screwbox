@@ -29,7 +29,9 @@ public class TableLayout implements ViewportLayout {
         int row = Math.floorDiv(index, columns);
 
         var offset = Offset.at(column * width, row * height);
-        var size = Size.of(width, height);
+        var size = index == count - 1
+                ? Size.of((columns - column) * width, height)
+                : Size.of(width, height);
 
         return new ScreenBounds(offset, size);
     }
