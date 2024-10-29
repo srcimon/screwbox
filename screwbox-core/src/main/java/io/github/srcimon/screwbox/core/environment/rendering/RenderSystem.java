@@ -18,6 +18,7 @@ import io.github.srcimon.screwbox.core.graphics.internal.ReflectionImage;
 import io.github.srcimon.screwbox.core.utils.Pixelperfect;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.environment.Order.SystemOrder.PRESENTATION_WORLD;
@@ -35,35 +36,40 @@ public class RenderSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+        final List<Entity> entities = fetchRenderEntities(engine);
         for(final var viewport : engine.graphics().activeViewports()) {
-            final SpriteBatch spriteBatch = new SpriteBatch();
-            final double zoom = viewport.camera().zoom();
-            final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), viewport.canvas().size());
-            for (final Entity entity : renderEntities) {
-                final RenderComponent render = entity.get(RenderComponent.class);
-                if (mustRender(render)) {
-                    final double width = render.sprite.width() * render.options.scale();
-                    final double height = render.sprite.height() * render.options.scale();
-                    final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
-
-                    final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
-                    if (visibleBounds.intersects(entityScreenBounds)) {
-                        spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
-                    }
-                }
-            }
-            addReflectionsToSpriteBatch(engine, viewport, spriteBatch);
+            final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> !render.renderOverLight);
+            addReflectionsToBatch(engine, viewport, spriteBatch);
             viewport.canvas().drawSpriteBatch(spriteBatch);
         }
     }
 
-    protected boolean mustRender(final RenderComponent render) {
-        return !render.renderOverLight;
+    protected List<Entity> fetchRenderEntities(Engine engine) {
+        return engine.environment().fetchAll(RENDERS);
     }
 
-    protected void addReflectionsToSpriteBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
-        final List<Entity> renderEntities = engine.environment().fetchAll(RENDERS);
+    protected SpriteBatch renderEntitiesOnViewport(final Viewport viewport, final List<Entity> entities, final Predicate<RenderComponent> renderCondition) {
+        final SpriteBatch spriteBatch = new SpriteBatch();
+        final double zoom = viewport.camera().zoom();
+        final ScreenBounds visibleBounds = new ScreenBounds(Offset.origin(), viewport.canvas().size());
+        for (final Entity entity : entities) {
+            final RenderComponent render = entity.get(RenderComponent.class);
+            if (renderCondition.test(render)) {
+                final double width = render.sprite.width() * render.options.scale();
+                final double height = render.sprite.height() * render.options.scale();
+                final var spriteBounds = Bounds.atPosition(entity.position(), width, height);
+
+                final var entityScreenBounds = viewport.toCanvas(spriteBounds, render.parallaxX, render.parallaxY);
+                if (visibleBounds.intersects(entityScreenBounds)) {
+                    spriteBatch.add(render.sprite, entityScreenBounds.offset(), render.options.scale(render.options.scale() * zoom), render.drawOrder);
+                }
+            }
+        }
+        return spriteBatch;
+    }
+
+    private void addReflectionsToBatch(final Engine engine, final Viewport viewport, final SpriteBatch spriteBatch) {
+        final List<Entity> renderEntities = fetchRenderEntities(engine);
         final var visibleArea = Pixelperfect.bounds(viewport.visibleArea());
         final var zoom = viewport.camera().zoom();
         for (final Entity mirror : engine.environment().fetchAll(MIRRORS)) {
