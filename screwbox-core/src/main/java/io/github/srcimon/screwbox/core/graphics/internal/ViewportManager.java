@@ -30,7 +30,6 @@ public class ViewportManager implements Updatable {
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
         disableSplitScreen();
-        this.options = SplitScreenOptions.screens(1);
     }
 
     public boolean isSplitScreenEnabled() {
@@ -72,7 +71,6 @@ public class ViewportManager implements Updatable {
         splitScreenViewportsCorrectType.clear();
         viewportMap.clear();
         viewportMap.put(0, defaultViewport);
-        options = SplitScreenOptions.screens(1);
     }
 
     public Viewport defaultViewport() {
