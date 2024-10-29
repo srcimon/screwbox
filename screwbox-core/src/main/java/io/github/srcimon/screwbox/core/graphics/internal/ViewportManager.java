@@ -116,7 +116,6 @@ public class ViewportManager implements Updatable {
     }
 
     private void arangeViewports() {
-        //TODO allow intro and extro animations! options.intro...
         for (int i = 0; i < splitScreenViewports.size(); i++) {
             ScreenBounds viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds());
             splitScreenViewports.get(i).updateClip(viewportBounds);
