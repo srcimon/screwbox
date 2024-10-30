@@ -110,7 +110,7 @@ public class LightDelegate {
 
         renderInProgress = true;
         if (!ambientLight.isMax()) {
-            renderLightmap();
+            renderLightmap();//TODO remove ambient light from light delegate!
         }
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
