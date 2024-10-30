@@ -131,9 +131,6 @@ public class DefaultLight implements Light {
     }
 
     public void update() {
-        for (final var delegate : delegates) {
-            delegate.update();
-        }
         lightPhysics.clear();
         delegates.clear();
         for (final var viewport : viewportManager.activeViewports()) {

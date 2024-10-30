@@ -134,12 +134,6 @@ public class LightDelegate {
         this.ambientLight = ambientLight;
     }
 
-    public void update() {
-        initLightmap();
-        tasks.clear();
-        postDrawingTasks.clear();
-    }
-
     private boolean isVisible(final Bounds lightBox) {
         return viewport.canvas().isVisible(viewport.toCanvas(lightBox));
     }
