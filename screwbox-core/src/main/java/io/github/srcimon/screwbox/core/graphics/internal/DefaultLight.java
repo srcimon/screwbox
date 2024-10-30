@@ -28,6 +28,7 @@ public class DefaultLight implements Light {
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
+    private boolean renderInProgress = false;
 
     public DefaultLight(final GraphicsConfiguration configuration, ViewportManager viewportManager, ExecutorService executor) {
         this.configuration = configuration;
@@ -117,9 +118,15 @@ public class DefaultLight implements Light {
 
     @Override
     public Light render() {
+        if (renderInProgress) {
+            throw new IllegalStateException("rendering lights is already in progress");
+        }
+
+        renderInProgress = true;
         for (final var delegate : delegates) {
             delegate.render();
         }
+        renderInProgress = false;
         return this;
     }
 

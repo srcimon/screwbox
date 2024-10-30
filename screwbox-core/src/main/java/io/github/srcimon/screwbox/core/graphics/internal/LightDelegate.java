@@ -33,8 +33,6 @@ public class LightDelegate {
     private Lightmap lightmap;
     private Percent ambientLight = Percent.zero();
 
-    private boolean renderInProgress = false;
-
     private final List<Runnable> tasks = new ArrayList<>();
 
     public LightDelegate(final LightPhysics lightPhysics,
@@ -104,11 +102,6 @@ public class LightDelegate {
     }
 
     public void render() {
-        if (renderInProgress) {
-            throw new IllegalStateException("rendering lights is already in progress");
-        }
-
-        renderInProgress = true;
         if (!ambientLight.isMax()) {
             renderLightmap();//TODO remove ambient light from light delegate!
         }
@@ -144,7 +137,7 @@ public class LightDelegate {
     }
 
     public void update() {
-        renderInProgress = false;
+
         initLightmap();
         tasks.clear();
         postDrawingTasks.clear();
