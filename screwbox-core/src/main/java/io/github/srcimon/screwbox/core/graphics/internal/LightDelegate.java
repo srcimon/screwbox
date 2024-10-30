@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
-import static java.util.Objects.requireNonNull;
 
 public class LightDelegate {
 
@@ -71,18 +70,16 @@ public class LightDelegate {
 
     private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
         tasks.add(() -> {
-            if (!lightPhysics.isCoveredByShadowCasters(position)) {
-                final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-                if (isVisible(lightBox)) {
-                    final List<Offset> area = new ArrayList<>();
-                    final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
-                    for (final var vector : worldArea) {
-                        area.add(viewport.toCanvas(vector));
-                    }
-                    final Offset offset = viewport.toCanvas(position);
-                    final int screenRadius = viewport.toCanvas(radius);
-                    lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
+            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+            if (isVisible(lightBox)) {
+                final List<Offset> area = new ArrayList<>();
+                final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
+                for (final var vector : worldArea) {
+                    area.add(viewport.toCanvas(vector));
                 }
+                final Offset offset = viewport.toCanvas(position);
+                final int screenRadius = viewport.toCanvas(radius);
+                lightmap.add(new Lightmap.PointLight(offset, screenRadius, area, color));
             }
         });
     }
@@ -99,12 +96,10 @@ public class LightDelegate {
     }
 
     public void addGlow(final Vector position, final double radius, final Color color) {
-        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
-            final CircleDrawOptions options = CircleDrawOptions.fading(color);
-            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
-            if (isVisible(lightBox)) {
-                postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
-            }
+        final CircleDrawOptions options = CircleDrawOptions.fading(color);
+        final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        if (isVisible(lightBox)) {
+            postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
         }
     }
 
@@ -146,10 +141,6 @@ public class LightDelegate {
 
     public void setAmbientLight(final Percent ambientLight) {
         this.ambientLight = ambientLight;
-    }
-
-    public Percent ambientLight() {
-        return ambientLight;
     }
 
     public void update() {

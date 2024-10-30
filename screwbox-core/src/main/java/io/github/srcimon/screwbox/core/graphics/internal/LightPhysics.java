@@ -13,7 +13,7 @@ import static java.util.Comparator.comparingDouble;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-class LightPhysics {
+public class LightPhysics {
 
     private final List<Bounds> shadowCasters = new ArrayList<>();
     private final List<Bounds> noSelfShadowShadowCasters = new ArrayList<>();

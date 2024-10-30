@@ -57,8 +57,10 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
-        for (final var delegate : delegates) {
-            delegate.addPointLight(position, radius, color);
+        if (!lightPhysics.isCoveredByShadowCasters(position)) {
+            for (final var delegate : delegates) {
+                delegate.addPointLight(position, radius, color);
+            }
         }
         return this;
     }
@@ -105,8 +107,10 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
-        for (final var delegate : delegates) {
-            delegate.addGlow(position, radius, color);
+        if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
+            for (final var delegate : delegates) {
+                delegate.addGlow(position, radius, color);
+            }
         }
         return this;
     }
