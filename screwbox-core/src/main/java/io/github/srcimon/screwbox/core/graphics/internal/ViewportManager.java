@@ -57,7 +57,7 @@ public class ViewportManager implements Updatable {
         return new DefaultViewport(canvas, camera);
     }
 
-    private void applyCameraSettingsToOtherCamera(Camera from, Camera to) {
+    private void applyCameraSettingsToOtherCamera(final Camera from, final Camera to) {
         to.setPosition(from.position());
         to.setZoom(from.zoom());
         to.setZoomRestriction(from.minZoom(), from.maxZoom());
