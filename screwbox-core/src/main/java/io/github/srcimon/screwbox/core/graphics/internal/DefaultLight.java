@@ -24,7 +24,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private List<LightDelegate> delegates = new ArrayList<>();
+    private final List<LightDelegate> delegates = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
@@ -48,16 +48,15 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addConeLight(Vector position, Rotation direction, Rotation cone, double radius, Color color) {
+    public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
         for (final var delegate : delegates) {
             delegate.addConeLight(position, direction, cone, radius, color);
         }
-        ;
         return this;
     }
 
     @Override
-    public Light addPointLight(Vector position, double radius, Color color) {
+    public Light addPointLight(final Vector position, final double radius, final Color color) {
         for (final var delegate : delegates) {
             delegate.addPointLight(position, radius, color);
         }
@@ -65,16 +64,15 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addSpotLight(Vector position, double radius, Color color) {
+    public Light addSpotLight(final Vector position, final double radius, final Color color) {
         for (final var delegate : delegates) {
             delegate.addSpotLight(position, radius, color);
         }
-        ;
         return this;
     }
 
     @Override
-    public Light addShadowCaster(Bounds shadowCaster, boolean selfShadow) {
+    public Light addShadowCaster(final Bounds shadowCaster, final boolean selfShadow) {
         if (selfShadow) {
             lightPhysics.addShadowCaster(shadowCaster);
         } else {
@@ -84,11 +82,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addFullBrightnessArea(Bounds area) {
+    public Light addFullBrightnessArea(final Bounds area) {
         for (final var delegate : delegates) {
             delegate.addFullBrightnessArea(area);
         }
-        ;
         return this;
     }
 
@@ -98,7 +95,6 @@ public class DefaultLight implements Light {
         for (final var delegate : delegates) {
             delegate.setAmbientLight(ambientLight);
         }
-        ;
         return this;
     }
 
@@ -108,11 +104,10 @@ public class DefaultLight implements Light {
     }
 
     @Override
-    public Light addGlow(Vector position, double radius, Color color) {
+    public Light addGlow(final Vector position, final double radius, final Color color) {
         for (final var delegate : delegates) {
             delegate.addGlow(position, radius, color);
         }
-        ;
         return this;
     }
 
@@ -125,14 +120,14 @@ public class DefaultLight implements Light {
     }
 
     public void update() {
-        for (var delegate : delegates) {
+        for (final var delegate : delegates) {
             delegate.update();
         }
         lightPhysics.clear();
         delegates.clear();
-        for (var viewport : viewportManager.activeViewports()) {
-            LightDelegate delegate = new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter);
-            delegate.setAmbientLight(ambientLight);
+        for (final var viewport : viewportManager.activeViewports()) {
+            final LightDelegate delegate = new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter);
+            delegate.setAmbientLight(ambientLight);//TODO move to constructor?
             delegates.add(delegate);
         }
     }
