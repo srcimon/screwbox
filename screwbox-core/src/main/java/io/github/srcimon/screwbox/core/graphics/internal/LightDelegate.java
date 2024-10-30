@@ -47,7 +47,6 @@ public class LightDelegate {
         initLightmap();
     }
 
-
     public void addFullBrightnessArea(final Bounds area) {
         if (isVisible(area)) {
             final ScreenBounds bounds = viewport.toCanvas(area);
@@ -63,12 +62,11 @@ public class LightDelegate {
 
     public void addPointLight(final Vector position, final double radius, final Color color) {
         addPointLight(position, radius, color, 0, 360);
-
     }
 
     private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
         tasks.add(() -> {
-            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+            final Bounds lightBox = lightLightBox(position, radius);
             if (isVisible(lightBox)) {
                 final List<Offset> area = new ArrayList<>();
                 final List<Vector> worldArea = lightPhysics.calculateArea(lightBox, minAngle, maxAngle);
@@ -84,7 +82,7 @@ public class LightDelegate {
 
     public void addSpotLight(final Vector position, final double radius, final Color color) {
         tasks.add(() -> {
-            final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+            final Bounds lightBox = lightLightBox(position, radius);
             if (isVisible(lightBox)) {
                 final Offset offset = viewport.toCanvas(position);
                 final int distance = viewport.toCanvas(radius);
@@ -94,9 +92,9 @@ public class LightDelegate {
     }
 
     public void addGlow(final Vector position, final double radius, final Color color) {
-        final CircleDrawOptions options = CircleDrawOptions.fading(color);
-        final Bounds lightBox = Bounds.atPosition(position, radius * 2, radius * 2);
+        final Bounds lightBox = lightLightBox(position, radius);
         if (isVisible(lightBox)) {
+            final CircleDrawOptions options = CircleDrawOptions.fading(color);
             postDrawingTasks.add(() -> viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options));
         }
     }
@@ -137,18 +135,20 @@ public class LightDelegate {
     }
 
     public void update() {
-
         initLightmap();
         tasks.clear();
         postDrawingTasks.clear();
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return viewport.canvas().isVisible(viewport.toCanvas(lightBox));//TODO this can easily be inlined
+        return viewport.canvas().isVisible(viewport.toCanvas(lightBox));
     }
 
     private void initLightmap() {
         lightmap = new Lightmap(viewport.canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 
+    private Bounds lightLightBox(Vector position, double radius) {
+        return Bounds.atPosition(position, radius * 2, radius * 2);
+    }
 }
