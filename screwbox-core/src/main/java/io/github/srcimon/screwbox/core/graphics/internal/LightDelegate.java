@@ -31,7 +31,6 @@ public class LightDelegate {
     private final LightPhysics lightPhysics;
     private final UnaryOperator<BufferedImage> postFilter;
     private Lightmap lightmap;
-    private Percent ambientLight = Percent.zero();
 
     private final List<Runnable> tasks = new ArrayList<>();
 
@@ -99,16 +98,13 @@ public class LightDelegate {
         }
     }
 
-    public void render() {
-        if (!ambientLight.isMax()) {
-            renderLightmap();//TODO remove ambient light from light delegate!
-        }
+    public void renderGlows() {
         for (final var drawingTask : postDrawingTasks) {
             drawingTask.run();
         }
     }
 
-    private void renderLightmap() {
+    public void renderLightmap(Percent ambientLight) {
         for (final var task : tasks) {
             task.run();
         }
@@ -128,10 +124,6 @@ public class LightDelegate {
         // Avoid flickering by overdraw at last by one pixel
         final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
         viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
-    }
-
-    public void setAmbientLight(final Percent ambientLight) {
-        this.ambientLight = ambientLight;
     }
 
     private boolean isVisible(final Bounds lightBox) {

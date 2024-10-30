@@ -95,9 +95,6 @@ public class DefaultLight implements Light {
     @Override
     public Light setAmbientLight(final Percent ambientLight) {
         this.ambientLight = requireNonNull(ambientLight, "ambient light must not be null");
-        for (final var delegate : delegates) {
-            delegate.setAmbientLight(ambientLight);
-        }
         return this;
     }
 
@@ -124,7 +121,10 @@ public class DefaultLight implements Light {
 
         renderInProgress = true;
         for (final var delegate : delegates) {
-            delegate.render();
+            if (!ambientLight.isMax()) {
+                delegate.renderLightmap(ambientLight);
+            }
+            delegate.renderGlows();
         }
         renderInProgress = false;
         return this;
@@ -135,7 +135,6 @@ public class DefaultLight implements Light {
         delegates.clear();
         for (final var viewport : viewportManager.activeViewports()) {
             final LightDelegate delegate = new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter);
-            delegate.setAmbientLight(ambientLight);//TODO move to constructor?
             delegates.add(delegate);
         }
     }
