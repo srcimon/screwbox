@@ -82,7 +82,7 @@ public class ViewportManager implements Updatable {
                 ? splitScreenViewportsCorrectType
                 : defaultViewports;
     }
-
+//TODO support animation -> translate screens that will exist in future and fade to black other screens
     public Optional<Viewport> viewport(final int index) {
         return Optional.ofNullable(viewportMap.get(index));
     }
