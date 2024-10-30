@@ -10,6 +10,7 @@ import io.github.srcimon.screwbox.core.audio.SoundOptions;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Camera;
+import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -81,10 +82,9 @@ class SoundSystemTest {
     }
 
     @Test
-    @Disabled
-        //TODO FIXME
-    void update_entityOutOfRangeWithoutPlayback_doesNothing(DefaultEnvironment environment, Audio audio, AudioConfiguration config) {
+    void update_entityOutOfRangeWithoutPlayback_doesNothing(DefaultEnvironment environment, Audio audio, AudioConfiguration config, Graphics graphics) {
         when(config.soundRange()).thenReturn(4.0);
+        when(graphics.distanceToAttention($(30, 20))).thenReturn(200.0);
 
         SoundComponent soundComponent = new SoundComponent(SoundBundle.NOTIFY);
 
@@ -100,9 +100,10 @@ class SoundSystemTest {
     }
 
     @Test
-    @Disabled //TODO FIXME
-    void update_entityOutOfRangeWithPlayback_stopsPlaybackAndRemovesPlayback(DefaultEnvironment environment, Audio audio, AudioConfiguration config) {
+    @Disabled
+    void update_entityOutOfRangeWithPlayback_stopsPlaybackAndRemovesPlayback(DefaultEnvironment environment, Audio audio, AudioConfiguration config, Graphics graphics) {
         when(config.soundRange()).thenReturn(4.0);
+        when(graphics.distanceToAttention($(30, 20))).thenReturn(200.0);
 
         SoundComponent soundComponent = new SoundComponent(SoundBundle.NOTIFY);
         soundComponent.playback = PLAYBACK;
