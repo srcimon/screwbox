@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.environment.rendering;
 
-import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
@@ -25,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static io.github.srcimon.screwbox.core.Bounds.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,8 +55,8 @@ class RenderSystemTest {
     void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
-        when(viewport.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
-        when(viewport.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
+        when(viewport.toCanvas($$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(viewport.visibleArea()).thenReturn($$(176, 176, 48, 48));
         when(canvas.size()).thenReturn(Size.of(800, 800));
 
         environment
@@ -78,7 +78,7 @@ class RenderSystemTest {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
 
-        when(viewport.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
+        when(viewport.visibleArea()).thenReturn($$(176, 176, 48, 48));
 
         environment
                 .addEntity(new Entity()
