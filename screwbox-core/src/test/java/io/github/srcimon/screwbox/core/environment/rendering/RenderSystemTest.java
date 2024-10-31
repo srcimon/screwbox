@@ -15,7 +15,7 @@ import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -44,13 +44,17 @@ class RenderSystemTest {
     @Mock
     Canvas canvas;
 
-    @Test
-    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Graphics graphics) {
-        var sprite = SpriteBundle.ICON.get();
+    @BeforeEach
+    void setUp(Graphics graphics) {
         when(viewport.camera()).thenReturn(camera);
         when(viewport.canvas()).thenReturn(canvas);
-        when(camera.zoom()).thenReturn(2.0);
         when(graphics.activeViewports()).thenReturn(List.of(viewport));
+    }
+
+    @Test
+    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment) {
+        var sprite = SpriteBundle.ICON.get();
+        when(camera.zoom()).thenReturn(2.0);
         when(viewport.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
         when(viewport.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
         when(canvas.size()).thenReturn(Size.of(800, 800));
@@ -70,14 +74,11 @@ class RenderSystemTest {
     }
 
     @Test
-    @Disabled
-        //TODO FIXME
-    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Graphics graphics, Canvas canvas) {
+    void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
-        when(canvas.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
-        when(graphics.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
-        when(graphics.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
+
+        when(viewport.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
 
         environment
                 .addEntity(new Entity()
