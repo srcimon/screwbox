@@ -73,11 +73,9 @@ class RenderOverLightSystemTest {
     }
 
     @Test
-    void update_spriteIsBelowLightLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Graphics graphics, Canvas canvas) {
+    void update_spriteIsBelowLight_drawsNoSprite(DefaultEnvironment environment) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
-        when(canvas.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
-        when(graphics.toCanvas($$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
 
         environment
                 .addEntity(
