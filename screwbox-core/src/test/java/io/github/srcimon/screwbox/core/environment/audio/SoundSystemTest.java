@@ -34,7 +34,6 @@ class SoundSystemTest {
     @BeforeEach
     void setUp(Camera camera) {
         when(camera.position()).thenReturn(Vector.zero());
-
     }
 
     @Test
@@ -100,7 +99,6 @@ class SoundSystemTest {
     }
 
     @Test
-    @Disabled
     void update_entityOutOfRangeWithPlayback_stopsPlaybackAndRemovesPlayback(DefaultEnvironment environment, Audio audio, AudioConfiguration config, Graphics graphics) {
         when(config.soundRange()).thenReturn(4.0);
         when(graphics.distanceToAttention($(30, 20))).thenReturn(200.0);
