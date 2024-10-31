@@ -131,7 +131,6 @@ class DefaultEngine implements Engine {
         final DefaultScreen screen = new DefaultScreen(frame, standbyProxyRenderer, createRobot(), screenCanvas, viewportManager);
         final var graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         window = new DefaultWindow(frame, configuration, graphicsDevice, standbyProxyRenderer);
-        final DefaultWorld world = new DefaultWorld(viewportManager);
         final DefaultLight light = new DefaultLight(configuration, viewportManager, executor);
         final AudioAdapter audioAdapter = new AudioAdapter();
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
@@ -139,7 +138,7 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         scenes = new DefaultScenes(this, screenCanvas, executor);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
-        graphics = new DefaultGraphics(configuration, screen, world, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
+        graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
         final DynamicSoundSupport dynamicSoundSupport = new DynamicSoundSupport(attentionFocus, audioConfiguration);
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);

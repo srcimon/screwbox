@@ -31,7 +31,6 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
-                           final DefaultWorld world,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final AsyncRenderer asyncRenderer,
@@ -39,12 +38,12 @@ public class DefaultGraphics implements Graphics, Updatable {
                            final AttentionFocus attentionFocus) {
         this.configuration = configuration;
         this.light = light;
-        this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.asyncRenderer = asyncRenderer;
         this.viewportManager = viewportManager;
         this.attentionFocus = attentionFocus;
+        this.world = new DefaultWorld(viewportManager);
     }
 
     @Override
