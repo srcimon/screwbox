@@ -13,14 +13,19 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
+    //TODO add javadoc
     Graphics enableSplitScreen(SplitScreenOptions options);
 
+    //TODO add javadoc
     Graphics disableSplitScreen();
 
+    //TODO add javadoc
     Optional<Viewport> vieport(int index);
 
+    //TODO add javadoc
     boolean isSplitScreenEnabled();
 
+    //TODO add javadoc
     List<Viewport> activeViewports();
 
     /**
@@ -35,6 +40,7 @@ public interface Graphics extends Viewport {
      */
     Screen screen();
 
+    //TODO add javadoc
     Canvas createCanvas(Offset offset, Size size);
 
     /**
