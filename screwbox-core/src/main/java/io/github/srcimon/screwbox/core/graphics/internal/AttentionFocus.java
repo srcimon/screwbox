@@ -22,10 +22,9 @@ public class AttentionFocus {
     }
 
     public Vector direction(final Vector position) {
-        final Vector direction = Vector.zero();
+        Vector direction = Vector.zero();
         for (var viewport : viewportManager.activeViewports()) {
-            direction.add(position.substract(viewport.camera().position()));
-
+            direction = direction.add(position.substract(viewport.camera().position()));
         }
         return direction.length(1);
     }
