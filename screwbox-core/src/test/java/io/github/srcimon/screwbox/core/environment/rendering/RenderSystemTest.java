@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.SpriteBatch;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 import io.github.srcimon.screwbox.core.test.EnvironmentExtension;
 import org.junit.jupiter.api.Disabled;
@@ -19,7 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -31,14 +35,24 @@ class RenderSystemTest {
     @Captor
     ArgumentCaptor<SpriteBatch> spriteBatch;
 
+    @Mock
+    Viewport viewport;
+
+    @Mock
+    Camera camera;
+
+    @Mock
+    Canvas canvas;
+
     @Test
-    @Disabled //TODO FIXME
-    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Camera camera, Canvas canvas, Graphics graphics) {
+    void update_oneSpriteOnScreen_drawsSpriteBatchWithOneSprite(DefaultEnvironment environment, Graphics graphics) {
         var sprite = SpriteBundle.ICON.get();
+        when(viewport.camera()).thenReturn(camera);
+        when(viewport.canvas()).thenReturn(canvas);
         when(camera.zoom()).thenReturn(2.0);
-        when(canvas.bounds()).thenReturn(new ScreenBounds(0, 0, 640, 480));
-        when(graphics.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
-        when(graphics.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
+        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(viewport.toCanvas(Bounds.$$(176, 176, 48, 48), 1, 1)).thenReturn(new ScreenBounds(20, 20, 8, 8));
+        when(viewport.visibleArea()).thenReturn(Bounds.$$(176, 176, 48, 48));
         when(canvas.size()).thenReturn(Size.of(800, 800));
 
         environment
@@ -56,7 +70,8 @@ class RenderSystemTest {
     }
 
     @Test
-    @Disabled //TODO FIXME
+    @Disabled
+        //TODO FIXME
     void update_spriteOnTopOfLight_drawsNoSprite(DefaultEnvironment environment, Camera camera, Graphics graphics, Canvas canvas) {
         var sprite = SpriteBundle.ICON.get();
         when(camera.zoom()).thenReturn(2.0);
