@@ -141,13 +141,6 @@ public class DefaultScreen implements Screen, Updatable {
         return new DefaultCanvas(renderer, bounds);
     }
 
-    void validateCanvasBounds(final ScreenBounds canvasBounds) {
-        requireNonNull(canvasBounds, "bounds must not be null");
-        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
-            throw new IllegalArgumentException("bounds must be on screen");
-        }
-    }
-
     @Override
     public void update() {
         double degrees = viewportManager.defaultViewport().camera().swing().degrees();
@@ -159,5 +152,12 @@ public class DefaultScreen implements Screen, Updatable {
 
     private ScreenBounds canvasBounds() {
         return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
+    }
+
+    private void validateCanvasBounds(final ScreenBounds canvasBounds) {
+        requireNonNull(canvasBounds, "bounds must not be null");
+        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
+            throw new IllegalArgumentException("bounds must be on screen");
+        }
     }
 }
