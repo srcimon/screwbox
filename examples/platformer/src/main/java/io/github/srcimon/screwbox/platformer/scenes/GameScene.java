@@ -94,7 +94,7 @@ public class GameScene implements Scene {
                         var e = engine.environment().fetchAll(Archetype.of(TransformComponent.class));
                         for(var v : engine.graphics().activeViewports()) {
 
-                            v.camera().setZoom(new Random().nextDouble(2, 4));
+                            v.camera().setZoom(new Random().nextDouble(1, 3));
                             v.camera().moveWithinVisualBounds(ListUtil.randomFrom(e).position().substract(v.camera().position()), configuration.get().cameraBounds);
                         }
                     }
