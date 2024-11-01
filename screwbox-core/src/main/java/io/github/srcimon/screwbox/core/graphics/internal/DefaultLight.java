@@ -24,7 +24,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private final List<LightDelegate> delegates = new ArrayList<>();
+    private final List<ViewportLight> viewportLights = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
@@ -50,8 +50,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
-        for (final var delegate : delegates) {
-            delegate.addConeLight(position, direction, cone, radius, color);
+        for (final var viewportLight : viewportLights) {
+            viewportLight.addConeLight(position, direction, cone, radius, color);
         }
         return this;
     }
@@ -59,8 +59,8 @@ public class DefaultLight implements Light {
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
-            for (final var delegate : delegates) {
-                delegate.addPointLight(position, radius, color);
+            for (final var viewportLight : viewportLights) {
+                viewportLight.addPointLight(position, radius, color);
             }
         }
         return this;
@@ -68,8 +68,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
-        for (final var delegate : delegates) {
-            delegate.addSpotLight(position, radius, color);
+        for (final var viewportLight : viewportLights) {
+            viewportLight.addSpotLight(position, radius, color);
         }
         return this;
     }
@@ -86,8 +86,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
-        for (final var delegate : delegates) {
-            delegate.addFullBrightnessArea(area);
+        for (final var viewportLight : viewportLights) {
+            viewportLight.addFullBrightnessArea(area);
         }
         return this;
     }
@@ -106,8 +106,8 @@ public class DefaultLight implements Light {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
         if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
-            for (final var delegate : delegates) {
-                delegate.addGlow(position, radius, color);
+            for (final var viewportLight : viewportLights) {
+                viewportLight.addGlow(position, radius, color);
             }
         }
         return this;
@@ -120,11 +120,11 @@ public class DefaultLight implements Light {
         }
 
         renderInProgress = true;
-        for (final var delegate : delegates) {
+        for (final var viewportLight : viewportLights) {
             if (!ambientLight.isMax()) {
-                delegate.renderLightmap(ambientLight);
+                viewportLight.renderLightmap(ambientLight);
             }
-            delegate.renderGlows();
+            viewportLight.renderGlows();
         }
         renderInProgress = false;
         return this;
@@ -132,10 +132,10 @@ public class DefaultLight implements Light {
 
     public void update() {
         lightPhysics.clear();
-        delegates.clear();
+        viewportLights.clear();
         for (final var viewport : viewportManager.viewports()) {
-            final LightDelegate delegate = new LightDelegate(lightPhysics, configuration, executor, viewport, postFilter);
-            delegates.add(delegate);
+            final ViewportLight viewportLight = new ViewportLight(lightPhysics, configuration, executor, viewport, postFilter);
+            viewportLights.add(viewportLight);
         }
     }
 }

@@ -22,7 +22,7 @@ import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
 
-public class LightDelegate {
+public class ViewportLight {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
@@ -34,7 +34,7 @@ public class LightDelegate {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public LightDelegate(final LightPhysics lightPhysics,
+    public ViewportLight(final LightPhysics lightPhysics,
                          final GraphicsConfiguration configuration,
                          final ExecutorService executor, final Viewport viewport,
                          final UnaryOperator<BufferedImage> postFilter) {
@@ -134,7 +134,7 @@ public class LightDelegate {
         lightmap = new Lightmap(viewport.canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 
-    private Bounds lightLightBox(Vector position, double radius) {
+    private Bounds lightLightBox(final Vector position, final double radius) {
         return Bounds.atPosition(position, radius * 2, radius * 2);
     }
 }
