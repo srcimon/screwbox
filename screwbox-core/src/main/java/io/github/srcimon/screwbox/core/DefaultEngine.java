@@ -24,7 +24,6 @@ import io.github.srcimon.screwbox.core.graphics.internal.DefaultGraphics;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultLight;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.AsyncRenderer;
 import io.github.srcimon.screwbox.core.graphics.internal.renderer.DefaultRenderer;
