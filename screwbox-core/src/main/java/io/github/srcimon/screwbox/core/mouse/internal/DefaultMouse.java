@@ -145,7 +145,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public boolean isAnyButtonDown() {
         return !downButtons.isEmpty();
     }
-    
+    //TODO dynamically switch used viewport to viewport that mouse is over
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
         offset = windowPosition.substract(screen.position()).substract(canvas().offset());
