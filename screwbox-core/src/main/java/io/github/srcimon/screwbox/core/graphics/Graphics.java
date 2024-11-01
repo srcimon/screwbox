@@ -43,7 +43,10 @@ public interface Graphics extends Viewport {
      */
     Screen screen();
 
-    //TODO add javadoc
+    /**
+     * Creates a {@link Canvas} that can be used to draw only on a specific area on the {@link Screen} without
+     * paying attention to calculating relative {@link Canvas#offset()} for every drawing task.
+     */
     Canvas createCanvas(Offset offset, Size size);
 
     /**

@@ -14,8 +14,6 @@ import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
-import java.util.Random;
-
 public class ToggleSplitscreenSystem implements EntitySystem {
     @Override
     public void update(Engine engine) {
@@ -33,7 +31,6 @@ public class ToggleSplitscreenSystem implements EntitySystem {
                 randomizeAllCameras(engine);
             }
         }
-
     }
 
     private void randomizeAllCameras(final Engine engine) {
@@ -42,7 +39,6 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         for (var viewport : engine.graphics().activeViewports()) {
             if (!viewport.equals(engine.graphics().primaryViewport())) {
                 Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().substract(viewport.camera().position());
-                viewport.camera().setZoom(new Random().nextDouble(1, 3));
                 viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.cameraBounds);
             }
         }
