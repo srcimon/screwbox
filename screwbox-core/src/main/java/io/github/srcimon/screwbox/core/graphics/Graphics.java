@@ -22,13 +22,23 @@ public interface Graphics extends Viewport {
     //TODO add javadoc
     boolean isSplitscreenModeEnabled();
 
-    //TODO add javadoc
-    Optional<Viewport> vieport(int index);
+    /**
+     * Returns the specified {@link Viewport} (index starting at 0). Will be empty if there is no such {@link Viewport}.
+     * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitScreenOptions)}.
+     * @since 2.5.0
+     */
+    Optional<Viewport> viewport(int index);
 
     //TODO add javadoc
     List<Viewport> viewports();
 
-    //TODO add javadoc
+    /**
+     * Returns the primary {@link Viewport}. This will be the {@link Screen} when split screen mode is not enabled. And
+     * will be the first {@link Viewport} if split screen is enabled.
+     *
+     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @since 2.5.0
+     */
     Viewport primaryViewport();
 
     /**
@@ -99,6 +109,7 @@ public interface Graphics extends Viewport {
 
     /**
      * Checks if the specified position is within the specified distance to the visible area. This also works in split screen.
+     * @since 2.5.0
      */
     boolean isWithinDistanceToVisibleArea(Vector position, double distance);
 

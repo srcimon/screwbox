@@ -16,7 +16,7 @@ public class CameraSystem implements EntitySystem {
     public void update(final Engine engine) {
         for (final var targetEntity : engine.environment().fetchAll(TARGET)) {
             final var target = targetEntity.get(CameraTargetComponent.class);
-            engine.graphics().vieport(target.viewportId).ifPresent(viewport -> {
+            engine.graphics().viewport(target.viewportId).ifPresent(viewport -> {
                 final var cameraPosition = viewport.camera().position();
                 final var targetBounds = targetEntity.bounds();
 
