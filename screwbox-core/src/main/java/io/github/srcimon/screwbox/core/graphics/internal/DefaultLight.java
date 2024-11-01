@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Light;
+import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingBlurImageFilter;
 import io.github.srcimon.screwbox.core.graphics.internal.filter.SizeIncreasingImageFilter;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
 import static io.github.srcimon.screwbox.core.graphics.GraphicsConfigurationEvent.ConfigurationProperty.LIGHTMAP_BLUR;
+import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
 import static java.util.Objects.requireNonNull;
 
 public class DefaultLight implements Light {
@@ -122,7 +124,10 @@ public class DefaultLight implements Light {
         renderInProgress = true;
         for (final var viewportLight : viewportLights) {
             if (!ambientLight.isMax()) {
-                viewportLight.renderLightmap(ambientLight);
+                var lightmap = viewportLight.renderLightmap();
+                // Avoid flickering by overdraw at last by one pixel
+                final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
+                viewportLight.canvas().drawSprite(lightmap, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
             }
             viewportLight.renderGlows();
         }

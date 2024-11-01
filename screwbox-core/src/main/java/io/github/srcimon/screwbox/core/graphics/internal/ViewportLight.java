@@ -5,6 +5,7 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -91,6 +92,10 @@ public class ViewportLight {
         });
     }
 
+    public Canvas canvas() {
+        return viewport.canvas();
+    }
+
     public void addGlow(final Vector position, final double radius, final Color color) {
         final Bounds lightBox = lightLightBox(position, radius);
         if (isVisible(lightBox)) {
@@ -105,7 +110,7 @@ public class ViewportLight {
         }
     }
 
-    public void renderLightmap(final Percent ambientLight) {
+    public Asset<Sprite> renderLightmap() {
         for (final var task : tasks) {
             task.run();
         }
@@ -114,7 +119,7 @@ public class ViewportLight {
             final var filtered = postFilter.apply(image);
             return Sprite.fromImage(filtered);
         });
-        final Asset<Sprite> sprite = Asset.asset(() -> {
+        return Asset.asset(() -> {
             try {
                 return spriteFuture.get();
             } catch (InterruptedException | ExecutionException e) {
@@ -122,9 +127,6 @@ public class ViewportLight {
                 throw new IllegalStateException("error receiving lightmap sprite", e);
             }
         });
-        // Avoid flickering by overdraw at last by one pixel
-        final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-        viewport.canvas().drawSprite(sprite, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
     }
 
     private boolean isVisible(final Bounds lightBox) {
