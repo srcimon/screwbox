@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -162,18 +161,15 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Vector screenToWorld(final Offset offset) {
-        final double x = (offset.x() - (canvas().width() / 2.0)) / getCamera().zoom() + getCamera().focus().x();
-        final double y = (offset.y() - (canvas().height() / 2.0)) / getCamera().zoom() + getCamera().focus().y();
+        final var camera = viewport().camera();
+        final double x = (offset.x() - (canvas().width() / 2.0)) / camera.zoom() + camera.focus().x();
+        final double y = (offset.y() - (canvas().height() / 2.0)) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
 
     private Viewport viewport() {
         return viewportManager.defaultViewport();
-    }
-
-    private Camera getCamera() {
-        return viewport().camera();
     }
 
     private Canvas canvas() {
