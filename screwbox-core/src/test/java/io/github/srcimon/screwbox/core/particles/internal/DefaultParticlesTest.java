@@ -50,7 +50,6 @@ class DefaultParticlesTest {
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
-        when(attentionFocus.distanceTo(any())).thenReturn(1.0);
 
         particles.update();
         particles.spawn($(20, 10), ParticleOptions.unknownSource());
@@ -84,7 +83,7 @@ class DefaultParticlesTest {
 
     @Test
     void spawn_particleOutOfSpawnDistance_doesntSpawnParticle() {
-        when(attentionFocus.distanceTo($(20000, 20))).thenReturn(20000.0);
+        when(attentionFocus.isWithinVisibleDistance($(20000, 20), 1000)).thenReturn(false);
         when(scenes.activeEnvironment()).thenReturn(environment);
 
         particles.spawn($(20000, 20), ParticleOptions.unknownSource());
@@ -97,7 +96,6 @@ class DefaultParticlesTest {
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(attentionFocus.distanceTo($(80, 100))).thenReturn(50.0);
-
         Entity source = new Entity().add(new RenderComponent(20));
 
         particles.spawn($(80, 100), ParticleOptions.particleSource(source));

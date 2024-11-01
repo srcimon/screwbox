@@ -29,4 +29,12 @@ public class AttentionFocus {
         return direction.length(1);
     }
 
+    public boolean isWithinVisibleDistance(final Vector position, final double distance) {
+        for (var viewport : viewportManager.activeViewports()) {
+            if(viewport.visibleArea().expand(distance).contains(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
