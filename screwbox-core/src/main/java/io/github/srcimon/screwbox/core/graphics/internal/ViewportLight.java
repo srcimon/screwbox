@@ -104,7 +104,7 @@ public class ViewportLight {
         }
     }
 
-    public void renderLightmap(Percent ambientLight) {
+    public void renderLightmap(final Percent ambientLight) {
         for (final var task : tasks) {
             task.run();
         }
