@@ -101,4 +101,5 @@ public interface Graphics extends Viewport {
      * Checks if the specified position is within the specified distance to the visible area. This also works in split screen.
      */
     boolean isWithinDistanceToVisibleArea(Vector position, double distance);
+
 }
