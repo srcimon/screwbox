@@ -42,7 +42,7 @@ public class TableLayout implements ViewportLayout {
         final int column = index % columns;
         final int row = Math.floorDiv(index, columns);
 
-        final var offset = Offset.at(column * width, row * height);
+        final var offset = Offset.at(column * width, row * height).add(bounds.offset());
         final var isLastViewport = index == count - 1;
         final var widthToUse = fillEmptySpace && isLastViewport
                 ? (columns - column) * width
