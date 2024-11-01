@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
+import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ class AttentionFocusTest {
         var secondViewport = new DefaultViewport(null, secondCamera);
         when(viewportManager.activeViewports()).thenReturn(List.of(firstViewport, secondViewport));
     }
+
     @Test
     void distanceTo_samePositionAsNerestCamera_isZero() {
         when(firstCamera.position()).thenReturn($(20, 90));
@@ -52,26 +54,26 @@ class AttentionFocusTest {
         assertThat(attentionFocus.distanceTo($(20, 90))).isEqualTo(50.99, offset(0.1));
     }
 
-    //TODO FIX
-//    @Test
-//    void direction_leftOfAllCameras_isDirectionVectorToTheLeft() {
-//        when(firstCamera.position()).thenReturn($(10, 40));
-//        when(secondCamera.position()).thenReturn($(4, 40));
-//
-//        Vector direction = attentionFocus.direction($(-20, 90));
-//
-//        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
-//        assertThat(direction.x()).isEqualTo(-0.51, offset(0.01));
-//        assertThat(direction.y()).isEqualTo(0.86, offset(0.01));
-//    }
-//
-//    @Test
-//    void direction_rightOfCamera_sDirectionVectorToTheRight() {
-//        when(firstCamera.position()).thenReturn($(10, 40));
-//
-//        Vector direction = attentionFocus.direction($(20, 90));
-//        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
-//        assertThat(direction.x()).isEqualTo(0.196, offset(0.01));
-//        assertThat(direction.y()).isEqualTo(0.98, offset(0.01));
-//    }
+    @Test
+    void direction_leftOfAllCameras_isDirectionVectorToTheLeft() {
+        when(firstCamera.position()).thenReturn($(10, 40));
+        when(secondCamera.position()).thenReturn($(4, 40));
+
+        Vector direction = attentionFocus.direction($(-20, 90));
+
+        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
+        assertThat(direction.x()).isEqualTo(-0.47, offset(0.01));
+        assertThat(direction.y()).isEqualTo(0.88, offset(0.01));
+    }
+
+    @Test
+    void direction_rightOfCameras_sDirectionVectorToTheRight() {
+        when(firstCamera.position()).thenReturn($(10, 40));
+        when(secondCamera.position()).thenReturn($(4, 40));
+
+        Vector direction = attentionFocus.direction($(20, 90));
+        assertThat(direction.length()).isEqualTo(1.0, offset(0.01));
+        assertThat(direction.x()).isEqualTo(0.25, offset(0.01));
+        assertThat(direction.y()).isEqualTo(0.97, offset(0.01));
+    }
 }
