@@ -131,7 +131,7 @@ public class LightRenderer {
     }
 
     private void initLightmap() {
-        lightmap = new Lightmap(viewport.canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
+        lightmap = new Lightmap(canvas().size(), configuration.lightmapScale(), configuration.lightFalloff());
     }
 
     private Bounds lightLightBox(final Vector position, final double radius) {
