@@ -147,7 +147,7 @@ public class DefaultScreen implements Screen, Updatable {
         for (var viewport : viewportManager.activeViewports()) {
             degrees += viewport.camera().swing().degrees();
         }
-        this.shake = Rotation.degrees(degrees);//TODO TEst
+        this.shake = Rotation.degrees(degrees);
     }
 
     private ScreenBounds canvasBounds() {
