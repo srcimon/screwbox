@@ -97,7 +97,6 @@ public interface Graphics extends Viewport {
      */
     Duration renderDuration();
 
-    //TODO graphics.distanceToAttention()? engine.distanceToAttention()?
-    double distanceToAttention(Vector position);
-
+    //TODO javadoc
+    boolean isWithinDistanceToVisibleArea(Vector position, double distance);
 }

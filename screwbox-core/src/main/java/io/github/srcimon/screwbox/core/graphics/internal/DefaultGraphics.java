@@ -157,8 +157,8 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public double distanceToAttention(Vector position) {
-        return attentionFocus.distanceTo(position);
+    public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {
+        return attentionFocus.isWithinDistanceToVisibleArea(position, distance);
     }
 
     @Override

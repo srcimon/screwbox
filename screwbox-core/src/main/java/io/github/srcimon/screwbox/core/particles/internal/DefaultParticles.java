@@ -43,7 +43,7 @@ public class DefaultParticles implements Particles, Updatable {
 
     @Override
     public boolean isWithinSpawnArea(final Vector position) {
-        return attentionFocus.isWithinVisibleDistance(position, spawnDistance);
+        return attentionFocus.isWithinDistanceToVisibleArea(position, spawnDistance);
     }
 
     @Override
