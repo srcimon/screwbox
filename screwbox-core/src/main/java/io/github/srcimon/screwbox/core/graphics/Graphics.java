@@ -28,6 +28,9 @@ public interface Graphics extends Viewport {
     //TODO add javadoc
     List<Viewport> activeViewports();
 
+    //TODO add javadoc
+    Viewport primaryViewport();
+
     /**
      * Read and change the current {@link GraphicsConfiguration}. All changes take effect right away.
      */
@@ -93,4 +96,5 @@ public interface Graphics extends Viewport {
 
     //TODO graphics.distanceToAttention()? engine.distanceToAttention()?
     double distanceToAttention(Vector position);
+
 }

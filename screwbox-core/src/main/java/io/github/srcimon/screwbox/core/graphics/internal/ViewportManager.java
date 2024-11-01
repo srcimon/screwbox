@@ -82,9 +82,16 @@ public class ViewportManager implements Updatable {
                 ? splitScreenViewportsCorrectType
                 : defaultViewports;
     }
-//TODO support animation -> translate screens that will exist in future and fade to black other screens
+
+    //TODO support animation -> translate screens that will exist in future and fade to black other screens
     public Optional<Viewport> viewport(final int index) {
         return Optional.ofNullable(viewportMap.get(index));
+    }
+
+    public Viewport primaryViewport() {
+        return isSplitScreenEnabled()
+                ? viewportMap.get(0)
+                : defaultViewport;
     }
 
     private record Tupel<T>(T first, T second) {

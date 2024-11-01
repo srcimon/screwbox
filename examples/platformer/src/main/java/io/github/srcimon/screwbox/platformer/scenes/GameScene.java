@@ -2,18 +2,9 @@ package io.github.srcimon.screwbox.platformer.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Percent;
-import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
-import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
-import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
-import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
-import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.scenes.Scene;
-import io.github.srcimon.screwbox.core.utils.ListUtil;
 import io.github.srcimon.screwbox.platformer.collectables.Cherries;
 import io.github.srcimon.screwbox.platformer.collectables.DeboB;
 import io.github.srcimon.screwbox.platformer.collectables.DeboD;
@@ -51,7 +42,6 @@ import io.github.srcimon.screwbox.tiled.Layer;
 import io.github.srcimon.screwbox.tiled.Map;
 import io.github.srcimon.screwbox.tiled.Tile;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
@@ -87,36 +77,7 @@ public class GameScene implements Scene {
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
-                .addSystem(engine -> {
-                    LineDrawOptions options  = LineDrawOptions.color(Color.BLACK).strokeWidth(4);
-                    if(engine.keyboard().isPressed(Key.F)) {
-                        final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
-                        var e = engine.environment().fetchAll(Archetype.of(TransformComponent.class));
-                        for(var v : engine.graphics().activeViewports()) {
-
-                            v.camera().setZoom(new Random().nextDouble(1, 3));
-                            v.camera().moveWithinVisualBounds(ListUtil.randomFrom(e).position().substract(v.camera().position()), configuration.get().cameraBounds);
-                        }
-                    }
-                    if (engine.keyboard().isPressed(Key.T)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.viewports(2).border(options));
-                    }
-                    if (engine.keyboard().isPressed(Key.Z)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.viewports(3).border(options));
-                    }
-                    if (engine.keyboard().isPressed(Key.G)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.viewports(3).tableLayout().border(options));
-                    }
-                    if (engine.keyboard().isPressed(Key.H)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.viewports(2).layout(new VerticalLayout()).border(options));
-                    }
-                    if (engine.keyboard().isPressed(Key.I)) {
-                        engine.graphics().enableSplitScreen(SplitScreenOptions.viewports(5).tableLayout().border(options));
-                    }
-                    if (engine.keyboard().isPressed(Key.U)) {
-                        engine.graphics().disableSplitScreen();
-                    }
-                })
+                .addSystem(new ToggleSplitscreenSystem())
                 .addSystem(new GroundDetectorSystem())
                 .addSystem(new KillZoneSystem())
                 .addSystem(new DebugConfigSystem())
