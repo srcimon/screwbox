@@ -29,16 +29,16 @@ public class ViewportManager implements Updatable {
         this.renderer = renderer;
         this.defaultViewport = defaultViewport;
         this.defaultViewports = List.of(defaultViewport);
-        disableSplitScreen();
+        disableSplitscreenMode();
     }
 
-    public boolean isSplitScreenEnabled() {
+    public boolean isSplitscreenModeEnabled() {
         return !splitScreenViewports.isEmpty();
     }
 
-    public void enableSplitScreen(final SplitScreenOptions options) {
-        if (isSplitScreenEnabled()) {
-            disableSplitScreen();
+    public void enableSplitscreenMode(final SplitScreenOptions options) {
+        if (isSplitscreenModeEnabled()) {
+            disableSplitscreenMode();
         }
         for (int i = 0; i < options.viewportCount(); i++) {
             DefaultViewport viewport = createViewport();
@@ -63,7 +63,7 @@ public class ViewportManager implements Updatable {
         to.setZoomRestriction(from.minZoom(), from.maxZoom());
     }
 
-    public void disableSplitScreen() {
+    public void disableSplitscreenMode() {
         if (!splitScreenViewports.isEmpty()) {
             applyCameraSettingsToOtherCamera(splitScreenViewports.getFirst().camera(), defaultViewport.camera());
         }
@@ -77,8 +77,8 @@ public class ViewportManager implements Updatable {
         return defaultViewport;
     }
 
-    public List<Viewport> activeViewports() {
-        return isSplitScreenEnabled()
+    public List<Viewport> viewports() {
+        return isSplitscreenModeEnabled()
                 ? splitScreenViewportsCorrectType
                 : defaultViewports;
     }
@@ -88,7 +88,7 @@ public class ViewportManager implements Updatable {
     }
 
     public Viewport primaryViewport() {
-        return isSplitScreenEnabled()
+        return isSplitscreenModeEnabled()
                 ? viewportMap.get(0)
                 : defaultViewport;
     }

@@ -35,7 +35,7 @@ class AttentionFocusTest {
     void setUp() {
         var firstViewport = new DefaultViewport(null, firstCamera);
         var secondViewport = new DefaultViewport(null, secondCamera);
-        when(viewportManager.activeViewports()).thenReturn(List.of(firstViewport, secondViewport));
+        when(viewportManager.viewports()).thenReturn(List.of(firstViewport, secondViewport));
     }
 
     @Test

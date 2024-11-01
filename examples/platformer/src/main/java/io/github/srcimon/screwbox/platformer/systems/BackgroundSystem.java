@@ -30,7 +30,7 @@ public class BackgroundSystem implements EntitySystem {
             final var sprite = entity.get(RenderComponent.class);
 
             final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom).opacity(sprite.options.opacity());
-            for (final var viewport : engine.graphics().activeViewports()) {
+            for (final var viewport : engine.graphics().viewports()) {
                 final var cameraPosition = viewport.camera().position();
                 final Offset offset = Offset.at(
                         cameraPosition.x() * -1 * (background.parallaxX - 1),

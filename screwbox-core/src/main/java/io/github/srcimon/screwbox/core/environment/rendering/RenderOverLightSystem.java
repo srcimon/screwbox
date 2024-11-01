@@ -13,7 +13,7 @@ public class RenderOverLightSystem extends RenderSystem {
     @Override
     public void update(final Engine engine) {
         final List<Entity> entities = fetchRenderEntities(engine);
-        for (final var viewport : engine.graphics().activeViewports()) {
+        for (final var viewport : engine.graphics().viewports()) {
             final SpriteBatch spriteBatch = renderEntitiesOnViewport(viewport, entities, render -> render.renderOverLight);
             viewport.canvas().drawSpriteBatch(spriteBatch);
         }

@@ -33,29 +33,29 @@ class ViewportManagerTest {
     }
 
     @Test
-    void enableSplitScreen_oneScreen_setsSplitScreenEnabled() {
-        viewportManager.enableSplitScreen(SplitScreenOptions.viewports(2));
+    void enableSplitScreen_oneScreen_setsSplitscreenModeEnabled() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
 
-        assertThat(viewportManager.isSplitScreenEnabled()).isTrue();
+        assertThat(viewportManager.isSplitscreenModeEnabled()).isTrue();
     }
 
     @Test
-    void disableSplitScreen_splitScreenEnabled_setsSplitScreenEnabledFalse() {
-        viewportManager.enableSplitScreen(SplitScreenOptions.viewports(2));
+    void disableSplitScreen_splitScreenEnabled_setsSplitscreenModeEnabledFalse() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
 
-        viewportManager.disableSplitScreen();
+        viewportManager.disableSplitscreenMode();
 
-        assertThat(viewportManager.isSplitScreenEnabled()).isFalse();
+        assertThat(viewportManager.isSplitscreenModeEnabled()).isFalse();
     }
 
     @Test
-    void disableSplitScreen_splitScreenEnabled_appliesCameraChangesOfFirstViewportCameraToDefaultViewport() {
-        viewportManager.enableSplitScreen(SplitScreenOptions.viewports(2));
+    void disableSplitScreen_splitscreenModeEnabled_appliesCameraChangesOfFirstViewportCameraToDefaultViewport() {
+        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
 
         viewportManager.viewport(0).ifPresent(viewport -> viewport.camera()
                 .setPosition($(100, 100)).setZoomRestriction(1, 4).setZoom(3.0));
 
-        viewportManager.disableSplitScreen();
+        viewportManager.disableSplitscreenMode();
 
         assertThat(viewportManager.defaultViewport().camera().position()).isEqualTo($(100, 100));
         assertThat(viewportManager.defaultViewport().camera().zoom()).isEqualTo(3.0);

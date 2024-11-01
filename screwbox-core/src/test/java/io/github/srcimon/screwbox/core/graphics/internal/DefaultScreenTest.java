@@ -149,7 +149,7 @@ class DefaultScreenTest {
         when(viewport3.camera()).thenReturn(camera3);
         when(camera3.swing()).thenReturn(Rotation.degrees(-2));
 
-        when(viewportManager.activeViewports()).thenReturn(List.of(viewport2, viewport3));
+        when(viewportManager.viewports()).thenReturn(List.of(viewport2, viewport3));
 
         screen.update();
 

@@ -45,7 +45,7 @@ class CameraSystemTest {
     @Test
     void update_withTarget_movesCameraTowardsTarget(DefaultEnvironment environment, Loop loop, Graphics graphics) {
         when(graphics.vieport(0)).thenReturn(Optional.of(viewport));
-        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(graphics.viewports()).thenReturn(List.of(viewport));
         when(viewport.camera()).thenReturn(camera);
         when(viewport.visibleArea()).thenReturn($$(0, 0, 640, 480));
         when(loop.delta(-2)).thenReturn(0.4);
@@ -62,7 +62,7 @@ class CameraSystemTest {
     @Test
     void update_withTargetAndBounds_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Loop loop, Graphics graphics) {
         when(graphics.vieport(0)).thenReturn(Optional.of(viewport));
-        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(graphics.viewports()).thenReturn(List.of(viewport));
         when(viewport.camera()).thenReturn(camera);
         when(viewport.visibleArea()).thenReturn($$(0, 0, 640, 480));
         when(loop.delta(-2)).thenReturn(0.4);
@@ -80,7 +80,7 @@ class CameraSystemTest {
     @Test
     void update_tooFarAway_movesCameraDirectlyToTarge(DefaultEnvironment environment, Graphics graphics) {
         when(graphics.vieport(0)).thenReturn(Optional.of(viewport));
-        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(graphics.viewports()).thenReturn(List.of(viewport));
         when(viewport.camera()).thenReturn(camera);
         when(viewport.visibleArea()).thenReturn($$(0, 0, 640, 480));
         when(camera.position()).thenReturn($(10000, 10000));
@@ -97,7 +97,7 @@ class CameraSystemTest {
     @Test
     void update_tooFarAwayButJumpingNotAllowed_movesCameraTowardsTargetWithinBounds(DefaultEnvironment environment, Graphics graphics) {
         when(graphics.vieport(0)).thenReturn(Optional.of(viewport));
-        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(graphics.viewports()).thenReturn(List.of(viewport));
         when(viewport.camera()).thenReturn(camera);
         when(camera.position()).thenReturn($(10000, 10000));
         CameraTargetComponent target = new CameraTargetComponent();

@@ -22,7 +22,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawRectangle(final Bounds bounds, final RectangleDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             final var canvasBounds = viewport.toCanvas(bounds);
             viewport.canvas().drawRectangle(canvasBounds, options);
         }
@@ -31,7 +31,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawLine(final Vector from, final Vector to, final LineDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawLine(viewport.toCanvas(from), viewport.toCanvas(to), options);
         }
         return this;
@@ -39,7 +39,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawCircle(final Vector position, final double radius, final CircleDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawCircle(viewport.toCanvas(position), viewport.toCanvas(radius), options);
         }
         return this;
@@ -47,7 +47,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawText(final Vector position, final String text, final TextDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             viewport.canvas().drawText(viewport.toCanvas(position), text, options.scale(options.scale() * viewport.camera().zoom()));
         }
         return this;
@@ -55,7 +55,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawText(final Vector position, final String text, final SystemTextDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             final Offset windowOffset = viewport.toCanvas(position);
             viewport.canvas().drawText(windowOffset, text, options);
         }
@@ -64,7 +64,7 @@ public class DefaultWorld implements World {
 
     @Override
     public World drawSprite(final Sprite sprite, final Vector origin, final SpriteDrawOptions options) {
-        for (final var viewport : viewportManager.activeViewports()) {
+        for (final var viewport : viewportManager.viewports()) {
             final SpriteDrawOptions scaledOptions = options.scale(options.scale() * viewport.camera().zoom());
             viewport.canvas().drawSprite(sprite, viewport.toCanvas(origin), scaledOptions);
         }

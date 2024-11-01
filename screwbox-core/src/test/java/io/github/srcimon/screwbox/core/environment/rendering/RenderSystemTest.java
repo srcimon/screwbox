@@ -48,7 +48,7 @@ class RenderSystemTest {
     void setUp(Graphics graphics) {
         when(viewport.camera()).thenReturn(camera);
         when(viewport.canvas()).thenReturn(canvas);
-        when(graphics.activeViewports()).thenReturn(List.of(viewport));
+        when(graphics.viewports()).thenReturn(List.of(viewport));
     }
 
     @Test

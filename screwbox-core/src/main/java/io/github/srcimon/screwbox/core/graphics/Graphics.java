@@ -14,19 +14,19 @@ import java.util.Optional;
 public interface Graphics extends Viewport {
 
     //TODO add javadoc
-    Graphics enableSplitScreen(SplitScreenOptions options);
+    Graphics enableSplitscreenMode(SplitScreenOptions options);
 
     //TODO add javadoc
-    Graphics disableSplitScreen();
+    Graphics disableSplitscreenMode();
+
+    //TODO add javadoc
+    boolean isSplitscreenModeEnabled();
 
     //TODO add javadoc
     Optional<Viewport> vieport(int index);
 
     //TODO add javadoc
-    boolean isSplitScreenEnabled();
-
-    //TODO add javadoc
-    List<Viewport> activeViewports();
+    List<Viewport> viewports();
 
     //TODO add javadoc
     Viewport primaryViewport();
