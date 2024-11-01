@@ -26,7 +26,7 @@ public class DefaultLight implements Light {
     private final LightPhysics lightPhysics = new LightPhysics();
     private final ViewportManager viewportManager;
     private final ExecutorService executor;
-    private final List<ViewportLight> viewportLights = new ArrayList<>();
+    private final List<LightRenderer> lightRenderers = new ArrayList<>();
     private final GraphicsConfiguration configuration;
     private UnaryOperator<BufferedImage> postFilter;
     private Percent ambientLight = Percent.zero();
@@ -52,7 +52,7 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addConeLight(final Vector position, final Rotation direction, final Rotation cone, final double radius, final Color color) {
-        for (final var viewportLight : viewportLights) {
+        for (final var viewportLight : lightRenderers) {
             viewportLight.addConeLight(position, direction, cone, radius, color);
         }
         return this;
@@ -61,8 +61,8 @@ public class DefaultLight implements Light {
     @Override
     public Light addPointLight(final Vector position, final double radius, final Color color) {
         if (!lightPhysics.isCoveredByShadowCasters(position)) {
-            for (final var viewportLight : viewportLights) {
-                viewportLight.addPointLight(position, radius, color);
+            for (final var lightRenderer : lightRenderers) {
+                lightRenderer.addPointLight(position, radius, color);
             }
         }
         return this;
@@ -70,8 +70,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addSpotLight(final Vector position, final double radius, final Color color) {
-        for (final var viewportLight : viewportLights) {
-            viewportLight.addSpotLight(position, radius, color);
+        for (final var lightRenderer : lightRenderers) {
+            lightRenderer.addSpotLight(position, radius, color);
         }
         return this;
     }
@@ -88,8 +88,8 @@ public class DefaultLight implements Light {
 
     @Override
     public Light addFullBrightnessArea(final Bounds area) {
-        for (final var viewportLight : viewportLights) {
-            viewportLight.addFullBrightnessArea(area);
+        for (final var lightRenderer : lightRenderers) {
+            lightRenderer.addFullBrightnessArea(area);
         }
         return this;
     }
@@ -108,8 +108,8 @@ public class DefaultLight implements Light {
     @Override
     public Light addGlow(final Vector position, final double radius, final Color color) {
         if (radius != 0 && !lightPhysics.isCoveredByShadowCasters(position)) {
-            for (final var viewportLight : viewportLights) {
-                viewportLight.addGlow(position, radius, color);
+            for (final var lightRenderer : lightRenderers) {
+                lightRenderer.addGlow(position, radius, color);
             }
         }
         return this;
@@ -122,14 +122,14 @@ public class DefaultLight implements Light {
         }
 
         renderInProgress = true;
-        for (final var viewportLight : viewportLights) {
+        for (final var lightRenderer : lightRenderers) {
             if (!ambientLight.isMax()) {
-                var lightmap = viewportLight.renderLightmap();
+                final var lights = lightRenderer.renderLight();
                 // Avoid flickering by overdraw at last by one pixel
                 final var overlap = Math.max(1, configuration.lightmapBlur()) * -configuration.lightmapScale();
-                viewportLight.canvas().drawSprite(lightmap, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
+                lightRenderer.canvas().drawSprite(lights, Offset.at(overlap, overlap), scaled(configuration.lightmapScale()).opacity(ambientLight.invert()));
             }
-            viewportLight.renderGlows();
+            lightRenderer.renderGlows();
         }
         renderInProgress = false;
         return this;
@@ -137,10 +137,10 @@ public class DefaultLight implements Light {
 
     public void update() {
         lightPhysics.clear();
-        viewportLights.clear();
+        lightRenderers.clear();
         for (final var viewport : viewportManager.viewports()) {
-            final ViewportLight viewportLight = new ViewportLight(lightPhysics, configuration, executor, viewport, postFilter);
-            viewportLights.add(viewportLight);
+            final LightRenderer viewportLight = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter);
+            lightRenderers.add(viewportLight);
         }
     }
 }

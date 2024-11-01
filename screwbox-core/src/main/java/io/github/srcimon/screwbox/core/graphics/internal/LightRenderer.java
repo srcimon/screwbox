@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Bounds;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.assets.Asset;
@@ -21,9 +20,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.UnaryOperator;
 
-import static io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions.scaled;
-
-public class ViewportLight {
+public class LightRenderer {
 
     private final List<Runnable> postDrawingTasks = new ArrayList<>();
     private final ExecutorService executor;
@@ -35,7 +32,7 @@ public class ViewportLight {
 
     private final List<Runnable> tasks = new ArrayList<>();
 
-    public ViewportLight(final LightPhysics lightPhysics,
+    public LightRenderer(final LightPhysics lightPhysics,
                          final GraphicsConfiguration configuration,
                          final ExecutorService executor,
                          final Viewport viewport,
@@ -110,7 +107,7 @@ public class ViewportLight {
         }
     }
 
-    public Asset<Sprite> renderLightmap() {
+    public Asset<Sprite> renderLight() {
         for (final var task : tasks) {
             task.run();
         }
