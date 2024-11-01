@@ -169,7 +169,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Viewport viewport() {
-        return viewportManager.defaultViewport();
+        return viewportManager.primaryViewport();
     }
 
     private Canvas canvas() {
