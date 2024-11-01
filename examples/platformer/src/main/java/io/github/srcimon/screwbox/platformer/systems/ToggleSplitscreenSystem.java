@@ -21,8 +21,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         int viewportCount = engine.graphics().viewports().size();
 
         if (engine.keyboard().isPressed(Key.T)) {
-            ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
-            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1).layout(layout));
+            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1));
             randomizeAllCameras(engine);
         } else if (engine.keyboard().isPressed(Key.Z)) {
             if (viewportCount == 1) {
@@ -31,6 +30,9 @@ public class ToggleSplitscreenSystem implements EntitySystem {
                 engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1));
                 randomizeAllCameras(engine);
             }
+        } else if (engine.keyboard().isPressed(Key.U)) {
+            ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
+            engine.graphics().enableSplitscreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
         }
     }
 

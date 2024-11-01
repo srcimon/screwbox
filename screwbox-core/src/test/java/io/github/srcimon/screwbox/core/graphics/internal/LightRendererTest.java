@@ -1,9 +1,12 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.Frame;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
-import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.test.TestUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -18,30 +21,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @Timeout(1)
 @ExtendWith(MockitoExtension.class)
 class LightRendererTest {
 
-    ExecutorService executor;
-
     @Mock
-    Canvas canvas;
-
-    @Mock
-    Viewport viewport;
+    Renderer renderer;
 
     @Mock
     LightPhysics lightPhysics;
 
+    ExecutorService executor;
+    DefaultCanvas canvas;
+    Viewport viewport;
     GraphicsConfiguration configuration;
     LightRenderer lightRenderer;
 
     @BeforeEach
     void setUp() {
-        when(viewport.canvas()).thenReturn(canvas);
-        when(canvas.size()).thenReturn(Size.of(320, 240));
+        canvas = new DefaultCanvas(renderer, new ScreenBounds(0, 0, 160, 80));
+        viewport = new DefaultViewport(canvas, new DefaultCamera(canvas));
         configuration = new GraphicsConfiguration();
         executor = Executors.newSingleThreadExecutor();
         lightRenderer = new LightRenderer(lightPhysics, configuration, executor, viewport, postFilter -> postFilter);
@@ -49,13 +49,26 @@ class LightRendererTest {
 
     @Test
     void renderLight_noLights_isBlack() {
-        var lightmap = lightRenderer.renderLight();
+        var sprite = lightRenderer.renderLight();
 
-        assertThat(lightmap.get().singleFrame().colors()).containsExactly(Color.BLACK);
+        assertThat(sprite.get().singleFrame().colors()).containsExactly(Color.BLACK);
+    }
+
+    @Test
+    void renderLight_spotLightPresent_createsImage() {
+        lightRenderer.addSpotLight(Vector.$(60, 20), 40, Color.BLACK);
+        var sprite = lightRenderer.renderLight();
+
+        verifyIsIdenticalWithReferenceImage(sprite, "renderLight_spotLightPresent_createsImage.png");
     }
 
     @AfterEach
     void tearDown() {
         TestUtil.shutdown(executor);
+    }
+
+    private void verifyIsIdenticalWithReferenceImage(Asset<Sprite> sprite, String fileName) {
+        Frame reference = Frame.fromFile("lightrenderer/" + fileName);
+        assertThat(sprite.get().singleFrame().listPixelDifferences(reference)).isEmpty();
     }
 }

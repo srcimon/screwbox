@@ -62,7 +62,7 @@ public class LightRenderer {
         addPointLight(position, radius, color, 0, 360);
     }
 
-    private void addPointLight(final Vector position, final double radius, final Color color, double minAngle, double maxAngle) {
+    private void addPointLight(final Vector position, final double radius, final Color color, final double minAngle, final double maxAngle) {
         tasks.add(() -> {
             final Bounds lightBox = lightLightBox(position, radius);
             if (isVisible(lightBox)) {
@@ -127,7 +127,7 @@ public class LightRenderer {
     }
 
     private boolean isVisible(final Bounds lightBox) {
-        return viewport.canvas().isVisible(viewport.toCanvas(lightBox));
+        return canvas().isVisible(viewport.toCanvas(lightBox));
     }
 
     private void initLightmap() {
