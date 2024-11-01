@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
@@ -13,23 +14,45 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
-    //TODO add javadoc
+    /**
+     * Adds multiple {@link Viewport viewports}. They can be used via {@link Graphics#viewports()}. To automatically use
+     * these {@link Viewport viewports} for rendering consider using {@link World} for your drawing operations or fall
+     * back to the predefined {@link EntitySystem systems}.
+     *
+     * @see #disableSplitscreenMode()
+     * @since 2.5.0
+     */
     Graphics enableSplitscreenMode(SplitScreenOptions options);
 
-    //TODO add javadoc
+    /**
+     * Disables split screen mode and removes the added {@link Viewport viewports} again.
+     *
+     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @since 2.5.0
+     */
     Graphics disableSplitscreenMode();
 
-    //TODO add javadoc
+    /**
+     * Returns {@code true} if the split screen mode is currently enabled.
+     *
+     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @since 2.5.0
+     */
     boolean isSplitscreenModeEnabled();
 
     /**
      * Returns the specified {@link Viewport} (index starting at 0). Will be empty if there is no such {@link Viewport}.
      * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitScreenOptions)}.
+     *
      * @since 2.5.0
      */
     Optional<Viewport> viewport(int index);
 
-    //TODO add javadoc
+    /**
+     * Returns all {@link Viewport viewports}. When split screen has not been enabled this will only return the {@link #primaryViewport()}.
+     *
+     * @since 2.5.0
+     */
     List<Viewport> viewports();
 
     /**
@@ -109,6 +132,7 @@ public interface Graphics extends Viewport {
 
     /**
      * Checks if the specified position is within the specified distance to the visible area. This also works in split screen.
+     *
      * @since 2.5.0
      */
     boolean isWithinDistanceToVisibleArea(Vector position, double distance);
