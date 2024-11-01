@@ -105,7 +105,8 @@ public class ViewportManager implements Updatable {
     private void drawBorders() {
         Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
         for (var viewport : splitScreenViewports) {
-            var bounds = viewport.canvas().bounds();
+            final var canvasBounds = viewport.canvas().bounds();
+            final var bounds = new ScreenBounds(canvasBounds.offset().substract(defaultViewport.canvas().offset()), canvasBounds.size());
             final Offset topRight = bounds.offset().addX(bounds.width());
             final Offset bottomLeft = bounds.offset().addY(bounds.height());
             final Offset bottomRight = bounds.offset().add(bounds.width(), bounds.height());
@@ -124,7 +125,7 @@ public class ViewportManager implements Updatable {
 
     private void arangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
-            ScreenBounds viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds());
+            final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds());
             splitScreenViewports.get(i).updateClip(viewportBounds);
         }
     }
