@@ -36,7 +36,8 @@ public class ViewportLight {
 
     public ViewportLight(final LightPhysics lightPhysics,
                          final GraphicsConfiguration configuration,
-                         final ExecutorService executor, final Viewport viewport,
+                         final ExecutorService executor,
+                         final Viewport viewport,
                          final UnaryOperator<BufferedImage> postFilter) {
         this.executor = executor;
         this.lightPhysics = lightPhysics;
