@@ -26,6 +26,7 @@ import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -48,6 +49,7 @@ class DefaultParticlesTest {
 
     @Test
     void particleCount_twoParticlesFoundAtBeginningAndOneSpawned_returnsThree() {
+        when(attentionFocus.isWithinVisibleDistance(any(), anyDouble())).thenReturn(true);
         when(scenes.activeEnvironment()).thenReturn(environment);
         when(environment.entityCount(Archetype.of(ParticleComponent.class))).thenReturn(2L);
 
@@ -94,8 +96,8 @@ class DefaultParticlesTest {
 
     @Test
     void spawn_withSourceEntity_spawnsParticleUsingOptions() {
+        when(attentionFocus.isWithinVisibleDistance(any(), anyDouble())).thenReturn(true);
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(attentionFocus.distanceTo($(80, 100))).thenReturn(50.0);
         Entity source = new Entity().add(new RenderComponent(20));
 
         particles.spawn($(80, 100), ParticleOptions.particleSource(source));
@@ -129,8 +131,8 @@ class DefaultParticlesTest {
 
     @Test
     void spawn_noSourceEntity_spawnsParticleUsingOptions() {
+        when(attentionFocus.isWithinVisibleDistance(any(), anyDouble())).thenReturn(true);
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(attentionFocus.distanceTo(any())).thenReturn(50.0);
 
         particles.spawn($$(80, 100, 100, 100), ParticleOptions.unknownSource().drawOrder(50).startScale(4));
 
@@ -152,7 +154,7 @@ class DefaultParticlesTest {
     @Test
     void spawnMultiple_spawnTenAndLimitIsFive_spawnsFive() {
         when(scenes.activeEnvironment()).thenReturn(environment);
-        when(attentionFocus.distanceTo(Vector.zero())).thenReturn(50.0);
+        when(attentionFocus.isWithinVisibleDistance(any(), anyDouble())).thenReturn(true);
 
         particles.setParticleLimit(5);
 
@@ -172,14 +174,14 @@ class DefaultParticlesTest {
 
     @Test
     void isWithinSpawnArea_distanceTooBig_isFalse() {
-        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(3000.0);
+        when(attentionFocus.isWithinVisibleDistance($(100, 1000), 1000)).thenReturn(false);
 
         assertThat(particles.isWithinSpawnArea($(100, 1000))).isFalse();
     }
 
     @Test
     void isWithinSpawnArea_distanceWithinRange_isTrue() {
-        when(attentionFocus.distanceTo($(100, 1000))).thenReturn(500.0);
+        when(attentionFocus.isWithinVisibleDistance($(100, 1000), 1000)).thenReturn(true);
 
         assertThat(particles.isWithinSpawnArea($(100, 1000))).isTrue();
     }
