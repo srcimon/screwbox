@@ -4,7 +4,8 @@ I scream, you scream, we all scream for split screen.
 
 - Support for split screen mode. Add multiple viewports using individual cameras to have a good local multiplayer experience.
 - Split screens can be automatically layouted with multiple pre defined layouts (horizontal, vertical and in colums).
-Create your own layouts
+Create your own layouts.
+- Automatically add visual borders between viewports.
 - Added `Graphics.isWithinDistanceToVisibleArea(Vector, double)`
 
 ### 🪛 Bug Fixes
