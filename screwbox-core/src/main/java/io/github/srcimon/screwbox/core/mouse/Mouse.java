@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.mouse;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
 
 /**
@@ -81,4 +82,9 @@ public interface Mouse {
      * Returns true if there was {@link MouseButton} down.
      */
     boolean isAnyButtonDown();
+
+    /**
+     * The {@link Viewport} the mouse is curently hovering over.
+     */
+    Viewport hoverViewport();
 }

@@ -7,6 +7,7 @@ I scream, you scream, we all scream for split screen.
 Create your own layouts.
 - Automatically add visual borders between viewports.
 - Added `Graphics.isWithinDistanceToVisibleArea(Vector, double)`
+- Added `Mouse.hoverViewport()`
 
 ### 🪛 Bug Fixes
 

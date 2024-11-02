@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -167,7 +166,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Vector screenToWorld(final Offset offset) {
-        Viewport viewport = viewport();
+        Viewport viewport = hoverViewport();
         Offset toUseOffset = offset.substract(viewport.canvas().offset()).add(viewportManager.defaultViewport().canvas().offset());
         final var camera = viewport.camera();
         final double x = (toUseOffset.x() - (viewport.canvas().width() / 2.0)) / camera.zoom() + camera.focus().x();
@@ -179,7 +178,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     //TODO: Viewport mouseOverViewport();
 
     //TODO find viewport only once -> performance
-    private Viewport viewport() {
+    @Override
+    public Viewport hoverViewport() {
         if (viewportManager.viewports().isEmpty()) {
             return viewportManager.primaryViewport();
         }

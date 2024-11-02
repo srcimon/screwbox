@@ -5,10 +5,12 @@ import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.core.LogFpsSystem;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
 import io.github.srcimon.screwbox.core.keyboard.Key;
@@ -63,6 +65,9 @@ public class GameScene implements Scene {
                 .addSystem(new PhysicsGridUpdateSystem())
                 .addSystem(engine -> {//TODO FIXME
                     engine.graphics().viewport(1).get().camera().setPosition(engine.graphics().viewport(0).get().camera().position());
+                })
+                .addSystem(Order.SystemOrder.PRESENTATION_UI_FOREGROUND, engine -> {
+                    engine.mouse().hoverViewport().canvas().fillWith(Color.BLUE.opacity(Percent.quater()));
                 })
                 .addSystem(new HurtSystem())
                 .addSystem(new RunAtPlayerSystem())
