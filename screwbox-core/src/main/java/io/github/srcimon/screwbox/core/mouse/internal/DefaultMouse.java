@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final Map<Integer, MouseButton> MAPPINGS = Map.of(
@@ -164,12 +167,28 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return viewportManager.primaryViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
-            final Offset fixedOffset = offset.add(viewportManager.defaultViewport().canvas().offset());
+            final Offset fixedOffset = getFixedOffset();
             if (viewport.canvas().bounds().contains(fixedOffset)) {
                 return viewport;
             }
         }
         return viewportManager.primaryViewport();
+    }
+
+    private Offset getFixedOffset() {
+        Offset to = offset.add(viewportManager.defaultViewport().canvas().offset());
+        if(screen.rotation().isNone()) {
+            return to;
+        }
+        final Offset from = viewportManager.defaultViewport().canvas().center();
+        final double radians = screen.rotation().invert().radians();
+        final double sinus = sin(radians);
+        final double cosinus = cos(radians);
+        final Offset translated = to.substract(from);
+        final double xNew = translated.x() * cosinus - translated.y() * sinus + from.x();
+        final double yNew = translated.x() * sinus + translated.y() * cosinus + from.y();
+
+        return Offset.at(xNew, yNew);
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
