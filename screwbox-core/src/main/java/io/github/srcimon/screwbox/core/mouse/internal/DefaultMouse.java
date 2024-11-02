@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
-import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
@@ -22,9 +21,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 
 public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotionListener, MouseWheelListener {
 

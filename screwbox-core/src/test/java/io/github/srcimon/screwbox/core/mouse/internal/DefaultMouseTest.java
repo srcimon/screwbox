@@ -1,8 +1,7 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
-import io.github.srcimon.screwbox.core.graphics.internal.DefaultWorld;
+import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +23,7 @@ class DefaultMouseTest {
     DefaultScreen screen;
 
     @Mock
-    DefaultWorld world;
-
-    @Mock
-    Canvas canvas;
+    ViewportManager viewportManager;
 
     @InjectMocks
     DefaultMouse mouse;
