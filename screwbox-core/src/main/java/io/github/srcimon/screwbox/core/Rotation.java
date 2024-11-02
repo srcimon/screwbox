@@ -1,7 +1,5 @@
 package io.github.srcimon.screwbox.core;
 
-import io.github.srcimon.screwbox.core.graphics.Offset;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
