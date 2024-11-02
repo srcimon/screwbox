@@ -34,15 +34,18 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             new HashSet<>(), new HashSet<>(), new HashSet<>());
     private final DefaultScreen screen;
     private final ViewportManager viewportManager;
-    private Offset offset = Offset.origin();
-    private Vector position = Vector.zero();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
 
+    private Offset offset = Offset.origin();
+    private Vector position = Vector.zero();
+    private Viewport hoverViewport;
+
     public DefaultMouse(final DefaultScreen screen, final ViewportManager viewportManager) {
         this.screen = screen;
         this.viewportManager = viewportManager;
+        hoverViewport = viewportManager.primaryViewport();
     }
 
     @Override
@@ -108,6 +111,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         lastPosition = offset;
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
+        hoverViewport = calculateHoverViewport();
     }
 
     @Override
@@ -147,11 +151,24 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return !downButtons.isEmpty();
     }
 
-    //TODO dynamically switch used viewport to viewport that mouse is over
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
         offset = windowPosition.substract(screen.position()).substract(viewportManager.defaultViewport().canvas().offset());
+        hoverViewport = calculateHoverViewport();
         position = toPositionConsideringRotation(offset);
+    }
+
+    private Viewport calculateHoverViewport() {
+        if (viewportManager.viewports().isEmpty()) {
+            return viewportManager.primaryViewport();
+        }
+        for (final var viewport : viewportManager.viewports()) {
+            var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().substract(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
+            if (verschobenBounds.contains(offset)) {
+                return viewport;
+            }
+        }
+        return viewportManager.primaryViewport();
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
@@ -180,15 +197,6 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     //TODO find viewport only once -> performance
     @Override
     public Viewport hoverViewport() {
-        if (viewportManager.viewports().isEmpty()) {
-            return viewportManager.primaryViewport();
-        }
-        for (final var viewport : viewportManager.viewports()) {
-            var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().substract(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
-            if (verschobenBounds.contains(offset)) {
-                return viewport;
-            }
-        }
-        return viewportManager.primaryViewport();
+       return hoverViewport;
     }
 }
