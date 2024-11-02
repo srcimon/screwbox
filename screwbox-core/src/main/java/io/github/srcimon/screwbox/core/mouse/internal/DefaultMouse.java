@@ -161,7 +161,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return mousePosition;
         }
 
-        Vector center = screenToWorld(screen.size().center().substract(viewport().canvas().offset()));
+        Vector center = screenToWorld(screen.size().center().substract(viewportManager.defaultViewport().canvas().offset()));
         final var delta = Line.between(center, mousePosition);
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
