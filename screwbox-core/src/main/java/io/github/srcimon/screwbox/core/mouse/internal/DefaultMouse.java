@@ -164,9 +164,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return viewportManager.primaryViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
-            final Offset fixedOffset = viewport.canvas().offset().substract(viewportManager.defaultViewport().canvas().offset());
-            final var fixedBounds = new ScreenBounds(fixedOffset, viewport.canvas().size());
-            if (fixedBounds.contains(offset)) {
+            final Offset fixedOffset = offset.add(viewportManager.defaultViewport().canvas().offset());
+            if (viewport.canvas().bounds().contains(fixedOffset)) {
                 return viewport;
             }
         }
