@@ -1,9 +1,12 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
+import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
@@ -35,6 +38,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     private final DefaultScreen screen;
     private final ViewportManager viewportManager;
     private Offset offset = Offset.origin();
+    private Vector position = Vector.zero();
     private boolean isCursorOnScreen;
     private Offset lastPosition = Offset.origin();
     private final Latch<Integer> unitsScrolled = Latch.of(0, 0);
@@ -58,7 +62,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     @Override
     public Vector position() {
-        return toPositionConsideringRotation(offset);
+        return position;
     }
 
     @Override
@@ -148,15 +152,18 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     //TODO dynamically switch used viewport to viewport that mouse is over
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position()).substract(canvas().offset());
+        offset = windowPosition.substract(screen.position()).substract(viewportManager.defaultViewport().canvas().offset());
+        position = toPositionConsideringRotation(offset);
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
+        final Vector mousePosition = screenToWorld(offset);
         if (screen.absoluteRotation().isNone()) {
-            return screenToWorld(offset);
+            return mousePosition;
         }
 
-        final var delta = Line.between(screenToWorld(screen.size().center().substract(viewport().canvas().offset())), screenToWorld(offset));
+        Vector center = screenToWorld(screen.size().center().substract(viewport().canvas().offset()));
+        final var delta = Line.between(center, mousePosition);
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
@@ -168,7 +175,20 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return Vector.of(x, y);
     }
 
+    //TODO: Viewport mouseOverViewport();
+
     private Viewport viewport() {
+        if(viewportManager.viewports().isEmpty()) {
+            return viewportManager.primaryViewport();
+        }
+        int i = 0;
+        for(final var viewport : viewportManager.viewports()) {
+var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().add(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
+            if(verschobenBounds.contains(offset)) {
+                return viewport;
+            }
+            i++;
+        }
         return viewportManager.primaryViewport();
     }
 
