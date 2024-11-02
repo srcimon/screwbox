@@ -159,21 +159,6 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Rotates the specified {@link Offset} by the specified {@link Rotation} around a central {@link Offset}.
-     *
-     * @since 2.5.0
-     */
-    public Offset rotateAroundCenter(final Offset center, final Offset target) {
-        final double radians = radians();
-        final double sinus = sin(radians);
-        final double cosinus = cos(radians);
-        final Offset translated = target.substract(center);
-        final double xNew = translated.x() * cosinus - translated.y() * sinus + center.x();
-        final double yNew = translated.x() * sinus + translated.y() * cosinus + center.y();
-        return Offset.at(xNew, yNew);
-    }
-
-    /**
      * Returns a new instance with the sum of this and the other {@link Rotation rotations} degrees.
      */
     public Rotation add(final Rotation other) {

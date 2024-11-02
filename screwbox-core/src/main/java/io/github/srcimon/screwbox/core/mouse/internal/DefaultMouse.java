@@ -167,22 +167,12 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return viewportManager.primaryViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
-            final Offset fixedOffset = getFixedOffset();
+            final Offset fixedOffset = offset.add(viewportManager.defaultViewport().canvas().offset());
             if (viewport.canvas().bounds().contains(fixedOffset)) {
                 return viewport;
             }
         }
         return viewportManager.primaryViewport();
-    }
-
-    private Offset getFixedOffset() {
-        final Offset target = offset.add(viewportManager.defaultViewport().canvas().offset());
-        if(screen.rotation().isNone()) {
-            return target;
-        }
-        final Offset center = viewportManager.defaultViewport().canvas().center();
-        return screen.rotation().invert().rotateAroundCenter(center, target);
-
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
