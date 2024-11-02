@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -163,8 +164,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return viewportManager.primaryViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
-            var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().substract(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
-            if (verschobenBounds.contains(offset)) {
+            final Offset fixedOffset = viewport.canvas().offset().substract(viewportManager.defaultViewport().canvas().offset());
+            final var fixedBounds = new ScreenBounds(fixedOffset, viewport.canvas().size());
+            if (fixedBounds.contains(offset)) {
                 return viewport;
             }
         }
@@ -177,26 +179,23 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return mousePosition;
         }
 
-        Vector center = screenToWorld(screen.size().center().substract(viewportManager.defaultViewport().canvas().offset()));
+        final Vector center = screenToWorld(screen.size().center().substract(viewportManager.defaultViewport().canvas().offset()));
         final var delta = Line.between(center, mousePosition);
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
     private Vector screenToWorld(final Offset offset) {
-        Viewport viewport = hoverViewport();
-        Offset toUseOffset = offset.substract(viewport.canvas().offset()).add(viewportManager.defaultViewport().canvas().offset());
-        final var camera = viewport.camera();
-        final double x = (toUseOffset.x() - (viewport.canvas().width() / 2.0)) / camera.zoom() + camera.focus().x();
-        final double y = (toUseOffset.y() - (viewport.canvas().height() / 2.0)) / camera.zoom() + camera.focus().y();
+        final Canvas hoverCanvas = hoverViewport.canvas();
+        final Offset fixedOffset = offset.substract(hoverCanvas.offset()).add(viewportManager.defaultViewport().canvas().offset());
+        final var camera = hoverViewport.camera();
+        final double x = (fixedOffset.x() - (hoverCanvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
+        final double y = (fixedOffset.y() - (hoverCanvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
 
-    //TODO: Viewport mouseOverViewport();
-
-    //TODO find viewport only once -> performance
     @Override
     public Viewport hoverViewport() {
-       return hoverViewport;
+        return hoverViewport;
     }
 }

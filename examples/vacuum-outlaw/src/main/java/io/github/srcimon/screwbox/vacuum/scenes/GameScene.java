@@ -64,6 +64,7 @@ public class GameScene implements Scene {
                 .addSystem(new LogFpsSystem())
                 .addSystem(new PhysicsGridUpdateSystem())
                 .addSystem(engine -> {//TODO FIXME
+                    engine.graphics().screen().setRotation(Rotation.degrees(10));
                     engine.graphics().viewport(1).get().camera().setPosition(engine.graphics().viewport(0).get().camera().position());
                 })
                 .addSystem(Order.SystemOrder.PRESENTATION_UI_FOREGROUND, engine -> {
