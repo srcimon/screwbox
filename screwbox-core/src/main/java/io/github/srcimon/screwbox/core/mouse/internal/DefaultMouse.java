@@ -168,15 +168,18 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Vector screenToWorld(final Offset offset) {
-        final var camera = viewport().camera();
-        final double x = (offset.x() - (canvas().width() / 2.0)) / camera.zoom() + camera.focus().x();
-        final double y = (offset.y() - (canvas().height() / 2.0)) / camera.zoom() + camera.focus().y();
+        Viewport viewport = viewport();
+        Offset toUseOffset = offset.substract(viewport.canvas().offset()).add(viewportManager.defaultViewport().canvas().offset());
+        final var camera = viewport.camera();
+        final double x = (toUseOffset.x() - (viewport.canvas().width() / 2.0)) / camera.zoom() + camera.focus().x();
+        final double y = (toUseOffset.y() - (viewport.canvas().height() / 2.0)) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
     }
 
     //TODO: Viewport mouseOverViewport();
 
+    //TODO find viewport only once -> performance
     private Viewport viewport() {
         if(viewportManager.viewports().isEmpty()) {
             return viewportManager.primaryViewport();
