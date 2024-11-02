@@ -8,6 +8,7 @@ Create your own layouts.
 - Automatically add visual borders between viewports.
 - Added `Graphics.isWithinDistanceToVisibleArea(Vector, double)`
 - Added `Mouse.hoverViewport()`
+- Added `Rotation.rotateAroundCenter(Offset, Offset)`
 
 ### 🪛 Bug Fixes
 

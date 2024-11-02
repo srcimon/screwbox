@@ -1,10 +1,13 @@
 package io.github.srcimon.screwbox.core;
 
+import io.github.srcimon.screwbox.core.graphics.Offset;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.util.Objects.requireNonNull;
@@ -137,7 +140,7 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
     }
 
     /**
-     * Rotates the given {@link Line} by the given {@link Rotation} around
+     * Rotates the specified {@link Line} by the specified {@link Rotation} around
      * {@link Line#from()}.
      *
      * @param line the {@link Line} to be rotated
@@ -152,7 +155,22 @@ public final class Rotation implements Serializable, Comparable<Rotation> {
         final double xNew = translated.x() * cosinus - translated.y() * sinus + line.from().x();
         final double yNew = translated.x() * sinus + translated.y() * cosinus + line.from().y();
 
-        return Line.between(line.from(), Vector.$(xNew, yNew));
+        return Line.between(line.from(), $(xNew, yNew));
+    }
+
+    /**
+     * Rotates the specified {@link Offset} by the specified {@link Rotation} around a central {@link Offset}.
+     *
+     * @since 2.5.0
+     */
+    public Offset rotateAroundCenter(final Offset center, final Offset target) {
+        final double radians = radians();
+        final double sinus = sin(radians);
+        final double cosinus = cos(radians);
+        final Offset translated = target.substract(center);
+        final double xNew = translated.x() * cosinus - translated.y() * sinus + center.x();
+        final double yNew = translated.x() * sinus + translated.y() * cosinus + center.y();
+        return Offset.at(xNew, yNew);
     }
 
     /**

@@ -34,7 +34,7 @@ public interface Mouse {
     /**
      * Checks if the given {@link MouseButton} was just pressed (Will be false in
      * the next frame.).
-     * 
+     *
      * @see #isPressedLeft()
      * @see #isPressedRight()
      */
@@ -43,7 +43,7 @@ public interface Mouse {
     /**
      * Checks if the left mouse button was just pressed (Will be false in the next
      * frame.).
-     * 
+     *
      * @see #isPressed(MouseButton)
      * @see #isPressedLeft()
      */
@@ -54,7 +54,7 @@ public interface Mouse {
     /**
      * Checks if the right mouse button was just pressed (Will be false in the next
      * frame.).
-     * 
+     *
      * @see #isPressedLeft()
      * @see #isPressed(MouseButton)
      */
@@ -85,6 +85,8 @@ public interface Mouse {
 
     /**
      * The {@link Viewport} the mouse is curently hovering over.
+     *
+     * @since 2.5.0
      */
     Viewport hoverViewport();
 }

@@ -176,19 +176,13 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Offset getFixedOffset() {
-        Offset to = offset.add(viewportManager.defaultViewport().canvas().offset());
+        final Offset target = offset.add(viewportManager.defaultViewport().canvas().offset());
         if(screen.rotation().isNone()) {
-            return to;
+            return target;
         }
-        final Offset from = viewportManager.defaultViewport().canvas().center();
-        final double radians = screen.rotation().invert().radians();
-        final double sinus = sin(radians);
-        final double cosinus = cos(radians);
-        final Offset translated = to.substract(from);
-        final double xNew = translated.x() * cosinus - translated.y() * sinus + from.x();
-        final double yNew = translated.x() * sinus + translated.y() * cosinus + from.y();
+        final Offset center = viewportManager.defaultViewport().canvas().center();
+        return screen.rotation().invert().rotateAroundCenter(center, target);
 
-        return Offset.at(xNew, yNew);
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {
