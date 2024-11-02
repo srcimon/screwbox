@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
-import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -27,7 +26,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final Renderer renderer;
     private final WindowFrame frame;
     private final Robot robot;
-    private final Camera camera;
+    private final ViewportManager viewportManager;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
@@ -35,12 +34,12 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final Camera camera) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
-        this.camera = camera;
+        this.viewportManager = viewportManager;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -142,19 +141,23 @@ public class DefaultScreen implements Screen, Updatable {
         return new DefaultCanvas(renderer, bounds);
     }
 
-    void validateCanvasBounds(final ScreenBounds canvasBounds) {
-        requireNonNull(canvasBounds, "bounds must not be null");
-        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
-            throw new IllegalArgumentException("bounds must be on screen");
-        }
-    }
-
     @Override
     public void update() {
-        this.shake = camera.swing();
+        double degrees = viewportManager.defaultViewport().camera().swing().degrees();
+        for (var viewport : viewportManager.viewports()) {
+            degrees += viewport.camera().swing().degrees();
+        }
+        this.shake = Rotation.degrees(degrees);
     }
 
     private ScreenBounds canvasBounds() {
         return isNull(canvasBounds) ? new ScreenBounds(frame.getCanvasSize()) : canvasBounds;
+    }
+
+    private void validateCanvasBounds(final ScreenBounds canvasBounds) {
+        requireNonNull(canvasBounds, "bounds must not be null");
+        if (!new ScreenBounds(frame.getCanvasSize()).intersects(canvasBounds)) {
+            throw new IllegalArgumentException("bounds must be on screen");
+        }
     }
 }

@@ -77,6 +77,7 @@ public class GameScene implements Scene {
                 .addSystem(new VanishingOnCollisionSystem())
                 .addSystem(new ToggleLightSystemsSystem())
                 .addSystem(new KilledFromAboveSystem())
+                .addSystem(new ToggleSplitscreenSystem())
                 .addSystem(new GroundDetectorSystem())
                 .addSystem(new KillZoneSystem())
                 .addSystem(new DebugConfigSystem())

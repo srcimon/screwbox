@@ -29,5 +29,6 @@ public class DeadScene implements Scene {
     @Override
     public void onEnter(Engine engine) {
         engine.audio().stopAllPlaybacks();
+        engine.graphics().disableSplitscreenMode();
     }
 }

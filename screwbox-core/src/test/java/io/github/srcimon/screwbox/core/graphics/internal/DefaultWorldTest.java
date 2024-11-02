@@ -2,7 +2,6 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -23,7 +22,10 @@ import static org.mockito.Mockito.when;
 class DefaultWorldTest {
 
     @Mock
-    Canvas canvas;
+    DefaultCanvas canvas;
+
+    @Mock
+    Renderer renderer;
 
     @Mock
     Camera camera;
@@ -33,7 +35,7 @@ class DefaultWorldTest {
     @BeforeEach
     void setUp() {
         DefaultViewport viewport = new DefaultViewport(canvas, camera);
-        world = new DefaultWorld(viewport);
+        world = new DefaultWorld(new ViewportManager(viewport, renderer));
     }
 
     @Test

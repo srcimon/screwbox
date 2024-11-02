@@ -1,9 +1,11 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.window.internal.WindowFrame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static io.github.srcimon.screwbox.core.Time.now;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +35,9 @@ class DefaultScreenTest {
 
     @Mock
     Robot robot;
+
+    @Mock
+    ViewportManager viewportManager;
 
     @Test
     void setCanvasBounds_cavasNotOnScreen_throwsException() {
@@ -122,6 +128,46 @@ class DefaultScreenTest {
         assertThatThrownBy(() -> screen.createCanvas(offset, size))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bounds must be on screen");
+    }
+
+    @Test
+    void update_multipleViewports_setsSwingToSumOfAllPlusDefaultViewport() {
+        Viewport viewport = mock(Viewport.class);
+        Camera camera = mock(Camera.class);
+        when(viewport.camera()).thenReturn(camera);
+        when(camera.swing()).thenReturn(Rotation.degrees(10));
+
+        when(viewportManager.defaultViewport()).thenReturn(viewport);
+
+        Viewport viewport2 = mock(Viewport.class);
+        Camera camera2 = mock(Camera.class);
+        when(viewport2.camera()).thenReturn(camera2);
+        when(camera2.swing()).thenReturn(Rotation.degrees(5));
+
+        Viewport viewport3 = mock(Viewport.class);
+        Camera camera3 = mock(Camera.class);
+        when(viewport3.camera()).thenReturn(camera3);
+        when(camera3.swing()).thenReturn(Rotation.degrees(-2));
+
+        when(viewportManager.viewports()).thenReturn(List.of(viewport2, viewport3));
+
+        screen.update();
+
+        assertThat(screen.shake()).isEqualTo(Rotation.degrees(13));
+    }
+
+    @Test
+    void update_onlyDefaultViewport_setsSwingToDefaultViewport() {
+        Viewport viewport = mock(Viewport.class);
+        Camera camera = mock(Camera.class);
+        when(viewport.camera()).thenReturn(camera);
+        when(camera.swing()).thenReturn(Rotation.degrees(10));
+
+        when(viewportManager.defaultViewport()).thenReturn(viewport);
+
+        screen.update();
+
+        assertThat(screen.shake()).isEqualTo(Rotation.degrees(10));
     }
 
 }

@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.when;
 class DefaultViewportTest {
 
     @Mock
-    Canvas canvas;
+    DefaultCanvas canvas;
 
     @Mock
     Camera camera;

@@ -14,32 +14,34 @@ public class CameraSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.environment().tryFetchSingleton(TARGET).ifPresent(targetEntity -> {
-            final var cameraPosition = engine.graphics().camera().position();
-            final var targetBounds = targetEntity.bounds();
-
+        for (final var targetEntity : engine.environment().fetchAll(TARGET)) {
             final var target = targetEntity.get(CameraTargetComponent.class);
-            final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
-            if (target.allowJumping
-                    && targetBounds.position().distanceTo(cameraPosition) > engine.graphics().visibleArea().width() / 2.0
-                    && (configuration.isEmpty()
-                    || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
-                engine.graphics().camera().setPosition(targetBounds.position());
-                return;
-            }
+            engine.graphics().viewport(target.viewportId).ifPresent(viewport -> {
+                final var cameraPosition = viewport.camera().position();
+                final var targetBounds = targetEntity.bounds();
 
-            final Vector distance = cameraPosition
-                    .substract(targetBounds.position())
-                    .substract(target.shift);
+                final var configuration = engine.environment().tryFetchSingletonComponent(CameraBoundsComponent.class);
+                if (target.allowJumping
+                        && targetBounds.position().distanceTo(cameraPosition) > viewport.visibleArea().width() / 2.0 * engine.graphics().viewports().size()
+                        && (configuration.isEmpty()
+                        || configuration.get().cameraBounds.expand(-2 * targetBounds.extents().length()).contains(targetBounds.position()))) {
+                    viewport.camera().setPosition(targetBounds.position());
+                    return;
+                }
 
-            final double value = engine.loop().delta(-1 * target.followSpeed);
-            final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
+                final Vector distance = cameraPosition
+                        .substract(targetBounds.position())
+                        .substract(target.shift);
 
-            if (configuration.isPresent()) {
-                engine.graphics().camera().moveWithinVisualBounds(cameraMovement, configuration.get().cameraBounds);
-            } else {
-                engine.graphics().camera().move(cameraMovement);
-            }
-        });
+                final double value = engine.loop().delta(-1 * target.followSpeed);
+                final Vector cameraMovement = distance.multiply(Math.clamp(value, -1, 1));
+
+                if (configuration.isPresent()) {
+                    viewport.camera().moveWithinVisualBounds(cameraMovement, configuration.get().cameraBounds);
+                } else {
+                    viewport.camera().move(cameraMovement);
+                }
+            });
+        }
     }
 }

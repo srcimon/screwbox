@@ -11,7 +11,7 @@ public class ZoomSystem implements EntitySystem {
 
     @Override
     public void update(Engine engine) {
-        Camera camera = engine.graphics().camera();
+        Camera camera = engine.graphics().primaryViewport().camera();
 
         if (engine.keyboard().isDown(Key.NUMBER_1)) {
             camera.changeZoomBy(engine.loop().delta(2.5));

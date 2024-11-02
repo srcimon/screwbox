@@ -12,6 +12,7 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
@@ -25,27 +26,61 @@ public class DefaultGraphics implements Graphics, Updatable {
     private final DefaultScreen screen;
     private final GraphicsDevice graphicsDevice;
     private final AsyncRenderer asyncRenderer;
-    private final Viewport viewport;
+    private final ViewportManager viewportManager;
+    private final AttentionFocus attentionFocus;
 
     public DefaultGraphics(final GraphicsConfiguration configuration,
                            final DefaultScreen screen,
-                           final DefaultWorld world,
                            final DefaultLight light,
                            final GraphicsDevice graphicsDevice,
                            final AsyncRenderer asyncRenderer,
-                           final Viewport viewport) {
+                           final ViewportManager viewportManager,
+                           final AttentionFocus attentionFocus) {
         this.configuration = configuration;
         this.light = light;
-        this.world = world;
         this.screen = screen;
         this.graphicsDevice = graphicsDevice;
         this.asyncRenderer = asyncRenderer;
-        this.viewport = viewport;
+        this.viewportManager = viewportManager;
+        this.attentionFocus = attentionFocus;
+        this.world = new DefaultWorld(viewportManager);
     }
 
     @Override
     public Bounds visibleArea() {
-        return viewport.visibleArea();
+        return viewportManager.defaultViewport().visibleArea();
+    }
+
+    @Override
+    public Graphics enableSplitscreenMode(final SplitScreenOptions options) {
+        viewportManager.enableSplitscreenMode(options);
+        return this;
+    }
+
+    @Override
+    public Graphics disableSplitscreenMode() {
+        viewportManager.disableSplitscreenMode();
+        return this;
+    }
+
+    @Override
+    public Optional<Viewport> viewport(final int index) {
+        return viewportManager.viewport(index);
+    }
+
+    @Override
+    public boolean isSplitscreenModeEnabled() {
+        return viewportManager.isSplitscreenModeEnabled();
+    }
+
+    @Override
+    public List<Viewport> viewports() {
+        return viewportManager.viewports();
+    }
+
+    @Override
+    public Viewport primaryViewport() {
+        return viewportManager.primaryViewport();
     }
 
     @Override
@@ -60,37 +95,37 @@ public class DefaultGraphics implements Graphics, Updatable {
 
     @Override
     public Camera camera() {
-        return viewport.camera();
+        return viewportManager.defaultViewport().camera();
     }
 
     @Override
     public Canvas canvas() {
-        return viewport.canvas();
+        return viewportManager.defaultViewport().canvas();
     }
 
     @Override
     public Vector toWorld(final Offset offset) {
-        return viewport.toWorld(offset);
+        return viewportManager.defaultViewport().toWorld(offset);
     }
 
     @Override
     public int toCanvas(double distance) {
-        return viewport.toCanvas(distance);
+        return viewportManager.defaultViewport().toCanvas(distance);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds) {
-        return viewport.toCanvas(bounds);
+        return viewportManager.defaultViewport().toCanvas(bounds);
     }
 
     @Override
     public ScreenBounds toCanvas(final Bounds bounds, final double parallaxX, final double parallaxY) {
-        return viewport.toCanvas(bounds, parallaxX, parallaxY);
+        return viewportManager.defaultViewport().toCanvas(bounds, parallaxX, parallaxY);
     }
 
     @Override
     public Offset toCanvas(final Vector position) {
-        return viewport.toCanvas(position);
+        return viewportManager.defaultViewport().toCanvas(position);
     }
 
     @Override
@@ -119,6 +154,11 @@ public class DefaultGraphics implements Graphics, Updatable {
     @Override
     public Duration renderDuration() {
         return asyncRenderer.renderDuration();
+    }
+
+    @Override
+    public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {
+        return attentionFocus.isWithinDistanceToVisibleArea(position, distance);
     }
 
     @Override

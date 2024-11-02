@@ -13,11 +13,17 @@ public class CameraTargetComponent implements Component {
     public double followSpeed;
     public Vector shift = Vector.zero();
     public boolean allowJumping = true;
+    public int viewportId = 0;
 
     public CameraTargetComponent() {
         this(2);
     }
     public CameraTargetComponent(final double followSpeed) {
+       this(0, followSpeed);
+    }
+
+    public CameraTargetComponent(final int viewportId, final double followSpeed) {
         this.followSpeed = followSpeed;
+        this.viewportId = viewportId;
     }
 }

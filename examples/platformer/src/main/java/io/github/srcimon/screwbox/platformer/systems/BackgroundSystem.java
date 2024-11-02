@@ -22,7 +22,7 @@ public class BackgroundSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        final var cameraPosition = engine.graphics().camera().position();
+
         final List<Entity> backgroundEntities = engine.environment().fetchAll(BACKGROUNDS);
         backgroundEntities.sort(BACKGROUND_COMPARATOR);
         for (final var entity : backgroundEntities) {
@@ -30,10 +30,13 @@ public class BackgroundSystem implements EntitySystem {
             final var sprite = entity.get(RenderComponent.class);
 
             final SpriteFillOptions options = SpriteFillOptions.scale(background.zoom).opacity(sprite.options.opacity());
-            final Offset offset = Offset.at(
-                    cameraPosition.x() * -1 * (background.parallaxX - 1),
-                    cameraPosition.y() * -1 * (background.parallaxY - 1));
-            engine.graphics().canvas().fillWith(sprite.sprite, options.offset(offset));
+            for (final var viewport : engine.graphics().viewports()) {
+                final var cameraPosition = viewport.camera().position();
+                final Offset offset = Offset.at(
+                        cameraPosition.x() * -1 * (background.parallaxX - 1),
+                        cameraPosition.y() * -1 * (background.parallaxY - 1));
+                viewport.canvas().fillWith(sprite.sprite, options.offset(offset));
+            }
         }
     }
 }

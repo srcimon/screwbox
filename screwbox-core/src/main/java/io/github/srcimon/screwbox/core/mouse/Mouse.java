@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.mouse;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.World;
 
 /**
@@ -33,7 +34,7 @@ public interface Mouse {
     /**
      * Checks if the given {@link MouseButton} was just pressed (Will be false in
      * the next frame.).
-     * 
+     *
      * @see #isPressedLeft()
      * @see #isPressedRight()
      */
@@ -42,7 +43,7 @@ public interface Mouse {
     /**
      * Checks if the left mouse button was just pressed (Will be false in the next
      * frame.).
-     * 
+     *
      * @see #isPressed(MouseButton)
      * @see #isPressedLeft()
      */
@@ -53,7 +54,7 @@ public interface Mouse {
     /**
      * Checks if the right mouse button was just pressed (Will be false in the next
      * frame.).
-     * 
+     *
      * @see #isPressedLeft()
      * @see #isPressed(MouseButton)
      */
@@ -81,4 +82,11 @@ public interface Mouse {
      * Returns true if there was {@link MouseButton} down.
      */
     boolean isAnyButtonDown();
+
+    /**
+     * The {@link Viewport} the mouse is curently hovering over.
+     *
+     * @since 2.5.0
+     */
+    Viewport hoverViewport();
 }

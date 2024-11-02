@@ -25,7 +25,8 @@ public class SoundSystem implements EntitySystem {
 
             // twice the distance on purpose to not cause flickering on edge
             final double enableRange = engine.audio().configuration().soundRange() * 2;
-            final boolean isInRange = entity.position().distanceTo(engine.graphics().camera().position()) < enableRange;
+
+            final boolean isInRange = engine.graphics().isWithinDistanceToVisibleArea(entity.position(), enableRange);
 
             if (isInRange) {
                 final SoundOptions soundOptions = SoundOptions.playOnce().position(entity.position());
