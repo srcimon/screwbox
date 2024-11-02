@@ -159,8 +159,8 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     }
 
     private Viewport calculateHoverViewport() {
-        if (viewportManager.viewports().isEmpty()) {
-            return viewportManager.primaryViewport();
+        if (!viewportManager.isSplitscreenModeEnabled()) {
+            return viewportManager.defaultViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
             final Offset fixedOffset = offset.add(viewportManager.defaultViewport().canvas().offset());
@@ -168,7 +168,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
                 return viewport;
             }
         }
-        return viewportManager.primaryViewport();
+        return viewportManager.defaultViewport();
     }
 
     private Vector toPositionConsideringRotation(final Offset offset) {

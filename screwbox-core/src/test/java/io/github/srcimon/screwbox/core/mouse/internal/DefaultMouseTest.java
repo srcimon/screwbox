@@ -1,5 +1,6 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
@@ -132,6 +133,17 @@ class DefaultMouseTest {
         mouse.update();
 
         assertThat(mouse.isAnyButtonDown()).isTrue();
+    }
+
+    @Test
+    void hoverViewport_noSplitScreen_returnsDefaultViewport() {
+        var viewport = mock(Viewport.class);
+        when(viewportManager.defaultViewport()).thenReturn(viewport);
+        mouse.update();
+
+        Viewport result = mouse.hoverViewport();
+
+        assertThat(result).isEqualTo(viewport);
     }
 
     private MouseEvent rightMouseButtonEvent() {
