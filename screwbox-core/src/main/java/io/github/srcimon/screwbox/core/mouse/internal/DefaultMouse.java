@@ -1,10 +1,8 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
 import io.github.srcimon.screwbox.core.Line;
-import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -149,6 +147,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     public boolean isAnyButtonDown() {
         return !downButtons.isEmpty();
     }
+
     //TODO dynamically switch used viewport to viewport that mouse is over
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
@@ -181,21 +180,15 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     //TODO find viewport only once -> performance
     private Viewport viewport() {
-        if(viewportManager.viewports().isEmpty()) {
+        if (viewportManager.viewports().isEmpty()) {
             return viewportManager.primaryViewport();
         }
-        int i = 0;
-        for(final var viewport : viewportManager.viewports()) {
-var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().add(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
-            if(verschobenBounds.contains(offset)) {
+        for (final var viewport : viewportManager.viewports()) {
+            var verschobenBounds = new ScreenBounds(viewport.canvas().bounds().offset().add(viewportManager.defaultViewport().canvas().offset()), viewport.canvas().size());
+            if (verschobenBounds.contains(offset)) {
                 return viewport;
             }
-            i++;
         }
         return viewportManager.primaryViewport();
-    }
-
-    private Canvas canvas() {
-        return viewport().canvas();
     }
 }
