@@ -1,7 +1,13 @@
 package io.github.srcimon.screwbox.core.mouse.internal;
 
+import io.github.srcimon.screwbox.core.Rotation;
+import io.github.srcimon.screwbox.core.graphics.Offset;
+import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultCamera;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultScreen;
+import io.github.srcimon.screwbox.core.graphics.internal.DefaultViewport;
 import io.github.srcimon.screwbox.core.graphics.internal.ViewportManager;
 import io.github.srcimon.screwbox.core.mouse.MouseButton;
 import org.junit.jupiter.api.Test;
@@ -13,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -144,6 +151,23 @@ class DefaultMouseTest {
         Viewport result = mouse.hoverViewport();
 
         assertThat(result).isEqualTo(viewport);
+    }
+
+    @Test
+    void mouseMoved_mouseOnWindow_updatesOffsetAndPosition() {
+        MouseEvent event = mock(MouseEvent.class);
+        when(event.getXOnScreen()).thenReturn(440);
+        when(event.getYOnScreen()).thenReturn(120);
+        DefaultCanvas canvas = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
+        when(screen.absoluteRotation()).thenReturn(Rotation.none());
+        when(viewportManager.defaultViewport()).thenReturn(new DefaultViewport(canvas, new DefaultCamera(canvas)));
+        when(screen.position()).thenReturn(Offset.at(300, 100));
+
+        mouse.mouseMoved(event);
+
+        assertThat(mouse.offset()).isEqualTo(Offset.at(140, 20));
+        assertThat(mouse.position()).isEqualTo($(-180.00, -220));
+
     }
 
     private MouseEvent rightMouseButtonEvent() {
