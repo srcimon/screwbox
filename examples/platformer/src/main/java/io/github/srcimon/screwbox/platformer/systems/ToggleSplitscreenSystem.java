@@ -33,6 +33,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         } else if (engine.keyboard().isPressed(Key.U)) {
             ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
             engine.graphics().enableSplitscreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
+            randomizeAllCameras(engine);
         }
     }
 

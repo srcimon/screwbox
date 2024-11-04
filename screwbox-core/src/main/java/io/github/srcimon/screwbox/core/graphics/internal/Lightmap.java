@@ -34,8 +34,8 @@ class Lightmap {
 
     public Lightmap(final Size size, final int resolution, final Percent lightFade) {
         this.image = new BufferedImage(
-                size.width() / resolution,
-                size.height() / resolution,
+                Math.max(1, size.width() / resolution),
+                Math.max(1, size.height() / resolution),
                 BufferedImage.TYPE_INT_ARGB);
         this.resolution = resolution;
         this.graphics = (Graphics2D) image.getGraphics();
