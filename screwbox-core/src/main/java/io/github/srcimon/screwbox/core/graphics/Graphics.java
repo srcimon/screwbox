@@ -14,6 +14,9 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
+    //TODO javadoc
+    Graphics renderSplitscreenBorders();
+
     /**
      * Adds multiple {@link Viewport viewports}. They can be used via {@link Graphics#viewports()}. To automatically use
      * these {@link Viewport viewports} for rendering consider using {@link World} for your drawing operations or fall

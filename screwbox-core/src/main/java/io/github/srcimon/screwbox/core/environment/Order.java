@@ -39,7 +39,7 @@ public @interface Order {
         PRESENTATION_UI_FOREGROUND,
         SCENE_TRANSITIONS,
         SPLIT_SCREEN_DECORATION,
-        UI
+        UI_MENU
         //TODO: specify better names for all orders
     }
 }

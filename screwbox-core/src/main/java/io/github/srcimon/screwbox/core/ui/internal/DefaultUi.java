@@ -1,8 +1,6 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.scenes.internal.HiddenEntitySystem;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -21,8 +19,7 @@ import java.util.function.Consumer;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Order(Order.SystemOrder.UI)
-public class DefaultUi implements Ui, Updatable, HiddenEntitySystem {
+public class DefaultUi implements Ui, Updatable {
 
     private final Engine engine;
     private final DefaultScenes scenes;
@@ -78,10 +75,10 @@ public class DefaultUi implements Ui, Updatable, HiddenEntitySystem {
     }
 
     @Override
-    public void updateWithinSceneEnvironment() {
+    public Ui renderMenu() {
         final var menu = openMenu.menu;
         if (isNull(menu) || scenes.isShowingLoadingScene()) {
-            return;
+            return this;
         }
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
@@ -96,6 +93,7 @@ public class DefaultUi implements Ui, Updatable, HiddenEntitySystem {
                 }
             }
         }
+        return this;
     }
 
     @Override

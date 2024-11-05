@@ -42,6 +42,9 @@ public interface Ui {
      */
     Optional<UiMenu> currentMenu();
 
+    //TODO javadoc
+    Ui renderMenu();
+
     Ui setRenderer(UiRenderer renderer);
 
     Ui setInteractor(UiInteractor interactor);

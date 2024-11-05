@@ -4,8 +4,8 @@ import io.github.srcimon.screwbox.core.Bounds;
 import io.github.srcimon.screwbox.core.Percent;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.Vector;
+import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.light.LightRenderSystem;
-import io.github.srcimon.screwbox.core.window.Window;
 
 /**
  * Subsystem for creating and rendering light effects to the screen. All added
@@ -49,7 +49,7 @@ public interface Light {
      *
      * @param shadowCaster the {@link Bounds} of the shadow caster
      * @see #addPointLight(Vector, double, Color) )
-     * @see #addShadowCaster(Bounds, boolean) 
+     * @see #addShadowCaster(Bounds, boolean)
      */
     default Light addShadowCaster(Bounds shadowCaster) {
         return addShadowCaster(shadowCaster, true);
@@ -61,7 +61,7 @@ public interface Light {
      * @param shadowCaster the {@link Bounds} of the shadow caster
      * @param selfShadow   specify if the object casts shadows over itself
      * @see #addPointLight(Vector, double, Color) )
-     * @see #addShadowCaster(Bounds) 
+     * @see #addShadowCaster(Bounds)
      */
     Light addShadowCaster(Bounds shadowCaster, boolean selfShadow);
 
@@ -97,8 +97,9 @@ public interface Light {
     Light addGlow(Vector position, double radius, Color color);
 
     /**
-     * Renders the lightmap to {@link Window}. Can be automated by using
-     * {@link LightRenderSystem}.
+     * Renders the lightmap to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.
+     *
+     * @see Environment#enableLight()
      */
     Light render();
 

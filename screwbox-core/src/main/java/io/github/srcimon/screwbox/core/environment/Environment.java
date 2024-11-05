@@ -23,8 +23,11 @@ import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSplitscreenBordersSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderUiMenuSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -284,6 +287,9 @@ public interface Environment {
     /**
      * Adds systems needed for rendering {@link Sprite}s.
      *
+     * @see RenderSceneTransitionSystem
+     * @see RenderUiMenuSystem
+     * @see RenderSplitscreenBordersSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
@@ -339,6 +345,7 @@ public interface Environment {
 
     /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
+     *
      * @see #enableParticles()
      * @see #enableLight()
      * @see #enableLogic()

@@ -13,9 +13,7 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -23,10 +21,9 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 @Order(Order.SystemOrder.SCENE_TRANSITIONS)
-public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
+public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
-    private final List<HiddenEntitySystem> hiddenEntitySystems = new ArrayList<>();
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
@@ -83,6 +80,18 @@ public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
     @Override
     public int sceneCount() {
         return sceneData.size();
+    }
+
+    @Override
+    public Scenes renderSceneTransition() {
+        if (isTransitioning()) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                activeTransition.drawIntro(canvas, Time.now());
+            } else {
+                activeTransition.drawOutro(canvas, Time.now());
+            }
+        }
+        return this;
     }
 
     @Override
@@ -174,17 +183,6 @@ public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
         }
     }
 
-    @Override
-    public void updateWithinSceneEnvironment() {
-        if (isTransitioning()) {
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(canvas, Time.now());
-            } else {
-                activeTransition.drawOutro(canvas, Time.now());
-            }
-        }
-    }
-
     private void add(final Scene scene) {
         final var sceneClass = scene.getClass();
         if (sceneData.containsKey(sceneClass)) {
@@ -202,15 +200,7 @@ public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
     }
 
     private SceneData createSceneData(final Scene scene) {
-        final DefaultEnvironment sceneEnvironment = new DefaultEnvironment(engine);
-        for (final var hiddenEntitySystem : hiddenEntitySystems) {
-            final var order = hiddenEntitySystem.getClass().getAnnotation(Order.class).value();
-            sceneEnvironment.addSystem(order, engine -> hiddenEntitySystem.updateWithinSceneEnvironment());        //TODO FIX : virtual systems can be seen
-        }
+        final var sceneEnvironment = new DefaultEnvironment(engine);
         return new SceneData(scene, sceneEnvironment);
-    }
-
-    public void addHiddenEntitySystems(final List<HiddenEntitySystem> hiddenEntitySystems) {
-        this.hiddenEntitySystems.addAll(hiddenEntitySystems);
     }
 }

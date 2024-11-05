@@ -12,6 +12,9 @@ import java.util.function.Supplier;
  */
 public interface Scenes {
 
+    //TODO javadoc
+    Scenes renderSceneTransition();
+
     /**
      * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.
      * Uses the default transition to reenter the current scene.
