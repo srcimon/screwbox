@@ -13,7 +13,6 @@ import io.github.srcimon.screwbox.core.audio.internal.DynamicSoundSupport;
 import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -45,7 +44,6 @@ import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.environment.internal.EnvironmentFactory;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
@@ -137,8 +135,7 @@ class DefaultEngine implements Engine {
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        final var environmentFactory = new EnvironmentFactory();
-        scenes = new DefaultScenes(this, screenCanvas, executor, environmentFactory);
+        scenes = new DefaultScenes(this, screenCanvas, executor);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
@@ -147,11 +144,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        environmentFactory.addRenderingEngineComponent(scenes);
-        environmentFactory.addRenderingEngineComponent(ui);
-        environmentFactory.addRenderingEngineComponent(viewportManager);
-        //TODO FIX : virtual systems can be seen
-
+        scenes.addRenderingSubsystems(List.of(scenes, ui, viewportManager));
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

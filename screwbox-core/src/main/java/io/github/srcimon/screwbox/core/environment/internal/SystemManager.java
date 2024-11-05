@@ -57,8 +57,11 @@ public class SystemManager {
     public void updateAllSystems() {
         entityManager.pickUpChanges();
         delayChanges();
+        int i = 0;
         for (final EntitySystem entitySystem : systems) {
             entityManager.delayChanges();
+            System.out.println("system " + i + " :" + entitySystem.getClass().getSimpleName());
+            i++;
             entitySystem.update(engine);
             entityManager.pickUpChanges();
         }

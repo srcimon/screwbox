@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.internal.EnvironmentFactory;
 import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -15,7 +14,9 @@ import io.github.srcimon.screwbox.core.scenes.Scene;
 import io.github.srcimon.screwbox.core.scenes.SceneTransition;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -26,11 +27,10 @@ import static java.util.Objects.requireNonNull;
 public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
-
+    private final List<RenderingSubsystem> renderingSubsystems = new ArrayList<>();
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
-    private final EnvironmentFactory environmentFactory;
 
     private SceneData activeScene;
     private SceneData loadingScene;
@@ -38,11 +38,10 @@ public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
 
-    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor, final EnvironmentFactory environmentFactory) {
+    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
         this.engine = engine;
         this.executor = executor;
         this.canvas = canvas;
-        this.environmentFactory = environmentFactory;
         SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
@@ -204,7 +203,15 @@ public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
     }
 
     private SceneData createSceneData(final Scene scene) {
-        final DefaultEnvironment sceneEnvironment = environmentFactory.createEnvironment(engine);
+        final DefaultEnvironment sceneEnvironment = new DefaultEnvironment(engine);
+        for (final var renderingSubsystem : renderingSubsystems) {
+            final var order = renderingSubsystem.getClass().getAnnotation(Order.class).value();
+            sceneEnvironment.addSystem(order, engine -> renderingSubsystem.render());        //TODO FIX : virtual systems can be seen
+        }
         return new SceneData(scene, sceneEnvironment);
+    }
+
+    public void addRenderingSubsystems(final List<RenderingSubsystem> renderingSubsystems) {
+        this.renderingSubsystems.addAll(renderingSubsystems);
     }
 }

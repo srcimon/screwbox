@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
-import io.github.srcimon.screwbox.core.environment.internal.EnvironmentFactory;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.scenes.Animation;
 import io.github.srcimon.screwbox.core.scenes.DefaultScene;
