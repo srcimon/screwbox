@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
+//TODO: enable option for no borders
 public record SplitScreenOptions(int viewportCount, LineDrawOptions border, ViewportLayout layout) {
 
     public SplitScreenOptions {
