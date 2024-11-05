@@ -147,8 +147,10 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.renderTransition());
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.UI, engine -> ui.renderMenu());
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.render());
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.UI, engine -> ui.render());
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.SPLIT_SCREEN_DECORATION, engine -> viewportManager.render());
+
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

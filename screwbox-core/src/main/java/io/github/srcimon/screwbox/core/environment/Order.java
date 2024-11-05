@@ -38,6 +38,8 @@ public @interface Order {
         PRESENTATION_UI,
         PRESENTATION_UI_FOREGROUND,
         SCENE_TRANSITIONS,
-        UI
+        UI,
+        SPLIT_SCREEN_DECORATION,
+        DEBUG_OVERLAY
     }
 }

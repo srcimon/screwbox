@@ -74,7 +74,7 @@ public class DefaultUi implements Ui, Updatable {
         }
     }
 
-    public void renderMenu() {
+    public void render() {
         final var menu = openMenu.menu;
         if (isNull(menu) || scenes.isShowingLoadingScene()) {
             return;

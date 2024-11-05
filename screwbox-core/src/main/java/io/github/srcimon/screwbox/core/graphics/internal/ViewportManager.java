@@ -99,11 +99,10 @@ public class ViewportManager implements Updatable {
     @Override
     public void update() {
         arangeViewports();
-        drawBorders();
     }
 
-    private void drawBorders() {
-        Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
+    public void render() {
+        final Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
         for (var viewport : splitScreenViewports) {
             final var canvasBounds = viewport.canvas().bounds();
             final var bounds = new ScreenBounds(canvasBounds.offset().substract(defaultViewport.canvas().offset()), canvasBounds.size());
