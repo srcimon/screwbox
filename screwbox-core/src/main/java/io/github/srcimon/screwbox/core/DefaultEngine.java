@@ -136,7 +136,8 @@ class DefaultEngine implements Engine {
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        scenes = new DefaultScenes(this, screenCanvas, executor, new EnvironmentFactory());
+        final var environmentFactory = new EnvironmentFactory();
+        scenes = new DefaultScenes(this, screenCanvas, executor, environmentFactory);
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
