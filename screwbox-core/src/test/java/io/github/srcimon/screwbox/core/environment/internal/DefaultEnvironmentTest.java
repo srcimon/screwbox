@@ -32,6 +32,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
+import io.github.srcimon.screwbox.core.utils.Cache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,17 @@ class DefaultEnvironmentTest {
     @BeforeEach
     void beforeEach() {
         environment = new DefaultEnvironment(engine);
+    }
+
+    @Test
+    void addSystem_usingOrder_orderIsUsedInExecution() {
+        final Cache<String, String> cache = new Cache<>();
+        environment.addSystem(Order.SystemOrder.SIMULATION, engine -> cache.put("key", "second"));
+        environment.addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, engine -> cache.put("key", "last"));
+        environment.addSystem(Order.SystemOrder.OPTIMIZATION, engine -> cache.put("key", "first"));
+        environment.update();
+
+        assertThat(cache.get("key")).contains("last");
     }
 
     @Test

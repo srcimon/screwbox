@@ -16,6 +16,7 @@ class SystemManagerTest {
         systemManager = new SystemManager(null, null);
     }
 
+
     @Test
     void addSystem_addsSystem() {
         systemManager.addSystem(new CollisionDetectionSystem());

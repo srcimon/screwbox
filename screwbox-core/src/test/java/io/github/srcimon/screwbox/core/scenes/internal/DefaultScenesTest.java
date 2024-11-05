@@ -38,15 +38,12 @@ class DefaultScenesTest {
 
     ExecutorService executor;
 
-    EnvironmentFactory environmentFactory;
-
     DefaultScenes scenes;
 
     @BeforeEach
     void beforeEach() {
         executor = Executors.newSingleThreadExecutor();
-        environmentFactory = new EnvironmentFactory();
-        scenes = new DefaultScenes(engine, canvas, executor, environmentFactory);
+        scenes = new DefaultScenes(engine, canvas, executor);
         scenes.setLoadingScene(environment -> {
         });
     }
