@@ -44,6 +44,7 @@ import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
+import io.github.srcimon.screwbox.core.scenes.internal.EnvironmentFactory;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
@@ -135,7 +136,7 @@ class DefaultEngine implements Engine {
         final AudioConfiguration audioConfiguration = new AudioConfiguration();
         final AudioLinePool audioLinePool = new AudioLinePool(audioAdapter, audioConfiguration);
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
-        scenes = new DefaultScenes(this, screenCanvas, executor);
+        scenes = new DefaultScenes(this, screenCanvas, executor, new EnvironmentFactory());
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);

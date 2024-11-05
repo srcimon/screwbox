@@ -26,6 +26,7 @@ public class DefaultScenes implements Scenes, Updatable {
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
+    private final EnvironmentFactory environmentFactory;
 
     private SceneData activeScene;
     private SceneData loadingScene;
@@ -33,11 +34,12 @@ public class DefaultScenes implements Scenes, Updatable {
     private boolean hasChangedToTargetScene = true;
     private SceneTransition defaultTransition = SceneTransition.custom();
 
-    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor) {
+    public DefaultScenes(final Engine engine, final Canvas canvas, final Executor executor, final EnvironmentFactory environmentFactory) {
         this.engine = engine;
         this.executor = executor;
         this.canvas = canvas;
-        SceneData defaultSceneData = new SceneData(new DefaultScene(), engine);
+        this.environmentFactory = environmentFactory;
+        SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
@@ -141,7 +143,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes setLoadingScene(final Scene loadingScene) {
-        this.loadingScene = new SceneData(loadingScene, engine);
+        this.loadingScene = createSceneData(loadingScene);
         this.loadingScene.initialize();
         return this;
     }
@@ -181,7 +183,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (sceneData.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene is already present: " + sceneClass);
         }
-        final SceneData data = new SceneData(scene, engine);
+        final SceneData data = createSceneData(scene);
         executor.execute(data::initialize);
         this.sceneData.put(sceneClass, data);
     }
@@ -192,4 +194,7 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
+    private SceneData createSceneData(final Scene scene) {
+        return new SceneData(scene, environmentFactory.createEnvironment(engine));
+    }
 }
