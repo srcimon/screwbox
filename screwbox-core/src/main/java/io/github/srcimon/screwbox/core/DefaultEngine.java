@@ -150,6 +150,7 @@ class DefaultEngine implements Engine {
         environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.render());
         environmentFactory.registerVirtualSystem(Order.SystemOrder.UI, engine -> ui.render());
         environmentFactory.registerVirtualSystem(Order.SystemOrder.SPLIT_SCREEN_DECORATION, engine -> viewportManager.render());
+        //TODO FIX : virtual systems can be seen
 
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
