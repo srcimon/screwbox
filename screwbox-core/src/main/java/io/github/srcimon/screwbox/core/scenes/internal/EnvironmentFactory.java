@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 public class EnvironmentFactory {
 
     public DefaultEnvironment createEnvironment(final Engine engine) {
-        return new DefaultEnvironment(engine);
+        DefaultEnvironment defaultEnvironment = new DefaultEnvironment(engine);
+        return defaultEnvironment;
     }
 }

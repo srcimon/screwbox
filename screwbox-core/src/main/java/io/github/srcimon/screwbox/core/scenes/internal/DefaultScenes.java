@@ -195,6 +195,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     private SceneData createSceneData(final Scene scene) {
-        return new SceneData(scene, environmentFactory.createEnvironment(engine));
+        final DefaultEnvironment sceneEnvironment = environmentFactory.createEnvironment(engine);
+        return new SceneData(scene, sceneEnvironment);
     }
 }
