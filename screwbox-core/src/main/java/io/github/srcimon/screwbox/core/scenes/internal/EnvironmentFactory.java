@@ -23,7 +23,7 @@ public class EnvironmentFactory {
         return environment;
     }
 
-    public void registerVirtualSystem(final Order.SystemOrder order, final EntitySystem system) {
-        virtualSystems.add(new VirtualSystem(order, system));
+    public void registerVirtualSystem(final Order.SystemOrder order, final Runnable runnable) {
+        virtualSystems.add(new VirtualSystem(order, engine -> runnable.run()));
     }
 }
