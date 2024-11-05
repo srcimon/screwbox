@@ -5,7 +5,6 @@ import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.internal.Renderable;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
@@ -24,10 +23,10 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 @Order(Order.SystemOrder.SCENE_TRANSITIONS)
-public class DefaultScenes implements Scenes, Updatable, Renderable {
+public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
-    private final List<Renderable> renderables = new ArrayList<>();
+    private final List<HiddenEntitySystem> hiddenEntitySystems = new ArrayList<>();
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
@@ -176,7 +175,7 @@ public class DefaultScenes implements Scenes, Updatable, Renderable {
     }
 
     @Override
-    public void render() {
+    public void updateWithinSceneEnvironment() {
         if (isTransitioning()) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
                 activeTransition.drawIntro(canvas, Time.now());
@@ -204,14 +203,14 @@ public class DefaultScenes implements Scenes, Updatable, Renderable {
 
     private SceneData createSceneData(final Scene scene) {
         final DefaultEnvironment sceneEnvironment = new DefaultEnvironment(engine);
-        for (final var renderable : renderables) {
-            final var order = renderable.getClass().getAnnotation(Order.class).value();
-            sceneEnvironment.addSystem(order, engine -> renderable.render());        //TODO FIX : virtual systems can be seen
+        for (final var hiddenEntitySystem : hiddenEntitySystems) {
+            final var order = hiddenEntitySystem.getClass().getAnnotation(Order.class).value();
+            sceneEnvironment.addSystem(order, engine -> hiddenEntitySystem.updateWithinSceneEnvironment());        //TODO FIX : virtual systems can be seen
         }
         return new SceneData(scene, sceneEnvironment);
     }
 
-    public void addRenderables(final List<Renderable> renderables) {
-        this.renderables.addAll(renderables);
+    public void addHiddenEntitySystems(final List<HiddenEntitySystem> hiddenEntitySystems) {
+        this.hiddenEntitySystems.addAll(hiddenEntitySystems);
     }
 }
