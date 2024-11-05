@@ -166,14 +166,18 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
             }
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(canvas, time);
-            } else {
-                activeTransition.drawOutro(canvas, time);
-            }
-
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;
+            }
+        }
+    }
+
+    public void renderTransition() {
+        if (isTransitioning()) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                activeTransition.drawIntro(canvas, Time.now());
+            } else {
+                activeTransition.drawOutro(canvas, Time.now());
             }
         }
     }

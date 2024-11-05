@@ -13,6 +13,7 @@ import io.github.srcimon.screwbox.core.audio.internal.DynamicSoundSupport;
 import io.github.srcimon.screwbox.core.audio.internal.MicrophoneMonitor;
 import io.github.srcimon.screwbox.core.audio.internal.WarmupAudioTask;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.graphics.Graphics;
 import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
@@ -138,6 +139,9 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         final var environmentFactory = new EnvironmentFactory();
         scenes = new DefaultScenes(this, screenCanvas, executor, environmentFactory);
+
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.renderTransition());
+
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
