@@ -41,5 +41,6 @@ public @interface Order {
         UI,
         SPLIT_SCREEN_DECORATION,
         DEBUG_OVERLAY
+        //TODO: specify better names for all orders
     }
 }

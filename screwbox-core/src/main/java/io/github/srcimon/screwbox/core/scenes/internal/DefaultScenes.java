@@ -3,7 +3,10 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
+import io.github.srcimon.screwbox.core.environment.internal.EnvironmentFactory;
+import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
@@ -19,7 +22,8 @@ import java.util.concurrent.Executor;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-public class DefaultScenes implements Scenes, Updatable {
+@Order(Order.SystemOrder.SCENE_TRANSITIONS)
+public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
 
@@ -172,6 +176,7 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
+    @Override
     public void render() {
         if (isTransitioning()) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {

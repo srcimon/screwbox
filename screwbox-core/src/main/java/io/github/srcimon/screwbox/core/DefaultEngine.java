@@ -45,7 +45,7 @@ import io.github.srcimon.screwbox.core.physics.Physics;
 import io.github.srcimon.screwbox.core.physics.internal.DefaultPhysics;
 import io.github.srcimon.screwbox.core.scenes.Scenes;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
-import io.github.srcimon.screwbox.core.scenes.internal.EnvironmentFactory;
+import io.github.srcimon.screwbox.core.environment.internal.EnvironmentFactory;
 import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.ui.internal.DefaultUi;
 import io.github.srcimon.screwbox.core.utils.internal.MacOsSupport;
@@ -147,9 +147,9 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, () -> scenes.render());
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.UI, () -> ui.render());
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.SPLIT_SCREEN_DECORATION, () -> viewportManager.render());
+        environmentFactory.addRenderingEngineComponent(scenes);
+        environmentFactory.addRenderingEngineComponent(ui);
+        environmentFactory.addRenderingEngineComponent(viewportManager);
         //TODO FIX : virtual systems can be seen
 
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));

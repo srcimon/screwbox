@@ -1,6 +1,8 @@
 package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
+import io.github.srcimon.screwbox.core.environment.Order;
+import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -19,7 +21,8 @@ import java.util.function.Consumer;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class DefaultUi implements Ui, Updatable {
+@Order(Order.SystemOrder.UI)
+public class DefaultUi implements Ui, Updatable, RenderingSubsystem {
 
     private final Engine engine;
     private final DefaultScenes scenes;
@@ -74,6 +77,7 @@ public class DefaultUi implements Ui, Updatable {
         }
     }
 
+    @Override
     public void render() {
         final var menu = openMenu.menu;
         if (isNull(menu) || scenes.isShowingLoadingScene()) {

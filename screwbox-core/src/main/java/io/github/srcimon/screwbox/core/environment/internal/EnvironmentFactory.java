@@ -1,9 +1,8 @@
-package io.github.srcimon.screwbox.core.scenes.internal;
+package io.github.srcimon.screwbox.core.environment.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,8 @@ public class EnvironmentFactory {
         return environment;
     }
 
-    public void registerVirtualSystem(final Order.SystemOrder order, final Runnable runnable) {
-        virtualSystems.add(new VirtualSystem(order, engine -> runnable.run()));
+    public void addRenderingEngineComponent(final RenderingSubsystem component) {
+        Order.SystemOrder order = component.getClass().getAnnotation(Order.class).value();
+        virtualSystems.add(new VirtualSystem(order, engine -> component.render()));
     }
 }
