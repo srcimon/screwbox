@@ -37,6 +37,7 @@ public @interface Order {
         PRESENTATION_UI_BACKGROUND,
         PRESENTATION_UI,
         PRESENTATION_UI_FOREGROUND,
-        SCENE_TRANSITIONS
+        SCENE_TRANSITIONS,
+        UI
     }
 }

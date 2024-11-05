@@ -139,9 +139,6 @@ class DefaultEngine implements Engine {
         final MicrophoneMonitor microphoneMonitor = new MicrophoneMonitor(executor, audioAdapter, audioConfiguration);
         final var environmentFactory = new EnvironmentFactory();
         scenes = new DefaultScenes(this, screenCanvas, executor, environmentFactory);
-
-        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.renderTransition());
-
         final AttentionFocus attentionFocus = new AttentionFocus(viewportManager);
         graphics = new DefaultGraphics(configuration, screen, light, graphicsDevice, asyncRenderer, viewportManager, attentionFocus);
         particles = new DefaultParticles(scenes, attentionFocus);
@@ -150,6 +147,8 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.SCENE_TRANSITIONS, engine -> scenes.renderTransition());
+        environmentFactory.registerVirtualSystem(Order.SystemOrder.UI, engine -> ui.renderMenu());
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

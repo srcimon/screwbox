@@ -71,11 +71,14 @@ public class DefaultUi implements Ui, Updatable {
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
             }
-            renderMenu(menu, canvas);
         }
     }
 
-    private void renderMenu(final UiMenu menu, final Canvas canvas) {
+    public void renderMenu() {
+        final var menu = openMenu.menu;
+        if (isNull(menu) || scenes.isShowingLoadingScene()) {
+            return;
+        }
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
             if (canvas.isVisible(bounds)) {
