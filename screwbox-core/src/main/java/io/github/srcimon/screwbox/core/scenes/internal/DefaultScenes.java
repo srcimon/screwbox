@@ -2,11 +2,10 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
-import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
-import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
+import io.github.srcimon.screwbox.core.environment.internal.Renderable;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.DefaultLoadingScene;
@@ -25,10 +24,10 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 @Order(Order.SystemOrder.SCENE_TRANSITIONS)
-public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
+public class DefaultScenes implements Scenes, Updatable, Renderable {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
-    private final List<RenderingSubsystem> renderingSubsystems = new ArrayList<>();
+    private final List<Renderable> renderables = new ArrayList<>();
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
@@ -205,14 +204,14 @@ public class DefaultScenes implements Scenes, Updatable, RenderingSubsystem {
 
     private SceneData createSceneData(final Scene scene) {
         final DefaultEnvironment sceneEnvironment = new DefaultEnvironment(engine);
-        for (final var renderingSubsystem : renderingSubsystems) {
-            final var order = renderingSubsystem.getClass().getAnnotation(Order.class).value();
-            sceneEnvironment.addSystem(order, engine -> renderingSubsystem.render());        //TODO FIX : virtual systems can be seen
+        for (final var renderable : renderables) {
+            final var order = renderable.getClass().getAnnotation(Order.class).value();
+            sceneEnvironment.addSystem(order, engine -> renderable.render());        //TODO FIX : virtual systems can be seen
         }
         return new SceneData(scene, sceneEnvironment);
     }
 
-    public void addRenderingSubsystems(final List<RenderingSubsystem> renderingSubsystems) {
-        this.renderingSubsystems.addAll(renderingSubsystems);
+    public void addRenderables(final List<Renderable> renderables) {
+        this.renderables.addAll(renderables);
     }
 }

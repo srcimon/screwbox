@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.ui.internal;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
+import io.github.srcimon.screwbox.core.environment.internal.Renderable;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 import io.github.srcimon.screwbox.core.scenes.internal.DefaultScenes;
@@ -22,7 +22,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Order(Order.SystemOrder.UI)
-public class DefaultUi implements Ui, Updatable, RenderingSubsystem {
+public class DefaultUi implements Ui, Updatable, Renderable {
 
     private final Engine engine;
     private final DefaultScenes scenes;

@@ -144,7 +144,7 @@ class DefaultEngine implements Engine {
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
         mouse = new DefaultMouse(screen, viewportManager);
-        scenes.addRenderingSubsystems(List.of(scenes, ui, viewportManager));
+        scenes.addRenderables(List.of(scenes, ui, viewportManager));
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);
         physics = new DefaultPhysics(this);

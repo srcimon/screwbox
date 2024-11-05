@@ -1,7 +1,7 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.internal.RenderingSubsystem;
+import io.github.srcimon.screwbox.core.environment.internal.Renderable;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Order(Order.SystemOrder.SPLIT_SCREEN_DECORATION)
-public class ViewportManager implements Updatable, RenderingSubsystem {
+public class ViewportManager implements Updatable, Renderable {
 
     private final List<Viewport> defaultViewports;
     private final List<DefaultViewport> splitScreenViewports = new ArrayList<>();
