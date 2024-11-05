@@ -41,7 +41,7 @@ public class DefaultScenes implements Scenes, Updatable, HiddenEntitySystem {
         this.engine = engine;
         this.executor = executor;
         this.canvas = canvas;
-        SceneData defaultSceneData = createSceneData(new DefaultScene());
+        SceneData defaultSceneData = createSceneData(new DefaultScene());//TODO BUG: THIS SCENE WONT HAVE HIDDEN SYSTEMS ADDED!!!!
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
