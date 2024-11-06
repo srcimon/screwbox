@@ -34,7 +34,7 @@ public enum Feature {
     ),
 
     RENDERING(
-            new RenderUiMenuSystem(),
+            new RenderUiSystem(),
             new RenderSceneTransitionSystem(),
             new RenderSplitscreenBordersSystem(),
             new RenderOverLightSystem(),

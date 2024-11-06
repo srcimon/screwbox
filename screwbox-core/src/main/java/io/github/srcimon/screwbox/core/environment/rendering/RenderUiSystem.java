@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 
 @Order(Order.SystemOrder.UI_MENU)
-public class RenderUiMenuSystem implements EntitySystem {
+public class RenderUiSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {

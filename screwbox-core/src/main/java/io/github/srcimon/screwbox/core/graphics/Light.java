@@ -99,6 +99,7 @@ public interface Light {
     /**
      * Renders the lightmap to all {@link Viewport viewports}. Can be automated by using {@link LightRenderSystem}.
      *
+     * @see LightRenderSystem
      * @see Environment#enableLight()
      */
     Light render();

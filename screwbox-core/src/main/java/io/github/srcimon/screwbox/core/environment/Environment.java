@@ -27,7 +27,7 @@ import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransiti
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSplitscreenBordersSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderUiMenuSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
@@ -288,7 +288,7 @@ public interface Environment {
      * Adds systems needed for rendering {@link Sprite}s.
      *
      * @see RenderSceneTransitionSystem
-     * @see RenderUiMenuSystem
+     * @see RenderUiSystem
      * @see RenderSplitscreenBordersSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
