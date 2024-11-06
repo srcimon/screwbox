@@ -104,7 +104,7 @@ public class ViewportManager implements Updatable {
     }
 
     public void renderSplitscreenBorders() {
-        if (isNull(options) || isNull(options.border())) {
+        if (isNull(options) || isNull(options.borders())) {
             return;
         }
         final Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
@@ -121,7 +121,7 @@ public class ViewportManager implements Updatable {
                     new Tupel<>(bottomLeft, bottomRight))
             ) {
                 if (alreadyDrawn.add(side)) {
-                    defaultViewport.canvas().drawLine(side.first(), side.second(), options.border());
+                    defaultViewport.canvas().drawLine(side.first(), side.second(), options.borders());
                 }
             }
         }

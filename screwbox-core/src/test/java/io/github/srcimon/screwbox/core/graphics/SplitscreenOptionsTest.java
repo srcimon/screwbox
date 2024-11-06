@@ -30,7 +30,7 @@ class SplitscreenOptionsTest {
 
         assertThat(options.viewportCount()).isEqualTo(4);
         assertThat(options.layout()).isInstanceOf(TableLayout.class);
-        assertThat(options.border()).isNull();
+        assertThat(options.borders()).isNull();
     }
 
     @Test
@@ -41,6 +41,6 @@ class SplitscreenOptionsTest {
 
         assertThat(options.viewportCount()).isEqualTo(2);
         assertThat(options.layout()).isInstanceOf(VerticalLayout.class);
-        assertThat(options.border()).isEqualTo(borders);
+        assertThat(options.borders()).isEqualTo(borders);
     }
 }
