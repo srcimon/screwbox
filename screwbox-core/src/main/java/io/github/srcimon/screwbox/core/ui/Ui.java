@@ -46,7 +46,7 @@ public interface Ui {
     Optional<UiMenu> currentMenu();
 
     /**
-     * Render the menu currently configured. Can be automated by using {@link RenderUiSystem}.
+     * Renders the currently open menu. Can be automated by using {@link RenderUiSystem}.
      *
      * @see RenderUiSystem
      * @see Environment#enableRendering()

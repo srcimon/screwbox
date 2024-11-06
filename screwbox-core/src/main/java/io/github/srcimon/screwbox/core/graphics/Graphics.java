@@ -4,6 +4,8 @@ import io.github.srcimon.screwbox.core.Duration;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSplitscreenBordersSystem;
 import io.github.srcimon.screwbox.core.loop.Loop;
 
 import java.util.List;
@@ -14,7 +16,13 @@ import java.util.Optional;
  */
 public interface Graphics extends Viewport {
 
-    //TODO javadoc
+    /**
+     * Renders borders between split screen {@link Viewport viewports}. Can be automated by using {@link RenderSplitscreenBordersSystem}.
+     *
+     * @see RenderSplitscreenBordersSystem
+     * @see Environment#enableRendering()
+     * @since 2.6.0
+     */
     Graphics renderSplitscreenBorders();
 
     /**
