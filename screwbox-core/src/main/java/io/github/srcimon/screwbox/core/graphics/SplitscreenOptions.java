@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * Configures split screen mode.
  *
  * @param viewportCount the number of {@link Viewport viewports} present in the split screen
- * @param borderStyle   the borderStyle style used to separate the {@link Viewport viewports}
+ * @param borders       the border style used to separate the {@link Viewport viewports}
  * @param layout        the layout wich is applied to calculate the size and position of the {@link Viewport viewports}
  * @since 2.5.0
  */
