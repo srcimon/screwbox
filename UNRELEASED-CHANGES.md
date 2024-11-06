@@ -1,6 +1,8 @@
+# 2.6.0
+
 ### 🚀 Features & improvements
 
-- ...
+- Added option to draw split screens without borders.
 
 ### 🪛 Bug Fixes
 
@@ -9,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Renamed `SplitscreenOptions`
 
 ### 📦 Dependency updates
 

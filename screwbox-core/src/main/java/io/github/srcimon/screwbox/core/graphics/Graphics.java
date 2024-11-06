@@ -25,12 +25,12 @@ public interface Graphics extends Viewport {
      * @see #disableSplitscreenMode()
      * @since 2.5.0
      */
-    Graphics enableSplitscreenMode(SplitScreenOptions options);
+    Graphics enableSplitscreenMode(SplitscreenOptions options);
 
     /**
      * Disables split screen mode and removes the added {@link Viewport viewports} again.
      *
-     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @see #enableSplitscreenMode(SplitscreenOptions)
      * @since 2.5.0
      */
     Graphics disableSplitscreenMode();
@@ -38,14 +38,14 @@ public interface Graphics extends Viewport {
     /**
      * Returns {@code true} if the split screen mode is currently enabled.
      *
-     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @see #enableSplitscreenMode(SplitscreenOptions)
      * @since 2.5.0
      */
     boolean isSplitscreenModeEnabled();
 
     /**
      * Returns the specified {@link Viewport} (index starting at 0). Will be empty if there is no such {@link Viewport}.
-     * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitScreenOptions)}.
+     * Multiple {@link Viewport viewports} can be enabled via {@link #enableSplitscreenMode(SplitscreenOptions)}.
      *
      * @since 2.5.0
      */
@@ -62,7 +62,7 @@ public interface Graphics extends Viewport {
      * Returns the primary {@link Viewport}. This will be the {@link Screen} when split screen mode is not enabled. And
      * will be the first {@link Viewport} if split screen is enabled.
      *
-     * @see #enableSplitscreenMode(SplitScreenOptions)
+     * @see #enableSplitscreenMode(SplitscreenOptions)
      * @since 2.5.0
      */
     Viewport primaryViewport();

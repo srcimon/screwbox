@@ -105,7 +105,7 @@ public class DemoScene implements Scene {
                 .add(new ColliderComponent());
     }
 
-    private static Converter<Map> worldInfoSingleton() {
+    private Converter<Map> worldInfoSingleton() {
         return map -> new Entity()
                 .add(new PhysicsGridConfigurationComponent(map.bounds(), 16, Sheduler.everySecond()))
                 .add(new CameraBoundsComponent(map.bounds()));

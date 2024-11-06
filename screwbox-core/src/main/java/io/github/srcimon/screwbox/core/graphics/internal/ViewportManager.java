@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
+import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+
 public class ViewportManager implements Updatable {
 
     private final List<Viewport> defaultViewports;
@@ -23,7 +25,7 @@ public class ViewportManager implements Updatable {
     private final Map<Integer, Viewport> viewportMap = new HashMap<>();
     private final Viewport defaultViewport;
     private final Renderer renderer;
-    private SplitScreenOptions options;
+    private SplitscreenOptions options;
 
     public ViewportManager(final Viewport defaultViewport, final Renderer renderer) {
         this.renderer = renderer;
@@ -36,7 +38,7 @@ public class ViewportManager implements Updatable {
         return !splitScreenViewports.isEmpty();
     }
 
-    public void enableSplitscreenMode(final SplitScreenOptions options) {
+    public void enableSplitscreenMode(final SplitscreenOptions options) {
         if (isSplitscreenModeEnabled()) {
             disableSplitscreenMode();
         }
@@ -102,6 +104,9 @@ public class ViewportManager implements Updatable {
     }
 
     public void renderSplitscreenBorders() {
+        if (isNull(options) || isNull(options.border())) {
+            return;
+        }
         final Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
         for (var viewport : splitScreenViewports) {
             final var canvasBounds = viewport.canvas().bounds();
