@@ -13,6 +13,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `SplitscreenOptions`
+- Added JavaDoc to `SplitscreenOptions`
 
 ### 📦 Dependency updates
 

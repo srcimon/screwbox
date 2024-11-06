@@ -8,6 +8,14 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 //TODO add javadoc to all methods
 //TODO add tests
+
+/**
+ * Configures split screen mode.
+ *
+ * @param viewportCount the number of {@link Viewport viewports} present in the split screen
+ * @param border        the border style used to separate the {@link Viewport viewports}
+ * @param layout        the layout wich is applied to calculate the size and position of the {@link Viewport viewports}
+ */
 public record SplitscreenOptions(int viewportCount, LineDrawOptions border, ViewportLayout layout) {
 
     public SplitscreenOptions {
