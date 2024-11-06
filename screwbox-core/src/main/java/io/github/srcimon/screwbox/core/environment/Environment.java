@@ -285,7 +285,7 @@ public interface Environment {
     Environment enablePhysics();
 
     /**
-     * Adds systems needed for rendering {@link Sprite}s.
+     * Adds systems needed for various rendering purposes.
      *
      * @see RenderSceneTransitionSystem
      * @see RenderUiSystem
