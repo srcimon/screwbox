@@ -16,10 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultUiTest {
@@ -134,6 +131,27 @@ class DefaultUiTest {
 
         assertThat(ui.currentMenu()).isPresent();
         assertThat(ui.currentMenu().get().itemCount()).isEqualTo(2);
+    }
+
+    @Test
+    void renderMenu_noMenu_noRendering() {
+        ui.renderMenu();
+
+        verifyNoInteractions(renderer);
+    }
+
+    @Test
+    void renderMenu_currentlyShowsLoadingScene_noRendering() {
+        when(scenes.isShowingLoadingScene()).thenReturn(true);
+
+        ui.openMenu(menu -> {
+            menu.addItem("test1");
+            menu.addItem("test2");
+        });
+
+        ui.renderMenu();
+
+        verifyNoInteractions(renderer);
     }
 
 }
