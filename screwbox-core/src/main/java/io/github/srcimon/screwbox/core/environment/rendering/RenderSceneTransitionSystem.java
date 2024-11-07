@@ -9,6 +9,6 @@ public class RenderSceneTransitionSystem implements EntitySystem {
 
     @Override
     public void update(final Engine engine) {
-        engine.scenes().renderSceneTransition();
+        engine.scenes().renderTransition();
     }
 }

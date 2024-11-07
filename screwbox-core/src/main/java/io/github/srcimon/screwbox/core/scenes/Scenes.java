@@ -20,7 +20,7 @@ public interface Scenes {
      * @see Environment#enableRendering()
      * @since 2.6.0
      */
-    Scenes renderSceneTransition();
+    Scenes renderTransition();
 
     /**
      * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.

@@ -81,7 +81,7 @@ public class DefaultScenes implements Scenes, Updatable {
     }
 
     @Override
-    public Scenes renderSceneTransition() {
+    public Scenes renderTransition() {
         if (isTransitioning()) {
             if (!isShowingLoadingScene() && hasChangedToTargetScene) {
                 activeTransition.drawIntro(canvas, Time.now());
