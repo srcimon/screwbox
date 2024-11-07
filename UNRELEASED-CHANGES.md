@@ -20,4 +20,4 @@
 
 ### 📦 Dependency updates
 
-- ...
+- Bump Jackson to 2.18.1
