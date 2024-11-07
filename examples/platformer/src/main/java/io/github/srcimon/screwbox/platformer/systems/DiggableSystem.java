@@ -28,7 +28,7 @@ import java.util.Optional;
 import static io.github.srcimon.screwbox.core.Duration.ofMillis;
 import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particleSource;
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class DiggableSystem implements EntitySystem {
 
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsComponent.class);

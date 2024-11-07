@@ -8,30 +8,22 @@ import io.github.srcimon.screwbox.core.environment.logic.StateSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleBurstSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleEmitterSystem;
 import io.github.srcimon.screwbox.core.environment.particles.ParticleInteractionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.MovementPathSystem;
-import io.github.srcimon.screwbox.core.environment.physics.ChaoticMovementSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CollisionDetectionSystem;
-import io.github.srcimon.screwbox.core.environment.physics.CursorAttachmentSystem;
-import io.github.srcimon.screwbox.core.environment.physics.GravitySystem;
-import io.github.srcimon.screwbox.core.environment.physics.MagnetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.MovementTargetSystem;
-import io.github.srcimon.screwbox.core.environment.physics.OptimizePhysicsPerformanceSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridConfigurationComponent;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsGridUpdateSystem;
-import io.github.srcimon.screwbox.core.environment.physics.PhysicsSystem;
+import io.github.srcimon.screwbox.core.environment.physics.*;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSplitscreenBordersSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenLightSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenOpacitySystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSpinSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
-import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.scenes.Scene;
 
 import java.util.ArrayList;
@@ -282,8 +274,11 @@ public interface Environment {
     Environment enablePhysics();
 
     /**
-     * Adds systems needed for rendering {@link Sprite}s.
+     * Adds systems needed for various rendering purposes.
      *
+     * @see RenderSceneTransitionSystem
+     * @see RenderUiSystem
+     * @see RenderSplitscreenBordersSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
@@ -339,6 +334,7 @@ public interface Environment {
 
     /**
      * Adds all systems including particle effects, tweening, logic, rendering, physics and light (so beware, it might get a little dark if you forget to add some lights).
+     *
      * @see #enableParticles()
      * @see #enableLight()
      * @see #enableLogic()

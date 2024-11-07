@@ -2,6 +2,7 @@ package io.github.srcimon.screwbox.core.scenes;
 
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
 
 import java.util.function.Supplier;
 
@@ -11,6 +12,15 @@ import java.util.function.Supplier;
  * The {@link Engine} is always started with a {@link DefaultScene} present.
  */
 public interface Scenes {
+
+    /**
+     * Renders current scene transitions. Can be automated by using {@link RenderSceneTransitionSystem}.
+     *
+     * @see RenderSceneTransitionSystem
+     * @see Environment#enableRendering()
+     * @since 2.6.0
+     */
+    Scenes renderTransition();
 
     /**
      * Clears all {@link Environment#entities()} and {@link Environment#systems()} and repopulates the active scene.

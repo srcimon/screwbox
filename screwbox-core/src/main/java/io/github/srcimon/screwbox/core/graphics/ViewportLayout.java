@@ -3,7 +3,7 @@ package io.github.srcimon.screwbox.core.graphics;
 /**
  * This layout can be used to calculate the position and size of a {@link Viewport} that is present in a split screen.
  *
- * @see Graphics#enableSplitscreenMode(SplitScreenOptions)
+ * @see Graphics#enableSplitscreenMode(SplitscreenOptions)
  */
 public interface ViewportLayout {
 

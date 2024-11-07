@@ -22,7 +22,6 @@ import static java.util.Objects.requireNonNull;
 public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();
-
     private final Executor executor;
     private final Engine engine;
     private final Canvas canvas;
@@ -37,7 +36,7 @@ public class DefaultScenes implements Scenes, Updatable {
         this.engine = engine;
         this.executor = executor;
         this.canvas = canvas;
-        SceneData defaultSceneData = new SceneData(new DefaultScene(), engine);
+        SceneData defaultSceneData = createSceneData(new DefaultScene());
         defaultSceneData.setInitialized();
         sceneData.put(DefaultScene.class, defaultSceneData);
         this.activeScene = defaultSceneData;
@@ -79,6 +78,18 @@ public class DefaultScenes implements Scenes, Updatable {
     @Override
     public int sceneCount() {
         return sceneData.size();
+    }
+
+    @Override
+    public Scenes renderTransition() {
+        if (isTransitioning()) {
+            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
+                activeTransition.drawIntro(canvas, Time.now());
+            } else {
+                activeTransition.drawOutro(canvas, Time.now());
+            }
+        }
+        return this;
     }
 
     @Override
@@ -141,7 +152,7 @@ public class DefaultScenes implements Scenes, Updatable {
 
     @Override
     public Scenes setLoadingScene(final Scene loadingScene) {
-        this.loadingScene = new SceneData(loadingScene, engine);
+        this.loadingScene = createSceneData(loadingScene);
         this.loadingScene.initialize();
         return this;
     }
@@ -164,12 +175,6 @@ public class DefaultScenes implements Scenes, Updatable {
                 activeScene.scene().onEnter(engine);
                 hasChangedToTargetScene = true;
             }
-            if (!isShowingLoadingScene() && hasChangedToTargetScene) {
-                activeTransition.drawIntro(canvas, time);
-            } else {
-                activeTransition.drawOutro(canvas, time);
-            }
-
             if (hasChangedToTargetScene && activeTransition.introProgress(time).isMax()) {
                 activeTransition = null;
             }
@@ -181,7 +186,7 @@ public class DefaultScenes implements Scenes, Updatable {
         if (sceneData.containsKey(sceneClass)) {
             throw new IllegalArgumentException("scene is already present: " + sceneClass);
         }
-        final SceneData data = new SceneData(scene, engine);
+        final SceneData data = createSceneData(scene);
         executor.execute(data::initialize);
         this.sceneData.put(sceneClass, data);
     }
@@ -192,4 +197,8 @@ public class DefaultScenes implements Scenes, Updatable {
         }
     }
 
+    private SceneData createSceneData(final Scene scene) {
+        final var sceneEnvironment = new DefaultEnvironment(engine);
+        return new SceneData(scene, sceneEnvironment);
+    }
 }

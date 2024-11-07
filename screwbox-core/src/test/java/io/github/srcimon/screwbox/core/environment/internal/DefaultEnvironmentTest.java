@@ -32,6 +32,7 @@ import io.github.srcimon.screwbox.core.environment.tweening.TweenPositionSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenScaleSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenSystem;
 import io.github.srcimon.screwbox.core.keyboard.Keyboard;
+import io.github.srcimon.screwbox.core.utils.Cache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,17 @@ class DefaultEnvironmentTest {
     @BeforeEach
     void beforeEach() {
         environment = new DefaultEnvironment(engine);
+    }
+
+    @Test
+    void addSystem_usingOrder_orderIsUsedInExecution() {
+        final Cache<String, String> cache = new Cache<>();
+        environment.addSystem(Order.SystemOrder.SIMULATION, e -> cache.put("key", "second"));
+        environment.addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, e -> cache.put("key", "last"));
+        environment.addSystem(Order.SystemOrder.OPTIMIZATION, e -> cache.put("key", "first"));
+        environment.update();
+
+        assertThat(cache.get("key")).contains("last");
     }
 
     @Test
@@ -366,7 +378,7 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(7)
+        assertThat(environment.systems()).hasSize(10)
                 .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
@@ -562,7 +574,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(33)
+        assertThat(environment.systems()).hasSize(36)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.platformer.components.PlayerMarkerComponent;
 
 import java.util.Optional;
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class CameraShiftSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, RenderComponent.class);

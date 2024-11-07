@@ -15,6 +15,8 @@ import io.github.srcimon.screwbox.core.loop.Loop;
 import io.github.srcimon.screwbox.core.mouse.Mouse;
 import io.github.srcimon.screwbox.core.particles.Particles;
 import io.github.srcimon.screwbox.core.physics.Physics;
+import io.github.srcimon.screwbox.core.scenes.Scenes;
+import io.github.srcimon.screwbox.core.ui.Ui;
 import io.github.srcimon.screwbox.core.window.Window;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.Extension;
@@ -46,8 +48,10 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         final var window = Mockito.mock(Window.class);
         final var screen = Mockito.mock(Screen.class);
         final var camera = Mockito.mock(Camera.class);
+        final var scenes = Mockito.mock(Scenes.class);
         final var mouse = Mockito.mock(Mouse.class);
         final var audio = Mockito.mock(Audio.class);
+        final var ui = Mockito.mock(Ui.class);
         final var audioConfiguration = Mockito.mock(AudioConfiguration.class);
         final var entities = new DefaultEnvironment(engine);
 
@@ -64,6 +68,8 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         when(engine.window()).thenReturn(window);
         when(engine.particles()).thenReturn(particles);
         when(engine.audio()).thenReturn(audio);
+        when(engine.ui()).thenReturn(ui);
+        when(engine.scenes()).thenReturn(scenes);
         when(audio.configuration()).thenReturn(audioConfiguration);
         when(graphics.world()).thenReturn(world);
         when(graphics.screen()).thenReturn(screen);
@@ -76,6 +82,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Camera.class, camera);
         parameters.put(Screen.class, screen);
         parameters.put(Canvas.class, canvas);
+        parameters.put(Scenes.class, scenes);
         parameters.put(Mouse.class, mouse);
         parameters.put(World.class, world);
         parameters.put(Window.class, window);
@@ -85,6 +92,7 @@ public class EnvironmentExtension implements Extension, BeforeEachCallback, Para
         parameters.put(Engine.class, engine);
         parameters.put(Particles.class, particles);
         parameters.put(Audio.class, audio);
+        parameters.put(Ui.class, ui);
         parameters.put(AudioConfiguration.class, audioConfiguration);
         parameters.put(DefaultEnvironment.class, entities);
     }

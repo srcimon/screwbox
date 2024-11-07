@@ -1,5 +1,8 @@
 package io.github.srcimon.screwbox.core.ui;
 
+import io.github.srcimon.screwbox.core.environment.Environment;
+import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -41,6 +44,15 @@ public interface Ui {
      * currently is no open {@link UiMenu}.
      */
     Optional<UiMenu> currentMenu();
+
+    /**
+     * Renders the currently open menu. Can be automated by using {@link RenderUiSystem}.
+     *
+     * @see RenderUiSystem
+     * @see Environment#enableRendering()
+     * @since 2.6.0
+     */
+    Ui renderMenu();
 
     Ui setRenderer(UiRenderer renderer);
 

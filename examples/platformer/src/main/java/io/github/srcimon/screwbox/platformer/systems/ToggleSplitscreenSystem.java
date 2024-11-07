@@ -13,7 +13,7 @@ import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.utils.ListUtil;
 
-import static io.github.srcimon.screwbox.core.graphics.SplitScreenOptions.viewports;
+import static io.github.srcimon.screwbox.core.graphics.SplitscreenOptions.viewports;
 
 public class ToggleSplitscreenSystem implements EntitySystem {
     @Override

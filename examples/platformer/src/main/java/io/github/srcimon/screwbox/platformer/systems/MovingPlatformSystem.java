@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.platformer.components.WaypointComponent;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class MovingPlatformSystem implements EntitySystem {
 
     private static final Archetype PLATFORMS = Archetype.of(MovingPlatformComponent.class, TransformComponent.class);

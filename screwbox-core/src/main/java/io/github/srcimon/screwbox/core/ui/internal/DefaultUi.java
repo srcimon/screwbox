@@ -71,11 +71,15 @@ public class DefaultUi implements Ui, Updatable {
             if (!menu.isActive(menu.selectedItem(), engine)) {
                 menu.nextItem(engine);
             }
-            renderMenu(menu, canvas);
         }
     }
 
-    private void renderMenu(final UiMenu menu, final Canvas canvas) {
+    @Override
+    public Ui renderMenu() {
+        final var menu = openMenu.menu;
+        if (isNull(menu) || scenes.isShowingLoadingScene()) {
+            return this;
+        }
         for (final var item : menu.items()) {
             final var bounds = layouter.calculateBounds(item, menu, canvas.bounds());
             if (canvas.isVisible(bounds)) {
@@ -89,6 +93,7 @@ public class DefaultUi implements Ui, Updatable {
                 }
             }
         }
+        return this;
     }
 
     @Override

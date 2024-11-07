@@ -23,6 +23,7 @@ public class GameOfLifeApp {
         Engine engine = ScrewBox.createEngine("Game Of Life");
 
         engine.environment()
+                .enableRendering()
                 .addEntity(new GridComponent())
                 .addSystem(new GridUpdateSystem())
                 .addSystem(new GridRenderSystem())

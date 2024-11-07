@@ -21,6 +21,7 @@ public class HelloWorldApp {
 
     public static void main(String[] args) {
         Engine screwBox = ScrewBox.createEngine("Hello World");
+
         // set ambient light to nearly full brightness
         screwBox.graphics().light().setAmbientLight(Percent.of(0.98));
 

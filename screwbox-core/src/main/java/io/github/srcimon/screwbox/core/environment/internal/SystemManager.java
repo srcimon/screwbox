@@ -13,7 +13,7 @@ import static java.util.Objects.isNull;
 
 public class SystemManager {
 
-    private static final Cache<Class<? extends EntitySystem>, Order.SystemOrder> CACHE = new Cache<>();
+    private static final Cache<EntitySystem, Order.SystemOrder> CACHE = new Cache<>();
     private static final Comparator<EntitySystem> SYSTEM_COMPARATOR = Comparator.comparing(SystemManager::orderOf);
     private final List<EntitySystem> systems = new ArrayList<>();
     private final EntityManager entityManager;
@@ -38,14 +38,13 @@ public class SystemManager {
     }
 
     public void addSystem(final EntitySystem system, final Order.SystemOrder order) {
-        CACHE.put(system.getClass(), order);
+        CACHE.put(system, order);
         addSystem(system);
     }
 
     private static Order.SystemOrder orderOf(final EntitySystem entitySystem) {
-        final var clazz = entitySystem.getClass();
-        return CACHE.getOrElse(clazz, () -> {
-            final var order = clazz.getAnnotation(Order.class);
+        return CACHE.getOrElse(entitySystem, () -> {
+            final var order = entitySystem.getClass().getAnnotation(Order.class);
             return isNull(order) ? Order.SystemOrder.SIMULATION : order.value();
         });
     }

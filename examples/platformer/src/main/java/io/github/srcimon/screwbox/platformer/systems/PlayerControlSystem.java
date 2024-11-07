@@ -7,7 +7,7 @@ import io.github.srcimon.screwbox.core.keyboard.Key;
 import io.github.srcimon.screwbox.core.keyboard.KeyCombination;
 import io.github.srcimon.screwbox.platformer.components.PlayerControlComponent;
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class PlayerControlSystem implements EntitySystem {
 
     private static final Archetype PLAYER = Archetype.of(PlayerControlComponent.class, PhysicsComponent.class);

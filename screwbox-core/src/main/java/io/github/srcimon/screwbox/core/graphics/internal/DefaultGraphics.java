@@ -52,7 +52,13 @@ public class DefaultGraphics implements Graphics, Updatable {
     }
 
     @Override
-    public Graphics enableSplitscreenMode(final SplitScreenOptions options) {
+    public Graphics renderSplitscreenBorders() {
+        viewportManager.renderSplitscreenBorders();
+        return this;
+    }
+
+    @Override
+    public Graphics enableSplitscreenMode(final SplitscreenOptions options) {
         viewportManager.enableSplitscreenMode(options);
         return this;
     }

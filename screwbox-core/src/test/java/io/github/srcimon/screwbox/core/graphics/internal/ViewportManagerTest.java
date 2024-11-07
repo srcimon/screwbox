@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Camera;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
-import io.github.srcimon.screwbox.core.graphics.SplitScreenOptions;
+import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,14 +34,14 @@ class ViewportManagerTest {
 
     @Test
     void enableSplitScreen_oneScreen_setsSplitscreenModeEnabled() {
-        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+        viewportManager.enableSplitscreenMode(SplitscreenOptions.viewports(2));
 
         assertThat(viewportManager.isSplitscreenModeEnabled()).isTrue();
     }
 
     @Test
     void disableSplitScreen_splitScreenEnabled_setsSplitscreenModeEnabledFalse() {
-        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+        viewportManager.enableSplitscreenMode(SplitscreenOptions.viewports(2));
 
         viewportManager.disableSplitscreenMode();
 
@@ -50,7 +50,7 @@ class ViewportManagerTest {
 
     @Test
     void disableSplitScreen_splitscreenModeEnabled_appliesCameraChangesOfFirstViewportCameraToDefaultViewport() {
-        viewportManager.enableSplitscreenMode(SplitScreenOptions.viewports(2));
+        viewportManager.enableSplitscreenMode(SplitscreenOptions.viewports(2));
 
         viewportManager.viewport(0).ifPresent(viewport -> viewport.camera()
                 .setPosition($(100, 100)).setZoomRestriction(1, 4).setZoom(3.0));
@@ -62,4 +62,5 @@ class ViewportManagerTest {
         assertThat(viewportManager.defaultViewport().camera().minZoom()).isEqualTo(1.0);
         assertThat(viewportManager.defaultViewport().camera().maxZoom()).isEqualTo(4.0);
     }
+
 }
