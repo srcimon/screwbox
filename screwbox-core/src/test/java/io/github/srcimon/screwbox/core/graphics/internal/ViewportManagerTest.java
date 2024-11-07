@@ -62,4 +62,5 @@ class ViewportManagerTest {
         assertThat(viewportManager.defaultViewport().camera().minZoom()).isEqualTo(1.0);
         assertThat(viewportManager.defaultViewport().camera().maxZoom()).isEqualTo(4.0);
     }
+
 }
