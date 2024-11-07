@@ -74,9 +74,9 @@ class DefaultEnvironmentTest {
     @Test
     void addSystem_usingOrder_orderIsUsedInExecution() {
         final Cache<String, String> cache = new Cache<>();
-        environment.addSystem(Order.SystemOrder.SIMULATION, engine -> cache.put("key", "second"));
-        environment.addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, engine -> cache.put("key", "last"));
-        environment.addSystem(Order.SystemOrder.OPTIMIZATION, engine -> cache.put("key", "first"));
+        environment.addSystem(Order.SystemOrder.SIMULATION, e -> cache.put("key", "second"));
+        environment.addSystem(Order.SystemOrder.PRESENTATION_BACKGROUND, e -> cache.put("key", "last"));
+        environment.addSystem(Order.SystemOrder.OPTIMIZATION, e -> cache.put("key", "first"));
         environment.update();
 
         assertThat(cache.get("key")).contains("last");

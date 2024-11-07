@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.scenes;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Environment;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 
 import java.util.function.Supplier;
 
