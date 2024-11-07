@@ -64,7 +64,6 @@ import java.util.concurrent.Executors;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 
-//TODO ensure every game works still fine
 class DefaultEngine implements Engine {
 
     private final DefaultLoop loop;
@@ -144,7 +143,6 @@ class DefaultEngine implements Engine {
         audio = new DefaultAudio(executor, audioConfiguration, dynamicSoundSupport, microphoneMonitor, audioLinePool);
         ui = new DefaultUi(this, scenes, screenCanvas);
         keyboard = new DefaultKeyboard();
-        //TODO enableFeatureByDefault?
         mouse = new DefaultMouse(screen, viewportManager);
         loop = new DefaultLoop(List.of(keyboard, graphics, scenes, viewportManager, ui, mouse, window, camera, particles, audio, screen));
         warmUpIndicator = new WarmUpIndicator(loop, log);

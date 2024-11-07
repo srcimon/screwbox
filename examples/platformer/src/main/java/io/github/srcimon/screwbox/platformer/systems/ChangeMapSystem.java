@@ -14,7 +14,7 @@ import io.github.srcimon.screwbox.platformer.components.ChangeMapComponent;
 import io.github.srcimon.screwbox.platformer.scenes.GameScene;
 
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class ChangeMapSystem implements EntitySystem {
 
     private static final Archetype CHANGE_MAP_ZONES = Archetype.of(ChangeMapComponent.class, SignalComponent.class);

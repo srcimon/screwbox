@@ -15,6 +15,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Renamed `SplitscreenOptions`
+- Better names for `SystemOrders`
 - Added JavaDoc to `SplitscreenOptions`
 
 ### 📦 Dependency updates

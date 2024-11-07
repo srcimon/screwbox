@@ -4,7 +4,7 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
 
-@Order(Order.SystemOrder.SCENE_TRANSITIONS)
+@Order(Order.SystemOrder.PRESENTATION_TRANSITIONS)
 public class RenderSceneTransitionSystem implements EntitySystem {
 
     @Override

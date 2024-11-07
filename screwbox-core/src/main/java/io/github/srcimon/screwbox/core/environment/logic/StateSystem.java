@@ -5,7 +5,7 @@ import io.github.srcimon.screwbox.core.environment.*;
 
 import static java.util.Objects.isNull;
 
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public final class StateSystem implements EntitySystem {
 
     private static final Archetype STATEFUL_ENTITIES = Archetype.of(StateComponent.class);

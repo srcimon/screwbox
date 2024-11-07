@@ -3,7 +3,6 @@ package io.github.srcimon.screwbox.core.scenes.internal;
 import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Time;
 import io.github.srcimon.screwbox.core.environment.Environment;
-import io.github.srcimon.screwbox.core.environment.Order;
 import io.github.srcimon.screwbox.core.environment.internal.DefaultEnvironment;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
 import io.github.srcimon.screwbox.core.loop.internal.Updatable;
@@ -20,7 +19,6 @@ import java.util.concurrent.Executor;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-@Order(Order.SystemOrder.SCENE_TRANSITIONS)
 public class DefaultScenes implements Scenes, Updatable {
 
     private final Map<Class<? extends Scene>, SceneData> sceneData = new HashMap<>();

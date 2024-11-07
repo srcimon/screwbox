@@ -23,7 +23,7 @@ public @interface Order {
     enum SystemOrder {
         OPTIMIZATION,
         PREPARATION,
-        SIMULATION_BEGIN,
+        SIMULATION_EARLY,
         SIMULATION,
         SIMULATION_LATE,
         PRESENTATION_PREPARE,
@@ -33,13 +33,14 @@ public @interface Order {
         PRESENTATION_LIGHT,
         PRESENTATION_ON_TOP_OF_LIGHT,
         PRESENTATION_OVERLAY,
-        PRESENTATION_TRANSITIONS,
         PRESENTATION_UI_BACKGROUND,
         PRESENTATION_UI,
         PRESENTATION_UI_FOREGROUND,
-        SCENE_TRANSITIONS,
-        SPLIT_SCREEN_DECORATION,
-        UI_MENU
-        //TODO: specify better names for all orders
+        PRESENTATION_TRANSITIONS,
+        PRESENTATION_VIEPORT_DECORATION,
+        PRESENTATION_UI_MENU,
+        DEBUG_OVERLAY_EARLY,
+        DEBUG_OVERLAY,
+        DEBUG_OVERLAY_LATE
     }
 }

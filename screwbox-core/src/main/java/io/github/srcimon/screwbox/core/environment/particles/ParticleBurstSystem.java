@@ -10,7 +10,7 @@ import io.github.srcimon.screwbox.core.environment.Order;
 /**
  * Finds particle emitters that have a {@link ParticleBurstComponent} and shut them down if they are active for too long.
  */
-@Order(Order.SystemOrder.SIMULATION_BEGIN)
+@Order(Order.SystemOrder.SIMULATION_EARLY)
 public class ParticleBurstSystem implements EntitySystem {
 
     private static final Archetype EMITTERS_WITH_TIMEOUT = Archetype.of(ParticleEmitterComponent.class, ParticleBurstComponent.class);
