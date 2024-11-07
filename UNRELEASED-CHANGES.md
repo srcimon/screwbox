@@ -3,9 +3,9 @@
 ### 🚀 Features & improvements
 
 - Added methods for explizitly rendering `Ui.renderMenu()`, `Scenes.renderTransition()`,
-  `Graphics renderSplitscreenBorders()` so drawing order of these subsystems can be customized
-- Added new entity systems to automate rendering of menus, scene transistions and split screen borders
-- Added option to draw split screens without borders.
+  `Graphics renderSplitscreenBorders()` so drawing order of these subsystems can be customized (#416)
+- Added new entity systems to automate rendering of menus, scene transistions and split screen borders (#416)
+- Added option to draw split screens without borders
 
 ### 🪛 Bug Fixes
 
