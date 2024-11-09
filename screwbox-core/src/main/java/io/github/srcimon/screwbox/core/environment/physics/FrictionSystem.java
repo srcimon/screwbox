@@ -22,29 +22,29 @@ public class FrictionSystem implements EntitySystem {
         for (final var entity : engine.environment().fetchAll(PHYSICS)) {
             final var physicsComponent = entity.get(PhysicsComponent.class);
 
-            final Vector momentum = physicsComponent.momentum;
-            if (physicsComponent.friction != 0 && !momentum.isZero()) {
+            
+            if (physicsComponent.friction != 0 && !physicsComponent.momentum.isZero()) {
+                final Vector momentum = physicsComponent.momentum;
                 final var speedChange = momentum
                         .length(abs(physicsComponent.friction) * engine.loop().delta())
                         .multiply(modifier(physicsComponent.friction));
-                if(physicsComponent.friction > 0) {
-                    final double nextX = speedChange.x() > 0
-                            ? Math.max(0, momentum.x() - speedChange.x())
-                            : Math.min(0, momentum.x() - speedChange.x());
-                    final double nextY = speedChange.y() > 0
-                            ? Math.max(0, momentum.y() - speedChange.y())
-                            : Math.min(0, momentum.y() - speedChange.y());
 
-                    physicsComponent.momentum = Vector.of(nextX, nextY);
-                } else {
-                    final double nextX = speedChange.x() < 0
-                            ? Math.max(0, momentum.x() - speedChange.x())
-                            : Math.min(0, momentum.x() - speedChange.x());
-                    final double nextY = speedChange.y() < 0
-                            ? Math.max(0, momentum.y() - speedChange.y())
-                            : Math.min(0, momentum.y() - speedChange.y());
-                    physicsComponent.momentum = Vector.of(nextX, nextY);
-                }
+                final boolean xIsSpeedUp = physicsComponent.friction > 0
+                        ? speedChange.x() > 0
+                        : speedChange.x() < 0;
+                final double nextX = xIsSpeedUp
+                        ? Math.max(0, momentum.x() - speedChange.x())
+                        : Math.min(0, momentum.x() - speedChange.x());
+                
+                final boolean yIsSpeedUp = physicsComponent.friction > 0
+                        ? speedChange.y() > 0
+                        : speedChange.y() < 0;
+               
+                final double nextY = yIsSpeedUp
+                        ? Math.max(0, momentum.y() - speedChange.y())
+                        : Math.min(0, momentum.y() - speedChange.y());
+
+                physicsComponent.momentum = Vector.of(nextX, nextY);
             }
         }
     }
