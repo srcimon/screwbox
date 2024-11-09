@@ -7,6 +7,7 @@ import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 
 import static io.github.srcimon.screwbox.core.utils.MathUtil.modifier;
+import static java.lang.Math.abs;
 
 /**
  * Applies friction on all {@link Entity entities} having a {@link PhysicsComponent}. Slows down entities by there specified
@@ -23,17 +24,27 @@ public class FrictionSystem implements EntitySystem {
 
             final Vector momentum = physicsComponent.momentum;
             if (physicsComponent.friction != 0 && !momentum.isZero()) {
-                final double xChange = -physicsComponent.friction * engine.loop().delta() * modifier(momentum.x());
-                final double yChange = -physicsComponent.friction * engine.loop().delta() * modifier(momentum.y());
+                final var speedChange = momentum
+                        .length(abs(physicsComponent.friction) * engine.loop().delta())
+                        .multiply(modifier(physicsComponent.friction));
+                if(physicsComponent.friction > 0) {
+                    final double nextX = speedChange.x() > 0
+                            ? Math.max(0, momentum.x() - speedChange.x())
+                            : Math.min(0, momentum.x() - speedChange.x());
+                    final double nextY = speedChange.y() > 0
+                            ? Math.max(0, momentum.y() - speedChange.y())
+                            : Math.min(0, momentum.y() - speedChange.y());
 
-                final double nextX = xChange < 0
-                        ? Math.max(0, momentum.x() + xChange)
-                        : Math.min(0, momentum.x() + xChange);
-                final double nextY = yChange < 0
-                        ? Math.max(0, momentum.y() + yChange)
-                        : Math.min(0, momentum.y() + yChange);
-
-                physicsComponent.momentum = Vector.of(nextX, nextY);
+                    physicsComponent.momentum = Vector.of(nextX, nextY);
+                } else {
+                    final double nextX = speedChange.x() < 0
+                            ? Math.max(0, momentum.x() - speedChange.x())
+                            : Math.min(0, momentum.x() - speedChange.x());
+                    final double nextY = speedChange.y() < 0
+                            ? Math.max(0, momentum.y() - speedChange.y())
+                            : Math.min(0, momentum.y() - speedChange.y());
+                    physicsComponent.momentum = Vector.of(nextX, nextY);
+                }
             }
         }
     }

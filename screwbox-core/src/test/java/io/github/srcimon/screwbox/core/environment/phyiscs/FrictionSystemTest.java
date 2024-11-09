@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.github.srcimon.screwbox.core.Vector.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
@@ -40,7 +41,8 @@ class FrictionSystemTest {
 
         environment.update();
 
-        assertThat(physics.momentum).isEqualTo($(18, 18));
+        assertThat(physics.momentum.x()).isEqualTo(18.59, offset(0.01));
+        assertThat(physics.momentum.y()).isEqualTo(18.59, offset(0.01));
 
         environment.updateTimes(20);
 
