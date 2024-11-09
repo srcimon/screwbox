@@ -19,7 +19,6 @@ public class PhysicsComponent implements Component {
     /**
      * Specifies the friction constantly applied on {@link #momentum}. Negative values will speed
      * up {@link io.github.srcimon.screwbox.core.environment.Entity} instead of slowing it down.
-     * </p>
      * Does not affect friction applied when colliding with {@link ColliderComponent}.
      */
     public double friction = 0;
