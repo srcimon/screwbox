@@ -120,7 +120,7 @@ public class ViewportManager implements Updatable {
                     new Tupel<>(topRight, bottomRight),
                     new Tupel<>(bottomLeft, bottomRight))
             ) {
-                if (alreadyDrawn.add(side)) {
+                if (!alreadyDrawn.add(side)) {
                     defaultViewport.canvas().drawLine(side.first(), side.second(), options.borders());
                 }
             }
