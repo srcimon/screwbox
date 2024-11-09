@@ -126,7 +126,7 @@ public interface Environment {
     Environment addSystem(EntitySystem system);
 
     /**
-     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link Order.SystemOrder} (overwrites annotated {@link Order.SystemOrder} if present.
+     * Adds an {@link EntitySystem} to the {@link Environment} with the given {@link Order.SystemOrder} (overwrites annotated {@link Order.SystemOrder} if present).
      */
     Environment addSystem(Order.SystemOrder order, EntitySystem system);
 
@@ -253,7 +253,7 @@ public interface Environment {
 
     /**
      * Returns true if there is a savegame with the given name. Value is cached for a second to prevent
-     * exessive disc usage.
+     * excessive disc usage.
      */
     boolean savegameFileExists(String name);
 
@@ -263,6 +263,7 @@ public interface Environment {
      * @see MovementPathSystem
      * @see MovementTargetSystem
      * @see CollisionDetectionSystem
+     * @see FrictionSystem
      * @see GravitySystem
      * @see MagnetSystem
      * @see CursorAttachmentSystem
