@@ -16,6 +16,8 @@ public class PhysicsComponent implements Component {
     public double gravityModifier = 1;
     public double magnetModifier = 1;
 
+    public double friction = 0;
+
     public PhysicsComponent() {
         this(Vector.zero());
     }
