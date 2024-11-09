@@ -6,6 +6,7 @@
   `Graphics renderSplitscreenBorders()` so drawing order of these subsystems can be customized (#416)
 - Added new entity systems to automate rendering of menus, scene transistions and split screen borders (#416)
 - Added option to draw split screens without borders
+- Added friction support for Physics entities 
 
 ### 🪛 Bug Fixes
 
