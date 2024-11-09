@@ -104,8 +104,15 @@ public interface Environment {
      */
     boolean hasSingleton(Class<? extends Component> component);
 
+    /**
+     * Tries to fetch a single {@link Entity} of the specified {@link Archetype}.
+     */
     Optional<Entity> tryFetchSingleton(Archetype archetype);
 
+    /**
+     * Tries to fetch a single {@link Entity} of the specified {@link Archetype} but will throw
+     * {@link IllegalArgumentException} when there is not exactly one entity matching the {@link Archetype}.
+     */
     default Entity fetchSingleton(final Archetype archetype) {
         return tryFetchSingleton(archetype).orElseThrow(() -> new IllegalStateException("did not find singleton entity"));
     }
