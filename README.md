@@ -50,9 +50,8 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     ``` java
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
+    import io.github.srcimon.screwbox.core.assets.FontBundle;
     import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
-    
-    import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
     
     public class HelloWorldApp {
     
@@ -61,12 +60,14 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     
             screwBox.environment().addSystem(engine -> {
                 var mousePosition = engine.mouse().position();
-                var textDrawOptions = TextDrawOptions.font(BOLDZILLA).scale(4).alignCenter();
-                engine.graphics().world().drawText(mousePosition, "Hello world!", textDrawOptions);
+                var textDrawOptions = TextDrawOptions.font(FontBundle.BOLDZILLA).scale(3).alignCenter();
+                var text = "ScrewBox is running at %s fps".formatted(engine.loop().fps());
+                engine.graphics().world().drawText(mousePosition, text, textDrawOptions);
             });
     
             screwBox.start();
         }
+    }
     ```
 
 ## Modules
