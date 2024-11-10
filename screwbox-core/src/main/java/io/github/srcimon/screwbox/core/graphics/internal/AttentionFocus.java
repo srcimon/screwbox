@@ -20,7 +20,7 @@ public class AttentionFocus {
         }
         return minDistance;
     }
-
+//TODO add more weight to viewports that are nearer than others to avoid searchDistance
     public Vector direction(final Vector position, final double searchDistance) {
         Vector direction = Vector.zero();
         for (var viewport : viewportManager.viewports()) {
