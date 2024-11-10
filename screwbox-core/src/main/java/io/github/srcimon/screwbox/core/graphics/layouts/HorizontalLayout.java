@@ -17,7 +17,10 @@ public class HorizontalLayout implements ViewportLayout {
         final int paddingToTheLeft = index * padding;
         final int width = (bounds.width() - totalPadding) / count;
         final var offset = Offset.at(paddingToTheLeft + index * width, 0).add(bounds.offset());
-        final var size = Size.of(width, bounds.height());
+        final var correctedSize = index == count - 1
+                ? bounds.width() - offset.x()
+                : width;
+        final var size = Size.of(correctedSize, bounds.height());
         return new ScreenBounds(offset, size);
     }
 
