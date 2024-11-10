@@ -378,7 +378,7 @@ class DefaultEnvironmentTest {
     void enableRendering_addsRenderingSystems() {
         environment.enableRendering();
 
-        assertThat(environment.systems()).hasSize(10)
+        assertThat(environment.systems()).hasSize(9)
                 .anyMatch(system -> system.getClass().equals(MovementRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedRotationSystem.class))
                 .anyMatch(system -> system.getClass().equals(FixedSpinSystem.class))
@@ -575,7 +575,7 @@ class DefaultEnvironmentTest {
     void enableAllFeatures_noSystemPresent_addsAllSystems() {
         environment.enableAllFeatures();
 
-        assertThat(environment.systems()).hasSize(37)
+        assertThat(environment.systems()).hasSize(36)
                 .anyMatch(system -> system.getClass().equals(PhysicsSystem.class));
     }
 

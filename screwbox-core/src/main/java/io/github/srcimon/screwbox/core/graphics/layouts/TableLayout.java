@@ -35,33 +35,24 @@ public class TableLayout implements ViewportLayout {
     }
 
     @Override
-    //TODO refactor
     public ScreenBounds calculateBounds(int index, int count, final int padding, ScreenBounds bounds) {
         final int rows = (int) Math.ceil(count * 1.0 / columns);
         final int column = index % columns;
         final int row = Math.floorDiv(index, columns);
-        final int totalXPadding = padding * (columns - 1);
-        final int totalYPadding = padding * (rows - 1);
-        final int width = (bounds.width() - totalXPadding) / columns;
-        final int height = (bounds.height() - totalYPadding) / rows;
-        final int paddingToTheLeft = column * padding;
-        final int paddingToTheTop = row * padding;
-        final var offset = Offset.at(column * width + paddingToTheLeft, row * height + paddingToTheTop).add(bounds.offset());
+        final int width = (bounds.width() - padding * (columns - 1)) / columns;
+        final int height = (bounds.height() - padding * (rows - 1)) / rows;
+        final var offset = Offset.at(column * width + column * padding, row * height + row * padding).add(bounds.offset());
         final var isLastViewport = index == count - 1;
+
         var widthToUse = fillEmptySpace && isLastViewport
                 ? bounds.width() - offset.x() + bounds.offset().x()
                 : width;
 
-        if (column == columns - 1) {
-            widthToUse = bounds.width() - offset.x() + bounds.offset().x();
-        }
-        final var filledHeight = row == rows - 1
+        final var filledHeight = isLastViewport
                 ? bounds.height() - offset.y() + bounds.offset().y()
                 : height;
 
         final var size = Size.of(widthToUse, filledHeight);
         return new ScreenBounds(offset, size);
     }
-
-
 }
