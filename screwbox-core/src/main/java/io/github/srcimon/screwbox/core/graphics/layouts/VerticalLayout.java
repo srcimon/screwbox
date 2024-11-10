@@ -17,7 +17,12 @@ public class VerticalLayout implements ViewportLayout {
         final int paddingToTheTop = index * padding;
         final int height = (bounds.height() - totalPadding) / count;
         final var offset = Offset.at(0, paddingToTheTop + index * height).add(bounds.offset());
-        final var size = Size.of(bounds.width(), height);
+        final var filledHeight = index == count - 1
+                ? bounds.height() - offset.y()
+                : height;
+
+        final var size = Size.of(bounds.width(), filledHeight);
+
         return new ScreenBounds(offset, size);
     }
 }

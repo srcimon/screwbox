@@ -51,7 +51,11 @@ public class TableLayout implements ViewportLayout {
                 ? bounds.width() - offset.x()
                 : width;
 
-        final var size = Size.of(widthToUse, height);
+        final var filledHeight = row == rows -1
+                ? bounds.height() - offset.y()
+                : height;
+
+        final var size = Size.of(widthToUse, filledHeight);
         return new ScreenBounds(offset, size);
     }
 
