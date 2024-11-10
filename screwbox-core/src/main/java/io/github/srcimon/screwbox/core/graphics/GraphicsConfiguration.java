@@ -9,6 +9,10 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Configuration of major {@link Graphics} and rendering properites. Every change creates a
+ * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
+ */
 public class GraphicsConfiguration {
 
     private final List<GraphicsConfigurationListener> listeners = new ArrayList<>();
@@ -19,6 +23,7 @@ public class GraphicsConfiguration {
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
+    private Color backgroundColor = Color.BLACK;
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
@@ -83,17 +88,31 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
+     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     *
+     * @param width  the width of the resolution to set
+     * @param height the height of the resolution to set
+     */
     public GraphicsConfiguration setResolution(final int width, final int height) {
         setResolution(Size.of(width, height));
         return this;
     }
 
+    /**
+     * Sets the current resolution. Be aware that not every resolution may be supported in fullscreen. Use
+     * {@link Graphics#supportedResolutions()} to get a list of all supported fullscreen resolutions.
+     */
     public GraphicsConfiguration setResolution(final Size resolution) {
         this.resolution = requireNonNull(resolution, "resolution must not be null");
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.RESOLUTION);
         return this;
     }
 
+    /**
+     * Toggles fullscreen mode.
+     */
     public GraphicsConfiguration toggleFullscreen() {
         setFullscreen(!isFullscreen());
         return this;
@@ -109,6 +128,9 @@ public class GraphicsConfiguration {
         return this;
     }
 
+    /**
+     * Sets fullscreen mode or get back to window mode.
+     */
     public GraphicsConfiguration setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.WINDOW_MODE);
@@ -146,14 +168,36 @@ public class GraphicsConfiguration {
         return useAntialiasing;
     }
 
+    /**
+     * Configures the falloff of lights. Can be used to set a specific light mood.
+     */
     public GraphicsConfiguration lightFalloff(final Percent lightFalloff) {
-        this.lightFalloff = lightFalloff;
+        this.lightFalloff = requireNonNull(lightFalloff, "light falloff must not be null");
         notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.LIGHT_FALLOFF);
         return this;
     }
 
+    /**
+     * Returns the falloff of lights.
+     */
     public Percent lightFalloff() {
         return lightFalloff;
+    }
+
+    /**
+     * Sets the background color used to prepare every new frame.
+     */
+    public GraphicsConfiguration setBackgroundColor(final Color backgroundColor) {
+        this.backgroundColor = requireNonNull(backgroundColor, "background color must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.BACKGROUND_COLOR);
+        return this;
+    }
+
+    /**
+     * Returns the background color used to prepare every new frame.
+     */
+    public Color backgroundColor() {
+        return backgroundColor;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {

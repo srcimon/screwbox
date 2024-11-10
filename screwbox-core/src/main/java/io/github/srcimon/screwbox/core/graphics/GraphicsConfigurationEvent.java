@@ -15,7 +15,8 @@ public class GraphicsConfigurationEvent extends EventObject {
         ANTIALIASING,
         LIGHTMAP_BLUR,
         LIGHTMAP_SCALE,
-        LIGHT_FALLOFF
+        LIGHT_FALLOFF,
+        BACKGROUND_COLOR
     }
 
     public GraphicsConfigurationEvent(final Object source, final ConfigurationProperty changedProperty) {

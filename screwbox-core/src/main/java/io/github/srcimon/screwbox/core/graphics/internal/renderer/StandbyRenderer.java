@@ -32,7 +32,7 @@ public class StandbyRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
         // does nothing
     }
 

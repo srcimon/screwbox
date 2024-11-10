@@ -46,9 +46,9 @@ public class FirewallRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
         if (!rotation.isNone()) {
-            next.rotate(rotation, clip);
+            next.rotate(rotation, clip, backgroundColor);
         }
     }
 

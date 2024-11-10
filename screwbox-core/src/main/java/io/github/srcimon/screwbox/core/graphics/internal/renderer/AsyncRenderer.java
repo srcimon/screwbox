@@ -60,8 +60,8 @@ public class AsyncRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip) {
-        renderTasks.active().add(() -> next.rotate(rotation, clip));
+    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
+        renderTasks.active().add(() -> next.rotate(rotation, clip, backgroundColor));
     }
 
     @Override

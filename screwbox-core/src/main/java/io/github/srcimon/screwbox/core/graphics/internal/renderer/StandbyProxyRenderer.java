@@ -43,8 +43,8 @@ public class StandbyProxyRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip) {
-        renderer.active().rotate(rotation, clip);
+    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
+        renderer.active().rotate(rotation, clip, backgroundColor);
     }
 
     @Override
