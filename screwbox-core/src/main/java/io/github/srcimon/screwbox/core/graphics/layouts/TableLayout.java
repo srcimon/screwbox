@@ -34,6 +34,7 @@ public class TableLayout implements ViewportLayout {
         this.fillEmptySpace = fillEmptySpace;
     }
 
+    //TODO add padding tests
     @Override
     public ScreenBounds calculateBounds(int index, int count, final int padding, ScreenBounds bounds) {
         final int rows = (int) Math.ceil(count * 1.0 / columns);

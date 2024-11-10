@@ -6,7 +6,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
-import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
