@@ -22,17 +22,17 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         int viewportCount = engine.graphics().viewports().size();
 
         if (engine.keyboard().isPressed(Key.T)) {
-            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1).layout(new TableLayout()).padding(4).noBorders());
+            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1).layout(new TableLayout(3, false)).padding(4));
             randomizeAllCameras(engine);
         } else if (engine.keyboard().isPressed(Key.Z)) {
             if (viewportCount == 1) {
                 engine.graphics().disableSplitscreenMode();
             } else {
-                engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1).padding(4).noBorders());
+                engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1).padding(4));
                 randomizeAllCameras(engine);
             }
         } else if (engine.keyboard().isPressed(Key.U)) {
-            ViewportLayout layout = new HorizontalLayout(); //ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
+            ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
             engine.graphics().enableSplitscreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
             randomizeAllCameras(engine);
         }
