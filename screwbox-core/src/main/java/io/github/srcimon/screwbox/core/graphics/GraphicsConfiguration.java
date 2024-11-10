@@ -186,6 +186,8 @@ public class GraphicsConfiguration {
 
     /**
      * Sets the background color used to prepare every new frame.
+     *
+     * @since 2.6.0
      */
     public GraphicsConfiguration setBackgroundColor(final Color backgroundColor) {
         this.backgroundColor = requireNonNull(backgroundColor, "background color must not be null");
@@ -195,6 +197,8 @@ public class GraphicsConfiguration {
 
     /**
      * Returns the background color used to prepare every new frame.
+     *
+     * @since 2.6.0
      */
     public Color backgroundColor() {
         return backgroundColor;
