@@ -21,16 +21,16 @@ class VerticalLayoutTest {
 
     @Test
     void calculateBounds_oneViewport_fillsWholeScreen() {
-        var result = verticalLayout.calculateBounds(0, 1, SCREEN);
+        var result = verticalLayout.calculateBounds(0, 1, 0, SCREEN);
 
         assertThat(result).isEqualTo(SCREEN);
     }
 
     @Test
     void calculateBounds_threeViewports_allHaveSameSize() {
-        var firstViewport = verticalLayout.calculateBounds(0, 3, SCREEN);
-        var secondViewport = verticalLayout.calculateBounds(1, 3, SCREEN);
-        var thirdViewport = verticalLayout.calculateBounds(2, 3, SCREEN);
+        var firstViewport = verticalLayout.calculateBounds(0, 3, 0, SCREEN);
+        var secondViewport = verticalLayout.calculateBounds(1, 3, 0, SCREEN);
+        var thirdViewport = verticalLayout.calculateBounds(2, 3, 0, SCREEN);
 
         assertThat(firstViewport.size())
                 .isEqualTo(secondViewport.size())

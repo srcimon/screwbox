@@ -43,16 +43,16 @@ public class TableLayout implements ViewportLayout {
         final int totalYPadding = padding * (rows - 1);
         final int width = (bounds.width() - totalXPadding) / columns;
         final int height = (bounds.height() - totalYPadding) / rows;
-        final int paddingToTheLeft = column  * padding;
-        final int paddingToTheTop = row  * padding;
+        final int paddingToTheLeft = column * padding;
+        final int paddingToTheTop = row * padding;
         final var offset = Offset.at(column * width + paddingToTheLeft, row * height + paddingToTheTop).add(bounds.offset());
         final var isLastViewport = index == count - 1;
         final var widthToUse = fillEmptySpace && isLastViewport
                 ? bounds.width() - offset.x()
                 : width;
 
-        final var filledHeight = row == rows -1
-                ? bounds.height() - offset.y()
+        final var filledHeight = row == rows - 1
+                ? bounds.height() - offset.y() + bounds.offset().y()
                 : height;
 
         final var size = Size.of(widthToUse, filledHeight);
