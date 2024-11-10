@@ -125,4 +125,19 @@ class GraphicsConfigurationTest {
                 event -> event.changedProperty().equals(ANTIALIASING)));
     }
 
+    @Test
+    void setBackgroundColor_colorNull_throwsException() {
+        assertThatThrownBy(() -> graphicsConfiguration.setBackgroundColor(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("background color must not be null");
+    }
+
+    @Test
+    void setBackgroundColor_colorBlue_setsBackgroundColorBlueAndNotifiesListeners() {
+        graphicsConfiguration.setBackgroundColor(Color.BLUE);
+
+        assertThat(graphicsConfiguration.backgroundColor()).isEqualTo(Color.BLUE);
+        verify(graphicsConfigListener).configurationChanged(argThat(
+                event -> event.changedProperty().equals(BACKGROUND_COLOR)));
+    }
 }
