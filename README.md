@@ -55,13 +55,13 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
     
     public class HelloWorldApp {
-
+    
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine();
-
-            screwBox.environment().addSystem(engine -> engine.graphics().canvas().drawText(
-                screen.center(), "Hello world!", font(BOLDZILLA).scale(4).alignCenter()));
-
+    
+            screwBox.environment().addSystem(engine ->
+                    engine.graphics().canvas().drawText(engine.mouse().offset(), "Hello world!", font(BOLDZILLA).scale(4).alignCenter()));
+    
             screwBox.start();
         }
     }
