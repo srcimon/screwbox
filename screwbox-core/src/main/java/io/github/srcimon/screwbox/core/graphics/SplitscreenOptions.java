@@ -14,10 +14,12 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @param layout        the layout wich is applied to calculate the size and position of the {@link Viewport viewports}
  * @since 2.5.0
  */
-public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, ViewportLayout layout) {
+public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, ViewportLayout layout, int padding) {
 
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
+        Validate.zeroOrPositive(padding, "padding must be positive");//TODO test
+
         if (viewportCount > 64) {
             throw new IllegalArgumentException("split screen supports only up to 64 viewports (what is your monitor like?)");
         }
@@ -30,7 +32,7 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.5.0
      */
     public static SplitscreenOptions viewports(final int screenCount) {
-        return new SplitscreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout());
+        return new SplitscreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout(), 0);
     }
 
     /**
@@ -39,7 +41,7 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.5.0
      */
     public SplitscreenOptions layout(final ViewportLayout layout) {
-        return new SplitscreenOptions(viewportCount, borders, layout);
+        return new SplitscreenOptions(viewportCount, borders, layout, padding);
     }
 
     /**
@@ -66,7 +68,7 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.5.0
      */
     public SplitscreenOptions borders(final LineDrawOptions borderOptions) {
-        return new SplitscreenOptions(viewportCount, borderOptions, layout);
+        return new SplitscreenOptions(viewportCount, borderOptions, layout, padding);
     }
 
     /**
@@ -75,6 +77,11 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.6.0
      */
     public SplitscreenOptions noBorders() {
-        return new SplitscreenOptions(viewportCount, null, layout);
+        return new SplitscreenOptions(viewportCount, null, layout, padding);
+    }
+
+    //TODO javadoc and test
+    public SplitscreenOptions padding(final int padding) {
+        return new SplitscreenOptions(viewportCount, borders, layout, padding);
     }
 }
