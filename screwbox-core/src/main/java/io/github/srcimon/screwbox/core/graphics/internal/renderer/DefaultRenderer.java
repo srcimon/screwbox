@@ -53,9 +53,9 @@ public class DefaultRenderer implements Renderer {
     }
 
     @Override
-    public void rotate(final Rotation rotation, final ScreenBounds clip) {
+    public void rotate(final Rotation rotation, final ScreenBounds clip, final Color backgroundColor) {
         // not invoking fillWith(color) here to prevent setting clip
-        applyNewColor(Color.BLACK);
+        applyNewColor(backgroundColor);
         graphics.fillRect(clip.offset().x(), clip.offset().y(), clip.width(), clip.height());
         graphics.rotate(rotation.radians(), clip.width() / 2.0, clip.height() / 2.0);
     }

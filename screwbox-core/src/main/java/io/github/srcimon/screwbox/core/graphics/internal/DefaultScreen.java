@@ -61,7 +61,7 @@ public class DefaultScreen implements Screen, Updatable {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()));
+        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()), Color.BLACK);
         renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
         canvas.updateClip(canvasBounds());
     }

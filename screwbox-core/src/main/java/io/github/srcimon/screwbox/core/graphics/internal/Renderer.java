@@ -22,7 +22,7 @@ public interface Renderer {
 
     void updateContext(Supplier<Graphics2D> graphics);
 
-    void rotate(Rotation rotation, ScreenBounds clip);
+    void rotate(Rotation rotation, ScreenBounds clip, Color backgroundColor);
 
     void fillWith(Color color, ScreenBounds clip);
 
