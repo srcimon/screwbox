@@ -2,7 +2,7 @@ package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Canvas;
-import io.github.srcimon.screwbox.core.graphics.Color;
+import io.github.srcimon.screwbox.core.graphics.GraphicsConfiguration;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Screen;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
@@ -27,6 +27,7 @@ public class DefaultScreen implements Screen, Updatable {
     private final WindowFrame frame;
     private final Robot robot;
     private final ViewportManager viewportManager;
+    private final GraphicsConfiguration configuration;
     private Graphics2D lastGraphics;
     private Sprite lastScreenshot;
     private Rotation rotation = Rotation.none();
@@ -34,12 +35,13 @@ public class DefaultScreen implements Screen, Updatable {
     private final DefaultCanvas canvas;
     private ScreenBounds canvasBounds;
 
-    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager) {
+    public DefaultScreen(final WindowFrame frame, final Renderer renderer, final Robot robot, final DefaultCanvas canvas, final ViewportManager viewportManager, final GraphicsConfiguration configuration) {
         this.renderer = renderer;
         this.frame = frame;
         this.robot = robot;
         this.canvas = canvas;
         this.viewportManager = viewportManager;
+        this.configuration = configuration;
     }
 
     public void updateScreen(final boolean antialiased) {
@@ -61,8 +63,9 @@ public class DefaultScreen implements Screen, Updatable {
             return graphics;
         };
         renderer.updateContext(graphicsSupplier);
-        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()), Color.BLACK);
-        renderer.fillWith(Color.BLACK, new ScreenBounds(frame.getCanvasSize()));
+        final var color = configuration.backgroundColor();
+        renderer.rotate(absoluteRotation(), new ScreenBounds(frame.getCanvasSize()), color);
+        renderer.fillWith(color, new ScreenBounds(frame.getCanvasSize()));
         canvas.updateClip(canvasBounds());
     }
 

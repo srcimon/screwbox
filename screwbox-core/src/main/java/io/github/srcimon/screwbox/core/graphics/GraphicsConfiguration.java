@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,6 +20,7 @@ public class GraphicsConfiguration {
     private int lightmapBlur = 3;
     private int lightmapScale = 4;
     private Percent lightFalloff = Percent.max();
+    private Color backgroundColor = Color.BLACK;
 
     /**
      * Sets the resolution modifier for the light map. Higher values lower the
@@ -154,6 +156,22 @@ public class GraphicsConfiguration {
 
     public Percent lightFalloff() {
         return lightFalloff;
+    }
+
+    /**
+     * Sets the background color used to prepare every new frame.
+     */
+    public GraphicsConfiguration setBackgroundColor(final Color backgroundColor) {
+        this.backgroundColor = Objects.requireNonNull(backgroundColor, "background color must not be null");
+        notifyListeners(GraphicsConfigurationEvent.ConfigurationProperty.BACKGROUND_COLOR);
+        return this;
+    }
+
+    /**
+     * Returns the background color used to prepare every new frame.
+     */
+    public Color backgroundColor() {
+        return backgroundColor;
     }
 
     private void notifyListeners(final GraphicsConfigurationEvent.ConfigurationProperty changedProperty) {
