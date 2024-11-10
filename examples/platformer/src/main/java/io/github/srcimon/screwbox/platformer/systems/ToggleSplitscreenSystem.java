@@ -6,6 +6,7 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
+import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
@@ -21,17 +22,17 @@ public class ToggleSplitscreenSystem implements EntitySystem {
         int viewportCount = engine.graphics().viewports().size();
 
         if (engine.keyboard().isPressed(Key.T)) {
-            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1));
+            engine.graphics().enableSplitscreenMode(viewports(viewportCount + 1).layout(new TableLayout()).padding(4).noBorders());
             randomizeAllCameras(engine);
         } else if (engine.keyboard().isPressed(Key.Z)) {
             if (viewportCount == 1) {
                 engine.graphics().disableSplitscreenMode();
             } else {
-                engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1));
+                engine.graphics().enableSplitscreenMode(viewports(viewportCount - 1).padding(4).noBorders());
                 randomizeAllCameras(engine);
             }
         } else if (engine.keyboard().isPressed(Key.U)) {
-            ViewportLayout layout = ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
+            ViewportLayout layout = new HorizontalLayout(); //ListUtil.randomFrom(new TableLayout(3, true), new TableLayout(3, false), new TableLayout(), new HorizontalLayout(), new VerticalLayout());
             engine.graphics().enableSplitscreenMode(viewports(engine.graphics().viewports().size()).layout(layout));
             randomizeAllCameras(engine);
         }

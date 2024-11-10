@@ -36,13 +36,22 @@ public class TableLayout implements ViewportLayout {
 
     @Override
     public ScreenBounds calculateBounds(int index, int count, final int padding, ScreenBounds bounds) {//TODO APPLY PADDING
-        final int width = (int) (bounds.width() * 1.0 / columns );
         final int rows = (int) Math.ceil(count * 1.0 / columns);
-        final int height = (int) (bounds.height() * 1.0 / rows );
         final int column = index % columns;
         final int row = Math.floorDiv(index, columns);
+        final int totalXPadding = padding * (columns - 1);
+        final int totalYPadding = padding * (rows - 1);
+        final int width = (bounds.width() - totalXPadding) / columns;
+        final int height = (bounds.height() - totalYPadding) / rows;
+        final int paddingToTheLeft = column  * padding;
 
-        final var offset = Offset.at(column * width, row * height).add(bounds.offset());
+       // final int paddingToTheLeft = index * padding;
+
+
+
+
+
+        final var offset = Offset.at(column * width + paddingToTheLeft, row * height).add(bounds.offset());
         final var isLastViewport = index == count - 1;
         final var widthToUse = fillEmptySpace && isLastViewport
                 ? (columns - column) * width
