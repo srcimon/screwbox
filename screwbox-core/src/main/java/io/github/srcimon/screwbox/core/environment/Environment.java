@@ -285,7 +285,6 @@ public interface Environment {
      *
      * @see RenderSceneTransitionSystem
      * @see RenderUiSystem
-     * @see RenderSplitscreenBordersSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
      * @see FlipSpriteSystem
