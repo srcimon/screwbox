@@ -20,16 +20,15 @@ public class AttentionFocus {
         }
         return minDistance;
     }
-//TODO add more weight to viewports that are nearer than others to avoid searchDistance
-    public Vector direction(final Vector position, final double searchDistance) {
-        Vector direction = Vector.zero();
+
+    public Vector direction(final Vector position) {
+        Vector sumOfWeightedDirections = Vector.zero();
         for (var viewport : viewportManager.viewports()) {
-            if (viewport.visibleArea().expand(searchDistance).contains(position)) {
-                Vector substract = position.substract(viewport.camera().position()).length(1);
-                direction = direction.add(substract);
-            }
+            final Vector direction = position.substract(viewport.camera().position());
+            final Vector weightedDirection = direction.length(1.0 / direction.length());
+            sumOfWeightedDirections = sumOfWeightedDirections.add(weightedDirection);
         }
-        return direction.length(1);
+        return sumOfWeightedDirections.length(1);
     }
 
     public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {

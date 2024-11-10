@@ -37,7 +37,7 @@ public class DynamicSoundSupport {
     }
 
     private double panByRelativePosition(final Vector position) {
-        final Vector direction = attentionFocus.direction(position, configuration.soundRange());
+        final Vector direction = attentionFocus.direction(position);
         return modifier(direction.x()) * distanceModifier(position);
     }
 
