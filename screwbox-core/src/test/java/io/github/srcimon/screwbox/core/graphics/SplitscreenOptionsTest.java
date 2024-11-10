@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import org.junit.jupiter.api.Test;
@@ -25,22 +24,19 @@ class SplitscreenOptionsTest {
     }
 
     @Test
-    void newInstance_tableLayoutWithFourViewportsAnNoBorders_setsAllProperties() {
-        var options = SplitscreenOptions.viewports(4).tableLayout().noBorders();
+    void newInstance_tableLayoutWithFourViewports_setsAllProperties() {
+        var options = SplitscreenOptions.viewports(4).tableLayout();
 
         assertThat(options.viewportCount()).isEqualTo(4);
         assertThat(options.layout()).isInstanceOf(TableLayout.class);
-        assertThat(options.borders()).isNull();
     }
 
     @Test
-    void newInstance_verticalLayoutWithTwoViewportsAndBlueBorders_setsAllProperties() {
-        var borders = LineDrawOptions.color(Color.BLUE).strokeWidth(2);
-
-        var options = SplitscreenOptions.viewports(2).verticalLayout().borders(borders);
+    void newInstance_verticalLayoutWithTwoViewportsAndPadding_setsAllProperties() {
+        var options = SplitscreenOptions.viewports(2).verticalLayout().padding(12);
 
         assertThat(options.viewportCount()).isEqualTo(2);
         assertThat(options.layout()).isInstanceOf(VerticalLayout.class);
-        assertThat(options.borders()).isEqualTo(borders);
+        assertThat(options.padding()).isEqualTo(12);
     }
 }

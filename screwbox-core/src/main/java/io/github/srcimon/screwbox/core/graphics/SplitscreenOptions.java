@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
@@ -15,7 +14,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @since 2.5.0
  */
 public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int padding) {
-    //TODO remove borders options from options
+
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
         Validate.max(viewportCount, 64, "split screen supports only up to 64 viewports (what is your monitor like?)");
