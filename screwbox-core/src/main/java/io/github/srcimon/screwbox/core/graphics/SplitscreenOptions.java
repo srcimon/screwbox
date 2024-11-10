@@ -15,7 +15,7 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @since 2.5.0
  */
 public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, ViewportLayout layout, int padding) {
-
+//TODO remove borders options from options
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
         Validate.zeroOrPositive(padding, "padding must be positive");//TODO test
