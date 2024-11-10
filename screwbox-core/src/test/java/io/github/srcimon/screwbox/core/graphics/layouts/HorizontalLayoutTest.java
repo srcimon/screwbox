@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HorizontalLayoutTest {
 
-    private static final ScreenBounds SCREEN = new ScreenBounds(20, 10, 640, 480);
+    private static final ScreenBounds SCREEN = new ScreenBounds(20, 10, 642, 482);
 
     HorizontalLayout horizontalLayout;
 
@@ -35,10 +35,10 @@ class HorizontalLayoutTest {
         assertThat(firstViewport.size())
                 .isEqualTo(secondViewport.size())
                 .isEqualTo(thirdViewport.size())
-                .isEqualTo(Size.of(213, 480));
+                .isEqualTo(Size.of(214, 482));
 
         assertThat(firstViewport.offset()).isEqualTo(Offset.at(20, 10));
-        assertThat(secondViewport.offset()).isEqualTo(Offset.at(233, 10));
-        assertThat(thirdViewport.offset()).isEqualTo(Offset.at(446, 10));
+        assertThat(secondViewport.offset()).isEqualTo(Offset.at(234, 10));
+        assertThat(thirdViewport.offset()).isEqualTo(Offset.at(448, 10));
     }
 }
