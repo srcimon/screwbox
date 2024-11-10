@@ -12,9 +12,11 @@ import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 public class VerticalLayout implements ViewportLayout {
 
     @Override
-    public ScreenBounds calculateBounds(final int index, final int count, final ScreenBounds bounds, final int padding) {//TODO APPLY PADDING
-        final int height = (int) (bounds.height() * 1.0 / count);
-        final var offset = Offset.at(0, index * height).add(bounds.offset());
+    public ScreenBounds calculateBounds(final int index, final int count, final int padding, final ScreenBounds bounds) {
+        final int totalPadding = padding * (count - 1);
+        final int paddingToTheTop = index * padding;
+        final int height = (bounds.height() - totalPadding) / count;
+        final var offset = Offset.at(0, paddingToTheTop + index * height).add(bounds.offset());
         final var size = Size.of(bounds.width(), height);
         return new ScreenBounds(offset, size);
     }

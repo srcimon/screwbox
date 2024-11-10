@@ -35,7 +35,7 @@ public class TableLayout implements ViewportLayout {
     }
 
     @Override
-    public ScreenBounds calculateBounds(int index, int count, ScreenBounds bounds, final int padding) {//TODO APPLY PADDING
+    public ScreenBounds calculateBounds(int index, int count, final int padding, ScreenBounds bounds) {//TODO APPLY PADDING
         final int width = (int) (bounds.width() * 1.0 / columns );
         final int rows = (int) Math.ceil(count * 1.0 / columns);
         final int height = (int) (bounds.height() * 1.0 / rows );

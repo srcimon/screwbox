@@ -129,7 +129,7 @@ public class ViewportManager implements Updatable {
 
     private void arangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
-            final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds(), options.padding());
+            final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), options.padding(), defaultViewport.canvas().bounds());
             splitScreenViewports.get(i).updateClip(viewportBounds);
         }
     }
