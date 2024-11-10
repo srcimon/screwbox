@@ -11,8 +11,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Configuration of major {@link Graphics} and rendering properites. Every change creates a
- *
- * @link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
+ * {@link GraphicsConfigurationEvent} that can be used to adjust to the new configuration.
  */
 public class GraphicsConfiguration {
 
