@@ -15,14 +15,12 @@ import io.github.srcimon.screwbox.core.utils.Validate;
  * @since 2.5.0
  */
 public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, ViewportLayout layout, int padding) {
-//TODO remove borders options from options
+    //TODO remove borders options from options
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
+        Validate.max(viewportCount, 64, "split screen supports only up to 64 viewports (what is your monitor like?)");
         Validate.zeroOrPositive(padding, "padding must be positive");//TODO test
-
-        if (viewportCount > 64) {
-            throw new IllegalArgumentException("split screen supports only up to 64 viewports (what is your monitor like?)");
-        }
+        Validate.max(padding, 32, "padding has max value of 32");
     }
 
     /**

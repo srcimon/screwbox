@@ -14,6 +14,7 @@
 - Set min size to `Lightmap` to prevent crashes when viewports are too small
 - Fixed wrong system order when adding systems using lambdas (#418)
 - Avoid unneccesary duplicate drawing of split screen borders
+- Added new validation for maximum values
 
 ### 🧽 Cleanup & refactoring
 
