@@ -21,17 +21,20 @@ public class AttentionFocus {
         return minDistance;
     }
 
-    public Vector direction(final Vector position) {
+    public Vector direction(final Vector position, final double searchDistance) {
         Vector direction = Vector.zero();
         for (var viewport : viewportManager.viewports()) {
-            direction = direction.add(position.substract(viewport.camera().position()));
+            if (viewport.visibleArea().expand(searchDistance).contains(position)) {
+                Vector substract = position.substract(viewport.camera().position()).length(1);
+                direction = direction.add(substract);
+            }
         }
         return direction.length(1);
     }
 
     public boolean isWithinDistanceToVisibleArea(final Vector position, final double distance) {
         for (var viewport : viewportManager.viewports()) {
-            if(viewport.visibleArea().expand(distance).contains(position)) {
+            if (viewport.visibleArea().expand(distance).contains(position)) {
                 return true;
             }
         }

@@ -15,6 +15,7 @@
 - Fixed wrong system order when adding systems using lambdas (#418)
 - Avoid unneccesary duplicate drawing of split screen borders
 - Added new validation for maximum values
+- Fixed wrong pan of sounds in split screen mode
 
 ### 🧽 Cleanup & refactoring
 
