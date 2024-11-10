@@ -12,7 +12,7 @@ import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 public class HorizontalLayout implements ViewportLayout {
 
     @Override
-    public ScreenBounds calculateBounds(final int index, final int count, final ScreenBounds bounds) {
+    public ScreenBounds calculateBounds(final int index, final int count, final ScreenBounds bounds, final int padding) {//TODO APPLY PADDING
         final int width = (int) (bounds.width() * 1.0 / count);
         final var offset = Offset.at(index * width, 0).add(bounds.offset());
         final var size = Size.of(width, bounds.height());

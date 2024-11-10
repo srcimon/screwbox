@@ -13,7 +13,8 @@ public interface ViewportLayout {
      * @param index  the index of the viewport in the list of {@link Graphics#viewports()} (starts at 0)
      * @param count  the total count of {@link Viewport viewports} of the split screen
      * @param bounds the surrounding bounds of the {@link Screen}
+     * @param paddings the padding between the {@link Viewport viewports}
      */
-    ScreenBounds calculateBounds(int index, int count, ScreenBounds bounds);
+    ScreenBounds calculateBounds(int index, int count, ScreenBounds bounds, int padding);
 
 }
