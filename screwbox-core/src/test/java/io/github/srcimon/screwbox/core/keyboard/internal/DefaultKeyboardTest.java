@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.awt.event.KeyEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.Offset.offset;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,80 @@ class DefaultKeyboardTest {
 
     @Mock
     private KeyEvent keyEvent;
+
+    @Test
+    void recordedText_notRecording_isEmpty() {
+        assertThat(keyboard.recordedText()).isEmpty();
+    }
+
+    @Test
+    void isRecording_recordingStarted_isTrue() {
+        keyboard.startRecording();
+
+        assertThat(keyboard.isRecording()).isTrue();
+    }
+
+    @Test
+    void stopRecording_notRecording_throwsException() {
+        assertThatThrownBy(() -> keyboard.stopRecording())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("keyboard is not recording");
+    }
+
+    @Test
+    void stopRecording_hasRecordedTwoChars_returnsRecordedText() {
+        keyboard.startRecording();
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(65);
+        when(keyEvent.getKeyChar()).thenReturn('a');
+        keyboard.keyTyped(keyEvent);
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(65);
+        when(keyEvent.getKeyChar()).thenReturn('b');
+        keyboard.keyTyped(keyEvent);
+
+        assertThat(keyboard.stopRecording()).isEqualTo("ab");
+    }
+
+    @Test
+    void startRecording_alreadyStarted_resetsRecording() {
+        keyboard.startRecording();
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(65);
+        when(keyEvent.getKeyChar()).thenReturn('a');
+        keyboard.keyTyped(keyEvent);
+
+        keyboard.startRecording();
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(65);
+        when(keyEvent.getKeyChar()).thenReturn('b');
+        keyboard.keyTyped(keyEvent);
+
+        assertThat(keyboard.recordedText()).contains("b");
+    }
+
+    @Test
+    void recordedText_typeAbcAndBackspace_isAb() {
+        keyboard.startRecording();
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(65);
+        when(keyEvent.getKeyChar()).thenReturn('a');
+        keyboard.keyTyped(keyEvent);
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(66);
+        when(keyEvent.getKeyChar()).thenReturn('b');
+        keyboard.keyTyped(keyEvent);
+
+        when(keyEvent.getExtendedKeyCode()).thenReturn(67);
+        when(keyEvent.getKeyChar()).thenReturn('c');
+        keyboard.keyTyped(keyEvent);
+
+        // BACKSPACE
+        when(keyEvent.getExtendedKeyCode()).thenReturn(8);
+        keyboard.keyTyped(keyEvent);
+
+        assertThat(keyboard.recordedText()).contains("ab");
+    }
 
 
     @Test

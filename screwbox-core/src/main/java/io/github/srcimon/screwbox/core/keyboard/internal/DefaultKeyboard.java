@@ -9,9 +9,14 @@ import io.github.srcimon.screwbox.core.utils.TrippleLatch;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static io.github.srcimon.screwbox.core.keyboard.Key.*;
+import static java.util.Objects.nonNull;
 
 public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
 
@@ -20,9 +25,19 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     private final TrippleLatch<Set<Integer>> pressedKeys = TrippleLatch.of(
             new HashSet<>(), new HashSet<>(), new HashSet<>());
 
+    private StringBuilder textRecorder = null;
+
     @Override
     public void keyTyped(final KeyEvent event) {
-        // not used
+        if (isRecording()) {
+            if (BACKSPACE.code() == event.getExtendedKeyCode()) {
+                if (!textRecorder.isEmpty()) {
+                    textRecorder.deleteCharAt(textRecorder.length() - 1);
+                }
+            } else {
+                textRecorder.append(event.getKeyChar());
+            }
+        }
     }
 
     @Override
@@ -39,6 +54,34 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     public void keyReleased(final KeyEvent event) {
         downKeys.remove(event.getKeyCode());
         unreleasedKeys.remove(event.getKeyCode());
+    }
+
+    @Override
+    public Keyboard startRecording() {
+        textRecorder = new StringBuilder();
+        return this;
+    }
+
+    @Override
+    public boolean isRecording() {
+        return nonNull(textRecorder);
+    }
+
+    @Override
+    public String stopRecording() {
+        if (!isRecording()) {
+            throw new IllegalStateException("keyboard is not recording");
+        }
+        final var recordedText = textRecorder.toString();
+        textRecorder = null;
+        return recordedText;
+    }
+
+    @Override
+    public Optional<String> recordedText() {
+        return isRecording()
+                ? Optional.of(textRecorder.toString())
+                : Optional.empty();
     }
 
     @Override
@@ -111,10 +154,9 @@ public class DefaultKeyboard implements Keyboard, Updatable, KeyListener {
     }
 
     private List<Key> mapCodes(final Set<Integer> codes) {
-        List<Key> keys = new ArrayList<>();
+        final List<Key> keys = new ArrayList<>();
         for (final var code : new ArrayList<>(codes)) {
-            Optional<Key> key = Key.fromCode(code);
-            key.ifPresent(keys::add);
+            Key.fromCode(code).ifPresent(keys::add);
         }
         return keys;
     }
