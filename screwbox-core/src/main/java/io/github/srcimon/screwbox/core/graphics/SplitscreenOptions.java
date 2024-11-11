@@ -18,7 +18,8 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
         Validate.max(viewportCount, 64, "split screen supports only up to 64 viewports (what is your monitor like?)");
-        Validate.zeroOrPositive(padding, "padding must be positive");//TODO test
+
+        Validate.zeroOrPositive(padding, "padding must be positive");
         Validate.max(padding, 32, "padding has max value of 32");
     }
 
@@ -59,12 +60,21 @@ public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int p
         return layout(new TableLayout());
     }
 
-    //TODO javadoc and test
+    /**
+     * Sets padding between {@link Viewport viewports} to zero. Default is 4.
+     *
+     * @since 2.6.0
+     */
     public SplitscreenOptions noPadding() {
-        return new SplitscreenOptions(viewportCount, layout, 0);
+        return padding(0);
     }
 
-    //TODO javadoc and test
+    /**
+     * Sets padding between {@link Viewport viewports} to the specified value. Default is 4.
+     * Max value is 32.
+     *
+     * @since 2.6.0
+     */
     public SplitscreenOptions padding(final int padding) {
         return new SplitscreenOptions(viewportCount, layout, padding);
     }

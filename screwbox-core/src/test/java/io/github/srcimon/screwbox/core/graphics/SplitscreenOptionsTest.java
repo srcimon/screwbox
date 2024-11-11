@@ -24,11 +24,12 @@ class SplitscreenOptionsTest {
     }
 
     @Test
-    void newInstance_tableLayoutWithFourViewports_setsAllProperties() {
-        var options = SplitscreenOptions.viewports(4).tableLayout();
+    void newInstance_tableLayoutWithFourViewportsNoPadding_setsAllProperties() {
+        var options = SplitscreenOptions.viewports(4).tableLayout().noPadding();
 
         assertThat(options.viewportCount()).isEqualTo(4);
         assertThat(options.layout()).isInstanceOf(TableLayout.class);
+        assertThat(options.padding()).isEqualTo(0);
     }
 
     @Test
@@ -38,5 +39,23 @@ class SplitscreenOptionsTest {
         assertThat(options.viewportCount()).isEqualTo(2);
         assertThat(options.layout()).isInstanceOf(VerticalLayout.class);
         assertThat(options.padding()).isEqualTo(12);
+    }
+
+    @Test
+    void padding_tooLarge_throwsException() {
+        var options = SplitscreenOptions.viewports(2);
+
+        assertThatThrownBy(() -> options.padding(33))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("padding has max value of 32");
+    }
+
+    @Test
+    void padding_negative_throwsException() {
+        var options = SplitscreenOptions.viewports(2);
+
+        assertThatThrownBy(() -> options.padding(-2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("padding must be positive");
     }
 }
