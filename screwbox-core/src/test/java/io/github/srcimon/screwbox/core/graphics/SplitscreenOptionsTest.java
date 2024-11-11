@@ -29,7 +29,7 @@ class SplitscreenOptionsTest {
 
         assertThat(options.viewportCount()).isEqualTo(4);
         assertThat(options.layout()).isInstanceOf(TableLayout.class);
-        assertThat(options.padding()).isEqualTo(0);
+        assertThat(options.padding()).isZero();
     }
 
     @Test

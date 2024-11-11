@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.utils;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static io.github.srcimon.screwbox.core.utils.ListUtil.containsDuplicates;
 

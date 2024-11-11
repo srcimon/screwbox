@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.layouts;
 
-import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
