@@ -77,4 +77,16 @@ public final class Validate {
             throw new IllegalArgumentException(message);
         }
     }
+
+    /**
+     * Value must be below max value.
+     *
+     * @throws IllegalArgumentException using specified message when not
+     */
+    public static void max(final int value, final int max, final String message) {
+        if (value > max) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
 }

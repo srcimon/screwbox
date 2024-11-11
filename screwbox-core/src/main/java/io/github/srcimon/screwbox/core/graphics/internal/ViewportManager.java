@@ -1,7 +1,6 @@
 package io.github.srcimon.screwbox.core.graphics.internal;
 
 import io.github.srcimon.screwbox.core.graphics.Camera;
-import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.SplitscreenOptions;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -9,13 +8,9 @@ import io.github.srcimon.screwbox.core.loop.internal.Updatable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
-import static java.util.Objects.isNull;
 
 public class ViewportManager implements Updatable {
 
@@ -95,41 +90,14 @@ public class ViewportManager implements Updatable {
                 : defaultViewport;
     }
 
-    private record Tupel<T>(T first, T second) {
-    }
-
     @Override
     public void update() {
         arangeViewports();
     }
 
-    public void renderSplitscreenBorders() {
-        if (isNull(options) || isNull(options.borders())) {
-            return;
-        }
-        final Set<Tupel<Offset>> alreadyDrawn = new HashSet<>();
-        for (var viewport : splitScreenViewports) {
-            final var canvasBounds = viewport.canvas().bounds();
-            final var bounds = new ScreenBounds(canvasBounds.offset().substract(defaultViewport.canvas().offset()), canvasBounds.size());
-            final Offset topRight = bounds.offset().addX(bounds.width());
-            final Offset bottomLeft = bounds.offset().addY(bounds.height());
-            final Offset bottomRight = bounds.offset().add(bounds.width(), bounds.height());
-            for (var side : List.of(
-                    new Tupel<>(bounds.offset(), topRight),
-                    new Tupel<>(bounds.offset(), bottomLeft),
-                    new Tupel<>(topRight, bottomRight),
-                    new Tupel<>(bottomLeft, bottomRight))
-            ) {
-                if (!alreadyDrawn.add(side)) {
-                    defaultViewport.canvas().drawLine(side.first(), side.second(), options.borders());
-                }
-            }
-        }
-    }
-
     private void arangeViewports() {
         for (int i = 0; i < splitScreenViewports.size(); i++) {
-            final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), defaultViewport.canvas().bounds());
+            final var viewportBounds = options.layout().calculateBounds(i, splitScreenViewports.size(), options.padding(), defaultViewport.canvas().bounds());
             splitScreenViewports.get(i).updateClip(viewportBounds);
         }
     }

@@ -15,7 +15,6 @@ import io.github.srcimon.screwbox.core.environment.rendering.FixedSpinSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.FlipSpriteSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.MovementRotationSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSceneTransitionSystem;
-import io.github.srcimon.screwbox.core.environment.rendering.RenderSplitscreenBordersSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderSystem;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderUiSystem;
 import io.github.srcimon.screwbox.core.environment.tweening.TweenDestroySystem;
@@ -286,7 +285,6 @@ public interface Environment {
      *
      * @see RenderSceneTransitionSystem
      * @see RenderUiSystem
-     * @see RenderSplitscreenBordersSystem
      * @see MovementRotationSystem
      * @see FixedRotationSystem
      * @see FlipSpriteSystem

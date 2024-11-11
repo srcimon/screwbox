@@ -1,6 +1,5 @@
 package io.github.srcimon.screwbox.core.graphics.layouts;
 
-import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
 import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
@@ -35,22 +34,27 @@ public class TableLayout implements ViewportLayout {
     }
 
     @Override
-    public ScreenBounds calculateBounds(int index, int count, ScreenBounds bounds) {
-        final int width = (int) (bounds.width() * 1.0 / columns );
+    public ScreenBounds calculateBounds(int index, int count, final int padding, final ScreenBounds bounds) {
         final int rows = (int) Math.ceil(count * 1.0 / columns);
-        final int height = (int) (bounds.height() * 1.0 / rows );
         final int column = index % columns;
         final int row = Math.floorDiv(index, columns);
+        final int width = (bounds.width() - padding * (columns - 1)) / columns;
+        final int height = (bounds.height() - padding * (rows - 1)) / rows;
+        final var offset = bounds.offset().add(
+                column * width + column * padding,
+                row * height + row * padding);
 
-        final var offset = Offset.at(column * width, row * height).add(bounds.offset());
         final var isLastViewport = index == count - 1;
-        final var widthToUse = fillEmptySpace && isLastViewport
-                ? (columns - column) * width
+
+        var widthToUse = fillEmptySpace && isLastViewport
+                ? bounds.width() - offset.x() + bounds.offset().x()
                 : width;
 
-        final var size = Size.of(widthToUse, height);
+        final var filledHeight = isLastViewport
+                ? bounds.height() - offset.y() + bounds.offset().y()
+                : height;
+
+        final var size = Size.of(widthToUse, filledHeight);
         return new ScreenBounds(offset, size);
     }
-
-
 }

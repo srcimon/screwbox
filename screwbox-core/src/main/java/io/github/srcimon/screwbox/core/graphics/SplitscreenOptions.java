@@ -1,26 +1,26 @@
 package io.github.srcimon.screwbox.core.graphics;
 
-import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.TableLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.VerticalLayout;
 import io.github.srcimon.screwbox.core.utils.Validate;
 
 /**
- * Configures split screen mode.
+ * Configures split screen mode. {@link Color} of padding between {@link Viewport viewports} can
+ * be changed via {@link GraphicsConfiguration#setBackgroundColor(Color)}.
  *
  * @param viewportCount the number of {@link Viewport viewports} present in the split screen
- * @param borders       the border style used to separate the {@link Viewport viewports}
  * @param layout        the layout wich is applied to calculate the size and position of the {@link Viewport viewports}
  * @since 2.5.0
  */
-public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, ViewportLayout layout) {
+public record SplitscreenOptions(int viewportCount, ViewportLayout layout, int padding) {
 
     public SplitscreenOptions {
         Validate.positive(viewportCount, "split screen must have at least one viewport");
-        if (viewportCount > 64) {
-            throw new IllegalArgumentException("split screen supports only up to 64 viewports (what is your monitor like?)");
-        }
+        Validate.max(viewportCount, 64, "split screen supports only up to 64 viewports (what is your monitor like?)");
+
+        Validate.zeroOrPositive(padding, "padding must be positive");
+        Validate.max(padding, 32, "padding has max value of 32");
     }
 
     /**
@@ -30,7 +30,7 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.5.0
      */
     public static SplitscreenOptions viewports(final int screenCount) {
-        return new SplitscreenOptions(screenCount, LineDrawOptions.color(Color.BLACK).strokeWidth(4), new HorizontalLayout());
+        return new SplitscreenOptions(screenCount, new HorizontalLayout(), 4);
     }
 
     /**
@@ -39,7 +39,7 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
      * @since 2.5.0
      */
     public SplitscreenOptions layout(final ViewportLayout layout) {
-        return new SplitscreenOptions(viewportCount, borders, layout);
+        return new SplitscreenOptions(viewportCount, layout, padding);
     }
 
     /**
@@ -61,20 +61,21 @@ public record SplitscreenOptions(int viewportCount, LineDrawOptions borders, Vie
     }
 
     /**
-     * Specify the boder style between the split screen {@link Viewport viewports}.
-     *
-     * @since 2.5.0
-     */
-    public SplitscreenOptions borders(final LineDrawOptions borderOptions) {
-        return new SplitscreenOptions(viewportCount, borderOptions, layout);
-    }
-
-    /**
-     * Split screen {@link Viewport viewports} will be drawn without any borders.
+     * Sets padding between {@link Viewport viewports} to zero. Default is 4.
      *
      * @since 2.6.0
      */
-    public SplitscreenOptions noBorders() {
-        return new SplitscreenOptions(viewportCount, null, layout);
+    public SplitscreenOptions noPadding() {
+        return padding(0);
+    }
+
+    /**
+     * Sets padding between {@link Viewport viewports} to the specified value. Default is 4.
+     * Max value is 32.
+     *
+     * @since 2.6.0
+     */
+    public SplitscreenOptions padding(final int padding) {
+        return new SplitscreenOptions(viewportCount, layout, padding);
     }
 }

@@ -2,8 +2,7 @@
 
 ### 🚀 Features & improvements
 
-- Added methods for explizitly rendering `Ui.renderMenu()`, `Scenes.renderTransition()`,
-  `Graphics.renderSplitscreenBorders()` so drawing order of these subsystems can be customized (#416)
+- Added methods for explizitly rendering `Ui.renderMenu()` and `Scenes.renderTransition()`, so drawing order of these subsystems can be customized (#416)
 - Added new entity systems to automate rendering of menus, scene transistions and split screen borders (#416)
 - Added option to draw split screens without borders
 - Added friction support for Physics entities
@@ -14,6 +13,8 @@
 - Set min size to `Lightmap` to prevent crashes when viewports are too small
 - Fixed wrong system order when adding systems using lambdas (#418)
 - Avoid unneccesary duplicate drawing of split screen borders
+- Added new validation for maximum values
+- Fixed wrong pan of sounds in split screen mode
 
 ### 🧽 Cleanup & refactoring
 

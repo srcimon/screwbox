@@ -50,18 +50,22 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
     ``` java
     import io.github.srcimon.screwbox.core.Engine;
     import io.github.srcimon.screwbox.core.ScrewBox;
+    import io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions;
     
     import static io.github.srcimon.screwbox.core.assets.FontBundle.BOLDZILLA;
-    import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptions.font;
     
     public class HelloWorldApp {
-
+    
         public static void main(String[] args) {
             Engine screwBox = ScrewBox.createEngine();
-
-            screwBox.environment().addSystem(engine -> engine.graphics().canvas().drawText(
-                screen.center(), "Hello world!", font(BOLDZILLA).scale(4).alignCenter()));
-
+    
+            screwBox.environment().addSystem(engine -> {
+                var mousePosition = engine.mouse().position();
+                var textDrawOptions = TextDrawOptions.font(BOLDZILLA).scale(3).alignCenter();
+                var text = "ScrewBox is running at %s fps".formatted(engine.loop().fps());
+                engine.graphics().world().drawText(mousePosition, text, textDrawOptions);
+            });
+    
             screwBox.start();
         }
     }
