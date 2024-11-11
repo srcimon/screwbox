@@ -4,9 +4,9 @@
 
 - Added methods for explizitly rendering `Ui.renderMenu()` and `Scenes.renderTransition()`, so drawing order of these subsystems can be customized (#416)
 - Added new entity systems to automate rendering of menus, scene transistions and split screen borders (#416)
-- Added option to draw split screens without borders
-- Added friction support for Physics entities
+- Added friction support for physics entities
 - Added option to specify background color of screen in `GraphicsConfiguration` (#425)
+- Added support for recording text via keyboard
 
 ### 🪛 Bug Fixes
 
