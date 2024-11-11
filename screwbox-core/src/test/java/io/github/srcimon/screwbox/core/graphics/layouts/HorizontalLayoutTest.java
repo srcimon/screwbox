@@ -28,9 +28,9 @@ class HorizontalLayoutTest {
 
     @Test
     void calculateBounds_threeViewports_allHaveSameSize() {
-        var firstViewport = horizontalLayout.calculateBounds(0, 3, 0,SCREEN);
-        var secondViewport = horizontalLayout.calculateBounds(1, 3, 0,SCREEN);
-        var thirdViewport = horizontalLayout.calculateBounds(2, 3, 0,SCREEN);
+        var firstViewport = horizontalLayout.calculateBounds(0, 3, 0, SCREEN);
+        var secondViewport = horizontalLayout.calculateBounds(1, 3, 0, SCREEN);
+        var thirdViewport = horizontalLayout.calculateBounds(2, 3, 0, SCREEN);
 
         assertThat(firstViewport.size())
                 .isEqualTo(secondViewport.size())
@@ -40,5 +40,18 @@ class HorizontalLayoutTest {
         assertThat(firstViewport.offset()).isEqualTo(Offset.at(20, 10));
         assertThat(secondViewport.offset()).isEqualTo(Offset.at(234, 10));
         assertThat(thirdViewport.offset()).isEqualTo(Offset.at(448, 10));
+    }
+
+    @Test
+    void calculateBounds_twoViewportsUsingPadding_paddingBetweenViewports() {
+        var firstViewport = horizontalLayout.calculateBounds(0, 2, 4, SCREEN);
+        var secondViewport = horizontalLayout.calculateBounds(1, 2, 4, SCREEN);
+
+        assertThat(firstViewport.size())
+                .isEqualTo(secondViewport.size())
+                .isEqualTo(Size.of(319, 482));
+
+        assertThat(firstViewport.offset()).isEqualTo(Offset.at(20, 10));
+        assertThat(secondViewport.offset()).isEqualTo(Offset.at(343, 10));
     }
 }

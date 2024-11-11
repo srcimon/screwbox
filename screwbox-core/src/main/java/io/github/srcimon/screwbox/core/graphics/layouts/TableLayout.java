@@ -34,15 +34,17 @@ public class TableLayout implements ViewportLayout {
         this.fillEmptySpace = fillEmptySpace;
     }
 
-    //TODO add padding tests
     @Override
-    public ScreenBounds calculateBounds(int index, int count, final int padding, ScreenBounds bounds) {
+    public ScreenBounds calculateBounds(int index, int count, final int padding, final ScreenBounds bounds) {
         final int rows = (int) Math.ceil(count * 1.0 / columns);
         final int column = index % columns;
         final int row = Math.floorDiv(index, columns);
         final int width = (bounds.width() - padding * (columns - 1)) / columns;
         final int height = (bounds.height() - padding * (rows - 1)) / rows;
-        final var offset = Offset.at(column * width + column * padding, row * height + row * padding).add(bounds.offset());
+        final var offset = bounds.offset().add(
+                column * width + column * padding,
+                row * height + row * padding);
+
         final var isLastViewport = index == count - 1;
 
         var widthToUse = fillEmptySpace && isLastViewport

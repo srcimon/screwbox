@@ -35,4 +35,18 @@ class TableLayoutTest {
         assertThat(result).isEqualTo(new ScreenBounds(20, 10, 320, 480));
     }
 
+    @Test
+    void calculateBounds_fourViewportsUsingPadding_paddingBetweenViewports() {
+        TableLayout layout = new TableLayout(2, false);
+        var first = layout.calculateBounds(0, 4, 6, SCREEN);
+        var second = layout.calculateBounds(1, 4, 6, SCREEN);
+        var third = layout.calculateBounds(2, 4, 6, SCREEN);
+        var fourth = layout.calculateBounds(3, 4, 6, SCREEN);
+
+        assertThat(first).isEqualTo(new ScreenBounds(20, 10, 317, 237));
+        assertThat(second).isEqualTo(new ScreenBounds(343, 10, 317, 237));
+        assertThat(third).isEqualTo(new ScreenBounds(20, 253, 317, 237));
+        assertThat(fourth).isEqualTo(new ScreenBounds(343, 253, 317, 237));
+    }
+
 }

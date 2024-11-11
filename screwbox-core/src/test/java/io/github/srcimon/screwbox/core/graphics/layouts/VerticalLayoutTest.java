@@ -41,4 +41,17 @@ class VerticalLayoutTest {
         assertThat(secondViewport.offset()).isEqualTo(Offset.at(20, 170));
         assertThat(thirdViewport.offset()).isEqualTo(Offset.at(20, 330));
     }
+
+    @Test
+    void calculateBounds_twoViewportsUsingPadding_paddingBetweenViewports() {
+        var firstViewport = verticalLayout.calculateBounds(0, 2, 4, SCREEN);
+        var secondViewport = verticalLayout.calculateBounds(1, 2, 4, SCREEN);
+
+        assertThat(firstViewport.size())
+                .isEqualTo(secondViewport.size())
+                .isEqualTo(Size.of(640, 238));
+
+        assertThat(firstViewport.offset()).isEqualTo(Offset.at(20, 10));
+        assertThat(secondViewport.offset()).isEqualTo(Offset.at(20, 252));
+    }
 }
