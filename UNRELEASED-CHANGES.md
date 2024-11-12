@@ -1,6 +1,6 @@
 ### 🚀 Features & improvements
 
-- ...
+- Added keys `OE`, `UE`, `AE`
 
 ### 🪛 Bug Fixes
 
@@ -8,7 +8,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- Added Keys `OE`, `UE`, `AE`
+- ...
 
 ### 📦 Dependency updates
 
