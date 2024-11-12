@@ -66,7 +66,10 @@ public enum Key {
     F9(120),
     F10(121),
     F11(122),
-    F12(123);
+    F12(123),
+    AE(16777444),
+    OE(16777462),
+    UE(16777468);
 
     private static final Map<Integer, Key> REVERSE_LOOKUP = new HashMap<>();
 
