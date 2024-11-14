@@ -23,7 +23,7 @@ If you want to get something startet in a few minutes ScrewBox might be a fun ch
 - **Entity Component System** Add and remove game objects and behaviour. Save and load the game state.
 - **Render Engine** Fast rendering of shapes, animated graphics and text. Enhance graphics with dynamic light and shadow
   effects. Use split screen mode to create local multiplayer games.
-- **Physics System** Move objects and resolve collisions. Detect objects via raycasting.
+- **Physics System** Move objects and resolve collisions. Detect obstacles via raycasting and use pathfinding to move around.
 - **Particle Effects** Add particle effects to create some nice visuals.
 - **Asset Management** Load game assets without interrupting the game flow.
 - **Basic UI** Create an animated interactive game ui in an instant.
