@@ -112,6 +112,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
         hoverViewport = calculateHoverViewport();
+        position = toPositionConsideringRotation(offset);
     }
 
     @Override
