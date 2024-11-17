@@ -9,9 +9,14 @@ import io.github.srcimon.screwbox.core.graphics.Color;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
 import io.github.srcimon.screwbox.core.graphics.SpriteBundle;
+import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.LineDrawOptions;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SpriteDrawOptions;
 
+/**
+ * Renders a crt monitor like effect on top of the primary {@link Viewport} or on all
+ * split screen {@link Viewport viewports}.
+ */
 @Order(Order.SystemOrder.PRESENTATION_UI_FOREGROUND)
 public class CrtMonitorOverlaySystem implements EntitySystem {
 
