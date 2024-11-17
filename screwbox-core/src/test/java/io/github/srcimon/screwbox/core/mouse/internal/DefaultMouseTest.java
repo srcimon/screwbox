@@ -3,6 +3,7 @@ package io.github.srcimon.screwbox.core.mouse.internal;
 import io.github.srcimon.screwbox.core.Rotation;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.ScreenBounds;
+import io.github.srcimon.screwbox.core.graphics.Size;
 import io.github.srcimon.screwbox.core.graphics.Viewport;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultCamera;
 import io.github.srcimon.screwbox.core.graphics.internal.DefaultCanvas;
@@ -38,6 +39,7 @@ class DefaultMouseTest {
 
     @Test
     void isPressed_mouseNotPressed_isFalse() {
+        mockDefaultViewportAndRotation();
         var isPressed = mouse.isPressed(MouseButton.LEFT);
 
         mouse.update();
@@ -47,6 +49,8 @@ class DefaultMouseTest {
 
     @Test
     void isPressed_mousePressed_isTrue() {
+        mockDefaultViewportAndRotation();
+
         mouse.mousePressed(rightMouseButtonEvent());
         mouse.update();
 
@@ -87,6 +91,8 @@ class DefaultMouseTest {
 
     @Test
     void unitsScrolled_scrollupAndDown_returnsSum() {
+        mockDefaultViewportAndRotation();
+
         MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
         when(scrollUpEvent.getUnitsToScroll()).thenReturn(4);
         mouse.mouseWheelMoved(scrollUpEvent);
@@ -106,6 +112,8 @@ class DefaultMouseTest {
 
     @Test
     void hasScrolled_scrollupAndDown_true() {
+        mockDefaultViewportAndRotation();
+
         MouseWheelEvent scrollUpEvent = mock(MouseWheelEvent.class);
         when(scrollUpEvent.getUnitsToScroll()).thenReturn(4);
         mouse.mouseWheelMoved(scrollUpEvent);
@@ -121,6 +129,8 @@ class DefaultMouseTest {
 
     @Test
     void hasScrolled_snotScrolled_false() {
+        mockDefaultViewportAndRotation();
+
         mouse.update();
 
         assertThat(mouse.hasScrolled()).isFalse();
@@ -128,6 +138,8 @@ class DefaultMouseTest {
 
     @Test
     void isAnyButtonDown_noButtonDown_false() {
+        mockDefaultViewportAndRotation();
+
         mouse.update();
 
         assertThat(mouse.isAnyButtonDown()).isFalse();
@@ -135,6 +147,8 @@ class DefaultMouseTest {
 
     @Test
     void isAnyButtonDown_leftClicked_true() {
+        mockDefaultViewportAndRotation();
+
         mouse.mousePressed(rightMouseButtonEvent());
 
         mouse.update();
@@ -144,13 +158,12 @@ class DefaultMouseTest {
 
     @Test
     void hoverViewport_noSplitScreen_returnsDefaultViewport() {
-        var viewport = mock(Viewport.class);
-        when(viewportManager.defaultViewport()).thenReturn(viewport);
+        mockDefaultViewportAndRotation();
         mouse.update();
 
         Viewport result = mouse.hoverViewport();
 
-        assertThat(result).isEqualTo(viewport);
+        assertThat(result.canvas().size()).isEqualTo(Size.of(640, 480));
     }
 
     @Test
@@ -174,5 +187,12 @@ class DefaultMouseTest {
         MouseEvent event = mock(MouseEvent.class);
         when(event.getButton()).thenReturn(3);
         return event;
+    }
+
+    private void mockDefaultViewportAndRotation() {
+        var ca = new DefaultCanvas(null, new ScreenBounds(0, 0, 640, 480));
+        DefaultViewport v = new DefaultViewport(ca, new DefaultCamera(ca));
+        when(viewportManager.defaultViewport()).thenReturn(v);
+        when(screen.absoluteRotation()).thenReturn(Rotation.none());
     }
 }

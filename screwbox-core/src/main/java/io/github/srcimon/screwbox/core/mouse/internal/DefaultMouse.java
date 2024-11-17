@@ -51,7 +51,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public Vector drag() {
         final Vector current = position();
-        final Vector last = toPositionConsideringRotation(lastPosition);
+        final Vector last = toPosition(lastPosition);
         return last.substract(current);
     }
 
@@ -112,6 +112,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
         hoverViewport = calculateHoverViewport();
+        position = toPosition(offset);
     }
 
     @Override
@@ -153,9 +154,9 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
 
     private void updateMousePosition(final MouseEvent e) {
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
-        offset = windowPosition.substract(screen.position()).substract(viewportManager.defaultViewport().canvas().offset());
+        offset = windowPosition.substract(screen.position()).substract(getOffset());
         hoverViewport = calculateHoverViewport();
-        position = toPositionConsideringRotation(offset);
+        position = toPosition(offset);
     }
 
     private Viewport calculateHoverViewport() {
@@ -163,7 +164,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
             return viewportManager.defaultViewport();
         }
         for (final var viewport : viewportManager.viewports()) {
-            final Offset fixedOffset = offset.add(viewportManager.defaultViewport().canvas().offset());
+            final Offset fixedOffset = offset.add(getOffset());
             if (viewport.canvas().bounds().contains(fixedOffset)) {
                 return viewport;
             }
@@ -171,25 +172,29 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return viewportManager.defaultViewport();
     }
 
-    private Vector toPositionConsideringRotation(final Offset offset) {
+    private Vector toPosition(final Offset offset) {
         final Vector mousePosition = screenToWorld(offset);
         if (screen.absoluteRotation().isNone()) {
             return mousePosition;
         }
 
-        final Vector center = screenToWorld(screen.size().center().substract(viewportManager.defaultViewport().canvas().offset()));
+        final Vector center = screenToWorld(screen.size().center().substract(getOffset()));
         final var delta = Line.between(center, mousePosition);
         return screen.absoluteRotation().invert().applyOn(delta).to();
     }
 
     private Vector screenToWorld(final Offset offset) {
         final Canvas hoverCanvas = hoverViewport.canvas();
-        final Offset fixedOffset = offset.substract(hoverCanvas.offset()).add(viewportManager.defaultViewport().canvas().offset());
+        final Offset fixedOffset = offset.substract(hoverCanvas.offset()).add(getOffset());
         final var camera = hoverViewport.camera();
         final double x = (fixedOffset.x() - (hoverCanvas.width() / 2.0)) / camera.zoom() + camera.focus().x();
         final double y = (fixedOffset.y() - (hoverCanvas.height() / 2.0)) / camera.zoom() + camera.focus().y();
 
         return Vector.of(x, y);
+    }
+
+    private Offset getOffset() {
+        return viewportManager.defaultViewport().canvas().offset();
     }
 
     @Override
