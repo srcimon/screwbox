@@ -14,7 +14,6 @@ import static java.lang.Character.isSpaceChar;
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
-import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
@@ -40,9 +39,8 @@ public class Pixelfont implements Serializable {
      */
     public void addCharacters(final List<Character> characters, final List<Sprite> sprites) {
         if (characters.size() != sprites.size()) {
-            throw new IllegalArgumentException(
-                    format("Count of characters (%d) is different than count of sprites (%d).",
-                            characters.size(), sprites.size()));
+            throw new IllegalArgumentException("Count of characters (%d) is different than count of sprites (%d)."
+                    .formatted(characters.size(), sprites.size()));
         }
         for (int i = 0; i < characters.size(); i++) {
             addCharacter(characters.get(i), sprites.get(i));
@@ -59,7 +57,7 @@ public class Pixelfont implements Serializable {
         requireNonNull(sprite, "Sprite must not be null. Character: " + character);
 
         if (hasCharacter(character)) {
-            throw new IllegalStateException("Character already present in font: X");
+            throw new IllegalStateException("Character already present in font: " + character);
         }
 
         if (height == 0) {

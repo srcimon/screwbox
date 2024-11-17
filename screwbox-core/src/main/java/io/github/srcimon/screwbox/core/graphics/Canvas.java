@@ -22,8 +22,14 @@ public interface Canvas extends Sizeable {
      */
     Offset center();
 
+    /**
+     * Returns the {@link ScreenBounds} of the canvas.
+     */
     ScreenBounds bounds();
 
+    /**
+     * Checks if the specified bounds is visible within the {@link Canvas}.
+     */
     boolean isVisible(final ScreenBounds other);
 
     /**
