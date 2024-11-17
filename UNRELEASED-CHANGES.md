@@ -2,7 +2,7 @@
 
 - Added keys `OE`, `UE`, `AE`
 - Added `SpriteBundle.CRT_MONITOR_EDGE`
-- Added `CrtMonitorOverlaySystem`
+- Added `CrtMonitorOverlaySystem` to create crt monitor effect (#254)
 
 ### 🪛 Bug Fixes
 
