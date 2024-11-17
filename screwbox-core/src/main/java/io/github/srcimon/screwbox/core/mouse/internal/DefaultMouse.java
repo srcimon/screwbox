@@ -51,7 +51,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
     @Override
     public Vector drag() {
         final Vector current = position();
-        final Vector last = toPositionConsideringRotation(lastPosition);
+        final Vector last = toPosition(lastPosition);
         return last.substract(current);
     }
 
@@ -112,7 +112,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         pressedButtons.backupInactive().clear();
         pressedButtons.toggle();
         hoverViewport = calculateHoverViewport();
-        position = toPositionConsideringRotation(offset);
+        position = toPosition(offset);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         final var windowPosition = Offset.at(e.getXOnScreen(), e.getYOnScreen());
         offset = windowPosition.substract(screen.position()).substract(getOffset());
         hoverViewport = calculateHoverViewport();
-        position = toPositionConsideringRotation(offset);
+        position = toPosition(offset);
     }
 
     private Viewport calculateHoverViewport() {
@@ -172,7 +172,7 @@ public class DefaultMouse implements Mouse, Updatable, MouseListener, MouseMotio
         return viewportManager.defaultViewport();
     }
 
-    private Vector toPositionConsideringRotation(final Offset offset) {
+    private Vector toPosition(final Offset offset) {
         final Vector mousePosition = screenToWorld(offset);
         if (screen.absoluteRotation().isNone()) {
             return mousePosition;
