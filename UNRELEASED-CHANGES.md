@@ -1,6 +1,8 @@
 ### 🚀 Features & improvements
 
 - Added keys `OE`, `UE`, `AE`
+- Added `SpriteBundle.CRT_MONITOR_EDGE`
+- Added `CrtMonitorOverlaySystem`
 
 ### 🪛 Bug Fixes
 
