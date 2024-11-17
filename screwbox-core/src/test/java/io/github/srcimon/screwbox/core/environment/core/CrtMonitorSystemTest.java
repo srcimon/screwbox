@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(EnvironmentExtension.class)
-public class CrtMonitorSystemTest {
+class CrtMonitorSystemTest {
 
     @Test
     void update_doesntDecorateSplitScreen_drawsDecorations(DefaultEnvironment environment, Loop loop, Canvas canvas) {
