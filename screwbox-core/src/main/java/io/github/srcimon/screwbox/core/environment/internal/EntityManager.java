@@ -26,7 +26,7 @@ public class EntityManager implements EntityListener {
     public void addEntity(final Entity entity) {
         if (delayChanges) {
             pendingNewEntites.add(entity);
-        } else {
+        } else {//TODO GET RID OF CONSTRUCT
             entity.id().ifPresent(id -> {
                 if (nonNull(entitiesById.put(id, entity))) {
                     throw new IllegalStateException("duplicate entity id detected: " + id);
