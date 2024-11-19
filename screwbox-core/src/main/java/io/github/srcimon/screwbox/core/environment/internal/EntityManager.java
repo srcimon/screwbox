@@ -27,13 +27,11 @@ public class EntityManager implements EntityListener {
         if (delayChanges) {
             pendingNewEntites.add(entity);
         } else {
-            final var id = entity.id();
-            if (id.isPresent()) {
-                if (entitiesById.containsKey(id.get())) {
-                    throw new IllegalStateException("duplicate entity id detected: " + id.get());
+            entity.id().ifPresent(id -> {
+                if (nonNull(entitiesById.put(id, entity))) {
+                    throw new IllegalStateException("duplicate entity id detected: " + id);
                 }
-                entitiesById.put(id.get(), entity);
-            }
+            });
             entity.registerListener(this);
             refreshCachedArchetypes(entity);
             this.entities.add(entity);
