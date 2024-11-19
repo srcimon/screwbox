@@ -24,10 +24,24 @@ public class Archetype implements Serializable {
 
     /**
      * Creates a new {@link Archetype}. Quite expensive. {@link Archetype}s should be stored in constants.
+     *
+     * @see #ofSpacial(Class[])
      */
     @SafeVarargs
     public static Archetype of(final Class<? extends Component>... componentClasses) {
         return new Archetype(List.of(componentClasses));
+    }
+
+    /**
+     * Creates a new {@link Archetype} containing a {@link TransformComponent}. Quite expensive. {@link Archetype}s should be stored in constants.
+     *
+     * @see #of(Class[])
+     */
+    @SafeVarargs
+    public static Archetype ofSpacial(final Class<? extends Component>... componentClasses) {
+        final var components = new ArrayList<>(List.of(componentClasses));
+        components.add(TransformComponent.class);
+        return new Archetype(components);
     }
 
     private Archetype(final List<Class<? extends Component>> componentClasses) {
@@ -53,7 +67,7 @@ public class Archetype implements Serializable {
     }
 
     private int calculateHash(final List<Class<? extends Component>> componentClasses) {
-        if(componentClasses.size() == 1) {
+        if (componentClasses.size() == 1) {
             return List.of(componentClasses.getFirst().getName()).hashCode();
         }
         final List<String> names = new ArrayList<>();
