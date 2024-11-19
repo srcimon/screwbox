@@ -12,6 +12,7 @@
 ### 🧽 Cleanup & refactoring
 
 - Added `Archetype.ofSpacial(class...)` convenience constructor (#433)
+- Reduced count of archetype creations when creating raycasts
 
 ### 📦 Dependency updates
 

@@ -23,7 +23,8 @@ public final class RaycastBuilder {
     private final Vector from;
     private final List<Predicate<Entity>> filters = new ArrayList<>();
     private Borders borders = Borders.ALL;
-    private Archetype archetype = Archetype.of(TransformComponent.class, ColliderComponent.class);
+    private static final Archetype DEFAULT_ARCHETYPE = Archetype.ofSpacial(ColliderComponent.class);
+    private Archetype archetype = DEFAULT_ARCHETYPE;//TODO Entity.isSpacial();
 
     public RaycastBuilder(final Environment environment, final Vector from) {
         this.environment = environment;
