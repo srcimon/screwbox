@@ -11,7 +11,6 @@ import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
@@ -32,10 +31,7 @@ import static io.github.srcimon.screwbox.core.particles.ParticleOptions.particle
 public class DiggableSystem implements EntitySystem {
 
     private static final Archetype DIGGINGS = Archetype.of(DiggingComponent.class, PhysicsComponent.class);
-
-    private static final Archetype DIGGABLES = Archetype.of(DiggableComponent.class, TransformComponent.class,
-            RenderComponent.class);
-
+    private static final Archetype DIGGABLES = Archetype.ofSpacial(DiggableComponent.class, RenderComponent.class);
     private static final Asset<Sound> DIG_SOUND = Sound.assetFromFile("sounds/dig.wav");
 
     @Override

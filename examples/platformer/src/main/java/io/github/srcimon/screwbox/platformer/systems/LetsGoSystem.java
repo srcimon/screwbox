@@ -28,8 +28,8 @@ import static io.github.srcimon.screwbox.core.graphics.drawoptions.TextDrawOptio
 @Order(Order.SystemOrder.PRESENTATION_EFFECTS)
 public class LetsGoSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(PlayerMarkerComponent.class, TransformComponent.class);
-    private static final Archetype BUBBLES = Archetype.of(LetsGoComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMarkerComponent.class);
+    private static final Archetype BUBBLES = Archetype.ofSpacial(LetsGoComponent.class);
     private static final Asset<Sound> LETS_GO_SOUND = Sound.assetFromFile("sounds/letsgo.wav");
 
     @Override

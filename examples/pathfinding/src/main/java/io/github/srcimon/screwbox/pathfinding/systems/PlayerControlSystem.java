@@ -14,8 +14,8 @@ import io.github.srcimon.screwbox.pathfinding.states.BombTickingState;
 
 public class PlayerControlSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(
-            PlayerMovementComponent.class, PhysicsComponent.class, RenderComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(
+            PlayerMovementComponent.class, PhysicsComponent.class, RenderComponent.class);
 
     @Override
     public void update(final Engine engine) {

@@ -9,14 +9,12 @@ import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.physics.MovementPathComponent;
 import io.github.srcimon.screwbox.core.environment.physics.PhysicsComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.utils.Sheduler;
 import io.github.srcimon.screwbox.pathfinding.components.PlayerMovementComponent;
 
 public class EnemyMovementSystem implements EntitySystem {
 
-    private static final Archetype PLAYER = Archetype.of(
-            PlayerMovementComponent.class, TransformComponent.class);
+    private static final Archetype PLAYER = Archetype.ofSpacial(PlayerMovementComponent.class);
 
     private static final Archetype ENEMIES = Archetype.of(
             PhysicsComponent.class, RenderComponent.class, MovementPathComponent.class);
