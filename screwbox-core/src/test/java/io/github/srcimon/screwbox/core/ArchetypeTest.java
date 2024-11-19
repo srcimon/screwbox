@@ -14,7 +14,7 @@ class ArchetypeTest {
 
     @Test
     void equals_identicalClasses_returnsTrue() {
-        var typeA = Archetype.of(PhysicsComponent.class, TransformComponent.class);
+        var typeA = Archetype.ofSpacial(PhysicsComponent.class);
         var typeB = Archetype.of(TransformComponent.class, PhysicsComponent.class);
 
         assertThat(typeA).isEqualTo(typeB);

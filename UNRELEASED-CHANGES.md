@@ -11,7 +11,7 @@
 
 ### 🧽 Cleanup & refactoring
 
-- ...
+- Added `Archetype.ofSpacial(class...)` convenience constructor (#433)
 
 ### 📦 Dependency updates
 

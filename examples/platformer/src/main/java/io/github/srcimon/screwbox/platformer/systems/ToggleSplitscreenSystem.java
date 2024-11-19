@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.Vector;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.rendering.CameraBoundsComponent;
 import io.github.srcimon.screwbox.core.graphics.ViewportLayout;
 import io.github.srcimon.screwbox.core.graphics.layouts.HorizontalLayout;
@@ -39,7 +38,7 @@ public class ToggleSplitscreenSystem implements EntitySystem {
 
     private void randomizeAllCameras(final Engine engine) {
         final var configuration = engine.environment().fetchSingletonComponent(CameraBoundsComponent.class);
-        final var exitingEntities = engine.environment().fetchAll(Archetype.of(TransformComponent.class));
+        final var exitingEntities = engine.environment().fetchAll(Archetype.ofSpacial());
         for (var viewport : engine.graphics().viewports()) {
             if (!viewport.equals(engine.graphics().primaryViewport())) {
                 Vector cameraMovement = ListUtil.randomFrom(exitingEntities).position().substract(viewport.camera().position());

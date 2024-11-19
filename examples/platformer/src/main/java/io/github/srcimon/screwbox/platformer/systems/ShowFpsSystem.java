@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.EntitySystem;
 import io.github.srcimon.screwbox.core.environment.Order;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.physics.ColliderComponent;
 import io.github.srcimon.screwbox.core.graphics.Offset;
 import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOptions;
@@ -12,7 +11,7 @@ import io.github.srcimon.screwbox.core.graphics.drawoptions.SystemTextDrawOption
 @Order(Order.SystemOrder.PRESENTATION_VIEPORT_DECORATION)
 public class ShowFpsSystem implements EntitySystem {
 
-    private static final Archetype COLLIDERS = Archetype.of(ColliderComponent.class, TransformComponent.class);
+    private static final Archetype COLLIDERS = Archetype.ofSpacial(ColliderComponent.class);
     private static final Offset TEXT_POSITION = Offset.at(50, 50);
     private static final SystemTextDrawOptions OPTIONS = SystemTextDrawOptions.systemFont("Futura", 14);
 

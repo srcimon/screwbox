@@ -4,7 +4,6 @@ import io.github.srcimon.screwbox.core.Engine;
 import io.github.srcimon.screwbox.core.assets.Asset;
 import io.github.srcimon.screwbox.core.environment.Archetype;
 import io.github.srcimon.screwbox.core.environment.Entity;
-import io.github.srcimon.screwbox.core.environment.core.TransformComponent;
 import io.github.srcimon.screwbox.core.environment.logic.EntityState;
 import io.github.srcimon.screwbox.core.environment.rendering.RenderComponent;
 import io.github.srcimon.screwbox.core.graphics.Sprite;
@@ -19,7 +18,7 @@ import static io.github.srcimon.screwbox.tiled.Tileset.spriteAssetFromJson;
 
 public class PlayerWalkingState implements EntityState {
 
-    private static final Archetype ENEMIES = Archetype.of(TransformComponent.class, EnemyComponent.class);
+    private static final Archetype ENEMIES = Archetype.ofSpacial(EnemyComponent.class);
     private static final Asset<Sprite> SPRITE = spriteAssetFromJson("tilesets/objects/player.json", "idle");
 
     @Override
